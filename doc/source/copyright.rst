@@ -5,8 +5,9 @@
 Copyright and License
 *********************
 
-:raw-html:`&copy;` 2004-2009 J. Dahl and L. Vandenberghe. 
-
+|
+| :raw-html:`&copy;` 2010 L. Vandenberghe. 
+| :raw-html:`&copy;` 2004-2009 J. Dahl and L. Vandenberghe. 
 
 CVXOPT is free software; you can redistribute it and/or modify it under 
 the terms of the 

@@ -588,11 +588,11 @@ where :math:`\circ` denotes Hadamard product.
         D = [k for k in xrange(m) if I[k]==J[k]]  # position of diagonal elements
 
         # starting point: symmetric identity with nonzero pattern I,J
-        K = spmatrix(0, I, J) 
-        K[::n+1] = 1
+        K = spmatrix(0.0, I, J) 
+        K[::n+1] = 1.0
 
         # Kn is used in the line search
-        Kn = spmatrix(0, I, J)
+        Kn = spmatrix(0.0, I, J)
 
         # symbolic factorization of K 
         F = cholmod.symbolic(K)
@@ -607,8 +607,8 @@ where :math:`\circ` denotes Hadamard product.
             d = cholmod.diag(F)
 
             # compute Kinv by solving K*X = I 
-            Kinv[:] = 0
-            Kinv[::n+1] = 1
+            Kinv[:] = 0.0
+            Kinv[::n+1] = 1.0
             cholmod.solve(F, Kinv)
 
             # solve Newton system

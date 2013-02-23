@@ -502,7 +502,7 @@ Quadratic Cone Programs
 
         .. math::
         
-            Gx+s = h, \qquad Ax = b, \qquad Px + G^Tz + A^T y + c = 0,
+            Gx+s = h, \qquad Ax = b, \qquad Px + G^Tz + A^T y + q = 0,
 
             s \succeq 0, \qquad z \succeq 0, \qquad s^T z  = 0.
   
@@ -1495,8 +1495,8 @@ We illustrate these features with three applications.
                     # z[:m] := d1[:m] .* ( P*x[:n] - x[n:] - bz[:m])
                     # z[m:] := d2[m:] .* (-P*x[:n] - x[n:] - bz[m:]) 
 
-                    z[:m] = mul(d[:m],  u - x[n:] - z[:m])
-                    z[m:] = mul(d[m:], -u - x[n:] - z[m:])
+                    z[:m] = mul(di[:m],  u - x[n:] - z[:m])
+                    z[m:] = mul(di[m:], -u - x[n:] - z[m:])
 
                 return f
 
@@ -2120,14 +2120,13 @@ The MOSEK interior-point algorithm parameters are set to their default
 values.  They can be modified by adding an entry 
 :attr:`solvers.options['MOSEK']`.  This entry is a dictionary with 
 MOSEK parameter/value pairs, with the parameter names imported from
-:mod:`pymosek`.  For details see Section 14.1.3 of the 
-`MOSEK Python API Manual <http://www.mosek.com/fileadmin/products/5_0/tools/doc/html/pyapi/index.html>`_.
+:mod:`mosek`.  For details see Section 15 of the MOSEK Python API Manual.
 
 For example the commands
 
 >>> from cvxopt import solvers 
->>> import pymosek
->>> solvers.options['MOSEK'] = {pymosek.iparam.log: 0}
+>>> import mosek
+>>> solvers.options['MOSEK'] = {mosek.iparam.log: 0}
 
 turn off the screen output during calls of 
 :func:`lp` or :func:`socp` with

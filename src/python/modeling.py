@@ -5,9 +5,10 @@ Routines for specifying and solving convex optimization problems with
 piecewise-linear objective and constraint functions.
 """
 
+# Copyright 2010 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.2
+# This file is part of CVXOPT version 1.1.3.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -57,7 +58,7 @@ class variable(object):
         if type(size) is int and size > 0: 
             self._size = size
         else: 
-            raise TypeError, "size must be a positive integer"
+            raise TypeError("size must be a positive integer")
 
 
     def __len__(self):
@@ -94,23 +95,23 @@ class variable(object):
                     matrix(value, (len(self),1), tc='d'))
 
             else:
-                raise AttributeError, "invalid type or size for "\
-                    "attribute 'value'"
+                raise AttributeError("invalid type or size for "\
+                    "attribute 'value'")
 
         elif name == 'name':
             if type(value) is str:
                 object.__setattr__(self,name,value)
 
             else:
-                raise AttributeError, "invalid type for attribute "\
-                    "'name'"
+                raise AttributeError("invalid type for attribute "\
+                    "'name'")
 
         elif name == '_size':
             object.__setattr__(self,name,value)
 
         else:
-            raise AttributeError, "'variable' object has no attribute "\
-                "'%s'" %name
+            raise AttributeError("'variable' object has no attribute "\
+                "'%s'" %name)
 
 
     def __pos__(self):
@@ -144,8 +145,8 @@ class variable(object):
 
     def __iadd__(self,other):
 
-        raise NotImplementedError, "in-place addition not implemented"\
-            " for 'variable' objects"
+        raise NotImplementedError("in-place addition not implemented"\
+            " for 'variable' objects")
 
 
     def __sub__(self,other):
@@ -160,8 +161,8 @@ class variable(object):
 
     def __isub__(self,other):
 
-        raise NotImplementedError, "in-place subtraction not "\
-            "implemented for 'variable' objects"
+        raise NotImplementedError("in-place subtraction not "\
+            "implemented for 'variable' objects")
 
 
     def __mul__(self,other):
@@ -176,8 +177,8 @@ class variable(object):
 
     def __imul__(self,other):
 
-        raise NotImplementedError, "in-place multiplication not "\
-            "implemented for 'variable' objects"
+        raise NotImplementedError("in-place multiplication not "\
+            "implemented for 'variable' objects")
 
 
     def __div__(self,other):
@@ -187,8 +188,8 @@ class variable(object):
 
     def __idiv__(self,other):
 
-        raise NotImplementedError, "in-place division not implemented "\
-            "for 'variable' objects"
+        raise NotImplementedError("in-place division not implemented "\
+            "for 'variable' objects")
 
 
     def __eq__(self,other):
@@ -444,14 +445,14 @@ class _function(object):
             other = matrix(other, tc='d')
         elif _ismatrix(other):  # ie, dense 'd' or sparse
             if other.size[1] != 1:
-                raise ValueError, 'incompatible dimensions'
+                raise ValueError('incompatible dimensions')
         elif type(other) is variable:
             other = +other
         elif type(other) is not _function:
             return NotImplemented
 
         if 1 != len(self) != len(other) != 1: 
-            raise ValueError, 'incompatible lengths'
+            raise ValueError('incompatible lengths')
 
         f = _function()
 
@@ -465,8 +466,8 @@ class _function(object):
         else:  #type(other) is _function:
             if not (self._isconvex() and other._isconvex()) and \
                 not (self._isconcave() and other._isconcave()):
-                raise ValueError, 'operands must be both convex or '\
-                    'both concave'
+                raise ValueError('operands must be both convex or '\
+                    'both concave')
 
             f._constant = self._constant + other._constant
             f._linear = self._linear + other._linear
@@ -490,14 +491,14 @@ class _function(object):
             other = matrix(other, tc='d')
         elif _ismatrix(other):
             if other.size[1] != 1: 
-                raise ValueError, 'incompatible dimensions'
+                raise ValueError('incompatible dimensions')
         elif type(other) is variable:
             other = +other
         elif type(other) is not _function:
             return NotImplemented
 
         if len(self) != len(other) != 1: 
-            raise ValueError, 'incompatible lengths'
+            raise ValueError('incompatible lengths')
 
         if _ismatrix(other):
             if 1 == len(self._constant) != len(other): 
@@ -508,8 +509,8 @@ class _function(object):
         else:   #type(other) is _function:
             if not (self._isconvex() and other._isconvex()) and \
                 not (self._isconcave() and other._isconcave()):
-                raise ValueError, 'operands must be both convex or '\
-                    'both concave'
+                raise ValueError('operands must be both convex or '\
+                    'both concave')
 
             if 1 == len(self._constant) != len(other._constant): 
                 self._constant = self._constant + other._constant
@@ -534,14 +535,14 @@ class _function(object):
             other = matrix(other, tc='d')
         elif _ismatrix(other):
             if other.size[1] != 1: 
-                raise ValueError, 'incompatible dimensions'
+                raise ValueError('incompatible dimensions')
         elif type(other) is variable:
             other = +other
         elif type(other) is not _function:
             return NotImplemented
 
         if 1 != len(self) != len(other) != 1: 
-            raise ValueError, 'incompatible lengths'
+            raise ValueError('incompatible lengths')
 
         f = _function()
 
@@ -554,8 +555,8 @@ class _function(object):
         else:   #type(other) is _function:
             if not (self._isconvex() and other._isconcave()) and \
                 not (self._isconcave() and other._isconvex()):
-                raise ValueError, 'operands must be convex and '\
-                    'concave or concave and convex'
+                raise ValueError('operands must be convex and '\
+                    'concave or concave and convex')
 
             f._constant = self._constant - other._constant
             f._linear = self._linear - other._linear
@@ -574,14 +575,14 @@ class _function(object):
             other = matrix(other, tc='d')
         elif _isdmatrix(other):
             if other.size[1] != 1: 
-                raise ValueError, 'incompatible dimensions'
+                raise ValueError('incompatible dimensions')
         elif type(other) is variable:
             other = +other
         elif type(other) is not _function:
             return NotImplemented
 
         if 1 != len(self) != len(other) != 1: 
-            raise ValueError, 'incompatible lengths'
+            raise ValueError('incompatible lengths')
 
         f = _function()
 
@@ -594,8 +595,8 @@ class _function(object):
         else:   # type(other) is _function:
             if not (self._isconvex() and other._isconcave()) and \
                 not (self._isconcave() and other._isconvex()):
-                raise ValueError, 'operands must be convex and '\
-                    'concave or concave and convex'
+                raise ValueError('operands must be convex and '\
+                    'concave or concave and convex')
 
             f._constant = other._constant - self._constant 
             f._linear = other._linear - self._linear 
@@ -614,14 +615,14 @@ class _function(object):
             other = matrix(other, tc='d')
         elif _ismatrix(other):
             if other.size[1] != 1: 
-                raise ValueError, 'incompatible dimensions'
+                raise ValueError('incompatible dimensions')
         elif type(other) is variable:
             other = +other
         elif type(other) is not _function:
             return NotImplemented
 
         if len(self) != len(other) != 1: 
-            raise ValueError, 'incompatible lengths'
+            raise ValueError('incompatible lengths')
 
         if _ismatrix(other):
             if 1 == len(self._constant) != len(other): 
@@ -632,8 +633,8 @@ class _function(object):
         else:   #type(other) is _function:
             if not (self._isconvex() and other._isconcave()) and \
                 not (self._isconcave() and other._isconvex()):
-                raise ValueError, 'operands must be convex and '\
-                    'concave or concave and convex'
+                raise ValueError('operands must be convex and '\
+                    'concave or concave and convex')
 
             if 1 == len(self._constant) != len(other._constant): 
                 self._constant = self._constant - other._constant
@@ -694,10 +695,10 @@ class _function(object):
                         pass
 
                 else: 
-                    raise ValueError, 'can only multiply with scalar'
+                    raise ValueError('can only multiply with scalar')
 
         else: 
-            raise TypeError, 'incompatible dimensions or types'
+            raise TypeError('incompatible dimensions or types')
 
         return f
 
@@ -752,10 +753,10 @@ class _function(object):
                     else: pass
 
                 else: 
-                    raise ValueError, 'can only multiply with scalar'
+                    raise ValueError('can only multiply with scalar')
 
         else: 
-            raise TypeError, 'incompatible dimensions or types'
+            raise TypeError('incompatible dimensions or types')
 
         return f
                 
@@ -793,7 +794,7 @@ class _function(object):
             return self
 
         else: 
-            raise TypeError, 'incompatible dimensions or types'
+            raise TypeError('incompatible dimensions or types')
 
 
     def __div__(self,other):
@@ -859,7 +860,7 @@ class _function(object):
 
         lg = len(self)
         l = _keytolist(key,lg)
-        if not l: raise ValueError, 'empty index set'
+        if not l: raise ValueError('empty index set')
 
         f = _function()
 
@@ -1056,7 +1057,7 @@ class _lin(object):
                     m[::newlg+1] += c[0]
                     self._coeff[v] = m
                 else:
-                    raise TypeError, 'incompatible dimensions'
+                    raise TypeError('incompatible dimensions')
                     
             elif _ismatrix(a) and a.size == (1,len(v)):
                 if c.size == (lg,len(v)):
@@ -1068,7 +1069,7 @@ class _lin(object):
                     m[::lg+1] += c[0]
                     self._coeff[v] = m
                 else:
-                    raise TypeError, 'incompatible dimensions'
+                    raise TypeError('incompatible dimensions')
 
             elif _isscalar(a) and len(v) > 1 and (lg == 1 or 
                 lg == len(v)):
@@ -1081,14 +1082,14 @@ class _lin(object):
                 elif _isscalar(c):
                     self._coeff[v] = c + a
                 else:
-                    raise TypeError, 'incompatible dimensions'
+                    raise TypeError('incompatible dimensions')
 
             elif _isscalar(a) and len(v) == 1:
                 self._coeff[v] = c + a    # add a to every elt of c
 
             else:
-                raise TypeError, 'coefficient has invalid type or '\
-                    'incompatible dimensions '
+                raise TypeError('coefficient has invalid type or '\
+                    'incompatible dimensions ')
 
         elif type(v) is variable:
 
@@ -1111,11 +1112,11 @@ class _lin(object):
                 self._coeff[v] = +a
 
             else:
-                raise TypeError, 'coefficient has invalid type or '\
-                    'incompatible dimensions '
+                raise TypeError('coefficient has invalid type or '\
+                    'incompatible dimensions ')
         
         else: 
-            raise TypeError, 'second argument must be a variable'
+            raise TypeError('second argument must be a variable')
 
 
     def _mul(self,a):
@@ -1134,7 +1135,7 @@ class _lin(object):
             for v,c in self._coeff.iteritems(): self._coeff[v] = a*c
 
         else: 
-            raise TypeError, 'incompatible dimensions'
+            raise TypeError('incompatible dimensions')
 
 
     def _rmul(self,a):
@@ -1158,7 +1159,7 @@ class _lin(object):
                     self._coeff[v] = a*c
              
         else: 
-            raise TypeError, 'incompatible dimensions'
+            raise TypeError('incompatible dimensions')
 
 
     def __pos__(self):
@@ -1221,8 +1222,8 @@ class _lin(object):
             for v,c in other._coeff.iteritems(): self._addterm(c,v)
 
         else: 
-            raise NotImplementedError, 'in-place addition must result '\
-                'in a function of the same length'
+            raise NotImplementedError('in-place addition must result '\
+                'in a function of the same length')
         
         return self
 
@@ -1274,8 +1275,8 @@ class _lin(object):
             for v,c in other._coeff.iteritems(): self._addterm(-c,v)
 
         else: 
-            raise NotImplementedError, 'in-place subtraction must '\
-                'result in a function of the same length'
+            raise NotImplementedError('in-place subtraction must '\
+                'result in a function of the same length')
         
         return self
 
@@ -1316,15 +1317,15 @@ class _lin(object):
         if _isscalar(other): 
             self._mul(other)
         else: 
-            raise NotImplementedError, 'in-place multiplication '  \
-                'only defined for scalar multiplication'
+            raise NotImplementedError('in-place multiplication '  \
+                'only defined for scalar multiplication')
         return self
 
 
     def __getitem__(self,key):
 
         l = _keytolist(key,len(self))
-        if not l: raise ValueError, 'empty index set'
+        if not l: raise ValueError('empty index set')
 
         f = _lin()
         for v,c in self._coeff.iteritems():
@@ -1394,7 +1395,7 @@ class _minmax(object):
                 (s[0]._isconcave() and not self._ismax)):
                 self._flist += [+s[0]]
             else:
-                raise TypeError, 'unsupported argument type'
+                raise TypeError('unsupported argument type')
 
         else:
             # cnst will be max/min of the constant arguments
@@ -1417,11 +1418,11 @@ class _minmax(object):
                     self._flist += [+f]
 
                 else:
-                    raise TypeError, 'unsupported argument type'
+                    raise TypeError('unsupported argument type')
 
                 lgf = len(f)
                 if 1 != lg != lgf != 1:
-                    raise ValueError, 'incompatible dimensions'
+                    raise ValueError('incompatible dimensions')
                 elif 1 == lg != lgf: 
                     lg = lgf
 
@@ -1537,15 +1538,15 @@ class _minmax(object):
             if other < 0.0: self._ismax = not self._ismax
             return self
 
-        raise NotImplementedError, 'in-place multiplication is only '\
-            'defined for scalars'
+        raise NotImplementedError('in-place multiplication is only '\
+            'defined for scalars')
 
 
     def __getitem__(self,key):
 
         lg = len(self)
         l = _keytolist(key,lg)
-        if not l: raise ValueError, 'empty index set'
+        if not l: raise ValueError('empty index set')
 
         if len(self._flist) == 1: fl = list(self._flist[0])    
         else: fl = self._flist
@@ -1669,7 +1670,7 @@ class _sum_minmax(_minmax):
 
         _minmax.__init__(self,op,*s)
         if len(self._flist) == 1: 
-            raise TypeError, 'expected more than 1 argument'
+            raise TypeError('expected more than 1 argument')
 
 
     def __len__(self):
@@ -1767,7 +1768,7 @@ class _sum_minmax(_minmax):
     def __getitem__(self,key):
 
         l = _keytolist(key,1)
-        if not l: raise ValueError, 'empty index set'
+        if not l: raise ValueError('empty index set')
 
         # expand sum and convert to a  _function
         if self._ismax: f = sum(_minmax('max',*self._flist))
@@ -1817,20 +1818,20 @@ class constraint(object):
         if ctype == '=' or ctype  == '<':
             self._type = ctype
         else:
-            raise TypeError, "'ctype' argument must be '<' or '='"
+            raise TypeError("'ctype' argument must be '<' or '='")
 
         if type(f) is not _function:
-            raise TypeError, "'f' argument must be a function"
+            raise TypeError("'f' argument must be a function")
         
         if ctype == '=':
             if f._isaffine(): self._f = f
             else:
-                raise TypeError, "constraint function must be affine"
+                raise TypeError("constraint function must be affine")
         
         else:
             if f._isconvex(): self._f = f
             else:
-                raise TypeError, "constraint function must be convex"
+                raise TypeError("constraint function must be convex")
  
         self.name = name
         self.multiplier = variable(len(self), name + '_mul')
@@ -1869,14 +1870,14 @@ class constraint(object):
                 if hasattr(self,'multiplier'): 
                     self.multiplier.name = value + '_mul'
             else:
-                raise TypeError, "invalid type for attribute 'name'"
+                raise TypeError("invalid type for attribute 'name'")
 
         elif name == 'multiplier' or name == '_type' or name == '_f': 
             object.__setattr__(self,name,value)
 
         else:
-            raise AttributeError, "'constraint' object has no "\
-                "attribute '%s'" %name
+            raise AttributeError("'constraint' object has no "\
+                "attribute '%s'" %name)
 
 
     def type(self):
@@ -1924,7 +1925,7 @@ class constraint(object):
         """
 
         if self.type() != '<': 
-            raise TypeError, 'constraint must be an inequality'
+            raise TypeError('constraint must be an inequality')
 
         ineqs, aux_ineqs, aux_vars = [], [], varlist()
 
@@ -2114,7 +2115,7 @@ class op(object):
                 else:
                     self._equalities += [c]
         else: 
-            raise TypeError, 'invalid argument for constraints' 
+            raise TypeError('invalid argument for constraints')
 
         for c in self._inequalities:
             for v in c.variables():
@@ -2155,8 +2156,8 @@ class op(object):
                 len(value) == 1:
                 pass
             else:
-                raise TypeError, "attribute 'objective' must be a "\
-                    "scalar affine or convex PWL function"
+                raise TypeError("attribute 'objective' must be a "\
+                    "scalar affine or convex PWL function")
 
             # remove variables in _variables that only appear in current
             # objective 
@@ -2177,15 +2178,15 @@ class op(object):
             if type(value) is str:
                 object.__setattr__(self,name,value)
             else:
-                raise TypeError, "attribute 'name' must be string"
+                raise TypeError("attribute 'name' must be string")
 
         elif name == '_inequalities' or name == '_equalities' or \
             name == '_variables' or name == 'status':
             object.__setattr__(self,name,value)
 
         else:
-            raise AttributeError, "'op' object has no attribute "\
-                "'%s'" %name
+            raise AttributeError("'op' object has no attribute "\
+                "'%s'" %name)
 
 
     def variables(self):    
@@ -2223,7 +2224,7 @@ class op(object):
         """
 
         if type(c) is not constraint:
-            raise TypeError, "argument must be of type 'constraint'"
+            raise TypeError("argument must be of type 'constraint'")
 
         try: 
             if c.type() == '<': 
@@ -2250,7 +2251,7 @@ class op(object):
         """
 
         if type(c) is not constraint:
-            raise TypeError, 'argument must be of type constraint'
+            raise TypeError('argument must be of type constraint')
 
         if c.type() == '<': self._inequalities += [c]             
         if c.type() == '=': self._equalities += [c]             
@@ -2549,14 +2550,14 @@ class op(object):
 
         variables = lp1.variables()
         if not variables: 
-            raise TypeError, 'lp must have at least one variable'
+            raise TypeError('lp must have at least one variable')
         x = variables[0]
         c = lp1.objective._linear._coeff[x]
         if _isspmatrix(c): c = matrix(c, tc='d')
 
         inequalities = lp1._inequalities
         if not inequalities:
-            raise TypeError, 'lp must have at least one inequality'
+            raise TypeError('lp must have at least one inequality')
         G = inequalities[0]._f._linear._coeff[x]
         h = -inequalities[0]._f._constant
 
@@ -2590,7 +2591,7 @@ class op(object):
         writes LP to file 'filename' in MPS format.
         '''
 
-        if not self._islp(): raise TypeError, 'problem must be an LP'
+        if not self._islp(): raise TypeError('problem must be an LP')
 
         constraints = self.constraints()
         variables = self.variables()
@@ -2728,15 +2729,15 @@ class op(object):
         while s[:4] != 'NAME': 
             s = f.readline()
             if not s: 
-                raise SyntaxError, "EOF reached before 'NAME' section "\
-                    "was found" 
+                raise SyntaxError("EOF reached before 'NAME' section "\
+                    "was found")
         self.name = strip(s[14:22])
 
         s = f.readline()
         while s[:4] != 'ROWS': 
             if not s: 
-                raise SyntaxError, "EOF reached before 'ROWS' section "\
-                    "was found" 
+                raise SyntaxError("EOF reached before 'ROWS' section "\
+                    "was found")
             s = f.readline()
         s = f.readline()
 
@@ -2746,7 +2747,7 @@ class op(object):
         rowtypes = dict()    # {MPS row label: 'E', 'G' or 'L'}
         foundobj = False     # first occurrence of 'N' counts
         while s[:7] != 'COLUMNS': 
-            if not s: raise SyntaxError, "file has no 'COLUMNS' section"
+            if not s: raise SyntaxError("file has no 'COLUMNS' section")
             if len(strip(s)) == 0 or s[0] == '*': 
                 pass
             elif strip(s[1:3]) in ['E','L','G']:
@@ -2759,7 +2760,7 @@ class op(object):
                     functions[rowlabel] = self.objective
                     foundobj = True
             else: 
-                raise ValueError, "unknown row type '%s'" %strip(s[1:3])
+                raise ValueError("unknown row type '%s'" %strip(s[1:3]))
             s = f.readline()
         s = f.readline()
 
@@ -2768,8 +2769,8 @@ class op(object):
         variables = dict()   # {MPS column label: variable}
         while s[:3] != 'RHS': 
             if not s: 
-                raise SyntaxError, "EOF reached before 'RHS' section "\
-                    "was found" 
+                raise SyntaxError("EOF reached before 'RHS' section "\
+                    "was found")
             if len(strip(s)) == 0 or s[0] == '*': 
                 pass
             else:
@@ -2779,13 +2780,13 @@ class op(object):
                 v = variables[collabel]
                 rowlabel = strip(s[14:22])
                 if not functions.has_key(rowlabel):
-                    raise KeyError, "no row label '%s'" %rowlabel
+                    raise KeyError("no row label '%s'" %rowlabel)
                 functions[rowlabel]._linear._coeff[v] = \
                     matrix(float(s[24:36]), tc='d')
                 rowlabel = strip(s[39:47])
                 if rowlabel:
                     if not functions.has_key(rowlabel):
-                        raise KeyError, "no row label '%s'" %rowlabel
+                        raise KeyError("no row label '%s'" %rowlabel)
                     functions[rowlabel]._linear._coeff[v] =  \
                         matrix(float(s[49:61]), tc='d')
             s = f.readline()
@@ -2800,8 +2801,8 @@ class op(object):
         rhslabel = None
         while s[:6] != 'RANGES' and s[:6] != 'BOUNDS' and \
             s[:6] != 'ENDATA':
-            if not s: raise SyntaxError, \
-                "EOF reached before 'ENDATA' was found"
+            if not s: raise SyntaxError( \
+                 "EOF reached before 'ENDATA' was found")
             if len(strip(s)) == 0 or s[0] == '*': 
                 pass
             else:
@@ -2813,14 +2814,14 @@ class op(object):
                     if rhslabel is None: rhslabel = strip(s[4:12])
                     rowlabel = strip(s[14:22])
                     if not functions.has_key(rowlabel):
-                        raise KeyError, "no row label '%s'" %rowlabel
+                        raise KeyError("no row label '%s'" %rowlabel)
                     functions[rowlabel]._constant = \
                         matrix(-float(s[24:36]), tc='d')
                     rowlabel = strip(s[39:47])
                     if rowlabel:
                         if not functions.has_key(rowlabel):
-                            raise KeyError, "no row label '%s'" \
-                                %rowlabel
+                            raise KeyError("no row label '%s'" \
+                                %rowlabel)
                         functions[rowlabel]._constant = \
                             matrix(-float(s[49:61]), tc='d')
             s = f.readline()
@@ -2838,8 +2839,8 @@ class op(object):
         if s[:6] == 'RANGES':
             s = f.readline()
             while s[:6] != 'BOUNDS' and s[:6] != 'ENDATA':
-                if not s: raise SyntaxError, \
-                    "EOF reached before 'ENDATA' was found"
+                if not s: raise SyntaxError( \
+                    "EOF reached before 'ENDATA' was found")
                 if len(strip(s)) == 0 or s[0] == '*': 
                     pass
                 else:
@@ -2850,13 +2851,13 @@ class op(object):
                             rangeslabel = strip(s[4:12])
                         rowlabel = strip(s[14:22])
                         if not rowtypes.has_key(rowlabel):
-                            raise KeyError, "no row label '%s'"%rowlabel
+                            raise KeyError("no row label '%s'"%rowlabel)
                         ranges[rowlabel] = float(s[24:36])
                         rowlabel = strip(s[39:47])
                         if rowlabel != '':
                             if not functions.has_key(rowlabel):
-                                raise KeyError, "no row label '%s'" \
-                                    %rowlabel
+                                raise KeyError("no row label '%s'" \
+                                    %rowlabel)
                             ranges[rowlabel] =  float(s[49:61])
                 s = f.readline()
 
@@ -2873,8 +2874,8 @@ class op(object):
         if s[:6] == 'BOUNDS':
             s = f.readline()
             while s[:6] != 'ENDATA':
-                if not s: raise SyntaxError, \
-                    "EOF reached before 'ENDATA' was found"
+                if not s: raise SyntaxError( \
+                    "EOF reached before 'ENDATA' was found")
                 if len(strip(s)) == 0 or s[0] == '*': 
                     pass
                 else:
@@ -2885,42 +2886,42 @@ class op(object):
                             boundslabel = strip(s[4:12])
                         collabel = strip(s[14:22])
                         if not variables.has_key(collabel):
-                            raise ValueError, 'unknown column label ' \
-                                + "'%s'" %collabel
+                            raise ValueError('unknown column label ' \
+                                + "'%s'" %collabel)
                         if strip(s[1:3]) == 'LO': 
                             if bounds[collabel][0] != 0.0:
-                                raise ValueError, "repeated lower "\
-                                    "bound for variable '%s'" %collabel
+                                raise ValueError("repeated lower "\
+                                    "bound for variable '%s'" %collabel)
                             bounds[collabel][0] = float(s[24:36])
                         elif strip(s[1:3]) == 'UP': 
                             if bounds[collabel][1] != None:
-                                raise ValueError, "repeated upper "\
-                                    "bound for variable '%s'" %collabel
+                                raise ValueError("repeated upper "\
+                                    "bound for variable '%s'" %collabel)
                             bounds[collabel][1] = float(s[24:36])
                         elif strip(s[1:3]) == 'FX': 
                             if bounds[collabel] != [0, None]:
-                                raise ValueError, "repeated bounds "\
-                                    "for variable '%s'" %collabel
+                                raise ValueError("repeated bounds "\
+                                    "for variable '%s'" %collabel)
                             bounds[collabel][0] = float(s[24:36])
                             bounds[collabel][1] = float(s[24:36])
                         elif strip(s[1:3]) == 'FR': 
                             if bounds[collabel] != [0, None]:
-                                raise ValueError, "repeated bounds "\
-                                    "for variable '%s'" %collabel
+                                raise ValueError("repeated bounds "\
+                                    "for variable '%s'" %collabel)
                             bounds[collabel][0] = None
                             bounds[collabel][1] = None
                         elif strip(s[1:3]) == 'MI': 
                             if bounds[collabel][0] != 0.0:
-                                raise ValueError, "repeated lower " \
-                                    "bound for variable '%s'" %collabel
+                                raise ValueError("repeated lower " \
+                                    "bound for variable '%s'" %collabel)
                             bounds[collabel][0] = None
                         elif strip(s[1:3]) == 'PL': 
                             if bounds[collabel][1] != None:
-                                raise ValueError, "repeated upper " \
-                                    "bound for variable '%s'" %collabel
+                                raise ValueError("repeated upper " \
+                                    "bound for variable '%s'" %collabel)
                         else:
-                            raise ValueError, "unknown bound type '%s'"\
-                                %strip(s[1:3])
+                            raise ValueError("unknown bound type '%s'"\
+                                %strip(s[1:3]))
                 s = f.readline()
 
         for l, type in rowtypes.iteritems():
@@ -2977,15 +2978,15 @@ class op(object):
         for c in self._inequalities + self._equalities:
             if len(c._f._linear._coeff) == 0:
                 if c.type() == '=' and c._f._constant[0] != 0.0:
-                    raise ValueError, "equality constraint '%s' "\
+                    raise ValueError("equality constraint '%s' "\
                        "has no variables and a nonzero righthand side"\
-                       %c.name
+                       %c.name)
                 elif c.type() == '<' and c._f._constant[0] > 0.0:
-                    raise ValueError, "inequality constraint '%s' "\
+                    raise ValueError("inequality constraint '%s' "\
                        "has no variables and a negative righthand side"\
-                       %c.name
+                       %c.name)
                 else:
-                    print "removing redundant constraint '%s'" %c.name
+                    print("removing redundant constraint '%s'" %c.name)
                     if c.type() == '<': self._inequalities.remove(c)
                     if c.type() == '=': self._equalities.remove(c)
 
@@ -3032,8 +3033,8 @@ def dot(x,y):
         return y.trans() * x
 
     else:
-        raise TypeError, 'invalid argument types or incompatible '\
-            'dimensions' 
+        raise TypeError('invalid argument types or incompatible '\
+            'dimensions')
 
 
 
@@ -3096,13 +3097,13 @@ def _keytolist(key,n):
         elif 0 <= key < n:  
             l = [key] 
         else:  
-            raise IndexError, 'variable index out of range'
+            raise IndexError('variable index out of range')
 
     elif (type(key) is list and not [k for k in key if type(k) is not 
         int]) or (type(key) is matrix and key.typecode == 'i'):
         l = [k for k in key if -n <= k < n]
         if len(l) != len(key):
-            raise IndexError, 'variable index out of range'
+            raise IndexError('variable index out of range')
         for i in xrange(len(l)): 
             if l[i] < 0: l[i] += n
         
@@ -3112,7 +3113,7 @@ def _keytolist(key,n):
         l = range(ind[0],ind[1],ind[2])
 
     else: 
-        raise TypeError, 'invalid key'
+        raise TypeError('invalid key')
 
     return l
 
@@ -3146,7 +3147,7 @@ def _vecmax(*s):
     """
 
     if not s:
-        raise TypeError, "_vecmax expected at least 1 argument, got 0"
+        raise TypeError("_vecmax expected at least 1 argument, got 0")
 
     val = None
     for c in s:
@@ -3158,7 +3159,7 @@ def _vecmax(*s):
             c = matrix(c, tc='d')
 
         elif not _isdmatrix(c) or c.size[1] != 1:
-            raise TypeError, "incompatible type or size" 
+            raise TypeError("incompatible type or size")
 
         if val is None:
             if len(s) == 1:  return matrix(max(c), tc='d')
@@ -3175,7 +3176,7 @@ def _vecmax(*s):
                 tc='d' )
     
         else: 
-            raise ValueError, 'incompatible dimensions'
+            raise ValueError('incompatible dimensions')
 
     return val
 
@@ -3194,7 +3195,7 @@ def _vecmin(*s):
     """
 
     if not s:
-        raise TypeError, "_vecmin expected at least 1 argument, got 0"
+        raise TypeError("_vecmin expected at least 1 argument, got 0")
 
     val = None
     for c in s:
@@ -3206,7 +3207,7 @@ def _vecmin(*s):
             c = matrix(c, tc='d')
 
         elif not _isdmatrix(c) or c.size[1] != 1:
-            raise TypeError, "incompatible type or size" 
+            raise TypeError("incompatible type or size")
 
         if val is None:
             if len(s) == 1:  return matrix(min(c), tc='d')
@@ -3223,6 +3224,6 @@ def _vecmin(*s):
                 tc='d' )
     
         else: 
-            raise ValueError, 'incompatible dimensions'
+            raise ValueError('incompatible dimensions')
 
     return val

@@ -1,7 +1,8 @@
 /*
+ * Copyright 2010 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.2
+ * This file is part of CVXOPT version 1.1.3.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -402,7 +403,7 @@ spmatrix * sparse_concat(PyObject *L, int id_arg)
               }
               else if ((SP_ID(Lij) == COMPLEX) && (SP_VALZ(Lij)[ik] != 0.0)) {
 
-                SP_VALZ(A)[cnt] = SP_VALD(Lij)[ik];
+                SP_VALZ(A)[cnt] = SP_VALZ(Lij)[ik];
                 SP_ROW(A)[cnt++] = mk + SP_ROW(Lij)[ik];
                 SP_COL(A)[nk+1]++;
                 nnz++;

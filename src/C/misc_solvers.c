@@ -1,7 +1,8 @@
 /*
+ * Copyright 2010 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.2
+ * This file is part of CVXOPT version 1.1.3.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,13 +86,17 @@ static PyObject* scale(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *x, *d, *vk, *rk;
     PyObject *W, *v, *beta, *r, *betak;
     char trans = 'N', inverse = 'N';
-    int m, n, ind = 0, int0 = 0, int1 = 1, i, k, inc, len, ld, maxn, N;
+    int m, n, xr, xc, ind = 0, int0 = 0, int1 = 1, i, k, inc, len, ld, 
+        maxn, N;
     double b, dbl0 = 0.0, dbl1 = 1.0, dblm1 = -1.0, dbl2 = 2.0, dbl5 = 0.5,
         *wrk;
     char *kwlist[] = {"x", "W", "trans", "inverse", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cc", kwlist,
         &x, &W, &trans, &inverse)) return NULL;
+
+    xr = x->nrows;
+    xc = x->ncols;
 
 
     /*
@@ -102,9 +107,9 @@ static PyObject* scale(PyObject *self, PyObject *args, PyObject *kwrds)
     if ((d = (inverse == 'N') ? (matrix *) PyDict_GetItemString(W, "dnl") :
         (matrix *) PyDict_GetItemString(W, "dnli"))){
         m = len(d);
-        for (i = 0; i < x->ncols; i++)
+        for (i = 0; i < xc; i++)
             dtbmv_("L", "N", "N", &m, &int0, MAT_BUFD(d), &int1,
-                MAT_BUFD(x) + i*x->nrows, &int1);
+                MAT_BUFD(x) + i*xr, &int1);
         ind += m;
     }
 
@@ -120,9 +125,9 @@ static PyObject* scale(PyObject *self, PyObject *args, PyObject *kwrds)
         return NULL;
     }
     m = len(d);
-    for (i = 0; i < x->ncols; i++)
+    for (i = 0; i < xc; i++)
         dtbmv_("L", "N", "N", &m, &int0, MAT_BUFD(d), &int1, MAT_BUFD(x)
-            + i*x->nrows + ind, &int1);
+            + i*xr + ind, &int1);
     ind += m;
 
 
@@ -136,34 +141,34 @@ static PyObject* scale(PyObject *self, PyObject *args, PyObject *kwrds)
      *
      * Inverse scaling is
      *
-     *    xk := 1/beta * (2*J*v*v'*J - J) * xk
-     *        = 1/beta * (-J) * (2*v*((-J*xk)'*v)' + xk).
+     *     xk := 1/beta * (2*J*v*v'*J - J) * xk
+     *         = 1/beta * (-J) * (2*v*((-J*xk)'*v)' + xk).
      */
 
     v = PyDict_GetItemString(W, "v");
     beta = PyDict_GetItemString(W, "beta");
     N = (int) PyList_Size(v);
-    if (!(wrk = (double *) calloc(x->ncols, sizeof(double))))
+    if (!(wrk = (double *) calloc(xc, sizeof(double))))
         return PyErr_NoMemory();
     for (k = 0; k < N; k++){
         vk = (matrix *) PyList_GetItem(v, (Py_ssize_t) k);
         m = vk->nrows;
         if (inverse == 'I')
-            dscal_(&(x->ncols), &dblm1, MAT_BUFD(x) + ind, &(x->nrows));
-        ld = MAX(x->nrows, 1);
-        dgemv_("T", &m, &(x->ncols), &dbl1, MAT_BUFD(x) + ind, &ld,
-            MAT_BUFD(vk), &int1, &dbl0, wrk, &int1);
-        dscal_(&(x->ncols), &dblm1, MAT_BUFD(x) + ind, &(x->nrows));
-        dger_(&m, &(x->ncols), &dbl2, MAT_BUFD(vk), &int1, wrk, &int1,
+            dscal_(&xc, &dblm1, MAT_BUFD(x) + ind, &xr);
+        ld = MAX(xr, 1);
+        dgemv_("T", &m, &xc, &dbl1, MAT_BUFD(x) + ind, &ld, MAT_BUFD(vk), 
+            &int1, &dbl0, wrk, &int1);
+        dscal_(&xc, &dblm1, MAT_BUFD(x) + ind, &xr);
+        dger_(&m, &xc, &dbl2, MAT_BUFD(vk), &int1, wrk, &int1,
             MAT_BUFD(x) + ind, &ld);
         if (inverse == 'I')
-            dscal_(&(x->ncols), &dblm1, MAT_BUFD(x) + ind, &(x->nrows));
+            dscal_(&xc, &dblm1, MAT_BUFD(x) + ind, &xr);
 
         betak = PyList_GetItem(beta, (Py_ssize_t) k);
         b = PyFloat_AS_DOUBLE(betak);
         if (inverse == 'I') b = 1.0 / b;
-        for (i = 0; i < x->ncols; i++)
-            dscal_(&m, &b, MAT_BUFD(x) + ind + i*x->nrows, &int1);
+        for (i = 0; i < xc; i++)
+            dscal_(&m, &b, MAT_BUFD(x) + ind + i*xr, &int1);
         ind += m;
     }
     free(wrk);
@@ -197,11 +202,11 @@ static PyObject* scale(PyObject *self, PyObject *args, PyObject *kwrds)
     for (k = 0; k < N; k++){
         rk = (matrix *) PyList_GetItem(r, (Py_ssize_t) k);
         n = rk->nrows;
-        for (i = 0; i < x->ncols; i++){
+        for (i = 0; i < xc; i++){
 
             /* scale diagonal of rk by 0.5 */
             inc = n + 1;
-            dscal_(&n, &dbl5, MAT_BUFD(x) + ind + i*x->nrows, &inc);
+            dscal_(&n, &dbl5, MAT_BUFD(x) + ind + i*xr, &inc);
 
             /* wrk = r*tril(x) if inverse is 'N' and trans is 'T' or
              *                 inverse is 'I' and trans is 'N'
@@ -211,7 +216,7 @@ static PyObject* scale(PyObject *self, PyObject *args, PyObject *kwrds)
             ld = MAX(1, n);
             dtrmm_( (( inverse == 'N' && trans == 'T') || ( inverse == 'I'
                 && trans == 'N')) ? "R" : "L", "L", "N", "N", &n, &n,
-                &dbl1, MAT_BUFD(x) + ind + i*x->nrows, &ld, wrk, &ld);
+                &dbl1, MAT_BUFD(x) + ind + i*xr, &ld, wrk, &ld);
 
             /* x := (r*wrk' + wrk*r') if inverse is 'N' and trans is 'T'
              *                        or inverse is 'I' and trans is 'N'
@@ -219,7 +224,7 @@ static PyObject* scale(PyObject *self, PyObject *args, PyObject *kwrds)
             dsyr2k_("L", ((inverse == 'N' && trans == 'T') ||
                 (inverse == 'I' && trans == 'N')) ? "N" : "T", &n, &n,
                 &dbl1, MAT_BUFD(rk), &ld, wrk, &ld, &dbl0, MAT_BUFD(x) +
-                ind + i*x->nrows, &ld);
+                ind + i*xr, &ld);
         }
         ind += n*n;
     }
@@ -415,7 +420,7 @@ static PyObject* pack(PyObject *self, PyObject *args, PyObject *kwrds)
 
 static char doc_pack2[] =
     "In-place version of pack().\n\n"
-    "pack2(x, y, dims, mnl = 0)\n\n"
+    "pack2(x, dims, mnl = 0)\n\n"
     "In-place version of pack(), which also accepts matrix arguments x.\n"
     "The columns of x are elements of S, with the 's' components stored\n"
     "in unpacked storage.  On return, the 's' components are stored in\n"
@@ -426,11 +431,14 @@ static PyObject* pack2(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *x;
     PyObject *O, *Ok, *dims;
     double a = sqrt(2.0), *wrk;
-    int i, j, k, nlq = 0, iu, ip, len, n, maxn;
+    int i, j, k, nlq = 0, iu, ip, len, n, maxn, xr, xc;
     char *kwlist[] = {"x", "dims", "mnl", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|i", kwlist, &x,
         &dims, &nlq)) return NULL;
+
+    xr = x->nrows;
+    xc = x->ncols;
 
     O = PyDict_GetItemString(dims, "l");
     nlq += (int) PyInt_AsLong(O);
@@ -447,7 +455,7 @@ static PyObject* pack2(PyObject *self, PyObject *args, PyObject *kwrds)
         maxn = MAX(maxn, (int) PyInt_AsLong(Ok));
     }
     if (!maxn) return Py_BuildValue("");
-    if (!(wrk = (double *) calloc(maxn * x->ncols, sizeof(double))))
+    if (!(wrk = (double *) calloc(maxn * xc, sizeof(double))))
         return PyErr_NoMemory();
 
     for (i = 0, iu = nlq, ip = nlq; i < (int) PyList_Size(O); i++){
@@ -455,12 +463,11 @@ static PyObject* pack2(PyObject *self, PyObject *args, PyObject *kwrds)
         n = (int) PyInt_AsLong(Ok);
         for (k = 0; k < n; k++){
             len = n-k;
-            dlacpy_(" ", &len, &(x->ncols), MAT_BUFD(x) + iu + k*(n+1),
-                &(x->nrows), wrk, &maxn);
+            dlacpy_(" ", &len, &xc, MAT_BUFD(x) + iu + k*(n+1), &xr, wrk, 
+                &maxn);
             for (j = 1; j < len; j++)
-                dscal_(&(x->ncols), &a, wrk + j, &maxn);
-            dlacpy_(" ", &len, &(x->ncols), wrk, &maxn, MAT_BUFD(x) + ip,
-                &(x->nrows));
+                dscal_(&xc, &a, wrk + j, &maxn);
+            dlacpy_(" ", &len, &xc, wrk, &maxn, MAT_BUFD(x) + ip, &xr);
             ip += len;
         }
         iu += n*n;

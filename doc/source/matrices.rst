@@ -729,10 +729,10 @@ In addition, sparse matrices have the following attributes.
     attribute is an efficient way of changing the values of the sparse 
     matrix, without changing the sparsity pattern.
     
-    When the attribute :attr:`V <>` is read, a *copy* of :attr:`V <>` is 
+    When the attribute :attr:`V` is read, a *copy* of :attr:`V` is 
     returned, as a new dense matrix.  This implies, for example, that an 
     indexed assignment ``A.V[I] = B`` does not work, or at least 
-    cannot be used to modify ``A``.  Instead the attribute :attr:`V <>` 
+    cannot be used to modify ``A``.  Instead the attribute :attr:`V` 
     will be read and returned as a new matrix; then the elements of this 
     new matrix are modified.
 
@@ -881,7 +881,7 @@ tuple containing the i-th elements (or nonzero elements) of
 ``A``, ``B``, ....   
 
 >>> from cvxopt import matrix
->>> A = matrix([[-11., -5., -20.], [-6., -0., 7.]])
+>>> A = matrix([[-11., -5., -20.], [-6., 0., 7.]])
 >>> B = matrix(range(6), (3,2))
 >>> list(A)
 [-11.0, -5.0, -20.0, -6.0, 0.0, 7.0]

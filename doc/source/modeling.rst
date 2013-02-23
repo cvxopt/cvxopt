@@ -37,7 +37,7 @@ Optimization variables are represented by :class:`variable` objects.
     :func:`repr`  or :func:`str`, or when writing linear programs to MPS 
     files.
 
-The function :func:`len <>` returns the length of a :class:`variable`.  
+The function :func:`!len` returns the length of a :class:`variable`.  
 A :class:`variable` ``x`` has two attributes.
 
 .. attribute:: name 
@@ -268,7 +268,7 @@ convex piecewise-linear functions.  The general expression for a
     f(x_1,\ldots,x_n) = b + A_1 x_1 + \cdots + A_n x_n + 
         \sum_{k=1}^K \min (y_1, y_2, \ldots, y_{m_k}).
 
-Here the arguments of the :func:`min <>` 
+Here the arguments of the :func:`!min` 
 can be constants, variables, affine 
 functions or concave piecewise-linear functions.
 
@@ -277,11 +277,11 @@ operations.
 
 **Maximum**  
     If the arguments in ``f = max(y1, y2, ...)`` do not include any 
-    variables or functions, then the Python built-in :func:`max <>` is 
+    variables or functions, then the Python built-in :func:`!max` is 
     evaluated.  
 
     If one or more of the arguments are variables or functions, 
-    :func:`max <>` 
+    :func:`!max` 
     returns a piecewise-linear function defined as the elementwise maximum 
     of its arguments.  In other words, 
     ``f[k] = max(y1[k], y2[k], ...)`` for ``k`` = 0, ...,  
@@ -298,7 +298,7 @@ operations.
     ``f = max(u[0], u[1], ..., u[len(u)-1])``.  
 
 **Minimum** 
-    Similar to :func:`max <>` but returns a concave piecewise-linear 
+    Similar to :func:`!max` but returns a concave piecewise-linear 
     function.
     The arguments can be scalars of type integer or float, dense 
     :const:`'d'` matrices with one column, variables, affine functions or 
@@ -408,7 +408,7 @@ for a variable of length 5.
 >>> c3 = (sum(x) == 2)
 
 
-The built-in function :func:`len <>` returns the dimension of the 
+The built-in function :func:`!len` returns the dimension of the 
 constraint function.
 
 Constraints have four public attributes.

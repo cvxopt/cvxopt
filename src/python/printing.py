@@ -1,6 +1,7 @@
+# Copyright 2010 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.2
+# This file is part of CVXOPT version 1.1.3.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -31,7 +32,7 @@ def matrix_str_default(X):
 
     sgn = ['-','+']
 
-    if   X.typecode is 'i': fmt = iformat
+    if   X.typecode == 'i': fmt = iformat
     else: fmt = dformat
 
     s = ""
@@ -41,11 +42,11 @@ def matrix_str_default(X):
 
     if width*height is 0: return ""
     if len(X) is 0: return ""
- 
+
     rlist = range(0,min(m,height))
     clist = range(0,min(n,width))
 
-    if X.typecode is 'z':
+    if X.typecode == 'z':
         twidth = max([ len(fmt % X[i,j].real + sgn[X[i,j].imag>0] + 'j' + \
                               (fmt % abs(X[i,j].imag)).lstrip() ) \
                           for i in rlist for j in clist ])
@@ -57,7 +58,7 @@ def matrix_str_default(X):
 
         for j in clist:
 
-            if X.typecode is 'z':
+            if X.typecode == 'z':
                 s += rjust(fmt % X[i,j].real + sgn[X[i,j].imag>0] + 'j' + \
                                (fmt % abs(X[i,j].imag)).lstrip(),twidth) 
             else:
@@ -90,7 +91,7 @@ def spmatrix_str_default(X):
 
     sgn = ['-','+']
 
-    if   X.typecode is 'i': fmt = iformat
+    if   X.typecode == 'i': fmt = iformat
     else: fmt = dformat
 
     s = ""
@@ -108,7 +109,7 @@ def spmatrix_str_default(X):
     Zero = '0'
     
     if len(Idx) > 0:
-        if X.typecode is 'z':
+        if X.typecode == 'z':
             twidth = max([ len(fmt % X[i,j].real + sgn[X[i,j].imag>0] + 'j' + \
                                   (fmt % abs(X[i,j].imag)).lstrip() ) \
                               for i in rlist for j in clist ])
@@ -123,7 +124,7 @@ def spmatrix_str_default(X):
         for j in clist:
 
             if (i,j) in Idx:
-                if X.typecode is 'z':
+                if X.typecode == 'z':
                     s += rjust(fmt % X[i,j].real + sgn[X[i,j].imag>0] + 'j' + \
                                    (fmt % abs(X[i,j].imag)).lstrip(),twidth)
                 else:
@@ -154,14 +155,13 @@ def spmatrix_str_triplet(X):
 
     sgn = ['-','+']
 
-    if   X.typecode is 'i': fmt = iformat
+    if   X.typecode == 'i': fmt = iformat
     else: fmt = dformat
 
     s = ""
-    #s = "<%ix%i sparse matrix with %i non-zeros>\n" %(m, n, len(X))
     
     if len(X) > 0:
-        if X.typecode is 'z':
+        if X.typecode == 'z':
             twidth = max([ len(fmt % Xk.real + sgn[Xk.imag>0] + 'j' + \
                                    (fmt % abs(Xk.imag)).lstrip() ) \
                                for Xk in X.V ])

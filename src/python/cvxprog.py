@@ -6,9 +6,10 @@ for quadratic and geometric programming.  Also includes an interface
 to the quadratic programming solver from MOSEK.
 """
 
+# Copyright 2010 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.2.
+# This file is part of CVXOPT version 1.1.3.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -390,32 +391,32 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
     except KeyError: MAXITERS = 100
     else: 
         if type(MAXITERS) is not int or MAXITERS < 1: 
-            raise ValueError, "options['maxiters'] must be a positive "\
-                "integer"
+            raise ValueError("options['maxiters'] must be a positive "\
+                "integer")
 
     try: ABSTOL = options['abstol']
     except KeyError: ABSTOL = 1e-7
     else: 
         if type(ABSTOL) is not float and type(ABSTOL) is not int: 
-            raise ValueError, "options['abstol'] must be a scalar"
+            raise ValueError("options['abstol'] must be a scalar")
 
     try: RELTOL = options['reltol']
     except KeyError: RELTOL = 1e-6
     else: 
         if type(RELTOL) is not float and type(RELTOL) is not int: 
-            raise ValueError, "options['reltol'] must be a scalar"
+            raise ValueError("options['reltol'] must be a scalar")
 
     try: FEASTOL = options['feastol']
     except KeyError: FEASTOL = 1e-7
     else: 
         if (type(FEASTOL) is not float and type(FEASTOL) is not int) or \
             FEASTOL <= 0.0: 
-            raise ValueError, "options['feastol'] must be a positive "\
-                "scalar"
+            raise ValueError("options['feastol'] must be a positive "\
+                "scalar")
 
     if RELTOL <= 0.0 and ABSTOL <= 0.0:
-        raise ValueError, "at least one of options['reltol'] and " \
-            "options['abstol'] must be positive"
+        raise ValueError("at least one of options['reltol'] and " \
+            "options['abstol'] must be positive")
 
     try: show_progress = options['show_progress']
     except KeyError: show_progress = True
@@ -424,8 +425,8 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
     except KeyError: refinement = 1
     else:
         if type(refinement) is not int or refinement < 0:
-            raise ValueError, "options['refinement'] must be a "\
-                "nonnegative integer"
+            raise ValueError("options['refinement'] must be a "\
+                "nonnegative integer")
 
     if kktsolver is None: 
         if dims and (dims['q'] or dims['s']):  
@@ -434,40 +435,40 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
             kktsolver = 'chol2'            
     defaultsolvers = ('ldl', 'ldl2', 'chol', 'chol2')
     if type(kktsolver) is str and kktsolver not in defaultsolvers:
-        raise ValueError, "'%s' is not a valid value for kktsolver" \
-            %kktsolver
+        raise ValueError("'%s' is not a valid value for kktsolver" \
+            %kktsolver)
 
     try: mnl, x0 = F()   
-    except: raise ValueError, "function call 'F()' failed"
+    except: raise ValueError("function call 'F()' failed")
     
     # Argument error checking depends on level of customization.
     customkkt = type(kktsolver) is not str
     operatorG = G is not None and type(G) not in (matrix, spmatrix)
     operatorA = A is not None and type(A) not in (matrix, spmatrix)
     if (operatorG or operatorA) and not customkkt:
-        raise ValueError, "use of function valued G, A requires a "\
-            "user-provided kktsolver"
+        raise ValueError("use of function valued G, A requires a "\
+            "user-provided kktsolver")
     customx = (xnewcopy != None or xdot != None or xaxpy != None or 
         xscal != None)
     if customx and (not operatorG or not operatorA or not customkkt):
-        raise ValueError, "use of non-vector type for x requires "\
-            "function valued G, A and user-provided kktsolver"
+        raise ValueError("use of non-vector type for x requires "\
+            "function valued G, A and user-provided kktsolver")
     customy = (ynewcopy != None or ydot != None or yaxpy != None or 
         yscal != None) 
     if customy and (not operatorA or not customkkt):
-        raise ValueError, "use of non vector type for y requires "\
-            "function valued A and user-provided kktsolver"
+        raise ValueError("use of non vector type for y requires "\
+            "function valued A and user-provided kktsolver")
 
     if not customx:  
         if type(x0) is not matrix or x0.typecode != 'd' or x0.size[1] != 1:
-            raise TypeError, "'x0' must be a 'd' matrix with one column"
+            raise TypeError("'x0' must be a 'd' matrix with one column")
         if type(c) is not matrix or c.typecode != 'd' or c.size != x0.size:
-            raise TypeError, "'c' must be a 'd' matrix of size (%d,%d)"\
-                %(x0.size[0],1)
+            raise TypeError("'c' must be a 'd' matrix of size (%d,%d)"\
+                %(x0.size[0],1))
         
     if h is None: h = matrix(0.0, (0,1))
     if type(h) is not matrix or h.typecode != 'd' or h.size[1] != 1:
-        raise TypeError, "'h' must be a 'd' matrix with 1 column" 
+        raise TypeError("'h' must be a 'd' matrix with 1 column")
 
     if not dims:  dims = {'l': h.size[0], 'q': [], 's': []}
 
@@ -475,7 +476,7 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
     # components unpacked.
     cdim = dims['l'] + sum(dims['q']) + sum([ k**2 for k in dims['s'] ])
     if h.size[0] != cdim:
-        raise TypeError, "'h' must be a 'd' matrix of size (%d,1)" %cdim
+        raise TypeError("'h' must be a 'd' matrix of size (%d,1)" %cdim)
 
     if G is None:
         if customx:
@@ -486,8 +487,8 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
             G = spmatrix([], [], [], (0, c.size[0]))
     if not operatorG:
         if G.typecode != 'd' or G.size != (cdim, c.size[0]):
-            raise TypeError, "'G' must be a 'd' matrix with size (%d, %d)"\
-                %(cdim, c.size[0])
+            raise TypeError("'G' must be a 'd' matrix with size (%d, %d)"\
+                %(cdim, c.size[0]))
         def fG(x, y, trans = 'N', alpha = 1.0, beta = 0.0):
             misc.sgemv(G, x, y, dims, trans = trans, alpha = alpha, 
                 beta = beta)
@@ -503,8 +504,8 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
             A = spmatrix([], [], [], (0, c.size[0]))
     if not operatorA:
         if A.typecode != 'd' or A.size[1] != c.size[0]:
-            raise TypeError, "'A' must be a 'd' matrix with %d columns" \
-                %c.size[0]
+            raise TypeError("'A' must be a 'd' matrix with %d columns" \
+                %c.size[0])
         def fA(x, y, trans = 'N', alpha = 1.0, beta = 0.0):
             base.gemv(A, x, y, trans = trans, alpha = alpha, beta = beta)
     else:
@@ -512,11 +513,11 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
     if not customy:
         if b is None: b = matrix(0.0, (0,1))
         if type(b) is not matrix or b.typecode != 'd' or b.size[1] != 1:
-            raise TypeError, "'b' must be a 'd' matrix with one column"
+            raise TypeError("'b' must be a 'd' matrix with one column")
         if not operatorA and b.size[0] != A.size[0]:
-            raise TypeError, "'b' must have length %d" %A.size[0]
+            raise TypeError("'b' must have length %d" %A.size[0])
     if b is None and customy:  
-        raise ValueEror, "use of non vector type for y requires b"
+        raise ValueEror("use of non vector type for y requires b")
 
    
     # kktsolver(x, z, W) returns a routine for solving
@@ -619,8 +620,9 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
     
 
     if show_progress: 
-        print "% 10s% 12s% 10s% 8s% 7s" %("pcost", "dcost", "gap", "pres",
-            "dres")
+        print("% 10s% 12s% 10s% 8s% 7s" %("pcost", "dcost", "gap", "pres",
+            "dres"))
+
 
     relaxed_iters = 0
     for iters in xrange(MAXITERS + 1):  
@@ -633,38 +635,38 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
        
         f = matrix(f, tc='d')
         if f.typecode != 'd' or f.size != (mnl, 1):
-            raise TypeError, "first output argument of F() must be a "\
-                "'d' matrix of size (%d, %d)" %(mnl, 1)
+            raise TypeError("first output argument of F() must be a "\
+                "'d' matrix of size (%d, %d)" %(mnl, 1))
 
         if type(Df) is matrix or type(Df) is spmatrix:
-            if customx: raise ValueError, "use of non-vector type for x "\
-                "requires function valued Df"
+            if customx: raise ValueError("use of non-vector type for x "\
+                "requires function valued Df")
             if Df.typecode != 'd' or Df.size != (mnl, c.size[0]):
-                raise TypeError, "second output argument of F() must "\
-                    "be a 'd' matrix of size (%d,%d)" %(mnl, c.size[0])
+                raise TypeError("second output argument of F() must "\
+                    "be a 'd' matrix of size (%d,%d)" %(mnl, c.size[0]))
             def fDf(u, v, alpha = 1.0, beta = 0.0, trans = 'N'): 
                 base.gemv(Df, u, v, alpha = alpha, beta = beta, trans = 
                     trans)
         else: 
             if not customkkt:
-                raise ValueError, "use of function valued Df requires "\
-                    "a user-provided kktsolver"
+                raise ValueError("use of function valued Df requires "\
+                    "a user-provided kktsolver")
             fDf = Df
 
         if refinement or DEBUG:
             if type(H) is matrix or type(H) is spmatrix:
-                if customx: raise ValueError, "use of non-vector type "\
-                    "for  x requires function valued H"
+                if customx: raise ValueError("use of non-vector type "\
+                    "for  x requires function valued H")
                 if H.typecode != 'd' or H.size != (c.size[0], c.size[0]):
-                    raise TypeError, "third output argument of F() must "\
+                    raise TypeError("third output argument of F() must "\
                         "be a 'd' matrix of size (%d,%d)" \
-                        %(c.size[0], c.size[0])
+                        %(c.size[0], c.size[0]))
                 def fH(u, v, alpha = 1.0, beta = 0.0): 
                     base.symv(H, u, v, alpha = alpha, beta = beta)
             else: 
                 if not customkkt:
-                    raise ValueError, "use of function valued H requires "\
-                        "a user-provided kktsolver"
+                    raise ValueError("use of function valued H requires "\
+                        "a user-provided kktsolver")
                 fH = H
            
 
@@ -725,8 +727,8 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
         dres = dres / dres0
 
         if show_progress:
-            print "%2d: % 8.4e % 8.4e % 4.0e% 7.0e% 7.0e" \
-                %(iters, pcost, dcost, gap, pres, dres) 
+            print("%2d: % 8.4e % 8.4e % 4.0e% 7.0e% 7.0e" \
+                %(iters, pcost, dcost, gap, pres, dres))
 
         # Stopping criteria.    
         if ( pres <= FEASTOL and dres <= FEASTOL and ( gap <= ABSTOL or 
@@ -742,12 +744,12 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
             tz = misc.max_step(z, dims, mnl)
             if iters == MAXITERS:
                 if show_progress:
-                    print "Terminated (maximum number of iterations "\
-                        "reached)."
+                    print("Terminated (maximum number of iterations "\
+                        "reached).")
                 status = 'unknown'
             else:
                 if show_progress:
-                    print "Optimal solution found."
+                    print("Optimal solution found.")
                 status = 'optimal'
 
             return {'status': status, 'x': x,  'y': y, 'znl': z[:mnl],  
@@ -782,8 +784,8 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
         except ArithmeticError: 
             singular_kkt_matrix = False
             if iters == 0:
-                raise ValueError, "Rank(A) < p or "\
-                    "Rank([H(x); A; Df(x); G]) < n"
+                raise ValueError("Rank(A) < p or "\
+                    "Rank([H(x); A; Df(x); G]) < n")
 
             elif 0 < relaxed_iters < MAX_RELAXED_ITERS > 0:
                 # The arithmetic error may be caused by a relaxed line 
@@ -832,7 +834,7 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
                 ts = misc.max_step(s, dims, mnl)
                 tz = misc.max_step(z, dims, mnl)
                 if show_progress:
-                    print "Terminated (singular KKT matrix)."
+                    print("Terminated (singular KKT matrix).")
                 status = 'unknown'
                 return {'status': status, 'x': x,  'y': y, 
                     'znl': z[:mnl],  'zl': zl, 'snl': s[:mnl], 
@@ -959,11 +961,11 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
                 blas.axpy(ws2, s)
             if DEBUG:
                 res(x, y, z, s, wx, wy, wz, ws)
-                print "KKT residuals:"
-                print "    'x': %e" %math.sqrt(xdot(wx, wx)) 
-                print "    'y': %e" %math.sqrt(ydot(wy, wy))
-                print "    'z': %e" %misc.snrm2(wz, dims, mnl)
-                print "    's': %e" %misc.snrm2(ws, dims, mnl)
+                print("KKT residuals:")
+                print("    'x': %e" %math.sqrt(xdot(wx, wx)))
+                print("    'y': %e" %math.sqrt(ydot(wy, wy)))
+                print("    'z': %e" %misc.snrm2(wz, dims, mnl))
+                print("    's': %e" %misc.snrm2(ws, dims, mnl))
      
 
         sigma, eta = 0.0, 0.0
@@ -1007,8 +1009,8 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
             try: f4(dx, dy, dz, ds)
             except ArithmeticError: 
                 if iters == 0:
-                    raise ValueError, "Rank(A) < p or "\
-                        "Rank([H(x); A; Df(x); G]) < n"
+                    raise ValueError("Rank(A) < p or "\
+                        "Rank([H(x); A; Df(x); G]) < n")
                 else:
                     sl, zl = s[mnl:], z[mnl:]
                     ind = dims['l'] + sum(dims['q'])
@@ -1019,7 +1021,7 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
                     ts = misc.max_step(s, dims, mnl)
                     tz = misc.max_step(z, dims, mnl)
                     if show_progress:
-                        print "Terminated (singular KKT matrix)."
+                        print("Terminated (singular KKT matrix).")
                     return {'status': 'unknown', 'x': x,  'y': y, 
                         'znl': z[:mnl],  'zl': zl, 'snl': s[:mnl], 
                         'sl': sl, 'gap': gap, 'relative gap': relgap, 
@@ -1137,9 +1139,9 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
                 if type(newDf) is matrix or type(Df) is spmatrix:
                     if newDf.typecode != 'd' or \
                         newDf.size != (mnl, c.size[0]):
-                            raise TypeError, "second output argument "\
+                            raise TypeError("second output argument "\
                                 "of F() must be a 'd' matrix of size "\
-                                "(%d,%d)" %(mnl, c.size[0])
+                                "(%d,%d)" %(mnl, c.size[0]))
                     def newfDf(u, v, alpha = 1.0, beta = 0.0, trans = 'N'):
                         base.gemv(newDf, u, v, alpha = alpha, beta = 
                                 beta, trans = trans)
@@ -1663,33 +1665,33 @@ def cp(F, G = None, h = None, dims = None, A = None, b = None,
     operatorG = G is not None and type(G) not in (matrix, spmatrix)
     operatorA = A is not None and type(A) not in (matrix, spmatrix)
     if (operatorG or operatorA) and not customkkt:
-        raise ValueError, "use of function valued G, A requires a "\
-            "user-provided kktsolver"
+        raise ValueError("use of function valued G, A requires a "\
+            "user-provided kktsolver")
     customx = (xnewcopy != None or xdot != None or xaxpy != None or
         xscal != None)
     if customx and (not operatorG or not operatorA or not customkkt):
-        raise ValueError, "use of non-vector type for x requires "\
-            "function valued G, A and user-provided kktsolver"
+        raise ValueError("use of non-vector type for x requires "\
+            "function valued G, A and user-provided kktsolver")
     customy = (ynewcopy != None or ydot != None or yaxpy != None or 
         yscal != None)
     if customy and (not operatorA or not customkkt):
-        raise ValueError, "use of non vector type for y requires "\
-            "function valued A and user-provided kktsolver"
+        raise ValueError("use of non vector type for y requires "\
+            "function valued A and user-provided kktsolver")
 
     if not customx:  
         if type(x0) is not matrix or x0.typecode != 'd' or x0.size[1] != 1:
-            raise TypeError, "'x0' must be a 'd' matrix with one column"
+            raise TypeError("'x0' must be a 'd' matrix with one column")
         
     if h is None: h = matrix(0.0, (0,1))
     if type(h) is not matrix or h.typecode != 'd' or h.size[1] != 1:
-        raise TypeError, "'h' must be a 'd' matrix with one column" 
+        raise TypeError("'h' must be a 'd' matrix with one column")
     if not dims: dims = {'l': h.size[0], 'q': [], 's': []}
 
     # Dimension of the product cone of the linear inequalities. with 's' 
     # components unpacked.
     cdim = dims['l'] + sum(dims['q']) + sum([ k**2 for k in dims['s'] ])
     if h.size[0] != cdim:
-        raise TypeError, "'h' must be a 'd' matrix of size (%d,1)" %cdim
+        raise TypeError("'h' must be a 'd' matrix of size (%d,1)" %cdim)
 
     if G is None:
         if customx:
@@ -1700,8 +1702,8 @@ def cp(F, G = None, h = None, dims = None, A = None, b = None,
             G = spmatrix([], [], [], (0, x0.size[0]))
     if type(G) is matrix or type(G) is spmatrix:
         if G.typecode != 'd' or G.size != (cdim, x0.size[0]):
-            raise TypeError, "'G' must be a 'd' matrix with size (%d, %d)"\
-                %(cdim, x0.size[0])
+            raise TypeError("'G' must be a 'd' matrix with size (%d, %d)"\
+                %(cdim, x0.size[0]))
         def fG(x, y, trans = 'N', alpha = 1.0, beta = 0.0):
             misc.sgemv(G, x, y, dims, trans = trans, alpha = alpha, 
                 beta = beta)
@@ -1717,8 +1719,8 @@ def cp(F, G = None, h = None, dims = None, A = None, b = None,
             A = spmatrix([], [], [], (0, x0.size[0]))
     if type(A) is matrix or type(A) is spmatrix:
         if A.typecode != 'd' or A.size[1] != x0.size[0]:
-            raise TypeError, "'A' must be a 'd' matrix with %d columns" \
-                %x0.size[0]
+            raise TypeError("'A' must be a 'd' matrix with %d columns" \
+                %x0.size[0])
         def fA(x, y, trans = 'N', alpha = 1.0, beta = 0.0):
             base.gemv(A, x, y, trans = trans, alpha = alpha, beta = beta)
     else:
@@ -1726,11 +1728,11 @@ def cp(F, G = None, h = None, dims = None, A = None, b = None,
     if not customy:
         if b is None: b = matrix(0.0, (0,1))
         if type(b) is not matrix or b.typecode != 'd' or b.size[1] != 1:
-            raise TypeError, "'b' must be a 'd' matrix with one column"
+            raise TypeError("'b' must be a 'd' matrix with one column")
         if not operatorA and b.size[0] != A.size[0]:
-            raise TypeError, "'b' must have length %d" %A.size[0]
+            raise TypeError("'b' must have length %d" %A.size[0])
     if b is None and customy:  
-        raise ValueEror, "use of non vector type for y requires b"
+        raise ValueEror("use of non vector type for y requires b")
 
 
     if xnewcopy is None: xnewcopy = matrix 
@@ -2057,41 +2059,41 @@ def gp(K, F, g, G=None, h=None, A=None, b=None):
 
     if type(K) is not list or [ k for k in K if type(k) is not int 
         or k <= 0 ]:
-        raise TypeError, "'K' must be a list of positive integers" 
+        raise TypeError("'K' must be a list of positive integers")
     mnl = len(K)-1
     l = sum(K)
 
     if type(F) not in (matrix, spmatrix) or F.typecode != 'd' or \
         F.size[0] != l:
-        raise TypeError, "'F' must be a dense or sparse 'd' matrix "\
-            "with %d rows" %l
+        raise TypeError("'F' must be a dense or sparse 'd' matrix "\
+            "with %d rows" %l)
     if type(g) is not matrix or g.typecode != 'd' or g.size != (l,1): 
-        raise TypeError, "'g' must be a dene 'd' matrix of "\
-            "size (%d,1)" %l
+        raise TypeError("'g' must be a dene 'd' matrix of "\
+            "size (%d,1)" %l)
     n = F.size[1]
 
     if G is None: G = spmatrix([], [], [], (0,n))
     if h is None: h = matrix(0.0, (0,1))
     if type(G) not in (matrix, spmatrix) or G.typecode != 'd' or \
         G.size[1] != n:
-        raise TypeError, "'G' must be a dense or sparse 'd' matrix "\
-            "with %d columns" %n 
+        raise TypeError("'G' must be a dense or sparse 'd' matrix "\
+            "with %d columns" %n)
     ml = G.size[0]
     if type(h) is not matrix or h.typecode != 'd' or h.size != (ml,1):
-        raise TypeError, "'h' must be a dense 'd' matrix of "\
-            "size (%d,1)" %ml
+        raise TypeError("'h' must be a dense 'd' matrix of "\
+            "size (%d,1)" %ml)
     dims = {'l': ml, 's': [], 'q': []}
 
     if A is None: A = spmatrix([], [], [], (0,n))
     if b is None: b = matrix(0.0, (0,1))
     if type(A) not in (matrix, spmatrix) or A.typecode != 'd' or \
         A.size[1] != n:
-        raise TypeError, "'A' must be a dense or sparse 'd' matrix "\
-            "with %d columns" %n
+        raise TypeError("'A' must be a dense or sparse 'd' matrix "\
+            "with %d columns" %n)
     p = A.size[0]
     if type(b) is not matrix or b.typecode != 'd' or b.size != (p,1): 
-        raise TypeError, "'b' must be a dense 'd' matrix of "\
-            "size (%d,1)" %p
+        raise TypeError("'b' must be a dense 'd' matrix of "\
+            "size (%d,1)" %p)
 
     y = matrix(0.0, (l,1))
     u = matrix(0.0, (max(K),1))

@@ -2,9 +2,10 @@
 Solver for linear and quadratic cone programs. 
 """
 
+# Copyright 2010 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.2
+# This file is part of CVXOPT version 1.1.3.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -345,7 +346,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         combination with 1. above, i.e., it requires the kktsolver 
         argument.
 
-        If G is a function, the call G(u, u, alpha, beta, trans)
+        If G is a function, the call G(u, v, alpha, beta, trans)
         should evaluate the matrix-vector products
 
             v := alpha * G * u + beta * v  if trans is 'N' 
@@ -426,32 +427,32 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
     except KeyError: MAXITERS = 100
     else:
         if type(MAXITERS) is not int or MAXITERS < 1:
-           raise ValueError, "options['maxiters'] must be a positive "\
-               "integer"
+           raise ValueError("options['maxiters'] must be a positive "\
+               "integer")
 
     try: ABSTOL = options['abstol']
     except KeyError: ABSTOL = 1e-7
     else:
         if type(ABSTOL) is not float and type(ABSTOL) is not int:
-            raise ValueError, "options['abstol'] must be a scalar"
+            raise ValueError("options['abstol'] must be a scalar")
 
     try: RELTOL = options['reltol']
     except KeyError: RELTOL = 1e-6
     else:
         if type(RELTOL) is not float and type(RELTOL) is not int:
-            raise ValueError, "options['reltol'] must be a scalar"
+            raise ValueError("options['reltol'] must be a scalar")
 
     if RELTOL <= 0.0 and ABSTOL <= 0.0 :
-        raise ValueError, "at least one of options['reltol'] and " \
-            "options['abstol'] must be positive"
+        raise ValueError("at least one of options['reltol'] and " \
+            "options['abstol'] must be positive")
 
     try: FEASTOL = options['feastol']
     except KeyError: FEASTOL = 1e-7
     else:
         if (type(FEASTOL) is not float and type(FEASTOL) is not int) or \
             FEASTOL <= 0.0:
-            raise ValueError, "options['feastol'] must be a positive "\
-                "scalar"
+            raise ValueError("options['feastol'] must be a positive "\
+                "scalar")
 
     try: show_progress = options['show_progress']
     except KeyError: show_progress = True
@@ -463,43 +464,43 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
             kktsolver = 'chol2'
     defaultsolvers = ('ldl', 'ldl2', 'qr', 'chol', 'chol2')
     if type(kktsolver) is str and kktsolver not in defaultsolvers:
-        raise ValueError, "'%s' is not a valid value for kktsolver" \
-            %kktsolver
+        raise ValueError("'%s' is not a valid value for kktsolver" \
+            %kktsolver)
 
     # Argument error checking depends on level of customization.
     customkkt = type(kktsolver) is not str
     matrixG = type(G) in (matrix, spmatrix)
     matrixA = type(A) in (matrix, spmatrix)
     if (not matrixG or (not matrixA and A is not None)) and not customkkt:
-        raise ValueError, "use of function valued G, A requires a "\
-            "user-provided kktsolver"
+        raise ValueError("use of function valued G, A requires a "\
+            "user-provided kktsolver")
     customx = (xnewcopy != None or xdot != None or xaxpy != None or 
         xscal != None)
     if customx and (matrixG or matrixA or not customkkt):
-        raise ValueError, "use of non-vector type for x requires "\
-            "function valued G, A and user-provided kktsolver"
+        raise ValueError("use of non-vector type for x requires "\
+            "function valued G, A and user-provided kktsolver")
     customy = (ynewcopy != None or ydot != None or yaxpy != None or 
         yscal != None)
     if customy and (matrixA or not customkkt):
-        raise ValueError, "use of non-vector type for y requires "\
-            "function valued A and user-provided kktsolver"
+        raise ValueError("use of non-vector type for y requires "\
+            "function valued A and user-provided kktsolver")
 
 
     if not customx and (type(c) is not matrix or c.typecode != 'd' or 
         c.size[1] != 1):
-        raise TypeError, "'c' must be a 'd' matrix with one column" 
+        raise TypeError("'c' must be a 'd' matrix with one column")
 
     if type(h) is not matrix or h.typecode != 'd' or h.size[1] != 1:
-        raise TypeError, "'h' must be a 'd' matrix with 1 column" 
+        raise TypeError("'h' must be a 'd' matrix with 1 column")
 
     if not dims: dims = {'l': h.size[0], 'q': [], 's': []}
     if type(dims['l']) is not int or dims['l'] < 0: 
-        raise TypeError, "'dims['l']' must be a nonnegative integer"
+        raise TypeError("'dims['l']' must be a nonnegative integer")
     if [ k for k in dims['q'] if type(k) is not int or k < 1 ]:
-        raise TypeError, "'dims['q']' must be a list of positive integers"
+        raise TypeError("'dims['q']' must be a list of positive integers")
     if [ k for k in dims['s'] if type(k) is not int or k < 0 ]:
-        raise TypeError, "'dims['s']' must be a list of nonnegative " \
-            "integers"
+        raise TypeError("'dims['s']' must be a list of nonnegative " \
+            "integers")
 
     try: refinement = options['refinement']
     except KeyError: 
@@ -507,8 +508,8 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         else: refinement = 0
     else:
         if type(refinement) is not int or refinement < 0: 
-            raise ValueError, "options['refinement'] must be a "\
-                "nonnegative integer"
+            raise ValueError("options['refinement'] must be a "\
+                "nonnegative integer")
 
 
     cdim = dims['l'] + sum(dims['q']) + sum([k**2 for k in dims['s']])
@@ -517,7 +518,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
     cdim_diag = dims['l'] + sum(dims['q']) + sum(dims['s'])
 
     if h.size[0] != cdim:
-        raise TypeError, "'h' must be a 'd' matrix of size (%d,1)" %cdim
+        raise TypeError("'h' must be a 'd' matrix of size (%d,1)" %cdim)
 
     # Data for kth 'q' constraint are found in rows indq[k]:indq[k+1] of G.
     indq = [ dims['l'] ]  
@@ -529,8 +530,8 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
 
     if matrixG:
         if G.typecode != 'd' or G.size != (cdim, c.size[0]):
-            raise TypeError, "'G' must be a 'd' matrix of size (%d, %d)"\
-                %(cdim, c.size[0])
+            raise TypeError("'G' must be a 'd' matrix of size (%d, %d)"\
+                %(cdim, c.size[0]))
         def Gf(x, y, trans = 'N', alpha = 1.0, beta = 0.0): 
             misc.sgemv(G, x, y, dims, trans = trans, alpha = alpha, 
                 beta = beta)
@@ -547,8 +548,8 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
             matrixA = True
     if matrixA:
         if A.typecode != 'd' or A.size[1] != c.size[0]:
-            raise TypeError, "'A' must be a 'd' matrix with %d columns "\
-                %c.size[0]
+            raise TypeError("'A' must be a 'd' matrix with %d columns "\
+                %c.size[0])
         def Af(x, y, trans = 'N', alpha = 1.0, beta = 0.0): 
             base.gemv(A, x, y, trans = trans, alpha = alpha, beta = beta)
     else: 
@@ -557,12 +558,12 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
     if not customy:
         if b is None: b = matrix(0.0, (0,1))
         if type(b) is not matrix or b.typecode != 'd' or b.size[1] != 1:
-            raise TypeError, "'b' must be a 'd' matrix with one column" 
+            raise TypeError("'b' must be a 'd' matrix with one column")
         if matrixA and b.size[0] != A.size[0]:
-            raise TypeError, "'b' must have length %d" %A.size[0]
+            raise TypeError("'b' must have length %d" %A.size[0])
     else:
         if b is None: 
-            raise ValueError, "use of non vector type for y requires b"
+            raise ValueError("use of non vector type for y requires b")
 
 
     # kktsolver(W) returns a routine for solving 3x3 block KKT system 
@@ -573,7 +574,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
 
     if kktsolver in defaultsolvers:
         if b.size[0] > c.size[0] or b.size[0] + cdim_pckd < c.size[0]:
-           raise ValueError, "Rank(A) < p or Rank([G; A]) < n"
+           raise ValueError("Rank(A) < p or Rank([G; A]) < n")
         if kktsolver == 'ldl': 
             factor = misc.kkt_ldl(G, dims, A)
         elif kktsolver == 'ldl2':
@@ -682,7 +683,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         for rti in W['rti']: rti[::rti.size[0]+1 ] = 1.0
         try: f = kktsolver(W)
         except ArithmeticError:  
-            raise ValueError, "Rank(A) < p or Rank([G; A]) < n"
+            raise ValueError("Rank(A) < p or Rank([G; A]) < n")
 
     if primalstart is None:
 
@@ -700,7 +701,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         blas.copy(h, s)
         try: f(x, dy, s) 
         except ArithmeticError:  
-            raise ValueError, "Rank(A) < p or Rank([G; A]) < n"
+            raise ValueError("Rank(A) < p or Rank([G; A]) < n")
         blas.scal(-1.0, s)  
 
     else:
@@ -710,7 +711,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
     # ts = min{ t | s + t*e >= 0 }
     ts = misc.max_step(s, dims)
     if ts >= 0 and primalstart: 
-        raise ValueError, "initial s is not positive"
+        raise ValueError("initial s is not positive")
 
 
     if dualstart is None:
@@ -730,7 +731,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         blas.scal(0.0, z)
         try: f(dx, y, z)
         except ArithmeticError:  
-            raise ValueError, "Rank(A) < p or Rank([G; A]) < n"
+            raise ValueError("Rank(A) < p or Rank([G; A]) < n")
 
     else:
         if 'y' in dualstart: ycopy(dualstart['y'], y)
@@ -739,7 +740,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
     # tz = min{ t | z + t*e >= 0 }
     tz = misc.max_step(z, dims)
     if tz >= 0 and dualstart: 
-        raise ValueError, "initial z is not positive"
+        raise ValueError("initial z is not positive")
 
     nrms = misc.snrm2(s, dims)
     nrmz = misc.snrm2(z, dims)
@@ -791,7 +792,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
             cx, by, hz = xdot(c,x), ydot(b,y), misc.sdot(h, z, dims) 
 
             if show_progress:
-                print "Optimal solution found."
+                print("Optimal solution found.")
             return { 'x': x, 'y': y, 's': s, 'z': z,
                 'status': 'optimal', 
                 'gap': gap, 
@@ -919,10 +920,10 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
 
         if show_progress:
             if iters == 0:
-                print "% 10s% 12s% 10s% 8s% 7s % 5s" %("pcost", "dcost",
-                    "gap", "pres", "dres", "k/t")
-            print "%2d: % 8.4e % 8.4e % 4.0e% 7.0e% 7.0e% 7.0e" \
-                %(iters, pcost, dcost, gap, pres, dres, kappa/tau)
+                print("% 10s% 12s% 10s% 8s% 7s % 5s" %("pcost", "dcost",
+                    "gap", "pres", "dres", "k/t"))
+            print("%2d: % 8.4e % 8.4e % 4.0e% 7.0e% 7.0e% 7.0e" \
+                %(iters, pcost, dcost, gap, pres, dres, kappa/tau))
 
 
         if ( pres <= FEASTOL and dres <= FEASTOL and ( gap <= ABSTOL or 
@@ -941,8 +942,8 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
             tz = misc.max_step(z, dims)
             if iters == MAXITERS:
                 if show_progress:
-                    print "Terminated (maximum number of iterations "\
-                        "reached)."
+                    print("Terminated (maximum number of iterations "\
+                        "reached).")
                 return { 'x': x, 'y': y, 's': s, 'z': z,
                     'status': 'unknown', 
                     'gap': gap, 
@@ -961,7 +962,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
 
             else:
                 if show_progress:
-                    print "Optimal solution found."
+                    print("Optimal solution found.")
                 return { 'x': x, 'y': y, 's': s, 'z': z,
                     'status': 'optimal', 
                     'gap': gap, 
@@ -985,7 +986,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
                 ind += m**2
             tz = misc.max_step(z, dims)
             if show_progress:
-                print "Certificate of primal infeasibility found."
+                print("Certificate of primal infeasibility found.")
             return { 'x': None, 'y': y, 's': None, 'z': z,
                 'status': 'primal infeasible',
                 'gap': None, 
@@ -1010,7 +1011,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
             y, z = None, None
             ts = misc.max_step(s, dims)
             if show_progress:
-                print "Certificate of dual infeasibility found."
+                print("Certificate of dual infeasibility found.")
             return {'x': x, 'y': None, 's': s, 'z': None,
                 'status': 'dual infeasible',
                 'gap': None, 
@@ -1080,7 +1081,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
             blas.scal(dgi, z1)
         except ArithmeticError:
             if iters == 0 and primalstart and dualstart: 
-                raise ValueError, "Rank(A) < p or Rank([G; A]) < n"
+                raise ValueError("Rank(A) < p or Rank([G; A]) < n")
             else:
                 xscal(1.0/tau, x)
                 yscal(1.0/tau, y)
@@ -1094,7 +1095,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
                 ts = misc.max_step(s, dims)
                 tz = misc.max_step(z, dims)
                 if show_progress:
-                    print "Terminated (singular KKT matrix)."
+                    print("Terminated (singular KKT matrix).")
                 return { 'x': x, 'y': y, 's': s, 'z': z,
                     'status': 'unknown', 
                     'gap': gap, 
@@ -1108,7 +1109,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
                     'residual as primal infeasibility certificate': 
                         pinfres,
                     'residual as dual infeasibility certificate': 
-                        dinfres, 
+                        dinfres,
                     'iterations': iters }
 
 
@@ -1239,13 +1240,13 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
             if DEBUG:
                 res(x, y, z, tau, s, kappa, wx, wy, wz, wtau, ws, wkappa,
                     W, dg, lmbda)
-                print "KKT residuals"
-                print "    'x': %e" %math.sqrt(xdot(wx, wx)) 
-                print "    'y': %e" %math.sqrt(ydot(wy, wy))
-                print "    'z': %e" %misc.snrm2(wz, dims)
-                print "    'tau': %e" %abs(wtau[0])
-                print "    's': %e" %misc.snrm2(ws, dims)
-                print "    'kappa': %e" %abs(wkappa[0])
+                print("KKT residuals")
+                print("    'x': %e" %math.sqrt(xdot(wx, wx)))
+                print("    'y': %e" %math.sqrt(ydot(wy, wy)))
+                print("    'z': %e" %misc.snrm2(wz, dims))
+                print("    'tau': %e" %abs(wtau[0]))
+                print("    's': %e" %misc.snrm2(ws, dims))
+                print("    'kappa': %e" %abs(wkappa[0]))
  
 
         mu = blas.nrm2(lmbda)**2 / (1 + cdim_diag) 
@@ -1307,7 +1308,6 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
                 blas.copy(ds, ws3)
                 misc.sprod(ws3, dz, dims)
                 wkappa3 = dtau[0] * dkappa[0]
-
 
             # Maximum step to boundary.
             #
@@ -1777,38 +1777,38 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
     # Use Mehrotra correction or not.
     try: correction = options['use_correction']
     except KeyError: correction = True
- 
+
 
     try: MAXITERS = options['maxiters']
     except KeyError: MAXITERS = 100
     else: 
         if type(MAXITERS) is not int or MAXITERS < 1: 
-            raise ValueError, "options['maxiters'] must be a positive "\
-                "integer"
+            raise ValueError("options['maxiters'] must be a positive "\
+                "integer")
 
     try: ABSTOL = options['abstol']
     except KeyError: ABSTOL = 1e-7
     else: 
         if type(ABSTOL) is not float and type(ABSTOL) is not int: 
-            raise ValueError, "options['abstol'] must be a scalar"
+            raise ValueError("options['abstol'] must be a scalar")
 
     try: RELTOL = options['reltol']
     except KeyError: RELTOL = 1e-6
     else: 
         if type(RELTOL) is not float and type(RELTOL) is not int: 
-            raise ValueError, "options['reltol'] must be a scalar"
+            raise ValueError("options['reltol'] must be a scalar")
 
     if RELTOL <= 0.0 and ABSTOL <= 0.0 :
-        raise ValueError, "at least one of options['reltol'] and " \
-            "options['abstol'] must be positive"
+        raise ValueError("at least one of options['reltol'] and " \
+            "options['abstol'] must be positive")
 
     try: FEASTOL = options['feastol']
     except KeyError: FEASTOL = 1e-7
     else: 
         if (type(FEASTOL) is not float and type(FEASTOL) is not int) or \
             FEASTOL <= 0.0:
-            raise ValueError, "options['feastol'] must be a positive "\
-                "scalar"
+            raise ValueError("options['feastol'] must be a positive "\
+                "scalar")
 
     try: show_progress = options['show_progress']
     except KeyError: show_progress = True
@@ -1821,8 +1821,8 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
             kktsolver = 'chol2'            
     defaultsolvers = ('ldl', 'ldl2', 'chol', 'chol2')
     if type(kktsolver) is str and kktsolver not in defaultsolvers:
-        raise ValueError, "'%s' is not a valid value for kktsolver" \
-            %kktsolver
+        raise ValueError("'%s' is not a valid value for kktsolver" \
+            %kktsolver)
 
 
     # Argument error checking depends on level of customization.
@@ -1832,28 +1832,28 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
     matrixA = type(A) in (matrix, spmatrix)
     if (not matrixP or (not matrixG and G is not None) or 
         (not matrixA and A is not None)) and not customkkt:
-        raise ValueError, "use of function valued P, G, A requires a "\
-            "user-provided kktsolver"
+        raise ValueError("use of function valued P, G, A requires a "\
+            "user-provided kktsolver")
     customx = (xnewcopy != None or xdot != None or xaxpy != None or 
         xscal != None) 
     if customx and (matrixP or matrixG or matrixA or not customkkt):
-        raise ValueError, "use of non-vector type for x requires "\
-            "function valued P, G, A and user-provided kktsolver"
+        raise ValueError("use of non-vector type for x requires "\
+            "function valued P, G, A and user-provided kktsolver")
     customy = (ynewcopy != None or ydot != None or yaxpy != None or 
         yscal != None) 
     if customy and (matrixA or not customkkt):
-        raise ValueError, "use of non vector type for y requires "\
-            "function valued A and user-provided kktsolver"
+        raise ValueError("use of non vector type for y requires "\
+            "function valued A and user-provided kktsolver")
 
 
     if not customx and (type(q) is not matrix or q.typecode != 'd' or
         q.size[1] != 1):
-        raise TypeError, "'q' must be a 'd' matrix with one column"
+        raise TypeError("'q' must be a 'd' matrix with one column")
 
     if matrixP:
         if P.typecode != 'd' or P.size != (q.size[0], q.size[0]):
-            raise TypeError, "'P' must be a 'd' matrix of size (%d, %d)"\
-                %(q.size[0], q.size[0])
+            raise TypeError("'P' must be a 'd' matrix of size (%d, %d)"\
+                %(q.size[0], q.size[0]))
         def fP(x, y, alpha = 1.0, beta = 0.0):
             base.symv(P, x, y, alpha = alpha, beta = beta)
     else:
@@ -1862,16 +1862,16 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
 
     if h is None: h = matrix(0.0, (0,1))
     if type(h) is not matrix or h.typecode != 'd' or h.size[1] != 1:
-        raise TypeError, "'h' must be a 'd' matrix with one column" 
+        raise TypeError("'h' must be a 'd' matrix with one column")
 
     if not dims: dims = {'l': h.size[0], 'q': [], 's': []}
     if type(dims['l']) is not int or dims['l'] < 0: 
-        raise TypeError, "'dims['l']' must be a nonnegative integer"
+        raise TypeError("'dims['l']' must be a nonnegative integer")
     if [ k for k in dims['q'] if type(k) is not int or k < 1 ]:
-        raise TypeError, "'dims['q']' must be a list of positive integers"
+        raise TypeError("'dims['q']' must be a list of positive integers")
     if [ k for k in dims['s'] if type(k) is not int or k < 0 ]:
-        raise TypeError, "'dims['s']' must be a list of nonnegative " \
-            "integers"
+        raise TypeError("'dims['s']' must be a list of nonnegative " \
+            "integers")
 
     try: refinement = options['refinement']
     except KeyError: 
@@ -1879,13 +1879,13 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
         else: refinement = 0
     else:
         if type(refinement) is not int or refinement < 0: 
-            raise ValueError, "options['refinement'] must be a "\
-                "nonnegative integer"
+            raise ValueError("options['refinement'] must be a "\
+                "nonnegative integer")
 
 
     cdim = dims['l'] + sum(dims['q']) + sum([ k**2 for k in dims['s'] ])
     if h.size[0] != cdim:
-        raise TypeError, "'h' must be a 'd' matrix of size (%d,1)" %cdim
+        raise TypeError("'h' must be a 'd' matrix of size (%d,1)" %cdim)
 
     # Data for kth 'q' constraint are found in rows indq[k]:indq[k+1] of G.
     indq = [ dims['l'] ]  
@@ -1905,8 +1905,8 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
             matrixG = True
     if matrixG:
         if G.typecode != 'd' or G.size != (cdim, q.size[0]):
-            raise TypeError, "'G' must be a 'd' matrix of size (%d, %d)"\
-                %(cdim, q.size[0])
+            raise TypeError("'G' must be a 'd' matrix of size (%d, %d)"\
+                %(cdim, q.size[0]))
         def fG(x, y, trans = 'N', alpha = 1.0, beta = 0.0):
             misc.sgemv(G, x, y, dims, trans = trans, alpha = alpha, 
                 beta = beta)
@@ -1924,8 +1924,8 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
             matrixA = True
     if matrixA:
         if A.typecode != 'd' or A.size[1] != q.size[0]:
-            raise TypeError, "'A' must be a 'd' matrix with %d columns" \
-                %q.size[0]
+            raise TypeError("'A' must be a 'd' matrix with %d columns" \
+                %q.size[0])
         def fA(x, y, trans = 'N', alpha = 1.0, beta = 0.0):
             base.gemv(A, x, y, trans = trans, alpha = alpha, beta = beta)
     else:
@@ -1933,11 +1933,11 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
     if not customy:
         if b is None: b = matrix(0.0, (0,1))
         if type(b) is not matrix or b.typecode != 'd' or b.size[1] != 1:
-            raise TypeError, "'b' must be a 'd' matrix with one column"
+            raise TypeError("'b' must be a 'd' matrix with one column")
         if matrixA and b.size[0] != A.size[0]:
-            raise TypeError, "'b' must have length %d" %A.size[0]
+            raise TypeError("'b' must have length %d" %A.size[0])
     if b is None and customy:  
-        raise ValueEror, "use of non-vector type for y requires b"
+        raise ValueEror("use of non-vector type for y requires b")
 
 
     ws3, wz3 = matrix(0.0, (cdim,1 )), matrix(0.0, (cdim,1 ))
@@ -1982,7 +1982,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
 
     if kktsolver in defaultsolvers:
          if b.size[0] > q.size[0]:
-             raise ValueError, "Rank(A) < p or Rank([P; G; A]) < n"
+             raise ValueError("Rank(A) < p or Rank([P; G; A]) < n")
          if kktsolver == 'ldl': 
              factor = misc.kkt_ldl(G, dims, A)
          elif kktsolver == 'ldl2': 
@@ -2024,7 +2024,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
         try: f3 = kktsolver({'d': matrix(0.0, (0,1)), 'di': 
             matrix(0.0, (0,1)), 'beta': [], 'v': [], 'r': [], 'rti': []})
         except ArithmeticError: 
-            raise ValueError, "Rank(A) < p or Rank([P; A; G]) < n"
+            raise ValueError("Rank(A) < p or Rank([P; A; G]) < n")
         x = xnewcopy(q)  
         xscal(-1.0, x)
         y = ynewcopy(b)
@@ -2078,7 +2078,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
         for rti in W['rti']: rti[::rti.size[0]+1 ] = 1.0
         try: f = kktsolver(W)
         except ArithmeticError:  
-            raise ValueError, "Rank(A) < p or Rank([P; A; G]) < n"
+            raise ValueError("Rank(A) < p or Rank([P; A; G]) < n")
 
              
         # Solve
@@ -2093,7 +2093,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
         blas.copy(h, z)
         try: f(x, y, z) 
         except ArithmeticError:  
-            raise ValueError, "Rank(A) < p or Rank([P; G; A]) < n"
+            raise ValueError("Rank(A) < p or Rank([P; G; A]) < n")
         blas.copy(z, s)  
         blas.scal(-1.0, s)  
 
@@ -2131,7 +2131,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
             blas.copy(initvals['s'], s)
             # ts = min{ t | s + t*e >= 0 }
             if misc.max_step(s, dims) >= 0:
-                raise ValueError, "initial s is not positive"
+                raise ValueError("initial s is not positive")
         else: 
             s[: dims['l']] = 1.0 
             ind = dims['l']
@@ -2151,7 +2151,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
             blas.copy(initvals['z'], z)
             # tz = min{ t | z + t*e >= 0 }
             if misc.max_step(z, dims) >= 0:
-                raise ValueError, "initial z is not positive"
+                raise ValueError("initial z is not positive")
         else:
             z[: dims['l']] = 1.0 
             ind = dims['l']
@@ -2173,9 +2173,8 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
 
 
     if show_progress: 
-        print "% 10s% 12s% 10s% 8s% 7s" %("pcost", "dcost", "gap", "pres",
-            "dres")
-
+        print("% 10s% 12s% 10s% 8s% 7s" %("pcost", "dcost", "gap", "pres",
+            "dres"))
 
     gap = misc.sdot(s, z, dims) 
 
@@ -2219,8 +2218,8 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
         dres = resx/resx0 
 
         if show_progress:
-            print "%2d: % 8.4e % 8.4e % 4.0e% 7.0e% 7.0e" \
-                %(iters, pcost, dcost, gap, pres, dres) 
+            print("%2d: % 8.4e % 8.4e % 4.0e% 7.0e% 7.0e" \
+                %(iters, pcost, dcost, gap, pres, dres))
 
         if ( pres <= FEASTOL and dres <= FEASTOL and ( gap <= ABSTOL or 
             (relgap is not None and relgap <= RELTOL) )) or \
@@ -2234,12 +2233,12 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
             tz = misc.max_step(z, dims)
             if iters == MAXITERS:
                 if show_progress:
-                    print "Terminated (maximum number of iterations "\
-                        "reached)."
+                    print("Terminated (maximum number of iterations "\
+                        "reached).")
                 status = 'unknown'
             else:
                 if show_progress:
-                    print "Optimal solution found."
+                    print("Optimal solution found.")
                 status = 'optimal'
             return { 'x': x,  'y': y,  's': s,  'z': z,  'status': status,
                     'gap': gap,  'relative gap': relgap, 
@@ -2271,7 +2270,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
         try: f3 = kktsolver(W)
         except ArithmeticError: 
             if iters == 0:
-                raise ValueError, "Rank(A) < p or Rank([P; A; G]) < n"
+                raise ValueError("Rank(A) < p or Rank([P; A; G]) < n")
             else:  
                 ind = dims['l'] + sum(dims['q'])
                 for m in dims['s']:
@@ -2280,7 +2279,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
                     ind += m**2
                 ts = misc.max_step(s, dims)
                 tz = misc.max_step(z, dims)
-                print "Terminated (singular KKT matrix)."
+                print("Terminated (singular KKT matrix).")
                 return { 'x': x,  'y': y,  's': s,  'z': z,  
                     'status': 'unknown', 'gap': gap,  
                     'relative gap': relgap, 'primal objective': pcost,  
@@ -2361,11 +2360,11 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
                 blas.axpy(ws2, s)
             if DEBUG:
                 res(x, y, z, s, wx, wy, wz, ws, W, lmbda)
-                print "KKT residuals:"
-                print "    'x': %e" %math.sqrt(xdot(wx, wx)) 
-                print "    'y': %e" %math.sqrt(ydot(wy, wy))
-                print "    'z': %e" %misc.snrm2(wz, dims)
-                print "    's': %e" %misc.snrm2(ws, dims)
+                print("KKT residuals:")
+                print("    'x': %e" %math.sqrt(xdot(wx, wx)))
+                print("    'y': %e" %math.sqrt(ydot(wy, wy)))
+                print("    'z': %e" %misc.snrm2(wz, dims))
+                print("    's': %e" %misc.snrm2(ws, dims))
 
 
         mu = gap / (dims['l'] + len(dims['q']) + sum(dims['s']))
@@ -2415,7 +2414,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
             try: f4(dx, dy, dz, ds)
             except ArithmeticError: 
                 if iters == 0:
-                    raise ValueError, "Rank(A) < p or Rank([P; A; G]) < n"
+                    raise ValueError("Rank(A) < p or Rank([P; A; G]) < n")
                 else:
                     ind = dims['l'] + sum(dims['q'])
                     for m in dims['s']:
@@ -2424,7 +2423,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
                         ind += m**2
                     ts = misc.max_step(s, dims)
                     tz = misc.max_step(z, dims)
-                    print "Terminated (singular KKT matrix)."
+                    print("Terminated (singular KKT matrix).")
                     return { 'x': x,  'y': y,  's': s,  'z': z,  
                         'status': 'unknown', 'gap': gap,  
                         'relative gap': relgap, 'primal objective': pcost, 
@@ -2436,9 +2435,9 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
             dsdz = misc.sdot(ds, dz, dims)
 
             # Save ds o dz for Mehrotra correction
-            if correction and i == 0:   
-                    blas.copy(ds, ws3)
-                    misc.sprod(ws3, dz, dims)
+            if correction and i == 0:
+                blas.copy(ds, ws3)
+                misc.sprod(ws3, dz, dims)
 
 
             # Maximum steps to boundary.  
@@ -2609,7 +2608,7 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
         'primal objective', 'dual objective', 'gap', 'relative gap',  
         'primal infeasibility', 'dual infeasibility', 'primal slack', 
         'dual slack', 'residual as primal infeasibility certificate', 
-        'residual as dual infeasibility certificate'. 
+        'residual as dual infeasibility certificate'.
 
         The 'status' field has values 'optimal', 'primal infeasible',
         'dual infeasible', or 'unknown'.  The values of the other fields
@@ -2796,32 +2795,32 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
     from cvxopt.base import matrix, spmatrix
 
     if type(c) is not matrix or c.typecode != 'd' or c.size[1] != 1: 
-        raise TypeError, "'c' must be a dense column matrix"
+        raise TypeError("'c' must be a dense column matrix")
     n = c.size[0]
-    if n < 1: raise ValueError, "number of variables must be at least 1"
+    if n < 1: raise ValueError("number of variables must be at least 1")
 
     if (type(G) is not matrix and type(G) is not spmatrix) or \
         G.typecode != 'd' or G.size[1] != n:
-        raise TypeError, "'G' must be a dense or sparse 'd' matrix "\
-            "with %d columns" %n 
+        raise TypeError("'G' must be a dense or sparse 'd' matrix "\
+            "with %d columns" %n)
     m = G.size[0]
     if type(h) is not matrix or h.typecode != 'd' or h.size != (m,1):
-        raise TypeError, "'h' must be a 'd' matrix of size (%d,1)" %m
+        raise TypeError("'h' must be a 'd' matrix of size (%d,1)" %m)
 
     if A is None:  A = spmatrix([], [], [], (0,n), 'd')
     if (type(A) is not matrix and type(A) is not spmatrix) or \
         A.typecode != 'd' or A.size[1] != n:
-        raise TypeError, "'A' must be a dense or sparse 'd' matrix "\
-            "with %d columns" %n
+        raise TypeError("'A' must be a dense or sparse 'd' matrix "\
+            "with %d columns" %n)
     p = A.size[0]
     if b is None: b = matrix(0.0, (0,1))
     if type(b) is not matrix or b.typecode != 'd' or b.size != (p,1): 
-        raise TypeError, "'b' must be a dense matrix of size (%d,1)" %p
+        raise TypeError("'b' must be a dense matrix of size (%d,1)" %p)
 
     if solver == 'glpk':
         try: from cvxopt import glpk
-        except ImportError: raise ValueError, "invalid option "\
-            "(solver = 'glpk'): cvxopt.glpk is not installed" 
+        except ImportError: raise ValueError("invalid option "\
+            "(solver = 'glpk'): cvxopt.glpk is not installed")
         glpk.options = options
         status, x, z, y = glpk.lp(c, G, h, A, b)
 
@@ -2887,24 +2886,24 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
 
     if solver == 'mosek':
         try: 
-            from cvxopt import mosek
-            import pymosek as msk
+            from cvxopt import msk
+            import mosek
         except ImportError: 
-            raise ValueError, "invalid option (solver = 'mosek'): "\
-                "cvxopt.mosek is not installed" 
+            raise ValueError("invalid option (solver = 'mosek'): "\
+                "cvxopt.mosek is not installed")
 
         if 'MOSEK' in options:
-            mosek.options = options['MOSEK']
+            msk.options = options['MOSEK']
         else:
-            mosek.options = {}
+            msk.options = {}
 
-        solsta, x, z, y  = mosek.lp(c, G, h, A, b)
+        solsta, x, z, y  = msk.lp(c, G, h, A, b)
 
         resx0 = max(1.0, blas.nrm2(c))
         resy0 = max(1.0, blas.nrm2(b))
         resz0 = max(1.0, blas.nrm2(h))
 
-        if solsta is msk.solsta.optimal:
+        if solsta is mosek.solsta.optimal:
             status = 'optimal'
 
             pcost = blas.dot(c,x)
@@ -2947,7 +2946,7 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
             pres, dres = max(resy, resz), resx
             pinfres, dinfres = None, None
 
-        elif solsta is msk.solsta.prim_infeas_cer:
+        elif solsta is mosek.solsta.prim_infeas_cer:
             status = 'primal infeasible'
 
             hz, by = blas.dot(h, z),  blas.dot(b, y)
@@ -2970,7 +2969,7 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
             dslack = -misc.max_step(z, dims)
             pslack = None
 
-        elif solsta == msk.solsta.dual_infeas_cer:
+        elif solsta == mosek.solsta.dual_infeas_cer:
             status = 'dual infeasible'
 
             cx = blas.dot(c,x)
@@ -3292,52 +3291,52 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
     from cvxopt.base import matrix, spmatrix
 
     if type(c) is not matrix or c.typecode != 'd' or c.size[1] != 1: 
-        raise TypeError, "'c' must be a dense column matrix"
+        raise TypeError("'c' must be a dense column matrix")
     n = c.size[0]
-    if n < 1: raise ValueError, "number of variables must be at least 1"
+    if n < 1: raise ValueError("number of variables must be at least 1")
 
     if Gl is None:  Gl = spmatrix([], [], [], (0,n), tc='d')
     if (type(Gl) is not matrix and type(Gl) is not spmatrix) or \
         Gl.typecode != 'd' or Gl.size[1] != n:
-        raise TypeError, "'Gl' must be a dense or sparse 'd' matrix "\
-            "with %d columns" %n
+        raise TypeError("'Gl' must be a dense or sparse 'd' matrix "\
+            "with %d columns" %n)
     ml = Gl.size[0]
     if hl is None: hl = matrix(0.0, (0,1))
     if type(hl) is not matrix or hl.typecode != 'd' or \
         hl.size != (ml,1):
-        raise TypeError, "'hl' must be a dense 'd' matrix of " \
-            "size (%d,1)" %ml
+        raise TypeError("'hl' must be a dense 'd' matrix of " \
+            "size (%d,1)" %ml)
 
     if Gq is None: Gq = []
     if type(Gq) is not list or [ G for G in Gq if (type(G) is not matrix 
         and type(G) is not spmatrix) or G.typecode != 'd' or 
         G.size[1] != n ]:
-        raise TypeError, "'Gq' must be a list of sparse or dense 'd' "\
-            "matrices with %d columns" %n 
+        raise TypeError("'Gq' must be a list of sparse or dense 'd' "\
+            "matrices with %d columns" %n)
     mq = [ G.size[0] for G in Gq ]
     a = [ k for k in xrange(len(mq)) if mq[k] == 0 ] 
-    if a: raise TypeError, "the number of rows of Gq[%d] is zero" %a[0]
+    if a: raise TypeError("the number of rows of Gq[%d] is zero" %a[0])
     if hq is None: hq = []
     if type(hq) is not list or len(hq) != len(mq) or [ h for h in hq if
         (type(h) is not matrix and type(h) is not spmatrix) or 
         h.typecode != 'd' ]: 
-        raise TypeError, "'hq' must be a list of %d dense or sparse "\
-            "'d' matrices" %len(mq)
+        raise TypeError("'hq' must be a list of %d dense or sparse "\
+            "'d' matrices" %len(mq))
     a = [ k for k in xrange(len(mq)) if hq[k].size != (mq[k], 1) ]
     if a:
         k = a[0]
-        raise TypeError, "'hq[%d]' has size (%d,%d).  Expected size "\
-            "is (%d,1)." %(k, hq[k].size[0], hq[k].size[1], mq[k]) 
+        raise TypeError("'hq[%d]' has size (%d,%d).  Expected size "\
+            "is (%d,1)." %(k, hq[k].size[0], hq[k].size[1], mq[k]))
 
     if A is None: A = spmatrix([], [], [], (0,n), 'd')
     if (type(A) is not matrix and type(A) is not spmatrix) or \
         A.typecode != 'd' or A.size[1] != n:
-        raise TypeError, "'A' must be a dense or sparse 'd' matrix "\
-            "with %d columns" %n
+        raise TypeError("'A' must be a dense or sparse 'd' matrix "\
+            "with %d columns" %n)
     p = A.size[0]
     if b is None: b = matrix(0.0, (0,1))
     if type(b) is not matrix or b.typecode != 'd' or b.size != (p,1): 
-        raise TypeError, "'b' must be a dense matrix of size (%d,1)" %p
+        raise TypeError("'b' must be a dense matrix of size (%d,1)" %p)
 
     dims = {'l': ml, 'q': mq, 's': []}
     N = ml + sum(mq)
@@ -3345,25 +3344,25 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
     if solver == 'mosek':
         from cvxopt import misc
         try: 
-            from cvxopt import mosek
-            import pymosek as msk
+            from cvxopt import msk
+            import mosek
         except ImportError: 
-            raise ValueError, "invalid option (solver = 'mosek'): "\
-                "cvxopt.mosek is not installed" 
+            raise ValueError("invalid option (solver = 'mosek'): "\
+                "cvxopt.mosek is not installed")
         if 'MOSEK' in options:
-            mosek.options = options['MOSEK']
+            msk.options = options['MOSEK']
         else:
-            mosek.options = {}
-        if p: raise ValueError, "socp() with the solver = 'socp' option "\
-            "does not handle problems with equality constraints"
+            msk.options = {}
+        if p: raise ValueError("socp() with the solver = 'socp' option "\
+            "does not handle problems with equality constraints")
 
-        solsta, x, zl, zq  = mosek.socp(c, Gl, hl, Gq, hq)
+        solsta, x, zl, zq  = msk.socp(c, Gl, hl, Gq, hq)
 
         resx0 = max(1.0, blas.nrm2(c))
         rh = matrix([ blas.nrm2(hl) ] + [ blas.nrm2(hqk) for hqk in hq ])
         resz0 = max(1.0, blas.nrm2(rh))
 
-        if solsta is msk.solsta.optimal:
+        if solsta is mosek.solsta.optimal:
             status = 'optimal'
             y = matrix(0.0, (0,1))
             pcost = blas.dot(c,x)
@@ -3419,7 +3418,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             pres, dres = resz, resx
             pinfres, dinfres = None, None
 
-        elif solsta is msk.solsta.prim_infeas_cer:
+        elif solsta is mosek.solsta.dual_infeas_cer:
             status = 'primal infeasible'
             y = matrix(0.0, (0,1))
             hz = blas.dot(hl, zl) + sum([blas.dot(hq[k],zq[k]) for k 
@@ -3452,7 +3451,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             pcost, dcost = None, 1.0
             gap, relgap = None, None
 
-        elif solsta == msk.solsta.dual_infeas_cer:
+        elif solsta == mosek.solsta.prim_infeas_cer:
             status = 'dual infeasible'
             cx = blas.dot(c,x)
 
@@ -3499,7 +3498,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             pinfres, dinfres = None, None
             pslack, dslack = None, None
 
-        print status
+        print(status)
 
         return {'status': status, 'x': x, 'sl': sl, 'sq': sq, 'y': y, 
             'zl': zl, 'zq': zq, 'primal objective': pcost, 
@@ -3856,63 +3855,63 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
     from cvxopt.base import matrix, spmatrix
 
     if type(c) is not matrix or c.typecode != 'd' or c.size[1] != 1: 
-        raise TypeError, "'c' must be a dense column matrix"
+        raise TypeError("'c' must be a dense column matrix")
     n = c.size[0]
-    if n < 1: raise ValueError, "number of variables must be at least 1"
+    if n < 1: raise ValueError("number of variables must be at least 1")
 
     if Gl is None: Gl = spmatrix([], [], [], (0,n), tc='d')
     if (type(Gl) is not matrix and type(Gl) is not spmatrix) or \
         Gl.typecode != 'd' or Gl.size[1] != n:
-        raise TypeError, "'Gl' must be a dense or sparse 'd' matrix "\
-            "with %d columns" %n
+        raise TypeError("'Gl' must be a dense or sparse 'd' matrix "\
+            "with %d columns" %n)
     ml = Gl.size[0]
     if hl is None: hl = matrix(0.0, (0,1))
     if type(hl) is not matrix or hl.typecode != 'd' or \
         hl.size != (ml,1):
-        raise TypeError, "'hl' must be a 'd' matrix of size (%d,1)" %ml
+        raise TypeError("'hl' must be a 'd' matrix of size (%d,1)" %ml)
 
     if Gs is None: Gs = []
     if type(Gs) is not list or [ G for G in Gs if (type(G) is not matrix 
         and type(G) is not spmatrix) or G.typecode != 'd' or 
         G.size[1] != n ]:
-        raise TypeError, "'Gs' must be a list of sparse or dense 'd' "\
-            "matrices with %d columns" %n 
+        raise TypeError("'Gs' must be a list of sparse or dense 'd' "\
+            "matrices with %d columns" %n)
     ms = [ int(math.sqrt(G.size[0])) for G in Gs ]
     a = [ k for k in xrange(len(ms)) if ms[k]**2 != Gs[k].size[0] ]
-    if a: raise TypeError, "the squareroot of the number of rows in "\
-        "'Gs[%d]' is not an integer" %k
+    if a: raise TypeError("the squareroot of the number of rows in "\
+        "'Gs[%d]' is not an integer" %k)
     if hs is None: hs = []
     if type(hs) is not list or len(hs) != len(ms) or [ h for h in hs if
         (type(h) is not matrix and type(h) is not spmatrix) or
         h.typecode != 'd' ]:
-        raise TypeError, "'hs' must be a list of %d dense or sparse "\
-            "'d' matrices" %len(ms)
+        raise TypeError("'hs' must be a list of %d dense or sparse "\
+            "'d' matrices" %len(ms))
     a = [ k for k in xrange(len(ms)) if hs[k].size != (ms[k],ms[k]) ]
     if a:
         k = a[0]
-        raise TypeError, "hs[%d] has size (%d,%d).  Expected size is "\
-            "(%d,%d)." %(k,hs[k].size[0], hs[k].size[1], ms[k], ms[k])
+        raise TypeError("hs[%d] has size (%d,%d).  Expected size is "\
+            "(%d,%d)." %(k,hs[k].size[0], hs[k].size[1], ms[k], ms[k]))
 
     if A is None: A = spmatrix([], [], [], (0,n), 'd')
     if (type(A) is not matrix and type(A) is not spmatrix) or \
         A.typecode != 'd' or A.size[1] != n:
-        raise TypeError, "'A' must be a dense or sparse 'd' matrix "\
-            "with %d columns" %n
+        raise TypeError("'A' must be a dense or sparse 'd' matrix "\
+            "with %d columns" %n)
     p = A.size[0]
     if b is None: b = matrix(0.0, (0,1))
     if type(b) is not matrix or b.typecode != 'd' or b.size != (p,1): 
-        raise TypeError, "'b' must be a dense matrix of size (%d,1)" %p
+        raise TypeError("'b' must be a dense matrix of size (%d,1)" %p)
 
     dims = {'l': ml, 'q': [], 's': ms}
     N = ml + sum([ m**2 for m in ms ])
 
     if solver == 'dsdp':
         try: from cvxopt import dsdp
-        except ImportError: raise ValueError, "invalid option "\
-            "(solver = 'dsdp'): cvxopt.dsdp is not installed"
+        except ImportError: raise ValueError("invalid option "\
+            "(solver = 'dsdp'): cvxopt.dsdp is not installed")
         dsdp.options = options
-        if p: raise ValueError, "sdp() with the solver = 'dsdp' option "\
-            "does not handle problems with equality constraints"
+        if p: raise ValueError("sdp() with the solver = 'dsdp' option "\
+            "does not handle problems with equality constraints")
         dsdpstatus, x, r, zl, zs = dsdp.sdp(c, Gl, hl, Gs, hs)
 
         resx0 = max(1.0, blas.nrm2(c))
@@ -4355,16 +4354,16 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
     if solver == 'mosek':
         from cvxopt import misc
         try: 
-            from cvxopt import mosek
-            import pymosek 
-        except ImportError: raise ValueError, "invalid option "\
-            "(solver='mosek'): cvxopt.mosek is not installed" 
+            from cvxopt import msk
+            import mosek 
+        except ImportError: raise ValueError("invalid option "\
+            "(solver='mosek'): cvxopt.msk is not installed")
 
         if 'MOSEK' in options:
-            mosek.options = options['MOSEK']
+            msk.options = options['MOSEK']
         else:
-            mosek.options = {}
-        solsta, x, z, y = mosek.qp(P, q, G, h, A, b)
+            msk.options = {}
+        solsta, x, z, y = msk.qp(P, q, G, h, A, b)
 
         n = q.size[0]
         if G is None: G = spmatrix([], [], [], (0,n), 'd')
@@ -4377,7 +4376,7 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
         resy0 = max(1.0, blas.nrm2(b))
         resz0 = max(1.0, blas.nrm2(h))
 
-        if solsta == pymosek.solsta.optimal:
+        if solsta == mosek.solsta.optimal:
             status = 'optimal'
 
             s = matrix(h)
@@ -4420,7 +4419,7 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
             pres, dres = max(resy, resz), resx
             pinfres, dinfres = None, None
 
-        elif solsta == pymosek.solsta.prim_infeas_cer:
+        elif solsta == mosek.solsta.prim_infeas_cer:
             status = 'primal infeasible'
 
             hz, by = blas.dot(h, z),  blas.dot(b, y)
@@ -4443,7 +4442,7 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
             dslack = -misc.max_step(z, dims)
             pslack = None
 
-        elif solsta == pymosek.solsta.dual_infeas_cer:
+        elif solsta == mosek.solsta.dual_infeas_cer:
             status = 'dual infeasible'
             qx = blas.dot(q,x)
             blas.scal(-1.0/qx, x)

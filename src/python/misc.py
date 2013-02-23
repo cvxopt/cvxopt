@@ -1,6 +1,7 @@
+# Copyright 2010 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.2.
+# This file is part of CVXOPT version 1.1.3.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -736,19 +737,19 @@ def sdot2(x, y):
 
     a = 0.0
     if type(x) is matrix:
-	n = x.size[0]
-	a += blas.dot(x, y, incx=n+1, incy=n+1, n=n)
-	for j in xrange(1,n):
-	    a += 2.0 * blas.dot(x, y, incx=n+1, incy=n+1, offsetx=j,
-		offsety=j, n=n-j)
+        n = x.size[0]
+        a += blas.dot(x, y, incx=n+1, incy=n+1, n=n)
+        for j in xrange(1,n):
+            a += 2.0 * blas.dot(x, y, incx=n+1, incy=n+1, offsetx=j,
+                offsety=j, n=n-j)
 
     else:
-	for k in xrange(len(x)):
-	    n = x[k].size[0]
-	    a += blas.dot(x[k], y[k], incx=n+1, incy=n+1, n=n)
-	    for j in xrange(1,n):
-		a += 2.0 * blas.dot(x[k], y[k], incx=n+1, incy=n+1, 
-		    offsetx=j, offsety=j, n=n-j)
+        for k in xrange(len(x)):
+            n = x[k].size[0]
+            a += blas.dot(x[k], y[k], incx=n+1, incy=n+1, n=n)
+            for j in xrange(1,n):
+                a += 2.0 * blas.dot(x[k], y[k], incx=n+1, incy=n+1, 
+                    offsetx=j, offsety=j, n=n-j)
     return a
 
 
@@ -805,7 +806,7 @@ def sgemv(A, x, y, dims, trans = 'N', alpha = 1.0, beta = 0.0, n = None,
     
         N = dims['l'] + sum(dims['q']) + sum( k**2 for k in dims['s'] ) 
 
-    representing a method from R^n to S.  
+    representing a mapping from R^n to S.  
     
     If trans is 'N': 
     
@@ -836,8 +837,8 @@ def jdot(x, y, n = None, offsetx = 0, offsety = 0):
     """
 
     if n is None: 
-        if len(x) != len(y): raise ValueError, "x and y must have the "\
-             "same length"
+        if len(x) != len(y): raise ValueError("x and y must have the "\
+             "same length")
         n = len(x)
     return x[offsetx] * y[offsety] - blas.dot(x, y, n = n-1, 
         offsetx = offsetx + 1, offsety = offsety + 1) 
@@ -1374,9 +1375,9 @@ def kkt_chol2(G, dims, A, mnl = 0):
     """
 
     if dims['q'] or dims['s']:
-        raise ValueError, "kktsolver option 'kkt_chol2' is implemented "\
+        raise ValueError("kktsolver option 'kkt_chol2' is implemented "\
             "only for problems with no second-order or semidefinite cone "\
-            "constraints"
+            "constraints")
     p, n = A.size
     ml = dims['l']
     F = {'firstcall': True, 'singular': False}
