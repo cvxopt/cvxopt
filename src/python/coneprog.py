@@ -2,10 +2,10 @@
 Solver for linear and quadratic cone programs. 
 """
 
-# Copyright 2010 L. Vandenberghe.
+# Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.3.
+# This file is part of CVXOPT version 1.1.4.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -860,7 +860,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
 
     gap = misc.sdot(s, z, dims) 
 
-    for iters in xrange(MAXITERS+1):
+    for iters in range(MAXITERS+1):
 
         # hrx = -A'*y - G'*z 
         Af(y, hrx, alpha = -1.0, trans = 'T') 
@@ -1221,7 +1221,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
                 blas.copy(s, ws)
                 wkappa[0] = kappa[0]
             f6_no_ir(x, y, z, tau, s, kappa)
-            for i in xrange(refinement):
+            for i in range(refinement):
                 xcopy(wx, wx2)
                 ycopy(wy, wy2)
                 blas.copy(wz, wz2)
@@ -1383,9 +1383,9 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         # dsk := Ls = dsk * sqrt(sigs).  
         # dzk := Lz = dzk * sqrt(sigz).
         ind2, ind3 = dims['l'] + sum(dims['q']), 0
-        for k in xrange(len(dims['s'])):
+        for k in range(len(dims['s'])):
             m = dims['s'][k]
-            for i in xrange(m):
+            for i in range(m):
                 blas.scal(math.sqrt(sigs[ind3+i]), ds, offset = ind2 + m*i,
                     n = m)
                 blas.scal(math.sqrt(sigz[ind3+i]), dz, offset = ind2 + m*i,
@@ -2178,7 +2178,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
 
     gap = misc.sdot(s, z, dims) 
 
-    for iters in xrange(MAXITERS + 1):
+    for iters in range(MAXITERS + 1):
 
         # f0 = (1/2)*x'*P*x + q'*x + r and  rx = P*x + q + A'*y + G'*z.
         xcopy(q, rx)
@@ -2347,7 +2347,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
                 blas.copy(z, wz)        
                 blas.copy(s, ws)        
             f4_no_ir(x, y, z, s)        
-            for i in xrange(refinement):
+            for i in range(refinement):
                 xcopy(wx, wx2)        
                 ycopy(wy, wy2)        
                 blas.copy(wz, wz2)        
@@ -2516,9 +2516,9 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
         # dsk := Ls = dsk * sqrt(sigs).
         # dzk := Lz = dzk * sqrt(sigz).
         ind2, ind3 = dims['l'] + sum(dims['q']), 0
-        for k in xrange(len(dims['s'])):
+        for k in range(len(dims['s'])):
             m = dims['s'][k]
-            for i in xrange(m):
+            for i in range(m):
                 blas.scal(math.sqrt(sigs[ind3+i]), ds, offset = ind2 + m*i,
                     n = m)
                 blas.scal(math.sqrt(sigz[ind3+i]), dz, offset = ind2 + m*i,
@@ -3314,7 +3314,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
         raise TypeError("'Gq' must be a list of sparse or dense 'd' "\
             "matrices with %d columns" %n)
     mq = [ G.size[0] for G in Gq ]
-    a = [ k for k in xrange(len(mq)) if mq[k] == 0 ] 
+    a = [ k for k in range(len(mq)) if mq[k] == 0 ] 
     if a: raise TypeError("the number of rows of Gq[%d] is zero" %a[0])
     if hq is None: hq = []
     if type(hq) is not list or len(hq) != len(mq) or [ h for h in hq if
@@ -3322,7 +3322,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
         h.typecode != 'd' ]: 
         raise TypeError("'hq' must be a list of %d dense or sparse "\
             "'d' matrices" %len(mq))
-    a = [ k for k in xrange(len(mq)) if hq[k].size != (mq[k], 1) ]
+    a = [ k for k in range(len(mq)) if hq[k].size != (mq[k], 1) ]
     if a:
         k = a[0]
         raise TypeError("'hq[%d]' has size (%d,%d).  Expected size "\
@@ -3367,16 +3367,16 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             y = matrix(0.0, (0,1))
             pcost = blas.dot(c,x)
             dcost = -blas.dot(hl,zl) - \
-                sum([ blas.dot(hq[k],zq[k]) for k in xrange(len(mq))]) 
+                sum([ blas.dot(hq[k],zq[k]) for k in range(len(mq))]) 
 
             sl = matrix(hl)
             base.gemv(Gl, x, sl, alpha = -1.0, beta = 1.0)
             sq = [ +hqk for hqk in hq ]
-            for k in xrange(len(Gq)):
+            for k in range(len(Gq)):
                 base.gemv(Gq[k], x, sq[k], alpha = -1.0, beta = 1.0)
 
             gap = blas.dot(sl, zl) + \
-                sum([blas.dot(zq[k],sq[k]) for k in xrange(len(mq))]) 
+                sum([blas.dot(zq[k],sq[k]) for k in range(len(mq))]) 
             if pcost < 0.0:
                 relgap = gap / -pcost
             elif dcost > 0.0:
@@ -3387,7 +3387,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             # rx = c + G'*z 
             rx = matrix(c)
             base.gemv(Gl, zl, rx, beta = 1.0, trans = 'T') 
-            for k in xrange(len(mq)):
+            for k in range(len(mq)):
                 base.gemv(Gq[k], zq[k], rx, beta = 1.0, trans = 'T') 
             resx = blas.nrm2(rx) / resx0
 
@@ -3397,7 +3397,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             blas.axpy(sl, rz)
             blas.axpy(hl, rz, alpha = -1.0)
             ind = ml
-            for k in xrange(len(mq)):
+            for k in range(len(mq)):
                 base.gemv(Gq[k], x, rz, offsety = ind)
                 blas.axpy(sq[k], rz, offsety = ind)
                 blas.axpy(hq[k], rz, alpha = -1.0, offsety = ind)
@@ -3408,7 +3408,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             blas.copy(sl, s)
             blas.copy(zl, z)
             ind = ml
-            for k in xrange(len(mq)):
+            for k in range(len(mq)):
                 blas.copy(zq[k], z, offsety = ind)
                 blas.copy(sq[k], s, offsety = ind)
                 ind += mq[k]
@@ -3422,9 +3422,9 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             status = 'primal infeasible'
             y = matrix(0.0, (0,1))
             hz = blas.dot(hl, zl) + sum([blas.dot(hq[k],zq[k]) for k 
-                in xrange(len(mq))]) 
+                in range(len(mq))]) 
             blas.scal(1.0 / -hz, zl)
-            for k in xrange(len(mq)):
+            for k in range(len(mq)):
                 blas.scal(1.0 / -hz, zq[k])
 
             x, sl, sq = None, None, None
@@ -3432,7 +3432,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             # rx = - G'*z 
             rx = matrix(0.0, (n,1)) 
             base.gemv(Gl, zl, rx, alpha = -1.0, beta = 1.0, trans = 'T') 
-            for k in xrange(len(mq)):
+            for k in range(len(mq)):
                 base.gemv(Gq[k], zq[k], rx, beta = 1.0, trans = 'T') 
             pinfres =  blas.nrm2(rx) / resx0 
             dinfres = None
@@ -3440,7 +3440,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             z = matrix(0.0, (N,1))
             blas.copy(zl, z)
             ind = ml
-            for k in xrange(len(mq)):
+            for k in range(len(mq)):
                 blas.copy(zq[k], z, offsety = ind)
                 ind += mq[k]
             dslack = -misc.max_step(z, dims)
@@ -3459,14 +3459,14 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             sl = matrix(0.0, (ml,1))
             base.gemv(Gl, x, sl, alpha = -1.0)
             sq = [ matrix(0.0, (mqk,1)) for mqk in mq ]
-            for k in xrange(len(mq)):
+            for k in range(len(mq)):
                 base.gemv(Gq[k], x, sq[k], alpha = -1.0, beta = 1.0)
 
             # rz = s + G*x  
             rz = matrix( [sl] + [sqk for sqk in sq])
             base.gemv(Gl, x, rz, beta = 1.0)
             ind = ml
-            for k in xrange(len(mq)):
+            for k in range(len(mq)):
                 base.gemv(Gq[k], x, rz, beta = 1.0, offsety = ind)
                 ind += mq[k]
             resz = blas.nrm2(rz) / resz0
@@ -3475,7 +3475,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             s = matrix(0.0, (N,1))
             blas.copy(sl, s)
             ind = ml
-            for k in xrange(len(mq)):
+            for k in range(len(mq)):
                 blas.copy(sq[k], s, offsety = ind)
                 ind += mq[k]
             pslack = -misc.max_step(s, dims)
@@ -3516,7 +3516,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
     h[:ml] = hl
     G[:ml,:] = Gl
     ind = ml
-    for k in xrange(len(mq)):
+    for k in range(len(mq)):
         h[ind : ind + mq[k]] = hq[k]
         G[ind : ind + mq[k], :] = Gq[k]
         ind += mq[k]
@@ -3528,7 +3528,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
         if ml: ps['s'][:ml] = primalstart['sl']
         if mq:
             ind = ml
-            for k in xrange(len(mq)): 
+            for k in range(len(mq)): 
                 ps['s'][ind : ind + mq[k]] = primalstart['sq'][k][:]
                 ind += mq[k]
     else: 
@@ -3541,7 +3541,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
         if ml: ds['z'][:ml] = dualstart['zl']
         if mq: 
             ind = ml
-            for k in xrange(len(mq)):
+            for k in range(len(mq)):
                 ds['z'][ind : ind + mq[k]] = dualstart['zq'][k][:]
                 ind += mq[k]
     else: 
@@ -3556,7 +3556,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
         sol['sl'] = sol['s'][:ml]  
         sol['sq'] = [ matrix(0.0, (m,1)) for m in mq ] 
         ind = ml
-        for k in xrange(len(mq)):
+        for k in range(len(mq)):
             sol['sq'][k][:] = sol['s'][ind : ind+mq[k]]
             ind += mq[k]
     del sol['s']
@@ -3568,7 +3568,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
         sol['zl'] = sol['z'][:ml]
         sol['zq'] = [ matrix(0.0, (m,1)) for m in mq] 
         ind = ml
-        for k in xrange(len(mq)):
+        for k in range(len(mq)):
             sol['zq'][k][:] = sol['z'][ind : ind+mq[k]]
             ind += mq[k]
     del sol['z']
@@ -3877,7 +3877,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
         raise TypeError("'Gs' must be a list of sparse or dense 'd' "\
             "matrices with %d columns" %n)
     ms = [ int(math.sqrt(G.size[0])) for G in Gs ]
-    a = [ k for k in xrange(len(ms)) if ms[k]**2 != Gs[k].size[0] ]
+    a = [ k for k in range(len(ms)) if ms[k]**2 != Gs[k].size[0] ]
     if a: raise TypeError("the squareroot of the number of rows in "\
         "'Gs[%d]' is not an integer" %k)
     if hs is None: hs = []
@@ -3886,7 +3886,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
         h.typecode != 'd' ]:
         raise TypeError("'hs' must be a list of %d dense or sparse "\
             "'d' matrices" %len(ms))
-    a = [ k for k in xrange(len(ms)) if hs[k].size != (ms[k],ms[k]) ]
+    a = [ k for k in range(len(ms)) if hs[k].size != (ms[k],ms[k]) ]
     if a:
         k = a[0]
         raise TypeError("hs[%d] has size (%d,%d).  Expected size is "\
@@ -3925,15 +3925,15 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
             blas.scal(-1.0/cx, x)
             sl = -Gl*x
             ss = [ -matrix(Gs[k]*x, (ms[k], ms[k])) for k in 
-                xrange(len(ms)) ]
-            for k in xrange(len(ms)):  
+                range(len(ms)) ]
+            for k in range(len(ms)):  
                 misc.symm(ss[k], ms[k])
 
             # rz = s + G*x  
             rz = matrix( [sl] + [ssk[:] for ssk in ss])
             base.gemv(Gl, x, rz, beta = 1.0)
             ind = ml
-            for k in xrange(len(ms)):
+            for k in range(len(ms)):
                 base.gemv(Gs[k], x, rz, beta = 1.0, offsety = ind)
                 ind += ms[k]**2
             dims = {'l': ml, 's': ms, 'q': []}
@@ -3942,7 +3942,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
             s = matrix(0.0, (N,1))
             blas.copy(sl, s)
             ind = ml
-            for k in xrange(len(ms)):
+            for k in range(len(ms)):
                 blas.copy(ss[k], s, offsety = ind)
                 ind += ms[k]
             pslack = -misc.max_step(s, dims)
@@ -3959,7 +3959,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
             y = matrix(0.0, (0,1))
             hz = blas.dot(hl, zl) + misc.sdot2(hs, zs)
             blas.scal(1.0 / -hz, zl)
-            for k in xrange(len(ms)):
+            for k in range(len(ms)):
                 blas.scal(1.0 / -hz, zs[k])
                 misc.symm(zs[k], ms[k])
 
@@ -3967,9 +3967,9 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
             rx = matrix(0.0, (n,1)) 
             base.gemv(Gl, zl, rx, alpha = -1.0, beta = 1.0, trans = 'T') 
             ind = 0
-            for k in xrange(len(ms)):
+            for k in range(len(ms)):
                 blas.scal(0.5, zs[k], inc=ms[k]+1)
-                for j in xrange(ms[k]):
+                for j in range(ms[k]):
                     blas.scal(0.0, zs[k], offset=j+ms[k]*(j+1), inc=ms[k])
                 base.gemv(Gs[k], zs[k], rx, alpha=2.0, beta=1.0, trans='T')
                 blas.scal(2.0, zs[k], inc=ms[k]+1)
@@ -3980,7 +3980,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
             z = matrix(0.0, (N,1))
             blas.copy(zl, z)
             ind = ml
-            for k in xrange(len(ms)):
+            for k in range(len(ms)):
                 blas.copy(zs[k], z, offsety = ind)
                 ind += ms[k]
             dslack = -misc.max_step(z, dims)
@@ -3999,8 +3999,8 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
             y = matrix(0.0, (0,1))
             sl = hl - Gl*x
             ss = [ hs[k] - matrix(Gs[k]*x, (ms[k], ms[k])) for k in 
-                xrange(len(ms)) ]
-            for k in xrange(len(ms)): 
+                range(len(ms)) ]
+            for k in range(len(ms)): 
                 misc.symm(ss[k], ms[k])
                 misc.symm(zs[k], ms[k])
             pcost = blas.dot(c,x)
@@ -4017,9 +4017,9 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
             rx = matrix(c)
             base.gemv(Gl, zl, rx, beta = 1.0, trans = 'T') 
             ind = 0
-            for k in xrange(len(ms)):
+            for k in range(len(ms)):
                 blas.scal(0.5, zs[k], inc = ms[k]+1)
-                for j in xrange(ms[k]):
+                for j in range(ms[k]):
                     blas.scal(0.0, zs[k], offset=j+ms[k]*(j+1), inc=ms[k])
                 base.gemv(Gs[k], zs[k], rx, alpha=2.0, beta=1.0, trans='T')
                 blas.scal(2.0, zs[k], inc=ms[k]+1)
@@ -4032,7 +4032,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
             blas.axpy(sl, rz)
             blas.axpy(hl, rz, alpha = -1.0)
             ind = ml
-            for k in xrange(len(ms)):
+            for k in range(len(ms)):
                 base.gemv(Gs[k], x, rz, offsety = ind)
                 blas.axpy(ss[k], rz, offsety = ind, n = ms[k]**2)
                 blas.axpy(hs[k], rz, alpha = -1.0, offsety = ind, 
@@ -4045,7 +4045,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
             blas.copy(sl, s)
             blas.copy(zl, z)
             ind = ml
-            for k in xrange(len(ms)):
+            for k in range(len(ms)):
                 blas.copy(ss[k], s, offsety = ind)
                 blas.copy(zs[k], z, offsety = ind)
                 ind += ms[k]
@@ -4059,9 +4059,9 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
                 rx = matrix(0.0, (n,1))
                 base.gemv(Gl, zl, rx, beta = 1.0, trans = 'T') 
                 ind = 0
-                for k in xrange(len(ms)):
+                for k in range(len(ms)):
                     blas.scal(0.5, zs[k], inc = ms[k]+1)
-                    for j in xrange(ms[k]):
+                    for j in range(ms[k]):
                         blas.scal(0.0, zs[k], offset=j+ms[k]*(j+1), 
                             inc=ms[k])
                     base.gemv(Gs[k], zs[k], rx, alpha=2.0, beta=1.0, 
@@ -4078,7 +4078,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
                 base.gemv(Gl, x, rz)
                 blas.axpy(sl, rz)
                 ind = ml
-                for k in xrange(len(ms)):
+                for k in range(len(ms)):
                     base.gemv(Gs[k], x, rz, offsety = ind)
                     blas.axpy(ss[k], rz, offsety = ind, n = ms[k]**2)
                     ind += ms[k]**2
@@ -4101,7 +4101,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
     h[:ml] = hl
     G[:ml,:] = Gl
     ind = ml
-    for k in xrange(len(ms)):
+    for k in range(len(ms)):
         m = ms[k]
         h[ind : ind + m*m] = hs[k][:]
         G[ind : ind + m*m, :] = Gs[k]
@@ -4114,7 +4114,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
         if ml: ps['s'][:ml] = primalstart['sl']
         if ms:
             ind = ml
-            for k in xrange(len(ms)):
+            for k in range(len(ms)):
                 m = ms[k]
                 ps['s'][ind : ind + m*m] = primalstart['ss'][k][:]
                 ind += m**2
@@ -4128,7 +4128,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
         if ml: ds['z'][:ml] = dualstart['zl']
         if ms: 
             ind = ml
-            for k in xrange(len(ms)):
+            for k in range(len(ms)):
                 m = ms[k]
                 ds['z'][ind : ind + m*m] = dualstart['zs'][k][:]
                 ind += m**2
@@ -4144,7 +4144,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
         sol['sl'] = sol['s'][:ml]
         sol['ss'] = [ matrix(0.0, (mk, mk)) for mk in ms ]
         ind = ml
-        for k in xrange(len(ms)):
+        for k in range(len(ms)):
             m = ms[k]
             sol['ss'][k][:] = sol['s'][ind:ind+m*m]
             ind += m**2
@@ -4157,7 +4157,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
         sol['zl'] = sol['z'][:ml]
         sol['zs'] = [ matrix(0.0, (mk, mk)) for mk in ms ]
         ind = ml
-        for k in xrange(len(ms)):
+        for k in range(len(ms)):
             m = ms[k]
             sol['zs'][k][:] = sol['z'][ind:ind+m*m]
             ind += m**2

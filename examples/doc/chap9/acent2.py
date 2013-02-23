@@ -23,4 +23,5 @@ h = matrix(
     [1.0, 0.0, 0.0, 0.0, 20., 10., 40., 10., 80., 10., 40., 10., 15.])  
 dims = {'l': 0, 'q': [4], 's':  [3]}  
 sol = solvers.cp(F, G, h, dims)  
-print "\nx = \n\n", sol['x']  
+print("\nx = \n") 
+print(sol['x'])

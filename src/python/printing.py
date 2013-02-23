@@ -1,7 +1,7 @@
-# Copyright 2010 L. Vandenberghe.
+# Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.3.
+# This file is part of CVXOPT version 1.1.4.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,9 +23,8 @@ options = {'dformat' : '% .2e',
 
 def matrix_str_default(X):
 
-    from sys import maxint
-    from string import rjust, center
-    from printing import options
+    from sys import maxsize
+    from cvxopt.printing import options
 
     width, height = options['width'], options['height']
     iformat, dformat = options['iformat'], options['dformat']
@@ -37,8 +36,8 @@ def matrix_str_default(X):
 
     s = ""
     m, n   = X.size
-    if width < 0: width = maxint
-    if height < 0: height = maxint
+    if width < 0: width = maxsize
+    if height < 0: height = maxsize
 
     if width*height is 0: return ""
     if len(X) is 0: return ""
@@ -59,10 +58,10 @@ def matrix_str_default(X):
         for j in clist:
 
             if X.typecode == 'z':
-                s += rjust(fmt % X[i,j].real + sgn[X[i,j].imag>0] + 'j' + \
-                               (fmt % abs(X[i,j].imag)).lstrip(),twidth) 
+                s += format(fmt % X[i,j].real + sgn[X[i,j].imag>0] + 'j' +\
+                          (fmt % abs(X[i,j].imag)).lstrip(), '>%i' %twidth)
             else:
-                s += rjust(fmt % X[i,j],twidth)
+                s += format(fmt % X[i,j], '>%i' %twidth)
 
             s += ' '
         
@@ -82,9 +81,8 @@ def matrix_repr_default(X):
 
 def spmatrix_str_default(X):
 
-    from sys import maxint
-    from string import rjust, center
-    from printing import options
+    from sys import maxsize
+    from cvxopt.printing import options
 
     width, height = options['width'], options['height']
     iformat, dformat = options['iformat'], options['dformat']
@@ -96,17 +94,16 @@ def spmatrix_str_default(X):
 
     s = ""
     m, n   = X.size
-    if width < 0: width = maxint
-    if height < 0: height = maxint
+    if width < 0: width = maxsize
+    if height < 0: height = maxsize
 
     if width*height is 0: return ""
  
-    rlist = xrange(0,min(m,height))
-    clist = xrange(0,min(n,width))
+    rlist = range(0,min(m,height))
+    clist = range(0,min(n,width))
 
     Xr = X[:min(m,height),:min(n,width)]
-    Idx = zip(*(Xr.I,Xr.J))
-    Zero = '0'
+    Idx = list(zip(*(Xr.I,Xr.J)))
     
     if len(Idx) > 0:
         if X.typecode == 'z':
@@ -116,7 +113,7 @@ def spmatrix_str_default(X):
         else:
             twidth = max([ len(fmt % X[i,j]) for i in rlist for j in clist ])
     else:
-        twidth = len(Zero)
+        twidth = 1
 
     for i in rlist:
         s += '['
@@ -125,12 +122,12 @@ def spmatrix_str_default(X):
 
             if (i,j) in Idx:
                 if X.typecode == 'z':
-                    s += rjust(fmt % X[i,j].real + sgn[X[i,j].imag>0] + 'j' + \
-                                   (fmt % abs(X[i,j].imag)).lstrip(),twidth)
+                    s +=  format(fmt % X[i,j].real + sgn[X[i,j].imag>0] + 'j' + \
+                                 (fmt % abs(X[i,j].imag)).lstrip(), '>%i' %twidth)
                 else:
-                    s += rjust(fmt % X[i,j],twidth)
+                    s += format(fmt % X[i,j], '>%i' %twidth)
             else: 
-                s += center(Zero, twidth)
+                s += format(0, '^%i' %twidth)
                 
             s += ' '
         
@@ -138,7 +135,7 @@ def spmatrix_str_default(X):
         else: s = s[:-1] + "]\n"
            
     if height < m: 
-        s += "[" + min(n,width)*(center(':',twidth)+' ')
+        s += "[" + min(n,width)*(format(':', '^%i' %twidth)+' ')
 
         if width < n: s += '   ]\n'
         else: s = s[:-1] + ']\n'
@@ -148,8 +145,7 @@ def spmatrix_str_default(X):
 
 def spmatrix_str_triplet(X):
 
-    from string import rjust
-    from printing import options
+    from cvxopt.printing import options
 
     iformat, dformat = options['iformat'], options['dformat']
 
@@ -174,17 +170,17 @@ def spmatrix_str_triplet(X):
     else:
         twidth = 0 
 
-    for k in xrange(len(X)):
+    for k in range(len(X)):
         s += "(" 
-        s += rjust(str(X.I[k]),imax) + "," + rjust(str(X.J[k]),jmax) 
+        s += format(X.I[k], '>%i' %imax)  + "," + \
+            format(X.J[k], '>%i' %jmax) 
         s += ") "
 
-        if X.typecode is 'z':
-            s += rjust(fmt % X.V[k].real + sgn[X.V[k].imag>0] + 'j' + \
-                           (fmt % abs(X.V[k].imag)).lstrip(),twidth)
+        if X.typecode=='z':
+            s +=  format(fmt % X.V[k].real + sgn[X.V[k].imag>0] + 'j' + \
+                         (fmt % abs(X.V[k].imag)).lstrip(), '>%i' %twidth)
         else:
-            s += rjust(fmt % X.V[k],twidth)
-        
+            s += format(fmt % X.V[k], '>%i' %twidth)
         s += "\n"
                 
     return s

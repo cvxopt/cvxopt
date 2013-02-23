@@ -17,4 +17,5 @@ G = matrix([-I, matrix(0.0, (1,n)), I])
 h = matrix(n*[0.0] + [1.0] + n*[0.0])
 dims = {'l': n, 'q': [n+1], 's': []}
 x = solvers.coneqp(A.T*A, -A.T*b, G, h, dims)['x']
-print "\nx = \n\n", x
+print("\nx = \n")
+print(x)

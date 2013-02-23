@@ -13,6 +13,8 @@ h = matrix( [ -3., 5.,  12.,  -2., -14., -13., 10.,  0.,  0.,  0.,  68.,
     -30., -19., -30.,  99.,  23., -19.,   23.,  10.] )
 dims = {'l': 2, 'q': [4, 4], 's': [3]}
 sol = solvers.conelp(c, G, h, dims)
-print "\nStatus:", sol['status']
-print "\nx =\n\n", sol['x']
-print "\nz =\n\n", sol['z']
+print("\nStatus: " + sol['status'])
+print("\nx = \n") 
+print(sol['x'])
+print("\nz = \n")
+print(sol['z'])

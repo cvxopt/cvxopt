@@ -2,10 +2,10 @@
 CVXOPT interface for MOSEK 6.0
 """
 
-# Copyright 2010 L. Vandenberghe.
+# Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.3.
+# This file is part of CVXOPT version 1.1.4.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -348,7 +348,7 @@ def conelp(c, G, h, dims = None):
 
     task.putobjsense(mosek.objsense.maximize)
 
-    for k in xrange(len(mq)):
+    for k in range(len(mq)):
         task.appendcone(mosek.conetype.quad, 0.0, 
                         array(range(ml+sum(mq[:k]),ml+sum(mq[:k+1]))))
     task.optimize()
@@ -455,7 +455,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
         raise TypeError("'Gq' must be a list of sparse or dense 'd' "\
             "matrices with %d columns" %n)
     mq = [ G.size[0] for G in Gq ]
-    a = [ k for k in xrange(len(mq)) if mq[k] == 0 ] 
+    a = [ k for k in range(len(mq)) if mq[k] == 0 ] 
     if a: raise TypeError("the number of rows of Gq[%d] is zero" %a[0])
     if hq is None: hq = []
     if type(hq) is not list or len(hq) != len(mq) or [ h for h in hq if
@@ -463,7 +463,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
         h.typecode != 'd' ]: 
             raise TypeError("'hq' must be a list of %d dense or sparse "\
                 "'d' matrices" %len(mq))
-    a = [ k for k in xrange(len(mq)) if hq[k].size != (mq[k], 1) ]
+    a = [ k for k in range(len(mq)) if hq[k].size != (mq[k], 1) ]
     if a:
         k = a[0]
         raise TypeError("'hq[%d]' has size (%d,%d).  Expected size "\
@@ -478,7 +478,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
     h[:ml] = hl
     G[:ml,:] = Gl
     ind = ml
-    for k in xrange(len(mq)):
+    for k in range(len(mq)):
         h[ind : ind + mq[k]] = hq[k]
         G[ind : ind + mq[k], :] = Gq[k]
         ind += mq[k]
@@ -527,7 +527,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
 
     task.putobjsense(mosek.objsense.maximize)
 
-    for k in xrange(len(mq)):
+    for k in range(len(mq)):
         task.appendcone(mosek.conetype.quad, 0.0, 
                         array(range(ml+sum(mq[:k]),ml+sum(mq[:k+1]))))
     task.optimize()
@@ -542,7 +542,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
     task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, ml, N, zq) 
     x = matrix(xu-xl)
 
-    zq = [ matrix(zq[sum(mq[:k]):sum(mq[:k+1])]) for k in xrange(len(mq)) ]
+    zq = [ matrix(zq[sum(mq[:k]):sum(mq[:k+1])]) for k in range(len(mq)) ]
     
     if ml:
         zl = zeros(ml, float)
@@ -680,7 +680,7 @@ def qp(P, q, G=None, h=None, A=None, b=None):
 
     Ps = sparse(P)
     I, J = Ps.I, Ps.J
-    tril = [ k for k in xrange(len(I)) if I[k] >= J[k] ]
+    tril = [ k for k in range(len(I)) if I[k] >= J[k] ]
     task.putqobj(array(I[tril]), array(J[tril]), array(Ps.V[tril]))
     
     task.putobjsense(mosek.objsense.minimize)

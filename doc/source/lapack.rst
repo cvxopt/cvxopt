@@ -44,7 +44,7 @@ General Linear Equations
     :math:`A` square and nonsingular.  
 
     The arguments ``A`` and ``B`` must have the same type (:const:`'d'` 
-    or :const:`'z'`).  On entry, ``B``  contains the righthand side 
+    or :const:`'z'`).  On entry, ``B``  contains the right-hand side 
     :math:`B`; on exit it contains the solution :math:`X`.  The optional 
     argument ``ipiv`` is an integer matrix of length at least :math:`n`.  
     If ``ipiv`` is provided, then :func:`gesv` solves the system, replaces
@@ -91,7 +91,7 @@ General Linear Equations
 
     On entry, ``A`` and ``ipiv`` must contain the factorization as computed
     by :func:`gesv` or :func:`getrf`.  On entry, ``B`` contains the 
-    righthand side :math:`B`; on exit it contains the solution :math:`X`.
+    right-hand side :math:`B`; on exit it contains the solution :math:`X`.
     ``B`` must have the same type as ``A``.
 
 
@@ -141,7 +141,7 @@ Separate functions are provided for equations with band matrices.
     subdiagonals.  
 
     The arguments ``A`` and ``B`` must have the same type (:const:`'d'` 
-    or :const:`'z'`).  On entry, ``B`` contains the righthand side 
+    or :const:`'z'`).  On entry, ``B`` contains the right-hand side 
     :math:`B`; on exit it contains the solution :math:`X`.  The optional 
     argument ``ipiv`` is an integer matrix of length at least :math:`n`.  
     If ``ipiv`` is provided, then ``A`` must have :math:`2k_l + k_u + 1` 
@@ -191,7 +191,7 @@ Separate functions are provided for equations with band matrices.
 
     On entry, ``A`` and ``ipiv`` must contain the factorization as computed
     by :func:`gbsv` or :func:`gbtrf`.  On entry, ``B`` contains the 
-    righthand side :math:`B`; on exit it contains the solution :math:`X`.
+    right-hand side :math:`B`; on exit it contains the solution :math:`X`.
     ``B`` must have the same type as ``A``.
 
 
@@ -211,9 +211,9 @@ As an example, we solve a linear equation with
 >>> from cvxopt.lapack import gbsv, gbtrf, gbtrs
 >>> n, kl, ku = 4, 2, 1
 >>> A = matrix([[0., 1., 3., 6.], [2., 4., 7., 10.], [5., 8., 11., 0.], [9., 12., 0., 0.]])
->>> x = matrix(1.0, (4,1))
+>>> x = matrix(1.0, (n,1))
 >>> gbsv(A, kl, x)
->>> print x
+>>> print(x)
 [ 7.14e-02]
 [ 4.64e-01]
 [-2.14e-01]
@@ -225,16 +225,16 @@ by :func:`gbsv <cvxopt.lapack.gbsv>`.
 >>> Ac = matrix(0.0, (2*kl+ku+1,n))
 >>> Ac[kl:,:] = A
 >>> ipiv = matrix(0, (n,1))
->>> x = matrix(1.0, (4,1))
+>>> x = matrix(1.0, (n,1))
 >>> gbsv(Ac, kl, x, ipiv)                 # solves A*x = 1
->>> print x
+>>> print(x)
 [ 7.14e-02]
 [ 4.64e-01]
 [-2.14e-01]
 [-1.07e-01]
->>> x = matrix(1.0, (4,1))
+>>> x = matrix(1.0, (n,1))
 >>> gbtrs(Ac, kl, ipiv, x, trans='T')     # solve A^T*x = 1
->>> print x
+>>> print(x)
 [ 7.14e-02]
 [ 2.38e-02]
 [ 1.43e-01]
@@ -245,16 +245,16 @@ factorization.
 
 >>> Ac[kl:,:] = A
 >>> gbtrf(Ac, n, kl, ipiv)                 
->>> x = matrix(1.0, (4,1))
+>>> x = matrix(1.0, (n,1))
 >>> gbtrs(Ac, kl, ipiv, x)                # solve A^T*x = 1
->>> print x                 
+>>> print(x)                 
 [ 7.14e-02]
 [ 4.64e-01]
 [-2.14e-01]
 [-1.07e-01]
->>> x = matrix(1.0, (4,1))
+>>> x = matrix(1.0, (n,1))
 >>> gbtrs(Ac, kl, ipiv, x, trans='T')     # solve A^T*x = 1
->>> print x
+>>> print(x)
 [ 7.14e-02]
 [ 2.38e-02]
 [ 1.43e-01]
@@ -280,7 +280,7 @@ simpler matrix format, with the diagonals stored in three separate vectors.
     length :math:`n-1`.  The four arguments must have the same type 
     (:const:`'d'` or :const:`'z'`).  On exit ``dl``, ``d``, ``du`` are 
     overwritten with the details of the LU factorization of :math:`A`. 
-    On entry, ``B`` contains the righthand side :math:`B`; on exit it 
+    On entry, ``B`` contains the right-hand side :math:`B`; on exit it 
     contains the solution :math:`X`.
 
     Raises an :exc:`ArithmeticError` if the matrix is singular.
@@ -316,7 +316,7 @@ simpler matrix format, with the diagonals stored in three separate vectors.
     The arguments ``dl``, ``d``, ``du``, ``du2``, and ``ipiv`` contain 
     the details of the LU factorization as returned by 
     :func:`gttrf <cvxopt.lapack.gttrf>`.
-    On entry, ``B`` contains the righthand side :math:`B`; on exit it 
+    On entry, ``B`` contains the right-hand side :math:`B`; on exit it 
     contains the solution :math:`X`.  ``B`` must have the same type as 
     the other arguments.
 
@@ -1096,13 +1096,13 @@ We illustrate this with the QR factorization of the matrix
 >>> m, n = A.size
 >>> tau = matrix(0.0, (n,1))
 >>> lapack.geqrf(A, tau)
->>> print A[:n, :]              # Upper triangular part is R.
+>>> print(A[:n, :])              # Upper triangular part is R.
 [-2.17e+01  5.08e+00 -4.76e+00]
 [ 2.17e-01 -1.06e+01 -2.66e+00]
 [ 6.87e-01  3.12e-01 -8.74e+00]
 >>> Q1 = +A
 >>> lapack.orgqr(Q1, tau)
->>> print Q1
+>>> print(Q1)
 [-2.77e-01  3.39e-01 -4.10e-01]
 [-2.77e-01 -4.16e-01  7.35e-01]
 [-8.77e-01 -2.32e-01 -2.53e-01]
@@ -1110,7 +1110,7 @@ We illustrate this with the QR factorization of the matrix
 >>> Q = matrix(0.0, (m,m))
 >>> Q[:, :n] = A
 >>> lapack.orgqr(Q, tau)
->>> print Q                     # Q = [ Q1, Q2]
+>>> print(Q)                     # Q = [ Q1, Q2]
 [-2.77e-01  3.39e-01 -4.10e-01 -8.00e-01]
 [-2.77e-01 -4.16e-01  7.35e-01 -4.58e-01]
 [-8.77e-01 -2.32e-01 -2.53e-01  3.35e-01]
@@ -1135,12 +1135,12 @@ can be generated as follows.
 >>> tau = matrix(0.0, (m,1))
 >>> lapack.geqrf(A, tau)
 >>> R = +A
->>> print R                     # Upper trapezoidal part is [R1, R2].
+>>> print(R)                     # Upper trapezoidal part is [R1, R2].
 [-9.70e+00 -1.52e+01 -3.09e+00  6.70e+00]
 [-1.58e-01  2.30e+01  1.14e+01 -1.92e+00]
 [ 7.09e-01 -5.57e-01  2.26e+00  2.09e+00]
 >>> lapack.orgqr(A, tau)
->>> print A[:, :m]              # Q is in the first m columns of A.
+>>> print(A[:, :m])              # Q is in the first m columns of A.
 [-3.09e-01 -8.98e-01 -3.13e-01]
 [ 2.06e-01 -3.85e-01  9.00e-01]
 [-9.28e-01  2.14e-01  3.04e-01]
@@ -1444,13 +1444,13 @@ As an example we compute the complex Schur form of the matrix
 >>> w = matrix(0.0, (5,1), 'z')
 >>> lapack.gees(S, w)
 0
->>> print S
+>>> print(S)
 [ 5.67e+00+j1.69e+01 -2.13e+01+j2.85e+00  1.40e+00+j5.88e+00 -4.19e+00+j2.05e-01  3.19e+00-j1.01e+01]
 [ 0.00e+00-j0.00e+00  5.67e+00-j1.69e+01  1.09e+01+j5.93e-01 -3.29e+00-j1.26e+00 -1.26e+01+j7.80e+00]
 [ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  1.27e+01+j3.43e-17 -6.83e+00+j2.18e+00  5.31e+00-j1.69e+00]
 [ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00 -1.31e+01-j0.00e+00 -2.60e-01-j0.00e+00]
 [ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00 -7.86e+00-j0.00e+00]
->>> print w
+>>> print(w)
 [ 5.67e+00+j1.69e+01]
 [ 5.67e+00-j1.69e+01]
 [ 1.27e+01+j3.43e-17]
@@ -1465,13 +1465,13 @@ the complex plane ordered first, can be computed as follows.
 ...
 >>> lapack.gees(S, w, select = F)
 2
->>> print S
+>>> print(S)
 [-1.31e+01-j0.00e+00 -1.72e-01+j7.93e-02 -2.81e+00+j1.46e+00  3.79e+00-j2.67e-01  5.14e+00-j4.84e+00]
 [ 0.00e+00-j0.00e+00 -7.86e+00-j0.00e+00 -1.43e+01+j8.31e+00  5.17e+00+j8.79e+00  2.35e+00-j7.86e-01]
 [ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  5.67e+00+j1.69e+01 -1.71e+01-j1.41e+01  1.83e+00-j4.63e+00]
 [ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  5.67e+00-j1.69e+01 -8.75e+00+j2.88e+00]
 [ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  1.27e+01+j3.43e-17]
->>> print w
+>>> print(w)
 [-1.31e+01-j0.00e+00]
 [-7.86e+00-j0.00e+00]
 [ 5.67e+00+j1.69e+01]
@@ -1553,25 +1553,25 @@ matrix :math:`A` of the previous example, and
 >>> b = matrix(0.0, (5,1))
 >>> lapack.gges(S, T, a, b)
 0
->>> print S
+>>> print(S)
 [ 6.64e+00-j8.87e+00 -7.81e+00-j7.53e+00  6.16e+00-j8.51e-01  1.18e+00+j9.17e+00  5.88e+00-j4.51e+00]
 [ 0.00e+00-j0.00e+00  8.48e+00+j1.13e+01 -2.12e-01+j1.00e+01  5.68e+00+j2.40e+00 -2.47e+00+j9.38e+00]
 [ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00 -1.39e+01-j0.00e+00  6.78e+00-j0.00e+00  1.09e+01-j0.00e+00]
 [ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00 -6.62e+00-j0.00e+00 -2.28e-01-j0.00e+00]
 [ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00 -2.89e+01-j0.00e+00]
->>> print T
+>>> print(T)
 [ 6.46e-01-j0.00e+00  4.29e-01-j4.79e-02  2.02e-01-j3.71e-01  1.08e-01-j1.98e-01 -1.95e-01+j3.58e-01]
 [ 0.00e+00-j0.00e+00  8.25e-01-j0.00e+00 -2.17e-01+j3.11e-01 -1.16e-01+j1.67e-01  2.10e-01-j3.01e-01]
 [ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  7.41e-01-j0.00e+00 -3.25e-01-j0.00e+00  5.87e-01-j0.00e+00]
 [ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  8.75e-01-j0.00e+00  4.84e-01-j0.00e+00]
 [ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00]
->>> print a
+>>> print(a)
 [ 6.64e+00-j8.87e+00]
 [ 8.48e+00+j1.13e+01]
 [-1.39e+01-j0.00e+00]
 [-6.62e+00-j0.00e+00]
 [-2.89e+01-j0.00e+00]
->>> print b
+>>> print(b)
 [ 6.46e-01]
 [ 8.25e-01]
 [ 7.41e-01]

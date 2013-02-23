@@ -16,7 +16,7 @@ formatting of dense matrices.
 >>> A = matrix(range(50), (5,10), 'd')
 >>> A  
 <5x10 matrix, tc='d'>
->>> print A
+>>> print(A)
 [ 0.00e+00  5.00e+00  1.00e+01  1.50e+01  2.00e+01  2.50e+01  3.00e+01 ... ]
 [ 1.00e+00  6.00e+00  1.10e+01  1.60e+01  2.10e+01  2.60e+01  3.10e+01 ... ]
 [ 2.00e+00  7.00e+00  1.20e+01  1.70e+01  2.20e+01  2.70e+01  3.20e+01 ... ]
@@ -41,7 +41,7 @@ displayed.  The default values of :attr:`options['width']` and
 {'width': 7, 'dformat': '% .2e', 'iformat': '% i', 'height': -1}
 >>> printing.options['dformat'] = '%.1f'
 >>> printing.options['width'] = -1
->>> print A
+>>> print(A)
 [ 0.0  5.0 10.0 15.0 20.0 25.0 30.0 35.0 40.0 45.0]
 [ 1.0  6.0 11.0 16.0 21.0 26.0 31.0 36.0 41.0 46.0]
 [ 2.0  7.0 12.0 17.0 22.0 27.0 32.0 37.0 42.0 47.0]
@@ -84,7 +84,7 @@ and :func:`cvxopt.spmatrix_str`, respectively.  By default, they are set to
 >>> A = spmatrix(range(5), range(5), range(5), (5,10))
 >>> A
 <5x10 sparse matrix, tc='d', nnz=5>
->>> print A
+>>> print(A)
 [ 0.00e+00     0         0         0         0         0         0     ... ]
 [    0      1.00e+00     0         0         0         0         0     ... ]
 [    0         0      2.00e+00     0         0         0         0     ... ]
@@ -105,7 +105,7 @@ entire matrix including structural zeros. An alternative triplet printing
 style is defined in :func:`printing.spmatrix_str_triplet`. 
 
 >>> cvxopt.spmatrix_str = printing.spmatrix_str_triplet
->>> print A
+>>> print(A)
 (0,0)  0.00e+00
 (1,1)  1.00e+00
 (2,2)  2.00e+00

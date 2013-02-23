@@ -241,7 +241,7 @@ Problems with Nonlinear Objectives
     .. math::
      
         \begin{array}{ll}
-        \mbox{minimize} & -\sum_{i=1}^m \log x_i \\
+        \mbox{minimize} & -\sum\limits_{i=1}^m \log x_i \\
         \mbox{subject to} & Ax = b. 
         \end{array}
 
@@ -272,7 +272,7 @@ Problems with Nonlinear Objectives
     .. math::
 
         \begin{array}{ll}
-        \mbox{minimize} &  \sum_{k=1}^m \phi((Ax-b)_k), 
+        \mbox{minimize} &  \sum\limits_{k=1}^m \phi((Ax-b)_k), 
         \end{array} 
         \qquad \phi(u) = \sqrt{\rho + u^2},
 
@@ -339,7 +339,7 @@ Problems with Nonlinear Objectives
         h = matrix([1.0, 0.0, 0.0, 0.0, 20., 10., 40., 10., 80., 10., 40., 10., 15.])
         dims = {'l': 0, 'q': [4], 's':  [3]}
         sol = solvers.cp(F, G, h, dims)
-        print sol['x']
+        print(sol['x'])
         [ 4.11e-01]
         [ 5.59e-01]
         [-7.20e-01]
@@ -688,7 +688,7 @@ Problems with Linear Objectives
         pylab.subplot(221)
         Amin = matrix([100., 100., 100., 100., 100.])
         W, H, x, y, w, h =  floorplan(Amin)
-        for k in xrange(5):
+        for k in range(5):
             pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
                        [y[k], y[k]+h[k], y[k]+h[k], y[k]], facecolor = '#D0D0D0')
             pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
@@ -699,7 +699,7 @@ Problems with Linear Objectives
         pylab.subplot(222)
         Amin = matrix([20., 50., 80., 150., 200.])
         W, H, x, y, w, h =  floorplan(Amin)
-        for k in xrange(5):
+        for k in range(5):
             pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
                        [y[k], y[k]+h[k], y[k]+h[k], y[k]], 'facecolor = #D0D0D0')
             pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
@@ -710,7 +710,7 @@ Problems with Linear Objectives
         pylab.subplot(223)
         Amin = matrix([180., 80., 80., 80., 80.])
         W, H, x, y, w, h =  floorplan(Amin)
-        for k in xrange(5):
+        for k in range(5):
             pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
                        [y[k], y[k]+h[k], y[k]+h[k], y[k]], 'facecolor = #D0D0D0')
             pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
@@ -721,7 +721,7 @@ Problems with Linear Objectives
         pylab.subplot(224)
         Amin = matrix([20., 150., 20., 200., 110.])
         W, H, x, y, w, h =  floorplan(Amin)
-        for k in xrange(5):
+        for k in range(5):
             pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
                        [y[k], y[k]+h[k], y[k]+h[k], y[k]], 'facecolor = #D0D0D0')
             pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
@@ -1038,7 +1038,7 @@ that take advantage of problem structure.
     The function call ``f = kktsolver(x, z, W)`` should return a 
     routine for solving the KKT system :eq:`e-cp-kkt` defined by ``x``, 
     ``z``, ``W``.  It will be called as ``f(bx, by, bz)``.
-    On entry, ``bx``, ``by``, ``bz`` contain the righthand side.  On exit,
+    On entry, ``bx``, ``by``, ``bz`` contain the right-hand side.  On exit,
     they should contain the solution of the KKT system, with the last 
     component scaled, i.e., on exit,
 

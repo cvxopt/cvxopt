@@ -2,7 +2,7 @@
 CVXOPT 
 ######
 
-**Release 1.1.3 -- September 15, 2010**
+**Release 1.1.4 -- December 21, 2011**
 
 **Joachim Dahl & Lieven Vandenberghe**
 

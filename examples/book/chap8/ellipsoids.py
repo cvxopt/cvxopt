@@ -1,10 +1,12 @@
 # Figures 8.3 and 8.4, pages 412 and 416.
 # Ellipsoidal approximations.
  
-import pylab
 from math import log, pi
 from cvxopt import blas, lapack, solvers, matrix, sqrt, mul, cos, sin
-solvers.options['show_progress'] = False
+#solvers.options['show_progress'] = False
+try: import pylab
+except ImportError: pylab_installed = False
+else: pylab_installed = True
 
 # Extreme points (with first one appended at the end)
 X = matrix([ 0.55,  0.25, -0.20, -0.25,  0.00,  0.40,  0.55,  
@@ -47,7 +49,7 @@ def F(x=None, z=None):
     #    = (xk - c)' * A * (xk - c) - 1  where c = A^-1*b  
     c = x[3:]
     lapack.potrs(L, c)  
-    for k in xrange(m):
+    for k in range(m):
         f[k+1] = (X[k,:].T - c).T * A * (X[k,:].T - c) - 1.0 
 
     # gradf0 = (-A^-1, 0) = (-B, 0)
@@ -98,31 +100,32 @@ sol = solvers.cp(F)
 A = matrix( sol['x'][[0, 1, 1, 2]], (2,2)) 
 b = sol['x'][3:]
 
-pylab.figure(1, facecolor='w')
-pylab.plot(X[:,0], X[:,1], 'ko', X[:,0], X[:,1], '-k')
-
-# Ellipsoid in the form { x | || L' * (x-c) ||_2 <= 1 }
-L = +A
-lapack.potrf(L)
-c = +b
-lapack.potrs(L, c)    
-
-# 1000 points on the unit circle
-nopts = 1000
-angles = matrix( [ a*2.0*pi/nopts for a in xrange(nopts) ], (1,nopts) )
-circle = matrix(0.0, (2,nopts))
-circle[0,:], circle[1,:] = cos(angles), sin(angles)
-
-# ellipse = L^-T * circle + c
-blas.trsm(L, circle, transA='T')
-ellipse = circle + c[:, nopts*[0]]
-ellipse2 = 0.5 * circle + c[:, nopts*[0]]
-
-pylab.plot(ellipse[0,:].T, ellipse[1,:].T, 'k-')
-pylab.fill(ellipse2[0,:].T, ellipse2[1,:].T, facecolor = '#F0F0F0')
-pylab.title('Loewner-John ellipsoid (fig 8.3)')
-pylab.axis('equal')
-pylab.axis('off')
+if pylab_installed:
+    pylab.figure(1, facecolor='w')
+    pylab.plot(X[:,0], X[:,1], 'ko', X[:,0], X[:,1], '-k')
+    
+    # Ellipsoid in the form { x | || L' * (x-c) ||_2 <= 1 }
+    L = +A
+    lapack.potrf(L)
+    c = +b
+    lapack.potrs(L, c)    
+    
+    # 1000 points on the unit circle
+    nopts = 1000
+    angles = matrix( [ a*2.0*pi/nopts for a in range(nopts) ], (1,nopts) )
+    circle = matrix(0.0, (2,nopts))
+    circle[0,:], circle[1,:] = cos(angles), sin(angles)
+    
+    # ellipse = L^-T * circle + c
+    blas.trsm(L, circle, transA='T')
+    ellipse = circle + c[:, nopts*[0]]
+    ellipse2 = 0.5 * circle + c[:, nopts*[0]]
+    
+    pylab.plot(ellipse[0,:].T, ellipse[1,:].T, 'k-')
+    pylab.fill(ellipse2[0,:].T, ellipse2[1,:].T, facecolor = '#F0F0F0')
+    pylab.title('Loewner-John ellipsoid (fig 8.3)')
+    pylab.axis('equal')
+    pylab.axis('off')
 
 
 # Maximum volume enclosed ellipsoid
@@ -148,8 +151,8 @@ pylab.axis('off')
 #
 # 5 variables x = (L[0,0], L[1,0], L[1,1], c[0], c[1])
 
-D = [ matrix(0.0, (3,5)) for k in xrange(m) ]
-for k in xrange(m):
+D = [ matrix(0.0, (3,5)) for k in range(m) ]
+for k in range(m):
     D[k][ [0, 3, 7, 11, 14] ] = matrix( [G[k,0], G[k,1], G[k,1], 
         -G[k,0], -G[k,1]] )
 d = [matrix([0.0, 0.0, hk]) for hk in h]
@@ -164,14 +167,14 @@ def F(x=None, z=None):
 
     f = matrix(0.0, (m+1,1))
     f[0] = -log(x[0]) - log(x[2])
-    for k in xrange(m):  
+    for k in range(m):  
         f[k+1] = y[k][:2].T * y[k][:2] / y[k][2] - y[k][2]
        
     Df = matrix(0.0, (m+1,5))
     Df[0,0], Df[0,2] = -1.0/x[0], -1.0/x[2]
 
     # gradient of g is ( 2.0*(u/t);  -(u/t)'*(u/t) -1) 
-    for k in xrange(m):
+    for k in range(m):
         a = y[k][:2] / y[k][2]
         gradg = matrix(0.0, (3,1))
         gradg[:2], gradg[2] = 2.0 * a, -a.T*a - 1
@@ -183,7 +186,7 @@ def F(x=None, z=None):
     H[2,2] = z[0] / x[2]**2
 
     # Hessian of g is (2.0/t) * [ I, -u/t;  -(u/t)',  (u/t)*(u/t)' ]
-    for k in xrange(m):
+    for k in range(m):
         a = y[k][:2] / y[k][2]
         hessg = matrix(0.0, (3,3))
         hessg[0,0], hessg[1,1] = 1.0, 1.0
@@ -197,29 +200,30 @@ sol = solvers.cp(F)
 L = matrix([sol['x'][0], sol['x'][1], 0.0, sol['x'][2]], (2,2))
 c = matrix([sol['x'][3], sol['x'][4]])
 
-pylab.figure(2, facecolor='w')
+if pylab_installed:
+    pylab.figure(2, facecolor='w')
 
-# polyhedron
-for k in xrange(m):
-    edge = X[[k,k+1],:] + 0.1 * matrix([1., 0., 0., -1.], (2,2)) * \
-        (X[2*[k],:] - X[2*[k+1],:])
-    pylab.plot(edge[:,0], edge[:,1], 'k')
+    # polyhedron
+    for k in range(m):
+        edge = X[[k,k+1],:] + 0.1 * matrix([1., 0., 0., -1.], (2,2)) * \
+            (X[2*[k],:] - X[2*[k+1],:])
+        pylab.plot(edge[:,0], edge[:,1], 'k')
+    
+    
+    # 1000 points on the unit circle
+    nopts = 1000
+    angles = matrix( [ a*2.0*pi/nopts for a in range(nopts) ], (1,nopts) )
+    circle = matrix(0.0, (2,nopts))
+    circle[0,:], circle[1,:] = cos(angles), sin(angles)
+    
+    # ellipse = L * circle + c
+    ellipse = L * circle + c[:, nopts*[0]]
+    ellipse2 = 2.0 * L * circle + c[:, nopts*[0]]
+    
+    pylab.plot(ellipse2[0,:].T, ellipse2[1,:].T, 'k-')
+    pylab.fill(ellipse[0,:].T, ellipse[1,:].T, facecolor = '#F0F0F0')
+    pylab.title('Maximum volume inscribed ellipsoid (fig 8.4)')
+    pylab.axis('equal')
+    pylab.axis('off')
 
-
-# 1000 points on the unit circle
-nopts = 1000
-angles = matrix( [ a*2.0*pi/nopts for a in xrange(nopts) ], (1,nopts) )
-circle = matrix(0.0, (2,nopts))
-circle[0,:], circle[1,:] = cos(angles), sin(angles)
-
-# ellipse = L * circle + c
-ellipse = L * circle + c[:, nopts*[0]]
-ellipse2 = 2.0 * L * circle + c[:, nopts*[0]]
-
-pylab.plot(ellipse2[0,:].T, ellipse2[1,:].T, 'k-')
-pylab.fill(ellipse[0,:].T, ellipse[1,:].T, facecolor = '#F0F0F0')
-pylab.title('Maximum volume inscribed ellipsoid (fig 8.4)')
-pylab.axis('equal')
-pylab.axis('off')
-
-pylab.show()
+    pylab.show()

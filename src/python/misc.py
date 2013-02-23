@@ -1,7 +1,7 @@
-# Copyright 2010 L. Vandenberghe.
+# Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.3.
+# This file is part of CVXOPT version 1.1.4.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ else:
     if 'dnl' in W:
         if inverse == 'N': w = W['dnl']
         else: w = W['dnli']
-        for k in xrange(x.size[1]):
+        for k in range(x.size[1]):
             blas.tbmv(w, x, n = w.size[0], k = 0, ldA = 1, offsetx = 
                 k*x.size[0])
         ind += w.size[0]
@@ -75,7 +75,7 @@ else:
 
     if inverse == 'N': w = W['d']
     else: w = W['di']
-    for k in xrange(x.size[1]):
+    for k in range(x.size[1]):
         blas.tbmv(w, x, n = w.size[0], k = 0, ldA = 1, offsetx = 
             k*x.size[0] + ind)
     ind += w.size[0]
@@ -94,7 +94,7 @@ else:
     #         = 1/beta * (-J) * (2*v*((-J*xk)'*v)' + xk). 
 
     w = matrix(0.0, (x.size[1], 1))
-    for k in xrange(len(W['v'])):
+    for k in range(len(W['v'])):
         v = W['v'][k]
         m = v.size[0]
         if inverse == 'I':  
@@ -109,7 +109,7 @@ else:
             a = 1.0 / W['beta'][k] 
         else:
             a = W['beta'][k] 
-        for i in xrange(x.size[1]):
+        for i in range(x.size[1]):
             blas.scal(a, x, n = m, offset = ind + i*x.size[0])
         ind += m
 
@@ -130,7 +130,7 @@ else:
 
     maxn = max( [0] + [ r.size[0] for r in W['r'] ] )
     a = matrix(0.0, (maxn, maxn))
-    for k in xrange(len(W['r'])):
+    for k in range(len(W['r'])):
 
         if inverse == 'N':
             r = W['r'][k]
@@ -141,7 +141,7 @@ else:
             t = trans
 
         n = r.size[0]
-        for i in xrange(x.size[1]):
+        for i in range(x.size[1]):
 
             # scale diagonal of xk by 0.5
             blas.scal(0.5, x, offset = ind + i*x.size[0], inc = n+1, n = n)
@@ -234,9 +234,9 @@ else:
     # inverse operation will be applied to nonsymmetric matrices.
 
     ind2 = ind
-    for k in xrange(len(dims['s'])):
+    for k in range(len(dims['s'])):
         m = dims['s'][k]
-        for j in xrange(m):
+        for j in range(m):
             c = math.sqrt(lmbda[ind2+j]) * base.sqrt(lmbda[ind2:ind2+m])
             if inverse == 'N':  
                 blas.tbsv(c, x, n = m, k = 0, ldA = 1, offsetx = ind + j*m)
@@ -307,7 +307,7 @@ def compute_scaling(s, z, lmbda, dims, mnl = None):
     W['v'] = [ matrix(0.0, (k,1)) for k in dims['q'] ]
     W['beta'] = len(dims['q']) * [ 0.0 ] 
 
-    for k in xrange(len(dims['q'])):
+    for k in range(len(dims['q'])):
         m = dims['q'][k]
         v = W['v'][k]
 
@@ -377,7 +377,7 @@ def compute_scaling(s, z, lmbda, dims, mnl = None):
     Lz = matrix(0.0, (max( [0] + dims['s'] )**2, 1))
 
     ind2 = ind
-    for k in xrange(len(dims['s'])):
+    for k in range(len(dims['s'])):
         m = dims['s'][k]
         r, rti = W['r'][k], W['rti'][k]
 
@@ -390,7 +390,7 @@ def compute_scaling(s, z, lmbda, dims, mnl = None):
         lapack.potrf(Lz, n = m, ldA = m)
 	 
         # SVD Lz'*Ls = U*diag(lambda_k)*V'.  Keep U in work. 
-        for i in xrange(m): 
+        for i in range(m): 
             blas.scal(0.0, Ls, offset = i*m, n = i)
         blas.copy(Ls, work, n = m**2)
         blas.trmm(Lz, work, transA = 'T', ldA = m, ldB = m, n = m, m = m) 
@@ -407,7 +407,7 @@ def compute_scaling(s, z, lmbda, dims, mnl = None):
 
         # r := r * diag(sqrt(lambda_k))
         # rti := rti * diag(1 ./ sqrt(lambda_k))
-        for i in xrange(m):
+        for i in range(m):
             a = math.sqrt( lmbda[ind+i] )
             blas.scal(a, r, offset = m*i, n = m)
             blas.scal(1.0/a, rti, offset = m*i, n = m)
@@ -500,7 +500,7 @@ def update_scaling(W, lmbda, s, z):
     #        beta[k] *=  sqrt(a/b)
 
     ind = m
-    for k in xrange(len(W['v'])):
+    for k in range(len(W['v'])):
 
         v = W['v'][k]
         m = len(v)
@@ -591,7 +591,7 @@ def update_scaling(W, lmbda, s, z):
     work = matrix(0.0, (max( [0] + [r.size[0] for r in W['r']])**2, 1))
     ind = mnl + ml + sum([ len(v) for v in W['v'] ])
     ind2, ind3 = ind, 0
-    for k in xrange(len(W['r'])):
+    for k in range(len(W['r'])):
         r, rti = W['r'][k], W['rti'][k]
         m = r.size[0]
 
@@ -623,7 +623,7 @@ def update_scaling(W, lmbda, s, z):
         blas.copy(work, rti, n = m**2)
 
         # r := r*lambda^{-1/2}; rti := rti*lambda^{-1/2}
-        for i in xrange(m):    
+        for i in range(m):    
             a = 1.0 / math.sqrt(lmbda[ind+i])
             blas.scal(a, r, offset = m*i, n = m)
             blas.scal(a, rti, offset = m*i, n = m)
@@ -650,12 +650,12 @@ else:
      blas.copy(x, y, n = nlq, offsetx = offsetx, offsety = offsety)
      iu, ip = offsetx + nlq, offsety + nlq
      for n in dims['s']:
-         for k in xrange(n):
+         for k in range(n):
              blas.copy(x, y, n = n-k, offsetx = iu + k*(n+1), offsety = ip)
              y[ip] /= math.sqrt(2)
              ip += n-k
          iu += n**2 
-     np = sum([ n*(n+1)/2 for n in dims['s'] ])
+     np = sum([ int(n*(n+1)/2) for n in dims['s'] ])
      blas.scal(math.sqrt(2.0), y, n = np, offset = offsety+nlq)
      
 
@@ -674,13 +674,13 @@ else:
      iu = mnl + dims['l'] + sum(dims['q'])
      ip = iu
      for n in dims['s']:
-         for k in xrange(n):
+         for k in range(n):
              x[ip, :] = x[iu + (n+1)*k, :]
              x[ip + 1 : ip+n-k, :] = x[iu + (n+1)*k + 1: iu + n*(k+1), :] \
                  * math.sqrt(2.0)
              ip += n - k
          iu += n**2 
-     np = sum([ n*(n+1)/2 for n in dims['s'] ])
+     np = sum([ int(n*(n+1)/2) for n in dims['s'] ])
      
 
 if use_C:
@@ -698,7 +698,7 @@ else:
      blas.copy(x, y, n = nlq, offsetx = offsetx, offsety = offsety)
      iu, ip = offsety+nlq, offsetx+nlq
      for n in dims['s']:
-         for k in xrange(n):
+         for k in range(n):
              blas.copy(x, y, n = n-k, offsetx = ip, offsety = iu+k*(n+1))
              y[iu+k*(n+1)] *= math.sqrt(2)
              ip += n-k
@@ -720,7 +720,7 @@ else:
     for m in dims['s']:
         a += blas.dot(x, y, offsetx = ind, offsety = ind, incx = m+1, 
             incy = m+1, n = m)
-        for j in xrange(1, m):
+        for j in range(1, m):
             a += 2.0 * blas.dot(x, y, incx = m+1, incy = m+1, 
                 offsetx = ind+j, offsety = ind+j, n = m-j)
         ind += m**2
@@ -739,15 +739,15 @@ def sdot2(x, y):
     if type(x) is matrix:
         n = x.size[0]
         a += blas.dot(x, y, incx=n+1, incy=n+1, n=n)
-        for j in xrange(1,n):
+        for j in range(1,n):
             a += 2.0 * blas.dot(x, y, incx=n+1, incy=n+1, offsetx=j,
                 offsety=j, n=n-j)
 
     else:
-        for k in xrange(len(x)):
+        for k in range(len(x)):
             n = x[k].size[0]
             a += blas.dot(x[k], y[k], incx=n+1, incy=n+1, n=n)
-            for j in xrange(1,n):
+            for j in range(1,n):
                 a += 2.0 * blas.dot(x[k], y[k], incx=n+1, incy=n+1, 
                     offsetx=j, offsety=j, n=n-j)
     return a
@@ -773,7 +773,7 @@ else:
     m = dims['l'] + sum(dims['q']) + sum([ k**2 for k in dims['s'] ]) 
     ind = offset + dims['l'] + sum(dims['q'])
     for mk in dims['s']:
-        for j in xrange(1, mk):  
+        for j in range(1, mk):  
             blas.scal(0.0, x, n = mk-j, inc = mk, offset = 
                     ind + j*(mk + 1) - 1) 
             blas.scal(2.0, x, offset = ind + mk*(j-1) + j, n = mk-j) 
@@ -792,7 +792,7 @@ else:
     m = dims['l'] + sum(dims['q']) + sum([ k**2 for k in dims['s'] ]) 
     ind = offset + dims['l'] + sum(dims['q'])
     for mk in dims['s']:
-        for j in xrange(1, mk):  
+        for j in range(1, mk):  
                 blas.scal(0.5, x, offset = ind + mk*(j-1) + j, n = mk-j) 
         ind += mk**2
 
@@ -866,7 +866,7 @@ else:
     """
 
     if n <= 1:  return
-    for i in xrange(n-1):
+    for i in range(n-1):
         blas.copy(x, x, offsetx = offset + i*(n+1) + 1, offsety = 
             offset + (i+1)*(n+1) - 1, incy = n, n = n-i-1)
 
@@ -920,7 +920,7 @@ else:
             blas.copy(x, A, offsetx = ind, n = m*m)
 
             # Write upper triangular part of A and yk.
-            for i in xrange(m-1):
+            for i in range(m-1):
                 symm(A, m)
                 symm(y, m, offset = ind)
 
@@ -933,7 +933,7 @@ else:
     else:
         ind2 = ind
         for m in dims['s']:
-            for j in xrange(m):
+            for j in range(m):
                 u = 0.5 * ( y[ind2+j:ind2+m] + y[ind2+j] )
                 blas.tbmv(u, x, n = m-j, k = 0, ldA = 1, offsetx = 
                     ind + j*(m+1))  
@@ -1003,7 +1003,7 @@ else:
 
     ind2 = ind
     for m in dims['s']:
-        for j in xrange(m):
+        for j in range(m):
             u = 0.5 * ( y[ind2+j:ind2+m] + y[ind2+j] )
             blas.tbsv(u, x, n = m-j, k = 0, ldA = 1, offsetx = ind + 
                 j*(m+1))  
@@ -1074,8 +1074,8 @@ def kkt_ldl(G, dims, A, mnl = 0):
     """
     
     p, n = A.size
-    ldK = n + p + mnl + dims['l'] + sum(dims['q']) + sum([ k*(k+1)/2 for k 
-        in dims['s'] ])
+    ldK = n + p + mnl + dims['l'] + sum(dims['q']) + sum([ int(k*(k+1)/2)
+        for k in dims['s'] ])
     K = matrix(0.0, (ldK, ldK))
     ipiv = matrix(0, (ldK, 1))
     u = matrix(0.0, (ldK, 1))
@@ -1086,7 +1086,7 @@ def kkt_ldl(G, dims, A, mnl = 0):
         blas.scal(0.0, K)
         if H is not None: K[:n, :n] = H
         K[n:n+p, :n] = A
-        for k in xrange(n):
+        for k in range(n):
             if mnl: g[:mnl] = Df[:,k]
             g[mnl:] = G[:,k]
             scale(g, W, trans = 'T', inverse = 'I')
@@ -1155,7 +1155,7 @@ def kkt_ldl2(G, dims, A, mnl = 0):
         blas.scal(0.0, K)
         if H is not None: K[:n, :n] = H
         K[n:,:n] = A
-        for k in xrange(n):
+        for k in range(n):
             if mnl: g[:mnl] = Df[:,k]
             g[mnl:] = G[:,k]
             scale(g, W, trans = 'T', inverse = 'I')
@@ -1234,8 +1234,8 @@ def kkt_chol(G, dims, A, mnl = 0):
     p, n = A.size
     cdim = mnl + dims['l'] + sum(dims['q']) + sum([ k**2 for k in 
         dims['s'] ])
-    cdim_pckd = mnl + dims['l'] + sum(dims['q']) + sum([ k*(k+1)/2 for k 
-        in dims['s'] ])
+    cdim_pckd = mnl + dims['l'] + sum(dims['q']) + sum([ int(k*(k+1)/2)
+        for k in dims['s'] ])
 
     # A' = [Q1, Q2] * [R; 0]  (Q1 is n x p, Q2 is n x n-p).
     if type(A) is matrix: 
@@ -1407,12 +1407,12 @@ def kkt_chol2(G, dims, A, mnl = 0):
                     F['K'] = spmatrix([], [], [], (p,p), 'd')
 
         # Dfs = Wnl^{-1} * Df 
-        if mnl: base.gemm(spmatrix(W['dnli'], range(mnl), range(mnl)), Df, 
-            F['Dfs'], partial = True)
+        if mnl: base.gemm(spmatrix(W['dnli'], list(range(mnl)), 
+            list(range(mnl))), Df, F['Dfs'], partial = True)
 
         # Gs = Wl^{-1} * G.
-        base.gemm(spmatrix(W['di'], range(ml), range(ml)), G, F['Gs'], 
-            partial = True)
+        base.gemm(spmatrix(W['di'], list(range(ml)), list(range(ml))), 
+            G, F['Gs'], partial = True)
 
         if F['firstcall']:
             base.syrk(F['Gs'], F['S'], trans = 'T') 
@@ -1590,7 +1590,7 @@ def kkt_qr(G, dims, A):
  
     p, n = A.size
     cdim = dims['l'] + sum(dims['q']) + sum([ k**2 for k in dims['s'] ])
-    cdim_pckd = dims['l'] + sum(dims['q']) + sum([ k*(k+1)/2 for k in 
+    cdim_pckd = dims['l'] + sum(dims['q']) + sum([ int(k*(k+1)/2) for k in 
         dims['s'] ])
 
     # A' = [Q1, Q2] * [R1; 0]

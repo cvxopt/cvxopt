@@ -1,9 +1,8 @@
 # Figure 7.8, page 384.
 # Chernoff lower bound.
 
-import pylab
 from cvxopt import matrix, mul, exp, normal, solvers, blas
-solvers.options['show_progress'] = False
+#solvers.options['show_progress'] = False
 
 # Extreme points and inequality description of Voronoi region around 
 # first symbol (at the origin).
@@ -23,7 +22,7 @@ b = [ mul(A[0], V[:,:m].T) * matrix(1.0, (2,1)) ]
 # List of symbols.
 C = [ matrix(0.0, (2,1)) ] + \
     [ 2.0 * b[0][k] / blas.nrm2(A[0][k,:])**2 * A[0][k,:].T for k in 
-    xrange(m) ]
+    range(m) ]
 
 # Voronoi set around C[1]
 A += [ matrix(0.0, (3,2)) ] 
@@ -36,7 +35,7 @@ A[1][2,:] = (C[2] - C[1]).T
 b[1][2] = 0.5 * A[1][2,:] * ( C[2] + C[1] )
 
 # Voronoi set around C[2], ..., C[5]
-for k in xrange(2, 6):
+for k in range(2, 6):
     A += [ matrix(0.0, (3,2)) ] 
     b += [ matrix(0.0, (3,1)) ]
     A[k][0,:] = -A[0][k-1,:]
@@ -67,35 +66,38 @@ b[6][2] = 0.5 * A[6][2,:] * ( C[5] + C[6] )
 P = matrix([1.0, 0.0, 0.0, 1.0], (2,2))
 q = matrix(0.0, (2,1))
 optvals = matrix([ blas.nrm2( solvers.qp(P, q, A[k], b[k] )['x'] )**2
-    for k in xrange(1,7) ])
+    for k in range(1,7) ])
 nopts = 200
-sigmas = 0.2 + (0.5 - 0.2)/nopts * matrix(range(nopts), tc='d')
+sigmas = 0.2 + (0.5 - 0.2)/nopts * matrix(list(range(nopts)), tc='d')
 bnds = [ 1.0 - sum( exp( - optvals / (2*sigma**2) )) for sigma 
     in sigmas]
 
-pylab.figure(facecolor='w')
-pylab.plot(sigmas, bnds, '-')
-pylab.axis([0.2, 0.5, 0.9, 1.0])
-pylab.title('Chernoff lower bound (fig. 7.8)')
-pylab.xlabel('sigma')
-pylab.ylabel('Probability of correct detection')
-pylab.show()
-
-if 0:  # uncomment out for the Monte Carlo estimation.
-    N = 100000
-    mcest = []
-    ones = matrix(1.0, (1,m))
-    for sigma in sigmas: 
-        X = sigma * normal(2, N)
-        S = b[0][:,N*[0]] - A[0]*X 
-        S = ones * (S - abs(S))
-        mcest += [ N - len(filter(lambda x: x < 0.0, S)) ]
-
+try: import pylab
+except ImportError: pass
+else:
     pylab.figure(facecolor='w')
-    pylab.plot(sigmas, bnds, '-', sigmas, (1.0/N)*matrix(mcest), '--')
     pylab.plot(sigmas, bnds, '-')
     pylab.axis([0.2, 0.5, 0.9, 1.0])
     pylab.title('Chernoff lower bound (fig. 7.8)')
     pylab.xlabel('sigma')
     pylab.ylabel('Probability of correct detection')
     pylab.show()
+    
+    if 0:  # uncomment out for the Monte Carlo estimation.
+        N = 100000
+        mcest = []
+        ones = matrix(1.0, (1,m))
+        for sigma in sigmas: 
+            X = sigma * normal(2, N)
+            S = b[0][:,N*[0]] - A[0]*X 
+            S = ones * (S - abs(S))
+            mcest += [ N - len(filter(lambda x: x < 0.0, S)) ]
+    
+        pylab.figure(facecolor='w')
+        pylab.plot(sigmas, bnds, '-', sigmas, (1.0/N)*matrix(mcest), '--')
+        pylab.plot(sigmas, bnds, '-')
+        pylab.axis([0.2, 0.5, 0.9, 1.0])
+        pylab.title('Chernoff lower bound (fig. 7.8)')
+        pylab.xlabel('sigma')
+        pylab.ylabel('Probability of correct detection')
+        pylab.show()

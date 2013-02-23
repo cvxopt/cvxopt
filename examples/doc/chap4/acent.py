@@ -20,7 +20,7 @@ def acent(A,b):
     x = matrix(0.0, (n,1))
     H = matrix(0.0, (n,n))
 
-    for iter in xrange(MAXITERS):
+    for iter in range(MAXITERS):
         
         # Gradient is g = A^T * (1./(b-A*x)).
         d = (b-A*x)**-1
@@ -35,18 +35,18 @@ def acent(A,b):
         lapack.posv(H, v)
 
         # Directional derivative and Newton decrement.
-	lam = blas.dot(g, v)
+        lam = blas.dot(g, v)
         ntdecrs += [ sqrt(-lam) ]
-        print "%2d.  Newton decr. = %3.3e" %(iter,ntdecrs[-1])
+        print("%2d.  Newton decr. = %3.3e" %(iter,ntdecrs[-1]))
         if ntdecrs[-1] < TOL: return x, ntdecrs
 
         # Backtracking line search.
         y = mul(A*v, d)
-	step = 1.0
+        step = 1.0
         while 1-step*max(y) < 0: step *= BETA 
-	while True:
+        while True:
             if -sum(log(1-step*y)) < ALPHA*step*lam: break
-	    step *= BETA
+            step *= BETA
         x += step*v
 
 

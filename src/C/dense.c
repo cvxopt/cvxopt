@@ -1,8 +1,8 @@
 /*
- * Copyright 2010 L. Vandenberghe.
+ * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.3.
+ * This file is part of CVXOPT version 1.1.4.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 
 #include <complexobject.h>
 
+#if PY_MAJOR_VERSION < 3
 /* NumPy array protocol */
 typedef struct {
   int version;
@@ -37,6 +38,7 @@ typedef struct {
   int_t *strides;
   void *data;
 } PyArrayInterface;
+#endif
 
 static const char PY_ARRAY_TC[3] = { 'i', 'f', 'c' };
 
@@ -145,7 +147,11 @@ matrix * Matrix_New(int_t nrows, int_t ncols, int id)
 
   a->id = id; a->nrows = nrows; a->ncols = ncols;
   if (!(a->buffer =  calloc(nrows*ncols,E_SIZE[id]))) {
+#if PY_MAJOR_VERSION >= 3
+    Py_TYPE(a)->tp_free((PyObject*)a);
+#else
     a->ob_type->tp_free((PyObject*)a);
+#endif
     return (matrix *)PyErr_NoMemory();
   }
 
@@ -172,6 +178,7 @@ matrix *Matrix_NewFromMatrix(matrix *src, int id)
   return a;
 }
 
+#if PY_MAJOR_VERSION < 3
 /*
   Creates a matrix from a PyArrayInterface.
  */
@@ -185,6 +192,7 @@ matrix *Matrix_NewFromArrayStruct(PyObject *obj, int id, int_t *ndim)
 
   if (src->nd != 1 && src->nd != 2)
     PY_ERR(PyExc_TypeError, "imported array must have 1 or 2 dimensions");
+
 
   int src_id;
   switch (src->typekind) {
@@ -256,6 +264,7 @@ matrix *Matrix_NewFromArrayStruct(PyObject *obj, int id, int_t *ndim)
   Py_DECREF(cobj);
   return a;
 }
+#endif
 
 /*
   Generates a matrix with all entries equal.
@@ -283,6 +292,7 @@ matrix * Matrix_NewFromSequence(PyObject *x, int id)
   int_t i, len = PySequence_Size(x);
   PyObject *seq = PySequence_Fast(x, "list is not iterable");
   if (!seq) return NULL;
+
 
   if (id == -1) {
     for (i=0; i<len; i++) {
@@ -442,7 +452,11 @@ static void
 matrix_dealloc(matrix* self)
 {
   free(self->buffer);
+#if PY_MAJOR_VERSION >= 3
+  Py_TYPE(self)->tp_free((PyObject*)self);
+#else
   self->ob_type->tp_free((PyObject*)self);
+#endif
 }
 
 static PyObject *
@@ -454,8 +468,13 @@ matrix_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
   int_t nrows=0, ncols=0;
   char tc = 0;
 
+#if PY_MAJOR_VERSION >= 3
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "|OOC:matrix", kwlist,
+      &Objx, &size, &tc))
+#else
   if (!PyArg_ParseTupleAndKeywords(args, kwds, "|OOc:matrix", kwlist,
       &Objx, &size, &tc))
+#endif
     return NULL;
 
   if (size && !PyArg_ParseTuple(size, "ll", &nrows, &ncols))
@@ -494,11 +513,13 @@ matrix_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     }
   }
 
+#if PY_MAJOR_VERSION < 3
   /* PyArrayStructure */
   else if (PyObject_HasAttrString(Objx,"__array_struct__")) {
     int_t ndim = 0;
     ret = Matrix_NewFromArrayStruct(Objx, id, &ndim);
   }
+#endif
 
   /* x is a list */
   else if (PyList_Check(Objx)) {
@@ -585,8 +606,13 @@ matrix * create_indexlist(int_t dim, PyObject *A)
   int_t i, j;
 
   /* integer */
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(A)) {
+    i = PyLong_AS_LONG(A);
+#else
   if (PyInt_Check(A)) {
     i = PyInt_AS_LONG(A);
+#endif
     if (OUT_RNG(i,dim)) PY_ERR(PyExc_IndexError, "index out of range");
 
     if ((x = Matrix_New(1,1,INT))) MAT_BUFI(x)[0] = i;
@@ -596,8 +622,13 @@ matrix * create_indexlist(int_t dim, PyObject *A)
   else if (PySlice_Check(A)) {
     int_t start, stop, step, lgt;
 
+#if PY_MAJOR_VERSION >= 3
+    if (PySlice_GetIndicesEx(A, dim, &start, &stop, &step, &lgt) < 0) 
+        return NULL;
+#else
     if (PySlice_GetIndicesEx((PySliceObject*)A, dim,
         &start, &stop, &step, &lgt) < 0) return NULL;
+#endif
 
     if ((x = Matrix_New(lgt, 1, INT)))
       for (i=start, j=0; j<lgt; i += step, j++) MAT_BUFI(x)[j] = i;
@@ -635,8 +666,14 @@ static PyObject *
 matrix_subscr(matrix* self, PyObject* args)
 {
   matrix *Il = NULL, *Jl = NULL, *ret;
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(args)) {
+    int_t i = PyLong_AS_LONG(args);
+#else
   if (PyInt_Check(args)) {
     int_t i = PyInt_AS_LONG(args);
+#endif
+
     if (OUT_RNG(i,MAT_LGT(self)))
       PY_ERR(PyExc_IndexError, "index out of range");
 
@@ -659,15 +696,19 @@ matrix_subscr(matrix* self, PyObject* args)
     free_lists_exit(args,(PyObject *)NULL,Il,(PyObject *)NULL,(PyObject *)ret);
   }
 
-  /* remainding cases are different two argument indexing */
+  /* remaining cases are different two argument indexing */
   PyObject *argI = NULL, *argJ = NULL;
   if (!PyArg_ParseTuple(args, "OO", &argI,&argJ))
     PY_ERR_TYPE("invalid index arguments");
 
   /* handle normal subscripts (two integers) separately */
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(argI) && PyLong_Check(argJ)) {
+    int i = PyLong_AS_LONG(argI), j = PyLong_AS_LONG(argJ);
+#else
   if (PyInt_Check(argI) && PyInt_Check(argJ)) {
-
     int i = PyInt_AS_LONG(argI), j = PyInt_AS_LONG(argJ);
+#endif
     if ( OUT_RNG(i, self->nrows) || OUT_RNG(j, self->ncols))
       PY_ERR(PyExc_IndexError, "index out of range");
 
@@ -680,10 +721,17 @@ matrix_subscr(matrix* self, PyObject* args)
     int_t rowstart, rowstop, rowstep, rowlgt;
     int_t colstart, colstop, colstep, collgt;
 
+#if PY_MAJOR_VERSION >= 3
+    if ( (PySlice_GetIndicesEx(argI, MAT_NROWS(self), &rowstart, &rowstop,
+        &rowstep, &rowlgt) < 0) || 
+        (PySlice_GetIndicesEx(argJ, MAT_NCOLS(self), &colstart, &colstop, 
+        &colstep, &collgt) < 0)) return NULL;
+#else
     if ( (PySlice_GetIndicesEx((PySliceObject*)argI, MAT_NROWS(self),
         &rowstart, &rowstop, &rowstep, &rowlgt) < 0) ||
         (PySlice_GetIndicesEx((PySliceObject*)argJ, MAT_NCOLS(self),
-            &colstart, &colstop, &colstep, &collgt) < 0)) return NULL;
+        &colstart, &colstop, &colstep, &collgt) < 0)) return NULL;
+#endif
 
     if (!(ret = Matrix_New(rowlgt, collgt, self->id)))
       return PyErr_NoMemory();
@@ -742,10 +790,14 @@ matrix_ass_subscr(matrix* self, PyObject* args, PyObject* val)
 
   if (!(PY_NUMBER(val) || Matrix_Check(val) || SpMatrix_Check(val))) {
 
+#if PY_MAJOR_VERSION >= 3
+    val = (PyObject *)Matrix_NewFromSequence(val, MAT_ID(self));
+#else
     if (PyObject_HasAttrString(val,"__array_struct__"))
       val = (PyObject *)Matrix_NewFromArrayStruct(val, -1, &arraystruct_nd);
     else
       val = (PyObject *)Matrix_NewFromSequence(val, MAT_ID(self));
+#endif
 
     if (!val)
       PY_ERR_INT(PyExc_NotImplementedError, "invalid type in assignment");
@@ -756,7 +808,11 @@ matrix_ass_subscr(matrix* self, PyObject* args, PyObject* val)
   if (get_id(val, (PY_NUMBER(val) ? 1 : 0)) > id)
     PY_ERR_INT(PyExc_TypeError, "invalid type in assignment");
 
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(args) || PyList_Check(args) ||
+#else
   if (PyInt_Check(args) || PyList_Check(args) ||
+#endif
       Matrix_Check(args) || PySlice_Check(args)) {
 
     if (!(Il = create_indexlist(MAT_LGT(self), args))) {
@@ -805,7 +861,7 @@ matrix_ass_subscr(matrix* self, PyObject* args, PyObject* val)
     free_lists_exit(args,(PyObject *)NULL,Il,(PyObject *)NULL,0);
   }
 
-  /* remainding cases are different two argument indexing */
+  /* remaining cases are different two argument indexing */
   PyObject *argI = NULL, *argJ = NULL;
   if (!PyArg_ParseTuple(args, "OO", &argI,&argJ))
     PY_ERR_INT(PyExc_TypeError, "invalid index arguments");
@@ -817,10 +873,17 @@ matrix_ass_subscr(matrix* self, PyObject* args, PyObject* val)
     int_t rowstart, rowstop, rowstep, rowlgt;
     int_t colstart, colstop, colstep, collgt;
 
+#if PY_MAJOR_VERSION >= 3
+    if ( (PySlice_GetIndicesEx(argI, MAT_NROWS(self), &rowstart, &rowstop,
+         &rowstep, &rowlgt) < 0) || 
+         (PySlice_GetIndicesEx(argJ, MAT_NCOLS(self), &colstart, &colstop,
+         &colstep, &collgt) < 0)) return -1;
+#else
     if ( (PySlice_GetIndicesEx((PySliceObject*)argI, MAT_NROWS(self),
         &rowstart, &rowstop, &rowstep, &rowlgt) < 0) ||
         (PySlice_GetIndicesEx((PySliceObject*)argJ, MAT_NCOLS(self),
             &colstart, &colstop, &colstep, &collgt) < 0)) return -1;
+#endif
 
     if (decref_val && MAT_LGT(val) == rowlgt*collgt) {
       MAT_NROWS(val) = rowlgt; MAT_NCOLS(val) = collgt;
@@ -985,10 +1048,41 @@ static PyObject * matrix_imag(matrix *self) {
   return (PyObject *)ret;
 }
 
+#if PY_MAJOR_VERSION >= 3
+
 static char doc_tofile[] =
     "Writes a matrix to file\n\n"
     "ARGUMENTS\n"
-    "fo          a Python file object prevously obtained by open()\n\n";
+    "s          a Python stream object, for example obtained by open()\n\n";
+static PyObject *
+matrix_tofile(matrix *self, PyObject *args, PyObject *kwrds)
+{
+  PyObject *f, *bytes, *res;
+  char *kwlist[] = {"s", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O:fromfile", kwlist, &f))
+    return NULL;
+
+  bytes = PyBytes_FromStringAndSize(self->buffer, E_SIZE[MAT_ID(self)]*MAT_LGT(self));
+
+  if (bytes == NULL)
+    return NULL;
+
+  res = PyObject_CallMethod(f, "write", "O", bytes);
+  Py_DECREF(bytes);
+  if (res == NULL)
+    return NULL;
+  Py_DECREF(res);
+
+  return Py_BuildValue("");
+}
+
+#else
+
+static char doc_tofile[] =
+    "Writes a matrix to file\n\n"
+    "ARGUMENTS\n"
+    "fo          a Python file object previously obtained by open()\n\n";
 static PyObject *
 matrix_tofile(matrix *self, PyObject *args, PyObject *kwrds)
 {
@@ -1008,6 +1102,54 @@ matrix_tofile(matrix *self, PyObject *args, PyObject *kwrds)
   if (fwrite(self->buffer, E_SIZE[self->id], MAT_LGT(self), fp)) ;
   return Py_BuildValue("");
 }
+
+#endif
+
+
+#if PY_MAJOR_VERSION >= 3
+
+static char doc_fromfile[] =
+	"Reads a matrix from file\n\n"
+	"ARGUMENTS\n"
+	"s          a Python stream object, for example obtained by open()\n\n";
+static PyObject *
+matrix_fromfile(matrix *self, PyObject *args, PyObject *kwrds)
+{
+  PyObject *f, *b;
+  char *kwlist[] = {"s", NULL};
+
+  if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O:fromfile", kwlist, &f))
+    return NULL;
+
+  b = PyObject_CallMethod(f, "read", "n", E_SIZE[self->id]*MAT_LGT(self));
+  if (b == NULL)
+    return NULL;
+
+  if (!PyBytes_Check(b)) {
+    PyErr_SetString(PyExc_TypeError,
+        "read() didn't return bytes");
+    Py_DECREF(b);
+    return NULL;
+  }
+
+  if (PyBytes_GET_SIZE(b) != E_SIZE[self->id]*MAT_LGT(self)) {
+    PyErr_SetString(PyExc_EOFError,
+        "read() didn't return enough bytes");
+    Py_DECREF(b);
+    return NULL;
+  }
+
+  Py_buffer view;
+  PyObject_GetBuffer(b, &view, PyBUF_SIMPLE);
+  memcpy(self->buffer, view.buf, E_SIZE[self->id]*MAT_LGT(self));
+
+  PyBuffer_Release(&view);
+  Py_DECREF(b);
+
+  return Py_BuildValue("");
+}
+
+#else
 
 static char doc_fromfile[] =
     "Reads a matrix from file\n\n"
@@ -1035,6 +1177,8 @@ matrix_fromfile(matrix *self, PyObject *args, PyObject *kwrds)
   return Py_BuildValue("");
 }
 
+#endif
+
 static PyObject *
 matrix_getstate(matrix *self)
 {
@@ -1044,8 +1188,13 @@ matrix_getstate(matrix *self)
     Py_XDECREF(list); Py_XDECREF(size); return NULL;
   }
 
+#if PY_MAJOR_VERSION >= 3
+  PyTuple_SET_ITEM(size, 0, PyLong_FromLong(MAT_NROWS(self)));
+  PyTuple_SET_ITEM(size, 1, PyLong_FromLong(MAT_NCOLS(self)));
+#else
   PyTuple_SET_ITEM(size, 0, PyInt_FromLong(MAT_NROWS(self)));
   PyTuple_SET_ITEM(size, 1, PyInt_FromLong(MAT_NCOLS(self)));
+#endif
 
   int i;
   for (i=0; i<MAT_LGT(self); i++) {
@@ -1058,22 +1207,26 @@ matrix_getstate(matrix *self)
 static PyObject *
 matrix_reduce(matrix* self)
 {
+#if PY_MAJOR_VERSION >= 3
+  return Py_BuildValue("ON", Py_TYPE(self), matrix_getstate(self));
+#else
   return Py_BuildValue("ON", self->ob_type, matrix_getstate(self));
+#endif
 }
 
 static PyMethodDef matrix_methods[] = {
     {"trans", (PyCFunction)matrix_transpose, METH_NOARGS,
         "Returns the matrix transpose"},
-        {"ctrans", (PyCFunction)matrix_ctranspose, METH_NOARGS,
-            "Returns the matrix conjugate transpose"},
-            {"real", (PyCFunction)matrix_real, METH_NOARGS,
-                "Returns real part of matrix"},
-                {"imag", (PyCFunction)matrix_imag, METH_NOARGS,
-                    "Returns imaginary part of matrix"},
-                    {"tofile", (PyCFunction)matrix_tofile, METH_VARARGS|METH_KEYWORDS, doc_tofile},
-                    {"fromfile", (PyCFunction)matrix_fromfile, METH_VARARGS|METH_KEYWORDS, doc_fromfile},
-                    {"__reduce__", (PyCFunction)matrix_reduce, METH_NOARGS, "__reduce__() -> (cls, state)"},
-                    {NULL}  /* Sentinel */
+    {"ctrans", (PyCFunction)matrix_ctranspose, METH_NOARGS,
+        "Returns the matrix conjugate transpose"},
+    {"real", (PyCFunction)matrix_real, METH_NOARGS,
+        "Returns real part of matrix"},
+    {"imag", (PyCFunction)matrix_imag, METH_NOARGS,
+        "Returns imaginary part of matrix"},
+    {"tofile", (PyCFunction)matrix_tofile, METH_VARARGS|METH_KEYWORDS, doc_tofile},
+    {"fromfile", (PyCFunction)matrix_fromfile, METH_VARARGS|METH_KEYWORDS, doc_fromfile},
+    {"__reduce__", (PyCFunction)matrix_reduce, METH_NOARGS, "__reduce__() -> (cls, state)"},
+    {NULL}  /* Sentinel */
 };
 
 static PyObject *
@@ -1081,8 +1234,13 @@ matrix_get_size(matrix *self, void *closure)
 {
   PyObject *t = PyTuple_New(2);
 
+#if PY_MAJOR_VERSION >= 3
+  PyTuple_SET_ITEM(t, 0, PyLong_FromLong(self->nrows));
+  PyTuple_SET_ITEM(t, 1, PyLong_FromLong(self->ncols));
+#else
   PyTuple_SET_ITEM(t, 0, PyInt_FromLong(self->nrows));
   PyTuple_SET_ITEM(t, 1, PyInt_FromLong(self->ncols));
+#endif
 
   return t;
 }
@@ -1096,12 +1254,22 @@ matrix_set_size(matrix *self, PyObject *value, void *closure)
   if (!PyTuple_Check(value) || PyTuple_Size(value) != 2)
     PY_ERR_INT(PyExc_TypeError, "can only assign a 2-tuple to size");
 
+#if PY_MAJOR_VERSION >= 3
+  if (!PyLong_Check(PyTuple_GET_ITEM(value, 0)) ||
+      !PyLong_Check(PyTuple_GET_ITEM(value, 1)))
+
+      PY_ERR_INT(PyExc_TypeError, "invalid size tuple");
+
+  int m = PyLong_AS_LONG(PyTuple_GET_ITEM(value, 0));
+  int n = PyLong_AS_LONG(PyTuple_GET_ITEM(value, 1));
+#else
   if (!PyInt_Check(PyTuple_GET_ITEM(value, 0)) ||
       !PyInt_Check(PyTuple_GET_ITEM(value, 1)))
-    PY_ERR_INT(PyExc_TypeError, "invalid size tuple");
+      PY_ERR_INT(PyExc_TypeError, "invalid size tuple");
 
   int m = PyInt_AS_LONG(PyTuple_GET_ITEM(value, 0));
   int n = PyInt_AS_LONG(PyTuple_GET_ITEM(value, 1));
+#endif
 
   if (m<0 || n<0)
     PY_ERR_INT(PyExc_TypeError, "dimensions must be non-negative");
@@ -1117,9 +1285,57 @@ matrix_set_size(matrix *self, PyObject *value, void *closure)
 
 static PyObject * matrix_get_typecode(matrix *self, void *closure)
 {
+#if PY_MAJOR_VERSION >= 3
+  return PyUnicode_FromStringAndSize(TC_CHAR[self->id], 1);
+#else
   return PyString_FromStringAndSize(TC_CHAR[self->id], 1);
+#endif
 }
 
+#if PY_MAJOR_VERSION >= 3
+
+static int
+matrix_buffer_getbuf(matrix *self, Py_buffer *view, int flags)
+{
+
+  if (view==NULL) return 0;
+
+  view->buf = self->buffer;
+  view->len = MAT_LGT(self)*E_SIZE[self->id];
+  view->readonly = 0;
+  view->format = NULL; //FIXME
+  view->ndim = 2;
+
+  view->obj = (PyObject*)self;
+  Py_INCREF(self);
+
+  view->itemsize = E_SIZE[self->id];
+  view->suboffsets = NULL;
+  self->shape[0] = self->nrows; self->shape[1] = self->ncols;
+  view->shape = self->shape;
+
+  self->strides[0] = view->itemsize;
+  self->strides[1] = self->nrows*view->itemsize;
+  view->strides = self->strides;
+
+  view->internal = NULL;
+  self->ob_exports++;
+  return 0;
+}
+
+static void
+matrix_buffer_relbuf(matrix *self, Py_buffer *view)
+{
+  self->ob_exports--;
+}
+
+static PyBufferProcs matrix_as_buffer = {
+    (getbufferproc)matrix_buffer_getbuf,
+    (releasebufferproc)matrix_buffer_relbuf
+};
+
+
+#else
 
 static void matrix_free_array_struct(void *a_struct, void *descr)
 {
@@ -1155,6 +1371,7 @@ static PyObject * matrix_array_struct(matrix *self, void *closure) {
       "CVXOPT ARRAY STRUCT", matrix_free_array_struct);
 
 }
+#endif
 
 static PyObject * matrix_get_T(matrix *self, void *closure)
 {
@@ -1169,56 +1386,67 @@ static PyObject * matrix_get_H(matrix *self, void *closure)
 static PyGetSetDef matrix_getsets[] = {
     {"size", (getter) matrix_get_size, (setter) matrix_set_size,
         "matrix dimensions"},
-        {"typecode", (getter) matrix_get_typecode, NULL, "typecode character"},
-        {"__array_struct__", (getter) matrix_array_struct, NULL,
-            "C object implementing the NumPy array protocol"},
-            {"T", (getter) matrix_get_T, NULL, "transpose"},
-            {"H", (getter) matrix_get_H, NULL, "conjugate transpose"},
-            {NULL}  /* Sentinel */
+    {"typecode", (getter) matrix_get_typecode, NULL, "typecode character"},
+#if PY_MAJOR_VERSION <3
+    {"__array_struct__", (getter) matrix_array_struct, NULL,
+        "C object implementing the NumPy array protocol"},
+#endif
+    {"T", (getter) matrix_get_T, NULL, "transpose"},
+    {"H", (getter) matrix_get_H, NULL, "conjugate transpose"},
+    {NULL}  /* Sentinel */
 };
 
 PyTypeObject matrix_tp = {
+#if PY_MAJOR_VERSION >= 3
+    PyVarObject_HEAD_INIT(NULL, 0)
+#else
     PyObject_HEAD_INIT(NULL)
     0,
+#endif
     "cvxopt.base.matrix",
     sizeof(matrix),
     0,
-    (destructor)matrix_dealloc,	        /* tp_dealloc */
-    0,	               	                /* tp_print */
-    0,					/* tp_getattr */
-    0,					/* tp_setattr */
-    0,					/* tp_compare */
-    (reprfunc)matrix_repr,	                /* tp_repr */
-    &matrix_as_number,			/* tp_as_number */
-    0,	                                /* tp_as_sequence */
-    &matrix_as_mapping,   	                /* tp_as_mapping */
-    0,					/* tp_hash */
-    0,					/* tp_call */
-    (reprfunc)matrix_str,			/* tp_str */
-    0,		                        /* tp_getattro */
-    0,			                /* tp_setattro */
-    0,			                /* tp_as_buffer */
+    (destructor)matrix_dealloc,	 /* tp_dealloc */
+    0,                           /* tp_print */
+    0,                           /* tp_getattr */
+    0,                           /* tp_setattr */
+    0,                           /* tp_compare */
+    (reprfunc)matrix_repr,       /* tp_repr */
+    &matrix_as_number,           /* tp_as_number */
+    0,                           /* tp_as_sequence */
+    &matrix_as_mapping,          /* tp_as_mapping */
+    0,                           /* tp_hash */
+    0,                           /* tp_call */
+    (reprfunc)matrix_str,        /* tp_str */
+    0,                           /* tp_getattro */
+    0,                           /* tp_setattro */
+#if PY_MAJOR_VERSION >= 3
+    &matrix_as_buffer,           /* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,  /* tp_flags */
+#else
+    0,                           /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE |
-    Py_TPFLAGS_CHECKTYPES,                  /* tp_flags */
-    0,					/* tp_doc */
-    0,					/* tp_traverse */
-    0,					/* tp_clear */
-    (richcmpfunc)matrix_richcompare,        /* tp_richcompare */
-    0,					/* tp_weaklistoffset */
-    (getiterfunc)matrix_iter,		/* tp_iter */
-    0,	       	                        /* tp_iternext */
-    matrix_methods,		                /* tp_methods */
-    0,			        	/* tp_members */
-    matrix_getsets,			        /* tp_getset */
-    0,		                        /* tp_base */
-    0,					/* tp_dict */
-    0,					/* tp_descr_get */
-    0,					/* tp_descr_set */
-    0,					/* tp_dictoffset */
-    0,                                      /* tp_init */
-    0,              			/* tp_alloc */
-    matrix_new,				/* tp_new */
-    0,           				/* tp_free */
+    Py_TPFLAGS_CHECKTYPES,       /* tp_flags */
+#endif
+    0,                           /* tp_doc */
+    0,                           /* tp_traverse */
+    0,                           /* tp_clear */
+    (richcmpfunc)matrix_richcompare,  /* tp_richcompare */
+    0,                          /* tp_weaklistoffset */
+    (getiterfunc)matrix_iter,   /* tp_iter */
+    0,                          /* tp_iternext */
+    matrix_methods,             /* tp_methods */
+    0,                          /* tp_members */
+    matrix_getsets,             /* tp_getset */
+    0,                          /* tp_base */
+    0,                          /* tp_dict */
+    0,                          /* tp_descr_get */
+    0,                          /* tp_descr_set */
+    0,                          /* tp_dictoffset */
+    0,                          /* tp_init */
+    0,                          /* tp_alloc */
+    matrix_new,                 /* tp_new */
+    0,                          /* tp_free */
 };
 
 /**************************************************************************/
@@ -1555,7 +1783,11 @@ matrix_div_generic(PyObject *self, PyObject *other, int inplace)
 
   int id_self = get_id(self, (Matrix_Check(self) ? 0 : 1));
   int id_other = get_id(other, (Matrix_Check(other) ? 0 : 1));
+#if PY_MAJOR_VERSION >= 3
+  int id = MAX(DOUBLE, MAX(id_self,id_other));
+#else
   int id = MAX(id_self,id_other);
+#endif
 
   number n;
   convert_num[id](&n,other,(Matrix_Check(other) ? 0 : 1),0);
@@ -1713,44 +1945,60 @@ static int matrix_nonzero(matrix *self)
 }
 
 static PyNumberMethods matrix_as_number = {
-    (binaryfunc)matrix_add,	/*nb_add*/
-    (binaryfunc)matrix_sub,	/*nb_subtract*/
-    (binaryfunc)matrix_mul,	/*nb_multiply*/
-    (binaryfunc)matrix_div, /*nb_divide*/
-    (binaryfunc)matrix_rem, /*nb_remainder*/
-    0,	                /*nb_divmod*/
-    (ternaryfunc)matrix_pow, /*nb_power*/
-    (unaryfunc)matrix_neg,	/*nb_negative*/
-    (unaryfunc)matrix_pos,	/*nb_positive*/
-    (unaryfunc)matrix_abs,	/*nb_absolute*/
-    (inquiry)matrix_nonzero,/*nb_nonzero*/
-    0,	                /*nb_invert*/
-    0,	                /*nb_lshift*/
-    0,	                /*nb_rshift*/
-    0,	                /*nb_and*/
-    0,	                /*nb_xor*/
-    0,	                /*nb_or*/
-    0,		        /*nb_coerce*/
-    0,	                /*nb_int*/
-    0,	                /*nb_long*/
-    0,                      /*nb_float*/
-    0,	                /*nb_oct*/
-    0, 	                /*nb_hex*/
-    (binaryfunc)matrix_iadd,/*nb_inplace_add*/
-    (binaryfunc)matrix_isub,/*nb_inplace_subtract*/
-    (binaryfunc)matrix_imul,/*nb_inplace_multiply*/
-    (binaryfunc)matrix_idiv,/*nb_inplace_divide*/
-    (binaryfunc)matrix_irem,/*nb_inplace_remainder*/
-    0,			/*nb_inplace_power*/
-    0,			/*nb_inplace_lshift*/
-    0,			/*nb_inplace_rshift*/
-    0,			/*nb_inplace_and*/
-    0,			/*nb_inplace_xor*/
-    0,			/*nb_inplace_or*/
-    0,	                /*nb_floor_divide*/
-    0,	                /*nb_true_divide*/
-    0,			/*nb_inplace_floor_divide*/
-    0,			/*nb_inplace_true_divide*/
+    (binaryfunc)matrix_add,    /*nb_add*/
+    (binaryfunc)matrix_sub,    /*nb_subtract*/
+    (binaryfunc)matrix_mul,    /*nb_multiply*/
+#if PY_MAJOR_VERSION < 3
+    (binaryfunc)matrix_div,    /*nb_divide*/
+#endif
+    (binaryfunc)matrix_rem,    /*nb_remainder*/
+    0,                         /*nb_divmod*/
+    (ternaryfunc)matrix_pow,   /*nb_power*/
+    (unaryfunc)matrix_neg,     /*nb_negative*/
+    (unaryfunc)matrix_pos,     /*nb_positive*/
+    (unaryfunc)matrix_abs,     /*nb_absolute*/
+    (inquiry)matrix_nonzero,   /*nb_nonzero*/
+    0,                         /*nb_invert*/
+    0,	                       /*nb_lshift*/
+    0,                         /*nb_rshift*/
+    0,                         /*nb_and*/
+    0,                         /*nb_xor*/
+    0,                         /*nb_or*/
+#if PY_MAJOR_VERSION < 3
+    0,                         /*nb_coerce*/
+#endif
+    0,	                       /*nb_int*/
+    0,                         /*nb_long*/
+    0,                         /*nb_float*/
+#if PY_MAJOR_VERSION < 3
+    0,                         /*nb_oct*/
+    0,                         /*nb_hex*/
+#endif
+    (binaryfunc)matrix_iadd,   /*nb_inplace_add*/
+    (binaryfunc)matrix_isub,   /*nb_inplace_subtract*/
+    (binaryfunc)matrix_imul,   /*nb_inplace_multiply*/
+#if PY_MAJOR_VERSION < 3
+    (binaryfunc)matrix_idiv,   /*nb_inplace_divide*/
+#endif
+    (binaryfunc)matrix_irem,   /*nb_inplace_remainder*/
+    0,                         /*nb_inplace_power*/
+    0,                         /*nb_inplace_lshift*/
+    0,                         /*nb_inplace_rshift*/
+    0,                         /*nb_inplace_and*/
+    0,                         /*nb_inplace_xor*/
+    0,                         /*nb_inplace_or*/
+    0,                         /*nb_floor_divide*/
+#if PY_MAJOR_VERSION < 3
+    0,                         /*nb_true_divide*/
+#else
+    (binaryfunc)matrix_div,    /*nb_true_divide*/
+#endif
+    0,                         /*nb_inplace_floor_divide*/
+#if PY_MAJOR_VERSION < 3
+    0,                         /*nb_inplace_true_divide*/
+#else
+    (binaryfunc)matrix_idiv    /*nb_inplace_true_divide*/
+#endif
 };
 
 
@@ -1818,35 +2066,39 @@ matrixiter_next(matrixiter *it)
 }
 
 static PyTypeObject matrixiter_tp = {
+#if PY_MAJOR_VERSION >= 3
+    PyVarObject_HEAD_INIT(NULL, 0)
+#else
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "matrixiter",			        /* tp_name */
-    sizeof(matrixiter),      		/* tp_basicsize */
-    0,					/* tp_itemsize */
-    (destructor)matrixiter_dealloc,		/* tp_dealloc */
-    0,					/* tp_print */
-    0,					/* tp_getattr */
-    0,					/* tp_setattr */
-    0,					/* tp_compare */
-    0,					/* tp_repr */
-    0,					/* tp_as_number */
-    0,					/* tp_as_sequence */
-    0,					/* tp_as_mapping */
-    0,					/* tp_hash */
-    0,					/* tp_call */
-    0,					/* tp_str */
-    0,                      		/* tp_getattro */
-    0,					/* tp_setattro */
-    0,					/* tp_as_buffer */
+    0,                                  /* ob_size */
+#endif
+    "matrixiter",                       /* tp_name */
+    sizeof(matrixiter),                 /* tp_basicsize */
+    0,                                  /* tp_itemsize */
+    (destructor)matrixiter_dealloc,     /* tp_dealloc */
+    0,                                  /* tp_print */
+    0,                                  /* tp_getattr */
+    0,                                  /* tp_setattr */
+    0,                                  /* tp_compare */
+    0,                                  /* tp_repr */
+    0,                                  /* tp_as_number */
+    0,                                  /* tp_as_sequence */
+    0,                                  /* tp_as_mapping */
+    0,                                  /* tp_hash */
+    0,                                  /* tp_call */
+    0,                                  /* tp_str */
+    0,                                  /* tp_getattro */
+    0,                                  /* tp_setattro */
+    0,	                                /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,/* tp_flags */
-    0,					/* tp_doc */
-    (traverseproc)matrixiter_traverse,	/* tp_traverse */
-    0,					/* tp_clear */
-    0,					/* tp_richcompare */
-    0,					/* tp_weaklistoffset */
-    0,                  			/* tp_iter */
-    (iternextfunc)matrixiter_next,		/* tp_iternext */
-    0,					/* tp_methods */
+    0,                                  /* tp_doc */
+    (traverseproc)matrixiter_traverse,  /* tp_traverse */
+    0,                                  /* tp_clear */
+    0,                                  /* tp_richcompare */
+    0,                                  /* tp_weaklistoffset */
+    0,                                  /* tp_iter */
+    (iternextfunc)matrixiter_next,      /* tp_iternext */
+    0,                                  /* tp_methods */
 };
 
 
@@ -1857,7 +2109,11 @@ PyObject * matrix_log(matrix *self, PyObject *args, PyObject *kwrds)
 
   if (!PyArg_ParseTuple(args, "O", &A)) return NULL;
 
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(A) || PyFloat_Check(A)) {
+#else
   if (PyInt_Check(A) || PyFloat_Check(A)) {
+#endif
     double f = PyFloat_AsDouble(A);
     if (f>0.0)
       return Py_BuildValue("d",log(f));
@@ -1924,7 +2180,11 @@ PyObject * matrix_exp(matrix *self, PyObject *args, PyObject *kwrds)
 
   if (!PyArg_ParseTuple(args, "O", &A)) return NULL;
 
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(A) || PyFloat_Check(A))
+#else
   if (PyInt_Check(A) || PyFloat_Check(A))
+#endif
     return Py_BuildValue("d",exp(PyFloat_AsDouble(A)));
 
   else if (PyComplex_Check(A)) {
@@ -1959,7 +2219,11 @@ PyObject * matrix_sqrt(matrix *self, PyObject *args, PyObject *kwrds)
 
   if (!PyArg_ParseTuple(args, "O", &A)) return NULL;
 
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(A) || PyFloat_Check(A)) {
+#else
   if (PyInt_Check(A) || PyFloat_Check(A)) {
+#endif
     double f = PyFloat_AsDouble(A);
     if (f >= 0.0)
       return Py_BuildValue("d",sqrt(f));
@@ -2017,7 +2281,11 @@ PyObject * matrix_cos(matrix *self, PyObject *args, PyObject *kwrds)
 
   if (!PyArg_ParseTuple(args, "O", &A)) return NULL;
 
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(A) || PyFloat_Check(A))
+#else
   if (PyInt_Check(A) || PyFloat_Check(A))
+#endif
     return Py_BuildValue("d",cos(PyFloat_AsDouble(A)));
 
   else if (PyComplex_Check(A)) {
@@ -2052,7 +2320,11 @@ PyObject * matrix_sin(matrix *self, PyObject *args, PyObject *kwrds)
 
   if (!PyArg_ParseTuple(args, "O", &A)) return NULL;
 
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(A) || PyFloat_Check(A))
+#else
   if (PyInt_Check(A) || PyFloat_Check(A))
+#endif
     return Py_BuildValue("d",sin(PyFloat_AsDouble(A)));
 
   else if (PyComplex_Check(A)) {
@@ -2080,5 +2352,3 @@ PyObject * matrix_sin(matrix *self, PyObject *args, PyObject *kwrds)
   }
   else PY_ERR_TYPE("argument must a be a number or dense matrix");
 }
-
-

@@ -2,10 +2,13 @@
 # Experiment design.
 
 from math import pi, log, sqrt
-import pylab
 from cvxopt import blas, lapack, solvers
 from cvxopt import matrix, spmatrix, spdiag, mul, cos, sin
-solvers.options['show_progress'] = False
+#solvers.options['show_progress'] = False
+
+try: import pylab
+except ImportError: pylab_installed = False
+else: pylab_installed = True
 
 V = matrix([-2.1213,    2.1213,
             -2.2981,    1.9284,
@@ -64,14 +67,15 @@ def F(x=None, z=None):
     return f, gradf, z[0] * H**2
 xd = solvers.cp(F, G, h, A = A, b = b)['x']
 
-pylab.figure(1, facecolor='w', figsize=(6,6)) 
-pylab.plot(V[0,:], V[1,:],'ow', [0], [0], 'k+')
-I = [ k for k in xrange(n) if xd[k] > 1e-5 ]
-pylab.plot(V[0,I], V[1,I],'or')
+if pylab_installed:
+    pylab.figure(1, facecolor='w', figsize=(6,6)) 
+    pylab.plot(V[0,:], V[1,:],'ow', [0], [0], 'k+')
+    I = [ k for k in range(n) if xd[k] > 1e-5 ]
+    pylab.plot(V[0,I], V[1,I],'or')
 
 # Enclosing ellipse is  {x | x' * (V*diag(xe)*V')^-1 * x = sqrt(2)}
 nopts = 1000
-angles = matrix( [ a*2.0*pi/nopts for a in xrange(nopts) ], (1,nopts) )
+angles = matrix( [ a*2.0*pi/nopts for a in range(nopts) ], (1,nopts) )
 circle = matrix(0.0, (2,nopts))
 circle[0,:], circle[1,:] = cos(angles), sin(angles)
 
@@ -79,10 +83,11 @@ W = V * spdiag(xd) * V.T
 lapack.potrf(W)
 ellipse = sqrt(2.0) * circle
 blas.trmm(W, ellipse)
-pylab.plot(ellipse[0,:].T, ellipse[1,:].T, 'k--')
-pylab.axis([-5, 5, -5, 5])
-pylab.title('D-optimal design (fig. 7.9)')
-pylab.axis('off')
+if pylab_installed:
+    pylab.plot(ellipse[0,:].T, ellipse[1,:].T, 'k--')
+    pylab.axis([-5, 5, -5, 5])
+    pylab.title('D-optimal design (fig. 7.9)')
+    pylab.axis('off')
 
 
 # E-design.
@@ -96,7 +101,7 @@ novars = n+1
 c = matrix(0.0, (novars,1))
 c[-1] = -1.0
 Gs = [matrix(0.0, (4,novars))]
-for k in xrange(n):  Gs[0][:,k] = -(V[:,k]*V[:,k].T)[:]
+for k in range(n):  Gs[0][:,k] = -(V[:,k]*V[:,k].T)[:]
 Gs[0][[0,3],-1] = 1.0
 hs = [matrix(0.0, (2,2))]
 Ge = matrix(0.0, (n, novars))
@@ -107,10 +112,11 @@ xe = sol['x'][:n]
 Z = sol['zs'][0]
 mu = sol['y'][0]
 
-pylab.figure(2, facecolor='w', figsize=(6,6)) 
-pylab.plot(V[0,:], V[1,:],'ow', [0], [0], 'k+')
-I = [ k for k in xrange(n) if xe[k] > 1e-5 ]
-pylab.plot(V[0,I], V[1,I],'or')
+if pylab_installed:
+    pylab.figure(2, facecolor='w', figsize=(6,6)) 
+    pylab.plot(V[0,:], V[1,:],'ow', [0], [0], 'k+')
+    I = [ k for k in range(n) if xe[k] > 1e-5 ]
+    pylab.plot(V[0,I], V[1,I],'or')
 
 # Enclosing ellipse follows from the solution of the dual problem:
 #
@@ -121,10 +127,11 @@ pylab.plot(V[0,I], V[1,I],'or')
 lapack.potrf(Z)
 ellipse = sqrt(mu) * circle
 blas.trsm(Z, ellipse, transA='T')
-pylab.plot(ellipse[0,:].T, ellipse[1,:].T, 'k--')
-pylab.axis([-5, 5, -5, 5])
-pylab.title('E-optimal design (fig. 7.10)')
-pylab.axis('off')
+if pylab_installed:
+    pylab.plot(ellipse[0,:].T, ellipse[1,:].T, 'k--')
+    pylab.axis([-5, 5, -5, 5])
+    pylab.title('E-optimal design (fig. 7.10)')
+    pylab.axis('off')
 
 
 # A-design.
@@ -143,7 +150,7 @@ novars = 3 + n
 c = matrix(0.0, (novars,1))
 c[[-3, -1]] = 1.0
 Gs = [matrix(0.0, (16, novars))]
-for k in xrange(n):
+for k in range(n):
     Gk = matrix(0.0, (4,4))
     Gk[:2,:2] = -V[:,k] * V[:,k].T
     Gs[0][:,k] = Gk[:]
@@ -161,10 +168,11 @@ xa = sol['x'][:n]
 Z = sol['zs'][0][:2,:2]
 mu = sol['y'][0]
 
-pylab.figure(3, facecolor='w', figsize = (6,6))
-pylab.plot(V[0,:], V[1,:],'ow', [0], [0], 'k+')
-I = [ k for k in xrange(n) if xa[k] > 1e-5 ]
-pylab.plot(V[0,I], V[1,I],'or')
+if pylab_installed:
+    pylab.figure(3, facecolor='w', figsize = (6,6))
+    pylab.plot(V[0,:], V[1,:],'ow', [0], [0], 'k+')
+    I = [ k for k in range(n) if xa[k] > 1e-5 ]
+    pylab.plot(V[0,I], V[1,I],'or')
 
 # Enclosing ellipse follows from the solution of the dual problem:
 #
@@ -176,8 +184,9 @@ pylab.plot(V[0,I], V[1,I],'or')
 lapack.potrf(Z)
 ellipse = sqrt(mu) * circle
 blas.trsm(Z, ellipse, transA='T')
-pylab.plot(ellipse[0,:].T, ellipse[1,:].T, 'k--')
-pylab.axis([-5, 5, -5, 5])
-pylab.title('A-optimal design (fig. 7.11)')
-pylab.axis('off')
-pylab.show()
+if pylab_installed:
+    pylab.plot(ellipse[0,:].T, ellipse[1,:].T, 'k--')
+    pylab.axis([-5, 5, -5, 5])
+    pylab.title('A-optimal design (fig. 7.11)')
+    pylab.axis('off')
+    pylab.show()

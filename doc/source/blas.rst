@@ -715,7 +715,7 @@ with the vector :math:`x = (1,-1,2,-2)`.
 >>> x = matrix([1., -1., 2., -2.])
 >>> y = matrix(0., (3,1))
 >>> gbmv(A, 3, 1, x, y)
->>> print y
+>>> print(y)
 [-5.00e+00]
 [ 1.20e+01]
 [-1.00e+00]
@@ -729,7 +729,7 @@ The following example illustrates the use of
 >>> A = matrix([-6., 5., -1., 2.], (1,4))
 >>> x = matrix(1.0, (4,1))
 >>> tbsv(A, x)  # x := diag(A)^{-1}*x
->>> print x
+>>> print(x)
 [-1.67e-01]
 [ 2.00e-01]
 [-1.00e+00]

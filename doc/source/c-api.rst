@@ -18,15 +18,36 @@ the API:
 
 ::
 
+    #if PY_MAJOR_VERSION >= 3
+
+    static PyModuleDef blas_module = {
+        PyModuleDef_HEAD_INIT,
+        "blas",
+        blas__doc__,
+        -1,
+        blas_functions,
+        NULL, NULL, NULL, NULL
+    };
+    
+    PyMODINIT_FUNC PyInit_blas(void)
+    {
+      PyObject *m;
+      if (!(m = PyModule_Create(&blas_module))) return NULL;
+      if (import_cvxopt() < 0) return NULL;
+      return m;
+    }
+    
+    #else 
+    
     PyMODINIT_FUNC initblas(void)
     {
       PyObject *m;
-
       m = Py_InitModule3("cvxopt.blas", blas_functions, blas__doc__);
-
-      if (import_cvxopt() < 0)
-        return;
+      if (import_cvxopt() < 0) return ;
     }
+    
+    #endif
+
 
   
 Dense Matrices

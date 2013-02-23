@@ -20,22 +20,22 @@ def mcsdp(w):
         """
             y := alpha*(-diag(x)) + beta*y.   
         """
-	if trans=='N':
+        if trans=='N':
             # x is a vector; y is a matrix.
-	    blas.scal(beta, y)
-	    blas.axpy(x, y, alpha = -alpha, incy = n+1)
+            blas.scal(beta, y)
+            blas.axpy(x, y, alpha = -alpha, incy = n+1)
 
-	else:   
+        else:   
             # x is a matrix; y is a vector.
-	    blas.scal(beta, y)
-	    blas.axpy(x, y, alpha = -alpha, incx = n+1)
+            blas.scal(beta, y)
+            blas.axpy(x, y, alpha = -alpha, incx = n+1)
 	 
 
     def cngrnc(r, x, alpha = 1.0):
         """
         Congruence transformation
 
-	    x := alpha * r'*x*r.
+            x := alpha * r'*x*r.
 
         r and x are square matrices.  
         """
@@ -59,13 +59,13 @@ def mcsdp(w):
 
         # t = rti*rti' as a nonsymmetric matrix.
         t = matrix(0.0, (n,n))
-	blas.gemm(rti, rti, t, transB = 'T') 
+        blas.gemm(rti, rti, t, transB = 'T') 
 
-	# Cholesky factorization of tsq = t.*t.
+        # Cholesky factorization of tsq = t.*t.
         tsq = t**2
-	lapack.potrf(tsq)
+        lapack.potrf(tsq)
 
-	def f(x, y, z):
+        def f(x, y, z):
             """
             Solve
                           -diag(z)                           = bx
@@ -98,7 +98,7 @@ def mcsdp(w):
             # z := -rti' * z * rti = -rti' * (diag(x) + bs) * rti 
             cngrnc(rti, z, alpha = -1.0)
 
-	return f
+        return f
 
     c = matrix(1.0, (n,1))
 

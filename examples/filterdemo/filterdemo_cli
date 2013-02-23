@@ -17,7 +17,7 @@ from matplotlib.backends.backend_gtk import FigureCanvasGTK as FigureCanvas
 import pylab 
 
 def frange(a,b,N):    
-    return [ a+k*float((b-a))/N  for k in xrange(N) ]
+    return [ a+k*float((b-a))/N  for k in range(N) ]
 
 def design_lowpass(N, d1, wc, ws, solver=None, Q=50):
 
@@ -26,11 +26,11 @@ def design_lowpass(N, d1, wc, ws, solver=None, Q=50):
     
     n1 = int(round(N*Q*wc/pi));
     w1 = matrix(frange(0,wc,n1))
-    G1 = matrix([cos(wi*j) for j in xrange(N+1) for wi in w1], (n1,N+1))
+    G1 = matrix([cos(wi*j) for j in range(N+1) for wi in w1], (n1,N+1))
 
     n2 = int(round(N*Q*(pi-ws)/pi));
     w2 = matrix(frange(ws,pi,n2))
-    G2 = matrix([cos(wi*j) for j in xrange(N+1) for wi in w2], (n2,N+1))
+    G2 = matrix([cos(wi*j) for j in range(N+1) for wi in w2], (n2,N+1))
     
     options['show_progress'] = 0    
     options['LPX_K_MSGLEV'] = 0
@@ -42,7 +42,7 @@ def design_lowpass(N, d1, wc, ws, solver=None, Q=50):
 def make_plot(h, d2, co, sb, pr, N, output=None):
     w = matrix(frange(0,pi,N*50));        
     C = w*matrix(range(N+1), (1,N+1), 'd');
-    for i in xrange(len(C)): C[i] = cos(C[i])
+    for i in range(len(C)): C[i] = cos(C[i])
     
     fig = pylab.figure()
     ax = fig.add_subplot(111)
@@ -61,7 +61,7 @@ def make_plot(h, d2, co, sb, pr, N, output=None):
     ax.grid()
 
 def usage():
-    print """
+    print("""
 Usage:
 filterdemo_cli --cutoff=CO --stopband=SB --ripple=RP --order=N [options]
 
@@ -73,8 +73,8 @@ Arguments:
 
 Options:
 --solver = SOLVER      One of default, mosek, glpk
---output = FILENAME    Output filename.
-"""
+--output = FILENAME    Output filename. 
+""")
     sys.exit(2)
     
 def main():
@@ -103,26 +103,26 @@ def main():
     if None in [co, sb, pr, N]: usage()
     
     if not (0.1 <= co < sb-0.01+1E-8 <= 0.5):
-        print "invalid cutoff and stopband frequencies"
+        print("invalid cutoff and stopband frequencies")
         usage()
 
     if not (0.01 <= pr <= 3):
-        print "invalid value of passband ripple"
+        print("invalid value of passband ripple")
         usage()
 
     if not (5 <= N <= 50):
-        print "invalid filterorder"
+        print("invalid filterorder")
         usage()
     
     if not solver in ['default','mosek','glpk']:
-        print "invalid solver"
+        print("invalid solver")
         usage()
 
 
     try:
         [h, d2] = design_lowpass(N, pr, co*pi, sb*pi, solver)
     except:
-        print "Please tighten filter specifications."
+        print("Please tighten filter specifications.")
         sys.exit(2)
         
         

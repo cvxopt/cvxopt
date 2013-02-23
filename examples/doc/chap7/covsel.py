@@ -8,7 +8,7 @@ def covsel(Y):
     """
     Returns the solution of
  
-        minimize    -logdet K + tr(KY)
+        minimize    -log det K + tr(KY)
         subject to  K_ij = 0  if (i,j) not in zip(I, J).
 
     Y is a symmetric sparse matrix with nonzero diagonal elements.
@@ -22,7 +22,7 @@ def covsel(Y):
     # non-zero positions for one-argument indexing 
     N = I + J*n         
     # position of diagonal elements
-    D = [ k for k in xrange(m) if I[k]==J[k] ]  
+    D = [ k for k in range(m) if I[k]==J[k] ]  
 
     # starting point: symmetric identity with nonzero pattern I,J
     K = spmatrix(0.0, I, J) 
@@ -37,7 +37,7 @@ def covsel(Y):
     # Kinv will be the inverse of K
     Kinv = matrix(0.0, (n,n))
 
-    for iters in xrange(100):
+    for iters in range(100):
 
         # numeric factorization of K
         cholmod.numeric(K, F)
@@ -57,9 +57,9 @@ def covsel(Y):
                                                   
         # stopping criterion
         sqntdecr = -blas.dot(grad,v) 
-        print "Newton decrement squared:%- 7.5e" %sqntdecr
+        print("Newton decrement squared:%- 7.5e" %sqntdecr)
         if (sqntdecr < 1e-12):
-            print "number of iterations: ", iters+1 
+            print("number of iterations: %d" %(iters+1))
             break
 
         # line search
@@ -67,7 +67,7 @@ def covsel(Y):
         dx[D] *= 2      
         f = -2.0*sum(log(d))      # f = -log det K
         s = 1
-        for lsiter in xrange(50):
+        for lsiter in range(50):
             Kn.V = K.V + s*dx
             try: 
                 cholmod.numeric(Kn, F)
@@ -83,6 +83,6 @@ def covsel(Y):
 
     return K
 
-Y = load(open("covsel.bin","r"))
-print "%d rows/columns, %d nonzeros\n" %(Y.size[0], len(Y))
+Y = load(open("covsel.bin","rb"))
+print("%d rows/columns, %d nonzeros\n" %(Y.size[0], len(Y)))
 covsel(Y)

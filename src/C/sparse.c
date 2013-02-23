@@ -1,8 +1,8 @@
 /*
- * Copyright 2010 L. Vandenberghe.
+ * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.3.
+ * This file is part of CVXOPT version 1.1.4.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,9 @@ extern int get_id(void *, int ) ;
 extern PyTypeObject matrix_tp ;
 extern matrix * Matrix_NewFromMatrix(matrix *, int) ;
 extern matrix * Matrix_NewFromSequence(PyObject *, int) ;
+#if PY_MAJOR_VERSION < 3
 extern matrix * Matrix_NewFromArrayStruct(PyObject *, int, int_t *) ;
+#endif
 extern matrix * Matrix_NewFromNumber(int_t , int_t , int_t , void *, int ) ;
 extern matrix * create_indexlist(int, PyObject *) ;
 extern matrix * Matrix_New(int_t, int_t, int) ;
@@ -1052,8 +1054,8 @@ int sp_zsymv(char uplo, int n, number alpha, ccs *A, int oA, void *x, int ix,
 }
 
 static int sp_dgemm(char tA, char tB, number alpha, void *a, void *b,
-    number beta, void *c, int sp_a, int sp_b, int sp_c, int partial, void **z,
-    int m, int n, int k)
+    number beta, void *c, int sp_a, int sp_b, int sp_c, int partial, 
+    void **z, int m, int n, int k)
 {
 
   if (sp_a && sp_b && sp_c && partial) {
@@ -2242,7 +2244,11 @@ static void spmatrix_dealloc(spmatrix* self)
   free(self->obj->colptr);
   free(self->obj->rowind);
   free(self->obj);
+#if PY_MAJOR_VERSION >= 3
+  Py_TYPE(self)->tp_free((PyObject*)self);
+#else
   self->ob_type->tp_free((PyObject*)self);
+#endif
 }
 
 static PyObject *
@@ -2255,8 +2261,13 @@ spmatrix_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 
   static char *kwlist[] = { "V", "I", "J", "size","tc", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "OOO|OC:spmatrix", kwlist,
+      &V, &Il, &Jl, &size, &tc))
+#else
   if (!PyArg_ParseTupleAndKeywords(args, kwds, "OOO|Oc:spmatrix", kwlist,
       &V, &Il, &Jl, &size, &tc))
+#endif
     return NULL;
 
   if (!(PySequence_Check((PyObject *)V) || Matrix_Check(V) || PY_NUMBER(V))) {
@@ -2272,14 +2283,18 @@ spmatrix_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
   if (tc && !(VALID_TC_SP(tc))) PY_ERR_TYPE("tc must be 'd' or 'z'");
   int id = (tc ? TC2ID(tc) : -1);
 
+#if PY_MAJOR_VERSION < 3
   int_t ndim = 0;
+#endif
   /* convert lists to matrices */
   if (Matrix_Check(Il))
     Py_INCREF(Il);
+#if PY_MAJOR_VERSION < 3
   else if (PyObject_HasAttrString((PyObject *)Il,"__array_struct__")) {
     if (!(Il = Matrix_NewFromArrayStruct((PyObject *)Il, INT, &ndim)))
       return NULL;
   }
+#endif
   else if (PySequence_Check((PyObject *)Il)) {
     if (!(Il = Matrix_NewFromSequence((PyObject *)Il, INT)))
       return NULL;
@@ -2288,12 +2303,14 @@ spmatrix_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 
   if (Matrix_Check(Jl))
     Py_INCREF(Jl);
+#if PY_MAJOR_VERSION < 3
   else if (PyObject_HasAttrString((PyObject *)Jl,"__array_struct__")) {
     if (!(Jl = Matrix_NewFromArrayStruct((PyObject *)Jl, INT, &ndim))) {
       Py_DECREF(Il);
       return NULL;
     }
   }
+#endif
   else if (PySequence_Check((PyObject *)Jl)) {
     if (!(Jl = Matrix_NewFromSequence((PyObject *)Jl, INT))) {
       Py_DECREF(Il);
@@ -2307,6 +2324,7 @@ spmatrix_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 
   if (Matrix_Check(V))
     Py_INCREF(V);
+#if PY_MAJOR_VERSION < 3
   else if (PyObject_HasAttrString((PyObject *)V,"__array_struct__")) {
     int_t ndim = 0;
     if (!(V = Matrix_NewFromArrayStruct((PyObject *)V, id, &ndim))) {
@@ -2315,6 +2333,7 @@ spmatrix_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
       return NULL;
     }
   }
+#endif
   else if (PySequence_Check((PyObject *)V))
     {
     if (!(V = Matrix_NewFromSequence((PyObject *)V, id))) {
@@ -2399,8 +2418,13 @@ static PyObject * spmatrix_get_size(spmatrix *self, void *closure)
 {
   PyObject *t = PyTuple_New(2);
 
+#if PY_MAJOR_VERSION >= 3
+  PyTuple_SET_ITEM(t, 0, PyLong_FromLong(SP_NROWS(self)));
+  PyTuple_SET_ITEM(t, 1, PyLong_FromLong(SP_NCOLS(self)));
+#else
   PyTuple_SET_ITEM(t, 0, PyInt_FromLong(SP_NROWS(self)));
   PyTuple_SET_ITEM(t, 1, PyInt_FromLong(SP_NCOLS(self)));
+#endif
 
   return t;
 }
@@ -2412,12 +2436,22 @@ static int spmatrix_set_size(spmatrix *self, PyObject *value, void *closure)
   if (!PyTuple_Check(value) || PyTuple_Size(value) != 2)
     PY_ERR_INT(PyExc_TypeError, "can only assign a 2-tuple to size");
 
+#if PY_MAJOR_VERSION >= 3
+  if (!PyLong_Check(PyTuple_GET_ITEM(value, 0)) ||
+      !PyLong_Check(PyTuple_GET_ITEM(value, 1)))
+#else
   if (!PyInt_Check(PyTuple_GET_ITEM(value, 0)) ||
       !PyInt_Check(PyTuple_GET_ITEM(value, 1)))
+#endif
     PY_ERR_INT(PyExc_TypeError, "invalid size tuple");
 
+#if PY_MAJOR_VERSION >= 3
+  int m = PyLong_AS_LONG(PyTuple_GET_ITEM(value, 0));
+  int n = PyLong_AS_LONG(PyTuple_GET_ITEM(value, 1));
+#else
   int m = PyInt_AS_LONG(PyTuple_GET_ITEM(value, 0));
   int n = PyInt_AS_LONG(PyTuple_GET_ITEM(value, 1));
+#endif
 
   if (m<0 || n<0)
     PY_ERR_INT(PyExc_TypeError, "dimensions must be non-negative");
@@ -2450,7 +2484,11 @@ static int spmatrix_set_size(spmatrix *self, PyObject *value, void *closure)
 
 static PyObject * spmatrix_get_typecode(matrix *self, void *closure)
 {
+#if PY_MAJOR_VERSION >= 3
+  return PyUnicode_FromStringAndSize(TC_CHAR[SP_ID(self)], 1);
+#else
   return PyString_FromStringAndSize(TC_CHAR[SP_ID(self)], 1);
+#endif
 }
 
 static PyObject *
@@ -2574,8 +2612,13 @@ spmatrix_getstate(spmatrix *self)
     return NULL;
   }
 
+#if PY_MAJOR_VERSION >= 3
+  PyTuple_SET_ITEM(size, 0, PyLong_FromLong(SP_NROWS(self)));
+  PyTuple_SET_ITEM(size, 1, PyLong_FromLong(SP_NCOLS(self)));
+#else
   PyTuple_SET_ITEM(size, 0, PyInt_FromLong(SP_NROWS(self)));
   PyTuple_SET_ITEM(size, 1, PyInt_FromLong(SP_NCOLS(self)));
+#endif
 
   return Py_BuildValue("NNNNs", V, Il, Jl, size, TC_CHAR[SP_ID(self)]);
 
@@ -2633,21 +2676,25 @@ static PyObject * spmatrix_imag(spmatrix *self) {
 static PyObject *
 spmatrix_reduce(spmatrix* self)
 {
+#if PY_MAJOR_VERSION >= 3
+  return Py_BuildValue("ON", Py_TYPE(self), spmatrix_getstate(self));
+#else
   return Py_BuildValue("ON", self->ob_type, spmatrix_getstate(self));
+#endif
 }
 
 static PyMethodDef spmatrix_methods[] = {
     {"real", (PyCFunction)spmatrix_real, METH_NOARGS,
         "Returns real part of sparse matrix"},
-        {"imag", (PyCFunction)spmatrix_imag, METH_NOARGS,
-            "Returns imaginary part of sparse matrix"},
-            {"trans", (PyCFunction)spmatrix_trans, METH_NOARGS,
-                "Returns the matrix transpose"},
-                {"ctrans", (PyCFunction)spmatrix_ctrans, METH_NOARGS,
-                    "Returns the matrix conjugate transpose"},
-                    {"__reduce__", (PyCFunction)spmatrix_reduce, METH_NOARGS,
-                        "__reduce__() -> (cls, state)"},
-                        {NULL}  /* Sentinel */
+    {"imag", (PyCFunction)spmatrix_imag, METH_NOARGS,
+        "Returns imaginary part of sparse matrix"},
+    {"trans", (PyCFunction)spmatrix_trans, METH_NOARGS,
+        "Returns the matrix transpose"},
+    {"ctrans", (PyCFunction)spmatrix_ctrans, METH_NOARGS,
+        "Returns the matrix conjugate transpose"},
+    {"__reduce__", (PyCFunction)spmatrix_reduce, METH_NOARGS,
+        "__reduce__() -> (cls, state)"},
+    {NULL}  /* Sentinel */
 };
 
 
@@ -2743,8 +2790,13 @@ spmatrix_subscr(spmatrix* self, PyObject* args)
   matrix *Il = NULL, *Jl = NULL;
 
   /* single integer */
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(args)) {
+    i = PyLong_AS_LONG(args);
+#else
   if (PyInt_Check(args)) {
     i = PyInt_AS_LONG(args);
+#endif
     if ( i<-SP_LGT(self) || i >= SP_LGT(self) )
       PY_ERR(PyExc_IndexError, "index out of range");
 
@@ -2789,8 +2841,13 @@ spmatrix_subscr(spmatrix* self, PyObject* args)
     PY_ERR(PyExc_TypeError, "invalid index sets I or J");
 
   /* two integers, subscript form, handle separately */
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(argI) && PyLong_Check(argJ)) {
+    i = PyLong_AS_LONG(argI); j = PyLong_AS_LONG(argJ);
+#else
   if (PyInt_Check(argI) && PyInt_Check(argJ)) {
     i = PyInt_AS_LONG(argI); j = PyInt_AS_LONG(argJ);
+#endif
     if ( OUT_RNG(i, SP_NROWS(self)) || OUT_RNG(j, SP_NCOLS(self)) )
       PY_ERR(PyExc_IndexError, "index out of range");
 
@@ -2802,30 +2859,48 @@ spmatrix_subscr(spmatrix* self, PyObject* args)
 
   if (PySlice_Check(argI)) {
     int_t rowstart, rowstop, rowstep, rowlgt, rowcnt;
-
+   
+#if PY_MAJOR_VERSION >= 3
+    if (PySlice_GetIndicesEx(argI, SP_NROWS(self), &rowstart, &rowstop, 
+        &rowstep, &rowlgt) < 0) return NULL;
+#else
     if (PySlice_GetIndicesEx((PySliceObject*)argI, SP_NROWS(self),
         &rowstart, &rowstop, &rowstep, &rowlgt) < 0) return NULL;
+#endif
 
     int_t colstart, colstop, colstep, collgt, colcnt;
-    if (PySlice_Check(argJ))
-      {
+    if (PySlice_Check(argJ)) {
+#if PY_MAJOR_VERSION >= 3
+      if (PySlice_GetIndicesEx(argJ, SP_NCOLS(self), &colstart, &colstop, 
+          &colstep, &collgt) < 0) return NULL;
+#else
       if (PySlice_GetIndicesEx((PySliceObject*)argJ, SP_NCOLS(self),
-          &colstart, &colstop, &colstep, &collgt) < 0)
-        return NULL;
-      }
-    else if (PyInt_Check(argJ))
-      {
-      j = PyInt_AS_LONG(argJ);
-      if ( OUT_RNG(j, SP_NCOLS(self)) )
-        PY_ERR(PyExc_IndexError, "index out of range");
-      colstart = 	CWRAP(j,SP_NCOLS(self)); colstop = colstart; collgt = 1; colstep = 1;
-      }
-    else if (PyList_Check(argJ) || Matrix_Check(argJ)) {
-      if (!(Jl = create_indexlist(SP_NCOLS(self), argJ)))
-        return NULL;
-
-      colstart = 0; colstop = MAT_LGT(Jl)-1; collgt = MAT_LGT(Jl); colstep = 1;
+          &colstart, &colstop, &colstep, &collgt) < 0) return NULL;
+#endif
     }
+#if PY_MAJOR_VERSION >= 3
+    else if (PyLong_Check(argJ)){
+      j = PyLong_AS_LONG(argJ);
+#else
+    else if (PyInt_Check(argJ)){
+      j = PyInt_AS_LONG(argJ);
+#endif
+      if ( OUT_RNG(j, SP_NCOLS(self)) )
+          PY_ERR(PyExc_IndexError, "index out of range");
+      colstart = CWRAP(j,SP_NCOLS(self)); 
+      colstop = colstart; 
+      collgt = 1; 
+      colstep = 1;
+    }
+    else if (PyList_Check(argJ) || Matrix_Check(argJ)) {
+      if (!(Jl = create_indexlist(SP_NCOLS(self), argJ))) 
+        return NULL;
+      colstart = 0; 
+      colstop = MAT_LGT(Jl)-1; 
+      collgt = MAT_LGT(Jl); 
+      colstep = 1;
+    }
+    else PY_ERR_TYPE("invalid index argument");
 
     int_t *colptr = calloc(collgt+1, sizeof(int_t));
     if (!colptr) {
@@ -3014,11 +3089,13 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
   if (!value) PY_ERR_INT(PyExc_NotImplementedError,
       "cannot delete matrix entries");
 
-  if (!(PY_NUMBER(value) || Matrix_Check(value) || SpMatrix_Check(value))) {
+  if (!(PY_NUMBER(value) || Matrix_Check(value) || SpMatrix_Check(value))){
+#if PY_MAJOR_VERSION < 3
     if (PyObject_HasAttrString(value,"__array_struct__"))
       value = (PyObject *)Matrix_NewFromArrayStruct(value, -1,
           &arraystruct_nd);
     else
+#endif
       value = (PyObject *)Matrix_NewFromSequence(value, SP_ID(self));
 
     if (!value)
@@ -3047,11 +3124,19 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
     itype = 's';
 
   /* single integer */
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(args)) {
+#else
   if (PyInt_Check(args)) {
+#endif
     if (itype != 'n')
       PY_ERR_INT(PyExc_IndexError, "incompatible sizes in assignment");
 
+#if PY_MAJOR_VERSION >= 3
+    i = PyLong_AsLong(args);
+#else
     i = PyInt_AsLong(args);
+#endif
     if ( i<-SP_LGT(self) || i >= SP_LGT(self) )
       PY_ERR_INT(PyExc_IndexError, "index out of range");
 
@@ -3289,12 +3374,20 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
     PY_ERR_INT(PyExc_TypeError, "invalid index arguments");
 
   /* two integers, subscript form, handle separately */
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(argI) && PyLong_Check(argJ)) {
+#else
   if (PyInt_Check(argI) && PyInt_Check(argJ)) {
+#endif
 
     if (itype != 'n')
       PY_ERR_INT(PyExc_TypeError, "argument has wrong size");
 
+#if PY_MAJOR_VERSION >= 3
+    i = PyLong_AS_LONG(argI); j = PyLong_AS_LONG(argJ);
+#else
     i = PyInt_AS_LONG(argI); j = PyInt_AS_LONG(argJ);
+#endif
     if ( OUT_RNG(i, SP_NROWS(self)) || OUT_RNG(j, SP_NCOLS(self)) )
       PY_ERR_INT(PyExc_IndexError, "index out of range");
 
@@ -3796,9 +3889,9 @@ spmatrix_mul(PyObject *self, PyObject *other)
 
   int id = MAX(get_id(self, PY_NUMBER(self)),get_id(other, PY_NUMBER(other)));
   if (PY_NUMBER(self) || (Matrix_Check(self) && MAT_LGT(self) == 1 &&
-      !(SpMatrix_Check(other) && SP_NCOLS(other) == 1)) ||
+      !(SpMatrix_Check(other) && SP_NROWS(other) == 1)) ||
       PY_NUMBER(other) || (Matrix_Check(other) && MAT_LGT(other) == 1 &&
-          !(SpMatrix_Check(self) && SP_NROWS(self) == 1)) )
+          !(SpMatrix_Check(self) && SP_NCOLS(self) == 1)) )
     {
 
     spmatrix *ret = SpMatrix_NewFromSpMatrix((spmatrix *)
@@ -3939,44 +4032,65 @@ static int spmatrix_nonzero(matrix *self)
 
 
 static PyNumberMethods spmatrix_as_number = {
-    (binaryfunc)spmatrix_add, /*nb_add*/
-    (binaryfunc)spmatrix_sub, /*nb_subtract*/
-    (binaryfunc)spmatrix_mul, /*nb_multiply*/
-    (binaryfunc)spmatrix_div, /*nb_divide*/
-    0,                      /*nb_remainder*/
-    0,	                /*nb_divmod*/
-    0,	                /*nb_power*/
-    (unaryfunc)spmatrix_neg,/*nb_negative*/
-    (unaryfunc)spmatrix_pos,/*nb_positive*/
-    (unaryfunc)spmatrix_abs,/*nb_absolute*/
-    (inquiry)spmatrix_nonzero,/*nb_nonzero*/
-    0,	                /*nb_invert*/
-    0,	                /*nb_lshift*/
-    0,	                /*nb_rshift*/
-    0,	                /*nb_and*/
-    0,	                /*nb_xor*/
-    0,	                /*nb_or*/
-    0,		        /*nb_coerce*/
-    0,	                /*nb_int*/
-    0,	                /*nb_long*/
-    0,	                /*nb_float*/
-    0,	                /*nb_oct*/
-    0, 	                /*nb_hex*/
-    (binaryfunc)spmatrix_iadd,/*nb_inplace_add*/
-    (binaryfunc)spmatrix_isub,/*nb_inplace_subtract*/
-    (binaryfunc)spmatrix_imul,/*nb_inplace_multiply*/
-    (binaryfunc)spmatrix_idiv,/*nb_inplace_divide*/
-    0,                      /*nb_inplace_remainder*/
-    0,			/*nb_inplace_power*/
-    0,			/*nb_inplace_lshift*/
-    0,			/*nb_inplace_rshift*/
-    0,			/*nb_inplace_and*/
-    0,			/*nb_inplace_xor*/
-    0,			/*nb_inplace_or*/
-    0,	                /* nb_floor_divide */
-    0,	                /* nb_true_divide */
-    0,			/* nb_inplace_floor_divide */
-    0,			/* nb_inplace_true_divide */
+    (binaryfunc)spmatrix_add,    /*nb_add*/
+    (binaryfunc)spmatrix_sub,    /*nb_subtract*/
+    (binaryfunc)spmatrix_mul,    /*nb_multiply*/
+#if PY_MAJOR_VERSION < 3
+    (binaryfunc)spmatrix_div,    /*nb_divide*/
+#endif
+    0,                           /*nb_remainder*/
+    0,                           /*nb_divmod*/
+    0,                           /*nb_power*/
+    (unaryfunc)spmatrix_neg,     /*nb_negative*/
+    (unaryfunc)spmatrix_pos,     /*nb_positive*/
+    (unaryfunc)spmatrix_abs,     /*nb_absolute*/
+    (inquiry)spmatrix_nonzero,   /*nb_nonzero*/
+    0,                           /*nb_invert*/
+    0,                           /*nb_lshift*/
+    0,                           /*nb_rshift*/
+    0,                           /*nb_and*/
+    0,                           /*nb_xor*/
+    0,                           /*nb_or*/
+#if PY_MAJOR_VERSION < 3
+    0,                           /*nb_coerce*/
+#endif
+    0,                           /*nb_int*/
+#if PY_MAJOR_VERSION >= 3
+    0,                           /*nb_reserved*/
+#else
+    0,                           /*nb_long*/
+#endif
+    0,                           /*nb_float*/
+#if PY_MAJOR_VERSION < 3
+    0,                           /*nb_oct*/
+    0,                           /*nb_hex*/
+#endif
+    (binaryfunc)spmatrix_iadd,   /*nb_inplace_add*/
+    (binaryfunc)spmatrix_isub,   /*nb_inplace_subtract*/
+    (binaryfunc)spmatrix_imul,   /*nb_inplace_multiply*/
+#if PY_MAJOR_VERSION < 3
+    (binaryfunc)spmatrix_idiv,   /*nb_inplace_divide*/
+#endif
+    0,                           /*nb_inplace_remainder*/
+    0,                           /*nb_inplace_power*/
+    0,                           /*nb_inplace_lshift*/
+    0,                           /*nb_inplace_rshift*/
+    0,                           /*nb_inplace_and*/
+    0,                           /*nb_inplace_xor*/
+    0,                           /*nb_inplace_or*/
+    0,                           /*nb_floor_divide */
+#if PY_MAJOR_VERSION >= 3
+    (binaryfunc)spmatrix_div,    /* nb_true_divide */
+#else
+    0,                           /* nb_true_divide */
+#endif
+    0,                           /* nb_inplace_floor_divide */
+#if PY_MAJOR_VERSION >= 3
+    (binaryfunc)spmatrix_idiv,   /* nb_inplace_true_divide */
+    0,                           /* nb_index */
+#else
+    0,                           /* nb_inplace_true_divide */
+#endif
 };
 
 
@@ -4045,77 +4159,89 @@ spmatrixiter_next(spmatrixiter *it)
 }
 
 static PyTypeObject spmatrixiter_tp = {
+#if PY_MAJOR_VERSION >= 3
+    PyVarObject_HEAD_INIT(NULL, 0)
+#else
     PyObject_HEAD_INIT(NULL)
-    0,					/* ob_size */
-    "spmatrixiter", 			/* tp_name */
-    sizeof(spmatrixiter),           	/* tp_basicsize */
-    0,					/* tp_itemsize */
-    (destructor)spmatrixiter_dealloc,	/* tp_dealloc */
-    0,					/* tp_print */
-    0,					/* tp_getattr */
-    0,					/* tp_setattr */
-    0,					/* tp_compare */
-    0,					/* tp_repr */
-    0,					/* tp_as_number */
-    0,					/* tp_as_sequence */
-    0,					/* tp_as_mapping */
-    0,					/* tp_hash */
-    0,					/* tp_call */
-    0,					/* tp_str */
-    0,       		                /* tp_getattro */
-    0, 		                        /* tp_setattro */
-    0,					/* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,/* tp_flags */
-    0,					/* tp_doc */
-    (traverseproc)spmatrixiter_traverse,	/* tp_traverse */
-    0,					/* tp_clear */
-    0,					/* tp_richcompare */
-    0,					/* tp_weaklistoffset */
-    0,              			/* tp_iter */
-    (iternextfunc)spmatrixiter_next,	/* tp_iternext */
-    0,					/* tp_methods */
+    0,                                        /* ob_size */
+#endif
+    "spmatrixiter",                           /* tp_name */
+    sizeof(spmatrixiter),                     /* tp_basicsize */
+    0,                                        /* tp_itemsize */
+    (destructor)spmatrixiter_dealloc,         /* tp_dealloc */
+    0,                                        /* tp_print */
+    0,                                        /* tp_getattr */
+    0,                                        /* tp_setattr */
+    0,                                        /* tp_compar */
+    0,                                        /* tp_repr */
+    0,                                        /* tp_as_number */
+    0,                                        /* tp_as_sequence */
+    0,                                        /* tp_as_mapping */
+    0,                                        /* tp_hash */
+    0,                                        /* tp_call */
+    0,                                        /* tp_str */
+    0,                                        /* tp_getattro */
+    0,                                        /* tp_setattro */
+    0,                                        /* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,  /* tp_flags */
+    0,                                        /* tp_doc */
+    (traverseproc)spmatrixiter_traverse,      /* tp_traverse */
+    0,                                        /* tp_clear */
+    0,                                        /* tp_richcompare */
+    0,                                        /* tp_weaklistoffset */
+    0,                                        /* tp_iter */
+    (iternextfunc)spmatrixiter_next,          /* tp_iternext */
+    0,                                        /* tp_methods */
 };
 
 
 PyTypeObject spmatrix_tp = {
+#if PY_MAJOR_VERSION >= 3
+    PyVarObject_HEAD_INIT(NULL, 0)
+#else
     PyObject_HEAD_INIT(NULL)
     0,
+#endif
     "cvxopt.base.spmatrix",
     sizeof(spmatrix),
     0,
-    (destructor)spmatrix_dealloc,	        /* tp_dealloc */
-    0,	               	                /* tp_print */
-    0,					/* tp_getattr */
-    0,					/* tp_setattr */
-    0,					/* tp_compare */
-    (reprfunc)spmatrix_repr,                /* tp_repr */
-    &spmatrix_as_number,			/* tp_as_number */
-    0,	                                /* tp_as_sequence */
-    &spmatrix_as_mapping,                   /* tp_as_mapping */
-    0,					/* tp_hash */
-    0,					/* tp_call */
-    (reprfunc)spmatrix_str, 		/* tp_str */
-    0,					/* tp_getattro */
-    0,			                /* tp_setattro */
-    0,			                /* tp_as_buffer */
+    (destructor)spmatrix_dealloc,              /* tp_dealloc */
+    0,                                         /* tp_print */
+    0,                                         /* tp_getattr */
+    0,                                         /* tp_setattr */
+    0,                                         /* tp_compare */
+    (reprfunc)spmatrix_repr,                   /* tp_repr */
+    &spmatrix_as_number,                       /* tp_as_number */
+    0,                                         /* tp_as_sequence */
+    &spmatrix_as_mapping,                      /* tp_as_mapping */
+    0,                                         /* tp_hash */
+    0,                                         /* tp_call */
+    (reprfunc)spmatrix_str,                    /* tp_str */
+    0,                                         /* tp_getattro */
+    0,                                         /* tp_setattro */
+    0,                                         /* tp_as_buffer */
+#if PY_MAJOR_VERSION >= 3
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,  /* tp_flags */
+#else
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE |
-    Py_TPFLAGS_CHECKTYPES,                  /* tp_flags */
-    0,					/* tp_doc */
-    0,					/* tp_traverse */
-    0,					/* tp_clear */
-    (richcmpfunc)spmatrix_richcompare,      /* tp_richcompare */
-    0,					/* tp_weaklistoffset */
-    (getiterfunc)spmatrix_iter,		/* tp_iter */
-    0,	       	                        /* tp_iternext */
-    spmatrix_methods,                       /* tp_methods */
-    0,				        /* tp_members */
-    spmatrix_getsets,      		        /* tp_getset */
-    0,		                        /* tp_base */
-    0,					/* tp_dict */
-    0,	       			        /* tp_descr_get */
-    0,					/* tp_descr_set */
-    0,					/* tp_dictoffset */
-    0,                                      /* tp_init */
-    0,               			/* tp_alloc */
-    spmatrix_new,				/* tp_new */
+    Py_TPFLAGS_CHECKTYPES,                     /* tp_flags */
+#endif
+    0,                                         /* tp_doc */
+    0,                                         /* tp_traverse */
+    0,                                         /* tp_clear */
+    (richcmpfunc)spmatrix_richcompare,         /* tp_richcompare */
+    0,                                         /* tp_weaklistoffset */
+    (getiterfunc)spmatrix_iter,                /* tp_iter */
+    0,                                         /* tp_iternext */
+    spmatrix_methods,                          /* tp_methods */
+    0,                                         /* tp_members */
+    spmatrix_getsets,                          /* tp_getset */
+    0,                                         /* tp_base */
+    0,                                         /* tp_dict */
+    0,                                         /* tp_descr_get */
+    0,                                         /* tp_descr_set */
+    0,                                         /* tp_dictoffset */
+    0,                                         /* tp_init */
+    0,                                         /* tp_alloc */
+    spmatrix_new,                              /* tp_new */
 };

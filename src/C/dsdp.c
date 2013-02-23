@@ -1,8 +1,8 @@
 /*
- * Copyright 2010 L. Vandenberghe.
+ * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.3.
+ * This file is part of CVXOPT version 1.1.4.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -121,14 +121,17 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
     SDPCone sdpcone;
     DSDPTerminationReason info;
     DSDPSolutionType status;
-    char *keystr, err_str[100];
+    char err_str[100];
+#if PY_MAJOR_VERSION >= 3
+    const char *keystr; 
+#else
+    char *keystr; 
+#endif
     char *kwlist[] = {"c", "Gl", "hl", "Gs", "hs", "gamma", "beta",
         NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|OOOOdd", kwlist,
         &c, &Gl, &hl, &Gs, &hs, &gamma, &beta)) return NULL;
-
-
 
     if (!Matrix_Check(c) || MAT_NCOLS(c) != 1 || MAT_ID(c) != DOUBLE)
         PY_ERR_TYPE("c must be a dense 'd' matrix with one column");
@@ -171,51 +174,68 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
 
     if (!(param = PyObject_GetAttrString(dsdp_module, "options")) ||
         !PyDict_Check(param)){
-	PyErr_SetString(PyExc_AttributeError, "missing dsdp.options "
+        PyErr_SetString(PyExc_AttributeError, "missing dsdp.options "
             " dictionary");
-	t = NULL;
-	goto done;
+        t = NULL;
+        goto done;
     }
     while (PyDict_Next(param, &pos, &key, &value))
-	if ((keystr = PyString_AsString(key))){
-	    if (!strcmp(keystr, "DSDP_Monitor")){
-		if (!PyInt_Check(value)) {
+#if PY_MAJOR_VERSION >= 3
+	if (PyUnicode_Check(key)) {
+	    keystr = _PyUnicode_AsString(key);
+#else
+        if ((keystr = PyString_AsString(key))){
+#endif
+            if (!strcmp(keystr, "DSDP_Monitor")){
+#if PY_MAJOR_VERSION >= 3
+                if (!PyLong_Check(value)) {
+#else
+                if (!PyInt_Check(value)) {
+#endif
                     sprintf(err_str, "invalid value for integer "
-			"DSDP parameter: DSDP_Monitor");
-		    PyErr_SetString(PyExc_ValueError, err_str);
-		    t = NULL;
-		    Py_DECREF(param);
-		    goto done;
-		}
-		else
-		    DSDPSetStandardMonitor(sdp, PyInt_AsLong(value));
-	    }
-	    if (!strcmp(keystr, "DSDP_MaxIts")){
-		if (!PyInt_Check(value) ||
-                    (k = PyInt_AsLong(value)) < 0) {
+                        "DSDP parameter: DSDP_Monitor");
+                    PyErr_SetString(PyExc_ValueError, err_str);
+                    t = NULL;
+                    Py_DECREF(param);
+                    goto done;
+                }
+#if PY_MAJOR_VERSION >= 3
+                else DSDPSetStandardMonitor(sdp, PyLong_AsLong(value));
+#else
+                else DSDPSetStandardMonitor(sdp, PyInt_AsLong(value));
+#endif
+            }
+            if (!strcmp(keystr, "DSDP_MaxIts")){
+#if PY_MAJOR_VERSION >= 3
+                if (!PyLong_Check(value) || (k = PyLong_AsLong(value)) < 0){
+#else
+                if (!PyInt_Check(value) || (k = PyInt_AsLong(value)) < 0){
+#endif
                     sprintf(err_str, "invalid value for nonnegative "
                         "integer DSDP parameter: DSDP_MaxIts");
-		    PyErr_SetString(PyExc_ValueError, err_str);
-		    t = NULL;
-		    Py_DECREF(param);
-		    goto done;
-		}
-		else
-		    DSDPSetMaxIts(sdp, k);
+                    PyErr_SetString(PyExc_ValueError, err_str);
+                    t = NULL;
+                    Py_DECREF(param);
+                    goto done;
+                }
+		else DSDPSetMaxIts(sdp, k);
             }
-	    if (!strcmp(keystr, "DSDP_GapTolerance")){
-		if ((!PyFloat_Check(value) && !PyInt_Check(value)) ||
+            if (!strcmp(keystr, "DSDP_GapTolerance")){
+#if PY_MAJOR_VERSION >= 3
+                if ((!PyFloat_Check(value) && !PyLong_Check(value)) ||
+#else
+                if ((!PyFloat_Check(value) && !PyInt_Check(value)) ||
+#endif
                     (tol = PyFloat_AsDouble(value)) <= 0.0) {
                     sprintf(err_str, "invalid value for float "
                         "DSDP parameter: DSDP_GapTolerance");
-		    PyErr_SetString(PyExc_ValueError, err_str);
-		    t = NULL;
-		    Py_DECREF(param);
-		    goto done;
-		}
-		else
-		    DSDPSetGapTolerance(sdp, tol);
-           }
+                    PyErr_SetString(PyExc_ValueError, err_str);
+                    t = NULL;
+                    Py_DECREF(param);
+                    goto done;
+                }
+                else DSDPSetGapTolerance(sdp, tol);
+            }
         }
     Py_DECREF(param);
 
@@ -289,7 +309,7 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
         lmis[k][0].ind = NULL;
         lmis[k][0].nnz = mk*(mk+1)/2;
         for (j=0; j<mk; j++){
-	    lngth = j+1;  incx = mk;  incy = 1;
+            lngth = j+1;  incx = mk;  incy = 1;
             dcopy_(&lngth, MAT_BUFD(hk)+j, &incx,
                 lmis[k][0].val+j*(j+1)/2, &incy);
         }
@@ -356,9 +376,9 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
 
     DSDPSetup(sdp);
     if (DSDPSolve(sdp)){
-	PyErr_SetString(PyExc_ArithmeticError, "DSDP error");
+        PyErr_SetString(PyExc_ArithmeticError, "DSDP error");
         t = NULL;
-	goto done;
+        goto done;
     }
     DSDPStopReason(sdp, &info);
     if (info != DSDP_CONVERGED && info != DSDP_SMALL_STEPS &&
@@ -383,24 +403,44 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
         switch (status){
             case DSDP_PDFEASIBLE:
                 PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                    PyUnicode_FromString("DSDP_PDFEASIBLE"));
+#else
                     PyString_FromString("DSDP_PDFEASIBLE"));
-	        break;
+#endif
+                break;
             case DSDP_UNBOUNDED:
                 PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                    PyUnicode_FromString("DSDP_UNBOUNDED"));
+#else
                     PyString_FromString("DSDP_UNBOUNDED"));
-	        break;
+#endif
+                break;
             case DSDP_INFEASIBLE:
                 PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                    PyUnicode_FromString("DSDP_INFEASIBLE"));
+#else
                     PyString_FromString("DSDP_INFEASIBLE"));
-	        break;
+#endif
+                break;
             case DSDP_PDUNKNOWN:
                 PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                    PyUnicode_FromString("DSDP_UNKNOWN"));
+#else
                     PyString_FromString("DSDP_UNKNOWN"));
-	        break;
+#endif
+                break;
         }
     } else {
         PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+        PyUnicode_FromString("DSDP_UNKNOWN"));
+#else
         PyString_FromString("DSDP_UNKNOWN"));
+#endif
     }
 
     DSDPGetY(sdp, MAT_BUFD(x), n);
@@ -446,9 +486,31 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
 }
 
 static PyMethodDef dsdp_functions[] = {
-  {"sdp", (PyCFunction) solvesdp, METH_VARARGS|METH_KEYWORDS, doc_dsdp},
-  {NULL}  /* Sentinel */
+    {"sdp", (PyCFunction) solvesdp, METH_VARARGS|METH_KEYWORDS, doc_dsdp},
+    {NULL}  /* Sentinel */
 };
+
+
+#if PY_MAJOR_VERSION >= 3
+
+static PyModuleDef dsdp_module_def = {
+    PyModuleDef_HEAD_INIT,
+    "dsdp",
+    dsdp__doc__,
+    -1,
+    dsdp_functions,
+    NULL, NULL, NULL, NULL
+};
+
+PyMODINIT_FUNC PyInit_dsdp(void)
+{
+  if (!(dsdp_module = PyModule_Create(&dsdp_module_def))) return NULL;
+  PyModule_AddObject(dsdp_module, "options", PyDict_New());
+  if (import_cvxopt() < 0) return NULL;
+  return dsdp_module;
+}
+
+#else
 
 PyMODINIT_FUNC initdsdp(void)
 {
@@ -457,3 +519,5 @@ PyMODINIT_FUNC initdsdp(void)
     PyModule_AddObject(dsdp_module, "options", PyDict_New());
     if (import_cvxopt() < 0) return;
 }
+
+#endif

@@ -4,7 +4,6 @@
 from math import sqrt, ceil, floor
 from cvxopt import solvers, blas, lapack
 from cvxopt import matrix, spmatrix, spdiag, sqrt, mul, div, setseed, normal
-import pylab
 
 def robls(A, b, rho): 
 

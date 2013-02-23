@@ -1,8 +1,8 @@
 /*
- * Copyright 2010 L. Vandenberghe.
+ * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.3.
+ * This file is part of CVXOPT version 1.1.4.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,11 @@
 #ifndef __MISC__
 #define __MISC__
 
+#if PY_MAJOR_VERSION >= 3
+#define PY_NUMBER(O) (PyLong_Check(O) || PyFloat_Check(O) || PyComplex_Check(O))
+#else
 #define PY_NUMBER(O) (PyInt_Check(O) || PyFloat_Check(O) || PyComplex_Check(O))
+#endif
 
 #ifndef NO_ANSI99_COMPLEX
 typedef union {
@@ -52,9 +56,16 @@ typedef union {
 #define X_NCOLS(O) (Matrix_Check(O) ? MAT_NCOLS(O) : SP_NCOLS(O))
 #define X_Matrix_Check(O) (Matrix_Check(O) || SpMatrix_Check(O))
 
+#if PY_MAJOR_VERSION >= 3
+#define TypeCheck_Capsule(O,str,errstr) { \
+    if (!PyCapsule_CheckExact(O)) PY_ERR(PyExc_TypeError, errstr); \
+    const char *descr = PyCapsule_GetName(O);  \
+    if (!descr || strcmp(descr,str)) PY_ERR(PyExc_TypeError,errstr); }
+#else
 #define TypeCheck_CObject(O,str,errstr) { \
     char *descr = PyCObject_GetDesc(O);   \
     if (!descr || strcmp(descr,str)) PY_ERR(PyExc_TypeError,errstr); }
+#endif
 
 
 #define len(x) (Matrix_Check(x) ? MAT_LGT(x) : SP_LGT(x))
@@ -92,7 +103,11 @@ typedef union {
 #define err_dbl_mtrx(s) { \
     PY_ERR_TYPE(s " must be a matrix with typecode 'd'") }
 
+#if PY_MAJOR_VERSION >= 3
+#define err_CO(s) PY_ERR_TYPE(s " is not a Capsule")
+#else
 #define err_CO(s) PY_ERR_TYPE(s " is not a CObject")
+#endif
 
 
 #define err_msk_noparam "missing options dictionary"

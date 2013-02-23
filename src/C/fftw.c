@@ -1,8 +1,8 @@
 /*
- * Copyright 2010 L. Vandenberghe.
+ * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.3.
+ * This file is part of CVXOPT version 1.1.4.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,7 @@
 #include "misc.h"
 #include <fftw3.h>
 
-PyDoc_STRVAR(fftw__doc__,
-    "Interface to the FFTW3 library.\n");
+PyDoc_STRVAR(fftw__doc__, "Interface to the FFTW3 library.\n");
 
 extern void zscal_(int *n, complex *alpha, complex *x, int *incx);
 extern void dscal_(int *n, double *alpha, double *x, int *incx);
@@ -92,8 +91,13 @@ static PyObject *dftn(PyObject *self, PyObject *args, PyObject *kwrds)
     dims = PyTuple_New(2);
     if (!dims) return PyErr_NoMemory();
 
+#if PY_MAJOR_VERSION >= 3
+    PyTuple_SET_ITEM(dims, 0, PyLong_FromLong(MAT_NCOLS(X)));
+    PyTuple_SET_ITEM(dims, 1, PyLong_FromLong(MAT_NROWS(X)));
+#else
     PyTuple_SET_ITEM(dims, 0, PyInt_FromLong(MAT_NCOLS(X)));
     PyTuple_SET_ITEM(dims, 1, PyInt_FromLong(MAT_NROWS(X)));
+#endif
     free_dims = 1;
   }
 
@@ -115,14 +119,22 @@ static PyObject *dftn(PyObject *self, PyObject *args, PyObject *kwrds)
   for (i=0; i<len; i++) {
     PyObject *item = PySequence_Fast_GET_ITEM(seq, i);
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyLong_Check(item)) {
+#else
     if (!PyInt_Check(item)) {
+#endif
       if (free_dims) { Py_DECREF(dims); }
       Py_DECREF(seq);
       free(dimarr);
       PY_ERR_TYPE("non-integer in dimension tuple");
     }
 
+#if PY_MAJOR_VERSION >= 3
+    dimarr[len-i-1] = PyLong_AS_LONG(item);
+#else
     dimarr[len-i-1] = PyInt_AS_LONG(item);
+#endif
     if (dimarr[len-i-1] < 0) {
       if (free_dims) { Py_DECREF(dims); }
       Py_DECREF(seq);
@@ -217,8 +229,8 @@ static PyObject *idftn(PyObject *self, PyObject *args, PyObject *kwrds)
   int *dimarr;
   int free_dims = 0;
 
-  if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|O:idftn",
-	  kwlist, &X, &dims))
+  if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|O:idftn", 
+      kwlist, &X, &dims))
     return NULL;
 
   if (!(Matrix_Check(X) && MAT_ID(X) == COMPLEX))
@@ -228,8 +240,13 @@ static PyObject *idftn(PyObject *self, PyObject *args, PyObject *kwrds)
     dims = PyTuple_New(2);
     if (!dims) return PyErr_NoMemory();
 
+#if PY_MAJOR_VERSION >= 3
+    PyTuple_SET_ITEM(dims, 0, PyLong_FromLong(MAT_NCOLS(X)));
+    PyTuple_SET_ITEM(dims, 1, PyLong_FromLong(MAT_NROWS(X)));
+#else
     PyTuple_SET_ITEM(dims, 0, PyInt_FromLong(MAT_NCOLS(X)));
     PyTuple_SET_ITEM(dims, 1, PyInt_FromLong(MAT_NROWS(X)));
+#endif
     free_dims = 1;
   }
 
@@ -249,14 +266,22 @@ static PyObject *idftn(PyObject *self, PyObject *args, PyObject *kwrds)
   for (i=0; i<len; i++) {
     PyObject *item = PySequence_Fast_GET_ITEM(seq, i);
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyLong_Check(item)) {
+#else
     if (!PyInt_Check(item)) {
+#endif
       if (free_dims) { Py_DECREF(dims); }
       Py_DECREF(seq);
       free(dimarr);
       PY_ERR_TYPE("non-integer in dimension tuple");
     }
 
+#if PY_MAJOR_VERSION >= 3
+    dimarr[len-i-1] = PyLong_AS_LONG(item);
+#else
     dimarr[len-i-1] = PyInt_AS_LONG(item);
+#endif
     if (dimarr[len-i-1] < 0) {
       if (free_dims) { Py_DECREF(dims); }
       Py_DECREF(seq);
@@ -370,7 +395,7 @@ static PyObject *dctn(PyObject *self, PyObject *args, PyObject *kwrds)
   int free_dims = 0;
 
   if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|OO:dctn", kwlist,
-	  &X, &dims, &type))
+      &X, &dims, &type))
     return NULL;
 
   if (!(Matrix_Check(X) && MAT_ID(X) == DOUBLE))
@@ -380,8 +405,13 @@ static PyObject *dctn(PyObject *self, PyObject *args, PyObject *kwrds)
     dims = PyTuple_New(2);
     if (!dims) return PyErr_NoMemory();
 
+#if PY_MAJOR_VERSION >= 3
+    PyTuple_SET_ITEM(dims, 0, PyLong_FromLong(MAT_NCOLS(X)));
+    PyTuple_SET_ITEM(dims, 1, PyLong_FromLong(MAT_NROWS(X)));
+#else
     PyTuple_SET_ITEM(dims, 0, PyInt_FromLong(MAT_NCOLS(X)));
     PyTuple_SET_ITEM(dims, 1, PyInt_FromLong(MAT_NROWS(X)));
+#endif
     free_dims = 1;
   }
 
@@ -418,14 +448,22 @@ static PyObject *dctn(PyObject *self, PyObject *args, PyObject *kwrds)
   for (i=0; i<len; i++) {
     PyObject *item = PySequence_Fast_GET_ITEM(seq, i);
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyLong_Check(item)) {
+#else
     if (!PyInt_Check(item)) {
+#endif
       if (free_dims) { Py_DECREF(dims); }
       Py_DECREF(seq);
       free(dimarr); free(kindarr);
       PY_ERR_TYPE("non-integer in dimension tuple");
     }
 
+#if PY_MAJOR_VERSION >= 3
+    dimarr[len-i-1] = PyLong_AS_LONG(item);
+#else
     dimarr[len-i-1] = PyInt_AS_LONG(item);
+#endif
     if (dimarr[len-i-1] < 0) {
       if (free_dims) { Py_DECREF(dims); }
       Py_DECREF(seq);
@@ -461,29 +499,37 @@ static PyObject *dctn(PyObject *self, PyObject *args, PyObject *kwrds)
     for (i=0; i<len; i++) {
       PyObject *item = PySequence_Fast_GET_ITEM(seq, i);
 
+#if PY_MAJOR_VERSION >= 3
+      if (!PyLong_Check(item)) {
+#else
       if (!PyInt_Check(item)) {
-	Py_DECREF(seq);
-	free(dimarr); free(kindarr);
-	PY_ERR_TYPE("non-integer in type tuple");
+#endif
+        Py_DECREF(seq);
+        free(dimarr); free(kindarr);
+        PY_ERR_TYPE("non-integer in type tuple");
       }
 
+#if PY_MAJOR_VERSION >= 3
+      switch(PyLong_AS_LONG(item)) {
+#else
       switch(PyInt_AS_LONG(item)) {
+#endif
       case 1:
-	kindarr[len-i-1] = FFTW_REDFT00;
-	if (dimarr[len-i-1] <= 1) {
-	  Py_DECREF(seq);
-	  free(dimarr); free(kindarr);
-	  PY_ERR(PyExc_ValueError,
-	      "dimension must be greater than 1 for DCT-I");
-	}
-	break;
+          kindarr[len-i-1] = FFTW_REDFT00;
+          if (dimarr[len-i-1] <= 1) {
+              Py_DECREF(seq);
+              free(dimarr); free(kindarr);
+              PY_ERR(PyExc_ValueError, 
+                  "dimension must be greater than 1 for DCT-I");
+          }
+          break;
       case 2: kindarr[len-i-1] = FFTW_REDFT10; break;
       case 3: kindarr[len-i-1] = FFTW_REDFT01; break;
       case 4: kindarr[len-i-1] = FFTW_REDFT11; break;
       default:
-	Py_DECREF(seq);
-	free(dimarr); free(kindarr);
-	PY_ERR(PyExc_ValueError, "type must be between 1 and 4");
+          Py_DECREF(seq);
+          free(dimarr); free(kindarr);
+          PY_ERR(PyExc_ValueError, "type must be between 1 and 4");
       }
     }
 
@@ -528,18 +574,17 @@ static PyObject *idct(PyObject *self, PyObject *args, PyObject *kwrds)
 
   fftw_r2r_kind kind;
   switch(type) {
-  case 1: kind = FFTW_REDFT00;
-    if (m <= 1) PY_ERR(PyExc_ValueError, "m must be greater than 1 for DCT-I");
-    break;
-  case 2: kind = FFTW_REDFT01; break;
-  case 3: kind = FFTW_REDFT10; break;
-  case 4: kind = FFTW_REDFT11; break;
-  default: PY_ERR(PyExc_ValueError, "type must be between 1 and 4");
+      case 1: kind = FFTW_REDFT00;
+          if (m <= 1) 
+            PY_ERR(PyExc_ValueError, "m must be greater than 1 for DCT-I");
+          break;
+      case 2: kind = FFTW_REDFT01; break;
+      case 3: kind = FFTW_REDFT10; break;
+      case 4: kind = FFTW_REDFT11; break;
+      default: PY_ERR(PyExc_ValueError, "type must be between 1 and 4");
   }
-  fftw_plan p = fftw_plan_many_r2r(1, &m, n,
-      X->buffer, &m, 1, m,
-      X->buffer, &m, 1, m,
-      &kind, FFTW_ESTIMATE);
+  fftw_plan p = fftw_plan_many_r2r(1, &m, n, X->buffer, &m, 1, m,
+      X->buffer, &m, 1, m, &kind, FFTW_ESTIMATE);
 
   Py_BEGIN_ALLOW_THREADS
   fftw_execute(p);
@@ -578,7 +623,7 @@ static PyObject *idctn(PyObject *self, PyObject *args, PyObject *kwrds)
   int free_dims = 0;
 
   if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|OO:idctn", kwlist,
-	  &X, &dims, &type))
+      &X, &dims, &type))
     return NULL;
 
   if (!(Matrix_Check(X) && MAT_ID(X) == DOUBLE))
@@ -588,8 +633,13 @@ static PyObject *idctn(PyObject *self, PyObject *args, PyObject *kwrds)
     dims = PyTuple_New(2);
     if (!dims) return PyErr_NoMemory();
 
+#if PY_MAJOR_VERSION >= 3
+    PyTuple_SET_ITEM(dims, 0, PyLong_FromLong(MAT_NCOLS(X)));
+    PyTuple_SET_ITEM(dims, 1, PyLong_FromLong(MAT_NROWS(X)));
+#else
     PyTuple_SET_ITEM(dims, 0, PyInt_FromLong(MAT_NCOLS(X)));
     PyTuple_SET_ITEM(dims, 1, PyInt_FromLong(MAT_NROWS(X)));
+#endif
     free_dims = 1;
   }
 
@@ -626,14 +676,22 @@ static PyObject *idctn(PyObject *self, PyObject *args, PyObject *kwrds)
   for (i=0; i<len; i++) {
     PyObject *item = PySequence_Fast_GET_ITEM(seq, i);
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyLong_Check(item)) {
+#else
     if (!PyInt_Check(item)) {
+#endif
       if (free_dims) { Py_DECREF(dims); }
       Py_DECREF(seq);
       free(dimarr); free(kindarr);
       PY_ERR_TYPE("non-integer in dimension tuple");
     }
 
+#if PY_MAJOR_VERSION >= 3
+    dimarr[len-i-1] = PyLong_AS_LONG(item);
+#else
     dimarr[len-i-1] = PyInt_AS_LONG(item);
+#endif
     if (dimarr[len-i-1] < 0) {
       if (free_dims) { Py_DECREF(dims); }
       Py_DECREF(seq);
@@ -667,29 +725,37 @@ static PyObject *idctn(PyObject *self, PyObject *args, PyObject *kwrds)
     for (i=0; i<len; i++) {
       PyObject *item = PySequence_Fast_GET_ITEM(seq, i);
 
+#if PY_MAJOR_VERSION >= 3
+      if (!PyLong_Check(item)) {
+#else
       if (!PyInt_Check(item)) {
-	Py_DECREF(seq);
-	free(dimarr); free(kindarr);
-	PY_ERR_TYPE("non-integer in type tuple");
+#endif
+        Py_DECREF(seq);
+        free(dimarr); free(kindarr);
+        PY_ERR_TYPE("non-integer in type tuple");
       }
 
+#if PY_MAJOR_VERSION >= 3
+      switch(PyLong_AS_LONG(item)) {
+#else
       switch(PyInt_AS_LONG(item)) {
+#endif
       case 1:
-	kindarr[len-i-1] = FFTW_REDFT00;
-	if (dimarr[len-i-1] <= 1) {
-	  Py_DECREF(seq);
-	  free(dimarr); free(kindarr);
-	  PY_ERR(PyExc_ValueError,
-	      "dimension must be greater than 1 for DCT-I");
-	}
-	break;
+          kindarr[len-i-1] = FFTW_REDFT00;
+          if (dimarr[len-i-1] <= 1) {
+              Py_DECREF(seq);
+              free(dimarr); free(kindarr);
+              PY_ERR(PyExc_ValueError,
+                  "dimension must be greater than 1 for DCT-I");
+          }
+          break;
       case 2: kindarr[len-i-1] = FFTW_REDFT01; break;
       case 3: kindarr[len-i-1] = FFTW_REDFT10; break;
       case 4: kindarr[len-i-1] = FFTW_REDFT11; break;
       default:
-	Py_DECREF(seq);
-	free(dimarr); free(kindarr);
-	PY_ERR(PyExc_ValueError, "type must be between 1 and 4");
+          Py_DECREF(seq);
+          free(dimarr); free(kindarr);
+          PY_ERR(PyExc_ValueError, "type must be between 1 and 4");
       }
     }
 
@@ -794,8 +860,13 @@ static PyObject *dstn(PyObject *self, PyObject *args, PyObject *kwrds)
     dims = PyTuple_New(2);
     if (!dims) return PyErr_NoMemory();
 
+#if PY_MAJOR_VERSION >= 3
+    PyTuple_SET_ITEM(dims, 0, PyLong_FromLong(MAT_NCOLS(X)));
+    PyTuple_SET_ITEM(dims, 1, PyLong_FromLong(MAT_NROWS(X)));
+#else
     PyTuple_SET_ITEM(dims, 0, PyInt_FromLong(MAT_NCOLS(X)));
     PyTuple_SET_ITEM(dims, 1, PyInt_FromLong(MAT_NROWS(X)));
+#endif
     free_dims = 1;
   }
 
@@ -828,13 +899,21 @@ static PyObject *dstn(PyObject *self, PyObject *args, PyObject *kwrds)
   for (i=0; i<len; i++) {
     PyObject *item = PySequence_Fast_GET_ITEM(seq, i);
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyLong_Check(item)) {
+#else
     if (!PyInt_Check(item)) {
+#endif
       if (free_dims) { Py_DECREF(dims); }
       free(dimarr); free(kindarr);
       PY_ERR_TYPE("non-integer in dimension tuple");
     }
 
+#if PY_MAJOR_VERSION >= 3
+    dimarr[len-i-1] = PyLong_AS_LONG(item);
+#else
     dimarr[len-i-1] = PyInt_AS_LONG(item);
+#endif
     if (dimarr[len-i-1] < 0) {
       if (free_dims) { Py_DECREF(dims); }
       free(dimarr); free(kindarr);
@@ -865,19 +944,27 @@ static PyObject *dstn(PyObject *self, PyObject *args, PyObject *kwrds)
     for (i=0; i<len; i++) {
       PyObject *item = PySequence_Fast_GET_ITEM(seq, i);
 
+#if PY_MAJOR_VERSION >= 3
+      if (!PyLong_Check(item)) {
+#else
       if (!PyInt_Check(item)) {
+#endif
 	free(dimarr); free(kindarr);
 	PY_ERR_TYPE("non-integer in type tuple");
       }
 
+#if PY_MAJOR_VERSION >= 3
+      switch(PyLong_AS_LONG(item)) {
+#else
       switch(PyInt_AS_LONG(item)) {
+#endif
       case 1: kindarr[len-i-1] = FFTW_RODFT00; break;
       case 2: kindarr[len-i-1] = FFTW_RODFT10; break;
       case 3: kindarr[len-i-1] = FFTW_RODFT01; break;
       case 4: kindarr[len-i-1] = FFTW_RODFT11; break;
       default:
-	free(dimarr); free(kindarr);
-	PY_ERR(PyExc_ValueError, "type must be between 1 and 4");
+          free(dimarr); free(kindarr);
+          PY_ERR(PyExc_ValueError, "type must be between 1 and 4");
       }
     }
   }
@@ -978,8 +1065,13 @@ static PyObject *idstn(PyObject *self, PyObject *args, PyObject *kwrds)
     dims = PyTuple_New(2);
     if (!dims) return PyErr_NoMemory();
 
+#if PY_MAJOR_VERSION >= 3
+    PyTuple_SET_ITEM(dims, 0, PyLong_FromLong(MAT_NCOLS(X)));
+    PyTuple_SET_ITEM(dims, 1, PyLong_FromLong(MAT_NROWS(X)));
+#else
     PyTuple_SET_ITEM(dims, 0, PyInt_FromLong(MAT_NCOLS(X)));
     PyTuple_SET_ITEM(dims, 1, PyInt_FromLong(MAT_NROWS(X)));
+#endif
     free_dims = 1;
   }
 
@@ -1014,13 +1106,21 @@ static PyObject *idstn(PyObject *self, PyObject *args, PyObject *kwrds)
   for (i=0; i<len; i++) {
     PyObject *item = PySequence_Fast_GET_ITEM(seq, i);
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyLong_Check(item)) {
+#else
     if (!PyInt_Check(item)) {
+#endif
       if (free_dims) { Py_DECREF(dims); }
       free(dimarr); free(kindarr);
       PY_ERR_TYPE("non-integer in dimension tuple");
     }
 
+#if PY_MAJOR_VERSION >= 3
+    dimarr[len-i-1] = PyLong_AS_LONG(item);
+#else
     dimarr[len-i-1] = PyInt_AS_LONG(item);
+#endif
     if (dimarr[len-i-1] < 0) {
       if (free_dims) { Py_DECREF(dims); }
       free(dimarr); free(kindarr);
@@ -1051,12 +1151,20 @@ static PyObject *idstn(PyObject *self, PyObject *args, PyObject *kwrds)
     for (i=0; i<len; i++) {
       PyObject *item = PySequence_Fast_GET_ITEM(seq, i);
 
+#if PY_MAJOR_VERSION >= 3
+      if (!PyLong_Check(item)) {
+#else
       if (!PyInt_Check(item)) {
+#endif
 	free(dimarr); free(kindarr);
 	PY_ERR_TYPE("non-integer in type tuple");
       }
 
+#if PY_MAJOR_VERSION >= 3
+      switch(PyLong_AS_LONG(item)) {
+#else
       switch(PyInt_AS_LONG(item)) {
+#endif
       case 1: kindarr[len-i-1] = FFTW_RODFT00; break;
       case 2: kindarr[len-i-1] = FFTW_RODFT10; break;
       case 3: kindarr[len-i-1] = FFTW_RODFT01; break;
@@ -1103,12 +1211,32 @@ static PyMethodDef fftw_functions[] = {
     {NULL}  /* Sentinel */
 };
 
+#if PY_MAJOR_VERSION >= 3
+
+static PyModuleDef fftw_module = {
+    PyModuleDef_HEAD_INIT,
+    "fftw",
+    fftw__doc__,
+    -1,
+    fftw_functions,
+    NULL, NULL, NULL, NULL
+};
+
+PyMODINIT_FUNC PyInit_fftw(void)
+{
+  PyObject *m;
+  if (!(m = PyModule_Create(&fftw_module))) return NULL;
+  if (import_cvxopt() < 0) return NULL;
+  return m;
+}
+
+#else
 
 PyMODINIT_FUNC initfftw(void)
 {
   PyObject *m;
-
   m = Py_InitModule3("cvxopt.fftw", fftw_functions, fftw__doc__);
-
   if (import_cvxopt() < 0) return;
 }
+
+#endif

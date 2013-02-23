@@ -1,8 +1,8 @@
 /*
- * Copyright 2010 L. Vandenberghe.
+ * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.3.
+ * This file is part of CVXOPT version 1.1.4.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,9 @@ extern PyTypeObject matrix_tp ;
 matrix * Matrix_New(int, int, int) ;
 matrix * Matrix_NewFromMatrix(matrix *, int) ;
 matrix * Matrix_NewFromSequence(PyObject *, int) ;
+#if PY_MAJOR_VERSION < 3
 matrix * Matrix_NewFromArrayStruct(PyObject *, int, int *) ;
+#endif
 
 extern PyTypeObject spmatrix_tp ;
 spmatrix * SpMatrix_New(int_t, int_t, int, int ) ;
@@ -111,12 +113,15 @@ convert_inum(void *dest, void *val, int val_id, int offset)
     default: PY_ERR_INT(PyExc_TypeError,"cannot cast argument as integer");
     }
   } else { /* PyNumber */
+#if PY_MAJOR_VERSION >= 3
+    if (PyLong_Check((PyObject *)val)) {
+      *(int_t *)dest = PyLong_AS_LONG((PyObject *)val); return 0;
+    }
+#else
     if (PyInt_Check((PyObject *)val)) {
       *(int_t *)dest = PyInt_AS_LONG((PyObject *)val); return 0;
     }
-    //else if (PyFloat_Check((PyObject *)val)) {
-    //  *(int_t *)dest = roundl(PyFloat_AS_DOUBLE((PyObject *)val)); return 0;
-    //}
+#endif
     else PY_ERR_INT(PyExc_TypeError,"cannot cast argument as integer");
   }
 }
@@ -131,7 +136,11 @@ convert_dnum(void *dest, void *val, int val_id, int offset)
     default: PY_ERR_INT(PyExc_TypeError, "cannot cast argument as double");
     }
   } else { /* PyNumber */
+#if PY_MAJOR_VERSION >= 3
+    if (PyLong_Check((PyObject *)val) || PyFloat_Check((PyObject *)val)) {
+#else
     if (PyInt_Check((PyObject *)val) || PyFloat_Check((PyObject *)val)) {
+#endif
       *(double *)dest = PyFloat_AsDouble((PyObject *)val);
       return 0;
     }
@@ -309,7 +318,11 @@ int get_id(void *val, int val_type) {
     else
       return SP_ID((spmatrix *)val);
   }
+#if PY_MAJOR_VERSION >= 3
+  else if (PyLong_Check((PyObject *)val))
+#else
   else if (PyInt_Check((PyObject *)val))
+#endif
     return INT;
   else if (PyFloat_Check((PyObject *)val))
     return DOUBLE;
@@ -374,7 +387,11 @@ PyObject * base_axpy(PyObject *self, PyObject *args, PyObject *kwrds)
         Matrix_Check(x) ? MAT_BUF(x): ((spmatrix *)x)->obj,
             Matrix_Check(y) ? MAT_BUF(y): ((spmatrix *)y)->obj,
                 SpMatrix_Check(x), SpMatrix_Check(y),
+#if PY_MAJOR_VERSION >= 3
+                partial ? PyLong_AS_LONG(partial) : 0, &z))
+#else
                 partial ? PyInt_AS_LONG(partial) : 0, &z))
+#endif
       return PyErr_NoMemory();
 
     if (z) {
@@ -422,12 +439,22 @@ PyObject* base_gemm(PyObject *self, PyObject *args, PyObject *kwrds)
   PyObject *ao=NULL, *bo=NULL;
   number a, b;
   int m, n, k;
+#if PY_MAJOR_VERSION >= 3
+  int transA='N', transB='N';
+  char transA_, transB_;
+#else
   char transA='N', transB='N';
+#endif
   char *kwlist[] = {"A", "B", "C", "transA", "transB", "alpha", "beta",
       "partial", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+  if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|CCOOO:gemm",
+      kwlist, &A, &B, &C, &transA, &transB, &ao, &bo, &partial))
+#else
   if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ccOOO:gemm",
       kwlist, &A, &B, &C, &transA, &transB, &ao, &bo, &partial))
+#endif
     return NULL;
 
   if (!(Matrix_Check(A) || SpMatrix_Check(A)))
@@ -457,6 +484,11 @@ PyObject* base_gemm(PyObject *self, PyObject *args, PyObject *kwrds)
   if (ao && convert_num[X_ID(A)](&a, ao, 1, 0)) err_type("alpha");
   if (bo && convert_num[X_ID(A)](&b, bo, 1, 0)) err_type("beta");
 
+#if PY_MAJOR_VERSION >= 3
+  transA_ = transA;
+  transB_ = transB;
+#endif
+
   int id = X_ID(A);
   if (Matrix_Check(A) && Matrix_Check(B) && Matrix_Check(C)) {
 
@@ -464,12 +496,28 @@ PyObject* base_gemm(PyObject *self, PyObject *args, PyObject *kwrds)
     int ldB = MAX(1,MAT_NROWS(B));
     int ldC = MAX(1,MAT_NROWS(C));
     if (id == INT) err_invalid_id;
+#if PY_MAJOR_VERSION >= 3
+    gemm[id](&transA_, &transB_, &m, &n, &k, (ao ? &a : &One[id]),
+        MAT_BUF(A), &ldA, MAT_BUF(B), &ldB, (bo ? &b : &Zero[id]),
+        MAT_BUF(C), &ldC);
+#else
     gemm[id](&transA, &transB, &m, &n, &k, (ao ? &a : &One[id]),
         MAT_BUF(A), &ldA, MAT_BUF(B), &ldB, (bo ? &b : &Zero[id]),
         MAT_BUF(C), &ldC);
+#endif
   } else {
 
     void *z = NULL;
+#if PY_MAJOR_VERSION >= 3
+    if (sp_gemm[id](transA_, transB_, (ao ? a : One[id]),
+        Matrix_Check(A) ? MAT_BUF(A) : ((spmatrix *)A)->obj,
+            Matrix_Check(B) ? MAT_BUF(B) : ((spmatrix *)B)->obj,
+                (bo ? b : Zero[id]),
+                Matrix_Check(C) ? MAT_BUF(C) : ((spmatrix *)C)->obj,
+                    SpMatrix_Check(A), SpMatrix_Check(B), SpMatrix_Check(C),
+                    partial ? PyLong_AS_LONG(partial) : 0, &z, m, n, k))
+      return PyErr_NoMemory();
+#else
     if (sp_gemm[id](transA, transB, (ao ? a : One[id]),
         Matrix_Check(A) ? MAT_BUF(A) : ((spmatrix *)A)->obj,
             Matrix_Check(B) ? MAT_BUF(B) : ((spmatrix *)B)->obj,
@@ -478,6 +526,7 @@ PyObject* base_gemm(PyObject *self, PyObject *args, PyObject *kwrds)
                     SpMatrix_Check(A), SpMatrix_Check(B), SpMatrix_Check(C),
                     partial ? PyInt_AS_LONG(partial) : 0, &z, m, n, k))
       return PyErr_NoMemory();
+#endif
 
     if (z) {
       free_ccs( ((spmatrix *)C)->obj );
@@ -528,15 +577,27 @@ static PyObject* base_gemv(PyObject *self, PyObject *args, PyObject *kwrds)
   PyObject *ao=NULL, *bo=NULL;
   number a, b;
   int m=-1, n=-1, ix=1, iy=1, oA=0, ox=0, oy=0;
+#if PY_MAJOR_VERSION >= 3
+  int trans='N';
+  char trans_;
+#else
   char trans='N';
+#endif
   char *kwlist[] = {"A", "x", "y", "trans", "alpha", "beta", "m", "n",
       "incx", "incy", "offsetA", "offsetx",
       "offsety", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+  if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COOiiiiiii:gemv",
+      kwlist, &A, &x, &y, &trans, &ao, &bo, &m, &n, &ix, &iy,
+      &oA, &ox, &oy))
+    return NULL;
+#else
   if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOOiiiiiii:gemv",
       kwlist, &A, &x, &y, &trans, &ao, &bo, &m, &n, &ix, &iy,
       &oA, &ox, &oy))
     return NULL;
+#endif
 
   if (!Matrix_Check(A) && !SpMatrix_Check(A))
     PY_ERR(PyExc_TypeError, "A must be a dense or sparse matrix");
@@ -579,6 +640,10 @@ static PyObject* base_gemv(PyObject *self, PyObject *args, PyObject *kwrds)
   if (ao && convert_num[MAT_ID(x)](&a, ao, 1, 0)) err_type("alpha");
   if (bo && convert_num[MAT_ID(x)](&b, bo, 1, 0)) err_type("beta");
 
+#if PY_MAJOR_VERSION >= 3
+  trans_ = trans;
+#endif
+
   if (Matrix_Check(A)) {
     int ldA = MAX(1,X_NROWS(A));
     if (trans == 'N' && n == 0)
@@ -586,15 +651,29 @@ static PyObject* base_gemv(PyObject *self, PyObject *args, PyObject *kwrds)
     else if ((trans == 'T' || trans == 'C') && m == 0)
       scal[id](&n, (bo ? &b : &Zero[id]), MAT_BUF(y)+oy*E_SIZE[id], &iy);
     else
+#if PY_MAJOR_VERSION >= 3
+      gemv[id](&trans_, &m, &n, (ao ? &a : &One[id]),
+          MAT_BUF(A) + oA*E_SIZE[id], &ldA,
+          MAT_BUF(x) + ox*E_SIZE[id], &ix, (bo ? &b : &Zero[id]),
+          MAT_BUF(y) + oy*E_SIZE[id], &iy);
+#else
       gemv[id](&trans, &m, &n, (ao ? &a : &One[id]),
           MAT_BUF(A) + oA*E_SIZE[id], &ldA,
           MAT_BUF(x) + ox*E_SIZE[id], &ix, (bo ? &b : &Zero[id]),
           MAT_BUF(y) + oy*E_SIZE[id], &iy);
+#endif
   } else {
+#if PY_MAJOR_VERSION >= 3
+    if (sp_gemv[id](trans_, m, n, (ao ? a : One[id]), ((spmatrix *)A)->obj,
+        oA, MAT_BUF(x) + ox*E_SIZE[id], ix, (bo ? b : Zero[id]),
+        MAT_BUF(y) + oy*E_SIZE[id], iy))
+      return PyErr_NoMemory();
+#else
     if (sp_gemv[id](trans, m, n, (ao ? a : One[id]), ((spmatrix *)A)->obj,
         oA, MAT_BUF(x) + ox*E_SIZE[id], ix, (bo ? b : Zero[id]),
         MAT_BUF(y) + oy*E_SIZE[id], iy))
       return PyErr_NoMemory();
+#endif
   }
 
   return Py_BuildValue("");
@@ -624,12 +703,22 @@ static PyObject* base_syrk(PyObject *self, PyObject *args, PyObject *kwrds)
 {
   PyObject *A, *C, *partial=NULL, *ao=NULL, *bo=NULL;
   number a, b;
+#if PY_MAJOR_VERSION >= 3
+  int trans='N', uplo='L';
+  char trans_, uplo_;
+#else
   char trans='N', uplo='L';
+#endif
   char *kwlist[] = {"A", "C", "uplo", "trans", "alpha", "beta", "partial",
       NULL};
 
+#if PY_MAJOR_VERSION >= 3
+  if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCOOO:syrk", kwlist,
+      &A, &C, &uplo, &trans, &ao, &bo, &partial))
+#else
   if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccOOO:syrk", kwlist,
       &A, &C, &uplo, &trans, &ao, &bo, &partial))
+#endif
     return NULL;
 
   if (!(Matrix_Check(A) || SpMatrix_Check(A)))
@@ -656,16 +745,36 @@ static PyObject* base_syrk(PyObject *self, PyObject *args, PyObject *kwrds)
   if (ao && convert_num[id](&a, ao, 1, 0)) err_type("alpha");
   if (bo && convert_num[id](&b, bo, 1, 0)) err_type("beta");
 
+#if PY_MAJOR_VERSION >= 3
+  trans_ = trans;
+  uplo_ = uplo;
+#endif
+
   if (Matrix_Check(A) && Matrix_Check(C)) {
 
     int ldA = MAX(1,MAT_NROWS(A));
     int ldC = MAX(1,MAT_NROWS(C));
 
+#if PY_MAJOR_VERSION >= 3
+    syrk[id](&uplo_, &trans_, &n, &k, (ao ? &a : &One[id]),
+        MAT_BUF(A), &ldA, (bo ? &b : &Zero[id]), MAT_BUF(C), &ldC);
+#else
     syrk[id](&uplo, &trans, &n, &k, (ao ? &a : &One[id]),
         MAT_BUF(A), &ldA, (bo ? &b : &Zero[id]), MAT_BUF(C), &ldC);
+#endif
   } else {
 
     void *z = NULL;
+#if PY_MAJOR_VERSION >= 3
+    if (sp_syrk[id](uplo_, trans_,
+        (ao ? a : One[id]),
+        Matrix_Check(A) ? MAT_BUF(A) : ((spmatrix *)A)->obj,
+            (bo ? b : Zero[id]),
+            Matrix_Check(C) ? MAT_BUF(C) : ((spmatrix *)C)->obj,
+                SpMatrix_Check(A), SpMatrix_Check(C),
+                partial ? PyLong_AS_LONG(partial) : 0,
+                    (trans == 'N' ? X_NCOLS(A) : X_NROWS(A)), &z))
+#else
     if (sp_syrk[id](uplo, trans,
         (ao ? a : One[id]),
         Matrix_Check(A) ? MAT_BUF(A) : ((spmatrix *)A)->obj,
@@ -674,6 +783,7 @@ static PyObject* base_syrk(PyObject *self, PyObject *args, PyObject *kwrds)
                 SpMatrix_Check(A), SpMatrix_Check(C),
                 partial ? PyInt_AS_LONG(partial) : 0,
                     (trans == 'N' ? X_NCOLS(A) : X_NROWS(A)), &z))
+#endif
       return PyErr_NoMemory();
 
     if (z) {
@@ -717,12 +827,22 @@ static PyObject* base_symv(PyObject *self, PyObject *args, PyObject *kwrds)
   matrix *x, *y;
   number a, b;
   int n=-1, ix=1, iy=1, oA=0, ox=0, oy=0, ldA;
+#if PY_MAJOR_VERSION >= 3
+  int uplo='L';
+  char uplo_;
+#else
   char uplo='L';
+#endif
   char *kwlist[] = {"A", "x", "y", "uplo", "alpha", "beta", "n",
       "incx", "incy", "offsetA", "offsetx", "offsety", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+  if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COOiiiiii:symv",
+      kwlist, &A, &x, &y, &uplo, &ao, &bo, &n, &ix, &iy, &oA, &ox, &oy))
+#else
   if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOOiiiiii:symv",
       kwlist, &A, &x, &y, &uplo, &ao, &bo, &n, &ix, &iy, &oA, &ox, &oy))
+#endif
     return NULL;
 
   if (!Matrix_Check(A) && !SpMatrix_Check(A))
@@ -762,17 +882,33 @@ static PyObject* base_symv(PyObject *self, PyObject *args, PyObject *kwrds)
   if (ao && convert_num[id](&a, ao, 1, 0)) err_type("alpha");
   if (bo && convert_num[id](&b, bo, 1, 0)) err_type("beta");
 
+#if PY_MAJOR_VERSION >= 3
+  uplo_ = uplo;
+#endif
+
   if (Matrix_Check(A)) {
 
+#if PY_MAJOR_VERSION >= 3
+    symv[id](&uplo_, &n, (ao ? &a : &One[id]),
+        MAT_BUF(A) + oA*E_SIZE[id], &ldA, MAT_BUF(x) + ox*E_SIZE[id],
+        &ix, (bo ? &b : &Zero[id]), MAT_BUF(y) + oy*E_SIZE[id], &iy);
+#else
     symv[id](&uplo, &n, (ao ? &a : &One[id]),
         MAT_BUF(A) + oA*E_SIZE[id], &ldA, MAT_BUF(x) + ox*E_SIZE[id],
         &ix, (bo ? &b : &Zero[id]), MAT_BUF(y) + oy*E_SIZE[id], &iy);
+#endif
   }
   else {
 
+#if PY_MAJOR_VERSION >= 3
+    if (sp_symv[id](uplo_, n, (ao ? a : One[id]), ((spmatrix *)A)->obj,
+        oA, MAT_BUF(x) + ox*E_SIZE[id], ix,
+        (bo ? b : Zero[id]), MAT_BUF(y) + oy*E_SIZE[id], iy))
+#else
     if (sp_symv[id](uplo, n, (ao ? a : One[id]), ((spmatrix *)A)->obj,
         oA, MAT_BUF(x) + ox*E_SIZE[id], ix,
         (bo ? b : Zero[id]), MAT_BUF(y) + oy*E_SIZE[id], iy))
+#endif
       return PyErr_NoMemory();
   }
 
@@ -1390,12 +1526,20 @@ PyObject * matrix_elem_mul(matrix *self, PyObject *args, PyObject *kwrds)
   int b_is_number = PyNumber_Check(B) || (Matrix_Check(B) && MAT_LGT(B) == 1);
 
   int ida, idb;
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(A)) { ida = INT; }
+#else
   if (PyInt_Check(A)) { ida = INT; }
+#endif
   else if (PyFloat_Check(A)) { ida = DOUBLE; }
   else if (PyComplex_Check(A)) { ida = COMPLEX; }
   else { ida = X_ID(A); }
 
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(B)) { idb = INT; }
+#else
   if (PyInt_Check(B)) { idb = INT; }
+#endif
   else if (PyFloat_Check(B)) { idb = DOUBLE; }
   else if (PyComplex_Check(B)) { idb = COMPLEX; }
   else { idb = X_ID(B); }
@@ -1575,17 +1719,29 @@ PyObject * matrix_elem_div(matrix *self, PyObject *args, PyObject *kwrds)
   int b_is_number = PyNumber_Check(B) || (Matrix_Check(B) && MAT_LGT(B) == 1);
 
   int ida, idb;
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(A)) { ida = INT; }
+#else
   if (PyInt_Check(A)) { ida = INT; }
+#endif
   else if (PyFloat_Check(A)) { ida = DOUBLE; }
   else if (PyComplex_Check(A)) { ida = COMPLEX; }
   else { ida = X_ID(A); }
 
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(B)) { idb = INT; }
+#else
   if (PyInt_Check(B)) { idb = INT; }
+#endif
   else if (PyFloat_Check(B)) { idb = DOUBLE; }
   else if (PyComplex_Check(B)) { idb = COMPLEX; }
   else { idb = X_ID(B); }
 
+#if PY_MAJOR_VERSION >= 3
+  int id  = MAX( DOUBLE, MAX( ida, idb ) ) ;
+#else
   int id  = MAX( ida, idb );
+#endif
 
   number a, b;
   if (a_is_number) convert_num[id](&a, A, PyNumber_Check(A), 0);
@@ -1707,36 +1863,58 @@ static PyMethodDef base_functions[] = {
     {NULL}		/* sentinel */
 };
 
-PyMODINIT_FUNC
-initbase(void)
+#if PY_MAJOR_VERSION >= 3
+
+static PyModuleDef base_module = {
+    PyModuleDef_HEAD_INIT,
+    "base",
+    base__doc__,
+    -1,
+    base_functions,
+    NULL, NULL, NULL, NULL
+};
+#define INITERROR return NULL
+PyMODINIT_FUNC PyInit_base(void)
+
+#else
+
+#define INITERROR return 
+PyMODINIT_FUNC initbase(void)
+
+#endif
 {
   static void *base_API[8];
   PyObject *base_mod, *c_api_object;
 
+#if PY_MAJOR_VERSION >= 3
+  base_mod = PyModule_Create(&base_module);
+  if (base_mod == NULL)
+#else
   if (!(base_mod = Py_InitModule3("base", base_functions, base__doc__)))
-    return;
+#endif
+    INITERROR;
 
   /* for MS VC++ compatibility */
   matrix_tp.tp_alloc = PyType_GenericAlloc;
   matrix_tp.tp_free = PyObject_Del;
   if (PyType_Ready(&matrix_tp) < 0)
-    return;
+    INITERROR;
 
   if (PyType_Ready(&matrix_tp) < 0)
-    return;
+    INITERROR;
 
   Py_INCREF(&matrix_tp);
   if (PyModule_AddObject(base_mod, "matrix", (PyObject *) &matrix_tp) < 0)
-    return;
+    INITERROR;
 
   spmatrix_tp.tp_alloc = PyType_GenericAlloc;
   spmatrix_tp.tp_free = PyObject_Del;
   if (PyType_Ready(&spmatrix_tp) < 0)
-    return;
+    INITERROR;
 
   Py_INCREF(&spmatrix_tp);
   if (PyModule_AddObject(base_mod, "spmatrix", (PyObject *) &spmatrix_tp) < 0)
-    return;
+    INITERROR;
 
   One[INT].i = 1; One[DOUBLE].d = 1.0; One[COMPLEX].z = 1.0;
 
@@ -1754,9 +1932,18 @@ initbase(void)
   base_API[6] = (void *)SpMatrix_NewFromIJV;
   base_API[7] = (void *)SpMatrix_Check_func;
 
+#if PY_MAJOR_VERSION >= 3
+  /* Create a Capsule containing the API pointer array's address */
+  c_api_object = PyCapsule_New((void *)base_API, "base_API", NULL);
+#else
   /* Create a CObject containing the API pointer array's address */
   c_api_object = PyCObject_FromVoidPtr((void *)base_API, NULL);
+#endif
 
   if (c_api_object != NULL)
     PyModule_AddObject(base_mod, "_C_API", c_api_object);
+
+#if PY_MAJOR_VERSION >= 3
+  return base_mod;
+#endif
 }

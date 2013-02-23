@@ -1,8 +1,8 @@
 /*
- * Copyright 2010 L. Vandenberghe.
+ * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.3.
+ * This file is part of CVXOPT version 1.1.4.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -164,20 +164,39 @@ uniform(PyObject *self, PyObject *args, PyObject *kwrds)
 }
 
 static PyMethodDef gsl_functions[] = {
-  {"getseed", (PyCFunction)getseed, METH_VARARGS|METH_KEYWORDS, doc_getseed},
-  {"setseed", (PyCFunction)setseed, METH_VARARGS|METH_KEYWORDS, doc_setseed},
-  {"normal", (PyCFunction)normal, METH_VARARGS|METH_KEYWORDS, doc_normal},
-  {"uniform", (PyCFunction)uniform, METH_VARARGS|METH_KEYWORDS, doc_uniform},
-  {NULL}  /* Sentinel */
+{"getseed", (PyCFunction)getseed, METH_VARARGS|METH_KEYWORDS, doc_getseed},
+{"setseed", (PyCFunction)setseed, METH_VARARGS|METH_KEYWORDS, doc_setseed},
+{"normal", (PyCFunction)normal, METH_VARARGS|METH_KEYWORDS, doc_normal},
+{"uniform", (PyCFunction)uniform, METH_VARARGS|METH_KEYWORDS, doc_uniform},
+{NULL}  /* Sentinel */
 };
 
-PyMODINIT_FUNC
-initgsl(void)
+#if PY_MAJOR_VERSION >= 3
+
+static PyModuleDef gsl_module = {
+    PyModuleDef_HEAD_INIT,
+    "gsl",
+    gsl__doc__,
+    -1,
+    gsl_functions,
+    NULL, NULL, NULL, NULL
+};
+
+PyMODINIT_FUNC PyInit_gsl(void)
 {
   PyObject *m;
-
-  m = Py_InitModule3("cvxopt.gsl", gsl_functions, gsl__doc__);
-
-  if (import_cvxopt() < 0)
-    return;
+  if (!(m = PyModule_Create(&gsl_module))) return NULL;
+  if (import_cvxopt() < 0) return NULL;
+  return m;
 }
+
+#else
+
+PyMODINIT_FUNC initgsl(void)
+{
+  PyObject *m;
+  m = Py_InitModule3("cvxopt.gsl", gsl_functions, gsl__doc__);
+  if (import_cvxopt() < 0) return;
+}
+
+#endif

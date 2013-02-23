@@ -25,7 +25,7 @@ ignored.
 A general sparse square matrix of order :math:`n` is represented by an
 :class:`spmatrix` object of size (:math:`n`, :math:`n`).
 
-Dense matrices, which appear as righthand sides of equations, are 
+Dense matrices, which appear as right-hand sides of equations, are 
 stored using the same conventions as in the BLAS and LAPACK modules.
 
 
@@ -72,7 +72,7 @@ As an example we consider the matrix
 >>> from cvxopt import spmatrix, amd 
 >>> A = spmatrix([10,3,5,-2,5,2], [0,2,1,2,2,3], [0,0,1,1,2,3])
 >>> P = amd.order(A)
->>> print P
+>>> print(P)
 [ 1]
 [ 0]
 [ 2]
@@ -136,7 +136,7 @@ In the following example we solve an equation with coefficient matrix
 >>> A = spmatrix(V,I,J)
 >>> B = matrix(1.0, (5,1))
 >>> umfpack.linsolve(A,B)
->>> print B
+>>> print(B)
 [ 5.79e-01]
 [-5.26e-02]
 [ 1.00e+00]
@@ -186,7 +186,7 @@ equivalent to the following three functions called in sequence.
 
 
 These separate functions are useful for solving several sets of linear 
-equations with the same coefficient matrix and different righthand sides, 
+equations with the same coefficient matrix and different right-hand sides, 
 or with coefficient matrices that share the same sparsity pattern.
 The symbolic factorization depends only on the sparsity pattern of
 the matrix, and not on the numerical values of the nonzero coefficients. 
@@ -228,7 +228,7 @@ code computes
 >>> umfpack.solve(A, FA, x)
 >>> umfpack.solve(B, FB, x)
 >>> umfpack.solve(A, FA, x, trans='T')
->>> print x
+>>> print(x)
 [ 5.81e-01]
 [-2.37e-01]
 [ 1.63e+00]
@@ -297,7 +297,7 @@ As an  example, we solve
 >>> A = spmatrix([10, 3, 5, -2, 5, 2], [0, 2, 1, 3, 2, 3], [0, 0, 1, 1, 2, 3])
 >>> X = matrix(range(8), (4,2), 'd')
 >>> cholmod.linsolve(A,X)
->>> print X
+>>> print(X)
 [-1.46e-01  4.88e-02]
 [ 1.33e+00  4.00e+00]
 [ 4.88e-01  1.17e+00]
@@ -316,7 +316,7 @@ The following code computes the inverse of the coefficient matrix
 in :eq:`e-A-pd` as a sparse matrix.
 
 >>> X = cholmod.splinsolve(A, spmatrix(1.0,range(4),range(4)))
->>> print X
+>>> print(X)
 [ 1.22e-01     0     -7.32e-02     0    ]
 [    0      3.33e-01     0      3.33e-01]
 [-7.32e-02     0      2.44e-01     0    ]
@@ -437,7 +437,7 @@ For the same example as above:
 >>> F = cholmod.symbolic(A)
 >>> cholmod.numeric(A, F)
 >>> cholmod.solve(F, X)
->>> print X
+>>> print(X)
 [-1.46e-01  4.88e-02]
 [ 1.33e+00  4.00e+00]
 [ 4.88e-01  1.17e+00]
@@ -484,14 +484,14 @@ of the coefficient matrix in :eq:`e-A-pd` by two methods.
 >>> from cvxopt import log
 >>> F = cholmod.symbolic(A)
 >>> cholmod.numeric(A, F)
->>> print 2.0 * sum(log(cholmod.diag(F)))
+>>> print(2.0 * sum(log(cholmod.diag(F))))
 5.50533153593
 >>> options['supernodal'] = 0
 >>> F = cholmod.symbolic(A)
 >>> cholmod.numeric(A, F)
 >>> Di = matrix(1.0, (4,1))
 >>> cholmod.solve(F, Di, sys=6)
->>> print -sum(log(Di))
+>>> print(-sum(log(Di)))
 5.50533153593
 
 
@@ -575,7 +575,7 @@ where :math:`\circ` denotes Hadamard product.
         """
         Returns the solution of
 
-             minimize    -logdet K + Tr(KY)
+             minimize    -log det K + Tr(KY)
              subject to  K_{ij}=0,  (i,j) not in indices listed in I,J.
 
         Y is a symmetric sparse matrix with nonzero diagonal elements.
@@ -585,7 +585,7 @@ where :math:`\circ` denotes Hadamard product.
         I, J = Y.I, Y.J
         n, m = Y.size[0], len(I) 
         N = I + J*n         # non-zero positions for one-argument indexing 
-        D = [k for k in xrange(m) if I[k]==J[k]]  # position of diagonal elements
+        D = [k for k in range(m) if I[k]==J[k]]  # position of diagonal elements
 
         # starting point: symmetric identity with nonzero pattern I,J
         K = spmatrix(0.0, I, J) 
@@ -600,7 +600,7 @@ where :math:`\circ` denotes Hadamard product.
         # Kinv will be the inverse of K
         Kinv = matrix(0.0, (n,n))
         
-        for iters in xrange(100):
+        for iters in range(100):
 
             # numeric factorization of K
             cholmod.numeric(K, F)
@@ -619,9 +619,9 @@ where :math:`\circ` denotes Hadamard product.
             
             # stopping criterion
             sqntdecr = -blas.dot(grad,v) 
-            print "Newton decrement squared:%- 7.5e" %sqntdecr
+            print("Newton decrement squared:%- 7.5e" %sqntdecr)
             if (sqntdecr < 1e-12):
-                print "number of iterations: ", iters+1 
+                print("number of iterations: ", iters+1)
                 break
 
             # line search
@@ -629,7 +629,7 @@ where :math:`\circ` denotes Hadamard product.
             dx[D] *= 2      # scale the diagonal elems        
             f = -2.0 * sum(log(d))    # f = -log det K
             s = 1
-            for lsiter in xrange(50):
+            for lsiter in range(50):
                 Kn.V = K.V + s*dx
                 try: 
                     cholmod.numeric(Kn, F)

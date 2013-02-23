@@ -5,10 +5,10 @@ Routines for specifying and solving convex optimization problems with
 piecewise-linear objective and constraint functions.
 """
 
-# Copyright 2010 L. Vandenberghe.
+# Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.3.
+# This file is part of CVXOPT version 1.1.4.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,10 +23,13 @@ piecewise-linear objective and constraint functions.
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from string import strip
 from cvxopt.base import matrix, spmatrix
 from cvxopt import blas, solvers 
-import __builtin__
+import sys
+if sys.version_info.major < 3: 
+    import __builtin__ as builtins
+else:
+    import builtins
 
 __all__ = ["variable", "constraint", "op", "min", "max", "sum", "dot"]
  
@@ -181,15 +184,29 @@ class variable(object):
             "implemented for 'variable' objects")
 
 
-    def __div__(self,other):
+    if sys.version_info.major < 3: 
 
-        return (+self).__div__(other)
+        def __div__(self,other):
+
+            return (+self).__div__(other)
 
 
-    def __idiv__(self,other):
+        def __idiv__(self,other):
 
-        raise NotImplementedError("in-place division not implemented "\
-            "for 'variable' objects")
+            raise NotImplementedError("in-place division not implemented "\
+                "for 'variable' objects")
+
+    else:
+    
+        def __truediv__(self,other):
+
+            return (+self).__truediv__(other)
+
+
+        def __itruediv__(self,other):
+
+            raise NotImplementedError("in-place division not implemented "\
+                "for 'variable' objects")
 
 
     def __eq__(self,other):
@@ -221,6 +238,12 @@ class variable(object):
 
         return (+self).__getitem__(key)
 
+
+    if sys.version_info.major >= 3: 
+
+        def __hash__(self):
+
+            return id(self)
 
 
 class _function(object):
@@ -796,17 +819,32 @@ class _function(object):
         else: 
             raise TypeError('incompatible dimensions or types')
 
+    if sys.version_info.major < 3: 
 
-    def __div__(self,other):
+        def __div__(self,other):
 
-        if type(other) is int or type(other) is float:
-            return self.__mul__(1.0/other)
+            if type(other) is int or type(other) is float:
+                return self.__mul__(1.0/other)
 
-        elif _isdmatrix(other) and other.size == (1,1):
-            return self.__mul__(1.0/other[0])
+            elif _isdmatrix(other) and other.size == (1,1):
+                return self.__mul__(1.0/other[0])
 
-        else:
-            return NotImplemented
+            else:
+                return NotImplemented
+
+    else:
+
+        def __truediv__(self,other):
+
+            if type(other) is int or type(other) is float:
+                return self.__mul__(1.0/other)
+
+            elif _isdmatrix(other) and other.size == (1,1):
+                return self.__mul__(1.0/other[0])
+
+            else:
+                return NotImplemented
+
 
 
     def __rdiv__(self,other):
@@ -814,16 +852,31 @@ class _function(object):
         return NotImplemented
 
 
-    def __idiv__(self,other):
+    if sys.version_info.major < 3: 
 
-        if type(other) is int or type(other) is float:
-            return self.__imul__(1.0/other)
+        def __idiv__(self,other):
 
-        elif _isdmatrix(other) and other.size == (1,1):
-            return self.__imul__(1.0/other[0])
+            if type(other) is int or type(other) is float:
+                return self.__imul__(1.0/other)
 
-        else:
-            return NotImplemented
+            elif _isdmatrix(other) and other.size == (1,1):
+                return self.__imul__(1.0/other[0])
+
+            else:
+                return NotImplemented
+
+    else:
+
+        def __itruediv__(self,other):
+
+            if type(other) is int or type(other) is float:
+                return self.__imul__(1.0/other)
+
+            elif _isdmatrix(other) and other.size == (1,1):
+                return self.__imul__(1.0/other[0])
+
+            else:
+                return NotImplemented
         
 
     def __abs__(self):
@@ -945,7 +998,7 @@ def sum(s):
         return f
 
     else:
-        return __builtin__.sum(s)
+        return builtins.sum(s)
 
 
 
@@ -981,7 +1034,7 @@ class _lin(object):
 
     def __len__(self):
     
-        for v,c in self._coeff.iteritems():
+        for v,c in iter(self._coeff.items()):
             if c.size[0] > 1: 
                 return c.size[0]
             elif _isscalar(c) and len(v) > 1: 
@@ -997,7 +1050,7 @@ class _lin(object):
     def __str__(self):
 
         s = repr(self)[1:-1] + '\n'
-        for v,c in self._coeff.iteritems(): 
+        for v,c in iter(self._coeff.items()): 
             s += 'coefficient of ' + repr(v) + ':\n'  + str(c) 
         return s
 
@@ -1005,7 +1058,7 @@ class _lin(object):
     def value(self):
 
         value = matrix(0.0, (len(self),1))
-        for v,c in self._coeff.iteritems():
+        for v,c in iter(self._coeff.items()):
             if v.value is None: 
                 return None
             else: 
@@ -1027,7 +1080,7 @@ class _lin(object):
 
         lg = len(self)
 
-        if self._coeff.has_key(v):
+        if v in self._coeff:
 
             # self := self + a*v with v a variable of self
             #
@@ -1126,13 +1179,13 @@ class _lin(object):
         '''
 
         if type(a) is int or type(a) is float:
-            for v in self._coeff.iterkeys(): self._coeff[v] *= a
+            for v in iter(self._coeff.keys()): self._coeff[v] *= a
 
         elif _ismatrix(a) and a.size == (1,1):
-            for v in self._coeff.iterkeys(): self._coeff[v] *= a[0]
+            for v in iter(self._coeff.keys()): self._coeff[v] *= a[0]
         
         elif len(self) == 1 and _isdmatrix(a) and a.size[1] == 1:
-            for v,c in self._coeff.iteritems(): self._coeff[v] = a*c
+            for v,c in iter(self._coeff.items()): self._coeff[v] = a*c
 
         else: 
             raise TypeError('incompatible dimensions')
@@ -1146,13 +1199,13 @@ class _lin(object):
 
         lg = len(self)
         if _isscalar(a):
-            for v in self._coeff.iterkeys(): self._coeff[v] *= a
+            for v in iter(self._coeff.keys()): self._coeff[v] *= a
         
         elif lg == 1 and _ismatrix(a) and a.size[1] == 1:
-            for v,c in self._coeff.iteritems(): self._coeff[v] = a*c
+            for v,c in iter(self._coeff.items()): self._coeff[v] = a*c
 
         elif _ismatrix(a) and a.size[1] == lg: 
-            for v,c in self._coeff.iteritems():
+            for v,c in iter(self._coeff.items()):
                 if c.size == (1,len(v)):
                     self._coeff[v] = a*c[lg*[0],:]
                 else: 
@@ -1165,14 +1218,14 @@ class _lin(object):
     def __pos__(self):
 
         f = _lin()
-        for v,c in self._coeff.iteritems(): f._coeff[v] = +c
+        for v,c in iter(self._coeff.items()): f._coeff[v] = +c
         return f
 
 
     def __neg__(self):
 
         f = _lin()
-        for v,c in self._coeff.iteritems(): f._coeff[v] = -c
+        for v,c in iter(self._coeff.items()): f._coeff[v] = -c
         return f
 
 
@@ -1191,7 +1244,7 @@ class _lin(object):
             f._addterm(1.0, other)
 
         elif type(other) is _lin:
-            for v,c in other._coeff.iteritems(): f._addterm(c,v)
+            for v,c in iter(other._coeff.items()): f._addterm(c,v)
 
         else: return NotImplemented
 
@@ -1219,7 +1272,7 @@ class _lin(object):
 
         elif type(other) is _lin and (len(other) == 1 or 
             len(other) == lg): 
-            for v,c in other._coeff.iteritems(): self._addterm(c,v)
+            for v,c in iter(other._coeff.items()): self._addterm(c,v)
 
         else: 
             raise NotImplementedError('in-place addition must result '\
@@ -1235,7 +1288,7 @@ class _lin(object):
         if type(other) is variable:
             f._addterm(-1.0, other)
         elif type(other) is _lin:
-            for v,c in other._coeff.iteritems(): f._addterm(-c,v)
+            for v,c in iter(other._coeff.items()): f._addterm(-c,v)
         else: 
             return NotImplemented
         
@@ -1249,7 +1302,7 @@ class _lin(object):
         if type(other) is variable:
             f._addterm(1.0, other)
         elif type(other) is _lin:
-            for v,c in other._coeff.iteritems(): f._addterm(c,v)
+            for v,c in iter(other._coeff.items()): f._addterm(c,v)
         else: 
             return NotImplemented
         
@@ -1272,7 +1325,7 @@ class _lin(object):
 
         elif type(other) is _lin and (len(other) == 1 or 
             len(other) == lg):
-            for v,c in other._coeff.iteritems(): self._addterm(-c,v)
+            for v,c in iter(other._coeff.items()): self._addterm(-c,v)
 
         else: 
             raise NotImplementedError('in-place subtraction must '\
@@ -1328,7 +1381,7 @@ class _lin(object):
         if not l: raise ValueError('empty index set')
 
         f = _lin()
-        for v,c in self._coeff.iteritems():
+        for v,c in iter(self._coeff.items()):
             if c.size == (len(self), len(v)):  
                 f._coeff[v] = c[l,:]
 
@@ -1337,9 +1390,9 @@ class _lin(object):
 
             elif c.size == (1,1) and len(v) > 1:
                 # create a sparse matrix with 1.0 element in 
-                # position (k,l[k]) for k in xrange(len(l)) 
+                # position (k,l[k]) for k in range(len(l)) 
                 f._coeff[v] = spmatrix([], [], [], (len(l),len(v)), 'd')
-                f._coeff[v][[l[k]*len(l)+k for k in xrange(len(l))]] \
+                f._coeff[v][[l[k]*len(l)+k for k in range(len(l))]] \
                     = c[0]
 
             else:  # c is 1 by len(v)
@@ -1457,7 +1510,7 @@ class _minmax(object):
         if len(self._flist) == 1:
             s += '\n' + repr(self._flist[0])[1:-1]
         else:
-            for k in xrange(len(self._flist)):
+            for k in range(len(self._flist)):
                 s += "\nfunction %d: " %k + repr(self._flist[k])[1:-1]
         return s
 
@@ -1587,7 +1640,7 @@ def max(*s):
     Does not work with generators (Python 2.4).
     """
 
-    try: return __builtin__.max(*s)
+    try: return builtins.max(*s)
     except NotImplementedError:
         f = _function()
         try: 
@@ -1626,7 +1679,7 @@ def min(*s):
     Does not work with generators (Python 2.4).
     """
 
-    try: return __builtin__.min(*s)
+    try: return builtins.min(*s)
     except NotImplementedError:
         f = _function()
         try: 
@@ -1697,7 +1750,7 @@ class _sum_minmax(_minmax):
     def __str__(self):
 
         s = repr(self)[1:-1] 
-        for k in xrange(len(self._flist)):
+        for k in range(len(self._flist)):
             s += "\nfunction %d: " %k + repr(self._flist[k])[1:-1]
         return s
 
@@ -1958,7 +2011,7 @@ class constraint(object):
 
                 else:
                     # write as vector + f0[k] <= 0 for all k
-                    for k in xrange(len(f0)):
+                    for k in range(len(f0)):
                         c = faff + f0[k] <= 0
                         c.name = self.name + '(%d)' %k 
                         c, caux, newvars = c._aslinearineq()
@@ -1968,7 +2021,7 @@ class constraint(object):
 
             else:
                 # constraint of the form f = faff + max(f0,f1,...) <= 0
-                for k in xrange(len(cvxterms[0]._flist)):
+                for k in range(len(cvxterms[0]._flist)):
                     c = faff + cvxterms[0]._flist[k] <= 0
                     c.name = self.name + '(%d)' %k 
                     c, caux, newvars = c._aslinearineq()
@@ -1983,7 +2036,7 @@ class constraint(object):
 
             sumt = _function()
 
-            for k in xrange(len(cvxterms)):
+            for k in range(len(cvxterms)):
                 if type(cvxterms[k]) is _minmax:
                     # gk is max(f0,f1,...)
 
@@ -2005,7 +2058,7 @@ class constraint(object):
                     else:
                         # add constraint gk = max(f0,f1, ... ) <= tk
 
-                        for j in xrange(len(cvxterms[k]._flist)):
+                        for j in range(len(cvxterms[k]._flist)):
                             fj = cvxterms[k]._flist[j]
                             c = fj <= tk
                             c.name = self.name + '[%d](%d)' %(k,j)
@@ -2022,7 +2075,7 @@ class constraint(object):
                     sumt = sumt + sum(tk)
 
                     # add contraint max(f0,f1, ... ) <= tk
-                    for j in xrange(len(cvxterms[k]._flist)):
+                    for j in range(len(cvxterms[k]._flist)):
                         fj = cvxterms[k]._flist[j]
                         c = fj <= tk
                         c.name = self.name + '[%d](%d)' %(k,j)
@@ -2119,14 +2172,14 @@ class op(object):
 
         for c in self._inequalities:
             for v in c.variables():
-                if self._variables.has_key(v):
+                if v in self._variables:
                     self._variables[v]['i'] += [c]
                 else:
                     self._variables[v] = {'o': False, 'i': [c], 'e': []}
 
         for c in self._equalities:
             for v in c.variables():
-                if self._variables.has_key(v):
+                if v in self._variables:
                     self._variables[v]['e'] += [c]
                 else:
                     self._variables[v] = {'o': False, 'i': [], 'e': [c]}
@@ -2169,7 +2222,7 @@ class op(object):
 
             # update _variables
             for v in self.objective.variables():
-                if not self._variables.has_key(v):
+                if v not in self._variables:
                     self._variables[v] = {'o': True, 'i': [], 'e': []}
                 else:
                     self._variables[v]['o'] = True
@@ -2257,12 +2310,12 @@ class op(object):
         if c.type() == '=': self._equalities += [c]             
         for v in c.variables():
             if c.type() == '<':
-                if self._variables.has_key(v):
+                if v in self._variables:
                     self._variables[v]['i'] += [c]
                 else:
                     self._variables[v] = {'o': False, 'i': [c], 'e': []}
             else:
-                if self._variables.has_key(v):
+                if v in self._variables:
                     self._variables[v]['e'] += [c]
                 else:
                     self._variables[v] = {'o': False, 'i': [], 'e': [c]}
@@ -2366,7 +2419,7 @@ class op(object):
             newobj._constant = +objective._constant
             newobj._linear = +objective._linear
 
-            for k in xrange(len(objective._cvxterms)):
+            for k in range(len(objective._cvxterms)):
                 fk = objective._cvxterms[k]
                 
                 if type(fk) is _minmax:
@@ -2379,7 +2432,7 @@ class op(object):
 
                 aux_variables += [tk]
 
-                for j in xrange(len(fk._flist)):
+                for j in range(len(fk._flist)):
                     c = fk._flist[j] <= tk
                     if len(fk._flist) > 1:
                         c.name = self.name + '[%d](%d)' %(k,j)
@@ -2407,7 +2460,7 @@ class op(object):
             vslc[v] = slice(n, n+len(v))
             n += len(v)
         c = matrix(0.0, (1,n))
-        for v,cf in objective._linear._coeff.iteritems():
+        for v,cf in iter(objective._linear._coeff.items()):
             if _isscalar(cf): 
                 c[vslc[v]] = cf[0]
             elif _isdmatrix(cf):  
@@ -2443,7 +2496,7 @@ class op(object):
 
         for i in islc:
             lg = len(i)
-            for v,cf in i._f._linear._coeff.iteritems():
+            for v,cf in iter(i._f._linear._coeff.items()):
                 if cf.size == (lg, len(v)):
                     if _isspmatrix(cf) and _isdmatrix(G):
                         G[islc[i], vslc[v]] = matrix(cf, tc='d')
@@ -2479,7 +2532,7 @@ class op(object):
 
         for e in equalities:
             lg = len(e)
-            for v,cf in e._f._linear._coeff.iteritems():
+            for v,cf in iter(e._f._linear._coeff.items()):
                 if cf.size == (lg,len(v)):
                     if _isspmatrix(cf) and _isdmatrix(A):
                         A[eslc[e], vslc[v]] = matrix(cf, tc='d')
@@ -2580,8 +2633,8 @@ class op(object):
 
         self.status = sol['status']
         if type(t) is tuple:
-            for v,f in vmap.iteritems(): v.value = f.value()
-            for c,f in mmap.iteritems(): c.multiplier.value = f.value()
+            for v,f in iter(vmap.items()): v.value = f.value()
+            for c,f in iter(mmap.items()): c.multiplier.value = f.value()
          
 
 
@@ -2605,9 +2658,9 @@ class op(object):
 
         f.write('ROWS\n') 
         f.write(' N  %8s\n' %'cost')
-        for k in xrange(len(constraints)):
+        for k in range(len(constraints)):
             c = constraints[k]
-            for i in xrange(len(c)):
+            for i in range(len(c)):
                 if c._type == '<':
                     f.write(' L  ')
                 else:
@@ -2621,32 +2674,32 @@ class op(object):
                 f.write('\n')
 
         f.write('COLUMNS\n') 
-        for k in xrange(len(variables)):
+        for k in range(len(variables)):
             v = variables[k]
-            for i in xrange(len(v)):
+            for i in range(len(v)):
                 if v.name: 
                     varname = v.name
                 else:
                     varname = str(k)
                 varname = varname[:(7-len(str(i)))] + '_' + str(i)
 
-                if self.objective._linear._coeff.has_key(v):
+                if v in self.objective._linear._coeff:
                     cf = self.objective._linear._coeff[v]
                     if cf[i] != 0.0:
                         f.write(4*' ' + varname[:8].rjust(8))
                         f.write(2*' ' + '%8s' %'cost')
                         f.write(2*' ' + '% 7.5E\n' %cf[i])
 
-                for j in xrange(len(constraints)):
+                for j in range(len(constraints)):
                      c = constraints[j]
                      if c.name:
                          cname = c.name 
                      else:
                          cname = str(j) 
-                     if c._f._linear._coeff.has_key(v):
+                     if v in c._f._linear._coeff:
                          cf = c._f._linear._coeff[v]
                          if cf.size == (len(c),len(v)):
-                             nz = [k for k in xrange(cf.size[0]) 
+                             nz = [k for k in range(cf.size[0]) 
                                  if cf[k,i] != 0.0]
                              for l in nz:
                                  conname = cname[:(7-len(str(l)))] \
@@ -2656,7 +2709,7 @@ class op(object):
                                  f.write(2*' ' + '% 7.5E\n' %cf[l,i])
                          elif cf.size == (1,len(v)):
                              if cf[0,i] != 0.0:
-                                 for l in xrange(len(c)):
+                                 for l in range(len(c)):
                                      conname = cname[:(7-len(str(l)))] \
                                          + '_' + str(l)
                                      f.write(4*' ' + 
@@ -2673,14 +2726,14 @@ class op(object):
                                  f.write(2*' ' + '% 7.5E\n' %cf[0,0])
                         
         f.write('RHS\n') 
-        for j in xrange(len(constraints)):
+        for j in range(len(constraints)):
             c = constraints[j]
             if c.name:
                 cname = c.name 
             else:
                 cname = str(j) 
             const = -c._f._constant
-            for l in xrange(len(c)):
+            for l in range(len(c)):
                  conname = cname[:(7-len(str(l)))] + '_' + str(l)
                  f.write(14*' ' + conname[:8].rjust(8))
                  if const.size[0] == len(c):
@@ -2691,9 +2744,9 @@ class op(object):
         f.write('RANGES\n') 
 
         f.write('BOUNDS\n') 
-        for k in xrange(len(variables)):
+        for k in range(len(variables)):
             v = variables[k]
-            for i in xrange(len(v)):
+            for i in range(len(v)):
                 if v.name:
                     varname = v.name
                 else:
@@ -2731,7 +2784,7 @@ class op(object):
             if not s: 
                 raise SyntaxError("EOF reached before 'NAME' section "\
                     "was found")
-        self.name = strip(s[14:22])
+        self.name = s[14:22].strip()
 
         s = f.readline()
         while s[:4] != 'ROWS': 
@@ -2748,19 +2801,19 @@ class op(object):
         foundobj = False     # first occurrence of 'N' counts
         while s[:7] != 'COLUMNS': 
             if not s: raise SyntaxError("file has no 'COLUMNS' section")
-            if len(strip(s)) == 0 or s[0] == '*': 
+            if len(s.strip()) == 0 or s[0] == '*': 
                 pass
-            elif strip(s[1:3]) in ['E','L','G']:
-                rowlabel = strip(s[4:12])
+            elif s[1:3].strip() in ['E','L','G']:
+                rowlabel = s[4:12].strip()
                 functions[rowlabel] = _function()
-                rowtypes[rowlabel] = strip(s[1:3])
-            elif strip(s[1:3]) == 'N':
-                rowlabel = strip(s[4:12])
+                rowtypes[rowlabel] = s[1:3].strip()
+            elif s[1:3].strip() == 'N':
+                rowlabel = s[4:12].strip()
                 if not foundobj:
                     functions[rowlabel] = self.objective
                     foundobj = True
             else: 
-                raise ValueError("unknown row type '%s'" %strip(s[1:3]))
+                raise ValueError("unknown row type '%s'" %s[1:3].strip())
             s = f.readline()
         s = f.readline()
 
@@ -2771,21 +2824,21 @@ class op(object):
             if not s: 
                 raise SyntaxError("EOF reached before 'RHS' section "\
                     "was found")
-            if len(strip(s)) == 0 or s[0] == '*': 
+            if len(s.strip()) == 0 or s[0] == '*': 
                 pass
             else:
-                if strip(s[4:12]): collabel = strip(s[4:12])
-                if not variables.has_key(collabel):
+                if s[4:12].strip(): collabel = s[4:12].strip()
+                if collabel not in variables:
                     variables[collabel] = variable(1,collabel)
                 v = variables[collabel]
-                rowlabel = strip(s[14:22])
-                if not functions.has_key(rowlabel):
+                rowlabel = s[14:22].strip()
+                if rowlabel not in functions:
                     raise KeyError("no row label '%s'" %rowlabel)
                 functions[rowlabel]._linear._coeff[v] = \
                     matrix(float(s[24:36]), tc='d')
-                rowlabel = strip(s[39:47])
+                rowlabel = s[39:47].strip()
                 if rowlabel:
-                    if not functions.has_key(rowlabel):
+                    if rowlabel not in functions:
                         raise KeyError("no row label '%s'" %rowlabel)
                     functions[rowlabel]._linear._coeff[v] =  \
                         matrix(float(s[49:61]), tc='d')
@@ -2803,23 +2856,23 @@ class op(object):
             s[:6] != 'ENDATA':
             if not s: raise SyntaxError( \
                  "EOF reached before 'ENDATA' was found")
-            if len(strip(s)) == 0 or s[0] == '*': 
+            if len(s.strip()) == 0 or s[0] == '*': 
                 pass
             else:
-                if None != rhslabel != strip(s[4:12]):
+                if None != rhslabel != s[4:12].strip():
                     # skip if rhslabel is different from 1st rhs label
                     # encountered
                     pass  
                 else:
-                    if rhslabel is None: rhslabel = strip(s[4:12])
-                    rowlabel = strip(s[14:22])
-                    if not functions.has_key(rowlabel):
+                    if rhslabel is None: rhslabel = s[4:12].strip()
+                    rowlabel = s[14:22].strip()
+                    if rowlabel not in functions:
                         raise KeyError("no row label '%s'" %rowlabel)
                     functions[rowlabel]._constant = \
                         matrix(-float(s[24:36]), tc='d')
-                    rowlabel = strip(s[39:47])
+                    rowlabel = s[39:47].strip()
                     if rowlabel:
-                        if not functions.has_key(rowlabel):
+                        if rowlabel not in functions:
                             raise KeyError("no row label '%s'" \
                                 %rowlabel)
                         functions[rowlabel]._constant = \
@@ -2833,7 +2886,7 @@ class op(object):
         # We read in only one vector, the one with the first range label
         # encountered.
         ranges = dict()
-        for l in rowtypes.iterkeys(): 
+        for l in iter(rowtypes.keys()): 
             ranges[l] = None   # {rowlabel: range value}
         rangeslabel = None
         if s[:6] == 'RANGES':
@@ -2841,21 +2894,21 @@ class op(object):
             while s[:6] != 'BOUNDS' and s[:6] != 'ENDATA':
                 if not s: raise SyntaxError( \
                     "EOF reached before 'ENDATA' was found")
-                if len(strip(s)) == 0 or s[0] == '*': 
+                if len(s.strip()) == 0 or s[0] == '*': 
                     pass
                 else:
-                    if None != rangeslabel != strip(s[4:12]):
+                    if None != rangeslabel != s[4:12].strip():
                         pass  
                     else:
                         if rangeslabel == None: 
-                            rangeslabel = strip(s[4:12])
-                        rowlabel = strip(s[14:22])
-                        if not rowtypes.has_key(rowlabel):
+                            rangeslabel = s[4:12].strip()
+                        rowlabel = s[14:22].strip()
+                        if rowlabel not in rowtypes:
                             raise KeyError("no row label '%s'"%rowlabel)
                         ranges[rowlabel] = float(s[24:36])
-                        rowlabel = strip(s[39:47])
+                        rowlabel = s[39:47].strip()
                         if rowlabel != '':
-                            if not functions.has_key(rowlabel):
+                            if rowlabel not in functions:
                                 raise KeyError("no row label '%s'" \
                                     %rowlabel)
                             ranges[rowlabel] =  float(s[49:61])
@@ -2869,62 +2922,62 @@ class op(object):
         # label encountered.
         boundslabel = None
         bounds = dict()
-        for v in variables.iterkeys():  
+        for v in iter(variables.keys()):  
             bounds[v] = [0.0, None] #{column label: [l.bound, u. bound]}
         if s[:6] == 'BOUNDS':
             s = f.readline()
             while s[:6] != 'ENDATA':
                 if not s: raise SyntaxError( \
                     "EOF reached before 'ENDATA' was found")
-                if len(strip(s)) == 0 or s[0] == '*': 
+                if len(s.strip()) == 0 or s[0] == '*': 
                     pass
                 else:
-                    if None != boundslabel != strip(s[4:12]):
+                    if None != boundslabel != s[4:12].strip():
                         pass  
                     else:
                         if boundslabel is None: 
-                            boundslabel = strip(s[4:12])
-                        collabel = strip(s[14:22])
-                        if not variables.has_key(collabel):
+                            boundslabel = s[4:12].strip()
+                        collabel = s[14:22].strip()
+                        if collabel not in variables:
                             raise ValueError('unknown column label ' \
                                 + "'%s'" %collabel)
-                        if strip(s[1:3]) == 'LO': 
+                        if s[1:3].strip() == 'LO': 
                             if bounds[collabel][0] != 0.0:
                                 raise ValueError("repeated lower "\
                                     "bound for variable '%s'" %collabel)
                             bounds[collabel][0] = float(s[24:36])
-                        elif strip(s[1:3]) == 'UP': 
+                        elif s[1:3].strip() == 'UP': 
                             if bounds[collabel][1] != None:
                                 raise ValueError("repeated upper "\
                                     "bound for variable '%s'" %collabel)
                             bounds[collabel][1] = float(s[24:36])
-                        elif strip(s[1:3]) == 'FX': 
+                        elif s[1:3].strip() == 'FX': 
                             if bounds[collabel] != [0, None]:
                                 raise ValueError("repeated bounds "\
                                     "for variable '%s'" %collabel)
                             bounds[collabel][0] = float(s[24:36])
                             bounds[collabel][1] = float(s[24:36])
-                        elif strip(s[1:3]) == 'FR': 
+                        elif s[1:3].strip() == 'FR': 
                             if bounds[collabel] != [0, None]:
                                 raise ValueError("repeated bounds "\
                                     "for variable '%s'" %collabel)
                             bounds[collabel][0] = None
                             bounds[collabel][1] = None
-                        elif strip(s[1:3]) == 'MI': 
+                        elif s[1:3].strip() == 'MI': 
                             if bounds[collabel][0] != 0.0:
                                 raise ValueError("repeated lower " \
                                     "bound for variable '%s'" %collabel)
                             bounds[collabel][0] = None
-                        elif strip(s[1:3]) == 'PL': 
+                        elif s[1:3].strip() == 'PL': 
                             if bounds[collabel][1] != None:
                                 raise ValueError("repeated upper " \
                                     "bound for variable '%s'" %collabel)
                         else:
                             raise ValueError("unknown bound type '%s'"\
-                                %strip(s[1:3]))
+                                %s[1:3].strip())
                 s = f.readline()
 
-        for l, type in rowtypes.iteritems():
+        for l, type in iter(rowtypes.items()):
 
             if type == 'L':   
                 c = functions[l] <= 0.0
@@ -2962,7 +3015,7 @@ class op(object):
                     c.name = l + '_lb'
                     self._inequalities += [c]
 
-        for l,bnds in bounds.iteritems():
+        for l,bnds in iter(bounds.items()):
             v = variables[l]
             if None != bnds[0] != bnds[1]:
                 c = v >= bnds[0]
@@ -2996,13 +3049,13 @@ class op(object):
             self._variables[v] = {'o': True, 'i': [], 'e': []}
         for c in self._inequalities:
             for v in c._f._linear._coeff.keys():
-                if self._variables.has_key(v):
+                if v in self._variables:
                     self._variables[v]['i'] += [c]
                 else:
                     self._variables[v] = {'o': False, 'i': [c], 'e': []}
         for c in self._equalities:
             for v in c._f._linear._coeff.keys():
-                if self._variables.has_key(v):
+                if v in self._variables:
                     self._variables[v]['e'] += [c]
                 else:
                     self._variables[v] = {'o': False, 'i': [], 'e': [c]}
@@ -3104,13 +3157,13 @@ def _keytolist(key,n):
         l = [k for k in key if -n <= k < n]
         if len(l) != len(key):
             raise IndexError('variable index out of range')
-        for i in xrange(len(l)): 
+        for i in range(len(l)): 
             if l[i] < 0: l[i] += n
         
     elif type(key) is slice:
             
         ind = key.indices(n)
-        l = range(ind[0],ind[1],ind[2])
+        l = list(range(ind[0],ind[1],ind[2]))
 
     else: 
         raise TypeError('invalid key')
@@ -3128,7 +3181,7 @@ class varlist(list):
 
     def __contains__(self,item):
             
-        for k in xrange(len(self)): 
+        for k in range(len(self)): 
             if self[k] is item: return True
         return False
 
@@ -3172,7 +3225,7 @@ def _vecmax(*s):
             val = matrix([max(c[0],x) for x in val], tc='d')
 
         elif len(val) == len(c):
-            val = matrix( [max(val[k],c[k]) for k in xrange(len(c))], 
+            val = matrix( [max(val[k],c[k]) for k in range(len(c))], 
                 tc='d' )
     
         else: 
@@ -3220,7 +3273,7 @@ def _vecmin(*s):
             val = matrix( [min(c[0],x) for x in val], tc='d' )
 
         elif len(val) == len(c):
-            val = matrix( [min(val[k],c[k]) for k in xrange(len(c))], 
+            val = matrix( [min(val[k],c[k]) for k in range(len(c))], 
                 tc='d' )
     
         else: 

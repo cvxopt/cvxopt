@@ -1,8 +1,8 @@
 /*
- * Copyright 2010 L. Vandenberghe.
+ * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.3.
+ * This file is part of CVXOPT version 1.1.4.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,11 @@ static const param_tuple AMD_PARAM_LIST[] = {
     {"AMD_AGGRESSIVE", AMD_AGGRESSIVE}
 }; /* 2 parameters */
 
+#if PY_MAJOR_VERSION >= 3
+static int get_param_idx(const char *str, int *idx)
+#else
 static int get_param_idx(char *str, int *idx)
+#endif
 {
     int i;
 
@@ -69,7 +73,10 @@ static int set_defaults(double *control)
     int_t pos=0;
     int param_id;
     PyObject *param, *key, *value;
-    char *keystr, err_str[100];
+#if PY_MAJOR_VERSION < 3
+    char *keystr; 
+#endif
+    char err_str[100];
 
     amd_defaults(control);
 
@@ -80,17 +87,25 @@ static int set_defaults(double *control)
         return 0;
     }
     while (PyDict_Next(param, &pos, &key, &value))
+#if PY_MAJOR_VERSION >= 3
+        if ((PyUnicode_Check(key)) && 
+            get_param_idx(_PyUnicode_AsString(key),&param_id)) {
+            if (!PyLong_Check(value) && !PyFloat_Check(value)){
+                sprintf(err_str, "invalid value for AMD parameter: %-.20s",
+                    _PyUnicode_AsString(key));
+#else
         if ((keystr = PyString_AsString(key)) && get_param_idx(keystr,
             &param_id)) {
             if (!PyInt_Check(value) && !PyFloat_Check(value)){
                 sprintf(err_str, "invalid value for AMD parameter: "
                     "%-.20s", keystr);
+#endif
                 PyErr_SetString(PyExc_ValueError, err_str);
                 Py_DECREF(param);
                 return 0;
             }
             control[param_id] = PyFloat_AsDouble(value);
-    }
+        }
     Py_DECREF(param);
     return 1;
 }
@@ -112,19 +127,27 @@ static char doc_order[] =
     "p         'i' matrix of length equal to the order of A";
 
 
-static PyObject* order_c(PyObject *self, PyObject *args,
-    PyObject *kwrds)
+static PyObject* order_c(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     spmatrix *A;
     matrix *perm;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     int j, k, n, nnz, alloc=0, info;
     int_t *rowind=NULL, *colptr=NULL;
     double control[AMD_CONTROL];
     char *kwlist[] = {"A", "uplo", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|C", kwlist, &A,
+        &uplo_)) return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|c", kwlist, &A,
         &uplo)) return NULL;
+#endif
     if (!set_defaults(control)) return NULL;
     if (!SpMatrix_Check(A) || SP_NROWS(A) != SP_NCOLS(A)){
         PyErr_SetString(PyExc_TypeError, "A must be a square sparse "
@@ -136,12 +159,11 @@ static PyObject* order_c(PyObject *self, PyObject *args,
         return PyErr_NoMemory();
     n = SP_NROWS(A);
     for (nnz=0, j=0; j<n; j++) {
-	if (uplo == 'L'){
-            for (k=SP_COL(A)[j]; k<SP_COL(A)[j+1] && SP_ROW(A)[k]<j;
-                k++);
+        if (uplo == 'L'){
+            for (k=SP_COL(A)[j]; k<SP_COL(A)[j+1] && SP_ROW(A)[k]<j; k++);
             nnz += SP_COL(A)[j+1] - k;
-	}
-	else {
+        }
+        else {
             for (k=SP_COL(A)[j]; k<SP_COL(A)[j+1] && SP_ROW(A)[k] <= j;
                 k++);
             nnz += k - SP_COL(A)[j];
@@ -152,31 +174,31 @@ static PyObject* order_c(PyObject *self, PyObject *args,
         rowind = (int_t *) SP_ROW(A);
     }
     else {
-	alloc = 1;
+        alloc = 1;
         colptr = (int_t *) calloc(n+1, sizeof(int_t));
         rowind = (int_t *) calloc(nnz, sizeof(int_t));
-	if (!colptr || !rowind) {
+        if (!colptr || !rowind) {
             Py_XDECREF(perm);  free(colptr);  free(rowind);
-	    return PyErr_NoMemory();
-	}
-	colptr[0] = 0;
+            return PyErr_NoMemory();
+        }
+        colptr[0] = 0;
         for (j=0; j<n; j++) {
-	    if (uplo == 'L'){
-                for (k=SP_COL(A)[j]; k<SP_COL(A)[j+1] &&
-                    SP_ROW(A)[k] < j; k++);
-		nnz = SP_COL(A)[j+1] - k;
+            if (uplo == 'L'){
+                for (k=SP_COL(A)[j]; k<SP_COL(A)[j+1] && SP_ROW(A)[k] < j; 
+                    k++);
+                nnz = SP_COL(A)[j+1] - k;
                 colptr[j+1] = colptr[j] + nnz;
-		memcpy(rowind + colptr[j], (int_t *) SP_ROW(A) + k,
+                memcpy(rowind + colptr[j], (int_t *) SP_ROW(A) + k,
                     nnz*sizeof(int_t));
-	    }
-	    else {
-                for (k=SP_COL(A)[j]; k<SP_COL(A)[j+1] &&
-                    SP_ROW(A)[k] <= j; k++);
+            }
+            else {
+                for (k=SP_COL(A)[j]; k<SP_COL(A)[j+1] && SP_ROW(A)[k] <= j;
+                    k++);
                 nnz = k - SP_COL(A)[j];
                 colptr[j+1] = colptr[j] + nnz;
-		memcpy(rowind + colptr[j], (int_t *) (SP_ROW(A) +
+                memcpy(rowind + colptr[j], (int_t *) (SP_ROW(A) +
                     SP_COL(A)[j]), nnz*sizeof(int_t));
-	    }
+            }
         }
     }
     info = amd_order(n, colptr, rowind, MAT_BUFI(perm), control, NULL);
@@ -200,14 +222,34 @@ static PyObject* order_c(PyObject *self, PyObject *args,
 }
 
 static PyMethodDef amd_functions[] = {
-{"order", (PyCFunction) order_c, METH_VARARGS|METH_KEYWORDS, doc_order},
-{NULL}  /* Sentinel */
+    {"order", (PyCFunction) order_c, METH_VARARGS|METH_KEYWORDS, doc_order},
+    {NULL}  /* Sentinel */
 };
 
+#if PY_MAJOR_VERSION >= 3
+
+static PyModuleDef amd_module_def = {
+    PyModuleDef_HEAD_INIT,
+    "amd",
+    amd__doc__,
+    -1,
+    amd_functions,
+    NULL, NULL, NULL, NULL
+};
+
+PyMODINIT_FUNC PyInit_amd(void)
+{
+    if (!(amd_module = PyModule_Create(&amd_module_def))) return NULL;
+    PyModule_AddObject(amd_module, "options", PyDict_New());
+    if (import_cvxopt() < 0) return NULL;
+    return amd_module;
+}
+
+#else
 PyMODINIT_FUNC initamd(void)
 {
-    amd_module = Py_InitModule3("cvxopt.amd", amd_functions,
-        amd__doc__);
+    amd_module = Py_InitModule3("cvxopt.amd", amd_functions, amd__doc__);
     PyModule_AddObject(amd_module, "options", PyDict_New());
     if (import_cvxopt() < 0) return;
 }
+#endif

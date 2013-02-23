@@ -14,4 +14,4 @@ op(sum(abs(x)) + sum(u), [A*x >= 1-u, u >= 0]).solve()
 x2 = variable(A.size[1],'x')  
 op(sum(abs(x2)) + sum(max(0, 1 - A*x2))).solve() 
 
-print "\nDifference between two solutions: %e" %nrm2(x.value - x2.value)
+print("\nDifference between two solutions: %e" %nrm2(x.value - x2.value))

@@ -1,13 +1,16 @@
 # Figures 8.10-12, page 426-429.
 # Approximate linear discrimination.
 
-import pylab, pickle
+import pickle
 from cvxopt import solvers, matrix, spmatrix, spdiag, log, exp, div
 from cvxopt.blas import dot
 from cvxopt.modeling import variable, op
-solvers.options['show_progress'] = False
+#solvers.options['show_progress'] = False
+try: import pylab
+except ImportError: pylab_installed = False
+else: pylab_installed = True
 
-data = pickle.load(open("linsep.bin"))
+data = pickle.load(open("linsep.bin", 'rb'))
 X, Y = data['X'], data['Y']
 n, N, M = X.size[0], X.size[1], Y.size[1]
 
@@ -25,17 +28,18 @@ op( sum(u)+sum(v), [X.T*a-b >= 1-u,  Y.T*a-b <= -1+v,
 a = a.value
 b = b.value
 
-pylab.figure(1, facecolor='w', figsize=(5,5))
-pts = matrix([-10.0, 10.0], (2,1))
-pylab.plot(X[0,:], X[1,:], 'ow', Y[0,:], Y[1,:], 'ok',
-    pts, (b - a[0]*pts)/a[1], '-r', 
-    pts, (b+1.0 - a[0]*pts)/a[1], '--r',
-    pts, (b-1.0 - a[0]*pts)/a[1], '--r' )
-pylab.title('Separation via linear programming (fig. 8.10)')
-pylab.axis([-10, 10, -10, 10])
-pylab.axis('off')
-pylab.xticks([])
-pylab.yticks([])
+if pylab_installed:
+    pylab.figure(1, facecolor='w', figsize=(5,5))
+    pts = matrix([-10.0, 10.0], (2,1))
+    pylab.plot(X[0,:], X[1,:], 'ow', Y[0,:], Y[1,:], 'ok',
+        pts, (b - a[0]*pts)/a[1], '-r', 
+        pts, (b+1.0 - a[0]*pts)/a[1], '--r',
+        pts, (b-1.0 - a[0]*pts)/a[1], '--r' )
+    pylab.title('Separation via linear programming (fig. 8.10)')
+    pylab.axis([-10, 10, -10, 10])
+    pylab.axis('off')
+    pylab.xticks([])
+    pylab.yticks([])
 
 # Support vector classifier.
 #
@@ -81,19 +85,20 @@ sol = solvers.sdp(c, Gl, hl, Gs, hs)
 a = sol['x'][:2]
 b = sol['x'][2]
 
-pylab.figure(2, facecolor='w', figsize=(5,5))
-pts = matrix([-10.0, 10.0], (2,1))
-pylab.plot(X[0,:], X[1,:], 'ow', Y[0,:], Y[1,:], 'ok',
-    pts, (b - a[0]*pts)/a[1], '-r', 
-    pts, (b+1.0 - a[0]*pts)/a[1], '--r',
-    pts, (b-1.0 - a[0]*pts)/a[1], '--r' )
-pylab.title('Support vector classifier (fig. 8.11)')
-pylab.axis([-10, 10, -10, 10])
-pylab.xticks([])
-pylab.yticks([])
-pylab.axis('off')
-
-
+if pylab_installed:
+    pylab.figure(2, facecolor='w', figsize=(5,5))
+    pts = matrix([-10.0, 10.0], (2,1))
+    pylab.plot(X[0,:], X[1,:], 'ow', Y[0,:], Y[1,:], 'ok',
+        pts, (b - a[0]*pts)/a[1], '-r', 
+        pts, (b+1.0 - a[0]*pts)/a[1], '--r',
+        pts, (b-1.0 - a[0]*pts)/a[1], '--r' )
+    pylab.title('Support vector classifier (fig. 8.11)')
+    pylab.axis([-10, 10, -10, 10])
+    pylab.xticks([])
+    pylab.yticks([])
+    pylab.axis('off')
+    
+    
 # Via logistic modeling.
 #
 # minimize -sum(X'*a - b) + sum log (1 + exp([X';Y']*a - b))
@@ -116,16 +121,17 @@ def F(x=None, z=None):
 sol = solvers.cp(F)
 a, b = sol['x'][:2],  sol['x'][2]
 
-pylab.figure(3, facecolor='w', figsize=(5,5))
-pts = matrix([-10.0, 10.0], (2,1))
-pylab.plot(X[0,:], X[1,:], 'ow', Y[0,:], Y[1,:], 'ok',
-    pts, (b - a[0]*pts)/a[1], '-r', 
-    pts, (b+1.0 - a[0]*pts)/a[1], '--r',
-    pts, (b-1.0 - a[0]*pts)/a[1], '--r' )
-pylab.title('Separation via logistic modeling (fig. 8.12)')
-pylab.axis([-10, 10, -10, 10])
-pylab.xticks([])
-pylab.yticks([])
-pylab.axis('off')
-
-pylab.show()
+if pylab_installed:
+    pylab.figure(3, facecolor='w', figsize=(5,5))
+    pts = matrix([-10.0, 10.0], (2,1))
+    pylab.plot(X[0,:], X[1,:], 'ow', Y[0,:], Y[1,:], 'ok',
+        pts, (b - a[0]*pts)/a[1], '-r', 
+        pts, (b+1.0 - a[0]*pts)/a[1], '--r',
+        pts, (b-1.0 - a[0]*pts)/a[1], '--r' )
+    pylab.title('Separation via logistic modeling (fig. 8.12)')
+    pylab.axis([-10, 10, -10, 10])
+    pylab.xticks([])
+    pylab.yticks([])
+    pylab.axis('off')
+    
+    pylab.show()

@@ -11,6 +11,9 @@ G += [ matrix([[-21., -11.,   0., -11.,  10.,   8.,   0.,   8., 5.],
 h = [ matrix([[33., -9.], [-9., 26.]]) ]  
 h += [ matrix([[14., 9., 40.], [9., 91., 10.], [40., 10., 15.]]) ]  
 sol = solvers.sdp(c, Gs=G, hs=h)  
-print "\nx = \n\n", sol['x']  
-print "zs[0] =\n\n", sol['zs'][0]  
-print "zs[1] =\n\n", sol['zs'][1]  
+print("\nx = \n") 
+print(sol['x'])
+print("zs[0] = \n")
+print(sol['zs'][0])
+print("zs[1] =\n")
+print(sol['zs'][1])

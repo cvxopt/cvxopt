@@ -11,10 +11,10 @@ library and on the strengths of Python as a high-level programming
 language.
 """ 
 
-# Copyright 2010 L. Vandenberghe.
+# Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.3.
+# This file is part of CVXOPT version 1.1.4.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ language.
 # 
 # You should have received a copy of the GNU General Public License
 
-import base
+import cvxopt.base
 
 def normal(nrows, ncols=1, mean=0.0, std=1.0):
     '''
@@ -55,7 +55,7 @@ def normal(nrows, ncols=1, mean=0.0, std=1.0):
     except:
         from cvxopt.base import matrix
         from random import gauss
-        return matrix([gauss(mean, std) for k in xrange(nrows*ncols)],
+        return matrix([gauss(mean, std) for k in range(nrows*ncols)],
                       (nrows,ncols), 'd' )
         
     return gsl.normal(nrows, ncols, mean, std)
@@ -86,7 +86,7 @@ def uniform(nrows, ncols=1, a=0, b=1):
     except:
         from cvxopt.base import matrix
         from random import uniform
-        return matrix([uniform(a, b) for k in xrange(nrows*ncols)],
+        return matrix([uniform(a, b) for k in range(nrows*ncols)],
                       (nrows,ncols), 'd' )
 
     return gsl.uniform(nrows, ncols, a, b)
@@ -122,13 +122,19 @@ def getseed():
         from cvxopt import gsl
         return gsl.getseed()
     except:
-        raise NotImplementedError, "getseed() not installed (requires GSL) "
+        raise NotImplementedError("getseed() not installed (requires GSL)")
     
 
+import sys
+if sys.version_info.major < 3:
+    import __builtin__
+    omax = __builtin__.max
+    omin = __builtin__.min
+else:
+    omax = max
+    omin = min
+    from functools import reduce
 
-import __builtin__
-omax = __builtin__.max
-omin = __builtin__.min
 
 def max(*args):
     ''' 
@@ -146,7 +152,7 @@ def max(*args):
     '''    
     
     if len(args) == 1 and type(args[0]).__name__ in \
-            ['list', 'tuple', 'xrange', 'generator']: 
+            ['list', 'tuple', 'xrange', 'range', 'generator']: 
         return +reduce(base.emax, *args)
     elif len(args) == 1 and type(args[0]) is base.matrix:
         return omax(args[0])
@@ -175,7 +181,7 @@ def min(*args):
     '''
 
     if len(args) == 1 and type(args[0]).__name__ in \
-            ['list', 'tuple', 'xrange', 'generator']: 
+            ['list', 'tuple', 'xrange', 'range', 'generator']: 
         return +reduce(base.emin, *args)
     elif len(args) == 1 and type(args[0]) is base.matrix:
         return omin(args[0])
@@ -204,7 +210,7 @@ def mul(*args):
     '''
 
     if len(args) == 1 and type(args[0]).__name__ in \
-            ['list', 'tuple', 'xrange', 'generator']: 
+            ['list', 'tuple', 'xrange', 'range', 'generator']: 
         return +reduce(base.emul, *args)
     else:
         return +reduce(base.emul, args)
@@ -226,7 +232,7 @@ def div(*args):
     '''
 
     if len(args) == 1 and type(args[0]).__name__ in \
-            ['list', 'tuple', 'xrange', 'generator']: 
+            ['list', 'tuple', 'xrange', 'range', 'generator']: 
         return +reduce(base.ediv, *args)
     else:
         return +reduce(base.ediv, args)

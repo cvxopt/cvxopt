@@ -65,17 +65,17 @@ A :class:`variable` ``x`` has two attributes.
 >>> x = variable(3,'a')
 >>> len(x)
 3
->>> print x.name
+>>> print(x.name)
 a
->>> print x.value 
+>>> print(x.value)
 None
 >>> x.value = matrix([1.,2.,3.])
->>> print x.value
+>>> print(x.value)
 [ 1.00e+00]
 [ 2.00e+00]
 [ 3.00e+00]
 >>> x.value = 1
->>> print x.value
+>>> print(x.value)
 [ 1.00e+00]
 [ 1.00e+00]
 [ 1.00e+00]
@@ -201,7 +201,7 @@ length 2.  The functions ``f`` and ``g`` are given by
 >>> A = matrix([[1., 2.], [3.,4.]])
 >>> b = matrix([1.,-1.])
 >>> g = A*f + sum(y) + b 
->>> print g
+>>> print(g)
 affine function of length 2
 constant term:
 [ 1.30e+01]
@@ -232,7 +232,7 @@ coefficient of variable(1,'x'):
 
 >>> x = variable(4,'x')
 >>> f = x[::2]
->>> print f 
+>>> print(f)
 linear function of length 2
 linear term: linear function of length 2
 coefficient of variable(4,'x'):
@@ -240,7 +240,7 @@ coefficient of variable(4,'x'):
 [    0         0      1.00e+00     0    ]
 >>> y = variable(3,'x')
 >>> g = matrix(range(12),(3,4),'d')*x - 3*y + 1
->>> print g[0] + g[2]
+>>> print(g[0] + g[2])
 affine function of length 1
 constant term:
 [ 2.00e+00]
@@ -577,19 +577,19 @@ As an example we solve the LP
 >>> lp1.solve()
 >>> lp1.status
 'optimal'
->>> print lp1.objective.value()
+>>> print(lp1.objective.value())
 [-9.00e+00]
->>> print x.value
+>>> print(x.value)
 [ 1.00e+00]
->>> print y.value
+>>> print(y.value)
 [ 1.00e+00]
->>> print c1.multiplier.value
+>>> print(c1.multiplier.value)
 [ 1.00e+00]
->>> print c2.multiplier.value
+>>> print(c2.multiplier.value)
 [ 2.00e+00]
->>> print c3.multiplier.value
+>>> print(c3.multiplier.value)
 [ 2.87e-08]
->>> print c4.multiplier.value
+>>> print(c4.multiplier.value)
 [ 2.80e-08]
 
 
@@ -603,12 +603,12 @@ We can solve the same LP in  matrix form as follows.
 >>> ineq = ( A*x <= b )
 >>> lp2 = op(dot(c,x), ineq)
 >>> lp2.solve()
->>> print lp2.objective.value()
+>>> print(lp2.objective.value())
 [-9.00e+00]
->>> print x.value
+>>> print(x.value)
 [ 1.00e+00]
 [ 1.00e+00]
->>> print ineq.multiplier.value
+>>> print(ineq.multiplier.value)
 [1.00e+00]
 [2.00e+00]
 [2.87e-08]

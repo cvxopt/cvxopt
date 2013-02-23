@@ -1,8 +1,8 @@
 /*
- * Copyright 2010 L. Vandenberghe.
+ * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.3.
+ * This file is part of CVXOPT version 1.1.4.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,15 +85,24 @@ static PyObject* scale(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *x, *d, *vk, *rk;
     PyObject *W, *v, *beta, *r, *betak;
+#if PY_MAJOR_VERSION >= 3
+    int trans = 'N', inverse = 'N';
+#else
     char trans = 'N', inverse = 'N';
+#endif
     int m, n, xr, xc, ind = 0, int0 = 0, int1 = 1, i, k, inc, len, ld, 
         maxn, N;
     double b, dbl0 = 0.0, dbl1 = 1.0, dblm1 = -1.0, dbl2 = 2.0, dbl5 = 0.5,
         *wrk;
     char *kwlist[] = {"x", "W", "trans", "inverse", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CC", kwlist,
+        &x, &W, &trans, &inverse)) return NULL;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cc", kwlist,
         &x, &W, &trans, &inverse)) return NULL;
+#endif
 
     xr = x->nrows;
     xc = x->ncols;
@@ -247,13 +256,22 @@ static PyObject* scale2(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *lmbda, *x;
     PyObject *dims, *O, *Ok;
+#if PY_MAJOR_VERSION >= 3
+    int inverse = 'N';
+#else
     char inverse = 'N';
+#endif
     double a, lx, x0, b, *c = NULL, *sql = NULL;
     int m = 0, mk, i, j, len, int0 = 0, int1 = 1, maxn = 0, ind2;
     char *kwlist[] = {"lmbda", "x", "dims", "mnl", "inverse", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|iC", kwlist, &lmbda,
+        &x, &dims, &m, &inverse)) return NULL;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ic", kwlist, &lmbda,
         &x, &dims, &m, &inverse)) return NULL;
+#endif
 
 
     /*
@@ -266,7 +284,11 @@ static PyObject* scale2(PyObject *self, PyObject *args, PyObject *kwrds)
      */
 
     O = PyDict_GetItemString(dims, "l");
+#if PY_MAJOR_VERSION >= 3
+    m += (int) PyLong_AsLong(O);
+#else
     m += (int) PyInt_AsLong(O);
+#endif
     if (inverse == 'N')
         dtbsv_("L", "N", "N", &m, &int0, MAT_BUFD(lmbda), &int1,
              MAT_BUFD(x), &int1);
@@ -292,7 +314,11 @@ static PyObject* scale2(PyObject *self, PyObject *args, PyObject *kwrds)
     O = PyDict_GetItemString(dims, "q");
     for (i = 0; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        mk = (int) PyLong_AsLong(Ok);
+#else
         mk = (int) PyInt_AsLong(Ok);
+#endif
         len = mk - 1;
         a = dnrm2_(&len, MAT_BUFD(lmbda) + m + 1, &int1);
         a = sqrt(MAT_BUFD(lmbda)[m] + a) * sqrt(MAT_BUFD(lmbda)[m] - a);
@@ -333,7 +359,11 @@ static PyObject* scale2(PyObject *self, PyObject *args, PyObject *kwrds)
     O = PyDict_GetItemString(dims, "s");
     for (i = 0; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        maxn = MAX(maxn, (int) PyLong_AsLong(Ok));
+#else
         maxn = MAX(maxn, (int) PyInt_AsLong(Ok));
+#endif
     }
     if (!(c = (double *) calloc(maxn, sizeof(double))) ||
         !(sql = (double *) calloc(maxn, sizeof(double)))){
@@ -343,7 +373,11 @@ static PyObject* scale2(PyObject *self, PyObject *args, PyObject *kwrds)
     ind2 = m;
     for (i = 0; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        mk = (int) PyLong_AsLong(Ok);
+#else
         mk = (int) PyInt_AsLong(Ok);
+#endif
         for (j = 0; j < mk; j++)
             sql[j] = sqrt(MAT_BUFD(lmbda)[ind2 + j]);
         for (j = 0; j < mk; j++){
@@ -386,12 +420,20 @@ static PyObject* pack(PyObject *self, PyObject *args, PyObject *kwrds)
         &y, &dims, &nlq, &ox, &oy)) return NULL;
 
     O = PyDict_GetItemString(dims, "l");
+#if PY_MAJOR_VERSION >= 3
+    nlq += (int) PyLong_AsLong(O);
+#else
     nlq += (int) PyInt_AsLong(O);
+#endif
 
     O = PyDict_GetItemString(dims, "q");
     for (i = 0; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        nlq += (int) PyLong_AsLong(Ok);
+#else
         nlq += (int) PyInt_AsLong(Ok);
+#endif
     }
     dcopy_(&nlq, MAT_BUFD(x) + ox, &int1, MAT_BUFD(y) + oy, &int1);
 
@@ -399,7 +441,11 @@ static PyObject* pack(PyObject *self, PyObject *args, PyObject *kwrds)
     for (i = 0, np = 0, iu = ox + nlq, ip = oy + nlq; i < (int)
         PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        n = (int) PyLong_AsLong(Ok);
+#else
         n = (int) PyInt_AsLong(Ok);
+#endif
         for (k = 0; k < n; k++){
             len = n-k;
             dcopy_(&len, MAT_BUFD(x) + iu + k*(n+1), &int1,  MAT_BUFD(y) +
@@ -441,18 +487,30 @@ static PyObject* pack2(PyObject *self, PyObject *args, PyObject *kwrds)
     xc = x->ncols;
 
     O = PyDict_GetItemString(dims, "l");
+#if PY_MAJOR_VERSION >= 3
+    nlq += (int) PyLong_AsLong(O);
+#else
     nlq += (int) PyInt_AsLong(O);
+#endif
 
     O = PyDict_GetItemString(dims, "q");
     for (i = 0; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        nlq += (int) PyLong_AsLong(Ok);
+#else
         nlq += (int) PyInt_AsLong(Ok);
+#endif
     }
 
     O = PyDict_GetItemString(dims, "s");
     for (i = 0, maxn = 0; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        maxn = MAX(maxn, (int) PyLong_AsLong(Ok));
+#else
         maxn = MAX(maxn, (int) PyInt_AsLong(Ok));
+#endif
     }
     if (!maxn) return Py_BuildValue("");
     if (!(wrk = (double *) calloc(maxn * xc, sizeof(double))))
@@ -460,7 +518,11 @@ static PyObject* pack2(PyObject *self, PyObject *args, PyObject *kwrds)
 
     for (i = 0, iu = nlq, ip = nlq; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        n = (int) PyLong_AsLong(Ok);
+#else
         n = (int) PyInt_AsLong(Ok);
+#endif
         for (k = 0; k < n; k++){
             len = n-k;
             dlacpy_(" ", &len, &xc, MAT_BUFD(x) + iu + k*(n+1), &xr, wrk, 
@@ -498,19 +560,31 @@ static PyObject* unpack(PyObject *self, PyObject *args, PyObject *kwrds)
         &y, &dims, &m, &ox, &oy)) return NULL;
 
     O = PyDict_GetItemString(dims, "l");
+#if PY_MAJOR_VERSION >= 3
+    m += (int) PyLong_AsLong(O);
+#else
     m += (int) PyInt_AsLong(O);
+#endif
 
     O = PyDict_GetItemString(dims, "q");
     for (i = 0; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        m += (int) PyLong_AsLong(Ok);
+#else
         m += (int) PyInt_AsLong(Ok);
+#endif
     }
     dcopy_(&m, MAT_BUFD(x) + ox, &int1, MAT_BUFD(y) + oy, &int1);
 
     O = PyDict_GetItemString(dims, "s");
     for (i = 0, ip = ox + m, iu = oy + m; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        n = (int) PyLong_AsLong(Ok);
+#else
         n = (int) PyInt_AsLong(Ok);
+#endif
         for (k = 0; k < n; k++){
             len = n-k;
             dcopy_(&len, MAT_BUFD(x) + ip, &int1, MAT_BUFD(y) + iu +
@@ -562,11 +636,20 @@ static PyObject* sprod(PyObject *self, PyObject *args, PyObject *kwrds)
     PyObject *dims, *O, *Ok;
     int i, j, k, mk, len, maxn, ind = 0, ind2, int0 = 0, int1 = 1, ld;
     double a, *A = NULL, dbl2 = 0.5, dbl0 = 0.0;
+#if PY_MAJOR_VERSION >= 3
+    int diag = 'N';
+#else
     char diag = 'N';
+#endif
     char *kwlist[] = {"x", "y", "dims", "mnl", "diag", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|iC", kwlist, &x, &y,
+        &dims, &ind, &diag)) return NULL;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ic", kwlist, &x, &y,
         &dims, &ind, &diag)) return NULL;
+#endif
 
 
     /*
@@ -576,7 +659,11 @@ static PyObject* sprod(PyObject *self, PyObject *args, PyObject *kwrds)
      */
 
     O = PyDict_GetItemString(dims, "l");
+#if PY_MAJOR_VERSION >= 3
+    ind += (int) PyLong_AsLong(O);
+#else
     ind += (int) PyInt_AsLong(O);
+#endif
     dtbmv_("L", "N", "N", &ind, &int0, MAT_BUFD(y), &int1, MAT_BUFD(x),
         &int1);
 
@@ -594,7 +681,11 @@ static PyObject* sprod(PyObject *self, PyObject *args, PyObject *kwrds)
     O = PyDict_GetItemString(dims, "q");
     for (i = 0; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        mk = (int) PyLong_AsLong(Ok);
+#else
         mk = (int) PyInt_AsLong(Ok);
+#endif
         a = ddot_(&mk, MAT_BUFD(y) + ind, &int1, MAT_BUFD(x) + ind, &int1);
         len = mk - 1;
         dscal_(&len, MAT_BUFD(y) + ind, MAT_BUFD(x) + ind + 1, &int1);
@@ -616,14 +707,22 @@ static PyObject* sprod(PyObject *self, PyObject *args, PyObject *kwrds)
     O = PyDict_GetItemString(dims, "s");
     for (i = 0, maxn = 0; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        maxn = MAX(maxn, (int) PyLong_AsLong(Ok));
+#else
         maxn = MAX(maxn, (int) PyInt_AsLong(Ok));
+#endif
     }
     if (diag == 'N'){
         if (!(A = (double *) calloc(maxn * maxn, sizeof(double))))
             return PyErr_NoMemory();
         for (i = 0; i < (int) PyList_Size(O); ind += mk*mk, i++){
             Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+            mk = (int) PyLong_AsLong(Ok);
+#else
             mk = (int) PyInt_AsLong(Ok);
+#endif
             len = mk*mk;
             dcopy_(&len, MAT_BUFD(x) + ind, &int1, A, &int1);
 
@@ -646,7 +745,11 @@ static PyObject* sprod(PyObject *self, PyObject *args, PyObject *kwrds)
         for (i = 0, ind2 = ind; i < (int) PyList_Size(O); ind += mk*mk,
             ind2 += mk, i++){
             Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+            mk = (int) PyLong_AsLong(Ok);
+#else
             mk = (int) PyInt_AsLong(Ok);
+#endif
             for (k = 0; k < mk; k++){
                 len = mk - k;
                 dcopy_(&len, MAT_BUFD(y) + ind2 + k, &int1, A, &int1);
@@ -687,7 +790,11 @@ static PyObject* sinv(PyObject *self, PyObject *args, PyObject *kwrds)
      */
 
     O = PyDict_GetItemString(dims, "l");
+#if PY_MAJOR_VERSION >= 3
+    ind += (int) PyLong_AsLong(O);
+#else
     ind += (int) PyInt_AsLong(O);
+#endif
     dtbsv_("L", "N", "N", &ind, &int0, MAT_BUFD(y), &int1, MAT_BUFD(x),
         &int1);
 
@@ -705,7 +812,11 @@ static PyObject* sinv(PyObject *self, PyObject *args, PyObject *kwrds)
     O = PyDict_GetItemString(dims, "q");
     for (i = 0; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        mk = (int) PyLong_AsLong(Ok);
+#else
         mk = (int) PyInt_AsLong(Ok);
+#endif
         len = mk - 1;
         a = dnrm2_(&len, MAT_BUFD(y) + ind + 1, &int1);
         a = (MAT_BUFD(y)[ind] + a) * (MAT_BUFD(y)[ind] - a);
@@ -735,14 +846,22 @@ static PyObject* sinv(PyObject *self, PyObject *args, PyObject *kwrds)
     O = PyDict_GetItemString(dims, "s");
     for (i = 0, maxn = 0; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        maxn = MAX(maxn, (int) PyLong_AsLong(Ok));
+#else
         maxn = MAX(maxn, (int) PyInt_AsLong(Ok));
+#endif
     }
     if (!(A = (double *) calloc(maxn, sizeof(double))))
         return PyErr_NoMemory();
     for (i = 0, ind2 = ind; i < (int) PyList_Size(O); ind += mk*mk,
         ind2 += mk, i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        mk = (int) PyLong_AsLong(Ok);
+#else
         mk = (int) PyInt_AsLong(Ok);
+#endif
         for (k = 0; k < mk; k++){
             len = mk - k;
             dcopy_(&len, MAT_BUFD(y) + ind2 + k, &int1, A, &int1);
@@ -776,18 +895,30 @@ static PyObject* trisc(PyObject *self, PyObject *args, PyObject *kwrds)
         &dims, &ox)) return NULL;
 
     O = PyDict_GetItemString(dims, "l");
+#if PY_MAJOR_VERSION >= 3
+    ox += (int) PyLong_AsLong(O);
+#else
     ox += (int) PyInt_AsLong(O);
+#endif
 
     O = PyDict_GetItemString(dims, "q");
     for (i = 0; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        ox += (int) PyLong_AsLong(Ok);
+#else
         ox += (int) PyInt_AsLong(Ok);
+#endif
     }
 
     O = PyDict_GetItemString(dims, "s");
     for (k = 0; k < (int) PyList_Size(O); k++){
         Ok = PyList_GetItem(O, (Py_ssize_t) k);
+#if PY_MAJOR_VERSION >= 3
+        nk = (int) PyLong_AsLong(Ok);
+#else
         nk = (int) PyInt_AsLong(Ok);
+#endif
         for (i = 1; i < nk; i++){
             len = nk - i;
             dscal_(&len, &dbl0, MAT_BUFD(x) + ox + i*(nk+1) - 1, &nk);
@@ -817,18 +948,30 @@ static PyObject* triusc(PyObject *self, PyObject *args, PyObject *kwrds)
         &dims, &ox)) return NULL;
 
     O = PyDict_GetItemString(dims, "l");
+#if PY_MAJOR_VERSION >= 3
+    ox += (int) PyLong_AsLong(O);
+#else
     ox += (int) PyInt_AsLong(O);
+#endif
 
     O = PyDict_GetItemString(dims, "q");
     for (i = 0; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        ox += (int) PyLong_AsLong(Ok);
+#else
         ox += (int) PyInt_AsLong(Ok);
+#endif
     }
 
     O = PyDict_GetItemString(dims, "s");
     for (k = 0; k < (int) PyList_Size(O); k++){
         Ok = PyList_GetItem(O, (Py_ssize_t) k);
+#if PY_MAJOR_VERSION >= 3
+        nk = (int) PyLong_AsLong(Ok);
+#else
         nk = (int) PyInt_AsLong(Ok);
+#endif
         for (i = 1; i < nk; i++){
             len = nk - i;
             dscal_(&len, &dbl5, MAT_BUFD(x) + ox + nk*(i-1) + i, &int1);
@@ -856,19 +999,31 @@ static PyObject* sdot(PyObject *self, PyObject *args, PyObject *kwrds)
         &dims, &m)) return NULL;
 
     O = PyDict_GetItemString(dims, "l");
+#if PY_MAJOR_VERSION >= 3
+    m += (int) PyLong_AsLong(O);
+#else
     m += (int) PyInt_AsLong(O);
+#endif
 
     O = PyDict_GetItemString(dims, "q");
     for (i = 0; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        m += (int) PyLong_AsLong(Ok);
+#else
         m += (int) PyInt_AsLong(Ok);
+#endif
     }
     a = ddot_(&m, MAT_BUFD(x), &int1, MAT_BUFD(y), &int1);
 
     O = PyDict_GetItemString(dims, "s");
     for (k = 0; k < (int) PyList_Size(O); k++){
         Ok = PyList_GetItem(O, (Py_ssize_t) k);
+#if PY_MAJOR_VERSION >= 3
+        nk = (int) PyLong_AsLong(Ok);
+#else
         nk = (int) PyInt_AsLong(Ok);
+#endif
         inc = nk+1;
         a += ddot_(&nk, MAT_BUFD(x) + m, &inc, MAT_BUFD(y) + m, &inc);
         for (i = 1; i < nk; i++){
@@ -907,13 +1062,21 @@ static PyObject* max_step(PyObject *self, PyObject *args, PyObject *kwrds)
         &dims, &ind, &sigma)) return NULL;
 
     O = PyDict_GetItemString(dims, "l");
+#if PY_MAJOR_VERSION >= 3
+    ind += (int) PyLong_AsLong(O);
+#else
     ind += (int) PyInt_AsLong(O);
+#endif
     for (i = 0; i < ind; i++) t = MAX(t, -MAT_BUFD(x)[i]);
 
     O = PyDict_GetItemString(dims, "q");
     for (i = 0; i < (int) PyList_Size(O); i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        mk = (int) PyLong_AsLong(Ok);
+#else
         mk = (int) PyInt_AsLong(Ok);
+#endif
         len = mk - 1;
         t = MAX(t, dnrm2_(&len, MAT_BUFD(x) + ind + 1, &int1) -
             MAT_BUFD(x)[ind]);
@@ -924,7 +1087,11 @@ static PyObject* max_step(PyObject *self, PyObject *args, PyObject *kwrds)
     Ns = (int) PyList_Size(O);
     for (i = 0, maxn = 0; i < Ns; i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        maxn = MAX(maxn, (int) PyLong_AsLong(Ok));
+#else
         maxn = MAX(maxn, (int) PyInt_AsLong(Ok));
+#endif
     }
     if (!maxn) return Py_BuildValue("d", (ind) ? t : 0.0);
 
@@ -954,7 +1121,11 @@ static PyObject* max_step(PyObject *self, PyObject *args, PyObject *kwrds)
     }
     for (i = 0, ind2 = 0; i < Ns; i++){
         Ok = PyList_GetItem(O, (Py_ssize_t) i);
+#if PY_MAJOR_VERSION >= 3
+        mk = (int) PyLong_AsLong(Ok);
+#else
         mk = (int) PyInt_AsLong(Ok);
+#endif
         if (mk){
             if (sigma){
                 dsyevd_("V", "L", &mk, MAT_BUFD(x) + ind, &mk,
@@ -980,7 +1151,7 @@ static PyObject* max_step(PyObject *self, PyObject *args, PyObject *kwrds)
     return Py_BuildValue("d", (ind) ? t : 0.0);
 }
 
-static PyMethodDef misc_solvers__functions[] = {
+static PyMethodDef misc_solvers_functions[] = {
     {"scale", (PyCFunction) scale, METH_VARARGS|METH_KEYWORDS, doc_scale},
     {"scale2", (PyCFunction) scale2, METH_VARARGS|METH_KEYWORDS,
         doc_scale2},
@@ -1000,12 +1171,33 @@ static PyMethodDef misc_solvers__functions[] = {
     {NULL}  /* Sentinel */
 };
 
+#if PY_MAJOR_VERSION >= 3
+
+static PyModuleDef misc_solvers_module = {
+    PyModuleDef_HEAD_INIT,
+    "misc_solvers",
+    misc_solvers__doc__,
+    -1,
+    misc_solvers_functions,
+    NULL, NULL, NULL, NULL
+};
+
+PyMODINIT_FUNC PyInit_misc_solvers(void)
+{
+  PyObject *m;
+  if (!(m = PyModule_Create(&misc_solvers_module))) return NULL;
+  if (import_cvxopt() < 0) return NULL;
+  return m;
+}
+
+#else
+
 PyMODINIT_FUNC initmisc_solvers(void)
 {
   PyObject *m;
-
-  m = Py_InitModule3("cvxopt.misc_solvers", misc_solvers__functions,
+  m = Py_InitModule3("cvxopt.misc_solvers", misc_solvers_functions,
       misc_solvers__doc__);
-
   if (import_cvxopt() < 0) return;
 }
+
+#endif

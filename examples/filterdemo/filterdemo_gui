@@ -14,7 +14,7 @@ import pylab
 
 
 def frange(a,b,N):    
-    return [ a+k*float((b-a))/N  for k in xrange(N) ]
+    return [ a+k*float((b-a))/N  for k in range(N) ]
 
 
 def design_lowpass(N, d1, wc, ws, solver=None, Q=50):

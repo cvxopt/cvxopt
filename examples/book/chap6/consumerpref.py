@@ -1,10 +1,12 @@
 # Figures 6.25 and 6.26, page 342.
 # Consumer preference analysis.
 
-import pylab
 from cvxopt import solvers, matrix, sqrt
 from cvxopt.modeling import variable, op
-solvers.options['show_progress'] = 0
+#solvers.options['show_progress'] = 0
+try: import pylab 
+except ImportError: pylab_installed = False
+else: pylab_installed = True
 
 def utility(x, y): 
     return (1.1 * sqrt(x) + 0.8 * sqrt(y)) / 1.9
@@ -56,19 +58,21 @@ m = B.size[1]
 nopts = 200
 a = (1.0/nopts)*matrix(range(nopts), tc='d')
 X, Y = a[:,nopts*[0]].T,  a[:,nopts*[0]]
-pylab.figure(1, facecolor='w')
-pylab.plot(B[0,:], B[1,:], 'wo', markeredgecolor='b')
-pylab.contour(pylab.array(X), pylab.array(Y), pylab.array(utility(X,Y)),
-    [.1*(k+1) for k in xrange(9)], colors='k')
-pylab.xlabel('x1')
-pylab.ylabel('x2')
-pylab.title('Goods baskets and utility function (fig. 6.25)')
-#print "Close figure to start analysis."
-#pylab.show()
+
+if pylab_installed:
+    pylab.figure(1, facecolor='w')
+    pylab.plot(B[0,:], B[1,:], 'wo', markeredgecolor='b')
+    pylab.contour(pylab.array(X), pylab.array(Y), pylab.array(utility(X,Y)),
+        [.1*(k+1) for k in range(9)], colors='k')
+    pylab.xlabel('x1')
+    pylab.ylabel('x2')
+    pylab.title('Goods baskets and utility function (fig. 6.25)')
+    #print("Close figure to start analysis.")
+    #pylab.show()
 
 
 # P are basket indices in order of increasing preference 
-l = zip(utility(B[0,:], B[1,:]), range(m))
+l = list(zip(utility(B[0,:], B[1,:]), range(m)))
 l.sort()
 P = [ e[1] for e in l ]
 
@@ -82,51 +86,51 @@ gxc = variable(1)
 gyc = variable(1)
 
 monotonicity = [ gx >= 0, gy >= 0, gxc >= 0, gyc >= 0 ]
-preferences = [ u[P[j+1]] >= u[P[j]] + 1.0 for j in xrange(m-1) ]
+preferences = [ u[P[j+1]] >= u[P[j]] + 1.0 for j in range(m-1) ]
 concavity = [ u[j] <= u[i] + gx[i] * ( B[0,j] - B[0,i] ) + 
-    gy[i] * ( B[1,j] - B[1,i] ) for i in xrange(m) for j in 
-    xrange(m) ] 
+    gy[i] * ( B[1,j] - B[1,i] ) for i in range(m) for j in range(m) ] 
 concavity += [ 0 <= u[i] + gx[i] * ( 0.5 - B[0,i] ) + 
-    gy[i] * ( 0.5 - B[1,i] ) for i in xrange(m) ]  
+    gy[i] * ( 0.5 - B[1,i] ) for i in range(m) ]  
 concavity += [ u[j] <= gxc * ( B[0,j] - 0.5 ) + 
-    gyc * ( B[1,j] - 0.5 ) for j in xrange(m) ]  
+    gyc * ( B[1,j] - 0.5 ) for j in range(m) ]  
 
 preferred, rejected, neutral = [], [], []
-for k in xrange(m):
+for k in range(m):
     p = op(-u[k], monotonicity + preferences + concavity)
     p.solve()
     if p.status == 'optimal' and p.objective.value()[0] > 0:
         rejected += [k]
-        print "Basket (%1.2f, %1.2f) rejected." %(B[0,k],B[1,k])
+        print("Basket (%1.2f, %1.2f) rejected." %(B[0,k],B[1,k]))
     else: 
         p = op(u[k], monotonicity + preferences + concavity)
         p.solve()
         if p.status == 'optimal' and p.objective.value()[0] > 0: 
-            print "Basket (%1.2f, %1.2f) preferred." %(B[0,k],B[1,k])
+            print("Basket (%1.2f, %1.2f) preferred." %(B[0,k],B[1,k]))
             preferred += [k]
         else:
-            print "No conclusion about basket (%1.2f, %1.2f)." \
-                %(B[0,k],B[1,k])
+            print("No conclusion about basket (%1.2f, %1.2f)." \
+                %(B[0,k],B[1,k]))
             neutral += [k]
 
-pylab.figure(1, facecolor='w')
-pylab.plot(B[0,:], B[1,:], 'wo', markeredgecolor='b')
-pylab.contour(pylab.array(X), pylab.array(Y), pylab.array(utility(X,Y)),
-    [.1*(k+1) for k in xrange(9)], colors='k')
-pylab.xlabel('x1')
-pylab.ylabel('x2')
-pylab.title('Goods baskets and utility function (fig. 6.25)')
-
-pylab.figure(2, facecolor='w')
-pylab.plot(B[0,preferred], B[1,preferred], 'go')
-pylab.plot(B[0,rejected], B[1,rejected], 'ro')
-pylab.plot(B[0,neutral], B[1,neutral], 'ys')
-pylab.plot([0.5], [0.5], '+')
-pylab.plot([0.5, 0.5], [0,1], ':', [0,1], [0.5,0.5], ':')
-pylab.axis([0,1,0,1])
-pylab.contour(pylab.array(X), pylab.array(Y), pylab.array(utility(X,Y)),
-    [utility(0.5,0.5)], colors='k')
-pylab.xlabel('x1')
-pylab.ylabel('x2')
-pylab.title('Result of preference analysis (fig. 6.26)')
-pylab.show()
+if pylab_installed:
+    pylab.figure(1, facecolor='w')
+    pylab.plot(B[0,:], B[1,:], 'wo', markeredgecolor='b')
+    pylab.contour(pylab.array(X), pylab.array(Y), pylab.array(utility(X,Y)),
+        [.1*(k+1) for k in range(9)], colors='k')
+    pylab.xlabel('x1')
+    pylab.ylabel('x2')
+    pylab.title('Goods baskets and utility function (fig. 6.25)')
+    
+    pylab.figure(2, facecolor='w')
+    pylab.plot(B[0,preferred], B[1,preferred], 'go')
+    pylab.plot(B[0,rejected], B[1,rejected], 'ro')
+    pylab.plot(B[0,neutral], B[1,neutral], 'ys')
+    pylab.plot([0.5], [0.5], '+')
+    pylab.plot([0.5, 0.5], [0,1], ':', [0,1], [0.5,0.5], ':')
+    pylab.axis([0,1,0,1])
+    pylab.contour(pylab.array(X), pylab.array(Y), pylab.array(utility(X,Y)),
+        [utility(0.5,0.5)], colors='k')
+    pylab.xlabel('x1')
+    pylab.ylabel('x2')
+    pylab.title('Result of preference analysis (fig. 6.26)')
+    pylab.show()

@@ -1,11 +1,11 @@
 # Figures 7.1, page 355.
 # Logistic regression.
 
-import pylab, pickle
+import pickle
 from cvxopt import solvers, matrix, spdiag, log, exp, div
-solvers.options['show_progress'] = False
+#solvers.options['show_progress'] = False
 
-data = pickle.load(open("logreg.bin"))
+data = pickle.load(open("logreg.bin", 'rb'))
 u, y = data['u'], data['y']
 
 # minimize   sum_{y_k = 1} (a*uk + b) + sum log (1 + exp(a*u + b))
@@ -32,13 +32,16 @@ def F(x=None, z=None):
 sol = solvers.cp(F)
 a, b = sol['x'][0], sol['x'][1]
 
-pylab.figure(facecolor='w')
-nopts = 200
-pts = -1.0 + 12.0/nopts * matrix(range(nopts)) 
-w = exp(a*pts + b)
-pylab.plot(u, y, 'o', pts, div(w, 1+w), '-')
-pylab.title('Logistic regression (fig. 7.1)')
-pylab.axis([-1, 11, -0.1, 1.1])
-pylab.xlabel('u')
-pylab.ylabel('Prob(y=1)')
-pylab.show()
+try: import pylab
+except ImportError: pass
+else:
+    pylab.figure(facecolor='w')
+    nopts = 200
+    pts = -1.0 + 12.0/nopts * matrix(list(range(nopts))) 
+    w = exp(a*pts + b)
+    pylab.plot(u, y, 'o', pts, div(w, 1+w), '-')
+    pylab.title('Logistic regression (fig. 7.1)')
+    pylab.axis([-1, 11, -0.1, 1.1])
+    pylab.xlabel('u')
+    pylab.ylabel('Prob(y=1)')
+    pylab.show()

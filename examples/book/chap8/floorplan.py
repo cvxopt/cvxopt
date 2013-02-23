@@ -1,8 +1,10 @@
 # Figure 8.20, page 444.
 # Floor planning example.
 
-import pylab
 from cvxopt import solvers, matrix, spmatrix, mul, div
+try: import pylab
+except ImportError: pylab_installed = False
+else: pylab_installed = True
 
 def floorplan(Amin):
 
@@ -155,52 +157,60 @@ def floorplan(Amin):
     return  sol['x'][0], sol['x'][1], sol['x'][2:7], sol['x'][7:12], \
         sol['x'][12:17], sol['x'][17:] 
 
-solvers.options['show_progress'] = False
+#solvers.options['show_progress'] = False
 
-pylab.figure(facecolor='w')
+if pylab_installed: pylab.figure(facecolor='w')
 
-pylab.subplot(221)
 Amin = matrix([100., 100., 100., 100., 100.])
 W, H, x, y, w, h =  floorplan(Amin)
-for k in xrange(5):
-    pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
-               [y[k], y[k]+h[k], y[k]+h[k], y[k]], facecolor = '#D0D0D0')
-    pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
-pylab.axis([-1.0, 26, -1.0, 26])
-pylab.xticks([])
-pylab.yticks([])
+if pylab_installed:
+    if pylab_installed: pylab.subplot(221)
+    for k in range(5):
+        pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
+                   [y[k], y[k]+h[k], y[k]+h[k], y[k]], 
+                   facecolor = '#D0D0D0')
+        pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
+    pylab.axis([-1.0, 26, -1.0, 26])
+    pylab.xticks([])
+    pylab.yticks([])
 
-pylab.subplot(222)
 Amin = matrix([20., 50., 80., 150., 200.])
 W, H, x, y, w, h =  floorplan(Amin)
-for k in xrange(5):
-    pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
-               [y[k], y[k]+h[k], y[k]+h[k], y[k]], facecolor = '#D0D0D0')
-    pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
-pylab.axis([-1.0, 26, -1.0, 26])
-pylab.xticks([])
-pylab.yticks([])
+if pylab_installed:
+    pylab.subplot(222)
+    for k in range(5):
+        pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
+                   [y[k], y[k]+h[k], y[k]+h[k], y[k]], 
+                   facecolor = '#D0D0D0')
+        pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
+    pylab.axis([-1.0, 26, -1.0, 26])
+    pylab.xticks([])
+    pylab.yticks([])
 
-pylab.subplot(223)
 Amin = matrix([180., 80., 80., 80., 80.])
 W, H, x, y, w, h =  floorplan(Amin)
-for k in xrange(5):
-    pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
-               [y[k], y[k]+h[k], y[k]+h[k], y[k]], facecolor = '#D0D0D0')
-    pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
-pylab.axis([-1.0, 26, -1.0, 26])
-pylab.xticks([])
-pylab.yticks([])
-
-pylab.subplot(224)
+if pylab_installed:
+    pylab.subplot(223)
+    for k in range(5):
+        pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
+                   [y[k], y[k]+h[k], y[k]+h[k], y[k]], 
+                   facecolor = '#D0D0D0')
+        pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
+    pylab.axis([-1.0, 26, -1.0, 26])
+    pylab.xticks([])
+    pylab.yticks([])
+    
 Amin = matrix([20., 150., 20., 200., 110.])
 W, H, x, y, w, h =  floorplan(Amin)
-for k in xrange(5):
-    pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
-               [y[k], y[k]+h[k], y[k]+h[k], y[k]], facecolor = '#D0D0D0')
-    pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
-pylab.axis([-1.0, 26, -1.0, 26])
-pylab.xticks([])
-pylab.yticks([])
+if pylab_installed:
+    pylab.subplot(224)
+    for k in range(5):
+        pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
+                   [y[k], y[k]+h[k], y[k]+h[k], y[k]], 
+                   facecolor = '#D0D0D0')
+        pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
+    pylab.axis([-1.0, 26, -1.0, 26])
+    pylab.xticks([])
+    pylab.yticks([])
 
-pylab.show()
+    pylab.show()

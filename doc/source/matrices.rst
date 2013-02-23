@@ -43,20 +43,20 @@ type (integer, double, or complex) of the matrix.
 
      >>> from cvxopt import matrix
      >>> A = matrix(1, (1,4))   
-     >>> print A
+     >>> print(A)
      [ 1  1  1  1]
      >>> A = matrix(1.0, (1,4))   
-     >>> print A
+     >>> print(A)
      [ 1.00e+00  1.00e+00  1.00e+00  1.00e+00]
      >>> A = matrix(1+1j)     
-     >>> print A
+     >>> print(A)
      [ 1.00e+00+j1.00e+00]
 
-   * If ``x`` is a sequence of numbers (list, tuple, array array, 
-     xrange object, one-dimensional NumPy array, ...),
-     then the numbers are interpreted as the coefficients of a matrix in 
-     column-major order.  The length of ``x``  must be equal to the 
-     product of ``size[0]`` and ``size[1]``.
+   * If ``x`` is a sequence of numbers (list, tuple, array, 
+     :mod:`array` array, ...), then the numbers are interpreted as the 
+     coefficients of a matrix in column-major order.     
+     The length of ``x``  must be equal to the product of 
+     ``size[0]`` and ``size[1]``.
      If ``size``  is not specified, a matrix with one column is created. 
      If ``tc``  is not specified, it is determined from the elements of 
      ``x``  (and if that is impossible, for example because ``x``  is
@@ -68,17 +68,20 @@ type (integer, double, or complex) of the matrix.
 
      >>> A = matrix([0, 1, 2, 3], (2,2))  
      >>> A = matrix((0, 1, 2, 3), (2,2))  
-     >>> A = matrix(xrange(4), (2,2))
+     >>> A = matrix(range(4), (2,2))   
      >>> from array import array
      >>> A = matrix(array('i', [0,1,2,3]), (2,2))
-     >>> print A
+     >>> print(A)
      [ 0  2]
      [ 1  3]
 
-   * If ``x``  is a dense or sparse matrix, or a two-dimensional NumPy 
-     array of type :const:`'i'`, :const:`'d'`, or :const:`'z'`, then the  
-     coefficients of ``x``  are copied, in column-major order, to a new 
-     matrix of the given size.  
+     In Python 2.7 the following also works.
+
+     >>> A = matrix(xrange(4), (2,2))   
+
+   * If ``x``  is a dense or sparse matrix, then the coefficients of 
+     ``x``  are copied, in column-major order, to a new matrix of the 
+     given size.  
      The total number of elements in the new matrix (the product of 
      ``size[0]`` and ``size[1]``) must be the same as the product 
      of  the dimensions of ``x``.  If ``size``  is not specified, the 
@@ -88,25 +91,29 @@ type (integer, double, or complex) of the matrix.
      ``tc``, in a similar way as for scalar ``x``.  
      
      >>> A = matrix([1., 2., 3., 4., 5., 6.], (2,3))  
-     >>> print A
+     >>> print(A)
      [ 1.00e+00  3.00e+00  5.00e+00]
      [ 2.00e+00  4.00e+00  6.00e+00]
      >>> B = matrix(A, (3,2))  
-     >>> print B
+     >>> print(B)
      [ 1.00e+00  4.00e+00]
      [ 2.00e+00  5.00e+00]
      [ 3.00e+00  6.00e+00]
      >>> C = matrix(B, tc='z')      
-     >>> print C
+     >>> print(C)
      [ 1.00e+00-j0.00e+00  4.00e+00-j0.00e+00]
      [ 2.00e+00-j0.00e+00  5.00e+00-j0.00e+00]
      [ 3.00e+00-j0.00e+00  6.00e+00-j0.00e+00]
+
+
+     In Python 2.7 NumPy arrays can be converted to matrices.
+
      >>> from numpy import array
      >>> x = array([[1., 2., 3.], [4., 5., 6.]])
      >>> x
      array([[ 1.  2.  3.]
             [ 4.  5.  6.]])
-     >>> print matrix(x)
+     >>> print(matrix(x))               
      [ 1.00e+00  2.00e+00  3.00e+00]
      [ 4.00e+00  5.00e+00  6.00e+00]
      
@@ -124,7 +131,7 @@ type (integer, double, or complex) of the matrix.
      a list of empty lists, a value :const:`'i'` is used).  
      The same rules for type conversion apply as for scalar ``x``.
      
-     >>> print matrix([[1., 2.], [3., 4.], [5., 6.]])
+     >>> print(matrix([[1., 2.], [3., 4.], [5., 6.]]))
      [ 1.00e+00  3.00e+00  5.00e+00]
      [ 2.00e+00  4.00e+00  6.00e+00]
      >>> A1 = matrix([1, 2], (2,1))
@@ -132,7 +139,7 @@ type (integer, double, or complex) of the matrix.
      >>> B2 = matrix([12, 13, 14, 15, 16, 17], (2,3))
      >>> B3 = matrix([18, 19, 20], (1,3))
      >>> C = matrix([[A1, 3.0, 4.0, 5.0], [B1, B2, B3]])
-     >>> print C
+     >>> print(C)
      [ 1.00e+00  6.00e+00  8.00e+00  1.00e+01]
      [ 2.00e+00  7.00e+00  9.00e+00  1.10e+01]
      [ 3.00e+00  1.20e+01  1.40e+01  1.60e+01]
@@ -144,7 +151,7 @@ type (integer, double, or complex) of the matrix.
      then the argument ``x`` can be replaced by ``x[0]``).
 
      >>> D = matrix([B1, B2, B3])
-     >>> print D
+     >>> print(D)
      [  6   8  10]
      [  7   9  11]
      [ 12  14  16]
@@ -200,10 +207,9 @@ constructs a sparse matrix from a triplet description.
 .. function:: cvxopt.spmatrix(x, I, J[, size[, tc]])
 
     ``I`` and ``J`` are sequences of integers (lists, tuples, 
-    :mod:`array` arrays, xrange objects, ...) or integer matrices 
+    :mod:`array` arrays, ...) or integer matrices 
     (:class:`matrix <cvxopt.matrix>` objects with typecode :const:`'i'`),  
-    containing the 
-    row and column indices of the nonzero entries.  
+    containing the row and column indices of the nonzero entries.  
     The lengths of ``I`` and ``J`` must be  equal.  If they are matrices, 
     they are treated as lists of indices stored in column-major order, 
     i.e., as lists ``list(I)``, respectively, ``list(J)``. 
@@ -235,7 +241,7 @@ constructs a sparse matrix from a triplet description.
         
       >>> from cvxopt import spmatrix
       >>> A = spmatrix(1.0, range(4), range(4))
-      >>> print A  
+      >>> print(A) 
          [ 1.00e+00     0         0         0    ]
          [    0      1.00e+00     0         0    ]
          [    0         0      1.00e+00     0    ]
@@ -252,7 +258,7 @@ constructs a sparse matrix from a triplet description.
       least one complex number.
       
       >>> A = spmatrix([2,-1,2,-2,1,4,3], [1,2,0,2,3,2,0], [0,0,1,1,2,3,4])
-      >>> print A 
+      >>> print(A)
         [    0      2.00e+00     0         0      3.00e+00]
         [ 2.00e+00     0         0         0         0    ]
         [-1.00e+00 -2.00e+00     0      4.00e+00     0    ]
@@ -297,22 +303,22 @@ from a block-matrix description.
     
     >>> from cvxopt import matrix, spmatrix, sparse
     >>> A = matrix([[1., 2., 0.], [2., 1., 2.], [0., 2., 1.]])
-    >>> print A
+    >>> print(A)
     [ 1.00e+00  2.00e+00  0.00e+00]
     [ 2.00e+00  1.00e+00  2.00e+00]
     [ 0.00e+00  2.00e+00  1.00e+00]
     >>> B = spmatrix([], [], [], (3,3))
-    >>> print B
+    >>> print(B)
     [0 0 0]
     [0 0 0]
     [0 0 0]
     >>> C = spmatrix([3, 4, 5], [0, 1, 2], [0, 1, 2])
-    >>> print C
+    >>> print(C)
     [ 3.00e+00     0         0    ]
     [    0      4.00e+00     0    ]
     [    0         0      5.00e+00]
     >>> D = sparse([[A, B], [B, C]])
-    >>> print D
+    >>> print(D)
     [ 1.00e+00  2.00e+00     0         0         0         0    ]
     [ 2.00e+00  1.00e+00  2.00e+00     0         0         0    ]
     [    0      2.00e+00  1.00e+00     0         0         0    ]
@@ -324,7 +330,7 @@ from a block-matrix description.
     list.
     
     >>> D = sparse([A, C])
-    >>> print D
+    >>> print(D)
     [ 1.00e+00  2.00e+00     0    ]
     [ 2.00e+00  1.00e+00  2.00e+00]
     [    0      2.00e+00  1.00e+00]
@@ -350,7 +356,7 @@ sparse matrix from a list of matrices.
     >>> B = matrix([[1,-2],[-2,1]])
     >>> C = spmatrix([1,1,1,1,1],[0,1,2,0,0,],[0,0,0,1,2])
     >>> D = spdiag([A, B, C])
-    >>> print D
+    >>> print(D)
     [ 3.00e+00     0         0         0         0         0    ]
     [    0      1.00e+00 -2.00e+00     0         0         0    ]
     [    0     -2.00e+00  1.00e+00     0         0         0    ]
@@ -387,15 +393,15 @@ number.
 | Elementwise exponentiation         | ``D**e``                |
 +------------------------------------+-------------------------+
 
-If one of the operands is integer (a scalar integer or a matrix of type
-:const:`'i'`) and the other operand is double (a scalar float or a matrix 
-of type :const:`'d'`), then the integer operand is converted to double, 
-and the result is a matrix of type :const:`'d'`.
-If one of the operands is integer or double, and the other operand is 
-complex (a scalar complex or a matrix of type :const:`'z'`), then the first 
-operand is converted to complex, and the result is a matrix of type 
-:const:`'z'`.  (An exception to this rule is elementwise exponentiation:
-the result of ``D**e`` is a real matrix if ``D`` and ``e`` are integer.)
+The type of the result of these operations generally follows the Python
+conventions.   
+For example, if ``A`` and ``c`` are integer, then in Python 2 the division
+``A/c`` is interpreted as integer division and results in a 
+type :const:`'i'` matrix, while in Python 3 it is interpreted as standard 
+divison and results in a type :const:`'d'` matrix.
+An exception to the Python conventions is elementwise exponentiation: 
+if ``D`` is an integer matrix and ``e`` is an integer number 
+than ``D**e`` is a matrix of type :const:`'d'`.
 
 Addition, subtraction, and matrix multiplication with two matrix operands 
 result in a sparse matrix if both matrices are sparse, and in a dense 
@@ -415,13 +421,10 @@ size of ``A`` and all entries equal to ``c[0]``.
 If ``c`` is a 1 by 1 dense matrix, then, if possible, the products 
 ``c*A`` and ``A*c`` are interpreted as matrix-matrix products.
 If the product cannot be interpreted as a matrix-matrix product
-(because the dimensions of ``A`` are incompatible), then the product is 
+because the dimensions of ``A`` are incompatible, then the product is 
 interpreted as the scalar multiplication with ``c[0]``.
 The division ``A/c`` and remainder ``A%c`` with ``c`` a 
 1 by 1 matrix are always interpreted as ``A/c[0]``, resp., ``A%c[0]``.
-
-Note that Python rounds the result of an integer division towards minus 
-infinity.
 
 The following in-place operations are also defined, but only if they do 
 not change the type (sparse or dense, integer, real, or complex) of the 
@@ -461,12 +464,12 @@ The following rules apply.
   pointer) to the object referenced by ``B``.
 
   >>> B = matrix([[1.,2.], [3.,4.]])  
-  >>> print B
+  >>> print(B)
   [ 1.00e+00  3.00e+00]
   [ 2.00e+00  4.00e+00]
   >>> A = B
   >>> A[0,0] = -1 
-  >>> print B   # modifying A[0,0] also modified B[0,0]
+  >>> print(B)   # modifying A[0,0] also modified B[0,0]
   [-1.00e+00  3.00e+00]
   [ 2.00e+00  4.00e+00]
   
@@ -476,7 +479,7 @@ The following rules apply.
   >>> B = matrix([[1.,2.], [3.,4.]])  
   >>> A = +B
   >>> A[0,0] = -1 
-  >>> print B   # modifying A[0,0] does not modify B[0,0]
+  >>> print(B)   # modifying A[0,0] does not modify B[0,0]
   [ 1.00e+00  3.00e+00]
   [ 2.00e+00  4.00e+00]
   
@@ -486,11 +489,11 @@ The following rules apply.
   >>> B = matrix([[1.,2.], [3.,4.]])  
   >>> A = B
   >>> A *= 2
-  >>> print B   # in-place operation also changed B
+  >>> print(B)   # in-place operation also changed B
   [ 2.00e+00  6.00e+00]
   [ 4.00e+00  8.00e+00]
   >>> A = 2*A
-  >>> print B   # regular operation creates a new A, so does not change B
+  >>> print(B)   # regular operation creates a new A, so does not change B
   [ 2.00e+00  6.00e+00]
   [ 4.00e+00  8.00e+00]
   
@@ -544,7 +547,7 @@ The following example illustrates one-argument indexing.
 
 >>> from cvxopt import matrix, spmatrix
 >>> A = matrix(range(16), (4,4), 'd')
->>> print A
+>>> print(A)
 [ 0.00e+00  4.00e+00  8.00e+00  1.20e+01]
 [ 1.00e+00  5.00e+00  9.00e+00  1.30e+01]
 [ 2.00e+00  6.00e+00  1.00e+01  1.40e+01]
@@ -552,13 +555,13 @@ The following example illustrates one-argument indexing.
 >>> A[4]
 4.0
 >>> I = matrix([0, 5, 10, 15])
->>> print A[I]      # the diagonal
+>>> print(A[I])      # the diagonal
 [ 0.00e+00]
 [ 5.00e+00]
 [ 1.00e+01]
 [ 1.50e+01]
 >>> I = [0,2];  J = [1,3]
->>> print A[2*I+J]  # duplicate I and append J
+>>> print(A[2*I+J])  # duplicate I and append J
 [ 0.00e+00]
 [ 2.00e+00]
 [ 0.00e+00]
@@ -566,10 +569,10 @@ The following example illustrates one-argument indexing.
 [ 1.00e+00]
 [ 3.00e+00]
 >>> I = matrix([0, 2]);  J =  matrix([1, 3])
->>> print A[2*I+J]  # multiply I by 2 and add J
+>>> print(A[2*I+J])  # multiply I by 2 and add J
 [ 1.00e+00]
 [ 7.00e+00]
->>> print A[4::4]   # get every fourth element skipping the first four  
+>>> print(A[4::4])   # get every fourth element skipping the first four  
 [ 4.00e+00]
 [ 8.00e+00]
 [ 1.20e+01]
@@ -580,39 +583,41 @@ the matrix and the second argument indexes the columns.  If both
 indices are scalars, then a scalar is returned.  In all other cases, 
 a matrix is returned.  We continue the example.
 
->>> print A[:,1]
+>>> print(A[:,1])
 [ 4.00e+00]
 [ 5.00e+00]
 [ 6.00e+00]
 [ 7.00e+00]
 >>> J = matrix([0, 2])
->>> print A[J,J]
+>>> print(A[J,J])
 [ 0.00e+00  8.00e+00]
 [ 2.00e+00  1.00e+01]
->>> print A[:2, -2:]   
+>>> print(A[:2, -2:])
 [ 8.00e+00  1.20e+01]
 [ 9.00e+00  1.30e+01]
 >>> A = spmatrix([0,2,-1,2,-2,1], [0,1,2,0,2,1], [0,0,0,1,1,2]) 
->>> print A[:, [0,1]]
+>>> print(A[:, [0,1]])
 [ 0.00e+00  2.00e+00]
 [ 2.00e+00     0    ]
 [-1.00e+00 -2.00e+00]
 >>> B = spmatrix([0,2*1j,0,-2], [1,2,1,2], [0,0,1,1,])
->>> print B[-2:,-2:]
+>>> print(B[-2:,-2:])
 [ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00]
 [ 0.00e+00+j2.00e+00 -2.00e+00-j0.00e+00]
 
 Expressions of the form ``A[I]`` or ``A[I,J]`` can also appear on 
-the lefthand side of an assignment.   The righthand side must be a scalar 
+the left-hand side of an assignment.   The right-hand side must be a 
+scalar 
 (i.e., a number or a 1 by 1 dense matrix), a sequence of numbers, or a 
-dense or sparse matrix.  If the righthand side is a scalar, it is 
+dense or sparse matrix.  If the right-hand side is a scalar, it is 
 interpreted as a dense matrix with identical entries and the dimensions of
-the lefthand side.  If the righthand side is a sequence of numbers (list, 
-tuple, :mod:`array` array, xrange object, ...) its values are interpreted 
+the left-hand side.  If the right-hand side is a sequence of numbers 
+(list, tuple, :mod:`array` array, range object, ...) its values are 
+interpreted 
 as the coefficients of a dense matrix in column-major order.  If the 
-righthand side is a matrix (:class:`matrix` or 
+right-hand side is a matrix (:class:`matrix` or 
 :class:`spmatrix`), it must 
-have the same size as the lefthand side.  Sparse matrices are 
+have the same size as the left-hand side.  Sparse matrices are 
 converted to dense in the assignment to a dense matrix.
 
 Indexed assignments are only allowed if they do not change the type of 
@@ -626,57 +631,57 @@ The following examples illustrate indexed assignment.
 
 >>> A = matrix(range(16), (4,4))
 >>> A[::2,::2] = matrix([[-1, -2], [-3, -4]])
->>> print A
+>>> print(A)
 [ -1   4  -3  12]
 [  1   5   9  13]
 [ -2   6  -4  14]
 [  3   7  11  15]
 >>> A[::5] += 1
->>> print A
+>>> print(A)
 [  0   4  -3  12]
 [  1   6   9  13]
 [ -2   6  -3  14]
 [  3   7  11  16]
 >>> A[0,:] = -1, 1, -1, 1
->>> print A
+>>> print(A)
 [ -1   1  -1   1]
 [  1   6   9  13]
 [ -2   6  -3  14]
 [  3   7  11  16]
->>> A[2:,2:] = xrange(4)
->>> print A
+>>> A[2:,2:] = range(4)
+>>> print(A)
 [ -1   1  -1   1]
 [  1   6   9  13]
 [ -2   6   0   2]
 [  3   7   1   3]
 >>> A = spmatrix([0,2,-1,2,-2,1], [0,1,2,0,2,1], [0,0,0,1,1,2]) 
->>> print A
+>>> print(A)
 [ 0.00e+00  2.00e+00     0    ]
 [ 2.00e+00     0      1.00e+00]
 [-1.00e+00 -2.00e+00     0    ]
 >>> C = spmatrix([10,-20,30], [0,2,1], [0,0,1])
->>> print C
+>>> print(C)
 [ 1.00e+01     0    ]
 [    0      3.00e+01]
 [-2.00e+01     0    ]
 >>> A[:,0] = C[:,0]
->>> print A
+>>> print(A)
 [ 1.00e+01  2.00e+00     0    ]
 [    0         0      1.00e+00]
 [-2.00e+01 -2.00e+00     0    ]
 >>> D = matrix(range(6), (3,2))
 >>> A[:,0] = D[:,0]
->>> print A
+>>> print(A)
 [ 0.00e+00  2.00e+00     0    ]
 [ 1.00e+00     0      1.00e+00]
 [ 2.00e+00 -2.00e+00     0    ]
 >>> A[:,0] = 1
->>> print A
+>>> print(A)
 [ 1.00e+00  2.00e+00     0    ]
 [ 1.00e+00     0      1.00e+00]
 [ 1.00e+00 -2.00e+00     0    ]
 >>> A[:,0] = 0
->>> print A
+>>> print(A)
 [ 0.00e+00  2.00e+00     0    ]
 [ 0.00e+00     0      1.00e+00]
 [ 0.00e+00 -2.00e+00     0    ]
@@ -757,18 +762,18 @@ The next example below illustrates assignments to :attr:`V`.
 
 >>> from cvxopt import spmatrix, matrix
 >>> A = spmatrix(range(5), [0,1,1,2,2], [0,0,1,1,2])
->>> print A
+>>> print(A)
 [ 0.00e+00     0         0    ]
 [ 1.00e+00  2.00e+00     0    ]
 [    0      3.00e+00  4.00e+00]
 >>> B = spmatrix(A.V, A.J, A.I, (4,4))  # transpose and add a zero row and column
->>> print B
+>>> print(B)
 [ 0.00e+00  1.00e+00     0         0    ]
 [    0      2.00e+00  3.00e+00     0    ]
 [    0         0      4.00e+00     0    ]
 [    0         0         0         0    ]
 >>> B.V = matrix([1., 7., 8., 6., 4.])   # assign new values to nonzero entries
->>> print B
+>>> print(B)
 [ 1.00e+00  7.00e+00     0         0    ]
 [    0      8.00e+00  6.00e+00     0    ]
 [    0         0      4.00e+00     0    ]
@@ -776,11 +781,6 @@ The next example below illustrates assignments to :attr:`V`.
 
 
 The following attributes and methods are defined for dense matrices.
-
-.. attribute:: __array_struct__
-
-    A PyCObject implementing the :program:`NumPy` array interface  
-    (see the section :ref:`s-array-interface` for details).
 
 .. method:: tofile(f)
 
@@ -795,32 +795,32 @@ The last two methods are illustrated in the following examples.
 
 >>> from cvxopt import matrix, spmatrix
 >>> A = matrix([[1.,2.,3.], [4.,5.,6.]])  
->>> print A
+>>> print(A)
 [ 1.00e+00  4.00e+00]
 [ 2.00e+00  5.00e+00]
 [ 3.00e+00  6.00e+00]
->>> f = open('mat.bin','w')
+>>> f = open('mat.bin','wb')
 >>> A.tofile(f)
 >>> f.close()
 >>> B = matrix(0.0, (2,3))
->>> f = open('mat.bin','r')
+>>> f = open('mat.bin','rb')
 >>> B.fromfile(f)
 >>> f.close()
->>> print B
+>>> print(B)
 [ 1.00e+00  3.00e+00  5.00e+00]
 [ 2.00e+00  4.00e+00  6.00e+00]
 >>> A = spmatrix(range(5), [0,1,1,2,2], [0,0,1,1,2])
->>> f = open('test.bin','w')
+>>> f = open('test.bin','wb')
 >>> A.V.tofile(f)  
 >>> A.I.tofile(f) 
 >>> A.J.tofile(f)
 >>> f.close()
->>> f = open('test.bin','r')
+>>> f = open('test.bin','rb')
 >>> V = matrix(0.0, (5,1));  V.fromfile(f)  
 >>> I = matrix(0, (5,1));  I.fromfile(f)  
 >>> J = matrix(0, (5,1));  J.fromfile(f)  
 >>> B = spmatrix(V, I, J)
->>> print B
+>>> print(B)
 [ 0.00e+00     0         0    ]
 [ 1.00e+00  2.00e+00     0    ]
 [    0      3.00e+00  4.00e+00]
@@ -876,9 +876,8 @@ For example, ``list(A)`` and ``tuple(A)`` construct a list,
 respectively a tuple, from the elements of ``A`` if ``A`` is dense, and 
 of the nonzero elements of ``A`` if ``A`` is sparse.
 
-``zip(A, B, ...)`` returns a list of tuples, with the i-th 
-tuple containing the i-th elements (or nonzero elements) of 
-``A``, ``B``, ....   
+``list(zip(A, B, ...))`` returns a list of tuples, with the i-th tuple 
+containing the i-th elements (or nonzero elements) of ``A``, ``B``, ....   
 
 >>> from cvxopt import matrix
 >>> A = matrix([[-11., -5., -20.], [-6., 0., 7.]])
@@ -887,11 +886,12 @@ tuple containing the i-th elements (or nonzero elements) of
 [-11.0, -5.0, -20.0, -6.0, 0.0, 7.0]
 >>> tuple(B)
 (0, 1, 2, 3, 4, 5)
->>> zip(A, B)
+>>> list(zip(A, B))
 [(-11.0, 0), (-5.0, 1), (-20.0, 2), (-6.0, 3), (0.0, 4), (7.0, 5)]
 
-``map(f, A)``, where ``f`` is a function and ``A`` is a dense matrix, 
-returns a list constructed by applying ``f`` to each element of ``A``.  If
+``list(map(f, A))``, where ``f`` is a function and ``A`` is a 
+dense matrix, returns a list constructed by applying ``f`` to each 
+element of ``A``.  If
 ``A`` is sparse, the function ``f`` is applied to each nonzero element of 
 ``A``.  Multiple arguments can be provided, for example, as in 
 ``map(f, A, B)``, if ``f`` is a function with two arguments.
@@ -899,35 +899,35 @@ In the following example, we return an integer 0-1 matrix with the
 result of an elementwise comparison.
 
 >>> A = matrix([ [0.5, -0.1, 2.0], [1.5, 0.2, -0.1], [0.3, 1.0, 0.0]]) 
->>> print A
+>>> print(A)
 [ 5.00e-01  1.50e+00  3.00e-01]
 [-1.00e-01  2.00e-01  1.00e+00]
 [ 2.00e+00 -1.00e-01  0.00e+00]
->>> print matrix(map(lambda x: 0 <= x <= 1, A), A.size)
+>>> print(matrix(list(map(lambda x: 0 <= x <= 1, A), A.size)))
 [ 1  0  1]
 [ 0  1  1]
 [ 0  0  1]
 
-``filter(f, A)``, where ``f`` is a function and ``A`` is a matrix, 
+``list(filter(f, A))``, where ``f`` is a function and ``A`` is a matrix, 
 returns a list containing the elements of ``A`` (or nonzero elements of 
 ``A`` is ``A`` is sparse) for which ``f`` is true.
 
 >>> A = matrix([[5, -4, 10, -7], [-1, -5, -6, 2], [6, 1, 5, 2],  [-1, 2, -3, -7]])
->>> print A
+>>> print(A)
 [  5  -1   6  -1]
 [ -4  -5   1   2]
 [ 10  -6   5  -3]
 [ -7   2   2  -7]
->>> filter(lambda x: x%2, A)         # list of odd elements in A
+>>> list(filter(lambda x: x%2, A))         # list of odd elements in A
 [5, -7, -1, -5, 1, 5, -1, -3, -7]
->>> filter(lambda x: -2 < x < 3, A)  # list of elements between -2 and 3
+>>> list(filter(lambda x: -2 < x < 3, A))  # list of elements between -2 and 3
 [-1, 2, 1, 2, -1, 2]
 
 It is also possible to iterate over matrix elements, as illustrated in
 the following example.
 
 >>> A = matrix([[5, -3], [9, 11]])
->>> for x in A: print max(x,0)
+>>> for x in A: print(max(x,0))
 ...
 5
 0
@@ -966,7 +966,7 @@ The following functions can be imported from CVXOPT.
     >>> from cvxopt import spmatrix, sqrt
     >>> A = spmatrix([2,1,2,2,1,3,4], [1,2,0,2,3,0,2], [0,0,1,1,2,3,3]) 
     >>> B = spmatrix(sqrt(A.V), A.I, A.J)
-    >>> print B
+    >>> print(B)
     [    0      1.41e+00     0      1.73e+00]
     [ 1.41e+00     0         0         0    ]
     [ 1.00e+00  1.41e+00     0      2.00e+00]
@@ -1011,17 +1011,17 @@ The following functions can be imported from CVXOPT.
     of the other arguments are not all 1 by 1.)
 
     :func:`mul` can also be called with an iterable 
-    (list, tuple, xrange 
-    object, or generator) as its single argument, if the iterable 
-    generates a list of dense or sparse matrices or scalars.
+    (list, tuple, range object, or generator) as its single argument, 
+    if the iterable generates a list of dense or sparse matrices or 
+    scalars.
 
     >>> from cvxopt import matrix, spmatrix, mul
     >>> A = matrix([[1.0, 2.0], [3.0, 4.0]])
     >>> B = spmatrix([2.0, 3.0], [0, 1], [0, 1])
-    >>> print mul(A, B, -1.0)
+    >>> print(mul(A, B, -1.0))
     [-2.00e+00     0    ]
     [    0     -1.20e+01]
-    >>> print mul( matrix([k, k+1]) for k in [1,2,3] )
+    >>> print(mul( matrix([k, k+1]) for k in [1,2,3] ))
     [  6]
     [ 24]
 
@@ -1049,13 +1049,12 @@ The following functions can be imported from CVXOPT.
     is a dense matrix if at least one of the arguments is a dense matrix.
     
     :func:`max <cvxopt.max>` can also be called with an iterable 
-    (list, tuple, xrange 
-    object, or generator) as its single argument, if the iterable 
-    generates a list of dense or sparse matrices or scalars.
-    
+    (list, tuple, range object, or generator) as its single argument, 
+    if the iterable generates a list of dense or sparse matrices or 
+    scalars.  
     >>> from cvxopt import matrix, spmatrix, max
     >>> A = spmatrix([2, -3], [0, 1], [0, 1])
-    >>> print max(A, -A, 1)
+    >>> print(max(A, -A, 1))
     [ 2.00e+00  1.00e+00]
     [ 1.00e+00  3.00e+00]
     
@@ -1074,7 +1073,7 @@ The following functions can be imported from CVXOPT.
     >>> from cvxopt import max
     >>> max(A)          # cvxopt.max takes maximum over all the  elements
     0.0
-    >>> print max(A, -1.5)
+    >>> print(max(A, -1.5))
     [-1.00e+00  0.00e+00]
     [ 0.00e+00 -1.50e+00]
     
@@ -1093,9 +1092,9 @@ The following functions can be imported from CVXOPT.
     as a dense matrix with all its entries equal to the scalar.
     
     :func:`min <cvxopt.min>` can also be called with an iterable 
-    (list, tuple, xrange 
-    object, or generator) as its single argument, if the iterable generates
-    a list of dense or sparse matrices or scalars.
+    (list, tuple, range object, or generator) as its single argument, 
+    if the iterable generates a list of dense or sparse matrices or 
+    scalars.
     
     
 .. _s-random:
@@ -1148,17 +1147,12 @@ functions based on the :mod:`random` module.
 The NumPy Array Interface
 =========================
 
-The CVXOPT :class:`matrix` object is compatible with the 
-NumPy Array 
+This section only applies to the Python 2 version of CVXOPT.
+
+The CVXOPT :class:`matrix` object is compatible with the NumPy Array 
 Interface, which allows Python objects that represent multidimensional 
 arrays to exchange data using information stored in the attribute 
 :attr:`__array_struct__`.  
-
-.. seealso::
-
-    * `NumPy Array Interface Specification <http://numpy.scipy.org/array_interface.shtml>`_
-
-    * `Numpy home page <http://numpy.scipy.org>`_
 
 As already mentioned in the section :ref:`s-dense-matrices`, a 
 two-dimensional array 
@@ -1171,7 +1165,7 @@ CVXOPT matrices and NumPy arrays.
 
 >>> from cvxopt import matrix
 >>> a = matrix(range(6), (2,3), 'd')
->>> print a
+>>> print(a)
 [ 0.00e+00  2.00e+00  4.00e+00]
 [ 1.00e+00  3.00e+00  5.00e+00]
 >>> from numpy import array

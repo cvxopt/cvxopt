@@ -131,4 +131,4 @@ m, n = 100, 100
 A, b = normal(m,n), normal(m,1)
 
 x, z = qcl1(A, b)
-if x is None: print "infeasible"
+if x is None: print("infeasible")

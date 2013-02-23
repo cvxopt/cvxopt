@@ -16,4 +16,4 @@ x2 = variable(n)
 y = variable(n)  
 op(dot(c,x2), [A*x2+sum(y) <= b, -y <= x2, x2 <= y]).solve()
 
-print "\nDifference between two solutions %e" %nrm2(x.value - x2.value)
+print("\nDifference between two solutions %e" %nrm2(x.value - x2.value))

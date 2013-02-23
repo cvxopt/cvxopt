@@ -1,9 +1,8 @@
 # Figures 7.2 and 7.3, pages 363 and 364.
 # Maximum entropy distribution.
 
-import pylab
 from cvxopt import solvers, blas, matrix, spmatrix, spdiag, log, div
-solvers.options['show_progress'] = False
+#solvers.options['show_progress'] = False
 
 # minimize     p'*log p  
 # subject to  -0.1 <= a'*p <= 0.1
@@ -16,8 +15,8 @@ solvers.options['show_progress'] = False
 # The variable is p (100).
 
 n = 100 
-a = -1.0 + (2.0/(n-1)) * matrix(range(n), (1,n))
-I = [k for k in xrange(n) if a[k] < 0]
+a = -1.0 + (2.0/(n-1)) * matrix(list(range(n)), (1,n))
+I = [k for k in range(n) if a[k] < 0]
 G = matrix([-a, a, -a**2, a**2, -(3 * a**3 - 2*a), (3 * a**3 - 2*a),
     matrix(0.0, (2,n))])
 G[6,I] = -1.0
@@ -66,27 +65,30 @@ GG[:n,:8] = -G.T
 GG[:n,8] = -A.T
 GG[n::n+9] = -1.0
 hh = matrix(0.0, (n+8,n))
-hh[:n,:] = matrix([i>=j for i in xrange(n) for j in xrange(n)], 
+hh[:n,:] = matrix([i>=j for i in range(n) for j in range(n)], 
     (n,n), 'd')  # upper triangular matrix of ones
-l = [-blas.dot(cc, solvers.lp(cc, GG, hh[:,k])['x']) for k in xrange(n)]
-u = [blas.dot(cc, solvers.lp(cc, GG, -hh[:,k])['x']) for k in xrange(n)]
+l = [-blas.dot(cc, solvers.lp(cc, GG, hh[:,k])['x']) for k in range(n)]
+u = [blas.dot(cc, solvers.lp(cc, GG, -hh[:,k])['x']) for k in range(n)]
 
 def f(x,y): return x+2*[y]
 def stepl(x): return reduce(f, x[1:], [x[0]])
 def stepr(x): return reduce(f, x[:-1], []) + [x[-1]]
 
-pylab.figure(1, facecolor='w')
-pylab.plot(stepl(a), stepr(p), '-')
-pylab.title('Maximum entropy distribution (fig. 7.2)')
-pylab.xlabel('a')
-pylab.ylabel('p = Prob(X = a)')
-
-pylab.figure(2, facecolor='w')
-pylab.plot([-1.0] + stepl(a), [0.0] + stepr(hh[:n,:].T*p), '-', 
-    [-1.0] + stepl(a), [0.0] + stepr(l), 'r-', 
-    [-1.0] + stepl(a), [0.0] + stepr(u), 'r-')
-pylab.title('Cumulative distribution (fig. 7.3)')
-pylab.xlabel('a')
-pylab.ylabel('Prob(X <= a)')
-pylab.axis([-1.1, 1.1, -0.1, 1.1])
-pylab.show()
+try: import pylab
+except ImportError: pass
+else:
+    pylab.figure(1, facecolor='w')
+    pylab.plot(stepl(a), stepr(p), '-')
+    pylab.title('Maximum entropy distribution (fig. 7.2)')
+    pylab.xlabel('a')
+    pylab.ylabel('p = Prob(X = a)')
+    
+    pylab.figure(2, facecolor='w')
+    pylab.plot([-1.0] + stepl(a), [0.0] + stepr(hh[:n,:].T*p), '-', 
+        [-1.0] + stepl(a), [0.0] + stepr(l), 'r-', 
+        [-1.0] + stepl(a), [0.0] + stepr(u), 'r-')
+    pylab.title('Cumulative distribution (fig. 7.3)')
+    pylab.xlabel('a')
+    pylab.ylabel('Prob(X <= a)')
+    pylab.axis([-1.1, 1.1, -0.1, 1.1])
+    pylab.show()

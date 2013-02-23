@@ -1,8 +1,8 @@
 /*
- * Copyright 2010 L. Vandenberghe.
+ * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.3.
+ * This file is part of CVXOPT version 1.1.4.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,25 +40,58 @@ PyDoc_STRVAR(umfpack__doc__,"Interface to the UMFPACK library.\n\n"
     "The default control settings of UMPFACK are used.\n\n"
     "See also http://www.cise.ufl.edu/research/sparse/umfpack.");
 
+#if PY_MAJOR_VERSION >= 3
+static void free_umfpack_d_symbolic(void *F)
+{
+    void *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
+    UMFD(free_symbolic)(&Fptr);
+}
+#else
 static void free_umfpack_d_symbolic(void *F, void *descr)
 {
     UMFD(free_symbolic)(&F);
 }
+#endif
 
+#if PY_MAJOR_VERSION >= 3
+static void free_umfpack_z_symbolic(void *F)
+{
+    void *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
+    UMFZ(free_symbolic)(&Fptr);
+}
+#else
 static void free_umfpack_z_symbolic(void *F, void *descr)
 {
     UMFZ(free_symbolic)(&F);
 }
+#endif
 
+#if PY_MAJOR_VERSION >= 3
+static void free_umfpack_d_numeric(void *F)
+{
+    void *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
+    UMFD(free_numeric)(&Fptr);
+}
+#else
 static void free_umfpack_d_numeric(void *F, void *descr)
 {
     UMFD(free_numeric)(&F);
 }
+#endif
 
+#if PY_MAJOR_VERSION >= 3
+static void free_umfpack_z_numeric(void *F)
+{
+    void *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
+    UMFZ(free_numeric)(&Fptr);
+}
+#else
 static void free_umfpack_z_numeric(void *F, void *descr)
 {
     UMFZ(free_numeric)(&F);
 }
+#endif
+
 
 static char doc_linsolve[] =
     "Solves a sparse set of linear equations.\n\n"
@@ -85,6 +118,9 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
 {
     spmatrix *A;
     matrix *B;
+#if PY_MAJOR_VERSION >= 3
+    int trans_ = 'N';
+#endif
     char trans='N';
     double info[UMFPACK_INFO];
     int oB=0, n, nrhs=-1, ldB=0, k;
@@ -92,8 +128,14 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
     char *kwlist[] = {"A", "B", "trans", "nrhs", "ldB", "offsetB",
         NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|Ciii", kwlist,
+        &A, &B, &trans_, &nrhs, &ldB, &oB)) return NULL;
+    trans = (char) trans_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ciii", kwlist,
         &A, &B, &trans, &nrhs, &ldB, &oB)) return NULL;
+#endif
 
     if (!SpMatrix_Check(A) || SP_NROWS(A) != SP_NCOLS(A))
         PY_ERR_TYPE("A must be a square sparse matrix");
@@ -240,9 +282,15 @@ static PyObject* symbolic(PyObject *self, PyObject *args)
             UMFD(symbolic)(SP_NROWS(A), SP_NCOLS(A), SP_COL(A),
                 SP_ROW(A), SP_VAL(A), &symbolic, NULL, info);
             if (info[UMFPACK_STATUS] == UMFPACK_OK)
+#if PY_MAJOR_VERSION >= 3
+                return (PyObject *) PyCapsule_New( (void *) symbolic, 
+                    "UMFPACK SYM D FACTOR", 
+                    (PyCapsule_Destructor) &free_umfpack_d_symbolic);  
+#else
                 return (PyObject *) PyCObject_FromVoidPtrAndDesc(
                     (void *) symbolic, "UMFPACK SYM D FACTOR",
                     free_umfpack_d_symbolic);
+#endif
             else
                 UMFD(free_symbolic)(&symbolic);
             break;
@@ -251,9 +299,15 @@ static PyObject* symbolic(PyObject *self, PyObject *args)
             UMFZ(symbolic)(SP_NROWS(A), SP_NCOLS(A), SP_COL(A),
                 SP_ROW(A), SP_VAL(A), NULL, &symbolic, NULL, info);
             if (info[UMFPACK_STATUS] == UMFPACK_OK)
+#if PY_MAJOR_VERSION >= 3
+                return (PyObject *) PyCapsule_New(
+                    (void *) symbolic, "UMFPACK SYM Z FACTOR",
+                    (PyCapsule_Destructor) &free_umfpack_z_symbolic);
+#else
                 return (PyObject *) PyCObject_FromVoidPtrAndDesc(
                     (void *) symbolic, "UMFPACK SYM Z FACTOR",
-                free_umfpack_z_symbolic);
+                    free_umfpack_z_symbolic);
+#endif
             else
                 UMFZ(free_symbolic)(&symbolic);
             break;
@@ -288,36 +342,74 @@ static PyObject* numeric(PyObject *self, PyObject *args)
     PyObject *Fs;
     double info[UMFPACK_INFO];
     void *numeric;
+#if PY_MAJOR_VERSION >= 3
+    void *Fsptr;
+    const char *descrd = "UMFPACK SYM D FACTOR";
+    const char *descrz = "UMFPACK SYM Z FACTOR";
+#endif
 
     if (!PyArg_ParseTuple(args, "OO", &A, &Fs)) return NULL;
 
     if (!SpMatrix_Check(A)) PY_ERR_TYPE("A must be a sparse matrix");
+#if PY_MAJOR_VERSION >= 3
+    if (!PyCapsule_CheckExact(Fs)) err_CO("Fs");
+#else
     if (!PyCObject_Check(Fs)) err_CO("Fs");
+#endif
 
     switch (SP_ID(A)) {
 	case DOUBLE:
+#if PY_MAJOR_VERSION >= 3
+            TypeCheck_Capsule(Fs, descrd, "Fs is not the UMFPACK symbolic "
+                "factor of a 'd' matrix");
+            if (!(Fsptr = (void *) PyCapsule_GetPointer(Fs, descrd)))
+                err_CO("Fs");
+            UMFD(numeric)(SP_COL(A), SP_ROW(A), SP_VAL(A), Fsptr, &numeric,
+                NULL, info);
+#else
             TypeCheck_CObject(Fs, "UMFPACK SYM D FACTOR", "Fs is not "
                 "the UMFPACK symbolic factor of a 'd' matrix");
             UMFD(numeric)(SP_COL(A), SP_ROW(A), SP_VAL(A),
 	        (void *) PyCObject_AsVoidPtr(Fs), &numeric, NULL, info);
+#endif
             if (info[UMFPACK_STATUS] == UMFPACK_OK)
+#if PY_MAJOR_VERSION >= 3
+                return (PyObject *) PyCapsule_New(
+                    (void *) numeric, "UMFPACK NUM D FACTOR",
+                    (PyCapsule_Destructor) &free_umfpack_d_numeric);
+#else
                 return (PyObject *) PyCObject_FromVoidPtrAndDesc(
                     (void *) numeric, "UMFPACK NUM D FACTOR",
                     free_umfpack_d_numeric);
+#endif
             else
                 UMFD(free_numeric)(&numeric);
 	    break;
 
         case COMPLEX:
+#if PY_MAJOR_VERSION >= 3
+            TypeCheck_Capsule(Fs, descrz, "Fs is not the UMFPACK symbolic "
+                "factor of a 'z' matrix");
+            if (!(Fsptr = (void *) PyCapsule_GetPointer(Fs, descrz)))
+                err_CO("Fs");
+            UMFZ(numeric)(SP_COL(A), SP_ROW(A), SP_VAL(A), NULL, Fsptr, 
+                &numeric, NULL, info);
+#else
             TypeCheck_CObject(Fs, "UMFPACK SYM Z FACTOR", "Fs is not "
                 "the UMFPACK symbolic factor of a 'z' matrix");
             UMFZ(numeric)(SP_COL(A), SP_ROW(A), SP_VAL(A), NULL,
-	         (void *) PyCObject_AsVoidPtr(Fs), &numeric, NULL,
-		 info);
+	         (void *) PyCObject_AsVoidPtr(Fs), &numeric, NULL, info);
+#endif
             if (info[UMFPACK_STATUS] == UMFPACK_OK)
+#if PY_MAJOR_VERSION >= 3
+                return (PyObject *) PyCapsule_New(
+                    (void *) numeric, "UMFPACK NUM Z FACTOR",
+                    (PyCapsule_Destructor) &free_umfpack_z_numeric);
+#else
                 return (PyObject *) PyCObject_FromVoidPtrAndDesc(
                     (void *) numeric, "UMFPACK NUM Z FACTOR",
                     free_umfpack_z_numeric);
+#endif
 	    else
                  UMFZ(free_numeric)(&numeric);
 	    break;
@@ -366,19 +458,41 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
     spmatrix *A;
     PyObject *F;
     matrix *B;
+#if PY_MAJOR_VERSION >= 3
+    int trans_ = 'N';
+    const char *descrd = "UMFPACK NUM D FACTOR"; 
+    const char *descrz = "UMFPACK NUM Z FACTOR"; 
+#endif
     char trans='N';
     double *x, info[UMFPACK_INFO];
     int oB=0, n, ldB=0, nrhs=-1, k;
     char *kwlist[] = {"A", "F", "B", "trans", "nrhs", "ldB", "offsetB",
         NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|Ciii", kwlist,
+        &A, &F, &B, &trans_, &nrhs, &ldB, &oB)) return NULL;
+    trans = (char) trans_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ciii", kwlist,
         &A, &F, &B, &trans, &nrhs, &ldB, &oB)) return NULL;
+#endif
 
     if (!SpMatrix_Check(A) || SP_NROWS(A) != SP_NCOLS(A))
         PY_ERR_TYPE("A must a square sparse matrix");
     n = SP_NROWS(A);
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyCapsule_CheckExact(F)) err_CO("F");
+    if (SP_ID(A) == DOUBLE) {
+        TypeCheck_Capsule(F, descrd, "F is not the UMFPACK numeric factor "
+            "of a 'd' matrix");
+    }
+    else  {
+        TypeCheck_Capsule(F, descrz, "F is not the UMFPACK numeric factor "
+            "of a 'z' matrix");
+    }
+#else
     if (!PyCObject_Check(F)) err_CO("F");
     if (SP_ID(A) == DOUBLE) {
         TypeCheck_CObject(F, "UMFPACK NUM D FACTOR", "F is not the "
@@ -388,6 +502,7 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
         TypeCheck_CObject(F, "UMFPACK NUM Z FACTOR", "F is not the "
             "UMFPACK numeric factor of a 'z' matrix");
     }
+#endif
 
     if (!Matrix_Check(B) || MAT_ID(B) != SP_ID(A))
         PY_ERR_TYPE("B must a dense matrix of the same numeric type "
@@ -406,16 +521,31 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
 
     for (k=0; k<nrhs; k++) {
         if (SP_ID(A) == DOUBLE)
+#if PY_MAJOR_VERSION >= 3
+            UMFD(solve)(trans == 'N' ? UMFPACK_A : UMFPACK_Aat,
+                SP_COL(A), SP_ROW(A), SP_VAL(A), x,
+                MAT_BUFD(B) + k*ldB + oB,
+                (void *) PyCapsule_GetPointer(F, descrd), NULL, info);
+#else
             UMFD(solve)(trans == 'N' ? UMFPACK_A : UMFPACK_Aat,
                 SP_COL(A), SP_ROW(A), SP_VAL(A), x,
                 MAT_BUFD(B) + k*ldB + oB,
                 (void *) PyCObject_AsVoidPtr(F), NULL, info);
+#endif
         else
+#if PY_MAJOR_VERSION >= 3
+            UMFZ(solve)(trans == 'N' ? UMFPACK_A : trans == 'C' ?
+                UMFPACK_At : UMFPACK_Aat, SP_COL(A), SP_ROW(A),
+                SP_VAL(A), NULL, x, NULL,
+                (double *)(MAT_BUFZ(B) + k*ldB + oB), NULL,
+                (void *) PyCapsule_GetPointer(F, descrz), NULL, info);
+#else
             UMFZ(solve)(trans == 'N' ? UMFPACK_A : trans == 'C' ?
                 UMFPACK_At : UMFPACK_Aat, SP_COL(A), SP_ROW(A),
                 SP_VAL(A), NULL, x, NULL,
                 (double *)(MAT_BUFZ(B) + k*ldB + oB), NULL,
                 (void *) PyCObject_AsVoidPtr(F), NULL, info);
+#endif
         if (info[UMFPACK_STATUS] == UMFPACK_OK)
             memcpy(B->buffer + (k*ldB + oB)*E_SIZE[SP_ID(A)], x,
                 n*E_SIZE[SP_ID(A)]);
@@ -444,20 +574,39 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
 }
 
 static PyMethodDef umfpack_functions[] = {
-{"linsolve", (PyCFunction) linsolve, METH_VARARGS|METH_KEYWORDS,
-    doc_linsolve},
-{"symbolic", (PyCFunction) symbolic, METH_VARARGS, doc_symbolic},
-{"numeric", (PyCFunction) numeric, METH_VARARGS, doc_numeric},
-{"solve", (PyCFunction) solve, METH_VARARGS|METH_KEYWORDS, doc_solve},
-{NULL}  /* Sentinel */
+    {"linsolve", (PyCFunction) linsolve, METH_VARARGS|METH_KEYWORDS,
+        doc_linsolve},
+    {"symbolic", (PyCFunction) symbolic, METH_VARARGS, doc_symbolic},
+    {"numeric", (PyCFunction) numeric, METH_VARARGS, doc_numeric},
+    {"solve", (PyCFunction) solve, METH_VARARGS|METH_KEYWORDS, doc_solve},
+    {NULL}  /* Sentinel */
 };
+
+#if PY_MAJOR_VERSION >= 3
+
+static PyModuleDef umfpack_module = {
+    PyModuleDef_HEAD_INIT,
+    "umfpack",
+    umfpack__doc__,
+    -1,
+    umfpack_functions,
+    NULL, NULL, NULL, NULL
+};
+
+PyMODINIT_FUNC PyInit_umfpack(void)
+{
+  PyObject *m;
+  if (!(m = PyModule_Create(&umfpack_module))) return NULL;
+  if (import_cvxopt() < 0) return NULL;
+  return m;
+}
+
+#else
 
 PyMODINIT_FUNC initumfpack(void)
 {
   PyObject *m;
-
-  m = Py_InitModule3("cvxopt.umfpack", umfpack_functions,
-      umfpack__doc__);
-
+  m = Py_InitModule3("cvxopt.umfpack", umfpack_functions, umfpack__doc__);
   if (import_cvxopt() < 0) return;
 }
+#endif

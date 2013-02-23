@@ -3,7 +3,9 @@
 
 from cvxopt import matrix, mul, div, cos, sin, exp, sqrt 
 from cvxopt import blas, lapack, solvers
-import pylab
+try: import pylab
+except ImportError: pylab_installed = False
+else: pylab_installed = True
 
 # Basis functions are Gabor pulses:  for k = 0,...,K-1,
 #
@@ -25,36 +27,36 @@ A = matrix(0.0, (N, K*(2*L+1)))
 
 # First K columns are DC pulses for k = 0,...,K-1
 A[:,:K] = B
-for l in xrange(L):
+for l in range(L):
 
     # Cosine pulses for omega = (l+1)*omega0 and k = 0,...,K-1.
-    A[:, K+l*(2*K) : K+l*(2*K)+K] = \
-        mul(B, cos((l+1)*omega0*ts)[:, K*[0]])
+    A[:, K+l*(2*K) : K+l*(2*K)+K] = mul(B, cos((l+1)*omega0*ts)[:, K*[0]])
 
     # Sine pulses for omega = (l+1)*omega0 and k = 0,...,K-1.
     A[:, K+l*(2*K)+K : K+(l+1)*(2*K)] = \
         mul(B, sin((l+1)*omega0*ts)[:,K*[0]])
 
+if pylab_installed:
 
-pylab.figure(1, facecolor='w')
-pylab.subplot(311)
-# DC pulse for k = 250 (tau = 0.5)
-pylab.plot(ts, A[:,250])
-pylab.ylabel('f(0.5, 0, c)')
-pylab.axis([0, 1, -1, 1])
-pylab.title('Three basis elements (fig. 6.21)')
-# Cosine pulse for k = 250 (tau = 0.5) and l = 15  (omega = 75)
-pylab.subplot(312)
-pylab.ylabel('f(0.5, 75, c)')
-pylab.plot(ts, A[:, K + 14*(2*K) + 250])
-pylab.axis([0, 1, -1, 1])
-pylab.subplot(313)
-# Cosine pulse for k = 250 (tau = 0.5) and l = 30  (omega = 150)
-pylab.plot(ts, A[:, K + 29*(2*K) + 250])
-pylab.ylabel('f(0.5, 150, c)')
-pylab.axis([0, 1, -1, 1])
-pylab.xlabel('t')
-
+    pylab.figure(1, facecolor='w')
+    pylab.subplot(311)
+    # DC pulse for k = 250 (tau = 0.5)
+    pylab.plot(ts, A[:,250])
+    pylab.ylabel('f(0.5, 0, c)')
+    pylab.axis([0, 1, -1, 1])
+    pylab.title('Three basis elements (fig. 6.21)')
+    # Cosine pulse for k = 250 (tau = 0.5) and l = 15  (omega = 75)
+    pylab.subplot(312)
+    pylab.ylabel('f(0.5, 75, c)')
+    pylab.plot(ts, A[:, K + 14*(2*K) + 250])
+    pylab.axis([0, 1, -1, 1])
+    pylab.subplot(313)
+    # Cosine pulse for k = 250 (tau = 0.5) and l = 30  (omega = 150)
+    pylab.plot(ts, A[:, K + 29*(2*K) + 250])
+    pylab.ylabel('f(0.5, 150, c)')
+    pylab.axis([0, 1, -1, 1])
+    pylab.xlabel('t')
+    
 # Signal.
 y = mul( 1.0 + 0.5 * sin(11*ts), sin(30 * sin(5*ts)))
 
@@ -156,7 +158,7 @@ def Fkkt(W):
  
     # Asc = A*diag(d)^-1/2
     blas.copy(A, Asc)
-    for k in xrange(m):
+    for k in range(m):
         blas.tbsv(ds, Asc, n=n, k=0, ldA=1, incx=m, offsetx=k)
 
     # S = I + A * D^-1 * A'
@@ -199,47 +201,48 @@ def Fkkt(W):
 
 x = solvers.coneqp(P, q, G, h, kktsolver = Fkkt)['x'][:n]
 
-I = [ k for k in xrange(n) if abs(x[k]) > 1e-2 ]
+I = [ k for k in range(n) if abs(x[k]) > 1e-2 ]
 xls = +y
 lapack.gels(A[:,I], xls)
 ybp = A[:,I]*xls[:len(I)]
 
-print "Sparse basis contains %d basis functions." %len(I)
-print "Relative RMS error = %.1e." %(blas.nrm2(ybp-y) / blas.nrm2(y))
+print("Sparse basis contains %d basis functions." %len(I))
+print("Relative RMS error = %.1e." %(blas.nrm2(ybp-y) / blas.nrm2(y)))
 
-pylab.figure(2, facecolor='w')
-pylab.subplot(211)
-pylab.plot(ts, y, '-', ts, ybp, 'r--')
-pylab.xlabel('t')
-pylab.ylabel('y(t), yhat(t)')
-pylab.axis([0, 1, -1.5, 1.5])
-pylab.title('Signal and basis pursuit approximation (fig. 6.22)')
-pylab.subplot(212)
-pylab.plot(ts, y-ybp, '-')
-pylab.xlabel('t')
-pylab.ylabel('y(t)-yhat(t)')
-pylab.axis([0, 1, -0.05, 0.05])
-       
-pylab.figure(3, facecolor='w')
-pylab.subplot(211)
-pylab.plot(ts, y, '-')
-pylab.xlabel('t')
-pylab.ylabel('y(t)')
-pylab.axis([0, 1, -1.5, 1.5])
-pylab.title('Signal and time-frequency plot (fig. 6.23)')
-pylab.subplot(212)
-omegas, taus = [], []
-for i in I:
-    if i < K: 
-        omegas += [0.0]
-        taus += [i*tau]
-    else:
-        l = (i-K)/(2*K)+1
-        k = ((i-K)%(2*K)) %K
-        omegas += [l*omega0]
-        taus += [k*tau]
-pylab.plot(ts, 150*abs(cos(5.0*ts)), '-', taus, omegas, 'ro')
-pylab.xlabel('t')
-pylab.ylabel('omega(t)')
-pylab.axis([0, 1, -5, 155])
-pylab.show()
+if pylab_installed:
+    pylab.figure(2, facecolor='w')
+    pylab.subplot(211)
+    pylab.plot(ts, y, '-', ts, ybp, 'r--')
+    pylab.xlabel('t')
+    pylab.ylabel('y(t), yhat(t)')
+    pylab.axis([0, 1, -1.5, 1.5])
+    pylab.title('Signal and basis pursuit approximation (fig. 6.22)')
+    pylab.subplot(212)
+    pylab.plot(ts, y-ybp, '-')
+    pylab.xlabel('t')
+    pylab.ylabel('y(t)-yhat(t)')
+    pylab.axis([0, 1, -0.05, 0.05])
+           
+    pylab.figure(3, facecolor='w')
+    pylab.subplot(211)
+    pylab.plot(ts, y, '-')
+    pylab.xlabel('t')
+    pylab.ylabel('y(t)')
+    pylab.axis([0, 1, -1.5, 1.5])
+    pylab.title('Signal and time-frequency plot (fig. 6.23)')
+    pylab.subplot(212)
+    omegas, taus = [], []
+    for i in I:
+        if i < K: 
+            omegas += [0.0]
+            taus += [i*tau]
+        else:
+            l = (i-K)/(2*K)+1
+            k = ((i-K)%(2*K)) %K
+            omegas += [l*omega0]
+            taus += [k*tau]
+    pylab.plot(ts, 150*abs(cos(5.0*ts)), '-', taus, omegas, 'ro')
+    pylab.xlabel('t')
+    pylab.ylabel('omega(t)')
+    pylab.axis([0, 1, -5, 155])
+    pylab.show()

@@ -3,12 +3,15 @@
 #
 # The problem data are different from the example in the book.
 
-import pylab, numpy, pickle
+import pickle
 from cvxopt import lapack, solvers, matrix, spmatrix, sqrt, mul
 from cvxopt.modeling import variable, op
-solvers.options['show_progress'] = False
+#solvers.options['show_progress'] = False
+try: import pylab, numpy
+except ImportError: pylab_installed = False
+else: pylab_installed = True
 
-data = pickle.load(open("placement.bin", "r"))
+data = pickle.load(open("placement.bin", "rb"))
 Xf = data['X']  # M by n matrix with coordinates of M fixed nodes
 M = Xf.size[0]  
 E = data['E']   # list of edges 
@@ -17,7 +20,7 @@ N = max(max(e) for e in E) + 1 - M  # number of free nodes; fixed nodes
                                     # have the highest M indices.
 # arc-node incidence matrix
 A = matrix(0.0, (L,M+N))
-for k in xrange(L):  A[k, E[k]] = matrix([1.0, -1.0], (1,2))
+for k in range(L):  A[k, E[k]] = matrix([1.0, -1.0], (1,2))
 
 
 # minimize sum h( sqrt( (A1*X[:,0] + B[:,0])**2 + 
@@ -40,15 +43,15 @@ B = A[:,N:]*Xf
 novars = L + 2*N
 c = matrix(0.0, (novars,1))
 c[:L] = 1.0
-G = [ spmatrix([], [], [], (9, novars)) for k in xrange(L) ]
-h = [ matrix(0.0, (3,3)) for k in xrange(L) ]
-for k in xrange(L):
+G = [ spmatrix([], [], [], (9, novars)) for k in range(L) ]
+h = [ matrix(0.0, (3,3)) for k in range(L) ]
+for k in range(L):
 
     # coefficient of tk
     C = spmatrix(-1.0, [0,1,2], [0,1,2])
     G[k][C.I + 3*C.J, k] = C.V
 
-    for j in xrange(N):
+    for j in range(N):
         # coefficient of x[j]
         C = spmatrix(-A[k,j], [2, 0], [0, 2])
         G[k][C.I + 3*C.J, L+j] = C.V
@@ -101,7 +104,7 @@ def F(x=None, z=None):
     g = gradg.T * AA
     if z is None: return f, g
     H = matrix(0.0, (2*L, 2*L))
-    for k in xrange(L):
+    for k in range(L):
         H[k,k], H[k+L,k+L] = 4*d[k], 4*d[k]
         H[[k,k+L], [k,k+L]] += 8 * y[[k,k+L]] * y[[k,k+L]].T 
     return f, g, AA.T*H*AA
@@ -110,64 +113,65 @@ sol = solvers.cp(F)
 X4 = matrix(sol['x'], (N,2))
 
 
-# Figures for linear placement.
+if pylab_installed:
+    # Figures for linear placement.
 
-pylab.figure(1, figsize=(10,4), facecolor='w')
-pylab.subplot(121) 
-X = matrix(0.0, (N+M,2))
-X[:N,:], X[N:,:] = X1, Xf
-pylab.plot(Xf[:,0], Xf[:,1], 'sw', X1[:,0], X1[:,1], 'or', ms=10)
-for s, t in E:  pylab.plot([X[s,0], X[t,0]], [X[s,1],X[t,1]], 'b:')
-pylab.axis([-1.1, 1.1, -1.1, 1.1])
-pylab.axis('equal')
-pylab.title('Linear placement')
-
-pylab.subplot(122) 
-lngths = sqrt((A1*X1 + B)**2 * matrix(1.0, (2,1)))
-pylab.hist(lngths, numpy.array([.1*k for k in xrange(15)]))
-x = pylab.arange(0, 1.6, 1.6/500)
-pylab.plot( x, 5.0/1.6*x, '--k')
-pylab.axis([0, 1.6, 0, 5.5])
-pylab.title('Length distribution')
-
-
-# Figures for quadratic placement.
-
-pylab.figure(2, figsize=(10,4), facecolor='w')
-pylab.subplot(121) 
-X[:N,:], X[N:,:] = X2, Xf
-pylab.plot(Xf[:,0], Xf[:,1], 'sw', X2[:,0], X2[:,1], 'or', ms=10)
-for s, t in E:  pylab.plot([X[s,0], X[t,0]], [X[s,1],X[t,1]], 'b:')
-pylab.axis([-1.1, 1.1, -1.1, 1.1])
-pylab.axis('equal')
-pylab.title('Quadratic placement')
-
-pylab.subplot(122) 
-lngths = sqrt((A1*X2 + B)**2 * matrix(1.0, (2,1)))
-pylab.hist(lngths, numpy.array([.1*k for k in xrange(15)]))
-x = pylab.arange(0, 1.5, 1.5/500)
-pylab.plot( x, 5.0/1.5**2 * x**2, '--k')
-pylab.axis([0, 1.5, 0, 5.5])
-pylab.title('Length distribution')
-
-
-# Figures for fourth order placement.
-
-pylab.figure(3, figsize=(10,4), facecolor='w')
-pylab.subplot(121) 
-X[:N,:], X[N:,:] = X4, Xf
-pylab.plot(Xf[:,0], Xf[:,1], 'sw', X4[:,0], X4[:,1], 'or', ms=10)
-for s, t in E:  pylab.plot([X[s,0], X[t,0]], [X[s,1],X[t,1]], 'b:')
-pylab.axis([-1.1, 1.1, -1.1, 1.1])
-pylab.axis('equal')
-pylab.title('Fourth order placement')
-
-pylab.subplot(122) 
-lngths = sqrt((A1*X4 + B)**2 * matrix(1.0, (2,1)))
-pylab.hist(lngths, numpy.array([.1*k for k in xrange(15)]))
-x = pylab.arange(0, 1.5, 1.5/500)
-pylab.plot( x, 6.0/1.4**4 * x**4, '--k')
-pylab.axis([0, 1.4, 0, 6.5])
-pylab.title('Length distribution')
-
-pylab.show()
+    pylab.figure(1, figsize=(10,4), facecolor='w')
+    pylab.subplot(121) 
+    X = matrix(0.0, (N+M,2))
+    X[:N,:], X[N:,:] = X1, Xf
+    pylab.plot(Xf[:,0], Xf[:,1], 'sw', X1[:,0], X1[:,1], 'or', ms=10)
+    for s, t in E:  pylab.plot([X[s,0], X[t,0]], [X[s,1],X[t,1]], 'b:')
+    pylab.axis([-1.1, 1.1, -1.1, 1.1])
+    pylab.axis('equal')
+    pylab.title('Linear placement')
+    
+    pylab.subplot(122) 
+    lngths = sqrt((A1*X1 + B)**2 * matrix(1.0, (2,1)))
+    pylab.hist(lngths, numpy.array([.1*k for k in range(15)]))
+    x = pylab.arange(0, 1.6, 1.6/500)
+    pylab.plot( x, 5.0/1.6*x, '--k')
+    pylab.axis([0, 1.6, 0, 5.5])
+    pylab.title('Length distribution')
+    
+    
+    # Figures for quadratic placement.
+    
+    pylab.figure(2, figsize=(10,4), facecolor='w')
+    pylab.subplot(121) 
+    X[:N,:], X[N:,:] = X2, Xf
+    pylab.plot(Xf[:,0], Xf[:,1], 'sw', X2[:,0], X2[:,1], 'or', ms=10)
+    for s, t in E:  pylab.plot([X[s,0], X[t,0]], [X[s,1],X[t,1]], 'b:')
+    pylab.axis([-1.1, 1.1, -1.1, 1.1])
+    pylab.axis('equal')
+    pylab.title('Quadratic placement')
+    
+    pylab.subplot(122) 
+    lngths = sqrt((A1*X2 + B)**2 * matrix(1.0, (2,1)))
+    pylab.hist(lngths, numpy.array([.1*k for k in range(15)]))
+    x = pylab.arange(0, 1.5, 1.5/500)
+    pylab.plot( x, 5.0/1.5**2 * x**2, '--k')
+    pylab.axis([0, 1.5, 0, 5.5])
+    pylab.title('Length distribution')
+    
+    
+    # Figures for fourth order placement.
+    
+    pylab.figure(3, figsize=(10,4), facecolor='w')
+    pylab.subplot(121) 
+    X[:N,:], X[N:,:] = X4, Xf
+    pylab.plot(Xf[:,0], Xf[:,1], 'sw', X4[:,0], X4[:,1], 'or', ms=10)
+    for s, t in E:  pylab.plot([X[s,0], X[t,0]], [X[s,1],X[t,1]], 'b:')
+    pylab.axis([-1.1, 1.1, -1.1, 1.1])
+    pylab.axis('equal')
+    pylab.title('Fourth order placement')
+    
+    pylab.subplot(122) 
+    lngths = sqrt((A1*X4 + B)**2 * matrix(1.0, (2,1)))
+    pylab.hist(lngths, numpy.array([.1*k for k in range(15)]))
+    x = pylab.arange(0, 1.5, 1.5/500)
+    pylab.plot( x, 6.0/1.4**4 * x**4, '--k')
+    pylab.axis([0, 1.4, 0, 6.5])
+    pylab.title('Length distribution')
+    
+    pylab.show()

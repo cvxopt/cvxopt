@@ -1,8 +1,8 @@
 /*
- * Copyright 2010 L. Vandenberghe.
+ * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.3.
+ * This file is part of CVXOPT version 1.1.4.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -392,13 +392,23 @@ static PyObject* getrs(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *B, *ipiv;
     int n=-1, nrhs=-1, ldA=0, ldB=0, oA=0, oB=0, info;
-    char trans='N';
+#if PY_MAJOR_VERSION >= 3
+    int trans_ = 'N';
+#endif
+    char trans = 'N';
     char *kwlist[] = {"A", "ipiv", "B", "trans", "n", "nrhs", "ldA",
         "ldB", "offsetA", "offsetB", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|Ciiiiii", kwlist,
+        &A, &ipiv, &B, &trans_, &n, &nrhs, &ldA, &ldB, &oA, &oB))
+        return NULL;
+    trans = trans_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ciiiiii", kwlist,
         &A, &ipiv, &B, &trans, &n, &nrhs, &ldA, &ldB, &oA, &oB))
         return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(ipiv) || ipiv->id != INT) err_int_mtrx("ipiv");
@@ -832,13 +842,25 @@ static PyObject* gbtrs(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *B, *ipiv;
     int kl, n=-1, ku=-1, nrhs=-1, ldA=0, ldB=0, oA=0, oB=0, info;
-    char trans='N';
+#if PY_MAJOR_VERSION >= 3
+    int trans_ = 'N';
+#endif
+    char trans = 'N';
     char *kwlist[] = {"A", "kl", "ipiv", "B", "trans", "n", "ku", "nrhs",
         "ldA", "ldB", "offsetA", "offsetB", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OiOO|Ciiiiiii", kwlist,
+        &A, &kl, &ipiv, &B, &trans_, &n, &ku, &nrhs, &ldA, &ldB, &oA,
+        &oB)) 
+        return NULL;
+    trans = (char) trans_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OiOO|ciiiiiii", kwlist,
         &A, &kl, &ipiv, &B, &trans, &n, &ku, &nrhs, &ldA, &ldB, &oA,
-        &oB)) return NULL;
+        &oB)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(ipiv) || ipiv->id != INT) err_int_mtrx("ipiv");
@@ -1186,15 +1208,25 @@ static char doc_gttrs[] =
 static PyObject* gttrs(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *dl, *d, *du, *du2, *ipiv, *B;
-    char trans='N';
+#if PY_MAJOR_VERSION >= 3
+    int trans_ = 'N';
+#endif
+    char trans = 'N';
     int n=-1, nrhs=-1, ldB=0, odl=0, od=0, odu=0, oB=0, info;
     static char *kwlist[] = {"dl", "d", "du", "du2", "ipiv", "B", "trans",
         "n", "nrhs", "ldB", "offsetdl", "offsetd", "offsetdu", "offsetB",
         NULL};
 
+#if PY_MAJOR_VERSION >= 3
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOOOOO|ciiiiiii",
         kwlist, &dl, &d, &du, &du2, &ipiv, &B, &trans, &n, &nrhs, &ldB,
         &odl, &od, &odu, &oB)) return NULL;
+    trans = (char) trans_;
+#else
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOOOOO|ciiiiiii",
+        kwlist, &dl, &d, &du, &du2, &ipiv, &B, &trans, &n, &nrhs, &ldB,
+        &odl, &od, &odu, &oB)) return NULL;
+#endif
 
     if (!Matrix_Check(dl)) err_mtrx("dl");
     if (!Matrix_Check(d)) err_mtrx("d");
@@ -1374,12 +1406,20 @@ static PyObject* potrf(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A;
     int n=-1, ldA=0, oA=0, info;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     char *kwlist[] = {"A", "uplo", "n", "ldA", "offsetA", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|Ciii", kwlist, &A,
+        &uplo_, &n, &ldA, &oA)) return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|ciii", kwlist, &A,
-        &uplo, &n, &ldA, &oA))
-        return NULL;
+        &uplo, &n, &ldA, &oA)) return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (n < 0){
@@ -1448,13 +1488,21 @@ static PyObject* potrs(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *B;
     int n=-1, nrhs=-1, ldA=0, ldB=0, oA=0, oB=0, info;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     char *kwlist[] = {"A", "B", "uplo", "n", "nrhs", "ldA", "ldB",
         "offsetA", "offsetB", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|Ciiiiii", kwlist,
+        &A, &B, &uplo_, &n, &nrhs, &ldA, &ldB, &oA, &oB)) return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ciiiiii", kwlist,
-        &A, &B, &uplo, &n, &nrhs, &ldA, &ldB, &oA, &oB))
-        return NULL;
+        &A, &B, &uplo, &n, &nrhs, &ldA, &ldB, &oA, &oB)) return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -1517,11 +1565,20 @@ static PyObject* potri(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A;
     int n=-1, ldA=0, oA=0, info;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     char *kwlist[] = {"A", "uplo", "n", "ldA", "offsetA", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|Ciii", kwlist,
+        &A, &uplo_, &n, &ldA, &oA)) return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|ciii", kwlist,
         &A, &uplo, &n, &ldA, &oA)) return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (uplo != 'L' && uplo != 'U') err_char("uplo", "'L', 'U'");
@@ -1531,6 +1588,8 @@ static PyObject* potri(PyObject *self, PyObject *args, PyObject *kwrds)
     if (ldA < MAX(1,n)) err_ld("ldA");
     if (oA < 0) err_nn_int("offsetA");
     if (oA + (n-1)*ldA + n > len(A)) err_buf_len("A");
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|ciii", kwlist,
+        &A, &uplo, &n, &ldA, &oA)) return NULL;
 
     switch (MAT_ID(A)){
         case DOUBLE:
@@ -1584,13 +1643,23 @@ static PyObject* posv(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *B;
     int n=-1, nrhs=-1, ldA=0, ldB=0, oA=0, oB=0, info;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     char *kwlist[] = {"A", "B", "uplo", "n", "nrhs", "ldA", "ldB",
         "offsetA", "offsetB", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|Ciiiiii", kwlist,
+        &A, &B, &uplo_, &n, &nrhs, &ldA, &ldB, &oA, &oB))
+        return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ciiiiii", kwlist,
         &A, &B, &uplo, &n, &nrhs, &ldA, &ldB, &oA, &oB))
         return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -1658,12 +1727,22 @@ static PyObject* pbtrf(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A;
     int n=-1, kd=-1, ldA=0, oA=0, info;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     char *kwlist[] = {"A", "uplo", "n", "kd", "ldA", "offsetA", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|Ciiii", kwlist, &A,
+        &uplo_, &n, &kd, &ldA, &oA))
+        return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|ciiii", kwlist, &A,
         &uplo, &n, &kd, &ldA, &oA))
         return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (n < 0) n = A->ncols;
@@ -1731,13 +1810,23 @@ static PyObject* pbtrs(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *B;
     int n=-1, kd=-1, nrhs=-1, ldA=0, ldB=0, oA=0, oB=0, info;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     char *kwlist[] = {"A", "B", "uplo", "n", "kd", "nrhs", "ldA", "ldB",
         "offsetA", "offsetB", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|Ciiiiiii", kwlist,
+        &A, &B, &uplo_, &n, &kd, &nrhs, &ldA, &ldB, &oA, oB))
+        return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ciiiiiii", kwlist,
         &A, &B, &uplo, &n, &kd, &nrhs, &ldA, &ldB, &oA, oB))
         return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -1815,13 +1904,23 @@ static PyObject* pbsv(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *B;
     int n=-1, kd=-1, nrhs=-1, ldA=0, ldB=0, oA=0, oB=0, info;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     char *kwlist[] = {"A", "B", "uplo", "n", "kd", "nrhs", "ldA", "ldB",
         "offsetA", "offsetB", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|Ciiiiiii", kwlist,
+        &A, &B, &uplo_, &n, &kd, &nrhs, &ldA, &ldB, &oA, oB))
+        return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ciiiiiii", kwlist,
         &A, &B, &uplo, &n, &kd, &nrhs, &ldA, &ldB, &oA, oB))
         return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -1957,13 +2056,24 @@ static char doc_pttrs[] =
 static PyObject* pttrs(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *d, *e, *B;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     int n=-1, nrhs=-1, ldB=0, od=0, oe=0, oB=0, info;
     static char *kwlist[] = {"d", "e", "B", "uplo", "n", "nrhs", "ldB",
         "offsetd", "offsete", "offsetB", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|Ciiiiii", kwlist,
+        &d, &e, &B, &uplo_, &n, &nrhs, &ldB, &od, &oe, &oB)) 
+        return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ciiiiii", kwlist,
-        &d, &e, &B, &uplo, &n, &nrhs, &ldB, &od, &oe, &oB)) return NULL;
+        &d, &e, &B, &uplo, &n, &nrhs, &ldB, &od, &oe, &oB)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(d)) err_mtrx("d");
     if (MAT_ID(d) != DOUBLE) err_type("d");
@@ -2109,11 +2219,22 @@ static PyObject* sytrf(PyObject *self, PyObject *args, PyObject *kwrds)
     void *work;
     number wl;
     int n=-1, ldA=0, oA=0, info, lwork;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     char *kwlist[] = {"A", "ipiv", "uplo", "n", "ldA", "offsetA", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|Ciii", kwlist,
+        &A, &ipiv, &uplo_, &n, &ldA, &oA)) 
+        return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ciii", kwlist,
-        &A, &ipiv, &uplo, &n, &ldA, &oA)) return NULL;
+        &A, &ipiv, &uplo, &n, &ldA, &oA)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(ipiv) || ipiv->id != INT) err_int_mtrx("ipiv");
@@ -2218,11 +2339,22 @@ static PyObject* hetrf(PyObject *self, PyObject *args, PyObject *kwrds)
     void *work;
     number wl;
     int n=-1, ldA=0, oA=0, info, lwork;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     char *kwlist[] = {"A", "ipiv", "uplo", "n", "ldA", "offsetA", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|Ciii", kwlist,
+        &A, &ipiv, &uplo_, &n, &ldA, &oA)) 
+        return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ciii", kwlist,
-        &A, &ipiv, &uplo, &n, &ldA, &oA)) return NULL;
+        &A, &ipiv, &uplo, &n, &ldA, &oA)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(ipiv) || ipiv->id != INT) err_int_mtrx("ipiv");
@@ -2334,13 +2466,23 @@ static PyObject* sytrs(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *B, *ipiv;
     int n=-1, nrhs=-1, ldA=0, ldB=0, oA=0, oB=0, info;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     char *kwlist[] = {"A", "ipiv", "B", "uplo", "n", "nrhs", "ldA", "ldB",
         "offsetA", "offsetB", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|Ciiiiii", kwlist,
+        &A, &ipiv, &B, &uplo_, &n, &nrhs, &ldA, &ldB, &oA, &oB))
+        return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ciiiiii", kwlist,
         &A, &ipiv, &B, &uplo, &n, &nrhs, &ldA, &ldB, &oA, &oB))
         return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(ipiv) || ipiv->id != INT) err_int_mtrx("ipiv");
@@ -2436,13 +2578,23 @@ static PyObject* hetrs(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *B, *ipiv;
     int n=-1, nrhs=-1, ldA=0, ldB=0, oA=0, oB=0, info;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ ='L';
+#endif
+    char uplo = 'L';
     char *kwlist[] = {"A", "ipiv", "B", "uplo", "n", "nrhs", "ldA", "ldB",
         "offsetA", "offsetB", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|Ciiiiii", kwlist,
+        &A, &ipiv, &B, &uplo_, &n, &nrhs, &ldA, &ldB, &oA, &oB))
+        return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ciiiiii", kwlist,
         &A, &ipiv, &B, &uplo, &n, &nrhs, &ldA, &ldB, &oA, &oB))
         return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(ipiv) || ipiv->id != INT) err_int_mtrx("ipiv");
@@ -2529,13 +2681,23 @@ static PyObject* sytri(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *ipiv;
     int n=-1, ldA=0, oA=0, info;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     void *work;
     char *kwlist[] = {"A", "ipiv", "uplo", "n", "ldA", "offsetA", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|Ciii", kwlist,
+        &A, &ipiv, &uplo_, &n, &ldA, &oA))
+        return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ciii", kwlist,
         &A, &ipiv, &uplo, &n, &ldA, &oA))
         return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(ipiv) || ipiv->id != INT) err_int_mtrx("ipiv");
@@ -2629,13 +2791,23 @@ static PyObject* hetri(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *ipiv;
     int n=-1, ldA=0, oA=0, info;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     void *work;
     char *kwlist[] = {"A", "ipiv", "uplo", "n", "ldA", "offsetA", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|Ciii", kwlist,
+        &A, &ipiv, &uplo_, &n, &ldA, &oA))
+        return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ciii", kwlist,
         &A, &ipiv, &uplo, &n, &ldA, &oA))
         return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(ipiv) || ipiv->id != INT) err_int_mtrx("ipiv");
@@ -2740,13 +2912,23 @@ static PyObject* sysv(PyObject *self, PyObject *args, PyObject *kwrds)
         *ipivc=NULL;
     void *work=NULL, *Ac=NULL;
     number wl;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     char *kwlist[] = {"A", "B", "ipiv", "uplo", "n", "nrhs", "ldA",
         "ldB", "offsetA", "offsetB", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|OCiiiiii", kwlist,
+        &A, &B, &ipiv, &uplo_, &n, &nrhs, &ldA, &ldB, &oA, &oB))
+        return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|Ociiiiii", kwlist,
         &A, &B, &ipiv, &uplo, &n, &nrhs, &ldA, &ldB, &oA, &oB))
         return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -2911,13 +3093,23 @@ static PyObject* hesv(PyObject *self, PyObject *args, PyObject *kwrds)
         *ipivc=NULL;
     void *work=NULL, *Ac=NULL;
     number wl;
-    char uplo='L';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L';
+#endif
+    char uplo = 'L';
     char *kwlist[] = {"A", "B", "ipiv", "uplo", "n", "nrhs", "ldA", "ldB",
         "offsetA", "offsetB", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|OCiiiiii", kwlist,
+        &A, &B, &ipiv, &uplo_, &n, &nrhs, &ldA, &ldB, &oA, &oB))
+        return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|Ociiiiii", kwlist,
         &A, &B, &ipiv, &uplo, &n, &nrhs, &ldA, &ldB, &oA, &oB))
         return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -3077,13 +3269,25 @@ static PyObject* trtrs(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *B;
     int n=-1, nrhs=-1, ldA=0, ldB=0, oA=0, oB=0, info;
-    char uplo='L', trans='N', diag='N';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L', trans_ = 'N', diag_ = 'N';
+#endif
+    char uplo = 'L', trans = 'N', diag = 'N';
     char *kwlist[] = {"A", "B", "uplo", "trans", "diag", "n", "nrhs",
         "ldA", "ldB", "offsetA", "offsetB", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCiiiiii", kwlist,
+        &A, &B, &uplo_, &trans_, &diag_, &n, &nrhs, &ldA, &ldB, &oA, &oB))
+        return NULL;
+    uplo = (char) uplo_;
+    trans = (char) trans_;
+    diag = (char) diag_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccciiiiii", kwlist,
         &A, &B, &uplo, &trans, &diag, &n, &nrhs, &ldA, &ldB, &oA, &oB))
         return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -3156,11 +3360,21 @@ static PyObject* trtri(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A;
     int n=-1, ldA=0, oA=0, info;
-    char uplo='L', diag='N';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L', diag_ = 'N';
+#endif
+    char uplo = 'L', diag = 'N';
     char *kwlist[] = {"A", "uplo", "diag", "n", "ldA", "offsetA", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|CCiii", kwlist,
+        &A, &uplo_, &diag_, &n, &ldA, &oA)) return NULL;
+    uplo = (char) uplo_;
+    diag = (char) diag_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|cciii", kwlist,
         &A, &uplo, &diag, &n, &ldA, &oA)) return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (uplo != 'L' && uplo != 'U') err_char("uplo", "'L', 'U'");
@@ -3234,15 +3448,28 @@ static char doc_tbtrs[] =
 static PyObject* tbtrs(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *B;
-    char uplo='L', trans='N', diag='N';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L', trans_ = 'N', diag_ = 'N';
+#endif
+    char uplo = 'L', trans = 'N', diag = 'N';
     int n=-1, kd=-1, nrhs=-1, ldA=0, ldB=0, oA=0, oB=0, info;
     char *kwlist[] = {"A", "B", "uplo", "trans", "diag", "n", "kd", "nrhs",
         "ldA", "ldB", "offsetA", "offsetB", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCiiiiiii", kwlist,
+        &A, &B, &uplo_, &trans_, &diag_, &n, &kd, &nrhs, &ldA, &ldB, &oA,
+        &oB))
+        return NULL;
+    uplo = (char) uplo_;
+    trans = (char) trans_;
+    diag = (char) diag_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccciiiiiii", kwlist,
         &A, &B, &uplo, &trans, &diag, &n, &kd, &nrhs, &ldA, &ldB, &oA,
         &oB))
         return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -3331,13 +3558,23 @@ static PyObject* gels(PyObject *self, PyObject *args, PyObject *kwrds)
     int m=-1, n=-1, nrhs=-1, ldA=0, ldB=0, oA=0, oB=0, info, lwork;
     void *work;
     number wl;
-    char trans='N';
+#if PY_MAJOR_VERSION >= 3
+    int trans_ = 'N';
+#endif
+    char trans = 'N';
     char *kwlist[] = {"A", "B", "trans", "m", "n", "nrhs", "ldA", "ldB",
         "offsetA", "offsetB", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|Ciiiiiii",
+        kwlist, &A, &B, &trans_, &m, &n, &nrhs, &ldA, &ldB, &oA, &oB))
+        return NULL;
+    trans = (char) trans_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ciiiiiii",
         kwlist, &A, &B, &trans, &m, &n, &nrhs, &ldA, &ldB, &oA, &oB))
         return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -3529,13 +3766,26 @@ static PyObject* ormqr(PyObject *self, PyObject *args, PyObject *kwrds)
     int m=-1, n=-1, k=-1, ldA=0, ldC=0, oA=0, oC=0, info, lwork;
     void *work;
     number wl;
-    char side='L', trans='N';
+#if PY_MAJOR_VERSION >= 3
+    int side_ = 'L', trans_ = 'N';
+#endif
+    char side = 'L', trans = 'N';
     char *kwlist[] = {"A", "tau", "C", "side", "trans", "m", "n", "k",
         "ldA", "ldC", "offsetA", "offsetC", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|CCiiiiiii",
+        kwlist, &A, &tau, &C, &side_, &trans_, &m, &n, &k, &ldA, &ldC,
+        &oA, &oC)) 
+        return NULL;
+    side = (char) side_;
+    trans = (char) trans_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cciiiiiii",
         kwlist, &A, &tau, &C, &side, &trans, &m, &n, &k, &ldA, &ldC,
-        &oA, &oC)) return NULL;
+        &oA, &oC)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(tau)) err_mtrx("tau");
@@ -3628,13 +3878,26 @@ static PyObject* unmqr(PyObject *self, PyObject *args, PyObject *kwrds)
     int m=-1, n=-1, k=-1, ldA=0, ldC=0, oA=0, oC=0, info, lwork;
     void *work;
     number wl;
-    char side='L', trans='N';
+#if PY_MAJOR_VERSION >= 3
+    int side_ = 'L', trans_ = 'N';
+#endif
+    char side = 'L', trans = 'N';
     char *kwlist[] = {"A", "tau", "C", "side", "trans", "m", "n", "k",
         "ldA", "ldC", "offsetA", "offsetC", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|CCiiiiiii",
+        kwlist, &A, &tau, &C, &side_, &trans_, &m, &n, &k, &ldA, &ldC,
+        &oA, &oC)) 
+        return NULL;
+    side = (char) side_;
+    trans = (char) trans_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cciiiiiii",
         kwlist, &A, &tau, &C, &side, &trans, &m, &n, &k, &ldA, &ldC,
-        &oA, &oC)) return NULL;
+        &oA, &oC)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(tau)) err_mtrx("tau");
@@ -3991,13 +4254,26 @@ static PyObject* ormlq(PyObject *self, PyObject *args, PyObject *kwrds)
     int m=-1, n=-1, k=-1, ldA=0, ldC=0, oA=0, oC=0, info, lwork;
     void *work;
     number wl;
-    char side='L', trans='N';
+#if PY_MAJOR_VERSION >= 3
+    int side_ = 'L', trans_ = 'N';
+#endif
+    char side = 'L', trans = 'N';
     char *kwlist[] = {"A", "tau", "C", "side", "trans", "m", "n", "k",
         "ldA", "ldC", "offsetA", "offsetC", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|CCiiiiiii",
+        kwlist, &A, &tau, &C, &side_, &trans_, &m, &n, &k, &ldA, &ldC,
+        &oA, &oC)) 
+        return NULL;
+    side = (char) side_;
+    trans = (char) trans_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cciiiiiii",
         kwlist, &A, &tau, &C, &side, &trans, &m, &n, &k, &ldA, &ldC,
-        &oA, &oC)) return NULL;
+        &oA, &oC)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(tau)) err_mtrx("tau");
@@ -4089,13 +4365,26 @@ static PyObject* unmlq(PyObject *self, PyObject *args, PyObject *kwrds)
     int m=-1, n=-1, k=-1, ldA=0, ldC=0, oA=0, oC=0, info, lwork;
     void *work;
     number wl;
-    char side='L', trans='N';
+#if PY_MAJOR_VERSION >= 3
+    int side_ = 'L', trans_ = 'N';
+#endif
+    char side = 'L', trans = 'N';
     char *kwlist[] = {"A", "tau", "C", "side", "trans", "m", "n", "k",
         "ldA", "ldC", "offsetA", "offsetC", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|CCiiiiiii",
+        kwlist, &A, &tau, &C, &side_, &trans_, &m, &n, &k, &ldA, &ldC,
+        &oA, &oC)) 
+        return NULL;
+    side = (char) side_;
+    trans = (char) trans_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cciiiiiii",
         kwlist, &A, &tau, &C, &side, &trans, &m, &n, &k, &ldA, &ldC,
-        &oA, &oC)) return NULL;
+        &oA, &oC)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(tau)) err_mtrx("tau");
@@ -4472,12 +4761,24 @@ static PyObject* syev(PyObject *self, PyObject *args, PyObject *kwrds)
     int n=-1, ldA=0, oA=0, oW=0, info, lwork;
     double *work;
     number wl;
-    char uplo='L', jobz='N';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L', jobz_ = 'N';
+#endif
+    char uplo = 'L', jobz = 'N';
     char *kwlist[] = {"A", "W", "jobz", "uplo", "n", "ldA", "offsetA",
         "offsetW", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCiiii", kwlist,
+        &A, &W, &jobz_, &uplo_, &n, &ldA, &oA, &oW)) 
+        return NULL;
+    jobz = (char) jobz_;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cciiii", kwlist,
-        &A, &W, &jobz, &uplo, &n, &ldA, &oA, &oW)) return NULL;
+        &A, &W, &jobz, &uplo, &n, &ldA, &oA, &oW)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(W) || MAT_ID(W) != DOUBLE) err_dbl_mtrx("W");
@@ -4554,12 +4855,24 @@ static PyObject* heev(PyObject *self, PyObject *args, PyObject *kwrds)
     double *rwork=NULL;
     void *work=NULL;
     number wl;
-    char uplo='L', jobz='N';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L', jobz_ = 'N';
+#endif
+    char uplo = 'L', jobz = 'N';
     char *kwlist[] = {"A", "W", "jobz", "uplo", "n", "ldA", "offsetA",
         "offsetW", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCiiii", kwlist,
+        &A, &W, &jobz_, &uplo_, &n, &ldA, &oA, &oW)) 
+        return NULL;
+    jobz = (char) jobz_;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cciiii", kwlist,
-        &A, &W, &jobz, &uplo, &n, &ldA, &oA, &oW)) return NULL;
+        &A, &W, &jobz, &uplo, &n, &ldA, &oA, &oW)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(W) || MAT_ID(W) != DOUBLE) err_dbl_mtrx("W");
@@ -4679,14 +4992,28 @@ static PyObject* syevx(PyObject *self, PyObject *args, PyObject *kwrds)
         *iwork, m, *ifail=NULL;
     double *work, vl=0.0, vu=0.0, abstol=0.0;
     double wl;
-    char uplo='L', jobz='N', range='A';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L', jobz_ = 'N', range_ = 'A';
+#endif
+    char uplo = 'L', jobz = 'N', range = 'A';
     char *kwlist[] = {"A", "W", "jobz", "range", "uplo", "vl", "vu",
 	"il", "iu", "Z", "n", "ldA", "ldZ", "abstol", "offsetA",
         "offsetW", "offsetZ", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCddiiOiiidiii",
+        kwlist, &A, &W, &jobz_, &range_, &uplo_, &vl, &vu, &il, &iu, &Z,
+	&n, &ldA, &ldZ, &abstol, &oA, &oW, &oZ)) 
+        return NULL;
+    jobz = (char) jobz_;
+    range = (char) range_;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cccddiiOiiidiii",
         kwlist, &A, &W, &jobz, &range, &uplo, &vl, &vu, &il, &iu, &Z,
-	&n, &ldA, &ldZ, &abstol, &oA, &oW, &oZ)) return NULL;
+	&n, &ldA, &ldZ, &abstol, &oA, &oW, &oZ)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(W) || MAT_ID(W) != DOUBLE) err_dbl_mtrx("W");
@@ -4819,14 +5146,28 @@ static PyObject* heevx(PyObject *self, PyObject *args, PyObject *kwrds)
     double vl=0.0, vu=0.0, abstol=0.0, *rwork;
     number wl;
     void *work;
-    char uplo='L', jobz='N', range='A';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L', jobz_ = 'N', range_ = 'A';
+#endif
+    char uplo = 'L', jobz = 'N', range = 'A';
     char *kwlist[] = {"A", "W", "jobz", "range", "uplo", "vl", "vu",
 	"il", "iu", "Z", "n", "ldA", "ldZ", "abstol", "offsetA",
         "offsetW", "offsetZ", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCddiiOiiidiii",
+        kwlist, &A, &W, &jobz_, &range_, &uplo_, &vl, &vu, &il, &iu, &Z,
+	&n, &ldA, &ldZ, &abstol, &oA, &oW, &oZ)) 
+        return NULL;
+    jobz = (char) jobz_;
+    range = (char) range_;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cccddiiOiiidiii",
         kwlist, &A, &W, &jobz, &range, &uplo, &vl, &vu, &il, &iu, &Z,
-	&n, &ldA, &ldZ, &abstol, &oA, &oW, &oZ)) return NULL;
+	&n, &ldA, &ldZ, &abstol, &oA, &oW, &oZ)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(W) || MAT_ID(W) != DOUBLE) err_dbl_mtrx("W");
@@ -4958,12 +5299,24 @@ static PyObject* syevd(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *W;
     int n=-1, ldA=0, oA=0, oW=0, info, lwork, liwork, *iwork, iwl;
     double *work=NULL, wl;
-    char uplo='L', jobz='N';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L', jobz_ = 'N';
+#endif
+    char uplo = 'L', jobz = 'N';
     char *kwlist[] = {"A", "W", "jobz", "uplo", "n", "ldA", "offsetA",
         "offsetW", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCiiii", kwlist,
+        &A, &W, &jobz_, &uplo_, &n, &ldA, &oA, &oW)) 
+        return NULL;
+    uplo = (char) uplo_;
+    jobz = (char) jobz_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cciiii", kwlist,
-        &A, &W, &jobz, &uplo, &n, &ldA, &oA, &oW)) return NULL;
+        &A, &W, &jobz, &uplo, &n, &ldA, &oA, &oW)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(W) || W->id != DOUBLE) err_dbl_mtrx("W");
@@ -5048,12 +5401,24 @@ static PyObject* heevd(PyObject *self, PyObject *args, PyObject *kwrds)
     double *rwork, rwl;
     number wl;
     void *work;
-    char uplo='L', jobz='N';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L', jobz_ = 'N';
+#endif
+    char uplo = 'L', jobz = 'N';
     char *kwlist[] = {"A", "W", "jobz", "uplo", "n", "ldA", "offsetA",
         "offsetW", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCiiii", kwlist,
+        &A, &W, &jobz_, &uplo_, &n, &ldA, &oA, &oW)) 
+        return NULL;
+    jobz = (char) jobz_;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cciiii", kwlist,
-        &A, &W, &jobz, &uplo, &n, &ldA, &oA, &oW)) return NULL;
+        &A, &W, &jobz, &uplo, &n, &ldA, &oA, &oW)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(W) || W->id != DOUBLE) err_dbl_mtrx("W");
@@ -5188,14 +5553,28 @@ static PyObject* syevr(PyObject *self, PyObject *args, PyObject *kwrds)
     int n=-1, ldA=0, ldZ=0, il=1, iu=1, oA=0, oW=0, oZ=0, info, lwork,
         *iwork=NULL, liwork, m, *isuppz=NULL, iwl;
     double *work=NULL, vl=0.0, vu=0.0, abstol=0.0, wl;
-    char uplo='L', jobz='N', range='A';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L', jobz_ = 'N', range_ = 'A';
+#endif
+    char uplo = 'L', jobz = 'N', range = 'A';
     char *kwlist[] = {"A", "W", "jobz", "range", "uplo", "vl", "vu",
 	"il", "iu", "Z", "n", "ldA", "ldZ", "abstol", "offsetA",
         "offsetW", "offsetZ", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCddiiOiiidiii",
+        kwlist, &A, &W, &jobz_, &range_, &uplo_, &vl, &vu, &il, &iu, &Z,
+	&n, &ldA, &ldZ, &abstol, &oA, &oW, &oZ)) 
+        return NULL;
+    jobz = (char) jobz_;
+    range = (char) range_;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cccddiiOiiidiii",
         kwlist, &A, &W, &jobz, &range, &uplo, &vl, &vu, &il, &iu, &Z,
-	&n, &ldA, &ldZ, &abstol, &oA, &oW, &oZ)) return NULL;
+	&n, &ldA, &ldZ, &abstol, &oA, &oW, &oZ)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(W) || MAT_ID(W) != DOUBLE) err_dbl_mtrx("W");
@@ -5336,14 +5715,28 @@ static PyObject* heevr(PyObject *self, PyObject *args, PyObject *kwrds)
     double vl=0.0, vu=0.0, abstol=0.0, *rwork, rwl;
     void *work;
     number wl;
-    char uplo='L', jobz='N', range='A';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L', jobz_ = 'N', range_ = 'A';
+#endif
+    char uplo = 'L', jobz = 'N', range = 'A';
     char *kwlist[] = {"A", "W", "jobz", "range", "uplo", "vl", "vu",
 	"il", "iu", "Z", "n", "ldA", "ldZ", "abstol", "offsetA",
         "offsetW", "offsetZ", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCddiiOiiidiii",
+        kwlist, &A, &W, &jobz_, &range_, &uplo_, &vl, &vu, &il, &iu, &Z,
+	&n, &ldA, &ldZ, &abstol, &oA, &oW, &oZ)) 
+        return NULL;
+    jobz = (char) jobz_;
+    range = (char) range_;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cccddiiOiiidiii",
         kwlist, &A, &W, &jobz, &range, &uplo, &vl, &vu, &il, &iu, &Z,
-	&n, &ldA, &ldZ, &abstol, &oA, &oW, &oZ)) return NULL;
+	&n, &ldA, &ldZ, &abstol, &oA, &oW, &oZ)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(W) || MAT_ID(W) != DOUBLE) err_dbl_mtrx("W");
@@ -5504,13 +5897,26 @@ static PyObject* sygv(PyObject *self, PyObject *args, PyObject *kwrds)
     int n=-1, itype=1, ldA=0, ldB=0, oA=0, oB=0, oW=0, info, lwork;
     double *work;
     number wl;
-    char uplo='L', jobz='N';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L', jobz_ = 'N';
+#endif
+    char uplo = 'L', jobz = 'N';
     char *kwlist[] = {"A", "B", "W", "itype", "jobz", "uplo", "n",
         "ldA", "ldB", "offsetA", "offsetB", "offsetW", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|iCCiiiiii",
+        kwlist, &A, &B, &W, &itype, &jobz_, &uplo_, &n, &ldA, &ldB, &oA,
+        &oB, &oW)) 
+        return NULL;
+    jobz = (char) jobz_;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|icciiiiii",
         kwlist, &A, &B, &W, &itype, &jobz, &uplo, &n, &ldA, &ldB, &oA,
-        &oB, &oW)) return NULL;
+        &oB, &oW)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B) || MAT_ID(B) != MAT_ID(A)) err_conflicting_ids;
@@ -5614,15 +6020,30 @@ static PyObject* hegv(PyObject *self, PyObject *args, PyObject *kwrds)
     double *rwork=NULL;
     void *work=NULL;
     number wl;
-    char uplo='L', jobz='N';
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'L', jobz_ = 'N';
+#endif
+    char uplo = 'L', jobz = 'N';
     char *kwlist[] = {"A", "B", "W", "itype", "jobz", "uplo", "n",
         "ldA", "offsetA", "offsetB", "offsetW", NULL};
+#if 0
     int ispec=1, n2=-1, n3=-1, n4=-1;
     char *name = "zhetrd", *uplol = "L", *uplou = "U";
+#endif
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|iCCiiiii",
+        kwlist, &A, &B, &W, &itype, &jobz_, &uplo_, &n, &ldA, &ldB, &oA,
+        &oB, &oW)) 
+        return NULL;
+    uplo = (char) uplo_;
+    jobz = (char) jobz_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|icciiiii",
         kwlist, &A, &B, &W, &itype, &jobz, &uplo, &n, &ldA, &ldB, &oA,
-        &oB, &oW)) return NULL;
+        &oB, &oW)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B) || MAT_ID(B) != MAT_ID(A)) err_conflicting_ids;
@@ -5674,8 +6095,7 @@ static PyObject* hegv(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
-#if 0
-            /* zhegv does not handle lwork=-1 correctly */
+#if 1
             lwork=-1;
             Py_BEGIN_ALLOW_THREADS
             zhegv_(&itype, &jobz, &uplo, &n, NULL, &n, NULL, &n, NULL,
@@ -5683,9 +6103,12 @@ static PyObject* hegv(PyObject *self, PyObject *args, PyObject *kwrds)
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
 #endif
-            /* replaces call to zhegv with lwork=-1 */
+#if 0
+            /* zhegv used to handle lwork=-1 incorrectly.
+               The following replaces the call to zhegv with lwork=-1 */
             lwork = n * (1 + ilaenv_(&ispec, &name, (uplo == 'L') ?
                 &uplol : &uplou, &n, &n2, &n3, &n4));
+#endif
 
             work = (void *) calloc(lwork, sizeof(complex));
             rwork = (double *) calloc(3*n-2, sizeof(double));
@@ -5788,14 +6211,27 @@ static PyObject* gesvd(PyObject *self, PyObject *args, PyObject *kwrds)
     double *rwork=NULL;
     void *work=NULL;
     number wl;
-    char jobu='N', jobvt='N';
+#if PY_MAJOR_VERSION >= 3
+    int jobu_ = 'N', jobvt_ = 'N';
+#endif
+    char jobu = 'N', jobvt = 'N';
     char *kwlist[] = {"A", "S", "jobu", "jobvt", "U", "Vt", "m", "n",
 	"ldA", "ldU", "ldVt", "offsetA", "offsetS", "offsetU",
         "offsetVt", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCOOiiiiiiiii",
+        kwlist, &A, &S, &jobu_, &jobvt_, &U, &Vt, &m, &n, &ldA, &ldU,
+        &ldVt, &oA, &oS, &oU, &oVt)) 
+        return NULL;
+    jobu = (char) jobu_;
+    jobvt = (char) jobvt_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccOOiiiiiiiii",
         kwlist, &A, &S, &jobu, &jobvt, &U, &Vt, &m, &n, &ldA, &ldU,
-        &ldVt, &oA, &oS, &oU, &oVt)) return NULL;
+        &ldVt, &oA, &oS, &oU, &oVt)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(S) || MAT_ID(S) != DOUBLE) err_dbl_mtrx("S");
@@ -5976,14 +6412,26 @@ static PyObject* gesdd(PyObject *self, PyObject *args, PyObject *kwrds)
     double *rwork=NULL;
     void *work=NULL;
     number wl;
-    char jobz='N';
+#if PY_MAJOR_VERSION >= 3
+    int jobz_ = 'N';
+#endif
+    char jobz = 'N';
     char *kwlist[] = {"A", "S", "jobz", "U", "Vt", "m", "n", "ldA",
 	"ldU", "ldVt", "offsetA", "offsetS", "offsetU", "offsetVt",
         NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|COOiiiiiiiii",
+        kwlist, &A, &S, &jobz_, &U, &Vt, &m, &n, &ldA, &ldU, &ldVt, &oA,
+       	&oS, &oU, &oVt)) 
+        return NULL;
+    jobz = (char) jobz_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cOOiiiiiiiii",
         kwlist, &A, &S, &jobz, &U, &Vt, &m, &n, &ldA, &ldU, &ldVt, &oA,
-       	&oS, &oU, &oVt)) return NULL;
+       	&oS, &oU, &oVt)) 
+        return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(S) || MAT_ID(S) != DOUBLE) err_dbl_mtrx("S");
@@ -6140,8 +6588,11 @@ extern int fselect_c(complex *w)
         Py_XDECREF(wpy);
         return -1;
     }
-    if PyInt_Check(result)
-        a = (int) PyInt_AsLong(result);
+#if PY_MAJOR_VERSION >= 3
+    if PyLong_Check(result) a = (int) PyLong_AsLong(result);
+#else
+    if PyInt_Check(result) a = (int) PyInt_AsLong(result);
+#endif
     else
         PyErr_SetString(PyExc_TypeError, "select() must return an integer "
             "argument");
@@ -6159,8 +6610,11 @@ extern int fselect_r(double *wr, double *wi)
         Py_XDECREF(wpy);
         return -1;
     }
-    if PyInt_Check(result)
-        a = (int) PyInt_AsLong(result);
+#if PY_MAJOR_VERSION >= 3
+    if PyLong_Check(result) a = (int) PyLong_AsLong(result);
+#else
+    if PyInt_Check(result) a = (int) PyInt_AsLong(result);
+#endif
     else
         PyErr_SetString(PyExc_TypeError, "select() must return an integer "
            "argument");
@@ -6351,8 +6805,11 @@ extern int fselect_gc(complex *w, double *v)
        Py_XDECREF(wpy); Py_XDECREF(vpy);
        return -1;
    }
-   if PyInt_Check(result)
-       a = (int) PyInt_AsLong(result);
+#if PY_MAJOR_VERSION >= 3
+   if PyLong_Check(result) a = (int) PyLong_AsLong(result);
+#else
+   if PyInt_Check(result) a = (int) PyInt_AsLong(result);
+#endif
    else
        PyErr_SetString(PyExc_TypeError, "select() must return an integer "
            "argument");
@@ -6372,8 +6829,11 @@ extern int fselect_gr(double *wr, double *wi, double *v)
        Py_XDECREF(wpy); Py_XDECREF(vpy);
        return -1;
    }
-   if PyInt_Check(result)
-       a = (int) PyInt_AsLong(result);
+#if PY_MAJOR_VERSION >= 3
+   if PyLong_Check(result) a = (int) PyLong_AsLong(result);
+#else
+   if PyInt_Check(result) a = (int) PyInt_AsLong(result);
+#endif
    else
        PyErr_SetString(PyExc_TypeError, "select() must return an integer "
            "argument");
@@ -6569,13 +7029,23 @@ static PyObject* lacpy(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *B;
     int m = -1, n = -1, ldA = 0, ldB = 0, oA = 0, oB = 0;
+#if PY_MAJOR_VERSION >= 3
+    int uplo_ = 'N';
+#endif
     char uplo = 'N';
     char *kwlist[] = {"A", "B", "uplo", "m", "n", "ldA", "ldB", "offsetA",
         "offsetB", NULL};
 
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|Ciiiiii", kwlist,
+        &A, &B, &uplo_, &m, &n, &ldA, &ldB, &oA, &oB))
+        return NULL;
+    uplo = (char) uplo_;
+#else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ciiiiii", kwlist,
         &A, &B, &uplo, &m, &n, &ldA, &ldB, &oA, &oB))
         return NULL;
+#endif
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -6674,11 +7144,33 @@ static PyMethodDef lapack_functions[] = {
 {NULL}  /* Sentinel */
 };
 
+
+#if PY_MAJOR_VERSION >= 3
+
+static PyModuleDef lapack_module = {
+    PyModuleDef_HEAD_INIT,
+    "lapack",
+    lapack__doc__,
+    -1,
+    lapack_functions,
+    NULL, NULL, NULL, NULL
+};
+
+PyMODINIT_FUNC PyInit_lapack(void)
+{
+    PyObject *m;
+    if (!(m = PyModule_Create(&lapack_module))) return NULL;
+    if (import_cvxopt() < 0) return NULL;
+    return m;
+}
+
+#else
+
 PyMODINIT_FUNC initlapack(void)
 {
-  PyObject *m;
-
-  m = Py_InitModule3("cvxopt.lapack", lapack_functions, lapack__doc__);
-
-  if (import_cvxopt() < 0) return;
+    PyObject *m;
+    m = Py_InitModule3("cvxopt.lapack", lapack_functions, lapack__doc__);
+    if (import_cvxopt() < 0) return;
 }
+
+#endif

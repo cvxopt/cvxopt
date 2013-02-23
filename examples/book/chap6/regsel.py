@@ -3,12 +3,14 @@
 #
 # The problem data are different from the book.
 
-import pylab
 from cvxopt import blas, lapack, solvers, matrix, mul
 from pickle import load
 solvers.options['show_progress'] = 0
+try: import pylab
+except ImportError: pylab_installed = False
+else: pylab_installed = True
 
-data = load(open('regsel.bin','r'))
+data = load(open('regsel.bin','rb'))
 A, b = data['A'], data['b']
 m, n = A.size 
 
@@ -47,7 +49,7 @@ for alpha in alphas:
     h[-1] = alpha
     x = solvers.qp(P, q, G, h)['x'][:n]
     xmax = max(abs(x))
-    I = [ k for k in xrange(n) if abs(x[k]) > tol*xmax ]
+    I = [ k for k in range(n) if abs(x[k]) > tol*xmax ]
     if len(I) <= m:
         xs = +b 
         lapack.gels(A[:,I], xs)
@@ -58,20 +60,21 @@ for alpha in alphas:
 
 # Eliminate duplicate cardinalities and make staircase plot.
 res2, card2 = [], []
-for c in xrange(m+1):
-    r = [ res[k] for k in xrange(len(res)) if card[k] == c ]
+for c in range(m+1):
+    r = [ res[k] for k in range(len(res)) if card[k] == c ]
     if r:  
         res2 += [ min(r), min(r) ]
         card2 += [ c, c+1 ]
 
-#pylab.figure(1, facecolor='w')
-#pylab.plot( res2[::2], card2[::2], 'o')
-#pylab.plot( res2, card2, '-') 
-#pylab.xlabel('||A*x-b||_2')
-#pylab.ylabel('card(x)')
-#pylab.title('Sparse regressor selection (fig 6.7)')
-#print "Close figure to start exhaustive search."
-#pylab.show()
+# if pylab_installed:
+#     pylab.figure(1, facecolor='w')
+#     pylab.plot( res2[::2], card2[::2], 'o')
+#     pylab.plot( res2, card2, '-') 
+#     pylab.xlabel('||A*x-b||_2')
+#     pylab.ylabel('card(x)')
+#     pylab.title('Sparse regressor selection (fig 6.7)')
+#     print("Close figure to start exhaustive search.")
+#     pylab.show()
 
 
 # Exhaustive search.
@@ -91,11 +94,12 @@ def patterns(k,n):
 bestx = matrix(0.0, (n, m))   # best solution for each cardinality
 bestres = matrix(blas.nrm2(b), (1, m+1))   # best residual
 x = matrix(0.0, (n,1))
-for k in xrange(1,m):
+for k in range(1,m):
     for s in patterns(k,n):
-        I = [ i for i in xrange(n) if s[i] ]
-        s = [k] + s 
-        print ("%d nonzeros: " + n*"%d") %tuple(s)
+        I = [ i for i in range(n) if s[i] ]
+        st = ""
+        for i in s: st += str(i)
+        print("%d nonzeros: " %k + st)
         x = +b
         lapack.gels(A[:,I], x)
         res = blas.nrm2(b - A[:,I] * x[:k])
@@ -104,21 +108,22 @@ for k in xrange(1,m):
             bestx[:,k][I] = x[:k] 
 bestres[m] = 0.0
 
-pylab.figure(1, facecolor='w')
+if pylab_installed:
+    pylab.figure(1, facecolor='w')
 
-# heuristic result
-pylab.plot( res2[::2], card2[::2], 'o' )
-pylab.plot( res2, card2, '-') 
-
-# exhaustive result
-res2, card2 = [ bestres[0] ], [ 0 ] 
-for k in xrange(1,m+1):
-    res2 += [bestres[k-1], bestres[k]]
-    card2 += [ k, k]
-pylab.plot( bestres.T, range(m+1), 'go')
-pylab.plot( res2, card2, 'g-')
-
-pylab.xlabel('||A*x-b||_2')
-pylab.ylabel('card(x)')
-pylab.title('Sparse regressor selection (fig 6.7)')
-pylab.show()
+    # heuristic result
+    pylab.plot( res2[::2], card2[::2], 'o' )
+    pylab.plot( res2, card2, '-') 
+    
+    # exhaustive result
+    res2, card2 = [ bestres[0] ], [ 0 ] 
+    for k in range(1,m+1):
+        res2 += [bestres[k-1], bestres[k]]
+        card2 += [ k, k]
+    pylab.plot( bestres.T, range(m+1), 'go')
+    pylab.plot( res2, card2, 'g-')
+    
+    pylab.xlabel('||A*x-b||_2')
+    pylab.ylabel('card(x)')
+    pylab.title('Sparse regressor selection (fig 6.7)')
+    pylab.show()

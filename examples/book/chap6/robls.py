@@ -4,9 +4,11 @@
 from math import pi
 from cvxopt import blas, lapack, solvers
 from cvxopt import matrix, spmatrix, mul, cos, sin, sqrt, uniform
-import pylab, numpy
 from pickle import load
-solvers.options['show_progress'] = 0
+#solvers.options['show_progress'] = 0
+try: import pylab, numpy
+except ImportError: pylab_installed = False
+else: pylab_installed = True
 
 def wcls(A, Ap, b):
     """
@@ -32,10 +34,10 @@ def wcls(A, Ap, b):
     M = m + p + 1
     c = matrix( n*[0.0] + 2*[1.0])
     Fs = [spmatrix([],[],[], (M**2, novars))]
-    for k in xrange(n):
+    for k in range(n):
         # coefficient of x[k]
         S = spmatrix([], [], [], (M, M))
-        for j in xrange(p):
+        for j in range(p):
             S[m+j, :m] = -Ap[j][:,k].T
             S[-1, :m ] = -A[:,k].T
         Fs[0][:,k] = S[:] 
@@ -53,7 +55,7 @@ def wcls(A, Ap, b):
 
 # Figure 6.15
 
-data = load(open('robls.bin','r'))['6.15']
+data = load(open('robls.bin','rb'))['6.15']
 A, b, B = data['A'], data['b'], data['B']
 m, n = A.size
 
@@ -81,26 +83,28 @@ lapack.posv(S, xstoch)
 
 xwc = wcls(A, [B], b)
 
-pylab.figure(1, facecolor='w')
 nopts = 500
-us = -2.0 + (2.0 - (-2.0))/(nopts-1) * matrix(range(nopts),tc='d')
+us = -2.0 + (2.0 - (-2.0))/(nopts-1) * matrix(list(range(nopts)),tc='d')
 rnom = [ blas.nrm2( (A+u*B)*xnom - b) for u in us ]
 rstoch = [ blas.nrm2( (A+u*B)*xstoch - b) for u in us ]
 rwc = [ blas.nrm2( (A+u*B)*xwc - b) for u in us ]
-pylab.plot(us, rnom, us, rstoch, us, rwc)
-pylab.plot([-1, -1], [0, 12], '--k', [1, 1], [0, 12], '--k')
-pylab.axis([-2.0, 2.0, 0.0, 12.0])
-pylab.xlabel('u')
-pylab.ylabel('r(u)')
-pylab.text(us[9], rnom[9], 'nominal')
-pylab.text(us[9], rstoch[9], 'stochastic')
-pylab.text(us[9], rwc[9], 'worst case')
-pylab.title('Robust least-squares (fig.6.15)')
+
+if pylab_installed:
+    pylab.figure(1, facecolor='w')
+    pylab.plot(us, rnom, us, rstoch, us, rwc)
+    pylab.plot([-1, -1], [0, 12], '--k', [1, 1], [0, 12], '--k')
+    pylab.axis([-2.0, 2.0, 0.0, 12.0])
+    pylab.xlabel('u')
+    pylab.ylabel('r(u)')
+    pylab.text(us[9], rnom[9], 'nominal')
+    pylab.text(us[9], rstoch[9], 'stochastic')
+    pylab.text(us[9], rwc[9], 'worst case')
+    pylab.title('Robust least-squares (fig.6.15)')
 
 
 # Figure 6.16
 
-data = load(open('robls.bin','r'))['6.16']
+data = load(open('robls.bin','rb'))['6.16']
 A, Ap, b = data['A0'], [data['A1'], data['A2']], data['b']
 (m, n), p = A.size, len(Ap)
 
@@ -142,18 +146,19 @@ P[:,0], P[:,1] = Ap[0]*xwc, Ap[1]*xwc
 r = P*u + q[:,notrials*[0]]
 reswc = sqrt( matrix(1.0, (1,m)) * mul(r,r) )
 
-pylab.figure(2, facecolor='w')
-pylab.hist(list(resls), numpy.array([0.1*k for k in xrange(50)]), fc='w', 
-    normed=True)
-pylab.text(4.4, 0.4, 'least-squares')
-pylab.hist(list(restik), numpy.array([0.1*k for k in xrange(50)]), fc='#D0D0D0', 
-    normed=True)
-pylab.text(2.9, 0.75, 'Tikhonov')
-pylab.hist(list(reswc), numpy.array([0.1*k for k in xrange(50)]), fc='#B0B0B0', 
-    normed=True)
-pylab.text(2.5, 2.0, 'robust least-squares')
-pylab.xlabel('residual')
-pylab.ylabel('frequency/binwidth')
-pylab.axis([0, 5, 0, 2.5])
-pylab.title('LS, Tikhonov and robust LS solutions (fig. 6.16)')
-pylab.show()
+if pylab_installed:
+   pylab.figure(2, facecolor='w')
+   pylab.hist(list(resls), numpy.array([0.1*k for k in range(50)]), fc='w', 
+       normed=True)
+   pylab.text(4.4, 0.4, 'least-squares')
+   pylab.hist(list(restik), numpy.array([0.1*k for k in range(50)]), fc='#D0D0D0', 
+       normed=True)
+   pylab.text(2.9, 0.75, 'Tikhonov')
+   pylab.hist(list(reswc), numpy.array([0.1*k for k in range(50)]), fc='#B0B0B0', 
+       normed=True)
+   pylab.text(2.5, 2.0, 'robust least-squares')
+   pylab.xlabel('residual')
+   pylab.ylabel('frequency/binwidth')
+   pylab.axis([0, 5, 0, 2.5])
+   pylab.title('LS, Tikhonov and robust LS solutions (fig. 6.16)')
+   pylab.show()

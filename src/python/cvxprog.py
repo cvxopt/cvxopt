@@ -6,10 +6,10 @@ for quadratic and geometric programming.  Also includes an interface
 to the quadratic programming solver from MOSEK.
 """
 
-# Copyright 2010 L. Vandenberghe.
+# Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.3.
+# This file is part of CVXOPT version 1.1.4.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -625,7 +625,7 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
 
 
     relaxed_iters = 0
-    for iters in xrange(MAXITERS + 1):  
+    for iters in range(MAXITERS + 1):  
 
         if refinement or DEBUG:  
             # We need H to compute residuals of KKT equations.
@@ -799,10 +799,10 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
                 blas.copy(W0['dnli'], W['dnli'])
                 blas.copy(W0['d'], W['d'])
                 blas.copy(W0['di'], W['di'])
-                for k in xrange(len(dims['q'])):
+                for k in range(len(dims['q'])):
                     blas.copy(W0['v'][k], W['v'][k])
                     W['beta'][k] = W0['beta'][k]
-                for k in xrange(len(dims['s'])):
+                for k in range(len(dims['s'])):
                     blas.copy(W0['r'][k], W['r'][k])
                     blas.copy(W0['rti'][k], W['rti'][k])
                 xcopy(x0, x); 
@@ -948,7 +948,7 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
                 blas.copy(z, wz)        
                 blas.copy(s, ws)        
             f4_no_ir(x, y, z, s)        
-            for i in xrange(refinement):
+            for i in range(refinement):
                 xcopy(wx, wx2)        
                 ycopy(wy, wy2)        
                 blas.copy(wz, wz2)        
@@ -1198,10 +1198,10 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
                             blas.copy(W['dnli'], W0['dnli'])
                             blas.copy(W['d'], W0['d'])
                             blas.copy(W['di'], W0['di'])
-                            for k in xrange(len(dims['q'])):
+                            for k in range(len(dims['q'])):
                                 blas.copy(W['v'][k], W0['v'][k])
                                 W0['beta'][k] = W['beta'][k]
-                            for k in xrange(len(dims['s'])):
+                            for k in range(len(dims['s'])):
                                 blas.copy(W['r'][k], W0['r'][k])
                                 blas.copy(W['rti'][k], W0['rti'][k])
                             xcopy(x, x0); xcopy(dx, dx0)
@@ -1247,10 +1247,10 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
                             blas.copy(W0['dnli'], W['dnli'])
                             blas.copy(W0['d'], W['d'])
                             blas.copy(W0['di'], W['di'])
-                            for k in xrange(len(dims['q'])):
+                            for k in range(len(dims['q'])):
                                 blas.copy(W0['v'][k], W['v'][k])
                                 W['beta'][k] = W0['beta'][k]
-                            for k in xrange(len(dims['s'])):
+                            for k in range(len(dims['s'])):
                                 blas.copy(W0['r'][k], W['r'][k])
                                 blas.copy(W0['rti'][k], W['rti'][k])
                             xcopy(x0, x); xcopy(dx0, dx);
@@ -1322,9 +1322,9 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
         # dsk := Ls = dsk * sqrt(sigs).
         # dzk := Lz = dzk * sqrt(sigz).
         ind2, ind3 = mnl + dims['l'] + sum(dims['q']), 0
-        for k in xrange(len(dims['s'])):
+        for k in range(len(dims['s'])):
             m = dims['s'][k]
-            for i in xrange(m):
+            for i in range(m):
                 blas.scal(math.sqrt(sigs[ind3+i]), ds, offset = ind2 + m*i,
                     n = m)
                 blas.scal(math.sqrt(sigz[ind3+i]), dz, offset = ind2 + m*i,
@@ -2099,9 +2099,9 @@ def gp(K, F, g, G=None, h=None, A=None, b=None):
     u = matrix(0.0, (max(K),1))
     Fsc = matrix(0.0, (max(K),n))
 
-    cs1 = [ sum(K[:i]) for i in xrange(mnl+1) ] 
-    cs2 = [ cs1[i] + K[i] for i in xrange(mnl+1) ]
-    ind = zip(range(mnl+1), cs1, cs2)
+    cs1 = [ sum(K[:i]) for i in range(mnl+1) ] 
+    cs2 = [ cs1[i] + K[i] for i in range(mnl+1) ]
+    ind = list(zip(range(mnl+1), cs1, cs2))
 
     def Fgp(x = None, z = None):
 
@@ -2143,7 +2143,7 @@ def gp(K, F, g, G=None, h=None, A=None, b=None):
                 #      = diag(yi)^1/2 * (Fi - 1*gradfi')
 
                 Fsc[:K[i], :] = F[start:stop, :] 
-                for k in xrange(start,stop):
+                for k in range(start,stop):
                    blas.axpy(Df, Fsc, n=n, alpha=-1.0, incx=mnl+1,
                        incy=Fsc.size[0], offsetx=i, offsety=k-start)
                    blas.scal(math.sqrt(y[k]), Fsc, inc=Fsc.size[0],

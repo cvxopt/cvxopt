@@ -2,11 +2,10 @@
 # Robust regression.
 
 from cvxopt import solvers, lapack, matrix, spmatrix
-import pylab
 from pickle import load
-solvers.options['show_progress'] = 0
+#solvers.options['show_progress'] = 0
 
-data = load(open('huber.bin','r'))
+data = load(open('huber.bin','rb'))
 u, v = data['u'], data['v']
 m, n = len(u), 2
 
@@ -68,13 +67,16 @@ G[4*m:,n+m:] = spmatrix(-1.0, range(m), range(m))
 
 xh = solvers.qp(P, q, G, h)['x'][:n]
 
-pylab.figure(1,facecolor='w')
-pylab.plot(u, v,'o', 
-    [-11,11], [xh[0]-11*xh[1], xh[0]+11*xh[1]], '-g', 
-    [-11,11], [xls[0]-11*xls[1], xls[0]+11*xls[1]], '--r',
-    markerfacecolor='w', markeredgecolor='b') 
-pylab.axis([-11, 11, -20, 25])
-pylab.xlabel('t')
-pylab.ylabel('f(t)')
-pylab.title('Robust regression (fig. 6.5)')
-pylab.show()
+try: import pylab
+except ImportError: pass
+else:
+    pylab.figure(1,facecolor='w')
+    pylab.plot(u, v,'o', 
+        [-11,11], [xh[0]-11*xh[1], xh[0]+11*xh[1]], '-g', 
+        [-11,11], [xls[0]-11*xls[1], xls[0]+11*xls[1]], '--r',
+        markerfacecolor='w', markeredgecolor='b') 
+    pylab.axis([-11, 11, -20, 25])
+    pylab.xlabel('t')
+    pylab.ylabel('f(t)')
+    pylab.title('Robust regression (fig. 6.5)')
+    pylab.show()

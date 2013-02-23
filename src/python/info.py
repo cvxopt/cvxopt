@@ -1,9 +1,9 @@
-version = '1.1.3'
+version = '1.1.4'
 
 def license(): print(
 """
-CVXOPT version 1.1.3. 
-Copyright (c) 2010 L. Vandenberghe.
+CVXOPT version 1.1.4. 
+Copyright (c) 2010-2011 L. Vandenberghe.
 Copyright (c) 2004-2009 J. Dahl and L. Vandenberghe.
 
 This program is free software; you can redistribute it and/or modify

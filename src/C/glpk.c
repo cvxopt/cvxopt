@@ -1,8 +1,8 @@
 /*
- * Copyright 2010 L. Vandenberghe.
+ * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.3.
+ * This file is part of CVXOPT version 1.1.4.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 #include "glpk.h"
 
 PyDoc_STRVAR(glpk__doc__,
-    "Interface to the simplex algorithm in GLPK.\n\n"
+    "Interface to the simplex and mixed integer LP algorithms in GLPK.\n\n"
     "The GLPK control parameters have the default values listed in \n"
     "the GLPK documentation, except for 'LPX_K_PRESOL', which is set\n"
     "to 1 and cannot be modified.  The other parameters can be\n"
@@ -42,38 +42,42 @@ typedef struct {
 }   param_tuple;
 
 static const param_tuple GLPK_PARAM_LIST[] = {
-    {"LPX_K_MSGLEV", 300, 'i'},
-    {"LPX_K_SCALE",  301, 'i'},
-    {"LPX_K_DUAL",   302, 'i'},
-    {"LPX_K_PRICE",  303, 'i'},
-    {"LPX_K_RELAX",  304, 'f'},
-    {"LPX_K_TOLBND", 305, 'f'},
-    {"LPX_K_TOLDJ",  306, 'f'},
-    {"LPX_K_TOLPIV", 307, 'f'},
-    {"LPX_K_ROUND",  308, 'i'},
-    {"LPX_K_OBJLL",  309, 'f'},
-    {"LPX_K_OBJUL",  310, 'f'},
-    {"LPX_K_ITLIM",  311, 'i'},
-    {"LPX_K_ITCNT",  312, 'i'},
-    {"LPX_K_TMLIM",  313, 'f'},
-    {"LPX_K_OUTFRQ", 314, 'i'},
-    {"LPX_K_OUTDLY", 315, 'f'},
-    {"LPX_K_BRANCH", 316, 'i'},
-    {"LPX_K_BTRACK", 317, 'i'},
-    {"LPX_K_TOLINT", 318, 'f'},
-    {"LPX_K_TOLOBJ", 319, 'f'},
-    {"LPX_K_MPSINFO",320, 'i'},
-    {"LPX_K_MPSOBJ", 321, 'i'},
-    {"LPX_K_MPSORIG",322, 'i'},
-    {"LPX_K_MPSWIDE",323, 'i'},
-    {"LPX_K_MPSFREE",324, 'i'},
-    {"LPX_K_MPSSKIP",325, 'i'},
-    {"LPX_K_LPTORIG",326, 'i'},
-    {"LPX_K_PRESOL", 327, 'i'}
+    {"LPX_K_MSGLEV",    LPX_K_MSGLEV,   'i'}, 
+    {"LPX_K_SCALE",     LPX_K_SCALE,    'i'},
+    {"LPX_K_DUAL",      LPX_K_DUAL,     'i'},
+    {"LPX_K_PRICE",     LPX_K_PRICE,    'i'},
+    {"LPX_K_RELAX",     LPX_K_RELAX,    'f'},
+    {"LPX_K_TOLBND",    LPX_K_TOLBND,   'f'},
+    {"LPX_K_TOLDJ",     LPX_K_TOLDJ,    'f'},
+    {"LPX_K_TOLPIV",    LPX_K_TOLPIV,   'f'},
+    {"LPX_K_ROUND",     LPX_K_ROUND,    'i'},
+    {"LPX_K_OBJLL",     LPX_K_OBJLL,    'f'},
+    {"LPX_K_OBJUL",     LPX_K_OBJUL,    'f'},
+    {"LPX_K_ITLIM",     LPX_K_ITLIM,    'i'},
+    {"LPX_K_ITCNT",     LPX_K_ITCNT,    'i'}, 
+    {"LPX_K_TMLIM",     LPX_K_TMLIM,    'f'},
+    {"LPX_K_OUTFRQ",    LPX_K_OUTFRQ,   'i'},
+    {"LPX_K_OUTDLY",    LPX_K_OUTDLY,   'f'},
+    {"LPX_K_BRANCH",    LPX_K_BRANCH,   'i'},
+    {"LPX_K_BTRACK",    LPX_K_BTRACK,   'i'},
+    {"LPX_K_TOLINT",    LPX_K_TOLINT,   'f'},
+    {"LPX_K_TOLOBJ",    LPX_K_TOLOBJ,   'f'},
+    {"LPX_K_MPSINFO",   LPX_K_MPSINFO,  'i'},
+    {"LPX_K_MPSOBJ",    LPX_K_MPSOBJ,   'i'},
+    {"LPX_K_MPSORIG",   LPX_K_MPSORIG,  'i'},
+    {"LPX_K_MPSWIDE",   LPX_K_MPSWIDE,  'i'},
+    {"LPX_K_MPSFREE",   LPX_K_MPSFREE,  'i'},
+    {"LPX_K_MPSSKIP",   LPX_K_MPSSKIP,  'i'},
+    {"LPX_K_LPTORIG",   LPX_K_LPTORIG,  'i'},
+    {"LPX_K_PRESOL",    LPX_K_PRESOL,   'i'},
 }; /* 28 paramaters */
 
 
+#if PY_MAJOR_VERSION >= 3
+static int get_param_idx(const char *str, int *idx, char *type)
+#else
 static int get_param_idx(char *str, int *idx, char *type)
+#endif
 {
     int i;
 
@@ -126,7 +130,12 @@ static PyObject *simplex(PyObject *self, PyObject *args,
     int m, n, p, i, j, k, nnz, nnzmax, *rn=NULL, *cn=NULL, param_id;
     int_t pos=0;
     double *a=NULL, val;
-    char param_type, err_str[100], *keystr;
+    char param_type, err_str[100]; 
+#if PY_MAJOR_VERSION >= 3
+    const char *keystr;
+#else
+    char *keystr;
+#endif
     char *kwlist[] = {"c", "G", "h", "A", "b", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|OO", kwlist, &c,
@@ -249,10 +258,21 @@ static PyObject *simplex(PyObject *self, PyObject *args,
     }
 
     while (PyDict_Next(param, &pos, &key, &value))
+#if PY_MAJOR_VERSION >= 3
+        if ((PyUnicode_Check(key)) && 
+            get_param_idx(_PyUnicode_AsString(key), &param_id, 
+            &param_type)){
+            keystr = _PyUnicode_AsString(key);
+#else
         if ((keystr = PyString_AsString(key)) && get_param_idx(keystr,
             &param_id, &param_type)){
+#endif
 	    if (param_type == 'i'){
+#if PY_MAJOR_VERSION >= 3
+	        if (!PyLong_Check(value)){
+#else
 	        if (!PyInt_Check(value)){
+#endif
                     sprintf(err_str, "invalid value for integer "
                         "GLPK parameter: %-.20s", keystr);
                     PyErr_SetString(PyExc_ValueError, err_str);
@@ -261,15 +281,27 @@ static PyObject *simplex(PyObject *self, PyObject *args,
                     return NULL;
 	        }
                 if (!strcmp("LPX_K_PRESOL", keystr) &&
+#if PY_MAJOR_VERSION >= 3
+                    PyLong_AS_LONG(value) != 1){
+#else
                     PyInt_AS_LONG(value) != 1){
+#endif
                     PyErr_Warn(PyExc_UserWarning, "ignoring value of "
                         "GLPK parameter 'LPX_K_PRESOL'");
                 }
                 else lpx_set_int_parm(lp, param_id,
+#if PY_MAJOR_VERSION >= 3
+                    PyLong_AS_LONG(value));
+#else
                     PyInt_AS_LONG(value));
+#endif
 	    }
 	    else {
+#if PY_MAJOR_VERSION >= 3
+	        if (!PyLong_Check(value) && !PyFloat_Check(value)){
+#else
 	        if (!PyInt_Check(value) && !PyFloat_Check(value)){
+#endif
                     sprintf(err_str, "invalid value for floating point "
                         "GLPK parameter: %-.20s", keystr);
                     PyErr_SetString(PyExc_ValueError, err_str);
@@ -301,7 +333,11 @@ static PyObject *simplex(PyObject *self, PyObject *args,
             }
 
             PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                PyUnicode_FromString("optimal"));
+#else
                 PyString_FromString("optimal"));
+#endif
 
             for (i=0; i<n; i++)
                 MAT_BUFD(x)[i] = lpx_get_col_prim(lp, i+1);
@@ -323,19 +359,31 @@ static PyObject *simplex(PyObject *self, PyObject *args,
         case LPX_E_NOPFS:
 
             PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                PyUnicode_FromString("primal infeasible"));
+#else
                 PyString_FromString("primal infeasible"));
+#endif
             break;
 
         case LPX_E_NODFS:
 
             PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                PyUnicode_FromString("dual infeasible"));
+#else
                 PyString_FromString("dual infeasible"));
+#endif
             break;
 
         default:
 
             PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                PyUnicode_FromString("unknown"));
+#else
                 PyString_FromString("unknown"));
+#endif
     }
 
     lpx_delete_prob(lp);
@@ -383,7 +431,12 @@ static PyObject *integer(PyObject *self, PyObject *args,
     int m, n, p, i, j, k, nnz, nnzmax, *rn=NULL, *cn=NULL, param_id;
     int_t pos=0;
     double *a=NULL, val;
-    char param_type, err_str[100], *keystr;
+    char param_type, err_str[100]; 
+#if PY_MAJOR_VERSION >= 3
+    const char *keystr;
+#else
+    char *keystr;
+#endif
     char *kwlist[] = {"c", "G", "h", "A", "b", "I", "B", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|OOOO", kwlist, &c,
@@ -512,10 +565,19 @@ static PyObject *integer(PyObject *self, PyObject *args,
     }
 
     while (PyDict_Next(param, &pos, &key, &value))
+#if PY_MAJOR_VERSION >= 3
+        if ((PyUnicode_Check(key)) && (keystr = PyUnicode_AS_DATA(key)) 
+            && get_param_idx(keystr, &param_id, &param_type)){
+#else
         if ((keystr = PyString_AsString(key)) && get_param_idx(keystr,
             &param_id, &param_type)){
+#endif
 	    if (param_type == 'i'){
+#if PY_MAJOR_VERSION >= 3
+	        if (!PyLong_Check(value)){
+#else
 	        if (!PyInt_Check(value)){
+#endif
                     sprintf(err_str, "invalid value for integer "
                         "GLPK parameter: %-.20s", keystr);
                     PyErr_SetString(PyExc_ValueError, err_str);
@@ -524,15 +586,27 @@ static PyObject *integer(PyObject *self, PyObject *args,
                     return NULL;
 	        }
                 if (!strcmp("LPX_K_PRESOL", keystr) &&
+#if PY_MAJOR_VERSION >= 3
+                    PyLong_AS_LONG(value) != 1){
+#else
                     PyInt_AS_LONG(value) != 1){
+#endif
                     PyErr_Warn(PyExc_UserWarning, "ignoring value of "
                         "GLPK parameter 'LPX_K_PRESOL'");
                 }
-                else lpx_set_int_parm(lp, param_id,
-                    PyInt_AS_LONG(value));
+                else 
+#if PY_MAJOR_VERSION >= 3
+                    lpx_set_int_parm(lp, param_id, PyLong_AS_LONG(value));
+#else
+                    lpx_set_int_parm(lp, param_id, PyInt_AS_LONG(value));
+#endif
 	    }
 	    else {
+#if PY_MAJOR_VERSION >= 3
+	        if (!PyLong_Check(value) && !PyFloat_Check(value)){
+#else
 	        if (!PyInt_Check(value) && !PyFloat_Check(value)){
+#endif
                     sprintf(err_str, "invalid value for floating point "
                         "GLPK parameter: %-.20s", keystr);
                     PyErr_SetString(PyExc_ValueError, err_str);
@@ -553,12 +627,20 @@ static PyObject *integer(PyObject *self, PyObject *args,
       for (i=0; i<PySet_GET_SIZE(IntSet); i++) {
 
 	PyObject *tmp = PySequence_Fast_GET_ITEM(iter, i);
+#if PY_MAJOR_VERSION >= 3
+	if (!PyLong_Check(tmp)) {
+#else
 	if (!PyInt_Check(tmp)) {
+#endif
 	  lpx_delete_prob(lp);
 	  Py_DECREF(iter);
 	  PY_ERR_TYPE("non-integer element in I");
 	}
+#if PY_MAJOR_VERSION >= 3
+	int k = PyLong_AS_LONG(tmp);
+#else
 	int k = PyInt_AS_LONG(tmp);
+#endif
 	if ((k < 0) || (k >= n)) {
 	  lpx_delete_prob(lp);
 	  Py_DECREF(iter);
@@ -576,12 +658,20 @@ static PyObject *integer(PyObject *self, PyObject *args,
       for (i=0; i<PySet_GET_SIZE(BinSet); i++) {
 
 	PyObject *tmp = PySequence_Fast_GET_ITEM(iter, i);
+#if PY_MAJOR_VERSION >= 3
+	if (!PyLong_Check(tmp)) {
+#else
 	if (!PyInt_Check(tmp)) {
+#endif
 	  lpx_delete_prob(lp);
 	  Py_DECREF(iter);
 	  PY_ERR_TYPE("non-binary element in I");
 	}
+#if PY_MAJOR_VERSION >= 3
+	int k = PyLong_AS_LONG(tmp);
+#else
 	int k = PyInt_AS_LONG(tmp);
+#endif
 	if ((k < 0) || (k >= n)) {
 	  lpx_delete_prob(lp);
 	  Py_DECREF(iter);
@@ -607,7 +697,11 @@ static PyObject *integer(PyObject *self, PyObject *args,
                 return PyErr_NoMemory();
             }
             PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                PyUnicode_FromString("optimal"));
+#else
                 PyString_FromString("optimal"));
+#endif
 
             for (i=0; i<n; i++)
                 MAT_BUFD(x)[i] = lpx_mip_col_val(lp, i+1);
@@ -618,36 +712,64 @@ static PyObject *integer(PyObject *self, PyObject *args,
 
         case LPX_E_FAULT:
             PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                PyUnicode_FromString("invalid MIP formulation"));
+#else
                 PyString_FromString("invalid MIP formulation"));
+#endif
 
 	case LPX_E_NOPFS:
             PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                PyUnicode_FromString("primal infeasible"));
+#else
                 PyString_FromString("primal infeasible"));
+#endif
 
 	case LPX_E_NODFS:
 
             PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                PyUnicode_FromString("dual infeasible"));
+#else
                 PyString_FromString("dual infeasible"));
+#endif
 
         case LPX_E_ITLIM:
 
             PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                PyUnicode_FromString("maxiters exceeded"));
+#else
                 PyString_FromString("maxiters exceeded"));
+#endif
 
         case LPX_E_TMLIM:
 
             PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                PyUnicode_FromString("time limit exceeded"));
+#else
                 PyString_FromString("time limit exceeded"));
+#endif
 
 	case LPX_E_SING:
 
             PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                PyUnicode_FromString("singular or ill-conditioned basis"));
+#else
                 PyString_FromString("singular or ill-conditioned basis"));
+#endif
 
         default:
 
             PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                PyUnicode_FromString("unknown"));
+#else
                 PyString_FromString("unknown"));
+#endif
     }
 
     lpx_delete_prob(lp);
@@ -665,13 +787,33 @@ static PyMethodDef glpk_functions[] = {
     {NULL}  /* Sentinel */
 };
 
+#if PY_MAJOR_VERSION >= 3
+
+static PyModuleDef glpk_module_def = {
+    PyModuleDef_HEAD_INIT,
+    "glpk",
+    glpk__doc__,
+    -1,
+    glpk_functions,
+    NULL, NULL, NULL, NULL
+};
+
+PyMODINIT_FUNC PyInit_glpk(void)
+{
+  if (!(glpk_module = PyModule_Create(&glpk_module_def))) return NULL;
+  PyModule_AddObject(glpk_module, "options", PyDict_New());
+  if (import_cvxopt() < 0) return NULL;
+  return glpk_module;
+}
+
+#else
 
 PyMODINIT_FUNC initglpk(void)
 {
-    glpk_module = Py_InitModule3("cvxopt.glpk", glpk_functions,
+    glpk_module = Py_InitModule3("cvxopt.glpk", glpk_functions, 
         glpk__doc__);
-
     PyModule_AddObject(glpk_module, "options", PyDict_New());
-
     if (import_cvxopt() < 0) return;
 }
+
+#endif

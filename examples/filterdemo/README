@@ -1,5 +1,5 @@
-The filterdemo computes a FIR lowpass filter by solving a linear 
-program.  It solves a discretization of the  problem
+The filterdemo computes a FIR lowpass filter by solving a linear program.  
+It solves a discretization of the  problem
 
 minimize     d2
 subject to   -1/d1 <= H(wk) <= d1,   0 <= w <=  wc

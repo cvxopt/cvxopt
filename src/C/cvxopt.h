@@ -1,8 +1,8 @@
 /*
- * Copyright 2010 L. Vandenberghe.
+ * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.3.
+ * This file is part of CVXOPT version 1.1.4.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,18 +34,6 @@
 #ifndef __CVXOPT__
 #define __CVXOPT__
 
-/*
-static void * malloc_aligned(size_t size) {
-  void *p = NULL;
-  if (!posix_memalign(&p, 16, size))
-    return p;
-  else
-    return NULL;
-}
-
-#define malloc(size) malloc_aligned(size)
-*/
-
 #define INT       0
 #define DOUBLE    1
 #define COMPLEX   2
@@ -55,7 +43,14 @@ static void * malloc_aligned(size_t size) {
 typedef struct {
   PyObject_HEAD
   void *buffer;          /* in column-major-mode array of type 'id' */
+#if PY_MAJOR_VERSION >= 3
+  int nrows, ncols;      /* number of rows and columns */
+  int_t shape[2];
+  int_t strides[2];
+  int_t ob_exports;
+#else
   int_t nrows, ncols;    /* number of rows and columns */
+#endif
   int   id;              /* DOUBLE, INT, COMPLEX */
 } matrix;
 
@@ -74,8 +69,8 @@ typedef struct {
 
 #ifdef BASE_MODULE
 
-#define Matrix_Check(v) ((v)->ob_type == &matrix_tp)
-#define SpMatrix_Check(v) ((v)->ob_type == &spmatrix_tp)
+#define Matrix_Check(self) PyObject_TypeCheck(self, &matrix_tp)
+#define SpMatrix_Check(self) PyObject_TypeCheck(self, &spmatrix_tp)
 
 #else
 
@@ -102,10 +97,15 @@ import_cvxopt(void)
 
   if (module != NULL) {
     PyObject *c_api_object = PyObject_GetAttrString(module, "_C_API");
-    if (c_api_object == NULL)
-      return -1;
-    if (PyCObject_Check(c_api_object))
-      cvxopt_API = (void **)PyCObject_AsVoidPtr(c_api_object);
+#if PY_MAJOR_VERSION >= 3
+    if (!c_api_object || !PyCapsule_IsValid(c_api_object, "base_API"))
+        return -1;
+    cvxopt_API = (void **) PyCapsule_GetPointer(c_api_object, "base_API");
+#else
+    if (!c_api_object || !(PyCObject_Check(c_api_object)))
+        return -1;
+    cvxopt_API = (void **) PyCObject_AsVoidPtr(c_api_object);
+#endif
     Py_DECREF(c_api_object);
   }
   return 0;

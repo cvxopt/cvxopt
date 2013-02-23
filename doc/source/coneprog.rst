@@ -329,11 +329,11 @@ As an example we solve the problem
 >>> sol = solvers.conelp(c, G, h, dims)
 >>> sol['status']
 'optimal'
->>> print sol['x']
+>>> print(sol['x'])
 [-1.22e+00]
 [ 9.66e-02]
 [ 3.58e+00]
->>> print sol['z']
+>>> print(sol['z'])
 [ 9.30e-02]
 [ 2.04e-08]
 [ 2.35e-01]
@@ -593,7 +593,7 @@ with
 >>> h = matrix(n*[0.0] + [1.0] + n*[0.0])
 >>> dims = {'l': n, 'q': [n+1], 's': []}
 >>> x = solvers.coneqp(A.T*A, -A.T*b, G, h, dims)['x']
->>> print x
+>>> print(x)
 [ 7.26e-01]
 [ 6.18e-01]
 [ 3.03e-01]
@@ -665,7 +665,7 @@ As a simple example we solve the LP
 >>> G = matrix([[2., 1., -1., 0.], [1., 2., 0., -1.]])
 >>> h = matrix([3., 3., 0., 0.])
 >>> sol = solvers.lp(c, G, h)
->>> print sol['x']
+>>> print(sol['x'])
 [ 1.00e+00]
 [ 1.00e+00]
 
@@ -786,7 +786,7 @@ the trade-off curve and produces two figures using the
 
     # Compute trade-off.
     N = 100
-    mus = [ 10**(5.0*t/N-1.0) for t in xrange(N) ]
+    mus = [ 10**(5.0*t/N-1.0) for t in range(N) ]
     portfolios = [ qp(mu*S, -pbar, G, h, A, b)['x'] for mu in mus ]
     returns = [ dot(pbar,x) for x in portfolios ]
     risks = [ sqrt(dot(x, S*x)) for x in portfolios ]
@@ -873,7 +873,7 @@ cone programs with no linear matrix inequality constraints.
 
     The input argument ``c`` is a real single-column dense matrix.  The 
     arguments ``Gl`` and ``hl`` are the coefficient matrix :math:`G_0` and 
-    the righthand side :math:`h_0` of the componentwise inequalities.
+    the right-hand side :math:`h_0` of the componentwise inequalities.
     ``Gl`` is a real dense or sparse matrix; ``hl`` is a real single-column
     dense matrix.  The default values for ``Gl`` and ``hl`` are matrices 
     with zero rows.
@@ -954,15 +954,15 @@ As an example, we solve  the second-order cone program
 >>> sol = solvers.socp(c, Gq = G, hq = h)
 >>> sol['status']
 optimal
->>> print sol['x']
+>>> print(sol['x'])
 [-5.02e+00]
 [-5.77e+00]
 [-8.52e+00]
->>> print sol['zq'][0]
+>>> print(sol['zq'][0])
 [ 1.34e+00]
 [-7.63e-02]
 [-1.34e+00]
->>> print sol['zq'][1]
+>>> print(sol['zq'][1])
 [ 1.02e+00]
 [ 4.02e-01]
 [ 7.80e-01]
@@ -1017,14 +1017,14 @@ option of using the DSDP semidefinite programming solver.
         s_0 \succeq 0, \qquad z_0 \succeq 0
 
     are componentwise vector inequalities.  The other inequalities are 
-    matrix inequalities (\ie, the require the lefthand sides to be positive
-    semidefinite).  We use the notation :math:`\mathbf{vec}(z)` to denote 
-    a symmetric matrix :math:`z` stored in column major order as a column 
-    vector.
+    matrix inequalities (\ie, the require the left-hand sides to be 
+    positive semidefinite).  We use the notation :math:`\mathbf{vec}(z)` 
+    to denote a symmetric matrix :math:`z` stored in column major order 
+    as a column vector.
 
     The input argument ``c`` is a real single-column dense matrix.  The 
     arguments ``Gl`` and ``hl`` are the coefficient matrix :math:`G_0` and
-    the righthand side :math:`h_0` of the componentwise inequalities.
+    the right-hand side :math:`h_0` of the componentwise inequalities.
     ``Gl`` is a real dense or sparse matrix;  ``hl`` is a real 
     single-column dense matrix.   The default values for ``Gl`` and ``hl``
     are matrices with zero rows.
@@ -1137,14 +1137,14 @@ We illustrate the calling sequence with a small example.
 >>> h = [ matrix([[33., -9.], [-9., 26.]]) ]
 >>> h += [ matrix([[14., 9., 40.], [9., 91., 10.], [40., 10., 15.]]) ]
 >>> sol = solvers.sdp(c, Gs=G, hs=h)  
->>> print sol['x']
+>>> print(sol['x'])
 [-3.68e-01]
 [ 1.90e+00]
 [-8.88e-01]
->>> print sol['zs'][0]
+>>> print(sol['zs'][0])
 [ 3.96e-03 -4.34e-03]
 [-4.34e-03  4.75e-03]
->>> print sol['zs'][1]
+>>> print(sol['zs'][1])
 [ 5.58e-02 -2.41e-03  2.42e-02]
 [-2.41e-03  1.04e-04 -1.05e-03]
 [ 2.42e-02 -1.05e-03  1.05e-02]
@@ -1307,7 +1307,7 @@ problem structure.
     The function call ``f = kktsolver(W)`` should return a routine for
     solving the KKT system :eq:`e-conelp-kkt` defined by ``W``.  It will 
     be called as ``f(bx, by, bz)``.  On entry, ``bx``, ``by``, ``bz`` 
-    contain the righthand side.  On exit, they should contain the solution
+    contain the right-hand side.  On exit, they should contain the solution
     of the KKT system, with the last component scaled, i.e., on exit,
     
     .. math::

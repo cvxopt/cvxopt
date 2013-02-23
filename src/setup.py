@@ -114,7 +114,7 @@ umfpack = Extension('umfpack',
 
 # Build for int or long? 
 import sys
-if sys.maxint > 2**31: MACROS += [('DLONG','')]
+if sys.maxsize > 2**31: MACROS += [('DLONG','')]
 
 cholmod = Extension('cholmod',
     library_dirs = [ ATLAS_LIB_DIR ],
@@ -148,7 +148,7 @@ extmods += [base, blas, lapack, umfpack, cholmod, amd, misc_solvers]
 
 setup (name = 'cvxopt', 
     description = 'Convex optimization package',
-    version = '1.1.3', 
+    version = '1.1.4', 
     long_description = '''
 CVXOPT is a free software package for convex optimization based on the 
 Python programming language. It can be used with the interactive Python 
