@@ -6,6 +6,7 @@ Copyright and License
 *********************
 
 |
+| :raw-html:`&copy;` 2012 M. Andersen and L. Vandenberghe. 
 | :raw-html:`&copy;` 2010-2011 L. Vandenberghe. 
 | :raw-html:`&copy;` 2004-2009 J. Dahl and L. Vandenberghe. 
 

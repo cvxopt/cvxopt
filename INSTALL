@@ -1,6 +1,13 @@
-Installation instructions for CVXOPT Version 1.1.4.
 
-The package requires version 2.7 or newer of Python, and is built from 
+This document describes the standard CVXOPT installation procedure on 
+Linux systems.  For other platforms, please consult the CVXOPT website 
+<abel.ee.ucla.edu/cvxopt>.
+
+
+Required and optional software 
+------------------------------
+
+The package requires version 2.7 or 3.x of Python, and is built from 
 source, so the header files and libraries for Python must be installed, 
 as well as the core binaries.
 
@@ -11,76 +18,74 @@ header files and libraries must be installed.
 
 The following software libraries are optional.  
 
-1) The GNU Scientific Library GSL (www.gnu.org/software/gsl).
+* The GNU Scientific Library GSL <www.gnu.org/software/gsl>.
 
-2) FFTW (www.fftw.org) is a C library for discrete Fourier transforms.
+* FFTW <www.fftw.org> is a C library for discrete Fourier transforms.
 
-3) GLPK (www.gnu.org/software/glpk/glpk.html) is a linear programming 
-package.  
+* GLPK <www.gnu.org/software/glpk/glpk.html> is a linear programming 
+  package.  
 
-4) MOSEK version 6 (www.mosek.com) is a commercial library of convex 
-optimization solvers.  
+* MOSEK version 6 <www.mosek.com> is a commercial library of convex 
+  optimization solvers.  
 
-5) DSDP5.8 (www-unix.mcs.anl.gov/DSDP) is a semidefinite programming
-solver. 
-
-
-Configuration script:
----------------------
-Edit src/setup.py and update the following variables:
-
-- ATLAS_LIB_DIR: the directory containing the LAPACK and BLAS libraries.
-
-- BUILD_GSL: set this variable to 1 if you would like to use the GSL  
-  random number generators for constructing random matrices in CVXOPT.  
-  If BULD_GSL is 0, the Python random number generators will be used 
-  instead.  
-- GSL_LIB_DIR: the directory containing libgsl.
-- GSL_iNC_DIR: the directory containing the GSL header files. 
-
-- BUILD_FFTW: set this variable to 1 to install the cvxopt.fftw module,
-  which is an interface to FFTW.
-- FFTW_LIB_DIR: the directory containing libfftw3.
-- FFTW_INC_DIR: the directory containing fftw.h.
-
-- BUILD_GLPK: set this variable to 1 to enable support for the linear
-  programming solver GLPK.  
-- GLPK_LIB_DIR: the directory containing libglpk.
-- GLPK_INC_DIR: the directory containing glpk.h. 
-
-- BUILD_DSDP: set this variable to 1 to enable support for the semidefinite
-  programming solver DSDP.
-- DSDP_LIB_DIR: the directory containing libdsdp.
-- DSDP_INC_DIR: the directory containing dsdp5.h.
-
-Support for the linear, second-order cone, and quadratic programming 
-solvers in MOSEK is automatically enabled if the MOSEK Python interface
-pymosek.so is found in the user's PYTHONPATH.
+* DSDP5.8 <www-unix.mcs.anl.gov/DSDP> is a semidefinite programming solver. 
 
 
-Compilation:
+Installation 
 ------------
+
 CVXOPT can be installed globally (for all users on a UNIX system) by 
 writing:
 
     python setup.py install
 
-It can also be installed locally in the home directory by typing:
+It can also be installed locally (for a single user) by typing::
 
-    python setup.py install --home=~
+    python setup.py install --user
 
-This will install the libraries in /home/username/lib/python. In this
-case PYTHONPATH must be updated, e.g., under Bash write
-
-    export PYTHONPATH = $PYTHONPATH:/home/username/lib/python
-
-
-Test it:
---------
 To test that the installation was successful, go to the examples directory 
-and try one of the examples, for example,
+and try one of the examples, for example, 
 
-    $ cd examples/doc/chap8
-    $ python lp.py
+     cd examples/doc/chap8
+     python lp.py
 
-If Python does not issue an error message installation was successful.
+If Python does not issue an error message, installation was successful.
+
+Additional information can be found in the 
+Python documentation <http://docs.python.org/install/index.html>.
+
+
+Customized setup script 
+-----------------------
+
+If needed, the default compilation can be customized by edting src/setup.py.
+The following variables in the setup script can be modified.
+
+* BLAS_LIB_DIR: the directory containing the LAPACK and BLAS libraries.
+
+* BUILD_GSL: set this variable to 1 if you would like to use the GSL  
+  random number generators for constructing random matrices in CVXOPT.  
+  If BULD_GSL is 0, the Python random number generators will be used 
+  instead.  
+* GSL_LIB_DIR: the directory containing libgsl.
+* GSL_INC_DIR: the directory containing the GSL header files. 
+
+* BUILD_FFTW: set this variable to 1 to install the cvxopt.fftw module,
+  which is an interface to FFTW.
+* FFTW_LIB_DIR: the directory containing libfftw3.
+* FFTW_INC_DIR: the directory containing fftw.h.
+
+* BUILD_GLPK: set this variable to 1 to enable support for the linear
+  programming solver GLPK.  
+* GLPK_LIB_DIR: the directory containing libglpk.
+* GLPK_INC_DIR: the directory containing glpk.h. 
+
+* BUILD_DSDP: set this variable to 1 to enable support for the semidefinite
+  programming solver DSDP.
+* DSDP_LIB_DIR: the directory containing libdsdp.
+* DSDP_INC_DIR: the directory containing dsdp5.h.
+
+Support for the linear, second-order cone, and quadratic programming 
+solvers in MOSEK is automatically enabled if the MOSEK Python interface
+pymosek.so is found in the user's PYTHONPATH.
+

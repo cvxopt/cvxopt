@@ -11,10 +11,11 @@ library and on the strengths of Python as a high-level programming
 language.
 """ 
 
+# Copyright 2012 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.4.
+# This file is part of CVXOPT version 1.1.5.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -126,7 +127,7 @@ def getseed():
     
 
 import sys
-if sys.version_info.major < 3:
+if sys.version_info[0] < 3:
     import __builtin__
     omax = __builtin__.max
     omin = __builtin__.min

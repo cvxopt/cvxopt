@@ -2,6 +2,7 @@
 CVXOPT interface for MOSEK 6.0
 """
 
+# Copyright 2012 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 

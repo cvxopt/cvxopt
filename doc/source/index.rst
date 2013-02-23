@@ -2,9 +2,9 @@
 CVXOPT 
 ######
 
-**Release 1.1.4 -- December 21, 2011**
+**Release 1.1.5 -- March 28, 2012**
 
-**Joachim Dahl & Lieven Vandenberghe**
+**Martin Andersen, Joachim Dahl, and Lieven Vandenberghe**
 
 .. toctree::
 

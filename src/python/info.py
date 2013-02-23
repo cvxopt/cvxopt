@@ -1,8 +1,9 @@
-version = '1.1.4'
+version = '1.1.5'
 
 def license(): print(
 """
-CVXOPT version 1.1.4. 
+CVXOPT version 1.1.5. 
+Copyright (c) 2012 M. Andersen and L. Vandenberghe.
 Copyright (c) 2010-2011 L. Vandenberghe.
 Copyright (c) 2004-2009 J. Dahl and L. Vandenberghe.
 

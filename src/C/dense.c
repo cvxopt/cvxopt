@@ -1,8 +1,9 @@
 /*
+ * Copyright 2012 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.4.
+ * This file is part of CVXOPT version 1.1.5.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1478,16 +1479,28 @@ matrix_add_generic(PyObject *self, PyObject *other, int inplace)
       matrix *ret = Matrix_NewFromMatrix((matrix *)other, id);
       if (!ret) return PyErr_NoMemory();
 
-      int lgt = MAT_LGT(ret), int1 = 1, int0 = 0;
-      axpy[id](&lgt, &One[id], &n, &int0, ret->buffer, &int1);
+      int lgt = MAT_LGT(ret); int i;
+      switch (id) {
+        case INT: 
+          for (i=0; i<lgt; i++) MAT_BUFI(ret)[i] += n.i;
+          break;
+        case DOUBLE: 
+          for (i=0; i<lgt; i++) MAT_BUFD(ret)[i] += n.d;
+          break;
+        case COMPLEX: 
+          for (i=0; i<lgt; i++) MAT_BUFZ(ret)[i] += n.z;
+          break;
+      }
       return (PyObject *)ret;
     }
     else {
       convert_num[id](&n,other,(Matrix_Check(other) ? 0 : 1),0);
 
-      int int1 = 1, int0 = 0;
-      axpy[id](&int1, &One[id], &n, &int0, MAT_BUF(self), &int1);
-
+      switch (id) {
+        case INT:     MAT_BUFI(self)[0] += n.i; break;
+        case DOUBLE:  MAT_BUFD(self)[0] += n.d; break;
+        case COMPLEX: MAT_BUFZ(self)[0] += n.z; break;
+      }
       Py_INCREF(self);
       return self;
     }
@@ -1503,14 +1516,34 @@ matrix_add_generic(PyObject *self, PyObject *other, int inplace)
       matrix *ret = Matrix_NewFromMatrix((matrix *)self, id);
       if (!ret) return PyErr_NoMemory();
 
-      int lgt = MAT_LGT(self), int1 = 1, int0 = 0;
-      axpy[id](&lgt, &One[id], &n, &int0, ret->buffer, &int1);
+      int lgt = MAT_LGT(self); int i;
+      switch (id) {
+        case INT: 
+          for (i=0; i<lgt; i++) MAT_BUFI(ret)[i] += n.i;
+          break;
+        case DOUBLE: 
+          for (i=0; i<lgt; i++) MAT_BUFD(ret)[i] += n.d;
+          break;
+        case COMPLEX: 
+          for (i=0; i<lgt; i++) MAT_BUFZ(ret)[i] += n.z;
+          break;
+      }
 
       return (PyObject *)ret;
     }
     else {
-      int lgt = MAT_LGT(self), int1 = 1, int0 = 0;
-      axpy[id](&lgt, &One[id], &n, &int0, MAT_BUF(self), &int1);
+      int lgt = MAT_LGT(self); int i;
+      switch (id) {
+        case INT: 
+          for (i=0; i<lgt; i++) MAT_BUFI(self)[i] += n.i;
+          break;
+        case DOUBLE: 
+          for (i=0; i<lgt; i++) MAT_BUFD(self)[i] += n.d;
+          break;
+        case COMPLEX: 
+          for (i=0; i<lgt; i++) MAT_BUFZ(self)[i] += n.z;
+          break;
+      }
 
       Py_INCREF(self);
       return self;
@@ -1584,16 +1617,28 @@ matrix_sub_generic(PyObject *self, PyObject *other, int inplace)
       matrix *ret = Matrix_NewFromMatrix((matrix *)other, id);
       if (!ret) return PyErr_NoMemory();
 
-      int lgt = MAT_LGT(ret), int1 = 1, int0 = 0;
-      scal[id](&lgt, &MinusOne[id], ret->buffer, &int1);
-      axpy[id](&lgt, &One[id], &n, &int0, ret->buffer, &int1);
+      int lgt = MAT_LGT(ret); int i; 
+      switch (id) {
+        case INT: 
+          for (i=0; i<lgt; i++) MAT_BUFI(ret)[i] = n.i - MAT_BUFI(ret)[i];
+          break;
+        case DOUBLE:
+          for (i=0; i<lgt; i++) MAT_BUFD(ret)[i] = n.d - MAT_BUFD(ret)[i];
+          break;
+        case COMPLEX: 
+          for (i=0; i<lgt; i++) MAT_BUFZ(ret)[i] = n.z - MAT_BUFZ(ret)[i];
+          break;
+      }
       return (PyObject *)ret;
     }
     else {
       convert_num[id](&n,other,(Matrix_Check(other) ? 0 : 1),0);
 
-      int int1 = 1, int0 = 0;
-      axpy[id](&int1, &MinusOne[id], &n, &int0, MAT_BUF(self), &int1);
+      switch (id) {
+        case INT:     MAT_BUFI(self)[0] -= n.i; break;
+        case DOUBLE:  MAT_BUFD(self)[0] -= n.d; break;
+        case COMPLEX: MAT_BUFZ(self)[0] -= n.z; break;
+      }
 
       Py_INCREF(self);
       return self;
@@ -1609,14 +1654,34 @@ matrix_sub_generic(PyObject *self, PyObject *other, int inplace)
       matrix *ret = Matrix_NewFromMatrix((matrix *)self, id);
       if (!ret) return PyErr_NoMemory();
 
-      int lgt = MAT_LGT(self), int1 = 1, int0 = 0;
-      axpy[id](&lgt, &MinusOne[id], &n, &int0, ret->buffer, &int1);
+      int lgt = MAT_LGT(self); int i;
+      switch (id) {
+        case INT: 
+          for (i=0; i<lgt; i++) MAT_BUFI(ret)[i] -= n.i;
+          break;
+        case DOUBLE: 
+          for (i=0; i<lgt; i++) MAT_BUFD(ret)[i] -= n.d;
+          break;
+        case COMPLEX: 
+          for (i=0; i<lgt; i++) MAT_BUFZ(ret)[i] -= n.z;
+          break;
+      }
 
       return (PyObject *)ret;
     }
     else {
-      int lgt = MAT_LGT(self), int1 = 1, int0 = 0;
-      axpy[id](&lgt, &MinusOne[id], &n, &int0, MAT_BUF(self), &int1);
+      int lgt = MAT_LGT(self); int i;
+      switch (id) {
+        case INT: 
+          for (i=0; i<lgt; i++) MAT_BUFI(self)[i] -= n.i;
+          break;
+        case DOUBLE: 
+          for (i=0; i<lgt; i++) MAT_BUFD(self)[i] -= n.d;
+          break;
+        case COMPLEX: 
+          for (i=0; i<lgt; i++) MAT_BUFZ(self)[i] -= n.z;
+          break;
+      }
 
       Py_INCREF(self);
       return self;
