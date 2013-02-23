@@ -486,7 +486,6 @@ of the coefficient matrix in :eq:`e-A-pd` by two methods.
 >>> cholmod.numeric(A, F)
 >>> print 2.0 * sum(log(cholmod.diag(F)))
 5.50533153593
-
 >>> options['supernodal'] = 0
 >>> F = cholmod.symbolic(A)
 >>> cholmod.numeric(A, F)

@@ -11,17 +11,23 @@ body {
     letter-spacing: -0.01em;
     line-height: 150%;
     text-align: center;
+    /* background-color: #AFC1C4; */
+    /* background-color: #BFD1D4; */
     color: black;
+    /* border: 1px solid #aaa; */
     margin: 0px 20px 0px 20px;
-    min-width: 800px; 
+    /* min-width: 740px; */
+    min-width: 800px; */
 }
 
 a {
+/*    color: #CA7900; */
     color: black;
     text-decoration: underline;
 }
 
 a:hover {
+/*    color: #2491CF; */
     text-decoration: underline;
 }
 
@@ -80,6 +86,7 @@ tt {
     font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
 }
 
+/* function names */
 tt.descname { 
     font-style: normal;
     background-color: transparent;
@@ -88,12 +95,14 @@ tt.descname {
     border: 0;
 }
 
+/* module name prepended to function name*/
 tt.descclassname {  
     font-style: normal;
     background-color: transparent;
     border: 0;
 }
 
+/* variables in function argument list and definition, :samp: */
 tt.docutils.literal, dl.function em {  
     font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
     font-style: italic;
@@ -101,6 +110,7 @@ tt.docutils.literal, dl.function em {
     border: 0;
 }
 
+/* function name in reference, and literals */
 tt.xref.docutils.literal {  
     font-style: normal;
     background-color: transparent;
@@ -112,7 +122,15 @@ a tt {
     background-color: transparent;
     font-weight: bold;
     border: 0;
+/*    color: #CA7900; */
 }
+
+/*
+a tt:hover {
+    color: #2491CF; 
+}
+*/
+
 
 .field-list ul {
     margin: 0;
@@ -173,7 +191,15 @@ pre a {
 div.document {
     background-color: white;
     text-align: left;
+/*    background-image: url(contents.png); */
+/*    background-repeat: repeat-x; */
 }
+
+/*
+div.documentwrapper {
+    width: 100%;
+}
+*/
 
 div.clearer {
     clear: both;
@@ -184,6 +210,7 @@ div.related h3 {
 }
 
 div.related ul {
+/*    background-image: url(navigation.png); */
     height: 2em;
     list-style: none;
     border-top: 1px solid #ddd; 
@@ -208,10 +235,12 @@ div.related ul li a {
     margin: 0;
     padding: 0 5px 0 5px;
     line-height: 1.75em;
+/*    color: #EE9816; */
     text-decoration: none;  
 }
 
 div.related ul li a:hover {
+/*    color: #3CA8E7;  */
     text-decoration: underline;  
 }
 
@@ -226,9 +255,17 @@ div.documentwrapper{
 }
 
 div.bodywrapper {
+/*     margin: 0 240px 0 0; */
     margin: 0 0 0 240px; 
     border-left: 1px solid #ccc;
 }
+
+/*
+div.body a {
+    text-decoration: underline; 
+    text-decoration: none;  
+}
+*/
 
 div.body a:hover {
     color: #2491CF;  
@@ -245,7 +282,9 @@ div.sphinxsidebar {
 
 div.sphinxsidebar h4, div.sphinxsidebar h3 {
     margin: 1em 0 .2em 0;
+/*    font-size: 0.9em; */
     font-size: 1.1em; 
+
     padding: 0.1em 0 0.1em 0.5em; 
     color: white; 
     border: 1px solid #86989B; 
@@ -369,6 +408,7 @@ table td, table th {
 }
 
 div.footer {
+/*    background-color: #E3EFF1; */
     color: #86989B;
     padding: 3px 8px 3px 0;
     clear: both;
@@ -563,7 +603,7 @@ ul.keywordmatches li.goodmatch a {
 }
 
 img.math {
-    vertical-align: center;
+    vertical-align: middle;
 }
 
 div.math {

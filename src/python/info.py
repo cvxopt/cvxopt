@@ -1,8 +1,8 @@
-version = '1.1.1'
+version = '1.1.2'
 
 def license(): print(
 """
-CVXOPT version 1.1.1  Copyright (c) 2004-2009 J. Dahl and L. Vandenberghe.
+CVXOPT version 1.1.2  Copyright (c) 2004-2009 J. Dahl and L. Vandenberghe.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,12 +21,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 The CVXOPT distribution includes source code for part of the SuiteSparse
 suite of sparse matrix algorithms, including:
 
-- AMD Version 2.2.0. Copyright (c) 2007 by Timothy A. Davis, Patrick R. 
+- AMD Version 2.2. Copyright (c) 2007 by Timothy A. Davis, Patrick R. 
   Amestoy, and Iain S. Duff.
-- CHOLMOD Version 1.7.0. Copyright (c) 2005-2007 by University of Florida, 
+- CHOLMOD Version 1.7.1. Copyright (c) 2005-2009 by University of Florida, 
   Timothy A. Davis and W. Hager.
-- COLAMD version 2.7.0. Copyright (c) 1998-2007 by Timothy A. Davis.
-- UMFPACK Version 5.2.0. Copyright (c) 1995-2006 by Timothy A. Davis.
+- COLAMD version 2.7. Copyright (c) 1998-2007 by Timothy A. Davis.
+- UMFPACK Version 5.4.0. Copyright (c) 1994-2009 by Timothy A. Davis.
 
 These packages are licensed under the terms of the GNU General Public 
 License, version 2 or higher (UMFPACK, the Supernodal module of CHOLMOD),

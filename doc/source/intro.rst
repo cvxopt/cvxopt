@@ -15,12 +15,12 @@ the strengths of Python as a high-level programming language.
 CVXOPT extends the built-in Python objects with two matrix objects: a 
 :class:`matrix <cvxopt.matrix>`  object for dense matrices and an 
 :class:`spmatrix <cvxopt.spmatrix>` object for sparse matrices.  These two 
-matrix types are introduced in chapter :ref:`c-matrices`, together with the
-arithmetic operations and functions defined for them.  The following 
-chapters (:ref:`c-blas` and :ref:`c-spsolvers`) describe interfaces to 
-several libraries for dense and sparse matrix computations.  The CVXOPT 
-optimization routines are described in the chapters :ref:`c-coneprog` and 
-:ref:`c-modeling`.
+matrix types are introduced in the chapter :ref:`c-matrices`, together 
+with the arithmetic operations and functions defined for them.  The 
+following chapters (:ref:`c-blas` and :ref:`c-spsolvers`) describe 
+interfaces to several libraries for dense and sparse matrix computations.  
+The CVXOPT optimization routines are described in the chapters 
+:ref:`c-coneprog` and :ref:`c-modeling`.
 These include convex optimization solvers written in Python, 
 interfaces to a few other optimization libraries, and a modeling tool 
 for piecewise-linear convex optimization problems.

@@ -1,4 +1,4 @@
-Installation instructions for CVXOPT Version 1.1.1
+Installation instructions for CVXOPT Version 1.1.2.
 
 The package requires version 2.5 or newer of Python, and is built from 
 source, so the header files and libraries for Python must be installed, 

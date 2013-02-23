@@ -1,6 +1,6 @@
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.1
+# This file is part of CVXOPT version 1.1.2.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -1577,7 +1577,7 @@ def kkt_qr(G, dims, A):
         W^{-T} * G * Q2 = Q3 * R3
     
     (with columns of W^{-T}*G in packed storage), and (2) returns a 
-    function for # solving 
+    function for solving 
     
         [ 0    A'   G'    ]   [ ux ]   [ bx ]
         [ A    0    0     ] * [ uy ] = [ by ].

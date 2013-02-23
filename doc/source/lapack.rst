@@ -209,7 +209,7 @@ As an example, we solve a linear equation with
 
 >>> from cvxopt import matrix
 >>> from cvxopt.lapack import gbsv, gbtrf, gbtrs
->>> n, kl = 4, 2, 1
+>>> n, kl, ku = 4, 2, 1
 >>> A = matrix([[0., 1., 3., 6.], [2., 4., 7., 10.], [5., 8., 11., 0.], [9., 12., 0., 0.]])
 >>> x = matrix(1.0, (4,1))
 >>> gbsv(A, kl, x)
@@ -1442,7 +1442,7 @@ As an example we compute the complex Schur form of the matrix
                 [-4., -12., -14., 8., -8.], [11., 0., 9., 6., 10.]])
 >>> S = matrix(A, tc='z')
 >>> w = matrix(0.0, (5,1), 'z')
->>> gees(S, w)
+>>> lapack.gees(S, w)
 0
 >>> print S
 [ 5.67e+00+j1.69e+01 -2.13e+01+j2.85e+00  1.40e+00+j5.88e+00 -4.19e+00+j2.05e-01  3.19e+00-j1.01e+01]
@@ -1463,7 +1463,7 @@ the complex plane ordered first, can be computed as follows.
 >>> S = matrix(A, tc='z')
 >>> def F(x): return (x.real < 0.0)
 ...
->>> gees(S, w, select = F)
+>>> lapack.gees(S, w, select = F)
 2
 >>> print S
 [-1.31e+01-j0.00e+00 -1.72e-01+j7.93e-02 -2.81e+00+j1.46e+00  3.79e+00-j2.67e-01  5.14e+00-j4.84e+00]
@@ -1551,7 +1551,7 @@ matrix :math:`A` of the previous example, and
 >>> T = matrix(B, tc='z')
 >>> a = matrix(0.0, (5,1), 'z')
 >>> b = matrix(0.0, (5,1))
->>> gges(S, T, a, b)
+>>> lapack.gges(S, T, a, b)
 0
 >>> print S
 [ 6.64e+00-j8.87e+00 -7.81e+00-j7.53e+00  6.16e+00-j8.51e-01  1.18e+00+j9.17e+00  5.88e+00-j4.51e+00]
@@ -1588,7 +1588,7 @@ The analytic centering problem is defined as
 .. math::
 
     \begin{array}{ll}
-        \mbox{minimize} & -\sum_{i=1}^m \log(b_i-a_i^Tx).
+        \mbox{minimize} & -\sum\limits_{i=1}^m \log(b_i-a_i^Tx).
     \end{array}
 
 

@@ -145,6 +145,7 @@
 #define dpttrs_ dpttrs
 #define zpttrs_ zpttrs
 #define dlacpy_ dlacpy
+#define zlacpy_ zlacpy
 #define dgees_ dgees
 #define zgees_ zgees
 #define dgges_ dgges

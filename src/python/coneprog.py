@@ -1,10 +1,10 @@
 """
-Solver for linear, second-order cone and semidefinite programming.
+Solver for linear and quadratic cone programs. 
 """
 
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.1
+# This file is part of CVXOPT version 1.1.2
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -118,18 +118,18 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         The other arguments are normally not needed.  They make it possible
         to exploit certain types of structure, as described below.
 
-
     Output arguments.
 
         Returns a dictionary with keys 'status', 'x', 's', 'z', 'y',
         'primal objective', 'dual objective', 'gap', 'relative gap',  
         'primal infeasibility', 'dual infeasibility', 'primal slack',
         'dual slack', 'residual as primal infeasibility certificate', 
-        'residual as dual infeasibility certificate'.
+        'residual as dual infeasibility certificate', 'iterations'.
 
         The 'status' field has values 'optimal', 'primal infeasible',
-        'dual infeasible', or 'unknown'.  The values of the other fields
-        depend on the exit status.
+        'dual infeasible', or 'unknown'.  The 'iterations' field is the
+        number of iterations taken.  The values of the other fields depend
+        on the exit status.
 
         Status 'optimal'. 
         - 'x', 's', 'y', 'z' are an approximate solution of the primal and
@@ -166,9 +166,8 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
               e = ( e_0, e_1, ..., e_N, e_{N+1}, ..., e_{M+N} )
 
           is the identity vector in C.  e_0 is an ml-vector of ones, 
-          e_k, k = 1,..., N, is the unit vector (1,0,...,0) of length
-          mq[k], and e_k = vec(I) where I is the identity matrix of order
-          ms[k].
+          e_k, k = 1,..., N, are unit vectors (1,0,...,0) of length mq[k],
+          and e_k = vec(I) where I is the identity matrix of order ms[k].
         - 'dual slack': the smallest dual slack, sup {t | z >= t*e }.
         - 'residual as primal infeasibility certificate': None.
         - 'residual as dual infeasibility certificate': None.
@@ -331,7 +330,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
           inverse of the transpose of r_k.
 
         The call f = kktsolver(W) should return a function f that solves 
-        the KKT system by g(x, y, z).  On entry, x, y, z contain the 
+        the KKT system by f(x, y, z).  On entry, x, y, z contain the 
         righthand side bx, by, bz.  On exit, they contain the solution, 
         with uz scaled: the argument z contains W*uz.  In other words,
         on exit, x, y, z are the solution of
@@ -382,6 +381,10 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
           and u is a vector in X.
         - xaxpy(u, v, alpha = 1.0) computes v := alpha*u + v for a scalar 
           alpha and two vectors u and v in X.
+        If this option is used, the argument c must be in the same format
+        as x, the argument G must be a Python function, the argument A 
+        must be a Python function or None, and the argument kktsolver is 
+        required.
 
         If Y is the vector space of primal variables y:
         - ynewcopy(u) creates a new copy of the vector u in Y.
@@ -391,8 +394,8 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         - yaxpy(u, v, alpha = 1.0) computes v := alpha*u + v for a scalar 
           alpha and two vectors u and v in Y.
         If this option is used, the argument b must be in the same format
-        as y, the argument A must be a Python function, and the argument 
-        kktsolver is required.
+        as y, the argument A must be a Python function or None, and the 
+        argument kktsolver is required.
 
 
     Control parameters.
@@ -411,8 +414,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
 
     """
     import math
-    from cvxopt import base, blas, misc
-    from cvxopt.base import matrix, spmatrix
+    from cvxopt import base, blas, misc, matrix, spmatrix
 
     EXPON = 3
     STEP = 0.99
@@ -466,19 +468,19 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
 
     # Argument error checking depends on level of customization.
     customkkt = type(kktsolver) is not str
-    operatorG = type(G) not in (matrix, spmatrix)
-    operatorA = A is not None and type(A) not in (matrix, spmatrix)
-    if (operatorG or operatorA) and not customkkt:
+    matrixG = type(G) in (matrix, spmatrix)
+    matrixA = type(A) in (matrix, spmatrix)
+    if (not matrixG or (not matrixA and A is not None)) and not customkkt:
         raise ValueError, "use of function valued G, A requires a "\
             "user-provided kktsolver"
-    customx = ( xnewcopy != None or xdot != None or xaxpy != None or 
-        xscal != None )
-    if customx and (not operatorG or not operatorA or not customkkt):
+    customx = (xnewcopy != None or xdot != None or xaxpy != None or 
+        xscal != None)
+    if customx and (matrixG or matrixA or not customkkt):
         raise ValueError, "use of non-vector type for x requires "\
             "function valued G, A and user-provided kktsolver"
     customy = (ynewcopy != None or ydot != None or yaxpy != None or 
         yscal != None)
-    if customy and (not operatorA or not customkkt):
+    if customy and (matrixA or not customkkt):
         raise ValueError, "use of non-vector type for y requires "\
             "function valued A and user-provided kktsolver"
 
@@ -525,7 +527,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
     inds = [ indq[-1] ]
     for k in dims['s']:  inds = inds + [ inds[-1] + k**2 ] 
 
-    if not operatorG:
+    if matrixG:
         if G.typecode != 'd' or G.size != (cdim, c.size[0]):
             raise TypeError, "'G' must be a 'd' matrix of size (%d, %d)"\
                 %(cdim, c.size[0])
@@ -539,10 +541,11 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         if customx or customy: 
             def A(x, y, trans = 'N', alpha = 1.0, beta = 0.0):
                 if trans == 'N': pass
-                else: yscal(beta, y)
+                else: xscal(beta, y)
         else: 
             A = spmatrix([], [], [], (0, c.size[0]))
-    if not operatorA:
+            matrixA = True
+    if matrixA:
         if A.typecode != 'd' or A.size[1] != c.size[0]:
             raise TypeError, "'A' must be a 'd' matrix with %d columns "\
                 %c.size[0]
@@ -555,7 +558,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         if b is None: b = matrix(0.0, (0,1))
         if type(b) is not matrix or b.typecode != 'd' or b.size[1] != 1:
             raise TypeError, "'b' must be a 'd' matrix with one column" 
-        if not operatorA and b.size[0] != A.size[0]:
+        if matrixA and b.size[0] != A.size[0]:
             raise TypeError, "'b' must have length %d" %A.size[0]
     else:
         if b is None: 
@@ -587,13 +590,13 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
 
     # res() evaluates residual in 5x5 block KKT system
     #
-    # [ vx   ]    [ 0         ]   [ 0   A'  G'  c ] [ ux        ]
-    # [ vy   ]    [ 0         ]   [-A   0   0   b ] [ uy        ]
-    # [ vz   ] += [ W'*us     ] - [-G   0   0   h ] [ W^{-1}*uz ]
-    # [ vtau ]    [ dg*ukappa ]   [-c' -b' -h'  0 ] [ utau/dg   ]
+    #     [ vx   ]    [ 0         ]   [ 0   A'  G'  c ] [ ux        ]
+    #     [ vy   ]    [ 0         ]   [-A   0   0   b ] [ uy        ]
+    #     [ vz   ] += [ W'*us     ] - [-G   0   0   h ] [ W^{-1}*uz ]
+    #     [ vtau ]    [ dg*ukappa ]   [-c' -b' -h'  0 ] [ utau/dg   ]
     # 
-    # vs := vs + lmbda o (dz + ds) 
-    # vkappa := vkappa + lmbdg * (dtau + dkappa).
+    #           vs += lmbda o (dz + ds) 
+    #       vkappa += lmbdg * (dtau + dkappa).
 
     ws3, wz3 = matrix(0.0, (cdim,1)), matrix(0.0, (cdim,1))
     def res(ux, uy, uz, utau, us, ukappa, vx, vy, vz, vtau, vs, vkappa, W,
@@ -683,14 +686,14 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
 
     if primalstart is None:
 
-	# minimize    || G * x - h ||^2
-	# subject to  A * x = b
-	#
-	# by solving
-	#
-	#     [ 0   A'  G' ]   [ x  ]   [ 0 ]
-	#     [ A   0   0  ] * [ dy ] = [ b ].
-	#     [ G   0  -I  ]   [ -s ]   [ h ]
+        # minimize    || G * x - h ||^2
+        # subject to  A * x = b
+        #
+        # by solving
+        #
+        #     [ 0   A'  G' ]   [ x  ]   [ 0 ]
+        #     [ A   0   0  ] * [ dy ] = [ b ].
+        #     [ G   0  -I  ]   [ -s ]   [ h ]
 
         xscal(0.0, x)
         ycopy(b, dy)  
@@ -738,12 +741,6 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
     if tz >= 0 and dualstart: 
         raise ValueError, "initial z is not positive"
 
-    trz = sum(z[:dims['l']]) + sum(z[indq[:-1]]) + sum([ 
-        sum(z[inds[k] : inds[k+1] : dims['s'][k]+1]) for k in 
-        xrange(len(dims['s'])) ])
-    trs = sum(s[:dims['l']]) + sum(s[indq[:-1]]) + sum([ 
-        sum(s[inds[k] : inds[k+1] : dims['s'][k]+1]) for k in 
-        xrange(len(dims['s'])) ])
     nrms = misc.snrm2(s, dims)
     nrmz = misc.snrm2(z, dims)
 
@@ -806,7 +803,8 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
                 'dual slack': -tz,
                 'dual infeasibility': dres,
                 'residual as primal infeasibility certificate': None,
-                'residual as dual infeasibility certificate': None } 
+                'residual as dual infeasibility certificate': None,
+                'iterations': 0 } 
 
         if ts >= -1e-8 * max(nrms, 1.0):  
             a = 1.0 + ts  
@@ -958,7 +956,8 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
                     'residual as primal infeasibility certificate': 
                         pinfres,
                     'residual as dual infeasibility certificate': 
-                        dinfres}
+                        dinfres,
+                    'iterations': iters}
 
             else:
                 if show_progress:
@@ -974,7 +973,8 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
                     'primal slack': -ts,
                     'dual slack': -tz,
                     'residual as primal infeasibility certificate': None,
-                    'residual as dual infeasibility certificate': None }
+                    'residual as dual infeasibility certificate': None,
+                    'iterations': iters }
 
         elif pinfres is not None and pinfres <= FEASTOL:
             yscal(1.0/(-hz - by), y)
@@ -997,7 +997,8 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
                 'primal slack': None,
                 'dual slack': -tz,
                 'residual as primal infeasibility certificate': pinfres,
-                'residual as dual infeasibility certificate': None }
+                'residual as dual infeasibility certificate': None,
+                'iterations': iters }
 
         elif dinfres is not None and dinfres <= FEASTOL:
             xscal(1.0/(-cx), x)
@@ -1021,7 +1022,8 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
                 'primal slack': -ts,
                 'dual slack': None,
                 'residual as primal infeasibility certificate': None,
-                'residual as dual infeasibility certificate': dinfres }
+                'residual as dual infeasibility certificate': dinfres,
+                'iterations': iters }
 
 
         # Compute initial scaling W:
@@ -1106,7 +1108,8 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
                     'residual as primal infeasibility certificate': 
                         pinfres,
                     'residual as dual infeasibility certificate': 
-                        dinfres }
+                        dinfres, 
+                    'iterations': iters }
 
 
         # f6_no_ir(x, y, z, tau, s, kappa) solves
@@ -1541,15 +1544,17 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
         Returns a dictionary with keys 'status', 'x', 's', 'z', 'y',
         'primal objective', 'dual objective', 'gap', 'relative gap', 
         'primal infeasibility', 'dual infeasibility', 'primal slack',
-        'dual slack'. 
+        'dual slack', 'iterations'. 
 
-        The 'status' field has values 'optimal' or 'unknown'.  
+        The 'status' field has values 'optimal' or 'unknown'.  'iterations'
+        is the number of iterations taken.
+
         If the status is 'optimal', 'x', 's', 'y', 'z' are an approximate 
         solution of the primal and dual optimality conditions   
 
               G*x + s = h,  A*x = b  
               P*x + G'*z + A'*y + q = 0 
-              s >= 0, z >= 0
+              s >= 0,  z >= 0
               s'*z = 0.
 
         If the status is 'unknown', 'x', 'y', 's', 'z' are the last 
@@ -1591,6 +1596,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
 
               || P*x + G'*z + A'*y + q || / max(1, ||q||).
 
+
         - 'primal slack': the smallest primal slack, sup {t | s >= t*e }, 
            where 
 
@@ -1600,6 +1606,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
           e_k, k = 1,..., N, is the unit vector (1,0,...,0) of length
           mq[k], and e_k = vec(I) where I is the identity matrix of order
           ms[k].
+
         - 'dual slack': the smallest dual slack, sup {t | z >= t*e }.
 
         If the exit status is 'optimal', then the primal and dual
@@ -1725,6 +1732,10 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
           and u is a vector in X.
         - xaxpy(u, v, alpha = 1.0) computes v := alpha*u + v for a scalar 
           alpha and two vectors u and v in X.
+        If this option is used, the argument q must be in the same format
+        as x, the argument P must be a Python function, the arguments A 
+        and G must be Python functions or None, and the argument 
+        kktsolver is required.
 
         If Y is the vector space of primal variables y:
         - ynewcopy(u) creates a new copy of the vector u in Y.
@@ -1733,6 +1744,9 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
           and u is a vector in Y.
         - yaxpy(u, v, alpha = 1.0) computes v := alpha*u + v for a scalar 
           alpha and two vectors u and v in Y.
+        If this option is used, the argument b must be in the same format
+        as y, the argument A must be a Python function or None, and the 
+        argument kktsolver is required.
 
 
     Control parameters.
@@ -1763,6 +1777,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
     # Use Mehrotra correction or not.
     try: correction = options['use_correction']
     except KeyError: correction = True
+ 
 
     try: MAXITERS = options['maxiters']
     except KeyError: MAXITERS = 100
@@ -1812,30 +1827,30 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
 
     # Argument error checking depends on level of customization.
     customkkt = type(kktsolver) is not str
-    operatorP = type(P) not in (matrix, spmatrix)
-    operatorG = G is not None and type(G) not in (matrix, spmatrix)
-    operatorA = A is not None and type(A) not in (matrix, spmatrix)
-    if (operatorP or operatorG or operatorA) and not customkkt:
+    matrixP = type(P) in (matrix, spmatrix)
+    matrixG = type(G) in (matrix, spmatrix)
+    matrixA = type(A) in (matrix, spmatrix)
+    if (not matrixP or (not matrixG and G is not None) or 
+        (not matrixA and A is not None)) and not customkkt:
         raise ValueError, "use of function valued P, G, A requires a "\
             "user-provided kktsolver"
     customx = (xnewcopy != None or xdot != None or xaxpy != None or 
         xscal != None) 
-    if customx and (not operatorP or not operatorG or not operatorA or 
-        not customkkt):
+    if customx and (matrixP or matrixG or matrixA or not customkkt):
         raise ValueError, "use of non-vector type for x requires "\
             "function valued P, G, A and user-provided kktsolver"
     customy = (ynewcopy != None or ydot != None or yaxpy != None or 
         yscal != None) 
-    if customy and (not operatorP or not operatorA or not customkkt):
+    if customy and (matrixA or not customkkt):
         raise ValueError, "use of non vector type for y requires "\
-            "function valued P, A and user-provided kktsolver"
+            "function valued A and user-provided kktsolver"
 
 
     if not customx and (type(q) is not matrix or q.typecode != 'd' or
         q.size[1] != 1):
         raise TypeError, "'q' must be a 'd' matrix with one column"
 
-    if not operatorP:
+    if matrixP:
         if P.typecode != 'd' or P.size != (q.size[0], q.size[0]):
             raise TypeError, "'P' must be a 'd' matrix of size (%d, %d)"\
                 %(q.size[0], q.size[0])
@@ -1872,6 +1887,14 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
     if h.size[0] != cdim:
         raise TypeError, "'h' must be a 'd' matrix of size (%d,1)" %cdim
 
+    # Data for kth 'q' constraint are found in rows indq[k]:indq[k+1] of G.
+    indq = [ dims['l'] ]  
+    for k in dims['q']:  indq = indq + [ indq[-1] + k ] 
+
+    # Data for kth 's' constraint are found in rows inds[k]:inds[k+1] of G.
+    inds = [ indq[-1] ]
+    for k in dims['s']:  inds = inds + [ inds[-1] + k**2 ] 
+
     if G is None:
         if customx:
             def G(x, y, trans = 'N', alpha = 1.0, beta = 0.0):
@@ -1879,7 +1902,8 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
                 else: xscal(beta, y)
         else:
             G = spmatrix([], [], [], (0, q.size[0]))
-    if not operatorG:
+            matrixG = True
+    if matrixG:
         if G.typecode != 'd' or G.size != (cdim, q.size[0]):
             raise TypeError, "'G' must be a 'd' matrix of size (%d, %d)"\
                 %(cdim, q.size[0])
@@ -1894,10 +1918,11 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
         if customx or customy:
             def A(x, y, trans = 'N', alpha = 1.0, beta = 0.0):
                 if trans == 'N': pass
-                else: yscal(beta, y)
+                else: xscal(beta, y)
         else:
             A = spmatrix([], [], [], (0, q.size[0]))
-    if not operatorA:
+            matrixA = True
+    if matrixA:
         if A.typecode != 'd' or A.size[1] != q.size[0]:
             raise TypeError, "'A' must be a 'd' matrix with %d columns" \
                 %q.size[0]
@@ -1909,7 +1934,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
         if b is None: b = matrix(0.0, (0,1))
         if type(b) is not matrix or b.typecode != 'd' or b.size[1] != 1:
             raise TypeError, "'b' must be a 'd' matrix with one column"
-        if not operatorA and b.size[0] != A.size[0]:
+        if matrixA and b.size[0] != A.size[0]:
             raise TypeError, "'b' must have length %d" %A.size[0]
     if b is None and customy:  
         raise ValueEror, "use of non-vector type for y requires b"
@@ -2026,56 +2051,117 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
             'primal objective': pcost,
             'dual objective': pcost,
             'primal slack': 0.0, 'dual slack': 0.0,
-            'primal infeasibility': pres, 'dual infeasibility': dres} 
+            'primal infeasibility': pres, 'dual infeasibility': dres,
+            'iterations': 0 } 
 
-
-    # Default initial points are x = 0, y = 0, s = e, z = e. 
 
     x, y = xnewcopy(q), ynewcopy(b)  
     s, z = matrix(0.0, (cdim, 1)), matrix(0.0, (cdim, 1))
 
-    if initvals is None: 
-        initvals = {}
-    if 'x' in initvals: 
-        xcopy(initvals['x'], x)
+    if initvals is None:
+
+        # Factor
+        #
+        #     [ P   A'  G' ] 
+        #     [ A   0   0  ].
+        #     [ G   0  -I  ]
+        
+        W = {}
+        W['d'] = matrix(1.0, (dims['l'], 1)) 
+        W['di'] = matrix(1.0, (dims['l'], 1)) 
+        W['v'] = [ matrix(0.0, (m,1)) for m in dims['q'] ]
+        W['beta'] = len(dims['q']) * [ 1.0 ] 
+        for v in W['v']: v[0] = 1.0
+        W['r'] = [ matrix(0.0, (m,m)) for m in dims['s'] ]
+        W['rti'] = [ matrix(0.0, (m,m)) for m in dims['s'] ]
+        for r in W['r']: r[::r.size[0]+1 ] = 1.0
+        for rti in W['rti']: rti[::rti.size[0]+1 ] = 1.0
+        try: f = kktsolver(W)
+        except ArithmeticError:  
+            raise ValueError, "Rank(A) < p or Rank([P; A; G]) < n"
+
+             
+        # Solve
+        #
+        #     [ P   A'  G' ]   [ x ]   [ -q ]
+        #     [ A   0   0  ] * [ y ] = [  b ].
+        #     [ G   0  -I  ]   [ z ]   [  h ]
+
+        xcopy(q, x)
+        xscal(-1.0, x)
+        ycopy(b, y)  
+        blas.copy(h, z)
+        try: f(x, y, z) 
+        except ArithmeticError:  
+            raise ValueError, "Rank(A) < p or Rank([P; G; A]) < n"
+        blas.copy(z, s)  
+        blas.scal(-1.0, s)  
+
+        nrms = misc.snrm2(s, dims)
+        ts = misc.max_step(s, dims)
+        if ts >= -1e-8 * max(nrms, 1.0):  
+            a = 1.0 + ts  
+            s[:dims['l']] += a
+            s[indq[:-1]] += a
+            ind = dims['l'] + sum(dims['q'])
+            for m in dims['s']:
+                s[ind : ind+m*m : m+1] += a
+                ind += m**2
+
+        nrmz = misc.snrm2(z, dims)
+        tz = misc.max_step(z, dims)
+        if tz >= -1e-8 * max(nrmz, 1.0):
+            a = 1.0 + tz  
+            z[:dims['l']] += a
+            z[indq[:-1]] += a
+            ind = dims['l'] + sum(dims['q'])
+            for m in dims['s']:
+                z[ind : ind+m*m : m+1] += a
+                ind += m**2
+
+
     else: 
-        xscal(0.0, x)
 
-    if 's' in initvals:
-        blas.copy(initvals['s'], s)
-        # ts = min{ t | s + t*e >= 0 }
-        if misc.max_step(s, dims) >= 0:
-            raise ValueError, "initial s is not positive"
-    else: 
-        s[: dims['l']] = 1.0 
-        ind = dims['l']
-        for m in dims['q']:
-            s[ind] = 1.0
-            ind += m
-        for m in dims['s']:
-            s[ind : ind + m*m : m+1] = 1.0
-            ind += m**2
+        if 'x' in initvals: 
+            xcopy(initvals['x'], x)
+        else: 
+            xscal(0.0, x)
 
-    if 'y' in initvals:
-        ycopy(initvals['y'], y)
-    else:
-        yscal(0.0, y)
+        if 's' in initvals:
+            blas.copy(initvals['s'], s)
+            # ts = min{ t | s + t*e >= 0 }
+            if misc.max_step(s, dims) >= 0:
+                raise ValueError, "initial s is not positive"
+        else: 
+            s[: dims['l']] = 1.0 
+            ind = dims['l']
+            for m in dims['q']:
+                s[ind] = 1.0
+                ind += m
+            for m in dims['s']:
+                s[ind : ind + m*m : m+1] = 1.0
+                ind += m**2
 
-    if 'z' in initvals:
-        blas.copy(initvals['z'], z)
-        # tz = min{ t | z + t*e >= 0 }
-        if misc.max_step(z, dims) >= 0:
-            raise ValueError, "initial z is not positive"
-    else:
-        z[: dims['l']] = 1.0 
-        ind = dims['l']
-        for m in dims['q']:
-            z[ind] = 1.0
-            ind += m
-        for m in dims['s']:
-            z[ind : ind + m*m : m+1] = 1.0
-            ind += m**2
-    
+        if 'y' in initvals:
+            ycopy(initvals['y'], y)
+        else:
+            yscal(0.0, y)
+
+        if 'z' in initvals:
+            blas.copy(initvals['z'], z)
+            # tz = min{ t | z + t*e >= 0 }
+            if misc.max_step(z, dims) >= 0:
+                raise ValueError, "initial z is not positive"
+        else:
+            z[: dims['l']] = 1.0 
+            ind = dims['l']
+            for m in dims['q']:
+                z[ind] = 1.0
+                ind += m
+            for m in dims['s']:
+                z[ind : ind + m*m : m+1] = 1.0
+                ind += m**2
+
 
     rx, ry, rz = xnewcopy(q), ynewcopy(b), matrix(0.0, (cdim, 1)) 
     dx, dy = xnewcopy(x), ynewcopy(y)   
@@ -2089,6 +2175,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
     if show_progress: 
         print "% 10s% 12s% 10s% 8s% 7s" %("pcost", "dcost", "gap", "pres",
             "dres")
+
 
     gap = misc.sdot(s, z, dims) 
 
@@ -2159,7 +2246,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
                     'primal objective': pcost,  'dual objective': dcost,
                     'primal infeasibility': pres,
                     'dual infeasibility': dres, 'primal slack': -ts,
-                    'dual slack': -tz }
+                    'dual slack': -tz , 'iterations': iters }
                     
 
         # Compute initial scaling W and scaled iterates:  
@@ -2199,7 +2286,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
                     'relative gap': relgap, 'primal objective': pcost,  
                     'dual objective': dcost, 'primal infeasibility': pres,
                     'dual infeasibility': dres, 'primal slack': -ts,
-                    'dual slack': -tz }   
+                    'dual slack': -tz, 'iterations': iters }   
 
         # f4_no_ir(x, y, z, s) solves
         # 
@@ -2344,12 +2431,14 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
                         'dual objective': dcost,
                         'primal infeasibility': pres,
                         'dual infeasibility': dres, 'primal slack': -ts,
-                        'dual slack': -tz }
+                        'dual slack': -tz, 'iterations': iters }
+
+            dsdz = misc.sdot(ds, dz, dims)
 
             # Save ds o dz for Mehrotra correction
-            if correction and i == 0:
-                blas.copy(ds, ws3)
-                misc.sprod(ws3, dz, dims)
+            if correction and i == 0:   
+                    blas.copy(ds, ws3)
+                    misc.sprod(ws3, dz, dims)
 
 
             # Maximum steps to boundary.  
@@ -2375,7 +2464,8 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
                 else:
                     step = min(1.0, STEP / t)
             if i == 0: 
-                sigma = (1.0 - step)**EXPON
+                sigma = min(1.0, max(0.0, 
+                    1.0 - step + dsdz/gap * step**2))**EXPON
                 eta = 0.0
 
 
@@ -2519,7 +2609,7 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
         'primal objective', 'dual objective', 'gap', 'relative gap',  
         'primal infeasibility', 'dual infeasibility', 'primal slack', 
         'dual slack', 'residual as primal infeasibility certificate', 
-        'residual as dual infeasibility certificate'.
+        'residual as dual infeasibility certificate'. 
 
         The 'status' field has values 'optimal', 'primal infeasible',
         'dual infeasible', or 'unknown'.  The values of the other fields

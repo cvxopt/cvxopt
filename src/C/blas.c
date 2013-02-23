@@ -1,7 +1,7 @@
 /*
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.1
+ * This file is part of CVXOPT version 1.1.2
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -750,19 +750,12 @@ static PyObject* iamax(PyObject *self, PyObject *args, PyObject *kwrds)
     if (n == 0) return Py_BuildValue("i", 0);
     if (len(x) < ox + 1+(n-1)*ix) err_buf_len("x");
 
-    double val;
     switch (MAT_ID(x)){
         case DOUBLE:
-            Py_BEGIN_ALLOW_THREADS
-      	    val = idamax_(&n, MAT_BUFD(x)+ox, &ix)-1;
-            Py_END_ALLOW_THREADS
-            return Py_BuildValue("i", val);
+            return Py_BuildValue("i", idamax_(&n, MAT_BUFD(x)+ox, &ix)-1);
 
         case COMPLEX:
-            Py_BEGIN_ALLOW_THREADS
-	    val = izamax_(&n, MAT_BUFZ(x)+ox, &ix)-1;
-            Py_END_ALLOW_THREADS
-	    return Py_BuildValue("i", val);
+	    return Py_BuildValue("i", izamax_(&n, MAT_BUFZ(x)+ox, &ix)-1);
 
         default:
             err_invalid_id;

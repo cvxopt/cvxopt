@@ -1843,7 +1843,7 @@ We illustrate these features with three applications.
             #     [  I        -I   -D1^-1   0     ] [zl[:n]]     [bzl[:n]]
             #     [ -I        -I    0      -D2^-1 ] [zl[n:]]     [bzl[n:]]
             #
-            # where D1 = W['di'][:n]**2, D2 = W['di'][:n]**2.
+            # where D1 = W['di'][:n]**2, D2 = W['di'][n:]**2.
             #    
             # We first eliminate zl and x[n:]:
             #

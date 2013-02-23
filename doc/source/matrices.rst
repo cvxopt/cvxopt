@@ -912,6 +912,12 @@ result of an elementwise comparison.
 returns a list containing the elements of ``A`` (or nonzero elements of 
 ``A`` is ``A`` is sparse) for which ``f`` is true.
 
+>>> A = matrix([[5, -4, 10, -7], [-1, -5, -6, 2], [6, 1, 5, 2],  [-1, 2, -3, -7]])
+>>> print A
+[  5  -1   6  -1]
+[ -4  -5   1   2]
+[ 10  -6   5  -3]
+[ -7   2   2  -7]
 >>> filter(lambda x: x%2, A)         # list of odd elements in A
 [5, -7, -1, -5, 1, 5, -1, -3, -7]
 >>> filter(lambda x: -2 < x < 3, A)  # list of elements between -2 and 3

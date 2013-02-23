@@ -31,15 +31,15 @@ The CVXOPT distribution includes the source code of part of the
 collection of sparse matrix algorithms.  The copyright and license 
 information for the included libraries is as follows.
 
-* **AMD** Version 2.2.0.  Copyright (c) 2007 by Timothy A.  Davis, 
+* **AMD** Version 2.2.  Copyright (c) 2007 by Timothy A.  Davis, 
   Patrick R.  Amestoy, and Iain S. Duff.  
 
-* **CHOLMOD** Version 1.7.0.  Copyright (c) 2005-2007 by the
+* **CHOLMOD** Version 1.7.1.  Copyright (c) 2005-2009 by the
   University of Florida, Timothy A. Davis, and W. Hager.
 
-* **COLAMD** Version 2.7.0.  Copyright (c) 1998-2007 by Timothy A. Davis.
+* **COLAMD** Version 2.7.  Copyright (c) 1998-2007 by Timothy A. Davis.
 
-* **UMFPACK** Version 5.2.0.  Copyright (c) by 1995-2006 Timothy A. Davis.
+* **UMFPACK** Version 5.4.0.  Copyright (c) 1994-2009 by Timothy A. Davis.
 
 UMFPACK and the Supernodal module of CHOLMOD are licensed under the terms 
 of the `GNU General Public License, version 2 

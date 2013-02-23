@@ -1,6 +1,6 @@
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.1
+# This file is part of CVXOPT version 1.1.2
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
