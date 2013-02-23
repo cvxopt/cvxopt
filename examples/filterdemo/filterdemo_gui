@@ -1,0 +1,212 @@
+#!/usr/bin/python
+from cvxopt import matrix, cos
+from cvxopt.solvers import options
+from cvxopt.modeling import op, variable, max
+
+from math import log10, pi, floor
+
+import gtk
+
+import matplotlib
+matplotlib.use('GTK')  # or 'GTK'
+from matplotlib.backends.backend_gtk import FigureCanvasGTK as FigureCanvas
+import pylab 
+
+
+def frange(a,b,N):    
+    return [ a+k*float((b-a))/N  for k in xrange(N) ]
+
+
+def design_lowpass(N, d1, wc, ws, solver=None, Q=50):
+
+    h = variable(N+1)
+    d1 = 10**(d1/20.0)     # convert from dB
+    
+    n  = matrix(range(N+1), (1,N+1), 'd')
+    n1 = int(round(N*Q*wc/pi));
+    G1 = cos(matrix(frange(0,wc,n1))*n)
+
+    n2 = int(round(N*Q*(pi-ws)/pi));
+    G2 = cos(matrix(frange(ws,pi,n2))*n)
+
+    op(max(abs(G2*h)), [G1*h <= d1, G1*h >= 1.0/d1]).solve(solver=solver)
+
+    return (h.value, max(abs(G2*h.value)))
+
+
+
+class MainGUI:
+
+    def check_values(self, param=None):
+        page = self.nb.get_current_page()
+        if page>=0:
+            N  = self.fo_spinner.get_value_as_int()
+            co = self.co_spinner.get_value()
+            sb = self.sb_spinner.get_value()
+            pr = self.pr_spinner.get_value()
+            if (co == self.tabs[page][1] and sb == self.tabs[page][2] and
+                pr == self.tabs[page][3] and N  == self.tabs[page][4]):
+                self.compute_filter.set_sensitive(False)
+            else:
+                self.compute_filter.set_sensitive(True)
+            
+    def change_co(self, param1):
+        self.sb_spinner.set_range(param1.get_value()+0.01,
+                                  self.sb_spinner.get_range()[1]);        
+        self.check_values()
+        
+    def change_sb(self, param1):
+        self.co_spinner.set_range(0.1, param1.get_value()-0.01);
+        self.check_values()
+        
+    def switch_page(self, page, page_num, page_int, notebook):
+        if len(self.tabs)>page_int:
+            self.tabs[page_int][0].draw()
+            self.co_spinner.set_value(self.tabs[page_int][1])
+            self.sb_spinner.set_value(self.tabs[page_int][2])
+            self.pr_spinner.set_value(self.tabs[page_int][3])
+            self.fo_spinner.set_value(self.tabs[page_int][4])
+            self.compute_filter.set_sensitive(False)
+            
+    def new_tab(self, button, notebook):
+        
+        N  = self.fo_spinner.get_value_as_int()
+        co = self.co_spinner.get_value()
+        sb = self.sb_spinner.get_value()
+        pr = self.pr_spinner.get_value()
+        
+        try: 
+            h, d2 = design_lowpass(N, pr, pi*co, pi*sb)
+        except:
+            x = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, \
+                type=gtk.MESSAGE_WARNING, message_format= \
+                "Please tighten the filter specifications.");
+            x.run()
+            return
+
+        w  = matrix(frange(0,pi,N*50));        
+        C = cos(w*matrix(range(N+1),(1,N+1)));
+        
+        fig = pylab.figure()
+        canvas = FigureCanvas(fig)  # a gtk.DrawingArea
+        ax = fig.add_subplot(111)
+        
+        ylim = [floor((20*log10(d2)-30)/100)*100,10]
+        
+        ax.plot(list(w/pi),[20*log10(abs(x)) for x in C*h])
+        ax.plot(2*[co],[-pr,ylim[0]],'g--')
+        ax.plot(2*[co],[10,pr],'g--')
+        ax.plot(2*[sb],[10,20*log10(d2)],'g--')
+        ax.plot([sb, 1],2*[20*log10(d2)],'g--')
+        ax.plot([0, co],2*[-pr],'g--')
+        ax.plot([0, co],2*[pr],'g--')
+
+        pylab.setp(ax,ylim=ylim)
+        pylab.setp(ax,xlabel="Normalized frequency")
+        pylab.setp(ax,ylabel="Attenuation [dB]")
+        ax.grid()        
+        canvas.show()               
+        notebook.append_page(canvas)
+        notebook.set_current_page(notebook.get_n_pages()-1)
+        
+        self.tabs.append([canvas,co,sb,pr,N])
+        self.compute_filter.set_sensitive(False)
+        
+    def close_tab(self, button, notebook):
+        page = notebook.get_current_page()
+        notebook.remove_page(page)
+        if page>=0: del(self.tabs[page])
+        # Need to refresh the widget -- 
+        # This forces the widget to redraw itself.
+        notebook.queue_draw_area(0,0,-1,-1)
+
+        if notebook.get_n_pages() == 0:
+            self.compute_filter.set_sensitive(True)
+
+    def delete(self, widget, event=None):
+        gtk.main_quit()
+        return gtk.FALSE
+    
+    def __init__(self):
+        window = gtk.Window (gtk.WINDOW_TOPLEVEL)
+        window.connect("delete_event", self.delete)
+        window.set_default_size(600, 400)
+        window.set_border_width(10)
+        table = gtk.Table(4,6,False)
+        window.add(table)
+        
+        # Create a new notebook, place the position of the tabs
+        notebook = gtk.Notebook()
+        notebook.connect("switch-page", self.switch_page, notebook)
+        notebook.set_tab_pos(gtk.POS_BOTTOM)
+        table.attach(notebook, 0,6,0,1)
+        notebook.show()
+        self.nb = notebook
+        self.tabs = []
+
+        # Stopband frequency 
+        co_label = gtk.Label("Cutoff")
+        co_label.show()
+        table.attach(co_label, 0,1,1,2, gtk.SHRINK, gtk.SHRINK)
+
+        co_adj = gtk.Adjustment(0.25, 0.1, 0.34, 0.01, 0, 0)
+        self.co_spinner = gtk.SpinButton(co_adj, 0.0, 2)
+        self.co_spinner.set_numeric(True)
+        self.co_spinner.connect("value-changed", self.change_co);
+        self.co_spinner.show()
+        table.attach(self.co_spinner, 0,1,2,3, gtk.SHRINK, gtk.SHRINK)
+
+        # Stopband frequency 
+        sb_label = gtk.Label("Stopband")
+        sb_label.show()
+        table.attach(sb_label, 1,2,1,2, gtk.SHRINK, gtk.SHRINK)
+
+        sb_adj = gtk.Adjustment(0.35, 0.26, 0.5, 0.01, 0, 0)
+        self.sb_spinner = gtk.SpinButton(sb_adj, 0.0, 2)
+        self.sb_spinner.set_numeric(True)
+        self.sb_spinner.connect("value-changed", self.change_sb);
+        self.sb_spinner.show()
+        table.attach(self.sb_spinner, 1,2,2,3, gtk.SHRINK, gtk.SHRINK)
+
+        # Passband ripple
+        pr_label = gtk.Label("Passband ripple")
+        pr_label.show()
+        table.attach(pr_label, 2,3,1,2, gtk.SHRINK, gtk.SHRINK)
+
+        pr_adj = gtk.Adjustment(1, 0.3, 3, 0.01, 0, 0)
+        self.pr_spinner = gtk.SpinButton(pr_adj, 0.0, 2)
+        self.pr_spinner.connect("value-changed", self.check_values);
+        self.pr_spinner.set_numeric(True)
+        self.pr_spinner.show()
+        table.attach(self.pr_spinner, 2,3,2,3, gtk.SHRINK, gtk.SHRINK)
+        
+        # Filter order
+        fo_label = gtk.Label("Filter order")
+        fo_label.show()
+        table.attach(fo_label, 3,4,1,2, gtk.SHRINK, gtk.SHRINK)
+
+        fo_adj = gtk.Adjustment(10, 5, 50, 1, 0, 0)
+        self.fo_spinner = gtk.SpinButton(fo_adj, 0.0, 0)
+        self.fo_spinner.connect("value-changed", self.check_values);
+        self.fo_spinner.set_numeric(True)
+        self.fo_spinner.show()
+        table.attach(self.fo_spinner, 3,4,2,3, gtk.SHRINK, gtk.SHRINK)
+
+        # Buttons
+        button = gtk.Button("compute filter")        
+        button.connect("clicked", self.new_tab, notebook)
+        table.attach(button, 4,5,2,3, gtk.FILL, gtk.SHRINK)
+        button.show()
+        self.compute_filter = button
+
+        button = gtk.Button("close tab")
+        button.connect("clicked", self.close_tab, notebook)
+        table.attach(button, 5,6,2,3, gtk.FILL, gtk.SHRINK)
+        button.show()
+        
+        table.show()
+        window.show()
+
+options['show_progress']=False
+gui = MainGUI()
+gtk.main()

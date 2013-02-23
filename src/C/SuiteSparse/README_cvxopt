@@ -1,0 +1,37 @@
+This is the September 20, 2008 (version 3.2.0) distribution of the 
+SuiteSparse package from www.cise.ufl.edu/research/sparse/SuiteSparse/, 
+with the following files and directories removed.
+
+AMD/Demo
+AMD/MATLAB
+BTF 
+CAMD
+CCOLAMD 
+CHOLMOD/Demo
+CHOLMOD/MATLAB
+CHOLMOD/MatrixOps
+CHOLMOD/Modify
+CHOLMOD/Partition
+CHOLMOD/Tcov
+CHOLMOD/Valgrind
+COLAMD/MATLAB
+CSparse
+Csparse_to_CXsparse
+CXSparse
+CXSparse_newfiles
+CXSparse_newfiles.tar.gz
+KLU
+LDL
+LINFACTOR
+MATLAB_Tools
+MESHND
+RBio
+SPQR
+SSMULT
+SuiteSparse_demo.m
+SuiteSparse_install.m
+SuiteSparse_test.m
+UFcollection
+UMFPACK/Demo
+UMFPACK/MATLAB
+UMFPACK/Tcov

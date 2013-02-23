@@ -1,0 +1,8 @@
+This directory contains some examples from the following chapters of 
+the CVXOPT documentation.
+
+Chapter 4. The LAPACK interface.
+Chapter 7. Sparse linear equations.
+Chapter 8. Cone programming.
+Chapter 9. Nonlinear convex optimization.
+Chapter 10. Modeling.

@@ -1,0 +1,12 @@
+The filterdemo computes a FIR lowpass filter by solving a linear 
+program.  It solves a discretization of the  problem
+
+minimize     d2
+subject to   -1/d1 <= H(wk) <= d1,   0 <= w <=  wc
+	     max(abs(H(wk))) <= d2,  ws <= w <= pi
+
+where H(w) = h_0 + sum_{i=1}^{n-1} h_i*cos(2*pi/n*i*w).
+The variables are h and d2.
+
+'filterdemo_cli' uses a simple a simple command-line interface. 
+'filterdemo_gui' uses a graphical user interface based on GTK.

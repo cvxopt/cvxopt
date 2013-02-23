@@ -1,0 +1,6 @@
+This directory contains examples from the book "Convex Optimization" 
+by Boyd and Vandenberghe (Cambridge University Press, 2004, and
+www.stanford.edu/~boyd/cvxbook).
+
+The scripts require the plotting library Matplotlib, available at 
+matplotlib.sourceforge.net.  

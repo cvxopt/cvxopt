@@ -1,0 +1,15 @@
+{% extends "!layout.html" %}
+{% set reldelim1 = ' ' %}
+{% block rootrellink %}
+    <li><a href="http://abel.ee.ucla.edu/cvxopt">CVXOPT home</a> |</li>
+    {{ super() }}
+{% endblock %}
+
+{%- block footer %}
+    <div class="footer">
+    {%- if show_sphinx %}
+      {% trans sphinx_version=sphinx_version|e %}Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> {{ sphinx_version }}.{% endtrans %}   
+    {%- endif %}
+    </div>
+{%- endblock %}
+
