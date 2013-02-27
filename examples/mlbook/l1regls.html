@@ -1,0 +1,150 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>L1-norm regularized least-squares &mdash; CVXOPT</title>
+    
+    <link rel="stylesheet" href="../../_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="top" title="CVXOPT" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="l1-norm-regularized-least-squares">
+<h1>L1-norm regularized least-squares<a class="headerlink" href="#l1-norm-regularized-least-squares" title="Permalink to this headline">¶</a></h1>
+<p>We consider a least-squares problem with <img class="math" src="../../_images/math/3ff9d2add1273f7f294d4f0318b0ed4340c07768.png" alt="\ell_1"/>-norm
+regularization</p>
+<div class="math" id="equation-regls">
+<p><span class="eqno">(1)</span><img src="../../_images/math/43a05b14583aae2475acb62a22f00ffd08f69db0.png" alt="\begin{array}{ll}
+\mbox{minimize}   &amp;  \| Ax - b \|_2^2  + \| x \|_1
+\end{array}"/></p>
+</div><p>with variable <img class="math" src="../../_images/math/2eac89afc12ea6dcdcdaef65d8d2dcb8b02536fb.png" alt="x \in \mathbf{R}^n"/> and problem data <img class="math" src="../../_images/math/0b1720d6ab3512194d6a38d765fedbe601577f9b.png" alt="A \in \mathbf{R}^{m \times n}"/> and <img class="math" src="../../_images/math/94ef0a277d03edba295611258568d953f4c710d5.png" alt="b \in
+\mathbf{R}^m"/>. The problem is equivalent to a QP</p>
+<div class="math" id="equation-regls_qp">
+<p><span class="eqno">(2)</span><img src="../../_images/math/99782b2fe88ce777d2f4cb199792e9f63665295e.png" alt="\begin{array}{ll}
+\mbox{minimize}   &amp; \| Ax - b \|_2^2  +  \mathbf{1}^Tv\\
+\mbox{subject to} &amp; -v \preceq x \preceq v
+\end{array}"/></p>
+</div><p>with <img class="math" src="../../_images/math/f93f5c51ea4b04b4992b003b39479f29018f6bda.png" alt="2n"/> variables and <img class="math" src="../../_images/math/f93f5c51ea4b04b4992b003b39479f29018f6bda.png" alt="2n"/> constraints. The problem can
+also be written as a separable QP</p>
+<div class="math" id="equation-regls_qp2">
+<p><span class="eqno">(3)</span><img src="../../_images/math/ae7d510acda395a6f3c09764594b713b2999d3a7.png" alt="\begin{array}{ll}
+\mbox{minimize}   &amp; w^Tw + e^Tu\\
+\mbox{subject to} &amp; -u \preceq x \preceq u \\
+                  &amp; Ax - w = b.
+\end{array}"/></p>
+</div><h3> Documentation </h3><p>Solvers for the <img class="math" src="../../_images/math/3ff9d2add1273f7f294d4f0318b0ed4340c07768.png" alt="\ell_1"/>-norm regularized least-squares problem are
+available as a Python module <a class="reference download internal" href="../../_downloads/l1regls.py"><tt class="xref download docutils literal"><span class="pre">l1regls.py</span></tt></a>. The module implements
+the following three functions:</p>
+<blockquote>
+<div><dl class="function">
+<dt id="l1regls">
+<tt class="descname">l1regls</tt><big>(</big><em>A</em>, <em>b</em><big>)</big><a class="headerlink" href="#l1regls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves the problem <a href="#equation-regls_qp">(2)</a> using a custom KKT solver.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="l1regls_mosek">
+<tt class="descname">l1regls_mosek</tt><big>(</big><em>A</em>, <em>b</em><big>)</big><a class="headerlink" href="#l1regls_mosek" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves the problem <a href="#equation-regls_qp">(2)</a> using MOSEK. This function is
+only available if MOSEK is installed.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="l1regls_mosek2">
+<tt class="descname">l1regls_mosek2</tt><big>(</big><em>A</em>, <em>b</em><big>)</big><a class="headerlink" href="#l1regls_mosek2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves the problem <a href="#equation-regls_qp2">(3)</a> using MOSEK. This function is
+only available if MOSEK is installed.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>.</p>
+</dd></dl>
+
+</div></blockquote>
+<h3> Example </h3><div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">l1regls</span> <span class="kn">import</span> <span class="n">l1regls</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">normal</span>
+
+<span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">200</span>
+<span class="n">A</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">l1regls</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <h3>Contents</h3>
+    <ul>
+    <li><a href="../../index.html">Main</a></li>
+    <li>
+    <ul>
+    <li><a href="../../copyright.html">Copyright and license</a></li>
+    <li><a href="../../download/index.html">Download</a></li>
+    <li><a href="../../install/index.html">Installation</a></li>
+    <li><a href="../../documentation/index.html">Documentation</a></li>
+    <li><a href="../index.html">Examples</a></li>
+    <li><a href="../../applications/index.html">Applications</a></li>
+    </ul>
+    </li>
+    </ul>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-2894407-1");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+  </body>
+</html>

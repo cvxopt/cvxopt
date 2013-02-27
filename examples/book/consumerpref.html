@@ -1,0 +1,238 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Consumer preference analysis (fig. 6.25-6.26) &mdash; CVXOPT</title>
+    
+    <link rel="stylesheet" href="../../_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="top" title="CVXOPT" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="consumer-preference-analysis-fig-6-25-6-26">
+<h1>Consumer preference analysis (fig. 6.25-6.26)<a class="headerlink" href="#consumer-preference-analysis-fig-6-25-6-26" title="Permalink to this headline">¶</a></h1>
+<p>
+<img class="examples" src="figures/fig-6-25.png">
+<img class="examples" src="figures/fig-6-26.png">
+</p>
+
+<p>
+<a href="src/consumerpref.py">source code</a>
+</p><div class="highlight-python"><div class="highlight"><pre><span class="c"># Figures 6.25 and 6.26, page 342.</span>
+<span class="c"># Consumer preference analysis.</span>
+
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span><span class="p">,</span> <span class="n">op</span>
+<span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">try</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">pylab</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="k">else</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="k">def</span> <span class="nf">utility</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mf">1.1</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="o">/</span> <span class="mf">1.9</span>
+
+<span class="n">B</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span>
+    <span class="mf">4.5e-01</span><span class="p">,</span>  <span class="mf">9.6e-01</span><span class="p">,</span>
+    <span class="mf">2.1e-01</span><span class="p">,</span>  <span class="mf">3.4e-01</span><span class="p">,</span>
+    <span class="mf">2.8e-01</span><span class="p">,</span>  <span class="mf">8.7e-01</span><span class="p">,</span>
+    <span class="mf">9.6e-01</span><span class="p">,</span>  <span class="mf">3.0e-02</span><span class="p">,</span>
+    <span class="mf">8.0e-02</span><span class="p">,</span>  <span class="mf">9.2e-01</span><span class="p">,</span>
+    <span class="mf">2.0e-02</span><span class="p">,</span>  <span class="mf">2.2e-01</span><span class="p">,</span>
+    <span class="mf">0.0e+00</span><span class="p">,</span>  <span class="mf">3.9e-01</span><span class="p">,</span>
+    <span class="mf">2.6e-01</span><span class="p">,</span>  <span class="mf">6.4e-01</span><span class="p">,</span>
+    <span class="mf">3.5e-01</span><span class="p">,</span>  <span class="mf">9.7e-01</span><span class="p">,</span>
+    <span class="mf">9.1e-01</span><span class="p">,</span>  <span class="mf">7.8e-01</span><span class="p">,</span>
+    <span class="mf">1.2e-01</span><span class="p">,</span>  <span class="mf">1.4e-01</span><span class="p">,</span>
+    <span class="mf">5.8e-01</span><span class="p">,</span>  <span class="mf">8.4e-01</span><span class="p">,</span>
+    <span class="mf">3.2e-01</span><span class="p">,</span>  <span class="mf">7.3e-01</span><span class="p">,</span>
+    <span class="mf">4.9e-01</span><span class="p">,</span>  <span class="mf">2.7e-01</span><span class="p">,</span>
+    <span class="mf">7.0e-02</span><span class="p">,</span>  <span class="mf">8.0e-01</span><span class="p">,</span>
+    <span class="mf">9.3e-01</span><span class="p">,</span>  <span class="mf">8.7e-01</span><span class="p">,</span>
+    <span class="mf">4.4e-01</span><span class="p">,</span>  <span class="mf">8.6e-01</span><span class="p">,</span>
+    <span class="mf">3.3e-01</span><span class="p">,</span>  <span class="mf">4.2e-01</span><span class="p">,</span>
+    <span class="mf">8.9e-01</span><span class="p">,</span>  <span class="mf">9.0e-01</span><span class="p">,</span>
+    <span class="mf">4.9e-01</span><span class="p">,</span>  <span class="mf">7.0e-02</span><span class="p">,</span>
+    <span class="mf">9.5e-01</span><span class="p">,</span>  <span class="mf">3.3e-01</span><span class="p">,</span>
+    <span class="mf">6.6e-01</span><span class="p">,</span>  <span class="mf">2.6e-01</span><span class="p">,</span>
+    <span class="mf">9.5e-01</span><span class="p">,</span>  <span class="mf">7.3e-01</span><span class="p">,</span>
+    <span class="mf">4.2e-01</span><span class="p">,</span>  <span class="mf">9.1e-01</span><span class="p">,</span>
+    <span class="mf">6.8e-01</span><span class="p">,</span>  <span class="mf">2.0e-01</span><span class="p">,</span>
+    <span class="mf">8.7e-01</span><span class="p">,</span>  <span class="mf">1.7e-01</span><span class="p">,</span>
+    <span class="mf">5.2e-01</span><span class="p">,</span>  <span class="mf">6.2e-01</span><span class="p">,</span>
+    <span class="mf">7.7e-01</span><span class="p">,</span>  <span class="mf">6.3e-01</span><span class="p">,</span>
+    <span class="mf">2.0e-02</span><span class="p">,</span>  <span class="mf">2.9e-01</span><span class="p">,</span>
+    <span class="mf">9.8e-01</span><span class="p">,</span>  <span class="mf">2.0e-02</span><span class="p">,</span>
+    <span class="mf">5.0e-02</span><span class="p">,</span>  <span class="mf">7.9e-01</span><span class="p">,</span>
+    <span class="mf">7.9e-01</span><span class="p">,</span>  <span class="mf">1.9e-01</span><span class="p">,</span>
+    <span class="mf">6.2e-01</span><span class="p">,</span>  <span class="mf">6.0e-02</span><span class="p">,</span>
+    <span class="mf">6.9e-01</span><span class="p">,</span>  <span class="mf">1.0e-01</span><span class="p">,</span>
+    <span class="mf">6.9e-01</span><span class="p">,</span>  <span class="mf">3.7e-01</span><span class="p">,</span>
+    <span class="mf">0.0e+00</span><span class="p">,</span>  <span class="mf">7.2e-01</span><span class="p">,</span>
+    <span class="mf">6.3e-01</span><span class="p">,</span>  <span class="mf">4.0e-02</span><span class="p">,</span>
+    <span class="mf">4.0e-02</span><span class="p">,</span>  <span class="mf">4.6e-01</span><span class="p">,</span>
+    <span class="mf">3.6e-01</span><span class="p">,</span>  <span class="mf">9.5e-01</span><span class="p">,</span>
+    <span class="mf">8.2e-01</span><span class="p">,</span>  <span class="mf">6.7e-01</span> <span class="p">],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">40</span><span class="p">))</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">B</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c"># Plot some contour lines.</span>
+<span class="n">nopts</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">nopts</span><span class="p">)</span><span class="o">*</span><span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">nopts</span><span class="p">),</span> <span class="n">tc</span><span class="o">=</span><span class="s">&#39;d&#39;</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">a</span><span class="p">[:,</span><span class="n">nopts</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>  <span class="n">a</span><span class="p">[:,</span><span class="n">nopts</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+<span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s">&#39;wo&#39;</span><span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">pylab</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">pylab</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Y</span><span class="p">),</span> <span class="n">pylab</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">utility</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)),</span>
+        <span class="p">[</span><span class="o">.</span><span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">)],</span> <span class="n">colors</span><span class="o">=</span><span class="s">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;x1&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;x2&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Goods baskets and utility function (fig. 6.25)&#39;</span><span class="p">)</span>
+    <span class="c">#print(&quot;Close figure to start analysis.&quot;)</span>
+    <span class="c">#pylab.show()</span>
+
+
+<span class="c"># P are basket indices in order of increasing preference</span>
+<span class="n">l</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">utility</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]),</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)))</span>
+<span class="n">l</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="n">P</span> <span class="o">=</span> <span class="p">[</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">l</span> <span class="p">]</span>
+
+<span class="c"># baskets with known preference relations</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">gx</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">gy</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+<span class="c"># comparison basket at (.5, .5) has utility 0</span>
+<span class="n">gxc</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">gyc</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">monotonicity</span> <span class="o">=</span> <span class="p">[</span> <span class="n">gx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">gy</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">gxc</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">gyc</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">]</span>
+<span class="n">preferences</span> <span class="o">=</span> <span class="p">[</span> <span class="n">u</span><span class="p">[</span><span class="n">P</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]]</span> <span class="o">&gt;=</span> <span class="n">u</span><span class="p">[</span><span class="n">P</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">]</span>
+<span class="n">concavity</span> <span class="o">=</span> <span class="p">[</span> <span class="n">u</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">gx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span> <span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span> <span class="o">+</span>
+    <span class="n">gy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span> <span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="p">]</span>
+<span class="n">concavity</span> <span class="o">+=</span> <span class="p">[</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">gx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span> <span class="mf">0.5</span> <span class="o">-</span> <span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span> <span class="o">+</span>
+    <span class="n">gy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span> <span class="mf">0.5</span> <span class="o">-</span> <span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="p">]</span>
+<span class="n">concavity</span> <span class="o">+=</span> <span class="p">[</span> <span class="n">u</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">gxc</span> <span class="o">*</span> <span class="p">(</span> <span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="p">)</span> <span class="o">+</span>
+    <span class="n">gyc</span> <span class="o">*</span> <span class="p">(</span> <span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="p">]</span>
+
+<span class="n">preferred</span><span class="p">,</span> <span class="n">rejected</span><span class="p">,</span> <span class="n">neutral</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">op</span><span class="p">(</span><span class="o">-</span><span class="n">u</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">monotonicity</span> <span class="o">+</span> <span class="n">preferences</span> <span class="o">+</span> <span class="n">concavity</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s">&#39;optimal&#39;</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">value</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">rejected</span> <span class="o">+=</span> <span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Basket (</span><span class="si">%1.2f</span><span class="s">, </span><span class="si">%1.2f</span><span class="s">) rejected.&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">k</span><span class="p">],</span><span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">op</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">monotonicity</span> <span class="o">+</span> <span class="n">preferences</span> <span class="o">+</span> <span class="n">concavity</span><span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="s">&#39;optimal&#39;</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">value</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;Basket (</span><span class="si">%1.2f</span><span class="s">, </span><span class="si">%1.2f</span><span class="s">) preferred.&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">k</span><span class="p">],</span><span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]))</span>
+            <span class="n">preferred</span> <span class="o">+=</span> <span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;No conclusion about basket (</span><span class="si">%1.2f</span><span class="s">, </span><span class="si">%1.2f</span><span class="s">).&quot;</span> \
+                <span class="o">%</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">k</span><span class="p">],</span><span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">k</span><span class="p">]))</span>
+            <span class="n">neutral</span> <span class="o">+=</span> <span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s">&#39;wo&#39;</span><span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">pylab</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">pylab</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Y</span><span class="p">),</span> <span class="n">pylab</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">utility</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)),</span>
+        <span class="p">[</span><span class="o">.</span><span class="mi">1</span><span class="o">*</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">)],</span> <span class="n">colors</span><span class="o">=</span><span class="s">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;x1&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;x2&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Goods baskets and utility function (fig. 6.25)&#39;</span><span class="p">)</span>
+
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">preferred</span><span class="p">],</span> <span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">preferred</span><span class="p">],</span> <span class="s">&#39;go&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">rejected</span><span class="p">],</span> <span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">rejected</span><span class="p">],</span> <span class="s">&#39;ro&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">neutral</span><span class="p">],</span> <span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">neutral</span><span class="p">],</span> <span class="s">&#39;ys&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">],</span> <span class="s">&#39;+&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;:&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">],</span> <span class="s">&#39;:&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">pylab</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">pylab</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Y</span><span class="p">),</span> <span class="n">pylab</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">utility</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)),</span>
+        <span class="p">[</span><span class="n">utility</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">)],</span> <span class="n">colors</span><span class="o">=</span><span class="s">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;x1&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;x2&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Result of preference analysis (fig. 6.26)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <h3>Contents</h3>
+    <ul>
+    <li><a href="../../index.html">Main</a></li>
+    <li>
+    <ul>
+    <li><a href="../../copyright.html">Copyright and license</a></li>
+    <li><a href="../../download/index.html">Download</a></li>
+    <li><a href="../../install/index.html">Installation</a></li>
+    <li><a href="../../documentation/index.html">Documentation</a></li>
+    <li><a href="../index.html">Examples</a></li>
+    <li><a href="../../applications/index.html">Applications</a></li>
+    </ul>
+    </li>
+    </ul>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-2894407-1");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+  </body>
+</html>

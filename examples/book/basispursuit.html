@@ -1,0 +1,351 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Basis pursuit (fig 6.21-6.23) &mdash; CVXOPT</title>
+    
+    <link rel="stylesheet" href="../../_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="top" title="CVXOPT" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="basis-pursuit-fig-6-21-6-23">
+<h1>Basis pursuit (fig 6.21-6.23)<a class="headerlink" href="#basis-pursuit-fig-6-21-6-23" title="Permalink to this headline">¶</a></h1>
+<p>
+<img class="examples" src="figures/fig-6-21.png">
+<img class="examples" src="figures/fig-6-22.png">
+<img class="examples" src="figures/fig-6-23.png">
+</p>
+
+<p>
+<a href="src/basispursuit.py">source code</a>
+</p><div class="highlight-python"><div class="highlight"><pre><span class="c"># Figures 6.21-23, pages 335-337.</span>
+<span class="c"># Basis pursuit.</span>
+
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span>
+<span class="k">try</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">pylab</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="k">else</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c"># Basis functions are Gabor pulses:  for k = 0,...,K-1,</span>
+<span class="c">#</span>
+<span class="c">#     exp(-(t - k * tau)^2/sigma^2 ) * cos (l*omega0*t),  l = 0,...,L</span>
+<span class="c">#     exp(-(t - k * tau)^2/sigma^2 ) * sin (l*omega0*t),  l = 1,...,L</span>
+
+<span class="n">sigma</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">tau</span> <span class="o">=</span> <span class="mf">0.002</span>
+<span class="n">omega0</span> <span class="o">=</span> <span class="mf">5.0</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">501</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">501</span>       <span class="c"># number of samples of each signal in [0,1]</span>
+
+<span class="c"># Build dictionary matrix</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">tc</span><span class="o">=</span><span class="s">&#39;d&#39;</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[:,</span> <span class="n">K</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span> <span class="n">tau</span> <span class="o">*</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">K</span><span class="p">),</span> <span class="s">&#39;d&#39;</span><span class="p">)[</span><span class="n">N</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">],:]</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">B</span><span class="o">/</span><span class="n">sigma</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">K</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">L</span><span class="o">+</span><span class="mi">1</span><span class="p">)))</span>
+
+<span class="c"># First K columns are DC pulses for k = 0,...,K-1</span>
+<span class="n">A</span><span class="p">[:,:</span><span class="n">K</span><span class="p">]</span> <span class="o">=</span> <span class="n">B</span>
+<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+
+    <span class="c"># Cosine pulses for omega = (l+1)*omega0 and k = 0,...,K-1.</span>
+    <span class="n">A</span><span class="p">[:,</span> <span class="n">K</span><span class="o">+</span><span class="n">l</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">K</span><span class="p">)</span> <span class="p">:</span> <span class="n">K</span><span class="o">+</span><span class="n">l</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">K</span><span class="p">)</span><span class="o">+</span><span class="n">K</span><span class="p">]</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">cos</span><span class="p">((</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">omega0</span><span class="o">*</span><span class="n">ts</span><span class="p">)[:,</span> <span class="n">K</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+    <span class="c"># Sine pulses for omega = (l+1)*omega0 and k = 0,...,K-1.</span>
+    <span class="n">A</span><span class="p">[:,</span> <span class="n">K</span><span class="o">+</span><span class="n">l</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">K</span><span class="p">)</span><span class="o">+</span><span class="n">K</span> <span class="p">:</span> <span class="n">K</span><span class="o">+</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">K</span><span class="p">)]</span> <span class="o">=</span> \
+        <span class="n">mul</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">sin</span><span class="p">((</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">omega0</span><span class="o">*</span><span class="n">ts</span><span class="p">)[:,</span><span class="n">K</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+<span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
+
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">311</span><span class="p">)</span>
+    <span class="c"># DC pulse for k = 250 (tau = 0.5)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">A</span><span class="p">[:,</span><span class="mi">250</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;f(0.5, 0, c)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Three basis elements (fig. 6.21)&#39;</span><span class="p">)</span>
+    <span class="c"># Cosine pulse for k = 250 (tau = 0.5) and l = 15  (omega = 75)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">312</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;f(0.5, 75, c)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">K</span> <span class="o">+</span> <span class="mi">14</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">K</span><span class="p">)</span> <span class="o">+</span> <span class="mi">250</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">313</span><span class="p">)</span>
+    <span class="c"># Cosine pulse for k = 250 (tau = 0.5) and l = 30  (omega = 150)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">A</span><span class="p">[:,</span> <span class="n">K</span> <span class="o">+</span> <span class="mi">29</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">K</span><span class="p">)</span> <span class="o">+</span> <span class="mi">250</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;f(0.5, 150, c)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">)</span>
+
+<span class="c"># Signal.</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="mi">11</span><span class="o">*</span><span class="n">ts</span><span class="p">),</span> <span class="n">sin</span><span class="p">(</span><span class="mi">30</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">ts</span><span class="p">)))</span>
+
+<span class="c"># Basis pursuit problem</span>
+<span class="c">#</span>
+<span class="c">#     minimize    ||A*x - y||_2^2 + ||x||_1</span>
+<span class="c">#</span>
+<span class="c">#     minimize    x&#39;*A&#39;*A*x - 2.0*y&#39;*A*x + 1&#39;*u</span>
+<span class="c">#     subject to  -u &lt;= x &lt;= u</span>
+<span class="c">#</span>
+<span class="c"># Variables x (n),  u (n).</span>
+
+<span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="n">q</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">blas</span><span class="o">.</span><span class="n">gemv</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s">&#39;T&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">P</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function and gradient evaluation of</span>
+
+<span class="sd">        v := alpha * 2*A&#39;*A * u + beta * v</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">blas</span><span class="o">.</span><span class="n">gemv</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+    <span class="n">blas</span><span class="o">.</span><span class="n">gemv</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s">&#39;T&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s">&#39;N&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        v := alpha*[I, -I; -I, -I] * u + beta * v  (trans = &#39;N&#39; or &#39;T&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">blas</span><span class="o">.</span><span class="n">scal</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+    <span class="n">blas</span><span class="o">.</span><span class="n">axpy</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">)</span>
+    <span class="n">blas</span><span class="o">.</span><span class="n">axpy</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="o">-</span><span class="n">alpha</span><span class="p">,</span> <span class="n">offsetx</span> <span class="o">=</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">blas</span><span class="o">.</span><span class="n">axpy</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="o">-</span><span class="n">alpha</span><span class="p">,</span> <span class="n">offsety</span> <span class="o">=</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">blas</span><span class="o">.</span><span class="n">axpy</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">n</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="o">-</span><span class="n">alpha</span><span class="p">,</span> <span class="n">offsetx</span> <span class="o">=</span> <span class="n">n</span><span class="p">,</span> <span class="n">offsety</span> <span class="o">=</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="n">h</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+
+<span class="c"># Customized solver for the KKT system</span>
+<span class="c">#</span>
+<span class="c">#     [  2.0*A&#39;*A   0    I      -I     ] [x[:n] ]     [bx[:n] ]</span>
+<span class="c">#     [  0          0   -I      -I     ] [x[n:] ]  =  [bx[n:] ].</span>
+<span class="c">#     [  I         -I   -D1^-1   0     ] [z[:n] ]     [bz[:n] ]</span>
+<span class="c">#     [ -I         -I    0      -D2^-1 ] [z[n:] ]     [bz[n:] ]</span>
+<span class="c">#</span>
+<span class="c"># where D1 = W[&#39;di&#39;][:n]**2,  D2 = W[&#39;di&#39;][:n]**2.</span>
+<span class="c">#</span>
+<span class="c"># We first eliminate z and x[n:]:</span>
+<span class="c">#</span>
+<span class="c">#     ( 2*A&#39;*A + 4*D1*D2*(D1+D2)^-1 ) * x[:n] =</span>
+<span class="c">#         bx[:n] - (D2-D1)*(D1+D2)^-1 * bx[n:]</span>
+<span class="c">#         + D1 * ( I + (D2-D1)*(D1+D2)^-1 ) * bz[:n]</span>
+<span class="c">#         - D2 * ( I - (D2-D1)*(D1+D2)^-1 ) * bz[n:]</span>
+<span class="c">#</span>
+<span class="c">#     x[n:] = (D1+D2)^-1 * ( bx[n:] - D1*bz[:n]  - D2*bz[n:] )</span>
+<span class="c">#              - (D2-D1)*(D1+D2)^-1 * x[:n]</span>
+<span class="c">#</span>
+<span class="c">#     z[:n] = D1 * ( x[:n] - x[n:] - bz[:n] )</span>
+<span class="c">#     z[n:] = D2 * (-x[:n] - x[n:] - bz[n:] ).</span>
+<span class="c">#</span>
+<span class="c">#</span>
+<span class="c"># The first equation has the form</span>
+<span class="c">#</span>
+<span class="c">#     (A&#39;*A + D)*x[:n]  =  rhs</span>
+<span class="c">#</span>
+<span class="c"># and is equivalent to</span>
+<span class="c">#</span>
+<span class="c">#     [ D    A&#39; ] [ x:n] ]  = [ rhs ]</span>
+<span class="c">#     [ A   -I  ] [ v    ]    [ 0   ].</span>
+<span class="c">#</span>
+<span class="c"># It can be solved as</span>
+<span class="c">#</span>
+<span class="c">#     ( A*D^-1*A&#39; + I ) * v = A * D^-1 * rhs</span>
+<span class="c">#     x[:n] = D^-1 * ( rhs - A&#39;*v ).</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">))</span>
+<span class="n">Asc</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">Fkkt</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
+
+    <span class="c"># Factor</span>
+    <span class="c">#</span>
+    <span class="c">#     S = A*D^-1*A&#39; + I</span>
+    <span class="c">#</span>
+    <span class="c"># where D = 2*D1*D2*(D1+D2)^-1, D1 = d[:n]**2, D2 = d[n:]**2.</span>
+
+    <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span> <span class="o">=</span> <span class="n">W</span><span class="p">[</span><span class="s">&#39;di&#39;</span><span class="p">][:</span><span class="n">n</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">W</span><span class="p">[</span><span class="s">&#39;di&#39;</span><span class="p">][</span><span class="n">n</span><span class="p">:]</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="c"># ds is square root of diagonal of D</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">div</span><span class="p">(</span> <span class="n">mul</span><span class="p">(</span> <span class="n">W</span><span class="p">[</span><span class="s">&#39;di&#39;</span><span class="p">][:</span><span class="n">n</span><span class="p">],</span> <span class="n">W</span><span class="p">[</span><span class="s">&#39;di&#39;</span><span class="p">][</span><span class="n">n</span><span class="p">:]),</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">d1</span><span class="o">+</span><span class="n">d2</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">d3</span> <span class="o">=</span>  <span class="n">div</span><span class="p">(</span><span class="n">d2</span> <span class="o">-</span> <span class="n">d1</span><span class="p">,</span> <span class="n">d1</span> <span class="o">+</span> <span class="n">d2</span><span class="p">)</span>
+
+    <span class="c"># Asc = A*diag(d)^-1/2</span>
+    <span class="n">blas</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">Asc</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="n">blas</span><span class="o">.</span><span class="n">tbsv</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">Asc</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ldA</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">incx</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">offsetx</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+
+    <span class="c"># S = I + A * D^-1 * A&#39;</span>
+    <span class="n">blas</span><span class="o">.</span><span class="n">syrk</span><span class="p">(</span><span class="n">Asc</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
+    <span class="n">S</span><span class="p">[::</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">1.0</span>
+    <span class="n">lapack</span><span class="o">.</span><span class="n">potrf</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+
+        <span class="n">x</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">mul</span><span class="p">(</span><span class="n">d3</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">:])</span> <span class="o">+</span> \
+                <span class="n">mul</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">z</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="n">mul</span><span class="p">(</span><span class="n">d3</span><span class="p">,</span> <span class="n">z</span><span class="p">[:</span><span class="n">n</span><span class="p">]))</span> <span class="o">-</span> \
+                <span class="n">mul</span><span class="p">(</span><span class="n">d2</span><span class="p">,</span> <span class="n">z</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span> <span class="o">-</span> <span class="n">mul</span><span class="p">(</span><span class="n">d3</span><span class="p">,</span> <span class="n">z</span><span class="p">[</span><span class="n">n</span><span class="p">:]))</span> <span class="p">)</span>
+        <span class="n">x</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">div</span><span class="p">(</span> <span class="n">x</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">ds</span><span class="p">)</span>
+
+        <span class="c"># Solve</span>
+        <span class="c">#</span>
+        <span class="c">#     S * v = 0.5 * A * D^-1 * ( bx[:n]</span>
+        <span class="c">#             - (D2-D1)*(D1+D2)^-1 * bx[n:]</span>
+        <span class="c">#             + D1 * ( I + (D2-D1)*(D1+D2)^-1 ) * bz[:n]</span>
+        <span class="c">#             - D2 * ( I - (D2-D1)*(D1+D2)^-1 ) * bz[n:] )</span>
+
+        <span class="n">blas</span><span class="o">.</span><span class="n">gemv</span><span class="p">(</span><span class="n">Asc</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="n">lapack</span><span class="o">.</span><span class="n">potrs</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+        <span class="c"># x[:n] = D^-1 * ( rhs - A&#39;*v ).</span>
+        <span class="n">blas</span><span class="o">.</span><span class="n">gemv</span><span class="p">(</span><span class="n">Asc</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s">&#39;T&#39;</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">div</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">ds</span><span class="p">)</span>
+
+        <span class="c"># x[n:] = (D1+D2)^-1 * ( bx[n:] - D1*bz[:n]  - D2*bz[n:] )</span>
+        <span class="c">#         - (D2-D1)*(D1+D2)^-1 * x[:n]</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span> <span class="o">=</span> <span class="n">div</span><span class="p">(</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span> <span class="o">-</span> <span class="n">mul</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">z</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span> <span class="o">-</span> <span class="n">mul</span><span class="p">(</span><span class="n">d2</span><span class="p">,</span> <span class="n">z</span><span class="p">[</span><span class="n">n</span><span class="p">:]),</span> <span class="n">d1</span><span class="o">+</span><span class="n">d2</span> <span class="p">)</span>\
+                <span class="o">-</span> <span class="n">mul</span><span class="p">(</span> <span class="n">d3</span><span class="p">,</span> <span class="n">x</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="p">)</span>
+
+        <span class="c"># z[:n] = D1^1/2 * (  x[:n] - x[n:] - bz[:n] )</span>
+        <span class="c"># z[n:] = D2^1/2 * ( -x[:n] - x[n:] - bz[n:] ).</span>
+        <span class="n">z</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span> <span class="n">W</span><span class="p">[</span><span class="s">&#39;di&#39;</span><span class="p">][:</span><span class="n">n</span><span class="p">],</span>  <span class="n">x</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span> <span class="o">-</span> <span class="n">z</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="p">)</span>
+        <span class="n">z</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span> <span class="n">W</span><span class="p">[</span><span class="s">&#39;di&#39;</span><span class="p">][</span><span class="n">n</span><span class="p">:],</span> <span class="o">-</span><span class="n">x</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span> <span class="o">-</span> <span class="n">z</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span> <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">g</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">coneqp</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">kktsolver</span> <span class="o">=</span> <span class="n">Fkkt</span><span class="p">)[</span><span class="s">&#39;x&#39;</span><span class="p">][:</span><span class="n">n</span><span class="p">]</span>
+
+<span class="n">I</span> <span class="o">=</span> <span class="p">[</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mf">1e-2</span> <span class="p">]</span>
+<span class="n">xls</span> <span class="o">=</span> <span class="o">+</span><span class="n">y</span>
+<span class="n">lapack</span><span class="o">.</span><span class="n">gels</span><span class="p">(</span><span class="n">A</span><span class="p">[:,</span><span class="n">I</span><span class="p">],</span> <span class="n">xls</span><span class="p">)</span>
+<span class="n">ybp</span> <span class="o">=</span> <span class="n">A</span><span class="p">[:,</span><span class="n">I</span><span class="p">]</span><span class="o">*</span><span class="n">xls</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">I</span><span class="p">)]</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Sparse basis contains </span><span class="si">%d</span><span class="s"> basis functions.&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="n">I</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Relative RMS error = </span><span class="si">%.1e</span><span class="s">.&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">blas</span><span class="o">.</span><span class="n">nrm2</span><span class="p">(</span><span class="n">ybp</span><span class="o">-</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="n">blas</span><span class="o">.</span><span class="n">nrm2</span><span class="p">(</span><span class="n">y</span><span class="p">)))</span>
+
+<span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">&#39;-&#39;</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">ybp</span><span class="p">,</span> <span class="s">&#39;r--&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;y(t), yhat(t)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Signal and basis pursuit approximation (fig. 6.22)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">y</span><span class="o">-</span><span class="n">ybp</span><span class="p">,</span> <span class="s">&#39;-&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;y(t)-yhat(t)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">])</span>
+
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">&#39;-&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;y(t)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Signal and time-frequency plot (fig. 6.23)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+    <span class="n">omegas</span><span class="p">,</span> <span class="n">taus</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">I</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">K</span><span class="p">:</span>
+            <span class="n">omegas</span> <span class="o">+=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
+            <span class="n">taus</span> <span class="o">+=</span> <span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">tau</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="n">K</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">K</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="p">((</span><span class="n">i</span><span class="o">-</span><span class="n">K</span><span class="p">)</span><span class="o">%</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">K</span><span class="p">))</span> <span class="o">%</span><span class="n">K</span>
+            <span class="n">omegas</span> <span class="o">+=</span> <span class="p">[</span><span class="n">l</span><span class="o">*</span><span class="n">omega0</span><span class="p">]</span>
+            <span class="n">taus</span> <span class="o">+=</span> <span class="p">[</span><span class="n">k</span><span class="o">*</span><span class="n">tau</span><span class="p">]</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="mi">150</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">cos</span><span class="p">(</span><span class="mf">5.0</span><span class="o">*</span><span class="n">ts</span><span class="p">)),</span> <span class="s">&#39;-&#39;</span><span class="p">,</span> <span class="n">taus</span><span class="p">,</span> <span class="n">omegas</span><span class="p">,</span> <span class="s">&#39;ro&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;omega(t)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">155</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <h3>Contents</h3>
+    <ul>
+    <li><a href="../../index.html">Main</a></li>
+    <li>
+    <ul>
+    <li><a href="../../copyright.html">Copyright and license</a></li>
+    <li><a href="../../download/index.html">Download</a></li>
+    <li><a href="../../install/index.html">Installation</a></li>
+    <li><a href="../../documentation/index.html">Documentation</a></li>
+    <li><a href="../index.html">Examples</a></li>
+    <li><a href="../../applications/index.html">Applications</a></li>
+    </ul>
+    </li>
+    </ul>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-2894407-1");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+  </body>
+</html>

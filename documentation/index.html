@@ -1,0 +1,250 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Documentation &mdash; CVXOPT</title>
+    
+    <link rel="stylesheet" href="../_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="top" title="CVXOPT" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="documentation">
+<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="user-s-guide">
+<h2>User&#8217;s guide<a class="headerlink" href="#user-s-guide" title="Permalink to this headline">¶</a></h2>
+<p>The
+<span class="raw-html"><a href="../userguide/index.html">user's guide</a></span>
+distributed with the package is also available on-line.</p>
+</div>
+<div class="section" id="technical-documentation">
+<h2>Technical documentation<a class="headerlink" href="#technical-documentation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>The use of CVXOPT to develop customized interior-point solvers is decribed in the chapter
+<a class="reference external" href="http://www.ee.ucla.edu/~vandenbe/publications/mlbook.pdf">Interior-point methods for large-scale cone programming</a> (pdf), from the book
+<em>Optimization for Machine Learning</em> (edited by S. Sra, S. Nowozin, S. J. Wright, MIT Press, 2011).</li>
+<li>A discussion of the interior-point algorithms used in the
+<tt class="xref py py-func docutils literal"><span class="pre">conelp()</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">coneqp()</span></tt> solvers can be found in the
+report <span class="raw-html"><a href="coneprog.pdf">The CVXOPT linear and quadratic cone program solvers</a></span> (pdf).</li>
+</ul>
+</div>
+<div class="section" id="discussion-forum">
+<h2>Discussion forum<a class="headerlink" href="#discussion-forum" title="Permalink to this headline">¶</a></h2>
+<p>There is a Google
+<a class="reference external" href="http://groups.google.com/forum/?fromgroups#!forum/cvxopt">discussion forum</a> for  CVXOPT.</p>
+</div>
+<div class="section" id="revision-history">
+<h2>Revision history<a class="headerlink" href="#revision-history" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>Version 1.1.5</strong> (March 28, 2012).</dt>
+<dd>Fixed a Mac OS X BLAS compatibility issue.</dd>
+<dt><strong>Version 1.1.4</strong> (December 21, 2011).</dt>
+<dd>Merged the source for the Python 2.7 and Python 3 versions.</dd>
+<dt><strong>Version 1.1.3</strong> (September 15, 2010).</dt>
+<dd>Upgrade of the MOSEK interface to MOSEK version 6.  A few bug fixes in
+the matrix class.</dd>
+<dt><strong>Version 1.1.2</strong> (December 15, 2009).</dt>
+<dd>Several bug fixes.  Improved initialization in the <tt class="xref py py-func docutils literal"><span class="pre">coneqp()</span></tt>
+solver.</dd>
+<dt><strong>Version 1.1.1</strong> (March 1, 2009).</dt>
+<dd>Translated the user guide to Sphinx.  Additional LAPACK routines for
+LQ factorization and QR factorization with column pivoting.</dd>
+<dt><strong>Version 1.1</strong> (October 15, 2008).</dt>
+<dd><tt class="xref py py-func docutils literal"><span class="pre">matrix()</span></tt>, <tt class="xref py py-func docutils literal"><span class="pre">spmatrix()</span></tt>, and the other functions in
+<tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.base</span></tt> can now be directly imported from cvxopt
+(&#8220;<tt class="samp docutils literal"><span class="pre">from</span> <span class="pre">cvxopt</span> <span class="pre">import</span> <span class="pre">matrix</span></tt>&#8221; replaces
+&#8220;<tt class="samp docutils literal"><span class="pre">from</span> <span class="pre">cvxopt.base</span> <span class="pre">import</span> <span class="pre">matrix</span></tt>&#8221;, although the older code still
+works).  <cite>bool(A)</cite> of a dense or sparse matrix <cite>A</cite> is now defined to be
+<tt class="xref py py-const docutils literal"><span class="pre">True</span></tt> if <cite>A</cite> is a nonzero matrix. (Hence &#8220;<tt class="samp docutils literal"><span class="pre">if</span> <span class="pre">A</span></tt>&#8221; in older
+code should be replaced by &#8220;<tt class="samp docutils literal"><span class="pre">if</span> <span class="pre">len(A)</span></tt>&#8221;.)  The optimization
+routines now return the last iterates when returning with status
+<tt class="xref py py-const docutils literal"><span class="pre">'unknown'</span></tt>, and  provide information about the accuracy of the
+solution they return.  An element-wise max and min of matrices.  Schur
+factorization routines from LAPACK.</dd>
+<dt><strong>Version 1.0</strong> (April 24, 2008).</dt>
+<dd>Addition of two-dimensional discrete transforms.  Performance
+improvements in the optimization routines.  Interfaces to the MOSEK and
+GLPK integer LP solvers (these features are documented in the source
+docstrings).</dd>
+<dt><strong>Version 0.9.3</strong> (February 24, 2008).</dt>
+<dd>A new solver for quadratic programming with linear cone constraints.
+Minor changes to the other solvers: the option of requesting several
+steps of iterative refinement when solving Newton equations; the
+fields <tt class="docutils literal"><span class="pre">W['dl']</span></tt> and <tt class="docutils literal"><span class="pre">W['dli']</span></tt> in the scaling dictionary described
+in section 9.4 were renamed <tt class="docutils literal"><span class="pre">W['d']</span></tt> and <tt class="docutils literal"><span class="pre">W['di']</span></tt>.</dd>
+<dt><strong>Version 0.9.2</strong> (December 27, 2007).</dt>
+<dd>The GNU Scientific Library is no longer required for installation.
+The <tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.random</span></tt> module has been deleted, and the functions for
+generating random matrices (<tt class="xref py py-func docutils literal"><span class="pre">random.uniform()</span></tt>,
+<tt class="xref py py-func docutils literal"><span class="pre">random.normal()</span></tt>, <tt class="xref py py-func docutils literal"><span class="pre">random.getseed()</span></tt>, <tt class="xref py py-func docutils literal"><span class="pre">random.setseed()</span></tt>)
+have been moved to <tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.base</span></tt>.  The upgrade also includes an
+improved and more easily customized style of matrix formatting.</dd>
+<dt><strong>Version 0.9.1</strong> (November 23, 2007).</dt>
+<dd>A revision of the nonlinear optimization solver, with added support for
+second-order cone and linear matrix inequality constraints.  (A new
+argument was added to the function <tt class="xref py py-func docutils literal"><span class="pre">solvers.cp()</span></tt>, but code that
+uses the previous version should still work if the arguments <tt class="docutils literal"><span class="pre">A</span></tt> and
+<tt class="docutils literal"><span class="pre">b</span></tt> are specified by keywords.)  The functions in
+<tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.random</span></tt> are now based on the random number generators of
+the GNU Scientific Library.  The MOSEK interface was upgraded to
+version 5.  A new function <tt class="xref py py-func docutils literal"><span class="pre">base.spdiag()</span></tt> for specifying sparse
+block diagonal matrices.</dd>
+<dt><strong>Version 0.9</strong> (August 10, 2007).</dt>
+<dd>A new cone program solver, with support for second-order cone
+constraints.</dd>
+<dt><strong>Version 0.8.2</strong> (February 6, 2007).</dt>
+<dd>Performance improvements in the sparse matrix arithmetic. The LAPACK
+solvers for banded and tridiagonal equations. Several bug fixes.</dd>
+<dt><strong>Version 0.8.1</strong> (October 31, 2006).</dt>
+<dd>Compatibility with Python 2.5.  An extension of <tt class="xref py py-func docutils literal"><span class="pre">base.matrix()</span></tt>
+to construct block matrices.  A new function <tt class="xref py py-func docutils literal"><span class="pre">sparse()</span></tt> to create
+sparse block matrices.  The default value of
+<tt class="xref py py-const docutils literal"><span class="pre">cholmod.options['supernodal']</span></tt> was changed to 2.</dd>
+<dt><strong>Version 0.8</strong> (September 20, 2006).</dt>
+<dd>General sequences are allowed in matrix definitions and assignments.
+The <tt class="xref py py-func docutils literal"><span class="pre">base.div()</span></tt>, <tt class="xref py py-func docutils literal"><span class="pre">base.mul()</span></tt>, and <tt class="xref py py-func docutils literal"><span class="pre">base.syrk()</span></tt>
+functions.  Elementwise exponentiation of dense matrices. The FFTW
+interface.  The optional arguments in BLAS and LAPACK have been
+reordered so that the most important arguments come first. (This
+affects previous code in which optional arguments were passed by
+position instead of by keyword.)  A revised nonlinear convex
+optimization solver with a simpler calling sequence.</dd>
+<dt><strong>Version 0.7.1</strong> (August 1, 2006).</dt>
+<dd><p class="first">Complex sparse matrices.  The sparse BLAS functions <tt class="xref py py-func docutils literal"><span class="pre">base.symv()</span></tt>
+and <tt class="xref py py-func docutils literal"><span class="pre">base.gemm()</span></tt>.  The DSDP5 interface.
+The <tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.colamd</span></tt> and <tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.ccolamd</span></tt> interfaces were
+removed.  There are several important backward incompatible changes in
+the definitions of <tt class="xref py py-func docutils literal"><span class="pre">base.matrix()</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">base.spmatrix()</span></tt>:</p>
+<ul class="last simple">
+<li>The <tt class="docutils literal"><span class="pre">x</span></tt> argument in <tt class="xref py py-func docutils literal"><span class="pre">base.matrix()</span></tt> is now required; it is no
+longer possible to create matrices with uninitialized values.</li>
+<li>If the <tt class="docutils literal"><span class="pre">x</span></tt> argument in <tt class="xref py py-func docutils literal"><span class="pre">base.matrix()</span></tt> is of integer type,
+an integer matrix is created.  For example, &#8220;<tt class="samp docutils literal"><span class="pre">matrix(1)</span></tt>&#8221; now
+creates an <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt> matrix;  &#8220;<tt class="samp docutils literal"><span class="pre">matrix(1.0)</span></tt>&#8221; creates a
+<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix.</li>
+<li>Symmetric sparse matrices are no longer defined. The <tt class="docutils literal"><span class="pre">type</span></tt>
+argument in <tt class="xref py py-func docutils literal"><span class="pre">base.spmatrix()</span></tt> has been removed.</li>
+<li>The <tt class="docutils literal"><span class="pre">x</span></tt>, <tt class="docutils literal"><span class="pre">I</span></tt>, <tt class="docutils literal"><span class="pre">J</span></tt> arguments in <tt class="xref py py-func docutils literal"><span class="pre">base.spmatrix()</span></tt> are all
+required.</li>
+</ul>
+</dd>
+<dt><strong>Version 0.7</strong> (April 21, 2006).</dt>
+<dd>A semidefinite programming solver.  LAPACK routines for QR
+factorization.  The <tt class="xref py py-func docutils literal"><span class="pre">base.gemv()</span></tt> function.  The
+<tt class="xref py py-func docutils literal"><span class="pre">base.smv()</span></tt> function was removed.</dd>
+<dt><strong>Version 0.6.1</strong> (February 27, 2006).</dt>
+<dd>Compatibility with the SciPy array interface.  Portability to 64 bit
+machines.  LAPACK routines for matrix inversion.  Generalized symmetric
+eigenvalue problems and singular value decomposition.  The
+<tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.ldl</span></tt> module has been removed.</dd>
+<dt><strong>Version 0.6</strong> (December 27, 2005).</dt>
+<dd>Elementwise <tt class="xref py py-func docutils literal"><span class="pre">exp()</span></tt>, <tt class="xref py py-func docutils literal"><span class="pre">sin()</span></tt>, <tt class="xref py py-func docutils literal"><span class="pre">cos()</span></tt>, and
+<tt class="xref py py-func docutils literal"><span class="pre">log()</span></tt> of dense matrices.  Indexed assignments of sparse to dense
+matrices.  Pickling of dense and sparse matrices. Interfaces to the
+matrix ordering libraries COLAMD and CCOLAMD.  Several new functions in
+<tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.cholmod</span></tt>.  A new LP solver.</dd>
+<dt><strong>Version 0.5</strong> (October 20, 2005).</dt>
+<dd>The CHOLMOD interface.  The nonlinear convex optimization solver in the
+solvers module.  Several bug fixes.</dd>
+<dt><strong>Version 0.4</strong> (May 18, 2005).</dt>
+<dd>Interfaces to the LP solvers in MOSEK and GLPK.</dd>
+<dt><strong>Version 0.3</strong> (March 29, 2005).</dt>
+<dd>Several minor additions and improvements.</dd>
+<dt><strong>Version 0.2</strong> (January 31, 2005).</dt>
+<dd>Sparse linear equation solvers from UMFPACK and LDL.  A modeling tool
+for convex piecewise-linear optimization problems.</dd>
+<dt><strong>Version 0.1</strong> (November 3, 2004).</dt>
+<dd>Dense and sparse matrix class.  Some BLAS and LAPACK routines.  A linear
+programming solver.</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <h3>Contents</h3>
+    <ul>
+    <li><a href="../index.html">Main</a></li>
+    <li>
+    <ul>
+    <li><a href="../copyright.html">Copyright and license</a></li>
+    <li><a href="../download/index.html">Download</a></li>
+    <li><a href="../install/index.html">Installation</a></li>
+    <li><a href="#">Documentation</a></li>
+    <li><a href="../examples/index.html">Examples</a></li>
+    <li><a href="../applications/index.html">Applications</a></li>
+    </ul>
+    </li>
+    </ul>
+        <h3>This page</h3> <ul>
+<li><a class="reference internal" href="#">Documentation</a><ul>
+<li><a class="reference internal" href="#user-s-guide">User&#8217;s guide</a></li>
+<li><a class="reference internal" href="#technical-documentation">Technical documentation</a></li>
+<li><a class="reference internal" href="#discussion-forum">Discussion forum</a></li>
+<li><a class="reference internal" href="#revision-history">Revision history</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-2894407-1");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+  </body>
+</html>

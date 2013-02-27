@@ -1,0 +1,184 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CVXOPT &mdash; CVXOPT User&#39;s Guide</title>
+    
+    <link rel="stylesheet" href="_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="top" title="CVXOPT User&#39;s Guide" href="#" />
+    <link rel="next" title="Copyright and License" href="copyright.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="copyright.html" title="Copyright and License"
+             accesskey="N">next</a></li>
+    <li><a href="http://cvxopt.org">CVXOPT home</a> |</li>
+    
+        <li><a href="#">user&#39;s guide</a> </li>
+ 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="cvxopt">
+<h1>CVXOPT<a class="headerlink" href="#cvxopt" title="Permalink to this headline">¶</a></h1>
+<p><strong>Release 1.1.5 &#8211; March 28, 2012</strong></p>
+<p><strong>Martin Andersen, Joachim Dahl, and Lieven Vandenberghe</strong></p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="matrices.html">Dense and Sparse Matrices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#dense-matrices">Dense Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#sparse-matrices">Sparse Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#arithmetic-operations">Arithmetic Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#indexing-and-slicing">Indexing and Slicing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#attributes-and-methods">Attributes and Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#built-in-functions">Built-In Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#other-matrix-functions">Other Matrix Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#randomly-generated-matrices">Randomly Generated Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#the-numpy-array-interface">The NumPy Array Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">The BLAS Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="blas.html#matrix-classes">Matrix Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blas.html#level-1-blas">Level 1 BLAS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blas.html#level-2-blas">Level 2 BLAS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blas.html#level-3-blas">Level 3 BLAS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lapack.html">The LAPACK Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#general-linear-equations">General Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#positive-definite-linear-equations">Positive Definite Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#symmetric-and-hermitian-linear-equations">Symmetric and Hermitian Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#triangular-linear-equations">Triangular Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#least-squares-and-least-norm-problems">Least-Squares and Least-Norm Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#symmetric-and-hermitian-eigenvalue-decomposition">Symmetric and Hermitian Eigenvalue Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#generalized-symmetric-definite-eigenproblems">Generalized Symmetric Definite Eigenproblems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#singular-value-decomposition">Singular Value Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#schur-and-generalized-schur-factorization">Schur and Generalized Schur Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#example-analytic-centering">Example: Analytic Centering</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fftw.html">Discrete Transforms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fftw.html#discrete-fourier-transform">Discrete Fourier Transform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fftw.html#discrete-cosine-transform">Discrete Cosine Transform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fftw.html#discrete-sine-transform">Discrete Sine Transform</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="spsolvers.html">Sparse Linear Equations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="spsolvers.html#matrix-orderings">Matrix Orderings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spsolvers.html#general-linear-equations">General Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spsolvers.html#positive-definite-linear-equations">Positive Definite Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spsolvers.html#example-covariance-selection">Example: Covariance Selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coneprog.html">Cone Programming</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#linear-cone-programs">Linear Cone Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#quadratic-cone-programs">Quadratic Cone Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#linear-programming">Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#quadratic-programming">Quadratic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#second-order-cone-programming">Second-Order Cone Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#semidefinite-programming">Semidefinite Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#exploiting-structure">Exploiting Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#optional-solvers">Optional Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#algorithm-parameters">Algorithm Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="solvers.html">Nonlinear Convex Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#problems-with-nonlinear-objectives">Problems with Nonlinear Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#problems-with-linear-objectives">Problems with Linear Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#geometric-programming">Geometric Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#exploiting-structure">Exploiting Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#algorithm-parameters">Algorithm Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modeling.html">Modeling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#variables">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#constraints">Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#optimization-problems">Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="c-api.html">C API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="c-api.html#dense-matrices">Dense Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="c-api.html#sparse-matrices">Sparse Matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="printing.html">Matrix Formatting</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Next topic</h4>
+  <p class="topless"><a href="copyright.html"
+                        title="next chapter">Copyright and License</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="copyright.html" title="Copyright and License"
+             >next</a></li>
+    <li><a href="http://cvxopt.org">CVXOPT home</a> |</li>
+    
+        <li><a href="#">user&#39;s guide</a> </li>
+ 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

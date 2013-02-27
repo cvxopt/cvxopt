@@ -1,0 +1,162 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>L1-norm approximation &mdash; CVXOPT</title>
+    
+    <link rel="stylesheet" href="../../_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="top" title="CVXOPT" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="l1-norm-approximation">
+<h1>L1-norm approximation<a class="headerlink" href="#l1-norm-approximation" title="Permalink to this headline">¶</a></h1>
+<p>The <img class="math" src="../../_images/math/3ff9d2add1273f7f294d4f0318b0ed4340c07768.png" alt="\ell_1"/>-norm approximation problem is given by</p>
+<div class="math" id="equation-l1approx">
+<p><span class="eqno">(1)</span><img src="../../_images/math/f031fda2630924d0de3c76dadd1fabeeee16901e.png" alt="\begin{array}{ll}
+\mbox{minimize}   &amp;  \| Pu - q \|_1
+\end{array}"/></p>
+</div><p>with variable <img class="math" src="../../_images/math/673b2a1a101e97494d200eb59b1ac29a73608e79.png" alt="u \in \mathbf{R}^n"/> and problem data <img class="math" src="../../_images/math/6d3b1d1cea2c783905be7b1c0d77166a119cae16.png" alt="P \in \mathbf{R}^{m \times n}"/> and <img class="math" src="../../_images/math/aaff9a9020ae22751cba7a6ffe4b4f67e7570795.png" alt="q \in
+\mathbf{R}^m"/>. The problem is equivalent to an LP</p>
+<div class="math" id="equation-l1approx_lp">
+<p><span class="eqno">(2)</span><img src="../../_images/math/5bfe3d212a40d5329b0a994d1c35669a487f5e67.png" alt="\begin{array}{ll}
+\mbox{minimize}   &amp; \mathbf{1}^Tv \\
+\mbox{subject to} &amp;  \begin{bmatrix} P &amp; -I\\ -P &amp; - I \end{bmatrix}
+                    \begin{bmatrix} u \\ v \end{bmatrix}
+                    \preceq
+                    \begin{bmatrix} q \\ -q \end{bmatrix}
+\end{array}"/></p>
+</div><p>with <img class="math" src="../../_images/math/53bf1afcb274a3bb84338109fffec8a1f1c02008.png" alt="m + n"/> variables and <img class="math" src="../../_images/math/c93d829d38f1f73cd97c8fd926e636e968d0c158.png" alt="2m"/> constraints. Yet another
+equivalent formulation is the problem</p>
+<div class="math" id="equation-l1approx_lp2">
+<p><span class="eqno">(3)</span><img src="../../_images/math/19472453e96d47e1f88452a2d6eec1858e8b216b.png" alt="\begin{array}{ll}
+\mbox{minimize}   &amp; e^Ts + e^Tt \\
+\mbox{subject to} &amp;  Pu - q = s - t \\
+                  &amp; s, t \geq 0
+\end{array}"/></p>
+</div><p>with variables <img class="math" src="../../_images/math/673b2a1a101e97494d200eb59b1ac29a73608e79.png" alt="u \in \mathbf{R}^n"/>, <img class="math" src="../../_images/math/6a801021c87850a757e62d88110f0af6ace1ace3.png" alt="s \in \mathbf{R}^m"/>, and <img class="math" src="../../_images/math/54e2e479a27c34f7f2d0041fa10008ad9f4b42eb.png" alt="t \in \mathbf{R}^m"/>.</p>
+<h3> Documentation </h3><p>A custom solver for the <img class="math" src="../../_images/math/3ff9d2add1273f7f294d4f0318b0ed4340c07768.png" alt="\ell_1"/>-norm approximation problem is
+available as a Python module <a class="reference download internal" href="../../_downloads/l1.py"><tt class="xref download docutils literal"><span class="pre">l1.py</span></tt></a>. The module implements
+the following four functions:</p>
+<blockquote>
+<div><dl class="function">
+<dt id="l1">
+<tt class="descname">l1</tt><big>(</big><em>P</em>, <em>q</em><big>)</big><a class="headerlink" href="#l1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves the problem <a href="#equation-l1approx_lp">(2)</a> using a custom KKT solver.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/9ad99798ec4c38e165cf517cb9e02b1c9e824103.png" alt="u"/>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="l1blas">
+<tt class="descname">l1blas</tt><big>(</big><em>P</em>, <em>q</em><big>)</big><a class="headerlink" href="#l1blas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves the problem <a href="#equation-l1approx_lp">(2)</a> using a custom KKT solver. This
+function implements the same custom KKT solver as <a class="reference internal" href="#l1" title="l1"><tt class="xref py py-func docutils literal"><span class="pre">l1()</span></tt></a>, but it
+uses BLAS routines instead of overloaded arithmetic.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/9ad99798ec4c38e165cf517cb9e02b1c9e824103.png" alt="u"/>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="l1mosek">
+<tt class="descname">l1mosek</tt><big>(</big><em>P</em>, <em>q</em><big>)</big><a class="headerlink" href="#l1mosek" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves the problem <a href="#equation-l1approx_lp">(2)</a> using MOSEK. This function
+is only available if MOSEK is installed.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/9ad99798ec4c38e165cf517cb9e02b1c9e824103.png" alt="u"/>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="l1mosek2">
+<tt class="descname">l1mosek2</tt><big>(</big><em>P</em>, <em>q</em><big>)</big><a class="headerlink" href="#l1mosek2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves the problem <a href="#equation-l1approx_lp2">(3)</a> using MOSEK. This function
+is only available if MOSEK is installed.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/9ad99798ec4c38e165cf517cb9e02b1c9e824103.png" alt="u"/>.</p>
+</dd></dl>
+
+</div></blockquote>
+<h3> Example </h3><div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">l1</span> <span class="kn">import</span> <span class="n">l1</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">normal</span>
+
+<span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">100</span>
+<span class="n">P</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">l1</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">q</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <h3>Contents</h3>
+    <ul>
+    <li><a href="../../index.html">Main</a></li>
+    <li>
+    <ul>
+    <li><a href="../../copyright.html">Copyright and license</a></li>
+    <li><a href="../../download/index.html">Download</a></li>
+    <li><a href="../../install/index.html">Installation</a></li>
+    <li><a href="../../documentation/index.html">Documentation</a></li>
+    <li><a href="../index.html">Examples</a></li>
+    <li><a href="../../applications/index.html">Applications</a></li>
+    </ul>
+    </li>
+    </ul>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-2894407-1");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+  </body>
+</html>

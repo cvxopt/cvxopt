@@ -1,0 +1,267 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Stochastic and worst-case robust approximation (fig. 6.15-6.16) &mdash; CVXOPT</title>
+    
+    <link rel="stylesheet" href="../../_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="top" title="CVXOPT" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="stochastic-and-worst-case-robust-approximation-fig-6-15-6-16">
+<h1>Stochastic and worst-case robust approximation (fig. 6.15-6.16)<a class="headerlink" href="#stochastic-and-worst-case-robust-approximation-fig-6-15-6-16" title="Permalink to this headline">¶</a></h1>
+<p>
+<img class="examples" src="figures/fig-6-15.png">
+<img class="examples" src="figures/fig-6-16.png">
+</p>
+
+<p>
+<a href="src/robls.py">source code</a>,
+<a href="data/robls.bin">data file (robls.bin)</a>
+</p><div class="highlight-python"><div class="highlight"><pre><span class="c"># Figures 6.15 and 6.16, pages 320 and 325.</span>
+<span class="c"># Stochastic and worst-case robust approximation.</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">uniform</span>
+<span class="kn">from</span> <span class="nn">pickle</span> <span class="kn">import</span> <span class="n">load</span>
+<span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">try</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">pylab</span><span class="o">,</span> <span class="nn">numpy</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="k">else</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="k">def</span> <span class="nf">wcls</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">Ap</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solves the robust least squares problem</span>
+
+<span class="sd">        minimize sup_{||u||&lt;= 1} || (A + sum_k u[k]*Ap[k])*x - b ||_2^2.</span>
+
+<span class="sd">    A is mxn.  Ap is a list of mxn matrices.  b is mx1.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">p</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">Ap</span><span class="p">)</span>
+
+    <span class="c"># minimize    t + v</span>
+    <span class="c"># subject to  [ I         *     *  ]</span>
+    <span class="c">#             [ P(x)&#39;     v*I  -*  ] &gt;= 0.</span>
+    <span class="c">#             [ (A*x-b)&#39;  0     t  ]</span>
+    <span class="c">#</span>
+    <span class="c"># where P(x) = [Ap[0]*x, Ap[1]*x, ..., Ap[p-1]*x].</span>
+    <span class="c">#</span>
+    <span class="c"># Variables x (n), v (1), t(1).</span>
+
+    <span class="n">novars</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">2</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">m</span> <span class="o">+</span> <span class="n">p</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span> <span class="n">n</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="p">[</span><span class="mf">1.0</span><span class="p">])</span>
+    <span class="n">Fs</span> <span class="o">=</span> <span class="p">[</span><span class="n">spmatrix</span><span class="p">([],[],[],</span> <span class="p">(</span><span class="n">M</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">novars</span><span class="p">))]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="c"># coefficient of x[k]</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">([],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">M</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="n">S</span><span class="p">[</span><span class="n">m</span><span class="o">+</span><span class="n">j</span><span class="p">,</span> <span class="p">:</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">Ap</span><span class="p">[</span><span class="n">j</span><span class="p">][:,</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">S</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="n">m</span> <span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">A</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">Fs</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[:]</span>
+    <span class="c"># coefficient of v</span>
+    <span class="n">Fs</span><span class="p">[</span><span class="mi">0</span><span class="p">][(</span><span class="n">M</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">m</span> <span class="p">:</span> <span class="p">(</span><span class="n">M</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">p</span><span class="p">)</span> <span class="p">:</span> <span class="n">M</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+    <span class="c"># coefficient of t</span>
+    <span class="n">Fs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+
+    <span class="n">hs</span> <span class="o">=</span> <span class="p">[</span><span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">M</span><span class="p">))]</span>
+    <span class="n">hs</span><span class="p">[</span><span class="mi">0</span><span class="p">][:(</span><span class="n">M</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">m</span><span class="p">:</span><span class="n">M</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">hs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">b</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">return</span> <span class="n">solvers</span><span class="o">.</span><span class="n">sdp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">Fs</span><span class="p">,</span> <span class="n">hs</span><span class="p">)[</span><span class="s">&#39;x&#39;</span><span class="p">][:</span><span class="n">n</span><span class="p">]</span>
+
+
+<span class="c"># Figure 6.15</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;robls.bin&#39;</span><span class="p">,</span><span class="s">&#39;rb&#39;</span><span class="p">))[</span><span class="s">&#39;6.15&#39;</span><span class="p">]</span>
+<span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;b&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;B&#39;</span><span class="p">]</span>
+<span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span>
+
+<span class="c"># Nominal problem:  minimize || A*x - b ||_2</span>
+<span class="n">xnom</span> <span class="o">=</span> <span class="o">+</span><span class="n">b</span>
+<span class="n">lapack</span><span class="o">.</span><span class="n">gels</span><span class="p">(</span><span class="o">+</span><span class="n">A</span><span class="p">,</span> <span class="n">xnom</span><span class="p">)</span>
+<span class="n">xnom</span> <span class="o">=</span> <span class="n">xnom</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>
+
+
+<span class="c"># Stochastic problem.</span>
+<span class="c">#</span>
+<span class="c"># minimize E || (A+u*B) * x - b ||_2^2</span>
+<span class="c">#          = || A*x - b||_2^2 + x&#39;*P*x</span>
+<span class="c">#</span>
+<span class="c"># with P = E(u^2) * B&#39;*B = (1/3) * B&#39;*B</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">A</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">B</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">B</span>
+<span class="n">xstoch</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">b</span>
+<span class="n">lapack</span><span class="o">.</span><span class="n">posv</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">xstoch</span><span class="p">)</span>
+
+
+<span class="c"># Worst case approximation.</span>
+<span class="c">#</span>
+<span class="c"># minimize max_{-1 &lt;= u &lt;= 1} ||A*u - b||_2^2.</span>
+
+<span class="n">xwc</span> <span class="o">=</span> <span class="n">wcls</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="p">[</span><span class="n">B</span><span class="p">],</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="n">nopts</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">us</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span> <span class="o">+</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">-</span> <span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">nopts</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">nopts</span><span class="p">)),</span><span class="n">tc</span><span class="o">=</span><span class="s">&#39;d&#39;</span><span class="p">)</span>
+<span class="n">rnom</span> <span class="o">=</span> <span class="p">[</span> <span class="n">blas</span><span class="o">.</span><span class="n">nrm2</span><span class="p">(</span> <span class="p">(</span><span class="n">A</span><span class="o">+</span><span class="n">u</span><span class="o">*</span><span class="n">B</span><span class="p">)</span><span class="o">*</span><span class="n">xnom</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">us</span> <span class="p">]</span>
+<span class="n">rstoch</span> <span class="o">=</span> <span class="p">[</span> <span class="n">blas</span><span class="o">.</span><span class="n">nrm2</span><span class="p">(</span> <span class="p">(</span><span class="n">A</span><span class="o">+</span><span class="n">u</span><span class="o">*</span><span class="n">B</span><span class="p">)</span><span class="o">*</span><span class="n">xstoch</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">us</span> <span class="p">]</span>
+<span class="n">rwc</span> <span class="o">=</span> <span class="p">[</span> <span class="n">blas</span><span class="o">.</span><span class="n">nrm2</span><span class="p">(</span> <span class="p">(</span><span class="n">A</span><span class="o">+</span><span class="n">u</span><span class="o">*</span><span class="n">B</span><span class="p">)</span><span class="o">*</span><span class="n">xwc</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">us</span> <span class="p">]</span>
+
+<span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">us</span><span class="p">,</span> <span class="n">rnom</span><span class="p">,</span> <span class="n">us</span><span class="p">,</span> <span class="n">rstoch</span><span class="p">,</span> <span class="n">us</span><span class="p">,</span> <span class="n">rwc</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span> <span class="s">&#39;--k&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span> <span class="s">&#39;--k&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;u&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;r(u)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">us</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">rnom</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="s">&#39;nominal&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">us</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">rstoch</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="s">&#39;stochastic&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">us</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">rwc</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="s">&#39;worst case&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Robust least-squares (fig.6.15)&#39;</span><span class="p">)</span>
+
+
+<span class="c"># Figure 6.16</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;robls.bin&#39;</span><span class="p">,</span><span class="s">&#39;rb&#39;</span><span class="p">))[</span><span class="s">&#39;6.16&#39;</span><span class="p">]</span>
+<span class="n">A</span><span class="p">,</span> <span class="n">Ap</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;A0&#39;</span><span class="p">],</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;A1&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;A2&#39;</span><span class="p">]],</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;b&#39;</span><span class="p">]</span>
+<span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">p</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">Ap</span><span class="p">)</span>
+
+<span class="c"># least squares solution:  minimize || A*x - b ||_2^2</span>
+<span class="n">xls</span> <span class="o">=</span> <span class="o">+</span><span class="n">b</span>
+<span class="n">lapack</span><span class="o">.</span><span class="n">gels</span><span class="p">(</span><span class="o">+</span><span class="n">A</span><span class="p">,</span> <span class="n">xls</span><span class="p">)</span>
+<span class="n">xls</span> <span class="o">=</span> <span class="n">xls</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>
+
+<span class="c"># Tikhonov solution:  minimize || A*x - b ||_2^2 + 0.1*||x||^2_2</span>
+<span class="n">xtik</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="o">*</span><span class="n">b</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="o">*</span><span class="n">A</span>
+<span class="n">S</span><span class="p">[::</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">0.1</span>
+<span class="n">lapack</span><span class="o">.</span><span class="n">posv</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">xtik</span><span class="p">)</span>
+
+<span class="c"># Worst case solution</span>
+<span class="n">xwc</span> <span class="o">=</span> <span class="n">wcls</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">Ap</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="n">notrials</span> <span class="o">=</span> <span class="mi">100000</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">notrials</span><span class="p">))</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">uniform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">notrials</span><span class="p">)</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">notrials</span><span class="p">))</span>
+<span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+<span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+
+<span class="c"># LS solution</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">xls</span> <span class="o">-</span> <span class="n">b</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">P</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">P</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">xls</span><span class="p">,</span> <span class="n">Ap</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">xls</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">P</span><span class="o">*</span><span class="n">u</span> <span class="o">+</span> <span class="n">q</span><span class="p">[:,</span><span class="n">notrials</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="n">resls</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">m</span><span class="p">))</span> <span class="o">*</span> <span class="n">mul</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">r</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="n">q</span> <span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">xtik</span> <span class="o">-</span> <span class="n">b</span>
+<span class="n">P</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">P</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">xtik</span><span class="p">,</span> <span class="n">Ap</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">xtik</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">P</span><span class="o">*</span><span class="n">u</span> <span class="o">+</span> <span class="n">q</span><span class="p">[:,</span><span class="n">notrials</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="n">restik</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">m</span><span class="p">))</span> <span class="o">*</span> <span class="n">mul</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">r</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="n">q</span> <span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">xwc</span> <span class="o">-</span> <span class="n">b</span>
+<span class="n">P</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">P</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">xwc</span><span class="p">,</span> <span class="n">Ap</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">xwc</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">P</span><span class="o">*</span><span class="n">u</span> <span class="o">+</span> <span class="n">q</span><span class="p">[:,</span><span class="n">notrials</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="n">reswc</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">m</span><span class="p">))</span> <span class="o">*</span> <span class="n">mul</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">r</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
+   <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+   <span class="n">pylab</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">resls</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="o">*</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">)]),</span> <span class="n">fc</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">,</span>
+       <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+   <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">4.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s">&#39;least-squares&#39;</span><span class="p">)</span>
+   <span class="n">pylab</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">restik</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="o">*</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">)]),</span> <span class="n">fc</span><span class="o">=</span><span class="s">&#39;#D0D0D0&#39;</span><span class="p">,</span>
+       <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+   <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">2.9</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="s">&#39;Tikhonov&#39;</span><span class="p">)</span>
+   <span class="n">pylab</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">reswc</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="o">*</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">)]),</span> <span class="n">fc</span><span class="o">=</span><span class="s">&#39;#B0B0B0&#39;</span><span class="p">,</span>
+       <span class="n">normed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+   <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s">&#39;robust least-squares&#39;</span><span class="p">)</span>
+   <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;residual&#39;</span><span class="p">)</span>
+   <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;frequency/binwidth&#39;</span><span class="p">)</span>
+   <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">])</span>
+   <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;LS, Tikhonov and robust LS solutions (fig. 6.16)&#39;</span><span class="p">)</span>
+   <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <h3>Contents</h3>
+    <ul>
+    <li><a href="../../index.html">Main</a></li>
+    <li>
+    <ul>
+    <li><a href="../../copyright.html">Copyright and license</a></li>
+    <li><a href="../../download/index.html">Download</a></li>
+    <li><a href="../../install/index.html">Installation</a></li>
+    <li><a href="../../documentation/index.html">Documentation</a></li>
+    <li><a href="../index.html">Examples</a></li>
+    <li><a href="../../applications/index.html">Applications</a></li>
+    </ul>
+    </li>
+    </ul>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-2894407-1");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+  </body>
+</html>

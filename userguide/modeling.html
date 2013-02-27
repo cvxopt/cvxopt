@@ -1,0 +1,825 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Modeling &mdash; CVXOPT User&#39;s Guide</title>
+    
+    <link rel="stylesheet" href="_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="top" title="CVXOPT User&#39;s Guide" href="index.html" />
+    <link rel="next" title="C API" href="c-api.html" />
+    <link rel="prev" title="Nonlinear Convex Optimization" href="solvers.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="c-api.html" title="C API"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="solvers.html" title="Nonlinear Convex Optimization"
+             accesskey="P">previous</a> |</li>
+    <li><a href="http://cvxopt.org">CVXOPT home</a> |</li>
+    
+        <li><a href="index.html">user&#39;s guide</a> </li>
+ 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="modeling">
+<span id="c-modeling"></span><h1>Modeling<a class="headerlink" href="#modeling" title="Permalink to this headline">¶</a></h1>
+<p>The module <tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.modeling</span></tt>  can be used to specify and solve
+optimization problems  with convex piecewise-linear objective and
+constraint functions.  Using this modeling tool, one can specify an
+optimization problem by first defining the optimization variables (see the
+section <a class="reference internal" href="#s-variables"><em>Variables</em></a>), and then specifying the objective and
+constraint functions using linear operations (vector addition and
+subtraction, matrix-vector multiplication, indexing and slicing)
+and nested evaluations of <tt class="xref py py-func docutils literal"><span class="pre">max</span></tt>,
+<tt class="xref py py-func docutils literal"><span class="pre">min</span></tt>,
+<tt class="xref py py-func docutils literal"><span class="pre">abs</span></tt> and
+<a class="reference internal" href="#cvxopt.modeling.sum" title="cvxopt.modeling.sum"><tt class="xref py py-func docutils literal"><span class="pre">sum</span></tt></a> (see the section <a class="reference internal" href="#s-functions"><em>Functions</em></a>).</p>
+<p>A more general Python convex modeling package is
+<a class="reference external" href="http://cvxmod.net">CVXMOD</a>.</p>
+<div class="section" id="variables">
+<span id="s-variables"></span><h2>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h2>
+<p>Optimization variables are represented by <tt class="xref py py-class docutils literal"><span class="pre">variable</span></tt> objects.</p>
+<dl class="function">
+<dt id="cvxopt.modeling.variable">
+<tt class="descclassname">cvxopt.modeling.</tt><tt class="descname">variable</tt><big>(</big><span class="optional">[</span><em>size</em><span class="optional">[</span>, <em>name</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.modeling.variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>A vector variable.  The first argument is the dimension of the vector
+(a positive integer with default value 1).  The second argument is a
+string with a name for the variable.  The name is optional and has
+default value <tt class="xref py py-const docutils literal"><span class="pre">&quot;&quot;</span></tt>. It is only used when displaying variables
+(or objects that depend on variables, such as functions or constraints)
+using <tt class="xref py py-func docutils literal"><span class="pre">print</span></tt> statements, when calling the built-in functions
+<tt class="xref py py-func docutils literal"><span class="pre">repr</span></tt>  or <tt class="xref py py-func docutils literal"><span class="pre">str</span></tt>, or when writing linear programs to MPS
+files.</p>
+</dd></dl>
+
+<p>The function <tt class="xref py py-func docutils literal"><span class="pre">len</span></tt> returns the length of a <tt class="xref py py-class docutils literal"><span class="pre">variable</span></tt>.
+A <tt class="xref py py-class docutils literal"><span class="pre">variable</span></tt> <tt class="docutils literal"><span class="pre">x</span></tt> has two attributes.</p>
+<dl class="attribute">
+<dt id="name">
+<tt class="descname">name</tt><a class="headerlink" href="#name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the variable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="value">
+<tt class="descname">value</tt><a class="headerlink" href="#value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Either <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt> or a dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix of size
+<tt class="docutils literal"><span class="pre">len(x)</span></tt> by 1.</p>
+<p>The attribute <tt class="docutils literal"><span class="pre">x.value</span></tt> is set to <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt> when the variable
+<tt class="docutils literal"><span class="pre">x</span></tt> is created.   It can be given a numerical value later, typically
+by solving an LP that has <tt class="docutils literal"><span class="pre">x</span></tt> as one of its variables.  One can also
+make an explicit assignment <tt class="docutils literal"><span class="pre">x.value</span> <span class="pre">=</span> <span class="pre">y</span></tt>.  The assigned value
+<tt class="docutils literal"><span class="pre">y</span></tt> must be an integer or float, or a dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix of
+size <tt class="docutils literal"><span class="pre">(len(x),</span> <span class="pre">1)</span></tt>.  If <tt class="docutils literal"><span class="pre">y</span></tt> is an integer or float, all the
+elements of <tt class="docutils literal"><span class="pre">x.value</span></tt> are set to the value of <tt class="docutils literal"><span class="pre">y</span></tt>.</p>
+</dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="s">&#39;a&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="go">a</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="go">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">3.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="go">[ 1.00e+00]</span>
+<span class="go">[ 2.00e+00]</span>
+<span class="go">[ 3.00e+00]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="go">[ 1.00e+00]</span>
+<span class="go">[ 1.00e+00]</span>
+<span class="go">[ 1.00e+00]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="functions">
+<span id="s-functions"></span><h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<p>Objective and constraint functions can be defined via overloaded operations
+on variables and other functions.  A function <tt class="docutils literal"><span class="pre">f</span></tt> is interpreted as a
+column vector, with length <tt class="docutils literal"><span class="pre">len(f)</span></tt> and with a value that depends on
+the values of its variables.  Functions have two public attributes.</p>
+<dl class="attribute">
+<dt>
+<tt class="descname">variables</tt></dt>
+<dd><p>Returns a copy of the list of variables of the function.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">value</tt></dt>
+<dd><p>The function value.  If any of the variables of <tt class="docutils literal"><span class="pre">f</span></tt> has value
+<tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>, then <tt class="docutils literal"><span class="pre">f.value()</span></tt> returns <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>.  Otherwise,
+it returns a dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix of size <tt class="docutils literal"><span class="pre">(len(f),1)</span></tt> with
+the function value computed from the <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of the
+variables of <tt class="docutils literal"><span class="pre">f</span></tt>.</p>
+</dd></dl>
+
+<p>Three types of functions are supported: affine, convex piecewise-linear,
+and concave piecewise-linear.</p>
+<p><strong>Affine functions</strong> represent vector valued functions of the form</p>
+<div class="math">
+<p><img src="_images/math/020270365620aa9739da358115af75168d7bdc82.png" alt="f(x_1,\ldots,x_n) = A_1 x_1 + \cdots + A_n x_n + b."/></p>
+</div><p>The coefficients can be scalars or dense or sparse matrices. The
+constant term is a scalar or a column vector.</p>
+<p>Affine functions result from the following operations.</p>
+<dl class="docutils">
+<dt><strong>Unary operations</strong></dt>
+<dd>For a variable <tt class="docutils literal"><span class="pre">x</span></tt>, the unary operation <tt class="docutils literal"><span class="pre">+x</span></tt> results in an
+affine function with <tt class="docutils literal"><span class="pre">x</span></tt> as variable, coefficient 1.0, and constant
+term 0.0.  The unary operation <tt class="docutils literal"><span class="pre">-x</span></tt> returns an affine function
+with <tt class="docutils literal"><span class="pre">x</span></tt> as variable, coefficient -1.0, and constant term 0.0.  For
+an affine function <tt class="docutils literal"><span class="pre">f</span></tt>, <tt class="docutils literal"><span class="pre">+f</span></tt> is a copy of <tt class="docutils literal"><span class="pre">f</span></tt>, and
+<tt class="docutils literal"><span class="pre">-f</span></tt> is a copy of <tt class="docutils literal"><span class="pre">f</span></tt> with the signs of its coefficients and
+constant term reversed.</dd>
+<dt><strong>Addition and subtraction</strong></dt>
+<dd><p class="first">Sums and differences of affine functions, variables and constants result
+in new affine functions.  The constant terms in the sum can be of type
+integer or float, or dense or sparse <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrices with one
+column.</p>
+<p class="last">The rules for addition and subtraction follow the conventions for
+matrix addition and subtraction in the section <a class="reference internal" href="matrices.html#s-arithmetic"><em>Arithmetic Operations</em></a>,
+with variables and affine functions interpreted as dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>
+matrices with one column.  In particular, a scalar term (integer, float,
+1 by 1 dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix, variable of length 1, or affine
+function of length 1) can be added to an affine function or variable of
+length greater than 1.</p>
+</dd>
+<dt><strong>Multiplication</strong></dt>
+<dd>Suppose <tt class="docutils literal"><span class="pre">v</span></tt> is an affine function or a variable, and <tt class="docutils literal"><span class="pre">a</span></tt> is an
+integer, float, sparse or dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix.  The products
+<tt class="docutils literal"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">v</span></tt> and  <tt class="docutils literal"><span class="pre">v</span> <span class="pre">*</span> <span class="pre">a</span></tt> are valid affine functions whenever
+the product is allowed under the rules for matrix and scalar
+multiplication of the section <a class="reference internal" href="matrices.html#s-arithmetic"><em>Arithmetic Operations</em></a>, with <tt class="docutils literal"><span class="pre">v</span></tt>
+interpreted
+as a <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix with one column.  In particular, the product
+<tt class="docutils literal"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">v</span></tt> is defined if <tt class="docutils literal"><span class="pre">a</span></tt> is a scalar (integer, float, or
+1 by 1 dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix), or a matrix (dense or sparse) with
+<tt class="docutils literal"><span class="pre">a.size[1]</span></tt> equal to <tt class="docutils literal"><span class="pre">len(v)</span></tt>.   The operation <tt class="docutils literal"><span class="pre">v</span> <span class="pre">*</span> <span class="pre">a</span></tt>
+is defined if <tt class="docutils literal"><span class="pre">a</span></tt> is scalar, or if <tt class="docutils literal"><span class="pre">len(v)</span></tt> is 1 and <tt class="docutils literal"><span class="pre">a</span></tt> is a
+matrix with one column.</dd>
+<dt><strong>Inner products</strong></dt>
+<dd><p class="first">The following two functions return scalar affine functions defined
+as inner products of a constant vector with  a variable or affine
+function.</p>
+<dl class="function">
+<dt id="cvxopt.modeling.sum">
+<tt class="descclassname">cvxopt.modeling.</tt><tt class="descname">sum</tt><big>(</big><em>v</em><big>)</big><a class="headerlink" href="#cvxopt.modeling.sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>The argument is an affine function or a variable.  The result is an
+affine function of length 1, with the sum of the components of the
+argument <tt class="docutils literal"><span class="pre">v</span></tt>.</p>
+</dd></dl>
+
+<dl class="last function">
+<dt id="cvxopt.modeling.dot">
+<tt class="descclassname">cvxopt.modeling.</tt><tt class="descname">dot</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#cvxopt.modeling.dot" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <tt class="docutils literal"><span class="pre">v</span></tt> is a variable or affine function and <tt class="docutils literal"><span class="pre">u</span></tt> is a
+<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix of size <tt class="docutils literal"><span class="pre">(len(v),</span> <span class="pre">1)</span></tt>, then
+<tt class="docutils literal"><span class="pre">dot(u,</span> <span class="pre">v)</span></tt> and <tt class="docutils literal"><span class="pre">dot(v,</span> <span class="pre">u)</span></tt> are equivalent to
+<tt class="docutils literal"><span class="pre">u.trans()</span> <span class="pre">*</span> <span class="pre">v</span></tt>.</p>
+<p>If <tt class="docutils literal"><span class="pre">u</span></tt> and <tt class="docutils literal"><span class="pre">v</span></tt> are dense matrices, then <tt class="xref py py-func docutils literal"><span class="pre">dot</span></tt>
+is equivalent to the function <a class="reference internal" href="blas.html#cvxopt.blas.dot" title="cvxopt.blas.dot"><tt class="xref py py-func docutils literal"><span class="pre">blas.dot</span></tt></a>,
+i.e., it returns the inner product of the two matrices.</p>
+</dd></dl>
+
+</dd>
+</dl>
+<p>In the following example, the variable <tt class="docutils literal"><span class="pre">x</span></tt> has length 1 and <tt class="docutils literal"><span class="pre">y</span></tt> has
+length 2.  The functions <tt class="docutils literal"><span class="pre">f</span></tt> and <tt class="docutils literal"><span class="pre">g</span></tt> are given by</p>
+<div class="math">
+<p><img src="_images/math/886d80061701fa13e900001edc51d07a7edbc605.png" alt="f(x,y) &amp;= \left[ \begin{array}{c} 2 \\ 2 \end{array}\right] x
+    + y + \left[ \begin{array}{c} 3 \\ 3 \end{array}\right], \\
+g(x,y) &amp;=
+    \left[ \begin{array}{cc} 1 &amp; 3 \\ 2 &amp; 4 \end{array}\right] f(x,y) +
+    \left[ \begin{array}{cc} 1 &amp; 1 \\ 1 &amp; 1 \end{array} \right] y +
+    \left[ \begin{array}{c} 1 \\ -1 \end{array} \right] \\
+       &amp;= \left[ \begin{array}{c} 8 \\ 12 \end{array}\right] x +
+   \left[ \begin{array}{cc} 2 &amp; 4 \\ 3 &amp; 5 \end{array}\right] y +
+   \left[ \begin{array}{c} 13 \\ 17\end{array}\right]."/></p>
+</div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s">&#39;y&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.</span><span class="p">,</span><span class="mf">4.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">f</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="go">affine function of length 2</span>
+<span class="go">constant term:</span>
+<span class="go">[ 1.30e+01]</span>
+<span class="go">[ 1.70e+01]</span>
+<span class="go">linear term: linear function of length 2</span>
+<span class="go">coefficient of variable(2,&#39;y&#39;):</span>
+<span class="go">[ 2.00e+00  4.00e+00]</span>
+<span class="go">[ 3.00e+00  5.00e+00]</span>
+<span class="go">coefficient of variable(1,&#39;x&#39;):</span>
+<span class="go">[ 8.00e+00]</span>
+<span class="go">[ 1.20e+01]</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt><strong>In-place operations</strong></dt>
+<dd>For an affine function <tt class="docutils literal"><span class="pre">f</span></tt> the operations <tt class="docutils literal"><span class="pre">f</span> <span class="pre">+=</span> <span class="pre">u</span></tt> and
+<tt class="docutils literal"><span class="pre">f</span> <span class="pre">-=</span> <span class="pre">u</span></tt>, with <tt class="docutils literal"><span class="pre">u</span></tt> a constant, a variable or an affine function,
+are allowed if they do not change the length of <tt class="docutils literal"><span class="pre">f</span></tt>, i.e., if <tt class="docutils literal"><span class="pre">u</span></tt>
+has length <tt class="docutils literal"><span class="pre">len(f)</span></tt> or length 1.  In-place multiplication
+<tt class="docutils literal"><span class="pre">f</span> <span class="pre">*=</span> <span class="pre">u</span></tt> and division <tt class="docutils literal"><span class="pre">f</span> <span class="pre">/=</span> <span class="pre">u</span></tt> are allowed if <tt class="docutils literal"><span class="pre">u</span></tt> is an
+integer, float, or 1 by 1 matrix.</dd>
+<dt><strong>Indexing and slicing</strong></dt>
+<dd>Variables and affine functions admit single-argument indexing of the
+four types described in the section <a class="reference internal" href="matrices.html#s-indexing"><em>Indexing and Slicing</em></a>.  The result of
+an indexing or slicing operation is an affine function.</dd>
+</dl>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="go">linear function of length 2</span>
+<span class="go">linear term: linear function of length 2</span>
+<span class="go">coefficient of variable(4,&#39;x&#39;):</span>
+<span class="go">[ 1.00e+00     0         0         0    ]</span>
+<span class="go">[    0         0      1.00e+00     0    ]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s">&#39;d&#39;</span><span class="p">)</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">g</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="go">affine function of length 1</span>
+<span class="go">constant term:</span>
+<span class="go">[ 2.00e+00]</span>
+<span class="go">linear term: linear function of length 1</span>
+<span class="go">coefficient of variable(4,&#39;x&#39;):</span>
+<span class="go">[ 2.00e+00  8.00e+00  1.40e+01  2.00e+01]</span>
+<span class="go">coefficient of variable(3,&#39;x&#39;):</span>
+<span class="go">[-3.00e+00     0     -3.00e+00]</span>
+</pre></div>
+</div>
+<p>The general expression of a <strong>convex piecewise-linear</strong> function is</p>
+<div class="math">
+<p><img src="_images/math/7314958d2e70f8f8b75364d171f03fca7b88ed62.png" alt="f(x_1,\ldots,x_n) = b + A_1 x_1 + \cdots + A_n x_n +
+    \sum_{k=1}^K \max (y_1, y_2, \ldots, y_{m_k})."/></p>
+</div><p>The maximum in this expression is a componentwise maximum of its vector
+arguments, which can be constant vectors, variables, affine functions or
+convex piecewise-linear functions.  The general expression for a
+<strong>concave piecewise-linear</strong> function is</p>
+<div class="math">
+<p><img src="_images/math/5a7839c7cd68986aef4aee3eb7941fd8e58b3678.png" alt="f(x_1,\ldots,x_n) = b + A_1 x_1 + \cdots + A_n x_n +
+    \sum_{k=1}^K \min (y_1, y_2, \ldots, y_{m_k})."/></p>
+</div><p>Here the arguments of the <tt class="xref py py-func docutils literal"><span class="pre">min</span></tt>
+can be constants, variables, affine
+functions or concave piecewise-linear functions.</p>
+<p>Piecewise-linear functions can be created using the following
+operations.</p>
+<dl class="docutils">
+<dt><strong>Maximum</strong></dt>
+<dd><p class="first">If the arguments in <tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">max(y1,</span> <span class="pre">y2,</span> <span class="pre">...)</span></tt> do not include any
+variables or functions, then the Python built-in <tt class="xref py py-func docutils literal"><span class="pre">max</span></tt> is
+evaluated.</p>
+<p>If one or more of the arguments are variables or functions,
+<tt class="xref py py-func docutils literal"><span class="pre">max</span></tt>
+returns a piecewise-linear function defined as the elementwise maximum
+of its arguments.  In other words,
+<tt class="docutils literal"><span class="pre">f[k]</span> <span class="pre">=</span> <span class="pre">max(y1[k],</span> <span class="pre">y2[k],</span> <span class="pre">...)</span></tt> for <tt class="docutils literal"><span class="pre">k</span></tt> = 0, ...,
+<tt class="docutils literal"><span class="pre">len(f)</span> <span class="pre">-</span> <span class="pre">1</span></tt>.  The length of <tt class="docutils literal"><span class="pre">f</span></tt> is equal to the maximum of the
+lengths of the arguments.  Each argument must have length equal to
+<tt class="docutils literal"><span class="pre">len(f)</span></tt> or length one.  Arguments with length one are interpreted
+as vectors of length <tt class="docutils literal"><span class="pre">len(f)</span></tt> with identical entries.</p>
+<p>The arguments can be scalars of type integer or float, dense
+<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrices with one column, variables, affine functions or
+convex piecewise-linear functions.</p>
+<p class="last">With one argument, <tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">max(u)</span></tt> is interpreted as
+<tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">max(u[0],</span> <span class="pre">u[1],</span> <span class="pre">...,</span> <span class="pre">u[len(u)-1])</span></tt>.</p>
+</dd>
+<dt><strong>Minimum</strong></dt>
+<dd>Similar to <tt class="xref py py-func docutils literal"><span class="pre">max</span></tt> but returns a concave piecewise-linear
+function.
+The arguments can be scalars of type integer or float, dense
+<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrices with one column, variables, affine functions or
+concave piecewise-linear functions.</dd>
+<dt><strong>Absolute value</strong></dt>
+<dd>If <tt class="docutils literal"><span class="pre">u</span></tt> is a variable or affine function then <tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">abs(u)</span></tt>
+returns the convex piecewise-linear function <tt class="docutils literal"><span class="pre">max(u,</span> <span class="pre">-u)</span></tt>.</dd>
+<dt><strong>Unary plus and minus</strong></dt>
+<dd><tt class="docutils literal"><span class="pre">+f</span></tt> creates a copy of <tt class="docutils literal"><span class="pre">f</span></tt>.  <tt class="docutils literal"><span class="pre">-f</span></tt> is a concave
+piecewise-linear function if <tt class="docutils literal"><span class="pre">f</span></tt> is convex and a convex
+piecewise-linear function if <tt class="docutils literal"><span class="pre">f</span></tt> is concave.</dd>
+<dt><strong>Addition and subtraction</strong></dt>
+<dd>Sums and differences involving piecewise-linear functions are allowed
+if they result in convex or concave functions.  For example, one can add
+two convex or two concave functions, but not a convex and a concave
+function.  The command <tt class="docutils literal"><span class="pre">sum(f)</span></tt> is equivalent to
+<tt class="docutils literal"><span class="pre">f[0]</span> <span class="pre">+</span> <span class="pre">f[1]</span> <span class="pre">+</span> <span class="pre">...</span> <span class="pre">+</span> <span class="pre">f[len(f)</span> <span class="pre">-</span> <span class="pre">1]</span></tt>.</dd>
+<dt><strong>Multiplication</strong></dt>
+<dd>Scalar multiplication <tt class="docutils literal"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">f</span></tt> of a piecewise-linear function <tt class="docutils literal"><span class="pre">f</span></tt>
+is defined if <tt class="docutils literal"><span class="pre">a</span></tt> is an integer, float, 1 by 1 <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix.
+Matrix-matrix multiplications <tt class="docutils literal"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">f</span></tt> or <tt class="docutils literal"><span class="pre">f</span> <span class="pre">*</span> <span class="pre">a</span></tt> are only
+defined if <tt class="docutils literal"><span class="pre">a</span></tt> is a dense or sparse 1 by 1 matrix.</dd>
+<dt><strong>Indexing and slicing</strong></dt>
+<dd>Piecewise-linear functions admit single-argument indexing of the four
+types described in the section <a class="reference internal" href="matrices.html#s-indexing"><em>Indexing and Slicing</em></a>.  The result of an
+indexing or slicing operation is a new piecewise-linear function.</dd>
+</dl>
+<p>In the following example, <tt class="docutils literal"><span class="pre">f</span></tt> is the 1-norm of a vector variable <tt class="docutils literal"><span class="pre">x</span></tt> of
+length 10, <tt class="docutils literal"><span class="pre">g</span></tt> is its infinity-norm, and <tt class="docutils literal"><span class="pre">h</span></tt> is the function</p>
+<div class="math">
+<p><img src="_images/math/3b995588fb741169d3c9ad3feb0cef172737ee0d.png" alt="h(x) = \sum_k \phi(x[k]), \qquad
+\phi(u) = \left\{\begin{array}{ll}
+    0       &amp; |u| \leq 1 \\
+    |u|-1   &amp; 1 \leq |u| \leq 2 \\
+    2|u|-3  &amp; |u| \geq 2.
+\end{array}\right."/></p>
+</div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span><span class="p">,</span> <span class="nb">max</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&#39;x&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">-</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt><strong>In-place operations</strong></dt>
+<dd>If <tt class="docutils literal"><span class="pre">f</span></tt> is piecewise-linear then the in-place operations
+<tt class="docutils literal"><span class="pre">f</span> <span class="pre">+=</span> <span class="pre">u</span></tt>, <tt class="docutils literal"><span class="pre">f</span> <span class="pre">-=</span> <span class="pre">u</span></tt>, <tt class="docutils literal"><span class="pre">f</span> <span class="pre">*=</span> <span class="pre">u</span></tt>, <tt class="docutils literal"><span class="pre">f</span> <span class="pre">/=</span> <span class="pre">u</span></tt> are
+defined if the corresponding expanded operations <tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">f</span> <span class="pre">+</span> <span class="pre">u</span></tt>,
+<tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">f</span> <span class="pre">-</span> <span class="pre">u</span></tt>, <tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">f</span> <span class="pre">*</span> <span class="pre">u</span></tt>, and <tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">f/u</span></tt> are defined
+and if they do not change the length of <tt class="docutils literal"><span class="pre">f</span></tt>.</dd>
+</dl>
+</div>
+<div class="section" id="constraints">
+<span id="s-constraints"></span><h2>Constraints<a class="headerlink" href="#constraints" title="Permalink to this headline">¶</a></h2>
+<p>Linear equality and inequality constraints of the form</p>
+<div class="math">
+<p><img src="_images/math/403491933318ae3568330e59282cb8a17e4f055a.png" alt="f(x_1,\ldots,x_n) = 0, \qquad f(x_1,\ldots,x_n) \preceq  0,"/></p>
+</div><p>where <img class="math" src="_images/math/bb2c93730dbb48558bb3c4738c956c4e8f816437.png" alt="f"/> is a convex function, are represented by <tt class="xref py py-class docutils literal"><span class="pre">constraint</span></tt>
+objects.  Equality constraints are created by expressions of the form</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f1</span> <span class="o">==</span> <span class="n">f2</span>
+</pre></div>
+</div>
+<p>Here <tt class="docutils literal"><span class="pre">f1</span></tt> and <tt class="docutils literal"><span class="pre">f2</span></tt> can be any objects for which the difference
+<tt class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span></tt> yields an affine function.  Inequality constraints are
+created by expressions of the form</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f1</span> <span class="o">&lt;=</span> <span class="n">f2</span>
+<span class="n">f2</span> <span class="o">&gt;=</span> <span class="n">f1</span>
+</pre></div>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">f1</span></tt> and <tt class="docutils literal"><span class="pre">f2</span></tt> can be any objects for which the difference
+<tt class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span></tt> yields a convex piecewise-linear function.  The comparison
+operators first convert the expressions to <tt class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span> <span class="pre">==</span> <span class="pre">0</span></tt>, resp.,
+<tt class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span> <span class="pre">&lt;=</span> <span class="pre">0</span></tt>, and then return a new <tt class="xref py py-class docutils literal"><span class="pre">constraint</span></tt> object with
+constraint function <tt class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span></tt>.</p>
+<p>In the following example we create three constraints</p>
+<div class="math">
+<p><img src="_images/math/8c4aac4d37d6f9f8563ed4ed85ff75797b4b1645.png" alt="\newcommand{\ones}{{\bf 1}}
+0 \preceq x \preceq \ones, \qquad \ones^T x = 2,"/></p>
+</div><p>for a variable of length 5.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c1</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c2</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c3</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The built-in function <tt class="xref py py-func docutils literal"><span class="pre">len</span></tt> returns the dimension of the
+constraint function.</p>
+<p>Constraints have four public attributes.</p>
+<dl class="attribute">
+<dt id="type">
+<tt class="descname">type</tt><a class="headerlink" href="#type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <tt class="xref py py-const docutils literal"><span class="pre">'='</span></tt> if the constraint is an equality constraint, and
+<strong>&#8216;&lt;&#8217;</strong> if the constraint is an inequality constraint.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">value</tt></dt>
+<dd><p>Returns the value of the constraint function.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="multiplier">
+<tt class="descname">multiplier</tt><a class="headerlink" href="#multiplier" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a constraint <tt class="docutils literal"><span class="pre">c</span></tt>, <tt class="docutils literal"><span class="pre">c.multiplier</span></tt> is a <tt class="xref py py-class docutils literal"><span class="pre">variable</span></tt>
+object of dimension <tt class="docutils literal"><span class="pre">len(c)</span></tt>.  It is used to represent the
+Lagrange multiplier or dual variable associated with the constraint.
+Its value is initialized as <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>, and can be modified by making
+an assignment to <tt class="docutils literal"><span class="pre">c.multiplier.value</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">name</tt></dt>
+<dd><p>The name of the constraint.  Changing the name of a constraint also
+changes the name of the multiplier of <tt class="docutils literal"><span class="pre">c</span></tt>.  For example, the command
+<tt class="docutils literal"><span class="pre">c.name</span> <span class="pre">=</span> <span class="pre">'newname'</span></tt> also changes
+<tt class="docutils literal"><span class="pre">c.multiplier.name</span></tt> to <tt class="docutils literal"><span class="pre">'newname_mul'</span></tt>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="optimization-problems">
+<span id="s-lp"></span><h2>Optimization Problems<a class="headerlink" href="#optimization-problems" title="Permalink to this headline">¶</a></h2>
+<p>Optimization problems are be constructed by calling the following
+function.</p>
+<dl class="function">
+<dt id="cvxopt.modeling.op">
+<tt class="descclassname">cvxopt.modeling.</tt><tt class="descname">op</tt><big>(</big><span class="optional">[</span><em>objective</em><span class="optional">[</span>, <em>constraints</em><span class="optional">[</span>, <em>name</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.modeling.op" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first argument specifies the objective function to be minimized.
+It can be an affine or convex piecewise-linear function with length 1,
+a <tt class="xref py py-class docutils literal"><span class="pre">variable</span></tt> with length 1, or a scalar constant (integer, float,
+or 1 by 1 dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix).  The default value is 0.0.</p>
+<p>The second argument is a single <tt class="xref py py-class docutils literal"><span class="pre">constraint</span></tt>, or a list of
+<tt class="xref py py-class docutils literal"><span class="pre">constraint</span></tt> objects.  The default value is an empty list.</p>
+<p>The third argument is a string with a name for the problem.
+The default value is the empty string.</p>
+</dd></dl>
+
+<p>The following attributes and methods are useful for examining
+and modifying optimization problems.</p>
+<dl class="attribute">
+<dt id="objective">
+<tt class="descname">objective</tt><a class="headerlink" href="#objective" title="Permalink to this definition">¶</a></dt>
+<dd><p>The objective or cost function.  One can write to this attribute to
+change the objective of an existing problem.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">variables</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns a list of the variables of the problem.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">constraints</tt><big>(</big><big>)</big></dt>
+<dd><p>Returns a list of the constraints.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="inequalities">
+<tt class="descname">inequalities</tt><big>(</big><big>)</big><a class="headerlink" href="#inequalities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the inequality constraints.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="equalities">
+<tt class="descname">equalities</tt><big>(</big><big>)</big><a class="headerlink" href="#equalities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the equality constraints.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="delconstraint">
+<tt class="descname">delconstraint</tt><big>(</big><em>c</em><big>)</big><a class="headerlink" href="#delconstraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes constraint <tt class="docutils literal"><span class="pre">c</span></tt> from the problem.</p>
+</dd></dl>
+
+<p>An optimization problem with convex piecewise-linear objective and
+constraints can be solved by calling the method <a class="reference internal" href="#solve" title="solve"><tt class="xref py py-func docutils literal"><span class="pre">solve</span></tt></a>.</p>
+<dl class="method">
+<dt id="solve">
+<tt class="descname">solve</tt><big>(</big><span class="optional">[</span><em>format</em><span class="optional">[</span>, <em>solver</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function converts the optimization problem to a linear program in
+matrix form and then solves it using the solver described in
+the section <a class="reference internal" href="coneprog.html#s-lpsolver"><em>Linear Programming</em></a>.</p>
+<p>The first argument is either <tt class="xref py py-const docutils literal"><span class="pre">'dense'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'sparse'</span></tt>, and
+denotes the matrix types used in the matrix representation of the LP.
+The default value is <tt class="xref py py-const docutils literal"><span class="pre">'dense'</span></tt>.</p>
+<p>The second argument is either <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'glpk'</span></tt>, or
+<tt class="xref py py-const docutils literal"><span class="pre">'mosek'</span></tt>, and selects one of three available LP solvers: the
+default solver written in Python, the GLPK solver (if installed) or the
+MOSEK LP solver (if installed); see the section <a class="reference internal" href="coneprog.html#s-lpsolver"><em>Linear Programming</em></a>.  The
+default value is <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>.</p>
+<p>The solver reports the outcome of optimization by setting the attribute
+<tt class="xref py py-attr docutils literal"><span class="pre">self.status</span></tt> and by modifying the <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of
+the variables and the constraint multipliers of the problem.</p>
+<ul class="simple">
+<li>If the problem is solved to optimality, <tt class="xref py py-attr docutils literal"><span class="pre">self.status</span></tt> is set to
+<tt class="xref py py-const docutils literal"><span class="pre">'optimal'</span></tt>.  The <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of the variables in
+the problem  are set to their computed solutions, and the
+<a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of the multipliers of the constraints of the
+problem are set to the computed dual optimal solution.</li>
+<li>If it is determined that the problem is infeasible,
+<tt class="xref py py-attr docutils literal"><span class="pre">self.status</span></tt> is set to <tt class="xref py py-const docutils literal"><span class="pre">'primal</span> <span class="pre">infeasible'</span></tt>.
+The <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of the variables are set to
+<tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>.  The <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of the multipliers of
+the constraints of the problem are set to a certificate of primal
+infeasibility.  With the <tt class="xref py py-const docutils literal"><span class="pre">'glpk'</span></tt> option, <a class="reference internal" href="#solve" title="solve"><tt class="xref py py-func docutils literal"><span class="pre">solve</span></tt></a> does
+not provide certificates of infeasibility.</li>
+<li>If it is determined that the problem is dual infeasible,
+<tt class="xref py py-attr docutils literal"><span class="pre">self.status</span></tt> is set to <tt class="xref py py-const docutils literal"><span class="pre">'dual</span> <span class="pre">infeasible'</span></tt>.
+The <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of the multipliers of the constraints of
+the problem are set to <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>.  The <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes
+of the variables are set to a certificate of dual infeasibility.
+With the <tt class="xref py py-const docutils literal"><span class="pre">'glpk'</span></tt> option, <a class="reference internal" href="#solve" title="solve"><tt class="xref py py-func docutils literal"><span class="pre">solve</span></tt></a> does not provide
+certificates of infeasibility.</li>
+<li>If the problem was not solved successfully, <tt class="xref py py-attr docutils literal"><span class="pre">self.status</span></tt> is set
+to <tt class="xref py py-const docutils literal"><span class="pre">'unknown'</span></tt>.  The <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of the variables
+and the constraint multipliers are set to <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>.</li>
+</ul>
+</dd></dl>
+
+<p>We refer to the section <a class="reference internal" href="coneprog.html#s-lpsolver"><em>Linear Programming</em></a> for details on the algorithms and
+the different solver options.</p>
+<p>As an example we solve the LP</p>
+<div class="math">
+<p><img src="_images/math/f83cbd0cda5f2e6fcd9dc17e1cd24ca56210d97b.png" alt="\begin{array}{ll}
+\mbox{minimize}   &amp; -4x - 5y \\
+\mbox{subject to} &amp;  2x +y \leq 3 \\
+                  &amp;  x +2y \leq 3 \\
+                  &amp; x \geq 0, \quad y \geq 0.
+\end{array}"/></p>
+</div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">op</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">variable</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c1</span> <span class="o">=</span> <span class="p">(</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c2</span> <span class="o">=</span> <span class="p">(</span> <span class="n">x</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c3</span> <span class="o">=</span> <span class="p">(</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c4</span> <span class="o">=</span> <span class="p">(</span> <span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lp1</span> <span class="o">=</span> <span class="n">op</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">x</span><span class="o">-</span><span class="mi">5</span><span class="o">*</span><span class="n">y</span><span class="p">,</span> <span class="p">[</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">,</span><span class="n">c3</span><span class="p">,</span><span class="n">c4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lp1</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lp1</span><span class="o">.</span><span class="n">status</span>
+<span class="go">&#39;optimal&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">lp1</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+<span class="go">[-9.00e+00]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="go">[ 1.00e+00]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="go">[ 1.00e+00]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">c1</span><span class="o">.</span><span class="n">multiplier</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="go">[ 1.00e+00]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">c2</span><span class="o">.</span><span class="n">multiplier</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="go">[ 2.00e+00]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">c3</span><span class="o">.</span><span class="n">multiplier</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="go">[ 2.87e-08]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">c4</span><span class="o">.</span><span class="n">multiplier</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="go">[ 2.80e-08]</span>
+</pre></div>
+</div>
+<p>We can solve the same LP in  matrix form as follows.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">op</span><span class="p">,</span> <span class="n">dot</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">2.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">3.</span><span class="p">,</span><span class="mf">3.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="o">-</span><span class="mf">4.</span><span class="p">,</span><span class="o">-</span><span class="mf">5.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ineq</span> <span class="o">=</span> <span class="p">(</span> <span class="n">A</span><span class="o">*</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">b</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lp2</span> <span class="o">=</span> <span class="n">op</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="n">ineq</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lp2</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">lp2</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+<span class="go">[-9.00e+00]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="go">[ 1.00e+00]</span>
+<span class="go">[ 1.00e+00]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">ineq</span><span class="o">.</span><span class="n">multiplier</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="go">[1.00e+00]</span>
+<span class="go">[2.00e+00]</span>
+<span class="go">[2.87e-08]</span>
+<span class="go">[2.80e-08]</span>
+</pre></div>
+</div>
+<p>The <tt class="xref py py-class docutils literal"><span class="pre">op</span></tt> class also includes two methods for writing and reading
+files in
+<a class="reference external" href="http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/linearprog/mps.html">MPS format</a>.</p>
+<dl class="method">
+<dt>
+<tt class="descname">tofile(filename) :noindex:</tt></dt>
+<dd><p>If the problem is an LP, writes it to the file <cite>filename</cite> using the
+MPS format.  Row and column labels are assigned based on the variable
+and constraint names in the LP.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">fromfile(filename) :noindex:</tt></dt>
+<dd><p>Reads the LP from the file <cite>filename</cite>.  The file must be a fixed-format
+MPS file.  Some features of the MPS format are not supported: comments
+beginning with dollar signs, the row types &#8216;DE&#8217;, &#8216;DL&#8217;, &#8216;DG&#8217;, and &#8216;DN&#8217;,
+and the capability of reading multiple righthand side, bound or range
+vectors.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p><strong>Norm and Penalty Approximation</strong></p>
+<blockquote>
+<div><p>In the first example we solve the norm approximation problems</p>
+<div class="math">
+<p><img src="_images/math/0ec1c8ba6115149dd073909f209e502f2ba3e83e.png" alt="\begin{array}{ll}
+\mbox{minimize} &amp; \|Ax - b\|_\infty,
+\end{array}
+\qquad
+\begin{array}{ll}
+\mbox{minimize} &amp; \|Ax - b\|_1
+\end{array},"/></p>
+</div><p>and the penalty approximation problem</p>
+<div class="math">
+<p><img src="_images/math/d496b7740ae0ccd09e484413ce837d9000be463e.png" alt="\begin{array}{ll}
+\mbox{minimize} &amp; \sum_k \phi((Ax-b)_k),
+\end{array} \qquad
+\phi(u) = \left\{\begin{array}{ll}
+    0        &amp; |u| \leq 3/4 \\
+    |u|-3/4  &amp; 3/4 \leq |u| \leq 3/2 \\
+    2|u|-9/4 &amp; |u| \geq 3/2.
+\end{array}\right."/></p>
+</div><p>We use randomly generated data.</p>
+<p>The code uses the <a class="reference external" href="http://matplotlib.sourceforge.net">Matplotlib</a>
+package for plotting the histograms of the residual vectors for the
+two solutions.  It generates the figure shown below.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">normal</span>
+<span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="nb">sum</span>
+<span class="kn">import</span> <span class="nn">pylab</span>
+
+<span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">100</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+<span class="n">x1</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">op</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x1</span><span class="o">-</span><span class="n">b</span><span class="p">)))</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+
+<span class="n">x2</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">op</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x2</span><span class="o">-</span><span class="n">b</span><span class="p">)))</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+
+<span class="n">x3</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">op</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x3</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">-</span><span class="mf">0.75</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x3</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">-</span><span class="mf">2.25</span><span class="p">)))</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+
+<span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">311</span><span class="p">)</span>
+<span class="n">pylab</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x1</span><span class="o">.</span><span class="n">value</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">m</span><span class="o">/</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">312</span><span class="p">)</span>
+<span class="n">pylab</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x2</span><span class="o">.</span><span class="n">value</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">m</span><span class="o">/</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">313</span><span class="p">)</span>
+<span class="n">pylab</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x3</span><span class="o">.</span><span class="n">value</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">m</span><span class="o">/</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/normappr.png" src="_images/normappr.png" style="width: 600px;" />
+<p>Equivalently, we can formulate and solve the problems as LPs.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">variable</span><span class="p">()</span>
+<span class="n">x1</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">op</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="n">t</span> <span class="o">&lt;=</span> <span class="n">A</span><span class="o">*</span><span class="n">x1</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">A</span><span class="o">*</span><span class="n">x1</span><span class="o">-</span><span class="n">b</span><span class="o">&lt;=</span><span class="n">t</span><span class="p">])</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+
+<span class="n">u</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">x2</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">op</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="p">[</span><span class="o">-</span><span class="n">u</span> <span class="o">&lt;=</span> <span class="n">A</span><span class="o">*</span><span class="n">x2</span><span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">A</span><span class="o">*</span><span class="n">x2</span><span class="o">+</span><span class="n">b</span> <span class="o">&lt;=</span> <span class="n">u</span><span class="p">])</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+
+<span class="n">v</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">x3</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">op</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="p">[</span><span class="n">v</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">v</span> <span class="o">&gt;=</span> <span class="n">A</span><span class="o">*</span><span class="n">x3</span><span class="o">+</span><span class="n">b</span><span class="o">-</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">v</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x3</span><span class="o">+</span><span class="n">b</span><span class="p">)</span><span class="o">-</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">v</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x3</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">-</span><span class="mf">2.25</span><span class="p">,</span> <span class="n">v</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x3</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">-</span><span class="mf">2.25</span><span class="p">])</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p><strong>Robust Linear Programming</strong></p>
+<blockquote>
+<div><p>The robust LP</p>
+<div class="math">
+<p><img src="_images/math/4e72e35845630bc33262799b6f9935bea86647aa.png" alt="\begin{array}{ll}
+\mbox{minimize}   &amp; c^T x \\
+\mbox{subject to} &amp; \sup_{\|v\|_\infty \leq 1}
+                    (a_i+v)^T x \leq b_i, \qquad i=1,\ldots,m
+\end{array}"/></p>
+</div><p>is equivalent to the problem</p>
+<div class="math">
+<p><img src="_images/math/d155ea915484cbb2afb045d5d7588a9cf5270a1e.png" alt="\begin{array}{ll}
+\mbox{minimize} &amp; c^Tx \\
+\mbox{subject to} &amp; a_i^Tx + \|x\|_1 \leq b_i, \qquad i=1,\ldots,m.
+\end{array}"/></p>
+</div><p>The following code computes the solution and the solution of the
+equivalent LP</p>
+<div class="math">
+<p><img src="_images/math/cdfb5ada1e2b5cce8ec7719396ad8648b569b415.png" alt="\newcommand{\ones}{{\bf 1}}
+\begin{array}{ll}
+\mbox{minimize}   &amp; c^Tx \\
+\mbox{subject to} &amp; a_i^Tx + \ones^Ty \leq b_i,
+                    \qquad i=1,\ldots,m \\
+                  &amp; -y \preceq x \preceq y
+\end{array}"/></p>
+</div><p>for randomly generated data.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">normal</span><span class="p">,</span> <span class="n">uniform</span>
+<span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span><span class="p">,</span> <span class="n">dot</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="nb">sum</span>
+
+<span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">100</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">uniform</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">op</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="n">A</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+
+<span class="n">x2</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">op</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">x2</span><span class="p">),</span> <span class="p">[</span><span class="n">A</span><span class="o">*</span><span class="n">x2</span><span class="o">+</span><span class="nb">sum</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x2</span> <span class="o">&lt;=</span> <span class="n">y</span><span class="p">])</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p><strong>1-Norm Support Vector Classifier</strong></p>
+<blockquote>
+<div><p>The following problem arises in classification:</p>
+<div class="math">
+<p><img src="_images/math/9b323d68ac75880c8435988bb12eebc0882ff5bd.png" alt="\newcommand{\ones}{{\bf 1}}
+\begin{array}{ll}
+\mbox{minimize}   &amp; \|x\|_1 + \ones^Tu \\
+\mbox{subject to} &amp; Ax \succeq \ones -u \\
+                  &amp; u \succeq 0.
+\end{array}"/></p>
+</div><p>It can be solved as follows.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s">&#39;u&#39;</span><span class="p">)</span>
+<span class="n">op</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="p">[</span><span class="n">A</span><span class="o">*</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="o">-</span><span class="n">u</span><span class="p">,</span> <span class="n">u</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>An equivalent unconstrained formulation is</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">op</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">A</span><span class="o">*</span><span class="n">x</span><span class="p">)))</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Modeling</a><ul>
+<li><a class="reference internal" href="#variables">Variables</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#constraints">Constraints</a></li>
+<li><a class="reference internal" href="#optimization-problems">Optimization Problems</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="solvers.html"
+                        title="previous chapter">Nonlinear Convex Optimization</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="c-api.html"
+                        title="next chapter">C API</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="c-api.html" title="C API"
+             >next</a></li>
+        <li class="right" >
+          <a href="solvers.html" title="Nonlinear Convex Optimization"
+             >previous</a> |</li>
+    <li><a href="http://cvxopt.org">CVXOPT home</a> |</li>
+    
+        <li><a href="index.html">user&#39;s guide</a> </li>
+ 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

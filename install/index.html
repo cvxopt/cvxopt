@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation instructions &mdash; CVXOPT</title>
+    
+    <link rel="stylesheet" href="../_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="top" title="CVXOPT" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="installation-instructions">
+<h1>Installation instructions<a class="headerlink" href="#installation-instructions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="standard-installation">
+<h2>Standard installation<a class="headerlink" href="#standard-installation" title="Permalink to this headline">¶</a></h2>
+<p class="rubric">Required and optional software</p>
+<p>The package requires version 2.7 or 3.x of Python, and is built from
+source, so the header files and libraries for Python must be installed,
+as well as the core binaries.</p>
+<p>The installation requires either ATLAS or BLAS + LAPACK.  Using
+architecture optimized ATLAS libraries is recommended and gives a large
+performance improvement over standard BLAS &amp; LAPACK libraries.  Both
+header files and libraries must be installed.</p>
+<p>The following software libraries are optional.</p>
+<ul class="simple">
+<li><a class="reference external" href="www.gnu.org/software/gsl">The GNU Scientific Library GSL</a>.</li>
+<li><a class="reference external" href="www.fftw.org">FFTW</a> is a C library for discrete Fourier transforms.</li>
+<li><a class="reference external" href="www.gnu.org/software/glpk/glpk.html">GLPK</a> is a linear programming package.</li>
+<li><a class="reference external" href="www.mosek.com">MOSEK version 6</a> is a commercial library of convex optimization solvers.</li>
+<li><a class="reference external" href="www-unix.mcs.anl.gov/DSDP">DSDP5.8</a> is a semidefinite programming solver.</li>
+</ul>
+<p class="rubric">Installation</p>
+<p>CVXOPT can be installed globally (for all users on a UNIX system) by
+writing:</p>
+<div class="highlight-python"><pre>python setup.py install</pre>
+</div>
+<p>It can also be installed locally (for a single user) by typing:</p>
+<div class="highlight-python"><pre>python setup.py install --user</pre>
+</div>
+<p>To test that the installation was successful, go to the examples directory
+and try one of the examples, for example,</p>
+<div class="highlight-python"><pre>cd examples/doc/chap8
+python lp.py</pre>
+</div>
+<p>If Python does not issue an error message, installation was successful.</p>
+<p>Additional information can be found in the
+<a class="reference external" href="http://docs.python.org/install/index.html">Python documentation</a>.</p>
+<p class="rubric">Customized setup script</p>
+<p>If needed, the default compilation can be customized by edting src/setup.py.
+The following variables in the setup script can be modified.</p>
+<ul class="simple">
+<li>BLAS_LIB_DIR: the directory containing the LAPACK and BLAS libraries.</li>
+<li>BUILD_GSL: set this variable to 1 if you would like to use the GSL
+random number generators for constructing random matrices in CVXOPT.
+If BULD_GSL is 0, the Python random number generators will be used
+instead.</li>
+<li>GSL_LIB_DIR: the directory containing libgsl.</li>
+<li>GSL_INC_DIR: the directory containing the GSL header files.</li>
+<li>BUILD_FFTW: set this variable to 1 to install the cvxopt.fftw module,
+which is an interface to FFTW.</li>
+<li>FFTW_LIB_DIR: the directory containing libfftw3.</li>
+<li>FFTW_INC_DIR: the directory containing fftw.h.</li>
+<li>BUILD_GLPK: set this variable to 1 to enable support for the linear
+programming solver GLPK.</li>
+<li>GLPK_LIB_DIR: the directory containing libglpk.</li>
+<li>GLPK_INC_DIR: the directory containing glpk.h.</li>
+<li>BUILD_DSDP: set this variable to 1 to enable support for the semidefinite
+programming solver DSDP.</li>
+<li>DSDP_LIB_DIR: the directory containing libdsdp.</li>
+<li>DSDP_INC_DIR: the directory containing dsdp5.h.</li>
+</ul>
+<p>Support for the linear, second-order cone, and quadratic programming
+solvers in MOSEK is automatically enabled if the MOSEK Python interface
+pymosek.so is found in the user&#8217;s PYTHONPATH.</p>
+</div>
+<div class="section" id="building-cvxopt-with-atlas">
+<h2>Building CVXOPT with ATLAS<a class="headerlink" href="#building-cvxopt-with-atlas" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ubuntu">
+<h3>Ubuntu<a class="headerlink" href="#ubuntu" title="Permalink to this headline">¶</a></h3>
+<p>In Ubuntu, simply install the libatlas package and follow the standard
+installation instructions. If multiple BLAS and LAPACK libraries have
+been installed, you can verify the current configuration using the following
+commands:</p>
+<div class="highlight-python"><pre>update-alternatives --config libblas.so.3
+update-alternatives --config liblapack.so.3</pre>
+</div>
+</div>
+<div class="section" id="mac-os-x">
+<h3>Mac OS X<a class="headerlink" href="#mac-os-x" title="Permalink to this headline">¶</a></h3>
+<p>In Mac OS X 10.7.x and Mac OS X 10.8.x, install the <a class="reference external" href="https://developer.apple.com/technologies/tools/">Developer tools</a> and follow the
+instructions for standard installation to build CVXOPT with the system
+supplied ATLAS BLAS and LAPACK libraries (Framework Accelerate).</p>
+</div>
+<div class="section" id="general-instructions-linux">
+<h3>General instructions (Linux)<a class="headerlink" href="#general-instructions-linux" title="Permalink to this headline">¶</a></h3>
+<p>To build CVXOPT with a custom ATLAS library, edit src/setup.py:</p>
+<ul>
+<li><p class="first">set the variable BLAS_LIB_DIR to the directory containing the ATLAS libraries, for example,</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">BLAS_LIB_DIR</span> <span class="o">=</span> <span class="s">&#39;/usr/local/atlas/lib&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">set the variable BLAS_LIB, for example,</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">BLAS_LIB</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;f77blas&#39;</span><span class="p">,</span><span class="s">&#39;cblas&#39;</span><span class="p">,</span><span class="s">&#39;atlas&#39;</span><span class="p">,</span><span class="s">&#39;gfortran&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>or with multithreaded BLAS,</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">BLAS_LIB</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;ptf77blas&#39;</span><span class="p">,</span><span class="s">&#39;ptcblas&#39;</span><span class="p">,</span><span class="s">&#39;atlas&#39;</span><span class="p">,</span><span class="s">&#39;gfortran&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Note that libcblas is required if liblapack was created by merging
+ATLAS and Netlib LAPACK.
+See <a class="reference external" href="http://math-atlas.sourceforge.net/errata.html#LINK">ATLAS documentation</a>.</p>
+</li>
+<li><p class="first">set the variable LAPACK_LIB, for example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">LAPACK_LIB</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;lapack&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Note that CVXOPT requires a complete LAPACK library.
+See <a class="reference external" href="http://math-atlas.sourceforge.net/atlas_install">ATLAS documentation</a>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="building-cvxopt-for-windows">
+<h2>Building CVXOPT for Windows<a class="headerlink" href="#building-cvxopt-for-windows" title="Permalink to this headline">¶</a></h2>
+<p>In this section, we outline how to build and install CVXOPT on Windows
+7 (32 bit) with reference BLAS and LAPACK.</p>
+<ul>
+<li><p class="first">Download and install Python from www.python.org. In the following, we use Python 2.7.2 (32 bit).</p>
+</li>
+<li><p class="first">Download and install the MinGW Compiler Suite (www.mingw.org).</p>
+<blockquote>
+<div><ul class="simple">
+<li>Download and run the <a class="reference external" href="http://mingw.org/wiki/Getting_Started">MinGW installer</a></li>
+<li>Install the C compiler, the Fortran compiler, and the MSYS Basic System</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Open the Command Prompt and set the path variable with the following command:</p>
+<div class="highlight-python"><pre>set path=%path%;c:\Python27;c:\MinGW\bin;c:\MinGW\msys\1.0\bin</pre>
+</div>
+</li>
+<li><p class="first">Download and compile BLAS source:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Download the reference <a class="reference external" href="http://www.netlib.org/blas.tgz">BLAS source distribution</a></p>
+</li>
+<li><p class="first">In the Command Prompt, change to the directory containing blas.tgz</p>
+</li>
+<li><p class="first">Run the following commands to unpack and compile reference BLAS:</p>
+<div class="highlight-python"><pre>tar -xvf blas.tgz
+cd BLAS
+sed 's/_LINUX/_WIN/' make.inc -i
+make &amp;&amp; cp blas_WIN.a ../libblas.a
+cd ..</pre>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Download and compile LAPACK source:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Download the <a class="reference external" href="http://www.netlib.org/lapack/lapack-3.4.0.tgz">LAPACK source distribution</a></p>
+</li>
+<li><p class="first">In the Command Prompt, change to directory containing lapack-3.4.0.tgz</p>
+</li>
+<li><p class="first">Run the following commands to unpack and compile LAPACK:</p>
+<div class="highlight-python"><pre>tar -xvf lapack-3.4.0.tgz
+cd lapack-3.4.0
+cp make.inc.example make.inc
+make lapacklib &amp;&amp; cp liblapack.a ..</pre>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Download and compile CVXOPT source:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Download the <a class="reference external" href="http://abel.ee.ucla.edu/cvxopt/download">CVXOPT source distribution</a></p>
+</li>
+<li><p class="first">In the Command Prompt, change to the directory containing the CVXOPT source distribution.</p>
+</li>
+<li><p class="first">Unpack the source distribution and change the directory to cvxopt-1.1.5/src:</p>
+<div class="highlight-python"><pre>tar -xvf cvxopt-1.1.5.tar.gz
+cd cvxopt-1.1.5/src</pre>
+</div>
+</li>
+<li><p class="first">Copy libblas.a and liblapack.a to the src directory</p>
+</li>
+<li><p class="first">Edit setup.py:</p>
+<blockquote>
+<div><ul class="simple">
+<li>set the variable BLAS_LIB in setup.py to BLAS_LIB = [&#8216;blas&#8217;,&#8217;gfortran&#8217;]</li>
+<li>set the variable BLAS_LIB_DIR in setup.py to BLAS_LIB_DIR = &#8216;.&#8217;</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Remove all instances of &#8216;-mno-cygwin&#8217; from c:\Python27\Lib\distutils\cygwinccompiler.py using the command:</p>
+<div class="highlight-python"><pre>sed 's/-mno-cygwin//g' -i'.bak' c:\Python27\Lib\distutils\cygwinccompiler.py</pre>
+</div>
+<p><strong>Remark</strong>: This command changes the Python installation. We will undo these changes
+in the last step of the installation.</p>
+</li>
+<li><p class="first">Run the following commands to build and install CVXOPT:</p>
+<div class="highlight-python"><pre>python setup.py build --compiler=mingw32
+python setup.py install</pre>
+</div>
+<p><strong>Remark</strong>: It is also possible to build a binary Windows installer with the command:</p>
+<div class="highlight-python"><pre>python setup.py build --compiler=mingw32 bdist --format=wininst</pre>
+</div>
+</li>
+<li><p class="first">Restore c:\Python27\Lib\distutils\cygwinccompiler.py with the following command:</p>
+<div class="highlight-python"><pre>mv c:\Python27\Lib\distutils\cygwinccompiler.py.bak c:\Python27\Lib\distutils\cygwinccompiler.py</pre>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <h3>Contents</h3>
+    <ul>
+    <li><a href="../index.html">Main</a></li>
+    <li>
+    <ul>
+    <li><a href="../copyright.html">Copyright and license</a></li>
+    <li><a href="../download/index.html">Download</a></li>
+    <li><a href="#">Installation</a></li>
+    <li><a href="../documentation/index.html">Documentation</a></li>
+    <li><a href="../examples/index.html">Examples</a></li>
+    <li><a href="../applications/index.html">Applications</a></li>
+    </ul>
+    </li>
+    </ul>
+        <h3>This page</h3> <ul>
+<li><a class="reference internal" href="#">Installation instructions</a><ul>
+<li><a class="reference internal" href="#standard-installation">Standard installation</a></li>
+<li><a class="reference internal" href="#building-cvxopt-with-atlas">Building CVXOPT with ATLAS</a><ul>
+<li><a class="reference internal" href="#ubuntu">Ubuntu</a></li>
+<li><a class="reference internal" href="#mac-os-x">Mac OS X</a></li>
+<li><a class="reference internal" href="#general-instructions-linux">General instructions (Linux)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#building-cvxopt-for-windows">Building CVXOPT for Windows</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-2894407-1");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+  </body>
+</html>

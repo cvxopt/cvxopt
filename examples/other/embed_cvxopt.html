@@ -1,0 +1,195 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Using CVXOPT from C &mdash; CVXOPT</title>
+    
+    <link rel="stylesheet" href="../../_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="top" title="CVXOPT" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="using-cvxopt-from-c">
+<h1>Using CVXOPT from C<a class="headerlink" href="#using-cvxopt-from-c" title="Permalink to this headline">¶</a></h1>
+<p>
+<a href="src/embed_cvxopt.c">source code</a>
+</p><div class="highlight-c"><div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm">   A modified version of the example in the Python documentation:</span>
+<span class="cm">   http://docs.python.org/ext/pure-embedding.html</span>
+
+<span class="cm">   Solves the LP:</span>
+
+<span class="cm">   minimize -4*x1 -5*x2</span>
+<span class="cm">   subject  2*x1 + x2 &lt;= 3</span>
+<span class="cm">            x1 + 2*x2 &lt;= 3</span>
+<span class="cm">            x1 &gt;= 0,  x2 &gt;= 0</span>
+
+<span class="cm">   and prints the solution from C.</span>
+
+
+<span class="cm">   On Ubuntu Linux compile with:</span>
+
+<span class="cm">   gcc -o embed_cvxopt embed_cvxopt.c \</span>
+<span class="cm">     -I${CVXOPT_SRC}/C \</span>
+<span class="cm">     -I/usr/include/python2.4 -lpython2.4</span>
+<span class="cm">*/</span>
+
+<span class="cp">#include &quot;cvxopt.h&quot;</span>
+
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+  <span class="n">Py_Initialize</span><span class="p">();</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">import_cvxopt</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;error importing cvxopt&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="cm">/* import cvxopt.solvers */</span>
+  <span class="n">PyObject</span> <span class="o">*</span><span class="n">solvers</span> <span class="o">=</span> <span class="n">PyImport_ImportModule</span><span class="p">(</span><span class="s">&quot;cvxopt.solvers&quot;</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">solvers</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;error importing cvxopt.solvers&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="cm">/* get reference to solvers.solvelp */</span>
+  <span class="n">PyObject</span> <span class="o">*</span><span class="n">lp</span> <span class="o">=</span> <span class="n">PyObject_GetAttrString</span><span class="p">(</span><span class="n">solvers</span><span class="p">,</span> <span class="s">&quot;lp&quot;</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">lp</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;error referencing cvxopt.solvers.lp&quot;</span><span class="p">);</span>
+    <span class="n">Py_DECREF</span><span class="p">(</span><span class="n">solvers</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="cm">/* create matrices */</span>
+  <span class="n">PyObject</span> <span class="o">*</span><span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="p">)</span><span class="n">Matrix_New</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">DOUBLE</span><span class="p">);</span>
+  <span class="n">PyObject</span> <span class="o">*</span><span class="n">G</span> <span class="o">=</span> <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="p">)</span><span class="n">Matrix_New</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">DOUBLE</span><span class="p">);</span>
+  <span class="n">PyObject</span> <span class="o">*</span><span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="p">)</span><span class="n">Matrix_New</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">DOUBLE</span><span class="p">);</span>
+  <span class="n">PyObject</span> <span class="o">*</span><span class="n">pArgs</span> <span class="o">=</span> <span class="n">PyTuple_New</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">c</span> <span class="o">||</span> <span class="o">!</span><span class="n">G</span> <span class="o">||</span> <span class="o">!</span><span class="n">h</span> <span class="o">||</span> <span class="o">!</span><span class="n">pArgs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;error creating matrices&quot;</span><span class="p">);</span>
+    <span class="n">Py_DECREF</span><span class="p">(</span><span class="n">solvers</span><span class="p">);</span> <span class="n">Py_DECREF</span><span class="p">(</span><span class="n">lp</span><span class="p">);</span>
+    <span class="n">Py_XDECREF</span><span class="p">(</span><span class="n">c</span><span class="p">);</span> <span class="n">Py_XDECREF</span><span class="p">(</span><span class="n">G</span><span class="p">);</span> <span class="n">Py_XDECREF</span><span class="p">(</span><span class="n">h</span><span class="p">);</span> <span class="n">Py_XDECREF</span><span class="p">(</span><span class="n">pArgs</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">MAT_BUFD</span><span class="p">(</span><span class="n">c</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">4</span><span class="p">;</span>
+  <span class="n">MAT_BUFD</span><span class="p">(</span><span class="n">c</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="p">;</span>
+
+  <span class="n">MAT_BUFD</span><span class="p">(</span><span class="n">G</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="n">MAT_BUFD</span><span class="p">(</span><span class="n">G</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="n">MAT_BUFD</span><span class="p">(</span><span class="n">G</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="n">MAT_BUFD</span><span class="p">(</span><span class="n">G</span><span class="p">)[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="n">MAT_BUFD</span><span class="p">(</span><span class="n">G</span><span class="p">)[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="n">MAT_BUFD</span><span class="p">(</span><span class="n">G</span><span class="p">)[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+  <span class="n">MAT_BUFD</span><span class="p">(</span><span class="n">h</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+  <span class="n">MAT_BUFD</span><span class="p">(</span><span class="n">h</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+
+  <span class="cm">/* pack matrices into an argument tuple - references are stolen*/</span>
+  <span class="n">PyTuple_SetItem</span><span class="p">(</span><span class="n">pArgs</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
+  <span class="n">PyTuple_SetItem</span><span class="p">(</span><span class="n">pArgs</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">G</span><span class="p">);</span>
+  <span class="n">PyTuple_SetItem</span><span class="p">(</span><span class="n">pArgs</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">h</span><span class="p">);</span>
+
+  <span class="n">PyObject</span> <span class="o">*</span><span class="n">sol</span> <span class="o">=</span> <span class="n">PyObject_CallObject</span><span class="p">(</span><span class="n">lp</span><span class="p">,</span> <span class="n">pArgs</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">sol</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">PyErr_Print</span><span class="p">();</span>
+    <span class="n">Py_DECREF</span><span class="p">(</span><span class="n">solvers</span><span class="p">);</span> <span class="n">Py_DECREF</span><span class="p">(</span><span class="n">lp</span><span class="p">);</span>
+    <span class="n">Py_DECREF</span><span class="p">(</span><span class="n">pArgs</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">PyObject</span> <span class="o">*</span><span class="n">x</span> <span class="o">=</span> <span class="n">PyDict_GetItemString</span><span class="p">(</span><span class="n">sol</span><span class="p">,</span> <span class="s">&quot;x&quot;</span><span class="p">);</span>
+  <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">x = (%5.4e, %5.4e)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">MAT_BUFD</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">MAT_BUFD</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">1</span><span class="p">]);</span>
+
+  <span class="n">Py_DECREF</span><span class="p">(</span><span class="n">solvers</span><span class="p">);</span>
+  <span class="n">Py_DECREF</span><span class="p">(</span><span class="n">lp</span><span class="p">);</span>
+  <span class="n">Py_DECREF</span><span class="p">(</span><span class="n">pArgs</span><span class="p">);</span>
+  <span class="n">Py_DECREF</span><span class="p">(</span><span class="n">sol</span><span class="p">);</span>
+
+  <span class="n">Py_Finalize</span><span class="p">();</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <h3>Contents</h3>
+    <ul>
+    <li><a href="../../index.html">Main</a></li>
+    <li>
+    <ul>
+    <li><a href="../../copyright.html">Copyright and license</a></li>
+    <li><a href="../../download/index.html">Download</a></li>
+    <li><a href="../../install/index.html">Installation</a></li>
+    <li><a href="../../documentation/index.html">Documentation</a></li>
+    <li><a href="../index.html">Examples</a></li>
+    <li><a href="../../applications/index.html">Applications</a></li>
+    </ul>
+    </li>
+    </ul>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-2894407-1");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+  </body>
+</html>

@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Floor planning example (fig. 8.20) &mdash; CVXOPT</title>
+    
+    <link rel="stylesheet" href="../../_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="top" title="CVXOPT" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="floor-planning-example-fig-8-20">
+<h1>Floor planning example (fig. 8.20)<a class="headerlink" href="#floor-planning-example-fig-8-20" title="Permalink to this headline">¶</a></h1>
+<p>
+<img class="examples" src="figures/fig-8-20.png">
+</p>
+
+<p>
+<a href="src/floorplan.py">source code</a>
+</p><div class="highlight-python"><div class="highlight"><pre><span class="c"># Figure 8.20, page 444.</span>
+<span class="c"># Floor planning example.</span>
+
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span>
+<span class="k">try</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">pylab</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="k">else</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="k">def</span> <span class="nf">floorplan</span><span class="p">(</span><span class="n">Amin</span><span class="p">):</span>
+
+    <span class="c">#     minimize    W+H</span>
+    <span class="c">#     subject to  Amin1 / h1 &lt;= w1</span>
+    <span class="c">#                 Amin2 / h2 &lt;= w2</span>
+    <span class="c">#                 Amin3 / h3 &lt;= w3</span>
+    <span class="c">#                 Amin4 / h4 &lt;= w4</span>
+    <span class="c">#                 Amin5 / h5 &lt;= w5</span>
+    <span class="c">#                 x1 &gt;= 0</span>
+    <span class="c">#                 x2 &gt;= 0</span>
+    <span class="c">#                 x4 &gt;= 0</span>
+    <span class="c">#                 x1 + w1 + rho &lt;= x3</span>
+    <span class="c">#                 x2 + w2 + rho &lt;= x3</span>
+    <span class="c">#                 x3 + w3 + rho &lt;= x5</span>
+    <span class="c">#                 x4 + w4 + rho &lt;= x5</span>
+    <span class="c">#                 x5 + w5 &lt;= W</span>
+    <span class="c">#                 y2 &gt;= 0</span>
+    <span class="c">#                 y3 &gt;= 0</span>
+    <span class="c">#                 y5 &gt;= 0</span>
+    <span class="c">#                 y2 + h2 + rho &lt;= y1</span>
+    <span class="c">#                 y1 + h1 + rho &lt;= y4</span>
+    <span class="c">#                 y3 + h3 + rho &lt;= y4</span>
+    <span class="c">#                 y4 + h4 &lt;= H</span>
+    <span class="c">#                 y5 + h5 &lt;= H</span>
+    <span class="c">#                 h1/gamma &lt;= w1 &lt;= gamma*h1</span>
+    <span class="c">#                 h2/gamma &lt;= w2 &lt;= gamma*h2</span>
+    <span class="c">#                 h3/gamma &lt;= w3 &lt;= gamma*h3</span>
+    <span class="c">#                 h4/gamma &lt;= w4 &lt;= gamma*h4</span>
+    <span class="c">#                 h5/gamma &lt;= w5 &lt;= gamma*h5</span>
+    <span class="c">#</span>
+    <span class="c"># 22 Variables W, H, x (5), y (5), w (5), h (5).</span>
+    <span class="c">#</span>
+    <span class="c"># W, H:  scalars; bounding box width and height</span>
+    <span class="c"># x, y:  5-vectors; coordinates of bottom left corners of blocks</span>
+    <span class="c"># w, h:  5-vectors; widths and heigths of the 5 blocks</span>
+
+    <span class="n">rho</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">5.0</span>   <span class="c"># min spacing, min aspect ratio</span>
+
+    <span class="c"># The objective is to minimize W + H.  There are five nonlinear</span>
+    <span class="c"># constraints</span>
+    <span class="c">#</span>
+    <span class="c">#     -w1 + Amin1 / h1 &lt;= 0</span>
+    <span class="c">#     -w2 + Amin2 / h2 &lt;= 0</span>
+    <span class="c">#     -w3 + Amin3 / h3 &lt;= 0</span>
+    <span class="c">#     -w4 + Amin4 / h4 &lt;= 0</span>
+    <span class="c">#     -w5 + Amin5 / h5 &lt;= 0.</span>
+
+    <span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">20</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">5</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mi">17</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="p">[</span><span class="mf">1.0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">17</span><span class="p">:])</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">12</span><span class="p">:</span><span class="mi">17</span><span class="p">]</span> <span class="o">+</span> <span class="n">div</span><span class="p">(</span><span class="n">Amin</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">17</span><span class="p">:])</span>
+        <span class="n">Df</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">22</span><span class="p">))</span>
+        <span class="n">Df</span><span class="p">[:,</span><span class="mi">12</span><span class="p">:</span><span class="mi">17</span><span class="p">]</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+        <span class="n">Df</span><span class="p">[:,</span><span class="mi">17</span><span class="p">:]</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="o">-</span><span class="n">div</span><span class="p">(</span><span class="n">Amin</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">17</span><span class="p">:]</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">Df</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span> <span class="mf">2.0</span><span class="o">*</span> <span class="n">mul</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">div</span><span class="p">(</span><span class="n">Amin</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">17</span><span class="p">::]</span><span class="o">**</span><span class="mi">3</span><span class="p">)),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">22</span><span class="p">),</span>
+            <span class="nb">range</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">22</span><span class="p">)</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">Df</span><span class="p">,</span> <span class="n">H</span>
+
+    <span class="c"># linear inequalities</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">26</span><span class="p">,</span><span class="mi">22</span><span class="p">))</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">26</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c"># -x1 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+
+    <span class="c"># -x2 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+
+    <span class="c"># -x4 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+
+    <span class="c"># x1 - x3 + w1 &lt;= -rho</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>
+
+    <span class="c"># x2 - x3 + w2 &lt;= -rho</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">13</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>
+
+    <span class="c"># x3 - x5 + w3 &lt;= -rho</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">14</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>
+
+    <span class="c"># x4 - x5 + w4 &lt;= -rho</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">15</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>
+
+    <span class="c"># -W + x5 + w5 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">16</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>
+
+    <span class="c"># -y2 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+
+    <span class="c"># -y3 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+
+    <span class="c"># -y5 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+
+    <span class="c"># -y1 + y2 + h2 &lt;= -rho</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">18</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>
+
+    <span class="c"># y1 - y4 + h1 &lt;= -rho</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">17</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>
+
+    <span class="c"># y3 - y4 + h3 &lt;= -rho</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">19</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>
+
+    <span class="c"># -H + y4 + h4 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>
+
+    <span class="c"># -H + y5 + h5 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">21</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>
+
+    <span class="c"># -w1 + h1/gamma &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">17</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>
+
+    <span class="c"># w1 - gamma * h1 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">17</span><span class="p">,</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">17</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>
+
+    <span class="c"># -w2 + h2/gamma &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">18</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>
+
+    <span class="c"># w2 - gamma * h2 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">19</span><span class="p">,</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">18</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>
+
+    <span class="c"># -w3 + h3/gamma &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">18</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>
+
+    <span class="c"># w3 - gamma * h3 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">19</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>
+
+    <span class="c"># -w4  + h4/gamma &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">22</span><span class="p">,</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">19</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>
+
+    <span class="c"># w4 - gamma * h4 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">23</span><span class="p">,</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>
+
+    <span class="c"># -w5 + h5/gamma &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">21</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>
+
+    <span class="c"># w5 - gamma * h5 &lt;= 0.0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">21</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>
+
+    <span class="c"># solve and return W, H, x, y, w, h</span>
+    <span class="n">sol</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">cpl</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+    <span class="k">return</span>  <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">:</span><span class="mi">7</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="mi">7</span><span class="p">:</span><span class="mi">12</span><span class="p">],</span> \
+        <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="mi">12</span><span class="p">:</span><span class="mi">17</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="mi">17</span><span class="p">:]</span>
+
+<span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span> <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+
+<span class="n">Amin</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">100.</span><span class="p">,</span> <span class="mf">100.</span><span class="p">,</span> <span class="mf">100.</span><span class="p">,</span> <span class="mf">100.</span><span class="p">,</span> <span class="mf">100.</span><span class="p">])</span>
+<span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span>  <span class="n">floorplan</span><span class="p">(</span><span class="n">Amin</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span> <span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">221</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
+                   <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
+                   <span class="n">facecolor</span> <span class="o">=</span> <span class="s">&#39;#D0D0D0&#39;</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+
+<span class="n">Amin</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">20.</span><span class="p">,</span> <span class="mf">50.</span><span class="p">,</span> <span class="mf">80.</span><span class="p">,</span> <span class="mf">150.</span><span class="p">,</span> <span class="mf">200.</span><span class="p">])</span>
+<span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span>  <span class="n">floorplan</span><span class="p">(</span><span class="n">Amin</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">222</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
+                   <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
+                   <span class="n">facecolor</span> <span class="o">=</span> <span class="s">&#39;#D0D0D0&#39;</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+
+<span class="n">Amin</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">180.</span><span class="p">,</span> <span class="mf">80.</span><span class="p">,</span> <span class="mf">80.</span><span class="p">,</span> <span class="mf">80.</span><span class="p">,</span> <span class="mf">80.</span><span class="p">])</span>
+<span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span>  <span class="n">floorplan</span><span class="p">(</span><span class="n">Amin</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">223</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
+                   <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
+                   <span class="n">facecolor</span> <span class="o">=</span> <span class="s">&#39;#D0D0D0&#39;</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+
+<span class="n">Amin</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">20.</span><span class="p">,</span> <span class="mf">150.</span><span class="p">,</span> <span class="mf">20.</span><span class="p">,</span> <span class="mf">200.</span><span class="p">,</span> <span class="mf">110.</span><span class="p">])</span>
+<span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span>  <span class="n">floorplan</span><span class="p">(</span><span class="n">Amin</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">224</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
+                   <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
+                   <span class="n">facecolor</span> <span class="o">=</span> <span class="s">&#39;#D0D0D0&#39;</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+
+    <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <h3>Contents</h3>
+    <ul>
+    <li><a href="../../index.html">Main</a></li>
+    <li>
+    <ul>
+    <li><a href="../../copyright.html">Copyright and license</a></li>
+    <li><a href="../../download/index.html">Download</a></li>
+    <li><a href="../../install/index.html">Installation</a></li>
+    <li><a href="../../documentation/index.html">Documentation</a></li>
+    <li><a href="../index.html">Examples</a></li>
+    <li><a href="../../applications/index.html">Applications</a></li>
+    </ul>
+    </li>
+    </ul>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-2894407-1");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+  </body>
+</html>

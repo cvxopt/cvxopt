@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>C API &mdash; CVXOPT User&#39;s Guide</title>
+    
+    <link rel="stylesheet" href="_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="top" title="CVXOPT User&#39;s Guide" href="index.html" />
+    <link rel="next" title="Matrix Formatting" href="printing.html" />
+    <link rel="prev" title="Modeling" href="modeling.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="printing.html" title="Matrix Formatting"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="modeling.html" title="Modeling"
+             accesskey="P">previous</a> |</li>
+    <li><a href="http://cvxopt.org">CVXOPT home</a> |</li>
+    
+        <li><a href="index.html">user&#39;s guide</a> </li>
+ 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="c-api">
+<span id="c-capi"></span><h1>C API<a class="headerlink" href="#c-api" title="Permalink to this headline">¶</a></h1>
+<p>The API can be used to extend CVXOPT with interfaces to external C routines
+and libraries.  A C program that creates or manipulates the dense or sparse
+matrix objects defined in CVXOPT must include the <tt class="xref py py-const docutils literal"><span class="pre">cvxopt.h</span></tt> header
+file in the <tt class="xref py py-const docutils literal"><span class="pre">src</span></tt> directory of the distribution.</p>
+<p>Before the C API can be used in an extension module it must be initialized
+by calling the macro <tt class="xref c c-macro docutils literal"><span class="pre">import_cvxopt</span></tt>.  As an example we show the
+module initialization from the <tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.blas</span></tt> module, which itself uses
+the API:</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="cp">#if PY_MAJOR_VERSION &gt;= 3</span>
+
+<span class="k">static</span> <span class="n">PyModuleDef</span> <span class="n">blas_module</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">PyModuleDef_HEAD_INIT</span><span class="p">,</span>
+    <span class="s">&quot;blas&quot;</span><span class="p">,</span>
+    <span class="n">blas__doc__</span><span class="p">,</span>
+    <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">blas_functions</span><span class="p">,</span>
+    <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span>
+<span class="p">};</span>
+
+<span class="n">PyMODINIT_FUNC</span> <span class="nf">PyInit_blas</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">PyObject</span> <span class="o">*</span><span class="n">m</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">m</span> <span class="o">=</span> <span class="n">PyModule_Create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">blas_module</span><span class="p">)))</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">import_cvxopt</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">m</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#else</span>
+
+<span class="n">PyMODINIT_FUNC</span> <span class="nf">initblas</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">PyObject</span> <span class="o">*</span><span class="n">m</span><span class="p">;</span>
+  <span class="n">m</span> <span class="o">=</span> <span class="n">Py_InitModule3</span><span class="p">(</span><span class="s">&quot;cvxopt.blas&quot;</span><span class="p">,</span> <span class="n">blas_functions</span><span class="p">,</span> <span class="n">blas__doc__</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">import_cvxopt</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#endif</span>
+</pre></div>
+</div>
+<div class="section" id="dense-matrices">
+<h2>Dense Matrices<a class="headerlink" href="#dense-matrices" title="Permalink to this headline">¶</a></h2>
+<p>As can be seen from the header file <tt class="xref py py-const docutils literal"><span class="pre">cvxopt.h</span></tt>, a <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> is
+essentially a  structure with four fields.  The fields <tt class="xref c c-member docutils literal"><span class="pre">nrows</span></tt> and
+<tt class="xref c c-member docutils literal"><span class="pre">ncols</span></tt> are two integers that specify the dimensions.  The
+<tt class="xref c c-member docutils literal"><span class="pre">id</span></tt> field controls the type of the matrix and can have values
+<tt class="xref py py-const docutils literal"><span class="pre">DOUBLE</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">INT</span></tt>, and <tt class="xref py py-const docutils literal"><span class="pre">COMPLEX</span></tt>.  The <tt class="xref c c-member docutils literal"><span class="pre">buffer</span></tt>
+field is an array that contains the matrix elements stored contiguously in
+column-major order.</p>
+<p>The following C functions can be used to create matrices.</p>
+<dl class="function">
+<dt id="Matrix_New">
+matrix * <tt class="descname">Matrix_New</tt><big>(</big>int<em>&nbsp;nrows</em>, int<em>&nbsp;ncols</em>, int<em>&nbsp;id</em><big>)</big><a class="headerlink" href="#Matrix_New" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> object of type <cite>id</cite> with <cite>nrows</cite> rows and
+<cite>ncols</cite> columns.  The elements of the matrix are uninitialized.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix_NewFromMatrix">
+matrix * <tt class="descname">Matrix_NewFromMatrix</tt><big>(</big>matrix<em>&nbsp;*src</em>, int<em>&nbsp;id</em><big>)</big><a class="headerlink" href="#Matrix_NewFromMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a copy of the matrix <cite>src</cite> converted to type <cite>id</cite>.  The
+following type conversions are allowed:  <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt> to <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>,
+<tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt> to <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>, and <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>  to <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Matrix_NewFromSequence">
+matrix * <tt class="descname">Matrix_NewFromSequence</tt><big>(</big>PyListObject<em>&nbsp;*x</em>, int<em>&nbsp;id</em><big>)</big><a class="headerlink" href="#Matrix_NewFromSequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a matrix of type <cite>id</cite> from the Python sequence type <cite>x</cite>. The
+returned matrix has size <tt class="docutils literal"><span class="pre">(len(x),</span> <span class="pre">1)</span></tt>.  The size can be changed
+by modifying the <tt class="xref c c-member docutils literal"><span class="pre">nrows</span></tt> and <tt class="xref c c-member docutils literal"><span class="pre">ncols</span></tt> fields of the
+returned matrix.</p>
+</dd></dl>
+
+<p>To illustrate the creation and manipulation of dense matrices (as well as
+the Python C API), we show the code for the <a class="reference internal" href="matrices.html#cvxopt.uniform" title="cvxopt.uniform"><tt class="xref py py-func docutils literal"><span class="pre">cvxopt.uniform</span></tt></a> function
+described in the section <a class="reference internal" href="matrices.html#s-random"><em>Randomly Generated Matrices</em></a>.</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="n">PyObject</span> <span class="o">*</span> <span class="nf">uniform</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">kwrds</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">matrix</span> <span class="o">*</span><span class="n">obj</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="kt">double</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="kt">char</span> <span class="o">*</span><span class="n">kwlist</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;nrows&quot;</span><span class="p">,</span> <span class="s">&quot;ncols&quot;</span><span class="p">,</span> <span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">};</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTupleAndKeywords</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kwrds</span><span class="p">,</span> <span class="s">&quot;i|idd&quot;</span><span class="p">,</span> <span class="n">kwlist</span><span class="p">,</span>
+          <span class="o">&amp;</span><span class="n">nrows</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ncols</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">b</span><span class="p">))</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">((</span><span class="n">nrows</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">ncols</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">PyExc_TypeError</span><span class="p">,</span> <span class="s">&quot;dimensions must be non-negative&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">obj</span> <span class="o">=</span> <span class="n">Matrix_New</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">DOUBLE</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">PyErr_NoMemory</span><span class="p">();</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nrows</span><span class="o">*</span><span class="n">ncols</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="n">MAT_BUFD</span><span class="p">(</span><span class="n">obj</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Uniform</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="p">)</span><span class="n">obj</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sparse-matrices">
+<h2>Sparse Matrices<a class="headerlink" href="#sparse-matrices" title="Permalink to this headline">¶</a></h2>
+<p>Sparse matrices are stored in compressed column storage (CCS) format.  For
+a general <cite>nrows</cite> by <cite>ncols</cite> sparse matrix with <cite>nnz</cite> nonzero entries this
+means the following.  The sparsity pattern and the nonzero values are
+stored in three fields:</p>
+<dl class="docutils">
+<dt><tt class="xref c c-member docutils literal"><span class="pre">values</span></tt></dt>
+<dd>A <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> matrix of size <tt class="docutils literal"><span class="pre">(nnz,1)</span></tt>  with the
+nonzero entries of the matrix stored columnwise.</dd>
+<dt><tt class="xref c c-member docutils literal"><span class="pre">rowind</span></tt></dt>
+<dd>An array of integers of length <cite>nnz</cite> containing the row indices of
+the nonzero entries, stored in the same order as <tt class="xref c c-member docutils literal"><span class="pre">values</span></tt>.</dd>
+<dt><tt class="xref c c-member docutils literal"><span class="pre">colptr</span></tt></dt>
+<dd>An array of integers of length <cite>ncols</cite> + 1 with for each column of the
+matrix the index of the first element in <tt class="xref c c-member docutils literal"><span class="pre">values</span></tt> from that
+column.  More precisely, <tt class="docutils literal"><span class="pre">colptr[0]</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">0</span></tt>, and for
+k = 0, 1, ..., <cite>ncols</cite> - 1, <tt class="docutils literal"><span class="pre">colptr[k+1]</span></tt> is equal to
+<tt class="docutils literal"><span class="pre">colptr[k]</span></tt> plus the number of nonzeros in column <cite>k</cite> of the
+matrix.  Thus, <tt class="docutils literal"><span class="pre">colptr[ncols]</span></tt> is equal to <cite>nnz</cite>, the number of
+nonzero entries.</dd>
+</dl>
+<p>For example, for the matrix</p>
+<div class="math">
+<p><img src="_images/math/f4cc3b4324f3f4bb12a7db934c2c5c5acc98fe66.png" alt="A=\left [\begin{array}{cccc}
+    1 &amp; 0 &amp; 0 &amp; 5\\
+    2 &amp; 0 &amp; 4 &amp; 0\\
+    0 &amp; 0 &amp; 0 &amp; 6\\
+    3 &amp; 0 &amp; 0 &amp; 0
+\end{array}\right]"/></p>
+</div><p>the elements of <tt class="xref c c-member docutils literal"><span class="pre">values</span></tt>, <tt class="xref c c-member docutils literal"><span class="pre">rowind</span></tt>, and <tt class="xref c c-member docutils literal"><span class="pre">colptr</span></tt>
+are:</p>
+<dl class="docutils">
+<dt><tt class="xref c c-member docutils literal"><span class="pre">values</span></tt>:</dt>
+<dd>1.0, 2.0, 3.0, 4.0, 5.0, 6.0</dd>
+<dt><tt class="xref c c-member docutils literal"><span class="pre">rowind</span></tt>:</dt>
+<dd>0, 1,3, 1, 0, 2</dd>
+<dt><tt class="xref c c-member docutils literal"><span class="pre">colptr</span></tt>:</dt>
+<dd>0, 3, 3, 4, 6.</dd>
+</dl>
+<p>It is crucial that for each column the row indices in <tt class="xref c c-member docutils literal"><span class="pre">rowind</span></tt> are
+sorted; the equivalent representation</p>
+<dl class="docutils">
+<dt><tt class="xref c c-member docutils literal"><span class="pre">values</span></tt>:</dt>
+<dd>3.0, 2.0, 1.0, 4.0, 5.0, 6.0</dd>
+<dt><tt class="xref c c-member docutils literal"><span class="pre">rowind</span></tt>:</dt>
+<dd>3, 1, 0, 1, 0, 2</dd>
+<dt><tt class="xref c c-member docutils literal"><span class="pre">colptr</span></tt>:</dt>
+<dd>0, 3, 3, 4, 6</dd>
+</dl>
+<p>is not allowed (and will likely cause the program to crash).</p>
+<p>The <tt class="xref c c-member docutils literal"><span class="pre">nzmax</span></tt> field specifies the number of non-zero elements the
+matrix can store.  It is equal to the length of <tt class="xref c c-member docutils literal"><span class="pre">rowind</span></tt> and
+<tt class="xref c c-member docutils literal"><span class="pre">values</span></tt>; this number can be larger that <tt class="docutils literal"><span class="pre">colptr[nrows]</span></tt>,
+but never less.  This field makes it possible to preallocate a certain
+amount of memory to avoid reallocations if the matrix is constructed
+sequentially by filling in elements.  In general the <tt class="xref c c-member docutils literal"><span class="pre">nzmax</span></tt> field
+can safely be ignored, however, since it will always be adjusted
+automatically as the number of non-zero elements grows.</p>
+<p>The <tt class="xref c c-member docutils literal"><span class="pre">id</span></tt> field controls the type of the matrix and can have
+values <tt class="xref py py-const docutils literal"><span class="pre">DOUBLE</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">COMPLEX</span></tt>.</p>
+<p>Sparse matrices are created using the following functions from the API.</p>
+<dl class="function">
+<dt id="SpMatrix_New">
+spmatrix * <tt class="descname">SpMatrix_New</tt><big>(</big>int<em>&nbsp;nrows</em>, int<em>&nbsp;ncols</em>, int<em>&nbsp;nzmax</em>, int<em>&nbsp;id</em><big>)</big><a class="headerlink" href="#SpMatrix_New" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a sparse zero matrix with <cite>nrows</cite> rows and <cite>ncols</cite> columns.
+<cite>nzmax</cite> is the number of elements that will be allocated (the length of
+the <tt class="xref c c-member docutils literal"><span class="pre">values</span></tt> and <tt class="xref c c-member docutils literal"><span class="pre">rowind</span></tt> fields).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="SpMatrix_NewFromMatrix">
+spmatrix * <tt class="descname">SpMatrix_NewFromMatrix</tt><big>(</big>spmatrix<em>&nbsp;*src</em>, int<em>&nbsp;id</em><big>)</big><a class="headerlink" href="#SpMatrix_NewFromMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a copy the sparse matrix var{src}.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="SpMatrix_NewFromIJV">
+spmatrix * <tt class="descname">SpMatrix_NewFromIJV</tt><big>(</big>matrix<em>&nbsp;*I</em>, matrix<em>&nbsp;*J</em>, matrix<em>&nbsp;*V</em>, int<em>&nbsp;nrows</em>, int<em>&nbsp;ncols</em>, int<em>&nbsp;nzmax</em>, int<em>&nbsp;id</em><big>)</big><a class="headerlink" href="#SpMatrix_NewFromIJV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a sparse matrix with <cite>nrows</cite> rows and <cite>ncols</cite> columns from a
+triplet description.  <cite>I</cite> and <cite>J</cite> must be integer matrices and <cite>V</cite>
+either a double or complex matrix, or <tt class="xref py py-const docutils literal"><span class="pre">NULL</span></tt>. If <cite>V</cite> is
+<tt class="xref py py-const docutils literal"><span class="pre">NULL</span></tt> the values of the entries in the matrix are undefined,
+otherwise they are specified by <cite>V</cite>.  Repeated entries in <cite>V</cite> are
+summed.  The number of allocated elements is given by <cite>nzmax</cite>, which is
+adjusted if it is smaller than the required amount.</p>
+</dd></dl>
+
+<p>We illustrate use of the sparse matrix class by listing the source
+code for the <a class="reference internal" href="matrices.html#real" title="real"><tt class="xref py py-attr docutils literal"><span class="pre">real</span></tt></a> method, which returns the real part of
+a sparse matrix:</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span> <span class="nf">spmatrix_real</span><span class="p">(</span><span class="n">spmatrix</span> <span class="o">*</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">SP_ID</span><span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="o">!=</span> <span class="n">COMPLEX</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="p">)</span><span class="n">SpMatrix_NewFromMatrix</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">SP_ID</span><span class="p">(</span><span class="n">self</span><span class="p">));</span>
+
+  <span class="n">spmatrix</span> <span class="o">*</span><span class="n">ret</span> <span class="o">=</span> <span class="n">SpMatrix_New</span><span class="p">(</span><span class="n">SP_NROWS</span><span class="p">(</span><span class="n">self</span><span class="p">),</span> <span class="n">SP_NCOLS</span><span class="p">(</span><span class="n">self</span><span class="p">),</span>
+      <span class="n">SP_NNZ</span><span class="p">(</span><span class="n">self</span><span class="p">),</span> <span class="n">DOUBLE</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ret</span><span class="p">)</span> <span class="k">return</span> <span class="n">PyErr_NoMemory</span><span class="p">();</span>
+
+  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">SP_NNZ</span><span class="p">(</span><span class="n">self</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="n">SP_VALD</span><span class="p">(</span><span class="n">ret</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">creal</span><span class="p">(</span><span class="n">SP_VALZ</span><span class="p">(</span><span class="n">self</span><span class="p">)[</span><span class="n">i</span><span class="p">]);</span>
+
+  <span class="n">memcpy</span><span class="p">(</span><span class="n">SP_COL</span><span class="p">(</span><span class="n">ret</span><span class="p">),</span> <span class="n">SP_COL</span><span class="p">(</span><span class="n">self</span><span class="p">),</span> <span class="p">(</span><span class="n">SP_NCOLS</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int_t</span><span class="p">));</span>
+  <span class="n">memcpy</span><span class="p">(</span><span class="n">SP_ROW</span><span class="p">(</span><span class="n">ret</span><span class="p">),</span> <span class="n">SP_ROW</span><span class="p">(</span><span class="n">self</span><span class="p">),</span> <span class="n">SP_NNZ</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int_t</span><span class="p">));</span>
+  <span class="k">return</span> <span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="p">)</span><span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">C API</a><ul>
+<li><a class="reference internal" href="#dense-matrices">Dense Matrices</a></li>
+<li><a class="reference internal" href="#sparse-matrices">Sparse Matrices</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="modeling.html"
+                        title="previous chapter">Modeling</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="printing.html"
+                        title="next chapter">Matrix Formatting</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="printing.html" title="Matrix Formatting"
+             >next</a></li>
+        <li class="right" >
+          <a href="modeling.html" title="Modeling"
+             >previous</a> |</li>
+    <li><a href="http://cvxopt.org">CVXOPT home</a> |</li>
+    
+        <li><a href="index.html">user&#39;s guide</a> </li>
+ 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,161 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SDPs with upper bounds &mdash; CVXOPT</title>
+    
+    <link rel="stylesheet" href="../../_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="top" title="CVXOPT" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="sdps-with-upper-bounds">
+<h1>SDPs with upper bounds<a class="headerlink" href="#sdps-with-upper-bounds" title="Permalink to this headline">¶</a></h1>
+<p>Consider a standard form SDP with an added upper bound</p>
+<div class="math" id="equation-ubsdp">
+<p><span class="eqno">(1)</span><img src="../../_images/math/70f0eb40552f762f4c286cfd9a85792179cbfcc2.png" alt="\begin{array}{ll}
+\mbox{minimize}   &amp; \mathbf{Tr}(BX) \\
+\mbox{subject to} &amp; \mathbf{Tr}(A_iX) + c_i = 0, \quad i =
+                     1,\ldots, n \\
+                  &amp; 0 \preceq X \preceq I
+\end{array}"/></p>
+</div><p>with variable <img class="math" src="../../_images/math/504a841f9ed96c0ab5e32d4a26b0e164b0e6c6c9.png" alt="X \in \mathbf{S}^m"/>. The problem <a href="#equation-ubsdp">(1)</a> can be reformulated by introducing a slack variable <img class="math" src="../../_images/math/ad28c83c99a8fd0dd2e2e594c9d02ee532765a0a.png" alt="S"/></p>
+<div class="math" id="equation-ubsdp_2">
+<p><span class="eqno">(2)</span><img src="../../_images/math/d6aeed233d1acdddb5a88ae154eae6d06e99ce0d.png" alt="\begin{array}{ll}
+\mbox{minimize}   &amp; \mathbf{Tr}(BX) \\
+\mbox{subject to} &amp; \mathbf{Tr}(A_iX) + c_i = 0, \quad i =
+                     1,\ldots, n \\
+                  &amp; X + S = I \\
+                  &amp; X \succeq 0, \ S \succeq 0.
+\end{array}"/></p>
+</div><h3> Documentation </h3><p>A custom solver for SDPs with upper bounds is available as a Python
+module <a class="reference download internal" href="../../_downloads/ubsdp.py"><tt class="xref download docutils literal"><span class="pre">ubsdp.py</span></tt></a>. The  module implements the following function:</p>
+<blockquote>
+<div><dl class="function">
+<dt id="ubsdp">
+<tt class="descname">ubsdp</tt><big>(</big><em>c</em>, <em>A</em>, <em>B</em>, <em>pstart = None</em>, <em>dstart = None</em><big>)</big><a class="headerlink" href="#ubsdp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves the problem <a href="#equation-ubsdp_2">(2)</a> using a custom KKT solver.</p>
+<p>The input arguments are <img class="math" src="../../_images/math/575f34ca99f4f8f4980f2bd64034861ee7919b5a.png" alt="c \in \mathbf{R}^n"/>, a matrix
+<img class="math" src="../../_images/math/0bb6e12511b86a89ad7a1d9903f982d33c1ca6d7.png" alt="A \in \mathbf{R}^{m^2 \times n}"/>, and a matrix <img class="math" src="../../_images/math/35c90ffc7244bfe9aafbdd7833722e11ff90adfc.png" alt="B
+\in \mathbf{S}^m"/>. The columns of <img class="math" src="../../_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> are
+<img class="math" src="../../_images/math/e490c633b13011cf59b288d0ac25821f4f57bf0e.png" alt="\mathbf{vec}(A_i)"/> where <img class="math" src="../../_images/math/2470d16367addaa6a4be88fc67cf4b356d87ddfb.png" alt="A_i \in \mathbf{S}^m"/> is
+the i&#8217;th data matrix.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>.</p>
+</dd></dl>
+
+</div></blockquote>
+<h3> Example </h3><div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">misc</span><span class="p">,</span> <span class="n">lapack</span>
+<span class="kn">from</span> <span class="nn">ubsdp</span> <span class="kn">import</span> <span class="n">ubsdp</span>
+
+<span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c"># Z0 random positive definite with maximum e.v. less than 1.0.</span>
+<span class="n">Z0</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">)</span>
+<span class="n">Z0</span> <span class="o">=</span> <span class="n">Z0</span> <span class="o">*</span> <span class="n">Z0</span><span class="o">.</span><span class="n">T</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">a</span> <span class="o">=</span> <span class="o">+</span><span class="n">Z0</span>
+<span class="n">lapack</span><span class="o">.</span><span class="n">syev</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">jobz</span> <span class="o">=</span> <span class="s">&#39;V&#39;</span><span class="p">)</span>
+<span class="n">wmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">wmax</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">:</span>  <span class="n">w</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.9</span><span class="o">/</span><span class="n">wmax</span><span class="p">)</span> <span class="o">*</span> <span class="n">w</span>
+<span class="n">Z0</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">spdiag</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span>
+
+<span class="c"># c = -A&#39;(Z0)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">misc</span><span class="o">.</span><span class="n">sgemv</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">Z0</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;l&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;q&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s">&#39;s&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">m</span><span class="p">]},</span> <span class="n">trans</span> <span class="o">=</span> <span class="s">&#39;T&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="c"># Z1 = I - Z0</span>
+<span class="n">Z1</span> <span class="o">=</span> <span class="o">-</span><span class="n">Z0</span>
+<span class="n">Z1</span><span class="p">[::</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">1.0</span>
+
+<span class="n">x0</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X0</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">)</span>
+<span class="n">X0</span> <span class="o">=</span> <span class="n">X0</span><span class="o">*</span><span class="n">X0</span><span class="o">.</span><span class="n">T</span>
+<span class="n">S0</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">)</span>
+<span class="n">S0</span> <span class="o">=</span> <span class="n">S0</span><span class="o">*</span><span class="n">S0</span><span class="o">.</span><span class="n">T</span>
+<span class="c"># B = A(x0) - X0 + S0</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x0</span> <span class="o">-</span> <span class="n">X0</span><span class="p">[:]</span> <span class="o">+</span> <span class="n">S0</span><span class="p">[:],</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">))</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">ubsdp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <h3>Contents</h3>
+    <ul>
+    <li><a href="../../index.html">Main</a></li>
+    <li>
+    <ul>
+    <li><a href="../../copyright.html">Copyright and license</a></li>
+    <li><a href="../../download/index.html">Download</a></li>
+    <li><a href="../../install/index.html">Installation</a></li>
+    <li><a href="../../documentation/index.html">Documentation</a></li>
+    <li><a href="../index.html">Examples</a></li>
+    <li><a href="../../applications/index.html">Applications</a></li>
+    </ul>
+    </li>
+    </ul>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-2894407-1");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+  </body>
+</html>

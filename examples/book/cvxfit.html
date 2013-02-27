@@ -1,0 +1,159 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Least-squares fit of a convex function (fig. 6.24) &mdash; CVXOPT</title>
+    
+    <link rel="stylesheet" href="../../_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="top" title="CVXOPT" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="least-squares-fit-of-a-convex-function-fig-6-24">
+<h1>Least-squares fit of a convex function (fig. 6.24)<a class="headerlink" href="#least-squares-fit-of-a-convex-function-fig-6-24" title="Permalink to this headline">¶</a></h1>
+<p>
+<img class="examples" src="figures/fig-6-24.png">
+</p>
+
+<p>
+<a href="src/cvxfit.py">source code</a>,
+<a href="data/cvxfit.bin">data file (cvxfit.bin)</a>
+</p><div class="highlight-python"><div class="highlight"><pre><span class="c"># Figure 6.24, page 339.</span>
+<span class="c"># Least-squares fit of a convex function.</span>
+
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">mul</span>
+<span class="kn">from</span> <span class="nn">pickle</span> <span class="kn">import</span> <span class="n">load</span>
+<span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;cvxfit.bin&#39;</span><span class="p">,</span><span class="s">&#39;rb&#39;</span><span class="p">))</span>
+<span class="n">u</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;u&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;y&#39;</span><span class="p">]</span>
+<span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+
+<span class="c"># minimize    (1/2) * || yhat - y ||_2^2</span>
+<span class="c"># subject to  yhat[j] &gt;= yhat[i] + g[i]&#39; * (u[j] - u[i]), j, i = 0,...,m-1</span>
+<span class="c">#</span>
+<span class="c"># Variables  yhat (m), g (m).</span>
+
+<span class="n">nvars</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">m</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="p">(</span><span class="n">nvars</span><span class="p">,</span> <span class="n">nvars</span><span class="p">))</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">nvars</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">q</span><span class="p">[:</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">y</span>
+
+<span class="c"># m blocks (i = 0,...,m-1) of linear inequalities</span>
+<span class="c">#</span>
+<span class="c">#     yhat[i] + g[i]&#39; * (u[j] - u[i]) &lt;= yhat[j], j = 0,...,m-1.</span>
+
+<span class="n">G</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">([],[],[],</span> <span class="p">(</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">nvars</span><span class="p">))</span>
+<span class="n">I</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    <span class="c"># coefficients of yhat[i]</span>
+    <span class="n">G</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">m</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">m</span><span class="p">)),</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="c"># coefficients of g[i]</span>
+    <span class="n">G</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">m</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">m</span><span class="p">)),</span> <span class="n">m</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span> <span class="o">-</span> <span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="c"># coefficients of yhat[j]</span>
+    <span class="n">G</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">m</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">m</span><span class="p">)),</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">))]</span> <span class="o">-=</span> <span class="n">I</span>
+
+<span class="n">h</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="n">sol</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">qp</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+<span class="n">yhat</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][:</span><span class="n">m</span><span class="p">]</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="n">m</span><span class="p">:]</span>
+
+<span class="n">nopts</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="p">[</span> <span class="mf">2.2</span><span class="o">/</span><span class="n">nopts</span> <span class="o">*</span> <span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span> <span class="p">]</span>
+<span class="n">f</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">max</span><span class="p">(</span><span class="n">yhat</span> <span class="o">+</span> <span class="n">mul</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">t</span><span class="o">-</span><span class="n">u</span><span class="p">))</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ts</span> <span class="p">]</span>
+
+<span class="k">try</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">pylab</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="k">pass</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">&#39;wo&#39;</span><span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="s">&#39;-g&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">7.2</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Least-squares fit of convex function (fig. 6.24)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <h3>Contents</h3>
+    <ul>
+    <li><a href="../../index.html">Main</a></li>
+    <li>
+    <ul>
+    <li><a href="../../copyright.html">Copyright and license</a></li>
+    <li><a href="../../download/index.html">Download</a></li>
+    <li><a href="../../install/index.html">Installation</a></li>
+    <li><a href="../../documentation/index.html">Documentation</a></li>
+    <li><a href="../index.html">Examples</a></li>
+    <li><a href="../../applications/index.html">Applications</a></li>
+    </ul>
+    </li>
+    </ul>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-2894407-1");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+  </body>
+</html>

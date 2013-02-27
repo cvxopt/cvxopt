@@ -1,0 +1,162 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Risk-return trade-off (fig. 4.12) &mdash; CVXOPT</title>
+    
+    <link rel="stylesheet" href="../../_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="top" title="CVXOPT" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="risk-return-trade-off-fig-4-12">
+<h1>Risk-return trade-off (fig. 4.12)<a class="headerlink" href="#risk-return-trade-off-fig-4-12" title="Permalink to this headline">¶</a></h1>
+<p>
+<img class="examples" src="figures/fig-4-12a.png">
+<img class="examples" src="figures/fig-4-12b.png">
+</p>
+
+<p>
+<a href="src/portfolio.py">source code</a>
+</p><div class="highlight-python"><div class="highlight"><pre><span class="c"># Figure 4.12, page 187.</span>
+<span class="c"># Risk-return trade-off.</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
+<span class="kn">from</span> <span class="nn">cvxopt.blas</span> <span class="kn">import</span> <span class="n">dot</span>
+<span class="kn">from</span> <span class="nn">cvxopt.solvers</span> <span class="kn">import</span> <span class="n">qp</span><span class="p">,</span> <span class="n">options</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span> <span class="p">[[</span> <span class="mf">4e-2</span><span class="p">,</span>  <span class="mf">6e-3</span><span class="p">,</span> <span class="o">-</span><span class="mf">4e-3</span><span class="p">,</span>   <span class="mf">0.0</span> <span class="p">],</span>
+             <span class="p">[</span> <span class="mf">6e-3</span><span class="p">,</span>  <span class="mf">1e-2</span><span class="p">,</span>  <span class="mf">0.0</span><span class="p">,</span>    <span class="mf">0.0</span> <span class="p">],</span>
+             <span class="p">[</span><span class="o">-</span><span class="mf">4e-3</span><span class="p">,</span>  <span class="mf">0.0</span><span class="p">,</span>   <span class="mf">2.5e-3</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">],</span>
+             <span class="p">[</span> <span class="mf">0.0</span><span class="p">,</span>   <span class="mf">0.0</span><span class="p">,</span>   <span class="mf">0.0</span><span class="p">,</span>    <span class="mf">0.0</span> <span class="p">]]</span> <span class="p">)</span>
+<span class="n">pbar</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="o">.</span><span class="mi">12</span><span class="p">,</span> <span class="o">.</span><span class="mi">10</span><span class="p">,</span> <span class="o">.</span><span class="mo">07</span><span class="p">,</span> <span class="o">.</span><span class="mo">03</span><span class="p">])</span>
+
+<span class="n">G</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+<span class="n">G</span><span class="p">[::</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">mus</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="mf">5.0</span><span class="o">*</span><span class="n">t</span><span class="o">/</span><span class="n">N</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="p">]</span>
+<span class="n">options</span><span class="p">[</span><span class="s">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="p">[</span> <span class="n">qp</span><span class="p">(</span><span class="n">mu</span><span class="o">*</span><span class="n">S</span><span class="p">,</span> <span class="o">-</span><span class="n">pbar</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)[</span><span class="s">&#39;x&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">mu</span> <span class="ow">in</span> <span class="n">mus</span> <span class="p">]</span>
+<span class="n">returns</span> <span class="o">=</span> <span class="p">[</span> <span class="n">dot</span><span class="p">(</span><span class="n">pbar</span><span class="p">,</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span> <span class="p">]</span>
+<span class="n">risks</span> <span class="o">=</span> <span class="p">[</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">S</span><span class="o">*</span><span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span> <span class="p">]</span>
+
+<span class="k">try</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">pylab</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="k">pass</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">risks</span><span class="p">,</span> <span class="n">returns</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;standard deviation&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;expected return&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Risk-return trade-off curve (fig 4.12)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">])</span>
+
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">c1</span> <span class="o">=</span> <span class="p">[</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span> <span class="p">]</span>
+    <span class="n">c2</span> <span class="o">=</span> <span class="p">[</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span> <span class="p">]</span>
+    <span class="n">c3</span> <span class="o">=</span> <span class="p">[</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span> <span class="p">]</span>
+    <span class="n">c4</span> <span class="o">=</span> <span class="p">[</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span> <span class="p">]</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">risks</span> <span class="o">+</span> <span class="p">[</span><span class="o">.</span><span class="mi">20</span><span class="p">],</span> <span class="n">c1</span> <span class="o">+</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s">&#39;#F0F0F0&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">risks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">risks</span><span class="p">,</span> <span class="n">c2</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">c1</span><span class="p">,</span>
+        <span class="n">facecolor</span> <span class="o">=</span> <span class="s">&#39;#D0D0D0&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">risks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">risks</span><span class="p">,</span> <span class="n">c3</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">c2</span><span class="p">,</span>
+        <span class="n">facecolor</span> <span class="o">=</span> <span class="s">&#39;#F0F0F0&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">risks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">risks</span><span class="p">,</span> <span class="n">c4</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">c3</span><span class="p">,</span>
+        <span class="n">facecolor</span> <span class="o">=</span> <span class="s">&#39;#D0D0D0&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;standard deviation&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;allocation&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">.</span><span class="mi">15</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="s">&#39;x1&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">.</span><span class="mi">10</span><span class="p">,</span><span class="o">.</span><span class="mi">7</span><span class="p">,</span><span class="s">&#39;x2&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">.</span><span class="mo">05</span><span class="p">,</span><span class="o">.</span><span class="mi">7</span><span class="p">,</span><span class="s">&#39;x3&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">.</span><span class="mo">01</span><span class="p">,</span><span class="o">.</span><span class="mi">7</span><span class="p">,</span><span class="s">&#39;x4&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Optimal allocations (fig 4.12)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <h3>Contents</h3>
+    <ul>
+    <li><a href="../../index.html">Main</a></li>
+    <li>
+    <ul>
+    <li><a href="../../copyright.html">Copyright and license</a></li>
+    <li><a href="../../download/index.html">Download</a></li>
+    <li><a href="../../install/index.html">Installation</a></li>
+    <li><a href="../../documentation/index.html">Documentation</a></li>
+    <li><a href="../index.html">Examples</a></li>
+    <li><a href="../../applications/index.html">Applications</a></li>
+    </ul>
+    </li>
+    </ul>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="../../index.html">CVXOPT</a> </li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-2894407-1");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
+  </body>
+</html>

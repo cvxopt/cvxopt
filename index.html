@@ -1,74 +1,142 @@
-<!DOCTYPE html>
-<html>
 
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Cvxopt : CVXOPT -- Python Software for Convex Optimization" />
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Cvxopt</title>
-  </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/cvxopt/cvxopt">View on GitHub</a>
-
-          <h1 id="project_title">Cvxopt</h1>
-          <h2 id="project_tagline">CVXOPT -- Python Software for Convex Optimization</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/cvxopt/cvxopt/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/cvxopt/cvxopt/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Cvxopt maintained by <a href="https://github.com/cvxopt">cvxopt</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
+    <title>&lt;no title&gt; &mdash; CVXOPT</title>
+    
+    <link rel="stylesheet" href="_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="top" title="CVXOPT" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="#">CVXOPT</a> </li> 
+      </ul>
+    </div>  
 
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1 style="letter-spacing: 0.8em; font-size: 2.5em !important;
+margin-bottom: 0; padding-bottom: 0"> CVXOPT </h1>
+<p style="color: #11557C; font-variant: small-caps; font-weight: bold;
+margin-bottom: 2em">
+Python Software for Convex Optimization </p><p>CVXOPT is a free software package for convex optimization based on the
+Python programming language. It can be used with the interactive Python
+interpreter, on the command line by executing Python scripts, or
+integrated in other software via Python extension modules. Its main purpose
+is to make the development of software for convex optimization applications
+straightforward by building on Python&#8217;s extensive standard library
+and on the strengths of Python as a high-level programming language.</p>
+<h2> Current release </h2><p>Version 1.1.5 includes:</p>
+<ul class="simple">
+<li>efficient Python classes for dense and sparse matrices (real and complex),
+with Python indexing and slicing and overloaded operations for matrix
+arithmetic</li>
+<li>an interface to most of the double-precision real and complex BLAS</li>
+<li>an interface to LAPACK routines for solving linear equations and
+least-squares problems, matrix factorizations (LU, Cholesky,
+<span class="raw-html">LDL<sup><small>T</small></sup></span> and QR),
+symmetric eigenvalue and singular value decomposition, and Schur
+factorization</li>
+<li>an interface to the fast Fourier transform routines from FFTW</li>
+<li>interfaces to the sparse LU and Cholesky solvers from UMFPACK and CHOLMOD</li>
+<li>routines for linear, second-order cone, and semidefinite programming
+problems</li>
+<li>routines for nonlinear convex optimization</li>
+<li>interfaces to the linear programming solver in GLPK, the semidefinite
+programming solver in DSDP5, and the linear, quadratic and second-order
+cone programming solvers in MOSEK</li>
+<li>a modeling tool for specifying convex piecewise-linear optimization
+problems.</li>
+</ul>
+<h2> Availability </h2><p>A platform-independent source package and a binary Windows installer are
+available from the Download section. CVXOPT is also available precompiled
+for the major platforms:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://packages.debian.org/squeeze/python-cvxopt">Debian Linux</a></li>
+<li><a class="reference external" href="http://packages.ubuntu.com/oneiric/python-cvxopt">Ubuntu Linux</a></li>
+<li><a class="reference external" href="https://admin.fedoraproject.org/pkgdb/acls/name/python-cvxopt">Fedora Linux</a></li>
+<li><a class="reference external" href="http://www.pythonxy.com">Python(x,y) for Microsoft Windows</a></li>
+</ul>
+<h2> Authors </h2><p>CVXOPT is developed by Martin Andersen
+(<span class="raw-html"><kbd>martin.skovgaard.andersen@gmail.com</kbd></span>),
+Joachim Dahl
+(<span class="raw-html"><kbd>dahl.joachim@gmail.com</kbd></span>),
+and Lieven Vandenberghe
+(<span class="raw-html"><kbd>vandenbe@ee.ucla.edu</kbd></span>).</p>
+<p>CVXOPT was originally developed for use in our own work, and is being made
+available in the hope that it may be useful to others.
+We welcome feedback, bug reports, and suggestions for improvements, but
+can only offer very limited support.</p>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+    <h3>Contents</h3>
+    <ul>
+    <li><a href="#">Main</a></li>
+    <li>
+    <ul>
+    <li><a href="copyright.html">Copyright and license</a></li>
+    <li><a href="download/index.html">Download</a></li>
+    <li><a href="install/index.html">Installation</a></li>
+    <li><a href="documentation/index.html">Documentation</a></li>
+    <li><a href="examples/index.html">Examples</a></li>
+    <li><a href="applications/index.html">Applications</a></li>
+    </ul>
+    </li>
+    </ul>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="#">CVXOPT</a> </li> 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try{
+var pageTracker = _gat._getTracker("UA-2894407-1");
+pageTracker._trackPageview();
+} catch(err) {}
+</script>
   </body>
 </html>
