@@ -3,9 +3,8 @@
 /* ========================================================================== */
 
 /* -------------------------------------------------------------------------- */
-/* UMFPACK Copyright (c) Timothy A. Davis, CISE,                              */
-/* Univ. of Florida.  All Rights Reserved.  See ../Doc/License for License.   */
-/* web: http://www.cise.ufl.edu/research/sparse/umfpack                       */
+/* Copyright (c) 2005-2012 by Timothy A. Davis, http://www.suitesparse.com.   */
+/* All Rights Reserved.  See ../Doc/License for License.                      */
 /* -------------------------------------------------------------------------- */
 
 /*
@@ -24,6 +23,7 @@
 	fclose (f) ; \
 	return (UMFPACK_ERROR_file_IO) ; \
     } \
+    fflush (f) ; \
 }
 
 /* ========================================================================== */
@@ -83,6 +83,9 @@ GLOBAL Int UMFPACK_save_numeric
     {
 	WRITE (Numeric->Upattern, Int, Numeric->ulen+1) ;
     }
+    /* It is possible that some parts of Numeric->Memory are
+       unitialized and unused; this is OK, but it can generate
+       a valgrind warning. */
     WRITE (Numeric->Memory, Unit, Numeric->size) ;
 
     /* close the file */

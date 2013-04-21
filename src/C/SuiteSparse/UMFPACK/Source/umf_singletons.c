@@ -3,9 +3,8 @@
 /* ========================================================================== */
 
 /* -------------------------------------------------------------------------- */
-/* UMFPACK Copyright (c) Timothy A. Davis, CISE,                              */
-/* Univ. of Florida.  All Rights Reserved.  See ../Doc/License for License.   */
-/* web: http://www.cise.ufl.edu/research/sparse/umfpack                       */
+/* Copyright (c) 2005-2012 by Timothy A. Davis, http://www.suitesparse.com.   */
+/* All Rights Reserved.  See ../Doc/License for License.                      */
 /* -------------------------------------------------------------------------- */
 
 /* Find and order the row and column singletons of a matrix A.  If there are
@@ -748,6 +747,7 @@ GLOBAL Int UMF_singletons
     const Int Ai [ ],	    /* size nz = Ap [n_col] */
     const Int Quser [ ],    /* size n_col if present */
     Int strategy,	    /* strategy requested by user */
+    Int do_singletons,      /* if false, then do not look for singletons */
 
     /* output, not defined on input: */
     Int Cdeg [ ],	/* size n_col */
@@ -822,7 +822,14 @@ GLOBAL Int UMF_singletons
     /* find singletons */
     /* ---------------------------------------------------------------------- */
 
-    if (Quser != (Int *) NULL)
+    if (!do_singletons)
+    {
+        /* do not look for singletons at all */
+        n1 = 0 ;
+        n1r = 0 ;
+        n1c = 0 ;
+    }
+    else if (Quser != (Int *) NULL)
     {
 	/* user has provided an input column ordering */
 	if (strategy == UMFPACK_STRATEGY_UNSYMMETRIC)

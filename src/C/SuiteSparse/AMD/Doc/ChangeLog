@@ -1,3 +1,27 @@
+Jun 20, 2012: verison 2.3.1
+
+    * minor update for Windows (removed filesep)
+
+Jun 1, 2012: version 2.3.0
+
+    * changed from UFconfig to SuiteSparse_config
+
+May 15, 2011: version 2.2.4
+
+    * minor fix to SIZE_T_MAX definition (finicky compiler workaround)
+
+Dec 7, 2011: version 2.2.3
+
+    * fixed the Makefile to better align with CFLAGS and other standards
+
+Jan 25, 2011: version 2.2.2
+
+    * minor fix to "make install"
+
+Nov 30, 2009: version 2.2.1
+
+    * added "make install" and "make uninstall"
+
 May 31, 2007: version 2.2.0
 
     * port to 64-bit MATLAB

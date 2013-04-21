@@ -1,9 +1,9 @@
 /*
- * Copyright 2012 M. Andersen and L. Vandenberghe.
+ * Copyright 2013 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.5.
+ * This file is part of CVXOPT version 1.1.6.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,204 +52,225 @@ PyDoc_STRVAR(lapack__doc__, "Interface to the LAPACK library.\n\n"
 extern int ilaenv_(int  *ispec, char **name, char **opts, int *n1,
     int *n2, int *n3, int *n4);
 
+extern void dlarfg_(int *n, double *alpha, double *x, int *incx, 
+    double *tau);
+extern void zlarfg_(int *n, double complex *alpha, double complex *x, 
+    int *incx, double complex *tau);
+extern void dlarfx_(char *side, int *m, int *n, double *V, double *tau, 
+    double *C, int *ldc, double *work); 
+extern void zlarfx_(char *side, int *m, int *n, double complex *V, 
+    double complex *tau, double complex *C, int *ldc, 
+    double complex *work); 
+
 extern void dlacpy_(char *uplo, int *m, int *n, double *A, int *lda,
     double *B, int *ldb);
-extern void zlacpy_(char *uplo, int *m, int *n, complex *A, int *lda,
-    complex *B, int *ldb);
+extern void zlacpy_(char *uplo, int *m, int *n, double complex *A, 
+    int *lda, double complex *B, int *ldb);
 
 extern void dgetrf_(int *m, int *n, double *A, int *lda, int *ipiv,
     int *info);
-extern void zgetrf_(int *m, int *n, complex *A, int *lda, int *ipiv,
+extern void zgetrf_(int *m, int *n, double complex *A, int *lda, int *ipiv,
     int *info);
 extern void dgetrs_(char *trans, int *n, int *nrhs, double *A, int *lda,
     int *ipiv, double *B, int *ldb, int *info);
-extern void zgetrs_(char *trans, int *n, int *nrhs, complex *A, int *lda,
-    int *ipiv, complex *B, int *ldb, int *info);
+extern void zgetrs_(char *trans, int *n, int *nrhs, double complex *A, 
+    int *lda, int *ipiv, double complex *B, int *ldb, int *info);
 extern void dgetri_(int *n, double *A, int *lda, int *ipiv, double *work,
     int *lwork, int *info);
-extern void zgetri_(int *n, complex *A, int *lda, int *ipiv, complex *work,
-    int *lwork, int *info);
+extern void zgetri_(int *n, double complex *A, int *lda, int *ipiv, 
+    double complex *work, int *lwork, int *info);
 extern void dgesv_(int *n, int *nrhs, double *A, int *lda, int *ipiv,
     double *B, int *ldb, int *info);
-extern void zgesv_(int *n, int *nrhs, complex *A, int *lda, int *ipiv,
-    complex *B, int *ldb, int *info);
+extern void zgesv_(int *n, int *nrhs, double complex *A, int *lda, 
+    int *ipiv, double complex *B, int *ldb, int *info);
 
 extern void dgbtrf_(int *m, int *n, int *kl, int *ku, double *AB,
     int *ldab, int *ipiv, int *info);
-extern void zgbtrf_(int *m, int *n, int *kl, int *ku, complex *AB,
+extern void zgbtrf_(int *m, int *n, int *kl, int *ku, double complex *AB,
     int *ldab, int *ipiv, int *info);
 extern void dgbtrs_(char *trans, int *n, int *kl, int *ku, int *nrhs,
     double *AB, int *ldab, int *ipiv, double *B, int *ldB, int *info);
 extern void zgbtrs_(char *trans, int *n, int *kl, int *ku, int *nrhs,
-    complex *AB, int *ldab, int *ipiv, complex *B, int *ldB, int *info);
+    double complex *AB, int *ldab, int *ipiv, double complex *B, 
+    int *ldB, int *info);
 extern void dgbsv_(int *n, int *kl, int *ku, int *nrhs, double *ab,
     int *ldab, int *ipiv, double *b, int *ldb, int *info);
-extern void zgbsv_(int *n, int *kl, int *ku, int *nrhs, complex *ab,
-    int *ldab, int *ipiv, complex *b, int *ldb, int *info);
+extern void zgbsv_(int *n, int *kl, int *ku, int *nrhs, double complex *ab,
+    int *ldab, int *ipiv, double complex *b, int *ldb, int *info);
 
 extern void dgttrf_(int *n, double *dl, double *d, double *du,
     double *du2, int *ipiv, int *info);
-extern void zgttrf_(int *n, complex *dl, complex *d, complex *du,
-    complex *du2, int *ipiv, int *info);
+extern void zgttrf_(int *n, double complex *dl, double complex *d, 
+    double complex *du, double complex *du2, int *ipiv, int *info);
 extern void dgttrs_(char *trans, int *n, int *nrhs, double *dl, double *d,
     double *du, double *du2, int *ipiv, double *B, int *ldB, int *info);
-extern void zgttrs_(char *trans, int *n, int *nrhs, complex *dl,
-    complex *d, complex *du, complex *du2, int *ipiv, complex *B,
-    int *ldB, int *info);
+extern void zgttrs_(char *trans, int *n, int *nrhs, double complex *dl,
+    double complex *d, double complex *du, double complex *du2, 
+    int *ipiv, double complex *B, int *ldB, int *info);
 extern void dgtsv_(int *n, int *nrhs, double *dl, double *d, double *du,
     double *B, int *ldB, int *info);
-extern void zgtsv_(int *n, int *nrhs, complex *dl, complex *d, complex *du,
-    complex *B, int *ldB, int *info);
+extern void zgtsv_(int *n, int *nrhs, double complex *dl, 
+    double complex *d, double complex *du, double complex *B, int *ldB, 
+    int *info);
 
 extern void dpotrf_(char *uplo, int *n, double *A, int *lda, int *info);
-extern void zpotrf_(char *uplo, int *n, complex *A, int *lda, int *info);
+extern void zpotrf_(char *uplo, int *n, double complex *A, int *lda, 
+    int *info);
 extern void dpotrs_(char *uplo, int *n, int *nrhs, double *A, int *lda,
     double *B, int *ldb, int *info);
-extern void zpotrs_(char *uplo, int *n, int *nrhs, complex *A, int *lda,
-    complex *B, int *ldb, int *info);
+extern void zpotrs_(char *uplo, int *n, int *nrhs, double complex *A, 
+    int *lda, double complex *B, int *ldb, int *info);
 extern void dpotri_(char *uplo, int *n, double *A, int *lda, int *info);
-extern void zpotri_(char *uplo, int *n, complex *A, int *lda, int *info);
+extern void zpotri_(char *uplo, int *n, double complex *A, int *lda, 
+    int *info);
 extern void dposv_(char *uplo, int *n, int *nrhs, double *A, int *lda,
     double *B, int *ldb, int *info);
-extern void zposv_(char *uplo, int *n, int *nrhs, complex *A, int *lda,
-    complex *B, int *ldb, int *info);
+extern void zposv_(char *uplo, int *n, int *nrhs, double complex *A, 
+    int *lda, double complex *B, int *ldb, int *info);
 
 extern void dpbtrf_(char *uplo, int *n, int *kd, double *AB, int *ldab,
     int *info);
-extern void zpbtrf_(char *uplo, int *n, int *kd, complex *AB, int *ldab,
-    int *info);
+extern void zpbtrf_(char *uplo, int *n, int *kd, double complex *AB, 
+    int *ldab, int *info);
 extern void dpbtrs_(char *uplo, int *n, int *kd, int *nrhs, double *AB,
     int *ldab, double *B, int *ldb, int *info);
-extern void zpbtrs_(char *uplo, int *n, int *kd, int *nrhs, complex *AB,
-    int *ldab, complex *B, int *ldb, int *info);
+extern void zpbtrs_(char *uplo, int *n, int *kd, int *nrhs, 
+    double complex *AB, int *ldab, double complex *B, int *ldb, int *info);
 extern void dpbsv_(char *uplo, int *n, int *kd, int *nrhs, double *A,
     int *lda, double *B, int *ldb, int *info);
-extern void zpbsv_(char *uplo, int *n, int *kd, int *nrhs, complex *A,
-    int *lda, complex *B, int *ldb, int *info);
+extern void zpbsv_(char *uplo, int *n, int *kd, int *nrhs, 
+    double complex *A, int *lda, double complex *B, int *ldb, int *info);
 
 extern void dpttrf_(int *n, double *d, double *e, int *info);
-extern void zpttrf_(int *n, double *d, complex *e, int *info);
+extern void zpttrf_(int *n, double *d, double complex *e, int *info);
 extern void dpttrs_(int *n, int *nrhs, double *d, double *e, double *B,
     int *ldB, int *info);
-extern void zpttrs_(char *uplo, int *n, int *nrhs, double *d, complex *e,
-    complex *B, int *ldB, int *info);
+extern void zpttrs_(char *uplo, int *n, int *nrhs, double *d, 
+    double complex *e, double complex *B, int *ldB, int *info);
 extern void dptsv_(int *n, int *nrhs, double *d, double *e, double *B,
     int *ldB, int *info);
-extern void zptsv_(int *n, int *nrhs, double *d, complex *e, complex *B,
-    int *ldB, int *info);
+extern void zptsv_(int *n, int *nrhs, double *d, double complex *e, 
+    double complex *B, int *ldB, int *info);
 
 extern void dsytrf_(char *uplo, int *n, double *A, int *lda, int *ipiv,
     double *work, int *lwork, int *info);
-extern void zsytrf_(char *uplo, int *n, complex *A, int *lda, int *ipiv,
-    complex *work, int *lwork, int *info);
-extern void zhetrf_(char *uplo, int *n, complex *A, int *lda, int *ipiv,
-    complex *work, int *lwork, int *info);
+extern void zsytrf_(char *uplo, int *n, double complex *A, int *lda, 
+    int *ipiv, double complex *work, int *lwork, int *info);
+extern void zhetrf_(char *uplo, int *n, double complex *A, int *lda, 
+    int *ipiv, double complex *work, int *lwork, int *info);
 extern void dsytrs_(char *uplo, int *n, int *nrhs, double *A, int *lda,
     int *ipiv, double *B, int *ldb, int *info);
-extern void zsytrs_(char *uplo, int *n, int *nrhs, complex *A, int *lda,
-    int *ipiv, complex *B, int *ldb, int *info);
-extern void zhetrs_(char *uplo, int *n, int *nrhs, complex *A, int *lda,
-    int *ipiv, complex *B, int *ldb, int *info);
+extern void zsytrs_(char *uplo, int *n, int *nrhs, double complex *A, 
+    int *lda, int *ipiv, double complex *B, int *ldb, int *info);
+extern void zhetrs_(char *uplo, int *n, int *nrhs, double complex *A, 
+    int *lda, int *ipiv, double complex *B, int *ldb, int *info);
 extern void dsytri_(char *uplo, int *n, double *A, int *lda, int *ipiv,
     double *work, int *info);
-extern void zsytri_(char *uplo, int *n, complex *A, int *lda, int *ipiv,
-    complex *work, int *info);
-extern void zhetri_(char *uplo, int *n, complex *A, int *lda, int *ipiv,
-    complex *work, int *info);
+extern void zsytri_(char *uplo, int *n, double complex *A, int *lda, 
+    int *ipiv, double complex *work, int *info);
+extern void zhetri_(char *uplo, int *n, double complex *A, int *lda, 
+    int *ipiv, double complex *work, int *info);
 extern void dsysv_(char *uplo, int *n, int *nrhs, double *A, int *lda,
     int *ipiv, double *B, int *ldb, double *work, int *lwork,
     int *info);
-extern void zsysv_(char *uplo, int *n, int *nrhs, complex *A, int *lda,
-    int *ipiv, complex *B, int *ldb, complex *work, int *lwork, int *info);
-extern void zhesv_(char *uplo, int *n, int *nrhs, complex *A, int *lda,
-    int *ipiv, complex *B, int *ldb, complex *work, int *lwork, int *info);
+extern void zsysv_(char *uplo, int *n, int *nrhs, double complex *A, 
+    int *lda, int *ipiv, double complex *B, int *ldb, 
+    double complex *work, int *lwork, int *info);
+extern void zhesv_(char *uplo, int *n, int *nrhs, double complex *A, 
+    int *lda, int *ipiv, double complex *B, int *ldb, 
+    double complex *work, int *lwork, int *info);
 
 extern void dtrtrs_(char *uplo, char *trans, char *diag, int *n, int *nrhs,
     double  *a, int *lda, double *b, int *ldb, int *info);
 extern void ztrtrs_(char *uplo, char *trans, char *diag, int *n, int *nrhs,
-    complex  *a, int *lda, complex *b, int *ldb, int *info);
+    double complex  *a, int *lda, double complex *b, int *ldb, int *info);
 extern void dtrtri_(char *uplo, char *diag, int *n, double  *a, int *lda,
     int *info);
-extern void ztrtri_(char *uplo, char *diag, int *n, complex  *a, int *lda,
-    int *info);
+extern void ztrtri_(char *uplo, char *diag, int *n, double complex  *a, 
+    int *lda, int *info);
 extern void dtbtrs_(char *uplo, char *trans, char *diag, int *n, int *kd,
     int *nrhs, double *ab, int *ldab, double *b, int *ldb, int *info);
 extern void ztbtrs_(char *uplo, char *trans, char *diag, int *n, int *kd,
-    int *nrhs, complex *ab, int *ldab, complex *b, int *ldb, int *info);
+    int *nrhs, double complex *ab, int *ldab, double complex *b, 
+    int *ldb, int *info);
 
 extern void dgels_(char *trans, int *m, int *n, int *nrhs, double *a,
     int *lda, double *b, int *ldb, double *work, int *lwork, int *info);
-extern void zgels_(char *trans, int *m, int *n, int *nrhs, complex *a,
-    int *lda, complex *b, int *ldb, complex *work, int *lwork, int *info);
+extern void zgels_(char *trans, int *m, int *n, int *nrhs, 
+    double complex *a, int *lda, double complex *b, int *ldb, 
+    double complex *work, int *lwork, int *info);
 extern void dgeqrf_(int *m, int *n, double *a, int *lda, double *tau,
     double *work, int *lwork, int *info);
-extern void zgeqrf_(int *m, int *n, complex *a, int *lda, complex *tau,
-    complex *work, int *lwork, int *info);
+extern void zgeqrf_(int *m, int *n, double complex *a, int *lda, 
+    double complex *tau, double complex *work, int *lwork, int *info);
 extern void dormqr_(char *side, char *trans, int *m, int *n, int *k,
     double *a, int *lda, double *tau, double *c, int *ldc, double *work,
     int *lwork, int *info);
 extern void zunmqr_(char *side, char *trans, int *m, int *n, int *k,
-    complex *a, int *lda, complex *tau, complex *c, int *ldc,
-    complex *work, int *lwork, int *info);
+    double complex *a, int *lda, double complex *tau, double complex *c, 
+    int *ldc, double complex *work, int *lwork, int *info);
 extern void dorgqr_(int *m, int *n, int *k, double *A, int *lda,
     double *tau, double *work, int *lwork, int *info);
-extern void zungqr_(int *m, int *n, int *k, complex *A, int *lda,
-    complex *tau, complex *work, int *lwork, int *info);
+extern void zungqr_(int *m, int *n, int *k, double complex *A, int *lda,
+    double complex *tau, double complex *work, int *lwork, int *info);
 extern void dorglq_(int *m, int *n, int *k, double *A, int *lda,
     double *tau, double *work, int *lwork, int *info);
-extern void zunglq_(int *m, int *n, int *k, complex *A, int *lda,
-    complex *tau, complex *work, int *lwork, int *info);
+extern void zunglq_(int *m, int *n, int *k, double complex *A, int *lda,
+    double complex *tau, double complex *work, int *lwork, int *info);
 
 extern void dgelqf_(int *m, int *n, double *a, int *lda, double *tau,
     double *work, int *lwork, int *info);
-extern void zgelqf_(int *m, int *n, complex *a, int *lda, complex *tau,
-    complex *work, int *lwork, int *info);
+extern void zgelqf_(int *m, int *n, double complex *a, int *lda, 
+    double complex *tau, double complex *work, int *lwork, int *info);
 extern void dormlq_(char *side, char *trans, int *m, int *n, int *k,
     double *a, int *lda, double *tau, double *c, int *ldc, double *work,
     int *lwork, int *info);
 extern void zunmlq_(char *side, char *trans, int *m, int *n, int *k,
-    complex *a, int *lda, complex *tau, complex *c, int *ldc,
-    complex *work, int *lwork, int *info);
+    double complex *a, int *lda, double complex *tau, double complex *c, 
+    int *ldc, double complex *work, int *lwork, int *info);
 
 extern void dgeqp3_(int *m, int *n, double *a, int *lda, int *jpvt,
     double *tau, double *work, int *lwork, int *info);
-extern void zgeqp3_(int *m, int *n, complex *a, int *lda, int *jpvt,
-    complex *tau, complex *work, int *lwork, double *rwork, int *info);
+extern void zgeqp3_(int *m, int *n, double complex *a, int *lda, int *jpvt,
+    double complex *tau, double complex *work, int *lwork, double *rwork, 
+    int *info);
 
 extern void dsyev_(char *jobz, char *uplo, int *n, double *A, int *lda,
     double *W, double *work, int *lwork, int *info);
-extern void zheev_(char *jobz, char *uplo, int *n, complex *A, int *lda,
-    double *W, complex *work, int *lwork, double *rwork, int *info);
+extern void zheev_(char *jobz, char *uplo, int *n, double complex *A, 
+    int *lda, double *W, double complex *work, int *lwork, double *rwork, 
+    int *info);
 extern void dsyevx_(char *jobz, char *range, char *uplo, int *n, double *A,
     int *lda, double *vl, double *vu, int *il, int *iu, double *abstol,
     int *m, double *W, double *Z, int *ldz, double *work, int *lwork,
     int *iwork, int *ifail, int *info);
 extern void zheevx_(char *jobz, char *range, char *uplo, int *n,
-    complex *A, int *lda, double *vl, double *vu, int *il, int *iu,
-    double *abstol, int *m, double *W, complex *Z, int *ldz, complex *work,
-    int *lwork, double *rwork, int *iwork, int *ifail, int *info);
+    double complex *A, int *lda, double *vl, double *vu, int *il, int *iu,
+    double *abstol, int *m, double *W, double complex *Z, int *ldz, 
+    double complex *work, int *lwork, double *rwork, int *iwork, 
+    int *ifail, int *info);
 extern void dsyevd_(char *jobz, char *uplo, int *n, double *A, int *ldA,
     double *W, double *work, int *lwork, int *iwork, int *liwork,
     int *info);
-extern void zheevd_(char *jobz, char *uplo, int *n, complex *A, int *ldA,
-    double *W, complex *work, int *lwork, double *rwork, int *lrwork,
-    int *iwork, int *liwork, int *info);
+extern void zheevd_(char *jobz, char *uplo, int *n, double complex *A, 
+    int *ldA, double *W, double complex *work, int *lwork, double *rwork, 
+    int *lrwork, int *iwork, int *liwork, int *info);
 extern void dsyevr_(char *jobz, char *range, char *uplo, int *n, double *A,
     int *ldA, double *vl, double *vu, int *il, int *iu, double *abstol,
     int *m, double *W, double *Z, int *ldZ, int *isuppz, double *work,
     int *lwork, int *iwork, int *liwork, int *info);
 extern void zheevr_(char *jobz, char *range, char *uplo, int *n,
-    complex *A, int *ldA, double *vl, double *vu, int *il, int *iu,
-    double *abstol, int *m, double *W, complex *Z, int *ldZ, int *isuppz,
-    complex *work, int *lwork, double *rwork, int *lrwork, int *iwork,
-    int *liwork, int *info);
+    double complex *A, int *ldA, double *vl, double *vu, int *il, int *iu,
+    double *abstol, int *m, double *W, double complex *Z, int *ldZ, 
+    int *isuppz, double complex *work, int *lwork, double *rwork, 
+    int *lrwork, int *iwork, int *liwork, int *info);
 
 extern void dsygv_(int *itype, char *jobz, char *uplo, int *n, double *A,
     int *lda, double *B, int *ldb, double *W, double *work, int *lwork,
     int *info);
-extern void zhegv_(int *itype, char *jobz, char *uplo, int *n, complex *A,
-    int *lda, complex *B, int *ldb, double *W, complex *work, int *lwork,
-    double *rwork, int *info);
+extern void zhegv_(int *itype, char *jobz, char *uplo, int *n, 
+    double complex *A, int *lda, double complex *B, int *ldb, double *W, 
+    double complex *work, int *lwork, double *rwork, int *info);
 
 extern void dgesvd_(char *jobu, char *jobvt, int *m, int *n, double *A,
     int *ldA, double *S, double *U, int *ldU, double *Vt, int *ldVt,
@@ -257,29 +278,63 @@ extern void dgesvd_(char *jobu, char *jobvt, int *m, int *n, double *A,
 extern void dgesdd_(char *jobz, int *m, int *n, double *A, int *ldA,
     double *S, double *U, int *ldU, double *Vt, int *ldVt, double *work,
     int *lwork, int *iwork, int *info);
-extern void zgesvd_(char *jobu, char *jobvt, int *m, int *n, complex *A,
-    int *ldA, double *S, complex *U, int *ldU, complex *Vt, int *ldVt,
-    complex *work, int *lwork, double *rwork, int *info);
-extern void zgesdd_(char *jobz, int *m, int *n, complex *A, int *ldA,
-    double *S, complex *U, int *ldU, complex *Vt, int *ldVt, complex *work,
-    int *lwork, double *rwork, int *iwork, int *info);
+extern void zgesvd_(char *jobu, char *jobvt, int *m, int *n, 
+    double complex *A, int *ldA, double *S, double complex *U, int *ldU, 
+    double complex *Vt, int *ldVt, double complex *work, int *lwork, 
+    double *rwork, int *info);
+extern void zgesdd_(char *jobz, int *m, int *n, double complex *A, 
+    int *ldA, double *S, double complex *U, int *ldU, double complex *Vt, 
+    int *ldVt, double complex *work, int *lwork, double *rwork, 
+    int *iwork, int *info);
 
 extern void dgees_(char *jobvs, char *sort, void *select, int *n,
     double *A, int *ldA, int *sdim, double *wr, double *wi, double *vs,
     int *ldvs, double *work, int *lwork, int *bwork, int *info);
 extern void zgees_(char *jobvs, char *sort, void *select, int *n,
-    complex *A, int *ldA, int *sdim, complex *w, complex *vs, int *ldvs,
-    complex *work, int *lwork, complex *rwork, int *bwork, int *info);
+    double complex *A, int *ldA, int *sdim, double complex *w, 
+    double complex *vs, int *ldvs, double complex *work, int *lwork, 
+    double complex *rwork, int *bwork, int *info);
 extern void dgges_(char *jobvsl, char *jobvsr, char *sort, void *delctg,
     int *n, double *A, int *ldA, double *B, int *ldB, int *sdim,
     double *alphar, double *alphai, double *beta, double *vsl, int *ldvsl,
     double *vsr, int *ldvsr, double *work, int *lwork, int *bwork,
     int *info);
 extern void zgges_(char *jobvsl, char *jobvsr, char *sort, void *delctg,
-    int *n, complex *A, int *ldA, complex *B, int *ldB, int *sdim,
-    complex *alpha, complex *beta, complex *vsl, int *ldvsl, complex *vsr,
-    int *ldvsr, complex *work, int *lwork, double *rwork, int *bwork,
+    int *n, double complex *A, int *ldA, double complex *B, int *ldB, 
+    int *sdim, double complex *alpha, double complex *beta, 
+    double complex *vsl, int *ldvsl, double complex *vsr, int *ldvsr, 
+    double complex *work, int *lwork, double *rwork, int *bwork, 
     int *info);
+
+
+static int number_from_pyobject(PyObject *o, number *a, int id)
+{
+    switch (id){
+        case DOUBLE:
+#if PY_MAJOR_VERSION >= 3
+            if (!PyLong_Check(o) && !PyLong_Check(o) &&
+                !PyFloat_Check(o)) return -1;
+#else
+            if (!PyInt_Check(o) && !PyLong_Check(o) &&
+                !PyFloat_Check(o)) return -1;
+#endif
+            (*a).d = PyFloat_AsDouble(o);
+            return 0;
+
+        case COMPLEX:
+#if PY_MAJOR_VERSION >= 3
+            if (!PyLong_Check(o) && !PyLong_Check(o) &&
+                !PyFloat_Check(o) && !PyComplex_Check(o)) return -1;
+#else
+            if (!PyInt_Check(o) && !PyLong_Check(o) &&
+                !PyFloat_Check(o) && !PyComplex_Check(o)) return -1;
+#endif
+            (*a).z = PyComplex_RealAsDouble(o) +
+                I*PyComplex_ImagAsDouble(o);
+            return 0;
+    }
+    return -1;
+}
 
 
 static char doc_getrf[] =
@@ -552,7 +607,7 @@ static PyObject* getri(PyObject *self, PyObject *args, PyObject *kwrds)
             zgetri_(&n, NULL, &ldA, NULL, &wl.z, &lwork, &info);
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
-            if (!(work = (void *) calloc(lwork, sizeof(complex)))){
+            if (!(work = (void *) calloc(lwork, sizeof(double complex)))){
 #if (SIZEOF_INT < SIZEOF_LONG)
                 free(ipiv_ptr);
 #endif
@@ -560,7 +615,7 @@ static PyObject* getri(PyObject *self, PyObject *args, PyObject *kwrds)
             }
             Py_BEGIN_ALLOW_THREADS
             zgetri_(&n, MAT_BUFZ(A)+oA, &ldA, ipiv_ptr,
-                (complex *) work, &lwork, &info);
+                (double complex *) work, &lwork, &info);
             Py_END_ALLOW_THREADS
             free(work);
             break;
@@ -683,14 +738,14 @@ static PyObject* gesv(PyObject *self, PyObject *args, PyObject *kwrds)
                     MAT_BUFZ(B)+oB, &ldB, &info);
                 Py_END_ALLOW_THREADS
             else {
-                if (!(Ac = (void *) calloc(n*n, sizeof(complex)))){
+                if (!(Ac = (void *) calloc(n*n, sizeof(double complex)))){
                     free(ipivc);
                     return PyErr_NoMemory();
                 }
-                for (k=0; k<n; k++) memcpy((complex *) Ac + k*n,
-                    MAT_BUFZ(A)+oA+k*ldA, n*sizeof(complex));
+                for (k=0; k<n; k++) memcpy((double complex *) Ac + k*n,
+                    MAT_BUFZ(A)+oA+k*ldA, n*sizeof(double complex));
                 Py_BEGIN_ALLOW_THREADS
-                zgesv_(&n, &nrhs, (complex *) Ac, &n, ipivc,
+                zgesv_(&n, &nrhs, (double complex *) Ac, &n, ipivc,
                     MAT_BUFZ(B)+oB, &ldB, &info);
                 Py_END_ALLOW_THREADS
                 free(Ac);
@@ -1041,18 +1096,18 @@ static PyObject* gbsv(PyObject *self, PyObject *args, PyObject *kwrds)
                 Py_END_ALLOW_THREADS
             else {
                 if (!(Ac = (void *) calloc((2*kl+ku+1)*n,
-                    sizeof(complex)))){
+                    sizeof(double complex)))){
                     free(ipivc);
                     return PyErr_NoMemory();
                 }
                 for (k=0; k<n; k++)
-                    memcpy((complex *) Ac + kl + k*(2*kl+ku+1),
+                    memcpy((double complex *) Ac + kl + k*(2*kl+ku+1),
                         MAT_BUFZ(A) + oA + k*ldA,
-                        (kl+ku+1)*sizeof(complex));
+                        (kl+ku+1)*sizeof(double complex));
                 ldA = 2*kl+ku+1;
                 Py_BEGIN_ALLOW_THREADS
-                zgbsv_(&n, &kl, &ku, &nrhs, (complex *) Ac, &ldA, ipivc,
-                    MAT_BUFZ(B)+oB, &ldB, &info);
+                zgbsv_(&n, &kl, &ku, &nrhs, (double complex *) Ac, &ldA, 
+                    ipivc, MAT_BUFZ(B)+oB, &ldB, &info);
                 Py_END_ALLOW_THREADS
                 free(Ac);
             }
@@ -2287,7 +2342,7 @@ static PyObject* sytrf(PyObject *self, PyObject *args, PyObject *kwrds)
             zsytrf_(&uplo, &n, NULL, &ldA, NULL, &wl.z, &lwork, &info);
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
-            if (!(work = (void *) calloc(lwork, sizeof(complex)))){
+            if (!(work = (void *) calloc(lwork, sizeof(double complex)))){
 #if (SIZEOF_INT < SIZEOF_LONG)
                 free(ipiv_ptr);
 #endif
@@ -2295,7 +2350,7 @@ static PyObject* sytrf(PyObject *self, PyObject *args, PyObject *kwrds)
             }
             Py_BEGIN_ALLOW_THREADS
             zsytrf_(&uplo, &n, MAT_BUFZ(A)+oA, &ldA, ipiv_ptr,
-                (complex *) work, &lwork, &info);
+                (double complex *) work, &lwork, &info);
             Py_END_ALLOW_THREADS
             free(work);
             break;
@@ -2407,7 +2462,7 @@ static PyObject* hetrf(PyObject *self, PyObject *args, PyObject *kwrds)
             zhetrf_(&uplo, &n, NULL, &ldA, NULL, &wl.z, &lwork, &info);
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
-            if (!(work = (void *) calloc(lwork, sizeof(complex)))){
+            if (!(work = (void *) calloc(lwork, sizeof(double complex)))){
 #if (SIZEOF_INT < SIZEOF_LONG)
                 free(ipiv_ptr);
 #endif
@@ -2415,7 +2470,7 @@ static PyObject* hetrf(PyObject *self, PyObject *args, PyObject *kwrds)
             }
             Py_BEGIN_ALLOW_THREADS
             zhetrf_(&uplo, &n, MAT_BUFZ(A)+oA, &ldA, ipiv_ptr,
-                (complex *) work, &lwork, &info);
+                (double complex *) work, &lwork, &info);
             Py_END_ALLOW_THREADS
             free(work);
             break;
@@ -2741,7 +2796,7 @@ static PyObject* sytri(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
 	case COMPLEX:
-            if (!(work = (void *) calloc(2*n, sizeof(complex)))){
+            if (!(work = (void *) calloc(2*n, sizeof(double complex)))){
 #if (SIZEOF_INT < SIZEOF_LONG)
                 free(ipiv_ptr);
 #endif
@@ -2749,7 +2804,7 @@ static PyObject* sytri(PyObject *self, PyObject *args, PyObject *kwrds)
             }
             Py_BEGIN_ALLOW_THREADS
             zsytri_(&uplo, &n, MAT_BUFZ(A)+oA, &ldA, ipiv_ptr,
-                (complex *) work, &info);
+                (double complex *) work, &info);
             Py_END_ALLOW_THREADS
             free(work);
             break;
@@ -2851,7 +2906,7 @@ static PyObject* hetri(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
-            if (!(work = (void *) calloc(n, sizeof(complex)))){
+            if (!(work = (void *) calloc(n, sizeof(double complex)))){
 #if (SIZEOF_INT < SIZEOF_LONG)
                 free(ipiv_ptr);
 #endif
@@ -2859,7 +2914,7 @@ static PyObject* hetri(PyObject *self, PyObject *args, PyObject *kwrds)
             }
             Py_BEGIN_ALLOW_THREADS
             zhetri_(&uplo, &n, MAT_BUFZ(A)+oA, &ldA, ipiv_ptr,
-                (complex *) work, &info);
+                (double complex *) work, &info);
             Py_END_ALLOW_THREADS
             free(work);
             break;
@@ -3010,7 +3065,7 @@ static PyObject* sysv(PyObject *self, PyObject *args, PyObject *kwrds)
             zsytrf_(&uplo, &n, NULL, &ldA, NULL, &wl.z, &lwork, &info);
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
-            if (!(work = (void *) calloc(lwork, sizeof(complex))))
+            if (!(work = (void *) calloc(lwork, sizeof(double complex))))
                 return PyErr_NoMemory();
             if (ipiv) {
 #if (SIZEOF_INT < SIZEOF_LONG)
@@ -3024,7 +3079,8 @@ static PyObject* sysv(PyObject *self, PyObject *args, PyObject *kwrds)
 #endif
                 Py_BEGIN_ALLOW_THREADS
                 zsysv_(&uplo, &n, &nrhs, MAT_BUFZ(A)+oA, &ldA, ipivc,
-                    MAT_BUFZ(B)+oB, &ldB, (complex *) work, &lwork, &info);
+                    MAT_BUFZ(B)+oB, &ldB, (double complex *) work, 
+                    &lwork, &info);
                 Py_END_ALLOW_THREADS
 #if (SIZEOF_INT < SIZEOF_LONG)
                 for (k=0; k<n; k++) MAT_BUFI(ipiv)[k] = ipivc[k];
@@ -3033,16 +3089,17 @@ static PyObject* sysv(PyObject *self, PyObject *args, PyObject *kwrds)
             }
             else {
                 ipivc = (int *) calloc(n, sizeof(int));
-                Ac = (void *) calloc(n*n, sizeof(complex));
+                Ac = (void *) calloc(n*n, sizeof(double complex));
                 if (!ipivc || !Ac){
                     free(work);  free(ipivc);  free(Ac);
                     return PyErr_NoMemory();
                 }
                 for (k=0; k<n; k++)
-                    memcpy((complex *) Ac + k*n, MAT_BUFZ(A) + oA + k*ldA,
-                        n*sizeof(complex));
+                    memcpy((double complex *) Ac + k*n, 
+                        MAT_BUFZ(A) + oA + k*ldA,
+                        n*sizeof(double complex));
                 Py_BEGIN_ALLOW_THREADS
-                zsysv_(&uplo, &n, &nrhs, (complex *) Ac, &n, ipivc,
+                zsysv_(&uplo, &n, &nrhs, (double complex *) Ac, &n, ipivc,
                     MAT_BUFZ(B)+oB, &ldB, work, &lwork, &info);
                 Py_END_ALLOW_THREADS
                 free(ipivc);  free(Ac);
@@ -3189,7 +3246,7 @@ static PyObject* hesv(PyObject *self, PyObject *args, PyObject *kwrds)
             lwork = -1;
             zhetrf_(&uplo, &n, NULL, &ldA, NULL, &wl.z, &lwork, &info);
             lwork = (int) creal(wl.z);
-            if (!(work = (void *) calloc(lwork, sizeof(complex))))
+            if (!(work = (void *) calloc(lwork, sizeof(double complex))))
                 return PyErr_NoMemory();
             if (ipiv) {
 #if (SIZEOF_INT < SIZEOF_LONG)
@@ -3203,7 +3260,8 @@ static PyObject* hesv(PyObject *self, PyObject *args, PyObject *kwrds)
 #endif
                 Py_BEGIN_ALLOW_THREADS
                 zhesv_(&uplo, &n, &nrhs, MAT_BUFZ(A)+oA, &ldA, ipivc,
-                    MAT_BUFZ(B)+oB, &ldB, (complex *) work, &lwork, &info);
+                    MAT_BUFZ(B)+oB, &ldB, (double complex *) work, 
+                    &lwork, &info);
                 Py_END_ALLOW_THREADS
 #if (SIZEOF_INT < SIZEOF_LONG)
                 for (k=0; k<n; k++) MAT_BUFI(ipiv)[k] = ipivc[k];
@@ -3212,16 +3270,17 @@ static PyObject* hesv(PyObject *self, PyObject *args, PyObject *kwrds)
             }
             else {
                 ipivc = (int *) calloc(n, sizeof(int));
-                Ac = (void *) calloc(n*n, sizeof(complex));
+                Ac = (void *) calloc(n*n, sizeof(double complex));
                 if (!ipivc || !Ac){
                     free(work);  free(ipivc);  free(Ac);
                     return PyErr_NoMemory();
                 }
                 for (k=0; k<n; k++)
-                    memcpy((complex *) Ac + k*n, MAT_BUFZ(A) + oA + k*ldA,
-                        n*sizeof(complex));
+                    memcpy((double complex *) Ac + k*n, 
+                        MAT_BUFZ(A) + oA + k*ldA,
+                        n*sizeof(double complex));
                 Py_BEGIN_ALLOW_THREADS
-                zhesv_(&uplo, &n, &nrhs, (complex *) Ac, &n, ipivc,
+                zhesv_(&uplo, &n, &nrhs, (double complex *) Ac, &n, ipivc,
                     MAT_BUFZ(B)+oB, &ldB, work, &lwork, &info);
                 Py_END_ALLOW_THREADS
                 free(ipivc);  free(Ac);
@@ -3622,11 +3681,12 @@ static PyObject* gels(PyObject *self, PyObject *args, PyObject *kwrds)
                 &lwork, &info);
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
-            if (!(work = (void *) calloc(lwork, sizeof(complex))))
+            if (!(work = (void *) calloc(lwork, sizeof(double complex))))
                 return PyErr_NoMemory();
             Py_BEGIN_ALLOW_THREADS
             zgels_(&trans, &m, &n, &nrhs, MAT_BUFZ(A)+oA, &ldA,
-                MAT_BUFZ(B)+oB, &ldB, (complex *) work, &lwork, &info);
+                MAT_BUFZ(B)+oB, &ldB, (double complex *) work, &lwork, 
+                &info);
             Py_END_ALLOW_THREADS
             free(work);
 	    break;
@@ -3710,11 +3770,11 @@ static PyObject* geqrf(PyObject *self, PyObject *args, PyObject *kwrds)
             zgeqrf_(&m, &n, NULL, &ldA, NULL, &wl.z, &lwork, &info);
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
-            if (!(work = (void *) calloc(lwork, sizeof(complex))))
+            if (!(work = (void *) calloc(lwork, sizeof(double complex))))
                 return PyErr_NoMemory();
             Py_BEGIN_ALLOW_THREADS
             zgeqrf_(&m, &n, MAT_BUFZ(A)+oA, &ldA, MAT_BUFZ(tau),
-                (complex *) work, &lwork, &info);
+                (double complex *) work, &lwork, &info);
             Py_END_ALLOW_THREADS
             free(work);
 	    break;
@@ -3950,12 +4010,12 @@ static PyObject* unmqr(PyObject *self, PyObject *args, PyObject *kwrds)
                 &ldC, &wl.z, &lwork, &info);
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
-            if (!(work = (void *) calloc(lwork, sizeof(complex))))
+            if (!(work = (void *) calloc(lwork, sizeof(double complex))))
                 return PyErr_NoMemory();
             Py_BEGIN_ALLOW_THREADS
             zunmqr_(&side, &trans, &m, &n, &k, MAT_BUFZ(A)+oA, &ldA,
-                MAT_BUFZ(tau), MAT_BUFZ(C)+oC, &ldC, (complex *) work,
-                &lwork, &info);
+                MAT_BUFZ(tau), MAT_BUFZ(C)+oC, &ldC, 
+                (double complex *) work, &lwork, &info);
             Py_END_ALLOW_THREADS
             free(work);
 	    break;
@@ -4111,11 +4171,11 @@ static PyObject* ungqr(PyObject *self, PyObject *args, PyObject *kwrds)
             zungqr_(&m, &n, &k, NULL, &ldA, NULL, &wl.z, &lwork, &info);
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
-            if (!(work = (void *) calloc(lwork, sizeof(complex))))
+            if (!(work = (void *) calloc(lwork, sizeof(double complex))))
                 return PyErr_NoMemory();
             Py_BEGIN_ALLOW_THREADS
             zungqr_(&m, &n, &k, MAT_BUFZ(A) + oA, &ldA, MAT_BUFZ(tau),
-                (complex *) work, &lwork, &info);
+                (double complex *) work, &lwork, &info);
             Py_END_ALLOW_THREADS
             free(work);
 	    break;
@@ -4199,11 +4259,11 @@ static PyObject* gelqf(PyObject *self, PyObject *args, PyObject *kwrds)
             zgelqf_(&m, &n, NULL, &ldA, NULL, &wl.z, &lwork, &info);
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
-            if (!(work = (void *) calloc(lwork, sizeof(complex))))
+            if (!(work = (void *) calloc(lwork, sizeof(double complex))))
                 return PyErr_NoMemory();
             Py_BEGIN_ALLOW_THREADS
             zgelqf_(&m, &n, MAT_BUFZ(A)+oA, &ldA, MAT_BUFZ(tau),
-                (complex *) work, &lwork, &info);
+                (double complex *) work, &lwork, &info);
             Py_END_ALLOW_THREADS
             free(work);
 	    break;
@@ -4437,12 +4497,12 @@ static PyObject* unmlq(PyObject *self, PyObject *args, PyObject *kwrds)
                 &ldC, &wl.z, &lwork, &info);
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
-            if (!(work = (void *) calloc(lwork, sizeof(complex))))
+            if (!(work = (void *) calloc(lwork, sizeof(double complex))))
                 return PyErr_NoMemory();
             Py_BEGIN_ALLOW_THREADS
             zunmlq_(&side, &trans, &m, &n, &k, MAT_BUFZ(A)+oA, &ldA,
-                MAT_BUFZ(tau), MAT_BUFZ(C)+oC, &ldC, (complex *) work,
-                &lwork, &info);
+                MAT_BUFZ(tau), MAT_BUFZ(C)+oC, &ldC, 
+                (double complex *) work, &lwork, &info);
             Py_END_ALLOW_THREADS
             free(work);
 	    break;
@@ -4598,11 +4658,11 @@ static PyObject* unglq(PyObject *self, PyObject *args, PyObject *kwrds)
             zunglq_(&m, &n, &k, NULL, &ldA, NULL, &wl.z, &lwork, &info);
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
-            if (!(work = (void *) calloc(lwork, sizeof(complex))))
+            if (!(work = (void *) calloc(lwork, sizeof(double complex))))
                 return PyErr_NoMemory();
             Py_BEGIN_ALLOW_THREADS
             zunglq_(&m, &n, &k, MAT_BUFZ(A) + oA, &ldA, MAT_BUFZ(tau),
-                (complex *) work, &lwork, &info);
+                (double complex *) work, &lwork, &info);
             Py_END_ALLOW_THREADS
             free(work);
 	    break;
@@ -4705,12 +4765,12 @@ static PyObject* geqp3(PyObject *self, PyObject *args, PyObject *kwrds)
                 &info);
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
-            if (!(work = (void *) calloc(lwork, sizeof(complex))) ||
+            if (!(work = (void *) calloc(lwork, sizeof(double complex))) ||
                 !(rwork = (double *) calloc(2*n, sizeof(double))))
                 return PyErr_NoMemory();
             Py_BEGIN_ALLOW_THREADS
             zgeqp3_(&m, &n, MAT_BUFZ(A)+oA, &ldA, jpvt_ptr, MAT_BUFZ(tau),
-                (complex *) work, &lwork, rwork, &info);
+                (double complex *) work, &lwork, rwork, &info);
             Py_END_ALLOW_THREADS
             free(work);
             free(rwork);
@@ -4917,7 +4977,7 @@ static PyObject* heev(PyObject *self, PyObject *args, PyObject *kwrds)
                 NULL, &info);
             Py_END_ALLOW_THREADS
 	    lwork = (int) creal(wl.z);
-	    work = (void *) calloc(lwork, sizeof(complex));
+	    work = (void *) calloc(lwork, sizeof(double complex));
 	    rwork = (double *) calloc(3*n-2, sizeof(double));
 	    if (!work || !rwork){
 		free(work);  free(rwork);
@@ -4925,7 +4985,7 @@ static PyObject* heev(PyObject *self, PyObject *args, PyObject *kwrds)
 	    }
             Py_BEGIN_ALLOW_THREADS
 	    zheev_(&jobz, &uplo, &n, MAT_BUFZ(A)+oA, &ldA,
-		MAT_BUFD(W)+oW,  (complex *) work, &lwork, rwork,
+		MAT_BUFD(W)+oW,  (double complex *) work, &lwork, rwork,
 		&info);
             Py_END_ALLOW_THREADS
 	    free(work);  free(rwork);
@@ -5245,7 +5305,7 @@ static PyObject* heevx(PyObject *self, PyObject *args, PyObject *kwrds)
 	       	NULL, NULL, &info);
             Py_END_ALLOW_THREADS
 	    lwork = (int) creal(wl.z);
-	    work = (void *) calloc(lwork, sizeof(complex));
+	    work = (void *) calloc(lwork, sizeof(double complex));
 	    rwork = (double *) calloc(7*n, sizeof(double));
 	    iwork = (int *) calloc(5*n, sizeof(int));
 	    if (jobz == 'V') ifail = (int *) calloc(n, sizeof(int));
@@ -5257,7 +5317,8 @@ static PyObject* heevx(PyObject *self, PyObject *args, PyObject *kwrds)
 	    zheevx_(&jobz, &range, &uplo, &n, MAT_BUFZ(A)+oA, &ldA, &vl,
                 &vu, &il, &iu, &abstol, &m, MAT_BUFD(W)+oW,
 		(jobz == 'V') ? MAT_BUFZ(Z)+oZ : NULL,  &ldZ,
-		(complex *) work, &lwork, rwork, iwork, ifail, &info);
+		(double complex *) work, &lwork, rwork, iwork, ifail, 
+                &info);
             Py_END_ALLOW_THREADS
 	    free(work);  free(rwork);  free(iwork);  free(ifail);
             break;
@@ -5475,7 +5536,7 @@ static PyObject* heevd(PyObject *self, PyObject *args, PyObject *kwrds)
             lwork = (int) wl.d;
             lrwork = (int) rwl;
             liwork = iwl;
-            work = (void *) calloc(lwork, sizeof(complex));
+            work = (void *) calloc(lwork, sizeof(double complex));
             rwork = (double *) calloc(lrwork, sizeof(double));
             iwork = (int *) calloc(liwork, sizeof(int));
             if (!work || !rwork || !iwork){
@@ -5484,7 +5545,7 @@ static PyObject* heevd(PyObject *self, PyObject *args, PyObject *kwrds)
             }
             Py_BEGIN_ALLOW_THREADS
             zheevd_(&jobz, &uplo, &n, MAT_BUFZ(A)+oA, &ldA,
-                MAT_BUFD(W)+oW, (complex *) work, &lwork, rwork,
+                MAT_BUFD(W)+oW, (double complex *) work, &lwork, rwork,
                 &lrwork, iwork, &liwork, &info);
             Py_END_ALLOW_THREADS
             free(work);  free(rwork);  free(iwork);
@@ -5825,7 +5886,7 @@ static PyObject* heevr(PyObject *self, PyObject *args, PyObject *kwrds)
             lwork = (int) creal(wl.z);
 	    lrwork = (int) rwl;
             liwork = iwl;
-            work = (void *) calloc(lwork, sizeof(complex));
+            work = (void *) calloc(lwork, sizeof(double complex));
             rwork = (double *) calloc(lrwork, sizeof(double));
             iwork = (int *) calloc(liwork, sizeof(int));
             if (jobz == 'V')
@@ -5839,8 +5900,8 @@ static PyObject* heevr(PyObject *self, PyObject *args, PyObject *kwrds)
             zheevr_(&jobz, &range, &uplo, &n, MAT_BUFZ(A)+oA, &ldA, &vl,
                 &vu, &il, &iu, &abstol, &m, MAT_BUFD(W)+oW,
                 (jobz == 'V') ? MAT_BUFZ(Z)+oZ : NULL,  &ldZ,
-                (jobz == 'V') ? isuppz : NULL, (complex *) work, &lwork,
-	       	rwork, &lrwork, iwork, &liwork, &info);
+                (jobz == 'V') ? isuppz : NULL, (double complex *) work, 
+                &lwork, rwork, &lrwork, iwork, &liwork, &info);
             Py_END_ALLOW_THREADS
             free(work);   free(rwork); free(iwork);   free(isuppz);
             break;
@@ -6111,7 +6172,7 @@ static PyObject* hegv(PyObject *self, PyObject *args, PyObject *kwrds)
                 &uplol : &uplou, &n, &n2, &n3, &n4));
 #endif
 
-            work = (void *) calloc(lwork, sizeof(complex));
+            work = (void *) calloc(lwork, sizeof(double complex));
             rwork = (double *) calloc(3*n-2, sizeof(double));
             if (!work || !rwork){
                 free(work);  free(rwork);
@@ -6119,8 +6180,8 @@ static PyObject* hegv(PyObject *self, PyObject *args, PyObject *kwrds)
             }
             Py_BEGIN_ALLOW_THREADS
             zhegv_(&itype, &jobz, &uplo, &n, MAT_BUFZ(A)+oA, &ldA,
-                MAT_BUFZ(B)+oB, &ldB, MAT_BUFD(W)+oW, (complex *) work,
-                &lwork, rwork, &info);
+                MAT_BUFZ(B)+oB, &ldB, MAT_BUFD(W)+oW, 
+                (double complex *) work, &lwork, rwork, &info);
             Py_END_ALLOW_THREADS
             free(work);  free(rwork);
             break;
@@ -6313,7 +6374,7 @@ static PyObject* gesvd(PyObject *self, PyObject *args, PyObject *kwrds)
                 &ldU, NULL, &ldVt, &wl.z, &lwork, NULL, &info);
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
-            work = (void *) calloc(lwork, sizeof(complex));
+            work = (void *) calloc(lwork, sizeof(double complex));
             rwork = (double *) calloc(5*MIN(m,n), sizeof(double));
 	    if (!work || !rwork){
                 free(work);  free(rwork);
@@ -6324,7 +6385,7 @@ static PyObject* gesvd(PyObject *self, PyObject *args, PyObject *kwrds)
                 MAT_BUFD(S)+oS, (jobu == 'A' || jobu == 'S') ?
                 MAT_BUFZ(U)+oU : NULL,  &ldU, (jobvt == 'A' ||
                 jobvt == 'S') ? MAT_BUFZ(Vt)+oVt : NULL, &ldVt,
-                (complex *) work, &lwork, rwork, &info);
+                (double complex *) work, &lwork, rwork, &info);
             Py_END_ALLOW_THREADS
             free(work);   free(rwork);
             break;
@@ -6510,7 +6571,7 @@ static PyObject* gesdd(PyObject *self, PyObject *args, PyObject *kwrds)
                 &ldVt, &wl.z, &lwork, NULL, NULL, &info);
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
-            work = (void *) calloc(lwork, sizeof(complex));
+            work = (void *) calloc(lwork, sizeof(double complex));
             iwork = (int *) calloc(8*MIN(m,n), sizeof(int));
             rwork = (double *) calloc( (jobz == 'N') ? 7*MIN(m,n) :
                 5*MIN(m,n)*(MIN(m,n)+1), sizeof(double));
@@ -6523,7 +6584,7 @@ static PyObject* gesdd(PyObject *self, PyObject *args, PyObject *kwrds)
                 (jobz == 'A' || jobz == 'S' || (jobz == 'O' && m<n)) ?
 		MAT_BUFZ(U)+oU : NULL,  &ldU, (jobz == 'A' ||
                 jobz == 'S' || (jobz == 'O' && m>=n)) ?
-                MAT_BUFZ(Vt)+oVt : NULL, &ldVt, (complex *) work,
+                MAT_BUFZ(Vt)+oVt : NULL, &ldVt, (double complex *) work,
                 &lwork, rwork, iwork, &info);
             Py_END_ALLOW_THREADS
             free(work);  free(iwork); free(rwork);
@@ -6579,7 +6640,7 @@ static char doc_gees[] =
 static PyObject *py_select_r;
 static PyObject *py_select_c;
 
-extern int fselect_c(complex *w)
+extern int fselect_c(double complex *w)
 {
     PyObject *wpy, *result;
     int a = 0;
@@ -6630,7 +6691,7 @@ static PyObject* gees(PyObject *self, PyObject *args, PyObject *kwrds)
     int n=-1, ldA=0, ldVs=0, oA=0, oVs=0, oW=0, info, lwork, sdim, k,
         *bwork=NULL;
     double *wr=NULL, *wi=NULL, *rwork=NULL;
-    complex *w=NULL;
+    double complex *w=NULL;
     void *work=NULL;
     number wl;
     char *kwlist[] = {"A", "w", "V", "select", "n", "ldA", "ldV",
@@ -6707,10 +6768,11 @@ static PyObject* gees(PyObject *self, PyObject *args, PyObject *kwrds)
                 &sdim, NULL, NULL, &ldVs, &wl.z, &lwork, NULL, NULL,
                 &info);
             lwork = (int) creal(wl.z);
-            work = (void *) calloc(lwork, sizeof(complex));
-            rwork = (double *) calloc(n, sizeof(complex));
+            work = (void *) calloc(lwork, sizeof(double complex));
+            rwork = (double *) calloc(n, sizeof(double complex));
             if (F) bwork = (int *) calloc(n, sizeof(int));
-            if (!W) w = (complex *) calloc(n, sizeof(complex));
+            if (!W) 
+                w = (double complex *) calloc(n, sizeof(double complex));
 	    if (!work || !rwork || (F && !bwork) || (!W && !w) ){
                 free(work);  free(rwork); free(bwork);  free(w);
                 return PyErr_NoMemory();
@@ -6719,8 +6781,8 @@ static PyObject* gees(PyObject *self, PyObject *args, PyObject *kwrds)
             zgees_(Vs ? "V": "N", F ? "S" : "N", F ? &fselect_c : NULL,
                 &n, MAT_BUFZ(A) + oA, &ldA, &sdim,
                 W ? MAT_BUFZ(W) + oW : w, Vs ? MAT_BUFZ(Vs) + oVs : NULL,
-                &ldVs, (complex *) work, &lwork, (complex *) rwork,  bwork,
-                 &info);
+                &ldVs, (double complex *) work, &lwork, 
+                (double complex *) rwork,  bwork, &info);
             free(work);  free(rwork); free(bwork);  free(w);
             break;
 
@@ -6794,7 +6856,7 @@ static char doc_gges[] =
 static PyObject *py_select_gr;
 static PyObject *py_select_gc;
 
-extern int fselect_gc(complex *w, double *v)
+extern int fselect_gc(double complex *w, double *v)
 {
    PyObject *wpy, *vpy, *result;
    int a = 0;
@@ -6849,7 +6911,7 @@ static PyObject* gges(PyObject *self, PyObject *args, PyObject *kwrds)
     int n=-1, ldA=0, ldB=0, ldVsl=0, ldVsr=0, oA=0, oB=0, oa=0, ob=0,
         oVsl=0, oVsr=0, info, lwork, sdim, k, *bwork=NULL;
     double *ar=NULL, *ai=NULL, *rwork=NULL;
-    complex *ac=NULL;
+    double complex *ac=NULL;
     void *work=NULL, *bc=NULL;
     number wl;
 
@@ -6970,11 +7032,12 @@ static PyObject* gges(PyObject *self, PyObject *args, PyObject *kwrds)
                 &n, NULL, &ldA, NULL, &ldB, &sdim, NULL, NULL, NULL,
                 &ldVsl, NULL, &ldVsr, &wl.z, &lwork, NULL, NULL, &info);
             lwork = (int) creal(wl.z);
-            work = (void *) calloc(lwork, sizeof(complex));
+            work = (void *) calloc(lwork, sizeof(double complex));
             rwork = (double *) calloc(8*n, sizeof(double));
             if (F) bwork = (int *) calloc(n, sizeof(int));
-            if (!a) ac = (complex *) calloc(n, sizeof(complex));
-            bc = (complex *) calloc(n, sizeof(complex));
+            if (!a) 
+                ac = (double complex *) calloc(n, sizeof(double complex));
+            bc = (double complex *) calloc(n, sizeof(double complex));
 	    if (!work || !rwork || (F && !bwork) || (!a && !ac) || !bc){
                 free(work);  free(rwork); free(bwork); free(ac); free(bc);
                 return PyErr_NoMemory();
@@ -6983,11 +7046,13 @@ static PyObject* gges(PyObject *self, PyObject *args, PyObject *kwrds)
             zgges_(Vsl ? "V": "N", Vsr ? "V" : "N", F ? "S" : "N",
                 F ? &fselect_gc : NULL, &n, MAT_BUFZ(A) + oA, &ldA,
                 MAT_BUFZ(B) + oB, &ldB, &sdim, a ? MAT_BUFZ(a) + oa : ac,
-                (complex *) bc, Vsl ? MAT_BUFZ(Vsl) + oVsl : NULL, &ldVsl,
+                (double complex *) bc, 
+                Vsl ? MAT_BUFZ(Vsl) + oVsl : NULL, &ldVsl,
                 Vsr ? MAT_BUFZ(Vsr) + oVsr : NULL, &ldVsr,
-                (complex *) work, &lwork, rwork,  bwork, &info);
+                (double complex *) work, &lwork, rwork,  bwork, &info);
             if (b) for (k=0; k<n; k++)
-                MAT_BUFD(b)[ob + k] = (double) creal(((complex *) bc)[k]);
+                MAT_BUFD(b)[ob + k] = 
+                    (double) creal(((double complex *) bc)[k]);
 
             free(work);  free(rwork); free(bwork); free(ac);  free(bc);
             break;
@@ -7004,27 +7069,29 @@ static PyObject* gges(PyObject *self, PyObject *args, PyObject *kwrds)
 
 
 static char doc_lacpy[] =
-"Copy all or part of a matrix.\n\n"
-"lacpy(A, B, uplo='N', m=A.size[0], n=A.size[1], ldA=max(1,A.size[0]),\n"
-"      ldB=max(1,B.size[0]), offsetA=0, offsetB=0)\n\n"
-"PURPOSE\n"
-"Copy the m x n matrix A to B.  If uplo is 'U', the upper trapezoidal\n"
-"part of A is copied.  If uplo is 'L', the lower trapezoidal part is\n"
-"copied.  if uplo is 'N', the entire matrix is copied.\n\n"
-"ARGUMENTS\n"
-"A         'd' or 'z' matrix\n\n"
-"B         'd' or 'z' matrix.  Must have the same type as A.\n\n"
-"uplo      'N', 'L' or 'U'\n\n"
-"m         nonnegative integer.  If negative, the default value is used.\n"
-"\n"
-"n         nonnegative integer.  If negative, the default value is used.\n"
-"\n"
-"ldA       positive integer.  ldA >= max(1,m).  If zero, the default\n"
-"          value is used.\n\n"
-"ldB       positive integer.  ldB >= max(1,m).  If zero, the default\n"
-"          value is used.\n\n"
-"offsetA   nonnegative integer\n\n"
-"offsetB   nonnegative integer";
+    "Copy all or part of a matrix.\n\n"
+    "lacpy(A, B, uplo='N', m=A.size[0], n=A.size[1], \n"
+    "      ldA=max(1,A.size[0]), ldB=max(1,B.size[0]), offsetA=0, \n"
+    "      offsetB=0)\n\n"
+    "PURPOSE\n"
+    "Copy the m x n matrix A to B.  If uplo is 'U', the upper\n"
+    "trapezoidal part of A is copied.  If uplo is 'L', the lower \n"
+    "trapezoidal part is copied.  if uplo is 'N', the entire matrix is\n"
+    "copied.\n\n"
+    "ARGUMENTS\n"
+    "A         'd' or 'z' matrix\n\n"
+    "B         'd' or 'z' matrix.  Must have the same type as A.\n\n"
+    "uplo      'N', 'L' or 'U'\n\n"
+    "m         nonnegative integer.  If negative, the default value is\n"
+    "          used.\n\n"
+    "n         nonnegative integer.  If negative, the default value is\n"
+    "          used.\n\n"
+    "ldA       positive integer.  ldA >= max(1,m).  If zero, the default\n"
+    "          value is used.\n\n"
+    "ldB       positive integer.  ldB >= max(1,m).  If zero, the default\n"
+    "          value is used.\n\n"
+    "offsetA   nonnegative integer\n\n"
+    "offsetB   nonnegative integer";
 
 static PyObject* lacpy(PyObject *self, PyObject *args, PyObject *kwrds)
 {
@@ -7081,6 +7148,175 @@ static PyObject* lacpy(PyObject *self, PyObject *args, PyObject *kwrds)
 
     return Py_BuildValue("");
 }
+
+
+static char doc_larfg[] =
+    "Generate an elementary Householder reflector.\n\n"
+    "tau = larfg(alpha, x, n=None, offseta=0, offsetx=0)\n\n"
+    "PURPOSE\n"
+    "Generates a Householder reflector\n\n"
+    "    H = I - tau * [1; v] * [1; v]^H\n\n"
+    "such that\n\n"
+    "    H^H * [alpha; x] = [beta; 0].\n\n"
+    "In other words,\n\n"
+    "    (I - tau.conjugate() * [1; v] * [1; v]^H) * [alpha; x] = "
+    "[beta; 0].\n\n"
+    "The matrix H is unitary, so\n\n"
+    "    2 * tau.real = abs(tau)**2 * ( 1.0 + ||v||**2).\n\n"
+    "On exit x contains the vector v and alpha is overwritten with beta.\n"
+    "The parameter tau is returned as the output value of the function."
+    "\n\n"
+    "ARGUMENTS\n"
+    "alpha     'd' or 'z' matrix.  On exit, contains beta.\n\n"
+    "x         'd' or 'z' matrix.  Must have the same type as alpha.\n"
+    "          On exit, contains v. \n\n"
+    "n         postive integer.  The dimension of the vector [alpha; x].\n"
+    "          If n <= 0, the default value is used, which is equal to\n"
+    "          1 + ( (len(x) - offsetx >= 1) ? len(x) - ox : 0 ).\n\n"
+    "offseta   nonnegative integer \n\n"
+    "offsetx   nonnegative integer \n\n"
+    "tau       scalar of the same type as alpha and x";
+
+static PyObject* larfg(PyObject *self, PyObject *args, PyObject *kwrds)
+{
+    matrix *a, *x;
+    number tau;
+    int n = 0, oa = 0, ox = 0, ix = 1; 
+    char *kwlist[] = {"alpha", "x", "n", "offseta", "offsetx", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|iii", kwlist,
+        &a, &x, &n, &oa, &ox)) return NULL;
+
+    if (!Matrix_Check(a)) err_mtrx("alpha");
+    if (!Matrix_Check(x)) err_mtrx("x");
+    if (MAT_ID(a) != MAT_ID(x)) err_conflicting_ids;
+    if (oa < 0) err_nn_int("offseta");
+    if (ox < 0) err_nn_int("offsetx");
+    if (n <= 0) n = 1 + ((len(x) >= ox + 1) ? len(x) - ox : 0);
+    if (len(x) < ox + n - 1) err_buf_len("x");
+    if (len(a) < oa + 1) err_buf_len("alpha");
+
+    switch (MAT_ID(a)){
+        case DOUBLE:
+            Py_BEGIN_ALLOW_THREADS
+            dlarfg_(&n, MAT_BUFD(a)+oa, MAT_BUFD(x)+ox, &ix, &tau.d);
+            Py_END_ALLOW_THREADS
+            return Py_BuildValue("d", tau.d);
+            break;
+
+        case COMPLEX:
+            Py_BEGIN_ALLOW_THREADS
+            zlarfg_(&n, MAT_BUFZ(a)+oa, MAT_BUFZ(x)+ox, &ix, &tau.z);
+            Py_END_ALLOW_THREADS
+            return PyComplex_FromDoubles(creal(tau.z), cimag(tau.z));
+            break;
+
+	default:
+            err_invalid_id;
+    }
+
+    return Py_BuildValue("");
+}
+
+
+static char doc_larfx[] =
+    "Apply an elementary Householder reflector to a matrix.\n\n"
+    "larfx(v, tau, C, side='L', m=C.size[0], n=C.size[1],\n" 
+    "      ldC=max(1,C.size[0]), offsetv=0, offsetC=0)\n\n"
+    "PURPOSE\n"
+    "Computes H*C (side is 'L') or C*H (side is 'R') where\n\n"
+    "    H = I - tau * v * v^H.\n\n"
+    "On exit C is overwritten with the result.\n\n"
+    "ARGUMENTS\n"
+    "v         'd' or 'z' matrix\n\n"
+    "tau       number.  Can only be complex if v is complex.\n\n"
+    "C         'd' or 'z' matrix of the same type as v\n\n"
+    "side      'L' or 'R'\n\n"
+    "m         nonnegative integer.  If negative, the default value is \n"
+    "          used.\n\n" 
+    "n         nonnegative integer.  If negative, the default value is \n"
+    "          used.\n\n" 
+    "ldC       nonnegative integer.  ldC >= max(1,m).  If zero, the\n"
+    "          default value is used.\n\n"
+    "offsetv   nonnegative integer \n\n"
+    "offsetC   nonnegative integer";
+
+static PyObject* larfx(PyObject *self, PyObject *args, PyObject *kwrds)
+{
+    matrix *v, *C;
+    PyObject *tauo=NULL;
+    number tau;
+    int m = -1, n = -1, ov = 0, oC = 0, ldC = 0; 
+    void *work = NULL;
+#if PY_MAJOR_VERSION >= 3
+    int side_ = 'L';
+#endif
+    char side = 'L';
+    char *kwlist[] = {"v", "tau", "C", "side", "m", "n", "ldC", "offsetv",
+        "offsetC", NULL};
+
+#if PY_MAJOR_VERSION >= 3 
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|Ciiiii", kwlist, 
+        &v, &tauo, &C, &side_, &m, &n, &ldC, &ov, &oC))
+        return NULL;
+    side = (char) side_;
+#else
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ciiiii", kwlist, 
+        &v, &tauo, &C, &side, &m, &n, &ldC, &ov, &oC))
+        return NULL;
+#endif
+ 
+    if (!Matrix_Check(v)) err_mtrx("v");
+    if (!Matrix_Check(C)) err_mtrx("C");
+    if (MAT_ID(v) != MAT_ID(C)) err_conflicting_ids;
+    if (tauo && number_from_pyobject(tauo, &tau, MAT_ID(v)))
+        err_type("tau")
+
+    if (side != 'L' && side != 'R') err_char("side", "'L', 'R'");
+
+    if (m < 0) m = C->nrows;
+    if (n < 0) n = C->ncols;
+    
+    if (ov < 0) err_nn_int("offsetv");
+    if ((side == 'L' && len(v) - ov < m) ||
+        (side == 'R' && len(v) - ov < n)) err_buf_len("v")
+
+    if (ldC == 0) ldC = MAX(1, C->nrows);
+    if (ldC < MAX(1,m)) err_ld("ldC");
+    if (oC < 0) err_nn_int("offsetC");
+    if (oC + (n-1)*ldC + m > len(C)) err_buf_len("C");
+
+
+    switch (MAT_ID(v)){
+        case DOUBLE:
+            if (!(work = (void *) calloc((side == 'L') ? n : m, 
+                sizeof(double))))
+                return PyErr_NoMemory();
+            Py_BEGIN_ALLOW_THREADS
+            dlarfx_(&side, &m, &n, MAT_BUFD(v)+ov, &tau.d, 
+                MAT_BUFD(C) + oC, &ldC, (double *) work);
+            Py_END_ALLOW_THREADS
+            free(work);
+            break;
+
+        case COMPLEX:
+            if (!(work = (void *) calloc((side == 'L') ? n : m,
+                sizeof(double complex))))
+                return PyErr_NoMemory();
+            Py_BEGIN_ALLOW_THREADS
+            zlarfx_(&side, &m, &n, MAT_BUFZ(v)+ov, &tau.z,
+                MAT_BUFZ(C) + oC, &ldC, (double complex *) work);
+            Py_END_ALLOW_THREADS
+            free(work);
+            break;
+
+	default:
+            err_invalid_id;
+    }
+
+    return Py_BuildValue("");
+}
+
 
 
 static PyMethodDef lapack_functions[] = {
@@ -7142,6 +7378,8 @@ static PyMethodDef lapack_functions[] = {
 {"gges", (PyCFunction) gges, METH_VARARGS|METH_KEYWORDS, doc_gges},
 {"lacpy", (PyCFunction) lacpy, METH_VARARGS|METH_KEYWORDS, doc_lacpy},
 {"geqp3", (PyCFunction) geqp3, METH_VARARGS|METH_KEYWORDS, doc_geqp3},
+{"larfg", (PyCFunction) larfg, METH_VARARGS|METH_KEYWORDS, doc_larfg},
+{"larfx", (PyCFunction) larfx, METH_VARARGS|METH_KEYWORDS, doc_larfx},
 {NULL}  /* Sentinel */
 };
 

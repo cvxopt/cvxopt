@@ -65,7 +65,7 @@ if BUILD_GSL:
         include_dirs = [ GSL_INC_DIR ],
         library_dirs = [ GSL_LIB_DIR, BLAS_LIB_DIR ],
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
-        sources = ['C/gsl.c'] )
+        sources = ['src/C/gsl.c'] )
     extmods += [gsl];
 
 if BUILD_FFTW:
@@ -73,14 +73,14 @@ if BUILD_FFTW:
         include_dirs = [ FFTW_INC_DIR ],
         library_dirs = [ FFTW_LIB_DIR, BLAS_LIB_DIR ],
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
-        sources = ['C/fftw.c'] )
+        sources = ['src/C/fftw.c'] )
     extmods += [fftw];
 
 if BUILD_GLPK:
     glpk = Extension('glpk', libraries = ['glpk'],
         include_dirs = [ GLPK_INC_DIR ],
         library_dirs = [ GLPK_LIB_DIR ],
-        sources = ['C/glpk.c'] )
+        sources = ['src/C/glpk.c'] )
     extmods += [glpk];
 
 if BUILD_DSDP:
@@ -88,7 +88,7 @@ if BUILD_DSDP:
         include_dirs = [ DSDP_INC_DIR ],
         library_dirs = [ DSDP_LIB_DIR, BLAS_LIB_DIR ],
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
-        sources = ['C/dsdp.c'] )
+        sources = ['src/C/dsdp.c'] )
     extmods += [dsdp];
 
 # Required modules
@@ -97,73 +97,79 @@ base = Extension('base', libraries = ['m'] + LAPACK_LIB + BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    sources = ['C/base.c','C/dense.c','C/sparse.c']) 
+    sources = ['src/C/base.c','src/C/dense.c','src/C/sparse.c']) 
 
 blas = Extension('blas', libraries = BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    sources = ['C/blas.c'] )
+    sources = ['src/C/blas.c'] )
 
 lapack = Extension('lapack', libraries = LAPACK_LIB + BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    sources = ['C/lapack.c'] )
+    sources = ['src/C/lapack.c'] )
 
 umfpack = Extension('umfpack', 
-    include_dirs = [ 'C/SuiteSparse/UMFPACK/Include',
-        'C/SuiteSparse/AMD/Include', 'C/SuiteSparse/AMD/Source', 
-        'C/SuiteSparse/UFconfig' ],
+    include_dirs = [ 'src/C/SuiteSparse/UMFPACK/Include',
+        'src/C/SuiteSparse/AMD/Include', 
+        'src/C/SuiteSparse/AMD/Source', 
+        'src/C/SuiteSparse/SuiteSparse_config' ],
     library_dirs = [ BLAS_LIB_DIR ],
-    define_macros = MACROS,
+    define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
     libraries = LAPACK_LIB + BLAS_LIB,
+    extra_compile_args = ['-Wno-unknown-pragmas'],
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    sources = [ 'C/umfpack.c',
-        'C/SuiteSparse/UMFPACK/Source/umfpack_global.c',
-        'C/SuiteSparse/UMFPACK/Source/umfpack_tictoc.c' ] +
-        glob('C/SuiteSparse_cvxopt_extra/umfpack/*'))
+    sources = [ 'src/C/umfpack.c',
+        'src/C/SuiteSparse/UMFPACK/Source/umfpack_global.c',
+        'src/C/SuiteSparse/UMFPACK/Source/umfpack_tictoc.c' ] +
+        ['src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
+        glob('src/C/SuiteSparse_cvxopt_extra/umfpack/*'))
 
 # Build for int or long? 
 import sys
-if sys.maxsize > 2**31: MACROS += [('DLONG','')]
+if sys.maxsize > 2**31: MACROS += [('DLONG',None)]
 
 cholmod = Extension('cholmod',
     library_dirs = [ BLAS_LIB_DIR ],
     libraries = LAPACK_LIB + BLAS_LIB,
-    include_dirs = [ 'C/SuiteSparse/CHOLMOD/Include', 
-        'C/SuiteSparse/COLAMD', 'C/SuiteSparse/AMD/Include', 
-        'C/SuiteSparse/UFconfig', 'C/SuiteSparse/COLAMD/Include' ],
-    define_macros = MACROS + [('NPARTITION', '1')],
+    include_dirs = [ 'src/C/SuiteSparse/CHOLMOD/Include', 
+        'src/C/SuiteSparse/COLAMD', 
+        'src/C/SuiteSparse/AMD/Include', 
+        'src/C/SuiteSparse/COLAMD/Include',
+        'src/C/SuiteSparse/SuiteSparse_config' ],
+    define_macros = MACROS + [('NPARTITION', '1'), ('NTIMER', '1')],
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    sources = [ 'C/cholmod.c' ] + 
-        ['C/SuiteSparse/AMD/Source/' + s for s in ['amd_global.c',
+    sources = [ 'src/C/cholmod.c' ] + 
+        ['src/C/SuiteSparse/AMD/Source/' + s for s in ['amd_global.c',
             'amd_postorder.c', 'amd_post_tree.c', 'amd_2.c']] +
-        ['C/SuiteSparse/COLAMD/Source/' + s for s in ['colamd.c',
+        ['src/C/SuiteSparse/COLAMD/Source/' + s for s in ['colamd.c',
             'colamd_global.c']] +
-        glob('C/SuiteSparse/CHOLMOD/Core/c*.c') +
-        glob('C/SuiteSparse/CHOLMOD/Cholesky/c*.c') +
-        ['C/SuiteSparse/CHOLMOD/Check/cholmod_check.c'] +
-        glob('C/SuiteSparse/CHOLMOD/Supernodal/c*.c') )
+        ['src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
+        glob('src/C/SuiteSparse/CHOLMOD/Core/c*.c') +
+        glob('src/C/SuiteSparse/CHOLMOD/Cholesky/c*.c') +
+        ['src/C/SuiteSparse/CHOLMOD/Check/cholmod_check.c'] +
+        glob('src/C/SuiteSparse/CHOLMOD/Supernodal/c*.c') )
 
 amd = Extension('amd', 
-    include_dirs = [ 'C/SuiteSparse/AMD/Include', 
-        'C/SuiteSparse/UFconfig' ],
+    include_dirs = [ 'src/C/SuiteSparse/AMD/Include', 
+        'src/C/SuiteSparse/SuiteSparse_config' ],
     define_macros = MACROS,
-    sources = [ 'C/amd.c' ] + glob('C/SuiteSparse/AMD/Source/*.c') )
+    sources = [ 'src/C/amd.c' ] + glob('src/C/SuiteSparse/AMD/Source/*.c') )
 
 misc_solvers = Extension('misc_solvers',
     libraries = LAPACK_LIB + BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    sources = ['C/misc_solvers.c'] )
+    sources = ['src/C/misc_solvers.c'] )
 
 extmods += [base, blas, lapack, umfpack, cholmod, amd, misc_solvers] 
 
 setup (name = 'cvxopt', 
     description = 'Convex optimization package',
-    version = '1.1.5', 
+    version = '1.1.6', 
     long_description = '''
 CVXOPT is a free software package for convex optimization based on the 
 Python programming language. It can be used with the interactive Python 
@@ -179,5 +185,5 @@ language.''',
     license = 'GNU GPL version 3',
     ext_package = "cvxopt",
     ext_modules = extmods,
-    package_dir = {"cvxopt": "python"},
+    package_dir = {"cvxopt": "src/python"},
     packages = ["cvxopt"])

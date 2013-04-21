@@ -619,14 +619,14 @@ The :class:`op` class also includes two methods for writing and reading
 files in 
 `MPS format <http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/linearprog/mps.html>`_.
 
-.. method:: tofile(filename)
+.. method:: tofile(filename) :noindex:
 
     If the problem is an LP, writes it to the file `filename` using the 
     MPS format.  Row and column labels are assigned based on the variable 
     and constraint names in the LP.  
 
 
-.. method:: fromfile(filename)
+.. method:: fromfile(filename) :noindex:
 
     Reads the LP from the file `filename`.  The file must be a fixed-format
     MPS file.  Some features of the MPS format are not supported: comments 

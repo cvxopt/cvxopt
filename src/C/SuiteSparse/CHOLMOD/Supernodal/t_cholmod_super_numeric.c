@@ -3,11 +3,11 @@
 /* ========================================================================== */
 
 /* -----------------------------------------------------------------------------
- * CHOLMOD/Supernodal Module.  Copyright (C) 2005-2006, Timothy A. Davis
+ * CHOLMOD/Supernodal Module.  Copyright (C) 2005-2012, Timothy A. Davis
  * The CHOLMOD/Supernodal Module is licensed under Version 2.0 of the GNU
  * General Public License.  See gpl.txt for a text of the license.
  * CHOLMOD is also available under other licenses; contact authors for details.
- * http://www.cise.ufl.edu/research/sparse
+ * http://www.suitesparse.com
  * -------------------------------------------------------------------------- */
 
 /* Template routine for cholmod_super_numeric.  All xtypes supported, except
@@ -107,7 +107,7 @@ static int TEMPLATE (cholmod_super_numeric)
     cholmod_common *Common
 )
 {
-    double one [2], zero [2], fjk [2] ;
+    double one [2], zero [2], fjk [2], tstart ;
     double *Lx, *Ax, *Fx, *Az, *Fz, *C ;
     Int *Super, *Head, *Ls, *Lpi, *Lpx, *Map, *SuperMap, *RelativeMap, *Next,
 	*Lpos, *Fp, *Fi, *Fnz, *Ap, *Ai, *Anz, *Iwork, *Next_save, *Lpos_save ;
@@ -154,6 +154,32 @@ static int TEMPLATE (cholmod_super_numeric)
     Super = L->super ;
 
     Lx = L->x ;
+
+#ifdef GPU_BLAS
+    TEMPLATE (CHOLMOD (gpu_init)) (C, L->maxcsize, Common) ;
+#endif
+
+#ifndef NTIMER
+    /* clear GPU / CPU statistics */
+    Common->CHOLMOD_CPU_GEMM_CALLS  = 0 ;
+    Common->CHOLMOD_CPU_SYRK_CALLS  = 0 ;
+    Common->CHOLMOD_CPU_TRSM_CALLS  = 0 ;
+    Common->CHOLMOD_CPU_POTRF_CALLS = 0 ;
+    Common->CHOLMOD_GPU_GEMM_CALLS  = 0 ;
+    Common->CHOLMOD_GPU_SYRK_CALLS  = 0 ;
+    Common->CHOLMOD_GPU_TRSM_CALLS  = 0 ;
+    Common->CHOLMOD_GPU_POTRF_CALLS = 0 ;
+    Common->CHOLMOD_CPU_GEMM_TIME   = 0 ;
+    Common->CHOLMOD_CPU_SYRK_TIME   = 0 ;
+    Common->CHOLMOD_CPU_TRSM_TIME   = 0 ;
+    Common->CHOLMOD_CPU_POTRF_TIME  = 0 ;
+    Common->CHOLMOD_GPU_GEMM_TIME   = 0 ;
+    Common->CHOLMOD_GPU_SYRK_TIME   = 0 ;
+    Common->CHOLMOD_GPU_TRSM_TIME   = 0 ;
+    Common->CHOLMOD_GPU_POTRF_TIME  = 0 ;
+    Common->CHOLMOD_ASSEMBLE_TIME   = 0 ;
+    Common->CHOLMOD_ASSEMBLE_TIME2  = 0 ;
+#endif
 
     stype = A->stype ;
 
@@ -425,7 +451,7 @@ static int TEMPLATE (cholmod_super_numeric)
 	     * Ls [pdi1 ... pdi2-1], of size ndrow1.  Nonzero rows in the range
 	     * k2:n-1 are in the list Ls [pdi2 ... pdend], of size ndrow2.  Let
 	     * L1 = L (Ls [pdi1 ... pdi2-1], kd1:kd2-1), and let
-	     * L2 = L (Ls [pdi2 ... pdend],  kd1:kd2-1).  C is ndrow2-by-ndcol.
+	     * L2 = L (Ls [pdi2 ... pdend],  kd1:kd2-1).  C is ndrow2-by-ndrow1.
 	     * Let C1 be the first ndrow1 rows of C and let C2 be the last
 	     * ndrow2-ndrow1 rows of C.  Only the lower triangular part of C1
 	     * needs to be computed since C1 is symmetric.
@@ -437,53 +463,73 @@ static int TEMPLATE (cholmod_super_numeric)
 	    /* compute leading ndrow1-by-ndrow1 lower triangular block of C,
 	     * C1 = L1*L1' */
 
-#ifdef REAL
-	    BLAS_dsyrk ("L", "N",
-		ndrow1, ndcol,			/* N, K: L1 is ndrow1-by-ndcol*/
-		one,				/* ALPHA:  1 */
-		Lx + L_ENTRY*pdx1, ndrow,	/* A, LDA: L1, ndrow */
-		zero,				/* BETA:   0 */
-		C, ndrow2) ;			/* C, LDC: C1 */
-#else
-	    BLAS_zherk ("L", "N",
-		ndrow1, ndcol,			/* N, K: L1 is ndrow1-by-ndcol*/
-		one,				/* ALPHA:  1 */
-		Lx + L_ENTRY*pdx1, ndrow,	/* A, LDA: L1, ndrow */
-		zero,				/* BETA:   0 */
-		C, ndrow2) ;			/* C, LDC: C1 */
+            ndrow3 = ndrow2 - ndrow1 ;  /* number of rows of C2 */
+            ASSERT (ndrow3 >= 0) ;
+
+#ifdef GPU_BLAS
+            if (!TEMPLATE (CHOLMOD (gpu_updateC))
+                (ndrow1, ndrow2, ndrow, ndcol, pdx1, Lx, C, Common))
 #endif
-
-	    /* compute remaining (ndrow3-ndrow1)-by-ndrow1 block of C,
-	     * C2 = L2*L1' */
-	    ndrow3 = ndrow2 - ndrow1 ;
-	    if (ndrow3 > 0)
-	    {
-
-#ifdef REAL
-		BLAS_dgemm ("N", "C",
-		    ndrow3, ndrow1, ndcol,	/* M, N, K */
-		    one,			/* ALPHA:  1 */
-		    Lx + L_ENTRY*(pdx1 + ndrow1),/* A, LDA: L2, ndrow */
-		    ndrow,	
-		    Lx + L_ENTRY*pdx1,		/* B, LDB: L1, ndrow */
-		    ndrow,
-		    zero,			/* BETA:   0 */
-		    C + L_ENTRY*ndrow1,		/* C, LDC: C2 */
-		    ndrow2) ;
-#else
-		BLAS_zgemm ("N", "C",
-		    ndrow3, ndrow1, ndcol,	/* M, N, K */
-		    one,			/* ALPHA:  1 */
-		    Lx + L_ENTRY*(pdx1 + ndrow1),/* A, LDA: L2, ndrow */
-		    ndrow,	
-		    Lx + L_ENTRY*pdx1,		/* B, LDB: L1, ndrow */
-		    ndrow,
-		    zero,			/* BETA:   0 */
-		    C + L_ENTRY*ndrow1,		/* C, LDC: C2 */
-		    ndrow2) ;
+            {
+#ifndef NTIMER
+                Common->CHOLMOD_CPU_SYRK_CALLS++ ;
+                tstart = SuiteSparse_time () ;
 #endif
-
-	    }
+#ifdef REAL
+                BLAS_dsyrk ("L", "N",
+                    ndrow1, ndcol,              /* N, K: L1 is ndrow1-by-ndcol*/
+                    one,                        /* ALPHA:  1 */
+                    Lx + L_ENTRY*pdx1, ndrow,   /* A, LDA: L1, ndrow */
+                    zero,                       /* BETA:   0 */
+                    C, ndrow2) ;                /* C, LDC: C1 */
+#else
+                BLAS_zherk ("L", "N",
+                    ndrow1, ndcol,              /* N, K: L1 is ndrow1-by-ndcol*/
+                    one,                        /* ALPHA:  1 */
+                    Lx + L_ENTRY*pdx1, ndrow,   /* A, LDA: L1, ndrow */
+                    zero,                       /* BETA:   0 */
+                    C, ndrow2) ;                /* C, LDC: C1 */
+#endif
+#ifndef NTIMER
+                Common->CHOLMOD_CPU_SYRK_TIME += SuiteSparse_time () - tstart ;
+#endif
+                /* compute remaining (ndrow2-ndrow1)-by-ndrow1 block of C,
+                 * C2 = L2*L1' */
+                if (ndrow3 > 0)
+                {
+#ifndef NTIMER
+                    Common->CHOLMOD_CPU_GEMM_CALLS++ ;
+                    tstart = SuiteSparse_time () ;
+#endif
+#ifdef REAL
+                    BLAS_dgemm ("N", "C",
+                        ndrow3, ndrow1, ndcol,  /* M, N, K */
+                        one,                    /* ALPHA:  1 */
+                        Lx + L_ENTRY*(pdx1 + ndrow1),   /* A, LDA: L2, ndrow */
+                        ndrow,
+                        Lx + L_ENTRY*pdx1,      /* B, LDB: L1, ndrow */
+                        ndrow,
+                        zero,                   /* BETA:   0 */
+                        C + L_ENTRY*ndrow1,     /* C, LDC: C2 */
+                        ndrow2) ;
+#else
+                    BLAS_zgemm ("N", "C",
+                        ndrow3, ndrow1, ndcol,  /* M, N, K */
+                        one,                    /* ALPHA:  1 */
+                        Lx + L_ENTRY*(pdx1 + ndrow1),/* A, LDA: L2, ndrow */
+                        ndrow,
+                        Lx + L_ENTRY*pdx1,      /* B, LDB: L1, ndrow */
+                        ndrow,
+                        zero,                   /* BETA:   0 */
+                        C + L_ENTRY*ndrow1, /* C, LDC: C2 */
+                        ndrow2) ;
+#endif
+#ifndef NTIMER
+                    Common->CHOLMOD_CPU_GEMM_TIME +=
+                        SuiteSparse_time () - tstart ;
+#endif
+                }
+            }
 
 	    DEBUG (CHOLMOD(dump_real) ("C", C, ndrow2, ndrow1, TRUE, L_ENTRY,
 			Common)) ;
@@ -498,26 +544,83 @@ static int TEMPLATE (cholmod_super_numeric)
 		ASSERT (RelativeMap [i] >= 0 && RelativeMap [i] < nsrow) ;
 	    }
 
-	    /* -------------------------------------------------------------- */
-	    /* assemble C into supernode s using the relative map */
-	    /* -------------------------------------------------------------- */
 
-	    pj = 0 ;
-	    for (j = 0 ; j < ndrow1 ; j++)		/* cols k1:k2-1 */
-	    {
-		ASSERT (RelativeMap [j] == Map [Ls [pdi1 + j]]) ;
-		ASSERT (RelativeMap [j] >= 0 && RelativeMap [j] < nscol) ;
-		px = psx + RelativeMap [j] * nsrow ;
-		for (i = j ; i < ndrow2 ; i++)		/* rows k1:n-1 */
-		{
-		    ASSERT (RelativeMap [i] == Map [Ls [pdi1 + i]]) ;
-		    ASSERT (RelativeMap [i] >= j && RelativeMap [i] < nsrow) ;
-		    /* Lx [px + RelativeMap [i]] -= C [i + pj] ; */
-		    q = px + RelativeMap [i] ;
-		    L_ASSEMBLESUB (Lx,q, C, i+pj) ;
-		}
-		pj += ndrow2 ;
-	    }
+            /* -------------------------------------------------------------- */
+            /* assemble C into supernode s using the relative map */
+            /* -------------------------------------------------------------- */
+
+#ifdef GPU_BLAS
+            TEMPLATE (CHOLMOD (gpu_syncSyrk)) (Common) ;
+            if (ndrow3 <= 0)
+            {
+#endif
+                /* non-GPU version, or GPU version when ndrow3 is zero */
+                pj = 0 ;
+                for (j = 0 ; j < ndrow1 ; j++)              /* cols k1:k2-1 */
+                {
+                    ASSERT (RelativeMap [j] == Map [Ls [pdi1 + j]]) ;
+                    ASSERT (RelativeMap [j] >= 0 && RelativeMap [j] < nscol) ;
+                    px = psx + RelativeMap [j] * nsrow ;
+                    for (i = j ; i < ndrow2 ; i++)          /* rows k1:n-1 */
+                    {
+                        ASSERT (RelativeMap [i] == Map [Ls [pdi1 + i]]) ;
+                        ASSERT (RelativeMap [i] >= j && RelativeMap[i] < nsrow);
+                        /* Lx [px + RelativeMap [i]] -= C [i + pj] ; */
+                        q = px + RelativeMap [i] ;
+                        L_ASSEMBLESUB (Lx,q, C, i+pj) ;
+                    }
+                    pj += ndrow2 ;
+                }
+#ifdef GPU_BLAS
+            }
+            else
+            {
+                /* GPU version when ndrow3 > zero, splits into two parts */
+#ifndef NTIMER
+                tstart = SuiteSparse_time () ;
+#endif
+                pj = 0 ;
+                for (j = 0 ; j < ndrow1 ; j++)              /* cols k1:k2-1 */
+                {
+                    ASSERT (RelativeMap [j] == Map [Ls [pdi1 + j]]) ;
+                    ASSERT (RelativeMap [j] >= 0 && RelativeMap [j] < nscol) ;
+                    px = psx + RelativeMap [j] * nsrow ;
+                    for (i = j ; i < ndrow1 ; i++)          /* rows k1:k2-1 */
+                    {
+                        ASSERT (RelativeMap [i] == Map [Ls [pdi1 + i]]) ;
+                        ASSERT (RelativeMap [i] >= j && RelativeMap[i] < nsrow);
+                        /* Lx [px + RelativeMap [i]] -= C [i + pj] ; */
+                        q = px + RelativeMap [i] ;
+                        L_ASSEMBLESUB (Lx,q, C, i+pj) ;
+                    }
+                    pj += ndrow2 ;
+                }
+#ifndef NTIMER
+                Common->CHOLMOD_ASSEMBLE_TIME2 += SuiteSparse_time () - tstart ;
+#endif
+                /* wait for dgemm to finish */
+                TEMPLATE (CHOLMOD (gpu_syncGemm)) (Common) ;
+                pj = 0 ;
+                for (j = 0 ; j < ndrow1 ; j++)              /* cols k1:k2-1 */
+                {
+                    ASSERT (RelativeMap [j] == Map [Ls [pdi1 + j]]) ;
+                    ASSERT (RelativeMap [j] >= 0 && RelativeMap [j] < nscol) ;
+                    px = psx + RelativeMap [j] * nsrow ;
+                    for (i = ndrow1 ; i < ndrow2 ; i++) /* rows k2:n-1 */
+                    {
+                        ASSERT (RelativeMap [i] == Map [Ls [pdi1 + i]]) ;
+                        ASSERT (RelativeMap [i] >= j && RelativeMap[i] < nsrow);
+                        /* Lx [px + RelativeMap [i]] -= C [i + pj] ; */
+                        q = px + RelativeMap [i] ;
+                        L_ASSEMBLESUB (Lx,q, C, i+pj) ;
+                    }
+                    pj += ndrow2 ;
+                }
+#ifndef NTIMER
+                Common->CHOLMOD_ASSEMBLE_TIME += SuiteSparse_time () - tstart ;
+#endif
+            }
+#endif
 
 	    /* -------------------------------------------------------------- */
 	    /* prepare this supernode d for its next ancestor */
@@ -558,7 +661,7 @@ static int TEMPLATE (cholmod_super_numeric)
 	 * holds rows k1:n-1 and columns k1:k2-1 of the updated matrix.   It
 	 * splits into two parts:  the square diagonal block S1, and the
 	 * rectangular part S2.  Here, S1 is factorized into L1*L1' and
-	 * overwritten by S1.
+	 * overwritten by L1.
 	 *
 	 * If supernode s is being repeated, only factorize it up to but not
 	 * including the column containing the problematic entry.
@@ -566,17 +669,30 @@ static int TEMPLATE (cholmod_super_numeric)
 
 	nscol2 = (repeat_supernode) ? (nscol_new) : (nscol) ;
 
-#ifdef REAL
-	LAPACK_dpotrf ("L",
-	    nscol2,			    /* N: nscol2 */
-	    Lx + L_ENTRY*psx, nsrow,	    /* A, LDA: S1, nsrow */
-	    info) ;			    /* INFO */
-#else
-	LAPACK_zpotrf ("L",
-	    nscol2,			    /* N: nscol2 */
-	    Lx + L_ENTRY*psx, nsrow,	    /* A, LDA: S1, nsrow */
-	    info) ;			    /* INFO */
+#ifdef GPU_BLAS
+        if (!TEMPLATE (CHOLMOD (gpu_lower_potrf))
+            (nscol2, nsrow, psx, Lx, &info, Common))
 #endif
+        {
+#ifndef NTIMER
+            Common->CHOLMOD_CPU_POTRF_CALLS++ ;
+            tstart = SuiteSparse_time () ;
+#endif
+#ifdef REAL
+            LAPACK_dpotrf ("L",
+                nscol2,                     /* N: nscol2 */
+                Lx + L_ENTRY*psx, nsrow,    /* A, LDA: S1, nsrow */
+                info) ;                     /* INFO */
+#else
+            LAPACK_zpotrf ("L",
+                nscol2,                     /* N: nscol2 */
+                Lx + L_ENTRY*psx, nsrow,    /* A, LDA: S1, nsrow */
+                info) ;                     /* INFO */
+#endif
+#ifndef NTIMER
+            Common->CHOLMOD_CPU_POTRF_TIME += SuiteSparse_time ()- tstart ;
+#endif
+        }
 
 	/* ------------------------------------------------------------------ */
 	/* check if the matrix is not positive definite */
@@ -650,6 +766,9 @@ static int TEMPLATE (cholmod_super_numeric)
 		 * zero.  Also, info will be 1 if integer overflow occured in
 		 * the BLAS. */
 		Head [s] = EMPTY ;
+#ifdef GPU_BLAS
+                TEMPLATE (CHOLMOD (gpu_end)) (Common) ;
+#endif
 		return (Common->status >= CHOLMOD_OK) ;
 	    }
 	    else
@@ -679,21 +798,34 @@ static int TEMPLATE (cholmod_super_numeric)
 	     * notation.
 	     */
 
-#ifdef REAL
-	    BLAS_dtrsm ("R", "L", "C", "N",
-		nsrow2, nscol2,			/* M, N */
-		one,				/* ALPHA: 1 */
-		Lx + L_ENTRY*psx, nsrow,	/* A, LDA: L1, nsrow */
-		Lx + L_ENTRY*(psx + nscol2),	/* B, LDB, L2, nsrow */
-		nsrow) ;
-#else
-	    BLAS_ztrsm ("R", "L", "C", "N",
-		nsrow2, nscol2,			/* M, N */
-		one,				/* ALPHA: 1 */
-		Lx + L_ENTRY*psx, nsrow,	/* A, LDA: L1, nsrow */
-		Lx + L_ENTRY*(psx + nscol2),	/* B, LDB, L2, nsrow */
-		nsrow) ;
+#ifdef GPU_BLAS
+            if (!TEMPLATE (CHOLMOD (gpu_triangular_solve))
+                (nsrow2, nscol2, nsrow, psx, Lx, Common))
 #endif
+            {
+#ifndef NTIMER
+                Common->CHOLMOD_CPU_TRSM_CALLS++ ;
+                tstart = SuiteSparse_time () ;
+#endif
+#ifdef REAL
+                BLAS_dtrsm ("R", "L", "C", "N",
+                    nsrow2, nscol2,                     /* M, N */
+                    one,                                /* ALPHA: 1 */
+                    Lx + L_ENTRY*psx, nsrow,            /* A, LDA: L1, nsrow */
+                    Lx + L_ENTRY*(psx + nscol2),        /* B, LDB, L2, nsrow */
+                    nsrow) ;
+#else
+                BLAS_ztrsm ("R", "L", "C", "N",
+                    nsrow2, nscol2,                     /* M, N */
+                    one,                                /* ALPHA: 1 */
+                    Lx + L_ENTRY*psx, nsrow,            /* A, LDA: L1, nsrow */
+                    Lx + L_ENTRY*(psx + nscol2),        /* B, LDB, L2, nsrow */
+                    nsrow) ;
+#endif
+#ifndef NTIMER
+                Common->CHOLMOD_CPU_TRSM_TIME += SuiteSparse_time () - tstart ;
+#endif
+            }
 
 	    if (CHECK_BLAS_INT && !Common->blas_ok)
 	    {
@@ -727,14 +859,22 @@ static int TEMPLATE (cholmod_super_numeric)
 	{
 	    /* matrix is not positive definite; finished clean-up for supernode
 	     * containing negative diagonal */
+
+#ifdef GPU_BLAS
+            TEMPLATE (CHOLMOD (gpu_end)) (Common) ;
+#endif
 	    return (Common->status >= CHOLMOD_OK) ;
 	}
     }
 
     /* success; matrix is positive definite */
     L->minor = n ;
+#ifdef GPU_BLAS
+    TEMPLATE (CHOLMOD (gpu_end)) (Common) ;
+#endif
     return (Common->status >= CHOLMOD_OK) ;
 }
+
 #undef PATTERN
 #undef REAL
 #undef COMPLEX

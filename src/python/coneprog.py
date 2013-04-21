@@ -2,11 +2,11 @@
 Solver for linear and quadratic cone programs. 
 """
 
-# Copyright 2012 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2013 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.5.
+# This file is part of CVXOPT version 1.1.6.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -3354,7 +3354,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             msk.options = options['MOSEK']
         else:
             msk.options = {}
-        if p: raise ValueError("socp() with the solver = 'socp' option "\
+        if p: raise ValueError("socp() with the solver = 'mosek' option "\
             "does not handle problems with equality constraints")
 
         solsta, x, zl, zq  = msk.socp(c, Gl, hl, Gq, hq)

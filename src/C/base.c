@@ -1,9 +1,9 @@
 /*
- * Copyright 2012 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2013 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.5.
+ * This file is part of CVXOPT version 1.1.6.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,17 +33,15 @@ extern PyTypeObject matrix_tp ;
 matrix * Matrix_New(int, int, int) ;
 matrix * Matrix_NewFromMatrix(matrix *, int) ;
 matrix * Matrix_NewFromSequence(PyObject *, int) ;
-#if PY_MAJOR_VERSION < 3
-matrix * Matrix_NewFromArrayStruct(PyObject *, int, int *) ;
-#endif
+matrix * Matrix_NewFromPyBuffer(PyObject *, int, int *) ;
 
 extern PyTypeObject spmatrix_tp ;
-spmatrix * SpMatrix_New(int_t, int_t, int, int ) ;
+spmatrix * SpMatrix_New(int_t, int_t, int_t, int ) ;
 spmatrix * SpMatrix_NewFromMatrix(matrix *, int) ;
 spmatrix * SpMatrix_NewFromSpMatrix(spmatrix *, int) ;
-spmatrix * SpMatrix_NewFromIJV(matrix *, matrix *, matrix *,
-    int_t, int_t, int, int) ;
-void free_ccs(ccs *) ;
+spmatrix * SpMatrix_NewFromIJV(matrix *, matrix *, matrix *, int_t, int_t, int) ;
+void free_ccs(ccs *);
+int get_id(void *val, int val_type);
 
 extern int (*sp_axpy[])(number, void *, void *, int, int, int, void **) ;
 
@@ -59,7 +57,7 @@ extern int (*sp_symv[])(char, int, number, ccs *, int, void *, int,
 extern int (*sp_syrk[])(char, char, number, void *, number,
     void *, int, int, int, int, void **) ;
 
-const int  E_SIZE[] = { sizeof(int_t), sizeof(double), sizeof(complex) };
+const int  E_SIZE[] = { sizeof(int_t), sizeof(double), sizeof(double complex) };
 const char TC_CHAR[][2] = {"i","d","z"} ;
 
 /*
@@ -67,6 +65,7 @@ const char TC_CHAR[][2] = {"i","d","z"} ;
  */
 
 number One[3], MinusOne[3], Zero[3];
+int intOne = 1;
 
 static void write_inum(void *dest, int i, void *src, int j) {
   ((int_t *)dest)[i]  = ((int_t *)src)[j];
@@ -77,7 +76,7 @@ static void write_dnum(void *dest, int i, void *src, int j) {
 }
 
 static void write_znum(void *dest, int i, void *src, int j) {
-  ((complex *)dest)[i]  = ((complex *)src)[j];
+  ((double complex *)dest)[i]  = ((double complex *)src)[j];
 }
 
 void (*write_num[])(void *, int, void *, int) = {
@@ -93,8 +92,8 @@ static PyObject * dnum2PyObject(void *src, int i) {
 
 static PyObject * znum2PyObject(void *src, int i) {
   Py_complex z;
-  z.real = creal (((complex *)src)[i]);
-  z.imag = cimag (((complex *)src)[i]);
+  z.real = creal (((double complex *)src)[i]);
+  z.imag = cimag (((double complex *)src)[i]);
   return Py_BuildValue("D", &z);
 }
 
@@ -155,16 +154,16 @@ convert_znum(void *dest, void *val, int val_id, int offset)
   if (val_id==0) { /* 1x1 matrix */
     switch (MAT_ID(val)) {
     case INT:
-      *(complex *)dest = MAT_BUFI(val)[offset]; return 0;
+      *(double complex *)dest = MAT_BUFI(val)[offset]; return 0;
     case DOUBLE:
-      *(complex *)dest = MAT_BUFD(val)[offset]; return 0;
+      *(double complex *)dest = MAT_BUFD(val)[offset]; return 0;
     case COMPLEX:
-      *(complex *)dest = MAT_BUFZ(val)[offset]; return 0;
+      *(double complex *)dest = MAT_BUFZ(val)[offset]; return 0;
     default: return -1;
     }
   } else { /* PyNumber */
     Py_complex c = PyComplex_AsCComplex((PyObject *)val);
-    *(complex *)dest = c.real + I*c.imag;
+    *(double complex *)dest = c.real + I*c.imag;
     return 0;
   }
 }
@@ -257,7 +256,7 @@ static void mtx_dabs(void *src, void *dest, int n) {
 static void mtx_zabs(void *src, void *dest, int n) {
   int i;
   for (i=0; i<n; i++)
-    ((double *)dest)[i] = cabs(((complex *)src)[i]);
+    ((double *)dest)[i] = cabs(((double complex *)src)[i]);
 }
 
 void (*mtx_abs[])(void *, void *, int) = { mtx_iabs, mtx_dabs, mtx_zabs };
@@ -284,7 +283,7 @@ static int zdiv(void *dest, number a, int n) {
     PY_ERR_INT(PyExc_ZeroDivisionError, "division by zero");
 
   int _n = n, int1 = 1;
-  complex _a = 1.0/a.z;
+  double complex _a = 1.0/a.z;
   zscal_(&_n, (void *)&_a, dest, &int1);
   return 0;
 }
@@ -378,8 +377,8 @@ PyObject * base_axpy(PyObject *self, PyObject *args, PyObject *kwrds)
 
   if (Matrix_Check(x) && Matrix_Check(y)) {
     int n = X_NROWS(x)*X_NCOLS(x);
-    axpy[id](&n, (ao ? &a : &One[id]), MAT_BUF(x), (int *)&One[INT],
-        MAT_BUF(y), (int *)&One[INT]);
+    axpy[id](&n, (ao ? &a : &One[id]), MAT_BUF(x), &intOne,
+        MAT_BUF(y), &intOne);
   }
   else {
 
@@ -941,10 +940,16 @@ sparse(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
   PyObject *Objx = NULL;
   static char *kwlist[] = { "x", "tc", NULL};
+  
+#if PY_MAJOR_VERSION >= 3
+  int tc = 0;
+  if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|C:sparse", kwlist,
+      &Objx, &tc))
+#else
   char tc = 0;
-
   if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|c:sparse", kwlist,
       &Objx, &tc))
+#endif
     return NULL;
 
   if (tc && !(VALID_TC_SP(tc))) PY_ERR_TYPE("tc must be 'd' or 'z'");
@@ -964,7 +969,7 @@ sparse(PyTypeObject *type, PyObject *args, PyObject *kwds)
   /* sparse matrix */
   else if (SpMatrix_Check(Objx)) {
 
-    int nnz=0, ik, jk;
+    int_t nnz = 0, ik, jk;
 
     for (jk=0; jk<SP_NCOLS(Objx); jk++) {
       for (ik=SP_COL(Objx)[jk]; ik<SP_COL(Objx)[jk+1]; ik++) {
@@ -1032,7 +1037,7 @@ spdiag(PyTypeObject *type, PyObject *args, PyObject *kwds)
   if (Matrix_Check(diag)) {
     int j, id = MAX(DOUBLE, MAT_ID(diag)), n = MAT_LGT(diag);
 
-    spmatrix *ret = SpMatrix_New(n, n, n, id);
+    spmatrix *ret = SpMatrix_New((int_t)n, (int_t)n, (int_t)n, id);
     if (!ret) return PyErr_NoMemory();
     SP_COL(ret)[0] = 0;
 
@@ -1051,7 +1056,8 @@ spdiag(PyTypeObject *type, PyObject *args, PyObject *kwds)
   }
   else if (SpMatrix_Check(diag)) {
 
-    int k, id = MAX(DOUBLE, SP_ID(diag)), n = SP_LGT(diag);
+    int k, id = MAX(DOUBLE, SP_ID(diag));
+    int_t n = SP_LGT(diag);
 
     spmatrix *ret = SpMatrix_New(n, n, SP_NNZ(diag), id);
     if (!ret) return PyErr_NoMemory();
@@ -1073,7 +1079,8 @@ spdiag(PyTypeObject *type, PyObject *args, PyObject *kwds)
 
   }
 
-  int j, k, l, idx, id=DOUBLE, n=0, nnz=0;
+  int j, k, l, idx, id=DOUBLE;
+  int_t n=0, nnz=0;
 
   for (k=0; k<PyList_GET_SIZE(diag); k++) {
     Dk = PyList_GET_ITEM(diag, k);
@@ -1223,7 +1230,7 @@ PyObject * matrix_elem_max(PyObject *self, PyObject *args, PyObject *kwrds)
       if (!(B = (PyObject *)dense((spmatrix *)B)) ) return PyErr_NoMemory();
     }
 
-    PyObject *ret = (PyObject *)Matrix_New(m, n, id);
+    PyObject *ret = (PyObject *)Matrix_New((int)m, (int)n, id);
     if (!ret) {
       if (freeA) { Py_DECREF(A); }
       if (freeB) { Py_DECREF(B); }

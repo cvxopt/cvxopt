@@ -171,12 +171,12 @@ def F(x=None, z=None):
     f = -sum(log(y))
     Df = (y**-1).T * G
     if z is None: return matrix(f), Df
-    H =  G.T * spdiag(y**-1) * G
+    H =  G.T * spdiag(y**-2) * G
     return matrix(f), Df, z[0]*H
 
 sol = solvers.cp(F)
 xac = sol['x']
-Hac = G.T * spdiag((h-G*xac)**-1) * G
+Hac = G.T * spdiag((h-G*xac)**-2) * G
 
 if pylab_installed:
     pylab.figure(3, facecolor='w')

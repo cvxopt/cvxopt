@@ -1,9 +1,9 @@
 /*
- * Copyright 2012 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2013 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.5.
+ * This file is part of CVXOPT version 1.1.6.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,18 +40,18 @@ PyDoc_STRVAR(blas__doc__,"Interface to the double-precision real and "
 
 /* BLAS 1 prototypes */
 extern void dswap_(int *n, double *x, int *incx, double *y, int *incy);
-extern void zswap_(int *n, complex *x, int *incx, complex *y,
+extern void zswap_(int *n, double complex *x, int *incx, double complex *y,
     int *incy);
 extern void dscal_(int *n, double *alpha, double *x, int *incx);
-extern void zscal_(int *n, complex *alpha, complex *x, int *incx);
-extern void zdscal_(int *n, double *alpha, complex *x, int *incx);
+extern void zscal_(int *n, double complex *alpha, double complex *x, int *incx);
+extern void zdscal_(int *n, double *alpha, double complex *x, int *incx);
 extern void dcopy_(int *n, double *x, int *incx, double *y, int *incy);
-extern void zcopy_(int *n, complex *x, int *incx, complex *y,
+extern void zcopy_(int *n, double complex *x, int *incx, double complex *y,
     int *incy);
 extern void daxpy_(int *n, double *alpha, double *x, int *incx,
     double *y, int *incy);
-extern void zaxpy_(int *n, complex *alpha, complex *x, int *incx,
-    complex *y, int *incy);
+extern void zaxpy_(int *n, double complex *alpha, double complex *x, int *incx,
+    double complex *y, int *incy);
 extern double ddot_(int *n, double *x, int *incx, double *y, int *incy);
 #if USE_CBLAS_ZDOT
 extern void cblas_zdotc_sub(int n, void *x, int incx, void *y,
@@ -60,66 +60,66 @@ extern void cblas_zdotu_sub(int n, void *x, int incx, void *y, int incy,
     void *result);
 #endif
 extern double dnrm2_(int *n, double *x, int *incx);
-extern double dznrm2_(int *n, complex *x, int *incx);
+extern double dznrm2_(int *n, double complex *x, int *incx);
 extern double dasum_(int *n, double *x, int *incx);
-extern double dzasum_(int *n, complex *x, int *incx);
+extern double dzasum_(int *n, double complex *x, int *incx);
 extern int idamax_(int *n, double *x, int *incx);
-extern int izamax_(int *n, complex *x, int *incx);
+extern int izamax_(int *n, double complex *x, int *incx);
 
 
 /* BLAS 2 prototypes */
 extern void dgemv_(char* trans, int *m, int *n, double *alpha,
     double *A, int *lda, double *x, int *incx, double *beta, double *y,
     int *incy);
-extern void zgemv_(char* trans, int *m, int *n, complex *alpha,
-    complex *A, int *lda, complex *x, int *incx, complex *beta,
-    complex *y, int *incy);
+extern void zgemv_(char* trans, int *m, int *n, double complex *alpha,
+    double complex *A, int *lda, double complex *x, int *incx, double complex *beta,
+    double complex *y, int *incy);
 extern void dgbmv_(char* trans, int *m, int *n, int *kl, int *ku,
     double *alpha, double *A, int *lda, double *x, int *incx,
     double *beta, double *y,  int *incy);
 extern void zgbmv_(char* trans, int *m, int *n, int *kl, int *ku,
-    complex *alpha, complex *A, int *lda, complex *x, int *incx,
-    complex *beta, complex *y,  int *incy);
+    double complex *alpha, double complex *A, int *lda, double complex *x, int *incx,
+    double complex *beta, double complex *y,  int *incy);
 extern void dsymv_(char *uplo, int *n, double *alpha, double *A,
     int *lda, double *x, int *incx, double *beta, double *y, int *incy);
-extern void zhemv_(char *uplo, int *n, complex *alpha, complex *A,
-    int *lda, complex *x, int *incx, complex *beta, complex *y,
+extern void zhemv_(char *uplo, int *n, double complex *alpha, double complex *A,
+    int *lda, double complex *x, int *incx, double complex *beta, double complex *y,
     int *incy);
 extern void dsbmv_(char *uplo, int *n, int *k, double *alpha, double *A,
     int *lda, double *x, int *incx, double *beta, double *y, int *incy);
-extern void zhbmv_(char *uplo, int *n, int *k, complex *alpha,
-    complex *A, int *lda, complex *x, int *incx, complex *beta,
-    complex *y, int *incy);
+extern void zhbmv_(char *uplo, int *n, int *k, double complex *alpha,
+    double complex *A, int *lda, double complex *x, int *incx, double complex *beta,
+    double complex *y, int *incy);
 extern void dtrmv_(char *uplo, char *trans, char *diag, int *n,
     double *A, int *lda, double *x, int *incx);
 extern void ztrmv_(char *uplo, char *trans, char *diag, int *n,
-    complex *A, int *lda, complex *x, int *incx);
+    double complex *A, int *lda, double complex *x, int *incx);
 extern void dtbmv_(char *uplo, char *trans, char *diag, int *n, int *k,
     double *A, int *lda, double *x, int *incx);
 extern void ztbmv_(char *uplo, char *trans, char *diag, int *n, int *k,
-    complex *A, int *lda, complex *x, int *incx);
+    double complex *A, int *lda, double complex *x, int *incx);
 extern void dtrsv_(char *uplo, char *trans, char *diag, int *n,
     double *A, int *lda, double *x, int *incx);
 extern void ztrsv_(char *uplo, char *trans, char *diag, int *n,
-    complex *A, int *lda, complex *x, int *incx);
+    double complex *A, int *lda, double complex *x, int *incx);
 extern void dtbsv_(char *uplo, char *trans, char *diag, int *n, int *k,
     double *A, int *lda, double *x, int *incx);
 extern void ztbsv_(char *uplo, char *trans, char *diag, int *n, int *k,
-    complex *A, int *lda, complex *x, int *incx);
+    double complex *A, int *lda, double complex *x, int *incx);
 extern void dger_(int *m, int *n, double *alpha, double *x, int *incx,
     double *y, int *incy, double *A, int *lda);
-extern void zgerc_(int *m, int *n, complex *alpha, complex *x,
-    int *incx, complex *y, int *incy, complex *A, int *lda);
-extern void zgeru_(int *m, int *n, complex *alpha, complex *x,
-    int *incx, complex *y, int *incy, complex *A, int *lda);
+extern void zgerc_(int *m, int *n, double complex *alpha, double complex *x,
+    int *incx, double complex *y, int *incy, double complex *A, int *lda);
+extern void zgeru_(int *m, int *n, double complex *alpha, double complex *x,
+    int *incx, double complex *y, int *incy, double complex *A, int *lda);
 extern void dsyr_(char *uplo, int *n, double *alpha, double *x,
     int *incx, double *A, int *lda);
-extern void zher_(char *uplo, int *n, double *alpha, complex *x,
-    int *incx, complex *A, int *lda);
+extern void zher_(char *uplo, int *n, double *alpha, double complex *x,
+    int *incx, double complex *A, int *lda);
 extern void dsyr2_(char *uplo, int *n, double *alpha, double *x,
     int *incx, double *y, int *incy, double *A, int *lda);
-extern void zher2_(char *uplo, int *n, complex *alpha, complex *x,
-    int *incx, complex *y, int *incy, complex *A, int *lda);
+extern void zher2_(char *uplo, int *n, double complex *alpha, double complex *x,
+    int *incx, double complex *y, int *incy, double complex *A, int *lda);
 
 
 /* BLAS 3 prototypes */
@@ -127,46 +127,46 @@ extern void dgemm_(char *transa, char *transb, int *m, int *n, int *k,
     double *alpha, double *A, int *lda, double *B, int *ldb,
     double *beta, double *C, int *ldc);
 extern void zgemm_(char *transa, char *transb, int *m, int *n, int *k,
-    complex *alpha, complex *A, int *lda, complex *B, int *ldb,
-    complex *beta, complex *C, int *ldc);
+    double complex *alpha, double complex *A, int *lda, double complex *B, int *ldb,
+    double complex *beta, double complex *C, int *ldc);
 extern void dsymm_(char *side, char *uplo, int *m, int *n,
     double *alpha, double *A, int *lda, double *B, int *ldb,
     double *beta, double *C, int *ldc);
 extern void zsymm_(char *side, char *uplo, int *m, int *n,
-    complex *alpha, complex *A, int *lda, complex *B, int *ldb,
-    complex *beta, complex *C, int *ldc);
+    double complex *alpha, double complex *A, int *lda, double complex *B, int *ldb,
+    double complex *beta, double complex *C, int *ldc);
 extern void zhemm_(char *side, char *uplo, int *m, int *n,
-    complex *alpha, complex *A, int *lda, complex *B, int *ldb,
-    complex *beta, complex *C, int *ldc);
+    double complex *alpha, double complex *A, int *lda, double complex *B, int *ldb,
+    double complex *beta, double complex *C, int *ldc);
 extern void dsyrk_(char *uplo, char *trans, int *n, int *k,
     double *alpha, double *A, int *lda, double *beta, double *B,
     int *ldb);
 extern void zsyrk_(char *uplo, char *trans, int *n, int *k,
-    complex *alpha, complex *A, int *lda, complex *beta, complex *B,
+    double complex *alpha, double complex *A, int *lda, double complex *beta, double complex *B,
     int *ldb);
 extern void zherk_(char *uplo, char *trans, int *n, int *k,
-    double *alpha, complex *A, int *lda, double *beta, complex *B,
+    double *alpha, double complex *A, int *lda, double *beta, double complex *B,
     int *ldb);
 extern void dsyr2k_(char *uplo, char *trans, int *n, int *k,
     double *alpha, double *A, int *lda, double *B, int *ldb,
     double *beta, double *C, int *ldc);
 extern void zsyr2k_(char *uplo, char *trans, int *n, int *k,
-    complex *alpha, complex *A, int *lda, complex *B, int *ldb,
-    complex *beta, complex *C, int *ldc);
+    double complex *alpha, double complex *A, int *lda, double complex *B, int *ldb,
+    double complex *beta, double complex *C, int *ldc);
 extern void zher2k_(char *uplo, char *trans, int *n, int *k,
-    complex *alpha, complex *A, int *lda, complex *B, int *ldb,
-    double *beta, complex *C, int *ldc);
+    double complex *alpha, double complex *A, int *lda, double complex *B, int *ldb,
+    double *beta, double complex *C, int *ldc);
 extern void dtrmm_(char *side, char *uplo, char *transa, char *diag,
     int *m, int *n, double *alpha, double *A, int *lda, double *B,
     int *ldb);
 extern void ztrmm_(char *side, char *uplo, char *transa, char *diag,
-    int *m, int *n, complex *alpha, complex *A, int *lda, complex *B,
+    int *m, int *n, double complex *alpha, double complex *A, int *lda, double complex *B,
     int *ldb);
 extern void dtrsm_(char *side, char *uplo, char *transa, char *diag,
     int *m, int *n, double *alpha, double *A, int *lda, double *B,
     int *ldb);
 extern void ztrsm_(char *side, char *uplo, char *transa, char *diag,
-    int *m, int *n, complex *alpha, complex *A, int *lda, complex *B,
+    int *m, int *n, double complex *alpha, double complex *A, int *lda, double complex *B,
     int *ldb);
 
 

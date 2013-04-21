@@ -1,18 +1,30 @@
-SuiteSparse:  A Suite of Sparse matrix packages
+SuiteSparse:  A Suite of Sparse matrix packages at http://www.suitesparse.com
 
 ------------------
 SuiteSparse/README
 ------------------
 
 ================================================================================
-QUICK START FOR MATLAB USERS:  uncompress the SuiteSparse.zip or
-SuiteSparse.tar.gz archive file (they contain the same thing), then in the
-MATLAB Command Window, cd to the SuiteSparse directory and type
-SuiteSparse_install.  All packages will be compiled, and several demos will be
-run.
+QUICK START FOR MATLAB USERS (Linux, Mac, or Windows):  uncompress the
+SuiteSparse.zip or SuiteSparse.tar.gz archive file (they contain the same
+thing), then in the MATLAB Command Window, cd to the SuiteSparse directory and
+type SuiteSparse_install.  All packages will be compiled, and several demos
+will be run.
+
+QUICK START FOR LINUX:  Just type 'make' in this directory.  Then do
+'sudo make install' if you want to install the libraries and include files
+in /usr/local.
+
+QUICK START FOR MAC:  Delete the SuiteSparse_config/SuiteSparse_config.mk
+file, and then remove "_Mac" from the *Mac.mk file in that directory.  Then
+continue as the 'QUICK START FOR LINUX' above.
 ================================================================================
 
-May 20, 2009.  SuiteSparse version 3.4.0
+March 27, 2013.  SuiteSparse VERSION 4.1.0
+
+    spqr_rank   MATLAB toolbox for rank deficient sparse matrices: null spaces,
+                reliable factorizations, etc.  With Leslie Foster, San Jose
+                State Univ.
 
     AMD         approximate minimum degree ordering
 
@@ -33,16 +45,21 @@ May 20, 2009.  SuiteSparse version 3.4.0
     CHOLMOD     sparse Cholesky factorization.  Requires AMD, COLAMD, CCOLAMD,
                 the BLAS, and LAPACK.  Optionally uses METIS.
 
-    UFconfig    configuration file for all the above packages.  The
-                UFconfig/UFconfig.mk is included in the Makefile's of all
-                packages.  CSparse and RBio do not use UFconfig.
+    SuiteSparse_config    configuration file for all the above packages.  The
+                SuiteSparse_config/SuiteSparse_config.mk is included in the
+                Makefile's of all packages.  CSparse and MATLAB_Tools do not
+                use SuiteSparse_config.  Prior to SuiteSparse Version 4.0.0,
+                this configuration directory was called 'UFconfig'.
+                Version 4.0.0 and later use SuiteSparse_config instead,
+                which is upward compatible with UFconfig.
 
-    CSparse     a concise sparse matrix package, developed for my upcoming
-                book, "Direct Methods for Sparse Linear Systems", to be
-                published by SIAM.
+    CSparse     a concise sparse matrix package, developed for my
+                book, "Direct Methods for Sparse Linear Systems",
+                published by SIAM.  Intended primarily for teaching.
 
     CXSparse    CSparse Extended.  Includes support for complex matrices
-                and both int or long integers.
+                and both int or long integers.  Use this instead of CSparse
+                for production use.
 
     RBio        read/write sparse matrices in Rutherford/Boeing format
 
@@ -61,16 +78,16 @@ May 20, 2009.  SuiteSparse version 3.4.0
 
     SuiteSparseQR   sparse QR factorization
 
-CHOLMOD optionally uses METIS 4.0.1
+Some codes optionally use METIS 4.0.1
 (http://www-users.cs.umn.edu/~karypis/metis).  To use METIS, place a copy of
 the metis-4.0 directory in the same directory containing this README file.
 Be sure that you do not have a nested metis-4.0/metis-4.0 directory; SuiteSparse
 won't find METIS if you do this, which can happen with a zip file of metis-4.0
-on Windows.  The use of METIS will improve the ordering quality in CHOLMOD.
+on Windows.  The use of METIS will improve the ordering quality.
 
 Refer to each package for license, copyright, and author information.  All
-codes are authored or co-authored by Timothy A. Davis, CISE Dept., Univ. of
-Florida.  email: my last name @ cise dot ufl dot edu.
+codes are authored or co-authored by Timothy A. Davis.
+email: DrTimothyAldenDavis@gmail.com
 
 ================================================================================
 If you use SuiteSparse_install in MATLAB, stop reading here.
@@ -84,13 +101,10 @@ To use "make" in Unix/Linux:
 
 (1) Use the right BLAS and LAPACK libraries
 
-    See http://www.netlib.org/blas for the Fortran reference BLAS (slow, but
-    they work).  See http://www.tacc.utexas.edu/~kgoto/ or
-    http://www.cs.utexas.edu/users/flame/goto/ for an optimized BLAS.  See
-    http://www.netlib.org/lapack for LAPACK.  The UFconfig/UFconfig.mk file
-    assumes the vanilla BLAS (-lblas).  You should use an optimized BLAS;
-    otherwise UMFPACK and CHOLMOD will be slow.  Change -lblas to -l(your BLAS
-    library here) in the UFconfig/UFconfig.mk file.
+    Edit your SuiteSparse_config/SuiteSparse_config.mk file to point to the
+    right compilers, and to the correct BLAS and LAPACK libraries.  There are
+    many examples of different computer architectures there.  Scroll through to
+    find yours, and uncomment those lines.
 
 (2) Install Intel's Threading Building Blocks (TBB)
 
@@ -99,52 +113,26 @@ To use "make" in Unix/Linux:
 
 (3) Configure METIS (or don't use METIS)
 
+    If you don't download METIS, skip this step.  Otherwise,
     cd to metis-4.0 and edit the Makefile.in file.  I recommend making these
-    changes to metis-4.0/Makefile.in:
+    changes to metis-4.0/Makefile.in, but this is optional.
 
         CC = gcc
         OPTFLAGS = -O3
 
-    And, if you want to use METIS in MATLAB and compile with "make" instead
-    of using SuiteSparse_install.m:
+(4) Make other changes to SuiteSparse_config/SuiteSparse_config.mk as needed
 
-        COPTIONS = -fexceptions -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE
-
-    Next, cd to metis-4.0 and type "make".
-
-    If you do not wish to use METIS, then edit the UFconfig/UFconfig.mk file,
-    and change the lines
-
-        CHOLMOD_CONFIG =
-        SPQR_CONFIG =
-
-    to
-
-        CHOLMOD_CONFIG = -DNPARTITION
-        SPQR_CONFIG = -DNPARTITION
-
-    Also change the line
-
-        METIS = ../../metis-4.0/libmetis.a
-
-    to
-
-        METIS =
-
-(4) Make other changes to UFconfig/UFconfig.mk as needed
-
-    Edit the UFconfig/UFconfig.mk file as needed.  Directions are in that file.
-    If you have compiled SuiteSparse already (partially or completely), then
-    whenever you edit the UFconfig/UFconfig.mk file, you should then type
-    "make purge" (or "make realclean") in this directory.
-
-    If you want to use "make" to compile mexFunctions, I recommend adding
-    these options to the CFLAGS = line:
-
-        -fexceptions -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE
+    Edit the SuiteSparse_config/SuiteSparse_config.mk file as needed.
+    Directions are in that file.  If you have compiled SuiteSparse already
+    (partially or completely), then whenever you edit the
+    SuiteSparse_config/SuiteSparse_config.mk file, you should then type "make
+    purge" (or "make realclean") in this directory.
 
 (5) Type "make" in this directory.  All packages will be be compiled.  METIS
     will be compiled if you have it.  Several demos will be run.
+
+    To compile just the libraries, without running any demos, use
+    "make library".
 
     The libraries will appear in */Lib/*.a.  Include files, as needed by user
     programs that use CHOLMOD, AMD, CAMD, COLAMD, CCOLAMD, BTF, KLU, UMFPACK,
@@ -153,10 +141,11 @@ To use "make" in Unix/Linux:
     The METIS library is in metis-4.0/libmetis.a.  METIS Include files (not
     needed by the end user of SuiteSparse) are in located in metis-4.0/Lib/*.h.
 
+(6) To install, type "sudo make install".  This will place copies of all
+    libraries in /usr/local/lib, and all include files in /usr/local/include.
+    You can change the install location by editting SuiteSparse_config.mk.
+    These directories must already exist.
 
-In a future version, I will include a "make install" that will create *.so
-libraries and place them in /usr/lib.  The libraries should be called
-libPACKAGE.so.VERSION.SUBVERSION.SUBSUBVERSION.  For example, 
-libcolamd.so.2.7.1 should be the library name for COLAMD version 2.7.1.
-The version numbers are located in UFconfig.h (in comments) and in each
-package (as a #define).
+(7) To uninstall, type "sudo make uninstall", which reverses "make install"
+    by removing the SuiteSparse libraries from /usr/local/lib, and the
+    include files from /usr/local/include.

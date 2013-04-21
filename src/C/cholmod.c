@@ -1,9 +1,9 @@
 /*
- * Copyright 2012 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2013 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.5.
+ * This file is part of CVXOPT version 1.1.6.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 #include "cholmod.h"
 #include "complex.h"
 
-const int E_SIZE[] = { sizeof(int_t), sizeof(double), sizeof(complex) };
+const int E_SIZE[] = { sizeof(int_t), sizeof(double), sizeof(double complex) };
 
 /* defined in pyconfig.h */
 #if (SIZEOF_INT < SIZEOF_LONG)
@@ -159,7 +159,7 @@ static cholmod_sparse *pack(spmatrix *A, char uplo)
                 if (SP_ID(A) == DOUBLE)
                     ((double *)B->x)[cnt] = SP_VALD(A)[k];
                 else
-                    ((complex *)B->x)[cnt] = SP_VALZ(A)[k];
+                    ((double complex *)B->x)[cnt] = SP_VALZ(A)[k];
                 ((int_t *)B->p)[j+1]++;
                 ((int_t *)B->i)[cnt++] = SP_ROW(A)[k];
 	    }
@@ -180,7 +180,7 @@ static cholmod_sparse *pack(spmatrix *A, char uplo)
                 if (SP_ID(A) == DOUBLE)
                     ((double *)B->x)[cnt] = SP_VALD(A)[k];
                 else
-                    ((complex *)B->x)[cnt] = SP_VALZ(A)[k];
+                    ((double complex *)B->x)[cnt] = SP_VALZ(A)[k];
             ((int_t *)B->p)[j+1]++;
             ((int_t *)B->i)[cnt++] = SP_ROW(A)[k];
         }
@@ -951,7 +951,7 @@ static char doc_diag[] =
     "          cholmod.numeric computed with options['supernodal'] = 2";
 
 extern void dcopy_(int *n, double *x, int *incx, double *y, int *incy);
-extern void zcopy_(int *n, complex *x, int *incx, complex *y, int *incy);
+extern void zcopy_(int *n, double complex *x, int *incx, double complex *y, int *incy);
 
 static PyObject* diag(PyObject *self, PyObject *args)
 {
@@ -1004,7 +1004,7 @@ static PyObject* diag(PyObject *self, PyObject *args)
 	    dcopy_(&ncols, ((double *) L->x) + ((int_t *) L->px)[k],
                 &incy, MAT_BUFD(d)+strt, &incx);
         else
-	    zcopy_(&ncols, ((complex *) L->x) + ((int_t *) L->px)[k],
+	    zcopy_(&ncols, ((double complex *) L->x) + ((int_t *) L->px)[k],
                 &incy, MAT_BUFZ(d)+strt, &incx);
         strt += ncols;
     }

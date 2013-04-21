@@ -1,4 +1,4 @@
-This is version 3.5.0 of the SuiteSparse package 
+This is version 4.1.0 of the SuiteSparse package 
 from www.cise.ufl.edu/research/sparse/SuiteSparse/, 
 with the following files and directories removed.
 
@@ -9,7 +9,6 @@ CAMD
 CCOLAMD 
 CHOLMOD/Demo
 CHOLMOD/MATLAB
-CHOLMOD/MatrixOps
 CHOLMOD/Modify
 CHOLMOD/Partition
 CHOLMOD/Tcov
@@ -22,16 +21,8 @@ CXSparse_newfiles
 CXSparse_newfiles.tar.gz
 KLU
 LDL
-LINFACTOR
 MATLAB_Tools
-MESHND
 RBio
-SPQR
-SSMULT
-SuiteSparse_demo.m
-SuiteSparse_install.m
-SuiteSparse_test.m
-UFcollection
 UMFPACK/Demo
 UMFPACK/MATLAB
 UMFPACK/Tcov

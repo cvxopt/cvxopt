@@ -3,9 +3,8 @@
 /* ========================================================================== */
 
 /* -------------------------------------------------------------------------- */
-/* UMFPACK Copyright (c) Timothy A. Davis, CISE,                              */
-/* Univ. of Florida.  All Rights Reserved.  See ../Doc/License for License.   */
-/* web: http://www.cise.ufl.edu/research/sparse/umfpack                       */
+/* Copyright (c) 2005-2012 by Timothy A. Davis, http://www.suitesparse.com.   */
+/* All Rights Reserved.  See ../Doc/License for License.                      */
 /* -------------------------------------------------------------------------- */
 
 /*
@@ -771,9 +770,6 @@ GLOBAL Int UMF_kernel_init
 
 	cdeg = Cdeg [k] ;
 	ASSERT (cdeg >= 0) ;
-	ASSERT (IMPLIES (
-	    (Symbolic->ordering != UMFPACK_ORDERING_GIVEN) && n1 > 0,
-	    cdeg > 1 || cdeg == 0)) ;
 
 	/* if fixQ: set Col_degree to 0 for the NON_PIVOTAL_COL macro */
 	Col_degree [k] = fixQ ? 0 : cdeg ;

@@ -6,7 +6,7 @@ Copyright and License
 *********************
 
 |
-| :raw-html:`&copy;` 2012 M. Andersen and L. Vandenberghe. 
+| :raw-html:`&copy;` 2012-2013 M. Andersen and L. Vandenberghe. 
 | :raw-html:`&copy;` 2010-2011 L. Vandenberghe. 
 | :raw-html:`&copy;` 2004-2009 J. Dahl and L. Vandenberghe. 
 
@@ -33,18 +33,18 @@ The CVXOPT distribution includes the source code of part of the
 collection of sparse matrix algorithms.  The copyright and license 
 information for the included libraries is as follows.
 
-* **AMD** Version 2.2.  Copyright (c) 2007 by Timothy A.  Davis, 
+* **AMD** Version 2.3.1.  Copyright (c) 2009-2012 by Timothy A.  Davis, 
   Patrick R.  Amestoy, and Iain S. Duff.  
 
-* **CHOLMOD** Version 1.7.1.  Copyright (c) 2005-2009 by the
+* **CHOLMOD** Version 2.1.0.  Copyright (c) 2005-2013 by the
   University of Florida, Timothy A. Davis, and W. Hager.
 
-* **COLAMD** Version 2.7.  Copyright (c) 1998-2007 by Timothy A. Davis.
+* **COLAMD** Version 2.8.0.  Copyright (c) 1998-2012 by Timothy A. Davis.
 
-* **UMFPACK** Version 5.4.0.  Copyright (c) 1994-2009 by Timothy A. Davis.
+* **UMFPACK** Version 5.6.1.  Copyright (c) 1995-2012 by Timothy A. Davis.
 
-UMFPACK and the Supernodal module of CHOLMOD are licensed under the terms 
-of the `GNU General Public License, version 2 
+UMFPACK and the Supernodal and MatrixOps modules of CHOLMOD are licensed 
+under the terms of the `GNU General Public License, version 2 
 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>`_ or higher.
 The other CHOLMOD modules, AMD, and COLAMD are licensed under the terms of 
 the `GNU Lesser General Public License, version 2.1 

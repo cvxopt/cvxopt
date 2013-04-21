@@ -3,9 +3,8 @@
 /* ========================================================================== */
 
 /* -------------------------------------------------------------------------- */
-/* UMFPACK Copyright (c) Timothy A. Davis, CISE,                              */
-/* Univ. of Florida.  All Rights Reserved.  See ../Doc/License for License.   */
-/* web: http://www.cise.ufl.edu/research/sparse/umfpack                       */
+/* Copyright (c) 2005-2012 by Timothy A. Davis, http://www.suitesparse.com.   */
+/* All Rights Reserved.  See ../Doc/License for License.                      */
 /* -------------------------------------------------------------------------- */
 
 int umfpack_di_symbolic
@@ -20,12 +19,12 @@ int umfpack_di_symbolic
     double Info [UMFPACK_INFO]
 ) ;
 
-UF_long umfpack_dl_symbolic
+SuiteSparse_long umfpack_dl_symbolic
 (
-    UF_long n_row,
-    UF_long n_col,
-    const UF_long Ap [ ],
-    const UF_long Ai [ ],
+    SuiteSparse_long n_row,
+    SuiteSparse_long n_col,
+    const SuiteSparse_long Ap [ ],
+    const SuiteSparse_long Ai [ ],
     const double Ax [ ],
     void **Symbolic,
     const double Control [UMFPACK_CONTROL],
@@ -44,12 +43,12 @@ int umfpack_zi_symbolic
     double Info [UMFPACK_INFO]
 ) ;
 
-UF_long umfpack_zl_symbolic
+SuiteSparse_long umfpack_zl_symbolic
 (
-    UF_long n_row,
-    UF_long n_col,
-    const UF_long Ap [ ],
-    const UF_long Ai [ ],
+    SuiteSparse_long n_row,
+    SuiteSparse_long n_col,
+    const SuiteSparse_long Ap [ ],
+    const SuiteSparse_long Ai [ ],
     const double Ax [ ], const double Az [ ],
     void **Symbolic,
     const double Control [UMFPACK_CONTROL],
@@ -66,11 +65,11 @@ double int Syntax:
     status = umfpack_di_symbolic (n_row, n_col, Ap, Ai, Ax,
 	&Symbolic, Control, Info) ;
 
-double UF_long Syntax:
+double SuiteSparse_long Syntax:
 
     #include "umfpack.h"
     void *Symbolic ;
-    UF_long n_row, n_col, *Ap, *Ai, status ;
+    SuiteSparse_long n_row, n_col, *Ap, *Ai, status ;
     double Control [UMFPACK_CONTROL], Info [UMFPACK_INFO], *Ax ;
     status = umfpack_dl_symbolic (n_row, n_col, Ap, Ai, Ax,
 	&Symbolic, Control, Info) ;
@@ -84,11 +83,11 @@ complex int Syntax:
     status = umfpack_zi_symbolic (n_row, n_col, Ap, Ai, Ax, Az,
 	&Symbolic, Control, Info) ;
 
-complex UF_long Syntax:
+complex SuiteSparse_long Syntax:
 
     #include "umfpack.h"
     void *Symbolic ;
-    UF_long n_row, n_col, *Ap, *Ai, status ;
+    SuiteSparse_long n_row, n_col, *Ap, *Ai, status ;
     double Control [UMFPACK_CONTROL], Info [UMFPACK_INFO], *Ax, *Az ;
     status = umfpack_zl_symbolic (n_row, n_col, Ap, Ai, Ax, Az,
 	&Symbolic, Control, Info) ;
@@ -101,10 +100,11 @@ Purpose:
 
     Given nonzero pattern of a sparse matrix A in column-oriented form,
     umfpack_*_symbolic performs a column pre-ordering to reduce fill-in
-    (using COLAMD or AMD) and a symbolic factorization.  This is required
+    (using COLAMD, AMD or METIS) and a symbolic factorization.  This is required
     before the matrix can be numerically factorized with umfpack_*_numeric.
-    If you wish to bypass the COLAMD or AMD pre-ordering and provide your own
-    ordering, use umfpack_*_qsymbolic instead.
+    If you wish to bypass the COLAMD/AMD/METIS pre-ordering and provide your own
+    ordering, use umfpack_*_qsymbolic instead.  If you wish to pass in a
+    pointer to a user-provided ordering function, use umfpack_*_fsymbolic.
 
     Since umfpack_*_symbolic and umfpack_*_qsymbolic are very similar, options
     for both routines are discussed below.
@@ -147,20 +147,18 @@ Arguments:
 	and sum up the duplicate entries.  See umfpack_*_report_matrix for how
 	to print the matrix A.
 
-    double Ax [nz] ;	Optional input argument, not modified.
+    double Ax [nz] ;	Optional input argument, not modified.  May be NULL.
 			Size 2*nz for packed complex case.
 
 	The numerical values of the sparse matrix A.  The nonzero pattern (row
 	indices) for column j is stored in Ai [(Ap [j]) ... (Ap [j+1]-1)], and
 	the corresponding numerical values are stored in
-	Ax [(Ap [j]) ... (Ap [j+1]-1)].  Used only by the 2-by-2 strategy to
-	determine whether entries are "large" or "small".  You do not have to
-	pass the same numerical values to umfpack_*_numeric.  If Ax is not
-	present (a (double *) NULL pointer), then any entry in A is assumed to
-	be "large".
+	Ax [(Ap [j]) ... (Ap [j+1]-1)].  Used only for gathering statistics
+        about how many nonzeros are placed on the diagonal by the fill-reducing
+        ordering.
 
     double Az [nz] ;	Optional input argument, not modified, for complex
-			versions.
+			versions.  May be NULL.
 
 	For the complex versions, this holds the imaginary part of A.  The
 	imaginary part of column j is held in Az [(Ap [j]) ... (Ap [j+1]-1)].
@@ -169,7 +167,7 @@ Arguments:
 	and imaginary parts are contained in Ax[0..2*nz-1], with Ax[2*k]
 	and Ax[2*k+1] being the real and imaginary part of the kth entry.
 
-	Used by the 2-by-2 strategy only.  See the description of Ax, above.
+	Used for statistics only.  See the description of Ax, above.
 
     void **Symbolic ;	Output argument.
 
@@ -226,8 +224,17 @@ Arguments:
 		[UMFPACK_PIVOT_TOLERANCE] (default 0.1) times the largest entry
 		in its column.
 
-	    UMFPACK_STRATEGY_2BY2:  disabled (exists in earlier versions)
-                If requested, the symmetric strategy is used instead.
+	Control [UMFPACK_ORDERING]:  The ordering method to use:
+            UMFPACK_ORDERING_CHOLMOD    try AMD/COLAMD, then METIS if needed
+            UMFPACK_ORDERING_AMD        just AMD or COLAMD
+            UMFPACK_ORDERING_GIVEN      just Qinit (umfpack_*_qsymbolic only)
+            UMFPACK_ORDERING_NONE       no fill-reducing ordering
+            UMFPACK_ORDERING_METIS      just METIS(A+A') or METIS(A'A)
+            UMFPACK_ORDERING_BEST       try AMD/COLAMD, METIS, and NESDIS
+            UMFPACK_ORDERING_USER       just user function (*_fsymbolic only)
+
+        Control [UMFPACK_SINGLETONS]: If false (0), then singletons are
+            not removed prior to factorization.  Default: true (1).
 
 	Control [UMFPACK_DENSE_COL]:
 	    If COLAMD is used, columns with more than
@@ -252,11 +259,6 @@ Arguments:
 	    matrix, and can indirectly affect fill-in and operation count.
 	    Assuming the block size is large enough (8 or so), this parameter
 	    has a modest effect on performance.
-
-	Control [UMFPACK_2BY2_TOLERANCE]:  no longer used
-
-	Control [UMFPACK_SCALE]:  See umfpack_numeric.h for a description.
-	    Only affects the 2-by-2 strategy.  Default: UMFPACK_SCALE_SUM.
 
 	Control [UMFPACK_FIXQ]:  If > 0, then the pre-ordering Q is not modified
 	    during numeric factorization.  If < 0, then Q may be modified.  If
@@ -309,7 +311,7 @@ Arguments:
 	    UMFPACK_ERROR_internal_error
 
 		Something very serious went wrong.  This is a bug.
-		Please contact the author (davis@cise.ufl.edu).
+		Please contact the author (DrTimothyAldenDavis@gmail.com).
 
 	Info [UMFPACK_NROW]:  the value of the input argument n_row.
 
@@ -323,7 +325,7 @@ Arguments:
 
 	Info [UMFPACK_SIZE_OF_INT]:  the number of bytes in an int.
 
-	Info [UMFPACK_SIZE_OF_LONG]:  the number of bytes in a UF_long.
+	Info [UMFPACK_SIZE_OF_LONG]:  the number of bytes in a SuiteSparse_long.
 
 	Info [UMFPACK_SIZE_OF_POINTER]:  the number of bytes in a void *
 	    pointer.
@@ -391,7 +393,7 @@ Arguments:
 	    umfpack_*_symbolic (Info [UMFPACK_SYMBOLIC_PEAK_MEMORY]).  The
 	    count includes the size of both the Symbolic and Numeric objects
 	    themselves.  It can be a very loose upper bound, particularly when
-	    the symmetric or 2-by-2 strategies are used.
+	    the symmetric strategy is used.
 
 	Info [UMFPACK_FLOPS_ESTIMATE]:  an estimate of the total floating-point
 	    operations required to factorize the matrix.  This is a "true"
@@ -440,8 +442,11 @@ Arguments:
 	    UMFPACK_STRATEGY_SYMMETRIC or UMFPACK_STRATEGY_UNSYMMETRIC
 
 	Info [UMFPACK_ORDERING_USED]:  The ordering method used:
-	    UMFPACK_ORDERING_COLAMD or UMFPACK_ORDERING_AMD.  It can be
-	    UMFPACK_ORDERING_GIVEN for umfpack_*_qsymbolic.
+            UMFPACK_ORDERING_AMD
+            UMFPACK_ORDERING_GIVEN
+            UMFPACK_ORDERING_NONE
+            UMFPACK_ORDERING_METIS
+            UMFPACK_ORDERING_USER
 
 	Info [UMFPACK_QFIXED]: 1 if the column pre-ordering will be refined
 	    during numerical factorization, 0 if not.
@@ -493,7 +498,7 @@ Arguments:
 	    pattern of the matrix is symmetric, this is normally a lower bound
 	    on the floating-point operation count in the actual numerical
 	    factorization, for matrices that fit the criteria for the symmetric
-	    or 2-by-2 strategies
+	    strategy.
 
 	Info [UMFPACK_SYMMETRIC_NDENSE]: The number of "dense" rows/columns of
 	    S+S' that were ignored during the AMD ordering.  These are placed

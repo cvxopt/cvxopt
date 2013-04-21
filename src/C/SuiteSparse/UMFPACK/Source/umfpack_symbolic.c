@@ -3,9 +3,8 @@
 /* ========================================================================== */
 
 /* -------------------------------------------------------------------------- */
-/* UMFPACK Copyright (c) Timothy A. Davis, CISE,                              */
-/* Univ. of Florida.  All Rights Reserved.  See ../Doc/License for License.   */
-/* web: http://www.cise.ufl.edu/research/sparse/umfpack                       */
+/* Copyright (c) 2005-2012 by Timothy A. Davis, http://www.suitesparse.com.   */
+/* All Rights Reserved.  See ../Doc/License for License.                      */
 /* -------------------------------------------------------------------------- */
 
 /*
@@ -30,10 +29,9 @@ GLOBAL Int UMFPACK_symbolic
     double Info [UMFPACK_INFO]
 )
 {
-    Int *Qinit = (Int *) NULL ;
     return (UMFPACK_qsymbolic (n_row, n_col, Ap, Ai, Ax,
 #ifdef COMPLEX
-	Az,
+        Az,
 #endif
-	Qinit, SymbolicHandle, Control, Info)) ;
+        (Int *) NULL, SymbolicHandle, Control, Info)) ;
 }

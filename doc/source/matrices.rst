@@ -106,7 +106,7 @@ type (integer, double, or complex) of the matrix.
      [ 3.00e+00-j0.00e+00  6.00e+00-j0.00e+00]
 
 
-     In Python 2.7 NumPy arrays can be converted to matrices.
+     NumPy arrays can be converted to matrices.
 
      >>> from numpy import array
      >>> x = array([[1., 2., 3.], [4., 5., 6.]])
@@ -903,7 +903,7 @@ result of an elementwise comparison.
 [ 5.00e-01  1.50e+00  3.00e-01]
 [-1.00e-01  2.00e-01  1.00e+00]
 [ 2.00e+00 -1.00e-01  0.00e+00]
->>> print(matrix(list(map(lambda x: 0 <= x <= 1, A), A.size)))
+>>> print(matrix(list(map(lambda x: 0 <= x <= 1, A)), A.size))
 [ 1  0  1]
 [ 0  1  1]
 [ 0  0  1]
@@ -1052,6 +1052,7 @@ The following functions can be imported from CVXOPT.
     (list, tuple, range object, or generator) as its single argument, 
     if the iterable generates a list of dense or sparse matrices or 
     scalars.  
+
     >>> from cvxopt import matrix, spmatrix, max
     >>> A = spmatrix([2, -3], [0, 1], [0, 1])
     >>> print(max(A, -A, 1))
@@ -1141,52 +1142,3 @@ functions based on the :mod:`random` module.
     :mod:`random` module can be managed via the functions 
     :func:`random.getstate` and :func:`random.setstate`.)
 
-
-.. _s-array-interface:
-
-The NumPy Array Interface
-=========================
-
-This section only applies to the Python 2 version of CVXOPT.
-
-The CVXOPT :class:`matrix` object is compatible with the NumPy Array 
-Interface, which allows Python objects that represent multidimensional 
-arrays to exchange data using information stored in the attribute 
-:attr:`__array_struct__`.  
-
-As already mentioned in the section :ref:`s-dense-matrices`, a 
-two-dimensional array 
-object (for example, a NumPy matrix or two-dimensional array) can be 
-converted to a CVXOPT :class:`matrix` object by using 
-the :func:`matrix <cvxopt.matrix>` constructor.  
-Conversely, CVXOPT matrices can be used as array-like 
-objects in NumPy.  The following example illustrates the compatibility of 
-CVXOPT matrices and NumPy arrays. 
-
->>> from cvxopt import matrix
->>> a = matrix(range(6), (2,3), 'd')
->>> print(a)
-[ 0.00e+00  2.00e+00  4.00e+00]
-[ 1.00e+00  3.00e+00  5.00e+00]
->>> from numpy import array
->>> b = array(a)
->>> b
-array([[ 0.  2.  4.]
-       [ 1.  3.  5.]])
->>> a*b
-array([[  0.   4.  16.]
-       [  1.   9.  25.]])
->>> from numpy import mat
->>> c = mat(a)
->>> c
-matrix([[ 0.  2.  4.]
-        [ 1.  3.  5.]])
->>> a.T * c 
-matrix([[  1.,   3.,   5.],
-        [  3.,  13.,  23.],
-        [  5.,  23.,  41.]])
-
-In the first product, ``a * b`` is interpreted as NumPy array 
-multiplication, i.e., componentwise multiplication.
-The second product ``a.T * c`` is interpreted as NumPy matrix 
-multiplication, i.e., standard matrix multiplication.

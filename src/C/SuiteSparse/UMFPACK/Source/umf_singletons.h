@@ -1,7 +1,6 @@
 /* -------------------------------------------------------------------------- */
-/* UMFPACK Copyright (c) Timothy A. Davis, CISE,                              */
-/* Univ. of Florida.  All Rights Reserved.  See ../Doc/License for License.   */
-/* web: http://www.cise.ufl.edu/research/sparse/umfpack                       */
+/* Copyright (c) 2005-2012 by Timothy A. Davis, http://www.suitesparse.com.   */
+/* All Rights Reserved.  See ../Doc/License for License.                      */
 /* -------------------------------------------------------------------------- */
 
 GLOBAL Int UMF_singletons
@@ -12,6 +11,7 @@ GLOBAL Int UMF_singletons
     const Int Ai [ ],
     const Int Quser [ ],
     Int strategy,
+    Int do_singletons,
     Int Cdeg [ ],
     Int Cperm [ ],
     Int Rdeg [ ],

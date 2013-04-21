@@ -1,3 +1,19 @@
+Jun 1, 2012: version 2.8.0
+
+    * UFconfig replaced with SuiteSparse_config
+
+Dec 7, 2011: version 2.7.4
+
+    * fixed the Makefile to better align with CFLAGS and other standards
+
+Jan 25, 2011: version 2.7.3
+
+    * minor fix to "make install"
+
+Nov 30, 2009: version 2.7.2
+
+    * added "make install" and "make uninstall"
+
 May 31, 2007: version 2.7.0
 
     * ported to 64-bit MATLAB

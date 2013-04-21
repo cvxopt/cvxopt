@@ -3,9 +3,8 @@
 /* ========================================================================== */
 
 /* -------------------------------------------------------------------------- */
-/* UMFPACK Copyright (c) Timothy A. Davis, CISE,                              */
-/* Univ. of Florida.  All Rights Reserved.  See ../Doc/License for License.   */
-/* web: http://www.cise.ufl.edu/research/sparse/umfpack                       */
+/* Copyright (c) 2005-2012 by Timothy A. Davis, http://www.suitesparse.com.   */
+/* All Rights Reserved.  See ../Doc/License for License.                      */
 /* -------------------------------------------------------------------------- */
 
 /*
@@ -161,8 +160,9 @@ GLOBAL Int UMFPACK_numeric
 	return (UMFPACK_ERROR_invalid_Symbolic_object) ;
     }
 
-    /* compute alloc_init automatically for AMD ordering */
-    if (Symbolic->ordering == UMFPACK_ORDERING_AMD && alloc_init >= 0)
+    /* compute alloc_init automatically for AMD or other symmetric ordering */
+    if (/* Symbolic->ordering == UMFPACK_ORDERING_AMD */ alloc_init >= 0
+        && Symbolic->amd_lunz > 0)
     {
 	alloc_init = (Symbolic->nz + Symbolic->amd_lunz) / Symbolic->lunz_bound;
 	alloc_init = MIN (1.0, alloc_init) ;

@@ -1,9 +1,9 @@
 /*
- * Copyright 2012 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2013 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.5.
+ * This file is part of CVXOPT version 1.1.6.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -419,8 +419,8 @@ static char doc_integer[] =
     "status       'optimal', 'primal infeasible', 'dual infeasible', \n"
     "             'invalid MIP formulation', 'maxiters exceeded', \n"
     "             'time limit exceeded', 'unknown'\n\n"
-    "x            an optimal solution if status is 'optimal';\n"
-    "             None otherwise";
+    "x            a (sub-)optimal solution if status is 'optimal' or \n"
+    "             'time limit exceeded'; None otherwise";
 
 static PyObject *integer(PyObject *self, PyObject *args,
     PyObject *kwrds)
@@ -711,6 +711,29 @@ static PyObject *integer(PyObject *self, PyObject *args,
             lpx_delete_prob(lp);
             return (PyObject *) t;
 
+        case LPX_E_TMLIM:
+
+            x = (matrix *) Matrix_New(n,1,DOUBLE);
+            if (!x) {
+                Py_XDECREF(t);
+                lpx_delete_prob(lp);
+                return PyErr_NoMemory();
+            }
+            PyTuple_SET_ITEM(t, 0, (PyObject *)
+#if PY_MAJOR_VERSION >= 3
+                PyUnicode_FromString("time limit exceeded"));
+#else
+                PyString_FromString("time limit exceeded"));
+#endif
+
+            for (i=0; i<n; i++)
+                MAT_BUFD(x)[i] = lpx_mip_col_val(lp, i+1);
+            PyTuple_SET_ITEM(t, 1, (PyObject *) x);
+
+            lpx_delete_prob(lp);
+            return (PyObject *) t;
+
+
         case LPX_E_FAULT:
             PyTuple_SET_ITEM(t, 0, (PyObject *)
 #if PY_MAJOR_VERSION >= 3
@@ -718,6 +741,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
 #else
                 PyString_FromString("invalid MIP formulation"));
 #endif
+            break;
 
 	case LPX_E_NOPFS:
             PyTuple_SET_ITEM(t, 0, (PyObject *)
@@ -726,6 +750,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
 #else
                 PyString_FromString("primal infeasible"));
 #endif
+            break;
 
 	case LPX_E_NODFS:
 
@@ -735,6 +760,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
 #else
                 PyString_FromString("dual infeasible"));
 #endif
+            break;
 
         case LPX_E_ITLIM:
 
@@ -744,15 +770,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
 #else
                 PyString_FromString("maxiters exceeded"));
 #endif
-
-        case LPX_E_TMLIM:
-
-            PyTuple_SET_ITEM(t, 0, (PyObject *)
-#if PY_MAJOR_VERSION >= 3
-                PyUnicode_FromString("time limit exceeded"));
-#else
-                PyString_FromString("time limit exceeded"));
-#endif
+            break;
 
 	case LPX_E_SING:
 
@@ -762,6 +780,8 @@ static PyObject *integer(PyObject *self, PyObject *args,
 #else
                 PyString_FromString("singular or ill-conditioned basis"));
 #endif
+            break;
+
 
         default:
 

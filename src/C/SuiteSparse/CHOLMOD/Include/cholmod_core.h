@@ -4,11 +4,10 @@
 
 /* -----------------------------------------------------------------------------
  * CHOLMOD/Include/cholmod_core.h.
- * Copyright (C) 2005-2006, Univ. of Florida.  Author: Timothy A. Davis
+ * Copyright (C) 2005-2013, Univ. of Florida.  Author: Timothy A. Davis
  * CHOLMOD/Include/cholmod_core.h is licensed under Version 2.1 of the GNU
  * Lesser General Public License.  See lesser.txt for a text of the license.
  * CHOLMOD is also available under other licenses; contact authors for details.
- * http://www.cise.ufl.edu/research/sparse
  * -------------------------------------------------------------------------- */
 
 /* CHOLMOD Core module: basic CHOLMOD objects and routines.
@@ -160,6 +159,7 @@
  * cholmod_copy_dense		create a copy of a dense matrix
  * cholmod_copy_dense2		copy a dense matrix (pre-allocated)
  * cholmod_dense_xtype		change the xtype of a dense matrix
+ * cholmod_ensure_dense  	ensure a dense matrix has a given size and type
  *
  * ============================================================================
  * === cholmod_triplet ========================================================
@@ -200,7 +200,7 @@
  *
  * int			TRUE (1) if successful, or FALSE (0) otherwise.
  *			(exception: cholmod_divcomplex)
- * UF_long		a value >= 0 if successful, or -1 otherwise.
+ * SuiteSparse_long     a value >= 0 if successful, or -1 otherwise.
  * double		a value >= 0 if successful, or -1 otherwise.
  * size_t		a value > 0 if successful, or 0 otherwise.
  * void *		a non-NULL pointer to newly allocated memory if
@@ -244,11 +244,11 @@
  *	#endif
  */
 
-#define CHOLMOD_DATE "Sept 30, 2008"
+#define CHOLMOD_DATE "Mar 27, 2013"
 #define CHOLMOD_VER_CODE(main,sub) ((main) * 1000 + (sub))
-#define CHOLMOD_MAIN_VERSION 1
-#define CHOLMOD_SUB_VERSION 7
-#define CHOLMOD_SUBSUB_VERSION 1
+#define CHOLMOD_MAIN_VERSION 2
+#define CHOLMOD_SUB_VERSION 1
+#define CHOLMOD_SUBSUB_VERSION 0
 #define CHOLMOD_VERSION \
     CHOLMOD_VER_CODE(CHOLMOD_MAIN_VERSION,CHOLMOD_SUB_VERSION)
 
@@ -269,6 +269,16 @@
 #include <stdlib.h>
 
 /* ========================================================================== */
+/* === CUDA BLAS for the GPU ================================================ */
+/* ========================================================================== */
+
+#ifdef GPU_BLAS
+#include <cuda_runtime.h>
+#include <cublas_v2.h>
+#endif
+
+
+/* ========================================================================== */
 /* === CHOLMOD objects ====================================================== */
 /* ========================================================================== */
 
@@ -286,8 +296,8 @@
 
 /* itype defines the types of integer used: */
 #define CHOLMOD_INT 0		/* all integer arrays are int */
-#define CHOLMOD_INTLONG 1	/* most are int, some are UF_long */
-#define CHOLMOD_LONG 2		/* all integer arrays are UF_long */
+#define CHOLMOD_INTLONG 1	/* most are int, some are SuiteSparse_long */
+#define CHOLMOD_LONG 2		/* all integer arrays are SuiteSparse_long */
 
 /* The itype of all parameters for all CHOLMOD routines must match.
  * FUTURE WORK: CHOLMOD_INTLONG is not yet supported.
@@ -366,6 +376,7 @@
 #define CHOLMOD_OUT_OF_MEMORY (-2)	/* failure: out of memory */
 #define CHOLMOD_TOO_LARGE (-3)		/* failure: integer overflow occured */
 #define CHOLMOD_INVALID (-4)		/* failure: invalid input */
+#define CHOLMOD_GPU_PROBLEM (-5)        /* failure: GPU fatal error */
 #define CHOLMOD_NOT_POSDEF (1)		/* warning: matrix not pos. def. */
 #define CHOLMOD_DSMALL (2)		/* warning: D for LDL'  or diag(L) or */
 					/* LL' has tiny absolute value */
@@ -675,13 +686,13 @@ typedef struct cholmod_common_struct
 	    * separator is discarded if it consists of the entire graph.
 	    * Default: 1 */
 
-	double other1 [4] ; /* future expansion */
+	double other_1 [4] ; /* future expansion */
 
 	size_t nd_small ;    /* do not partition graphs with fewer nodes than
 			     * nd_small, in NESDIS.  Default: 200 (same as
 			     * METIS) */
 
-	size_t other2 [4] ; /* future expansion */
+	size_t other_2 [4] ; /* future expansion */
 
 	int aggressive ;    /* Aggresive absorption in AMD, COLAMD, SYMAMD,
 			     * CCOLAMD, and CSYMAMD.  Default: TRUE */
@@ -714,7 +725,7 @@ typedef struct cholmod_common_struct
 	/* fill-reducing ordering to use */
 	int ordering ;
 
-	size_t other3 [4] ; /* future expansion */
+	size_t other_3 [4] ; /* future expansion */
 
     } method [CHOLMOD_MAXMETHODS + 1] ;
 
@@ -822,7 +833,7 @@ typedef struct cholmod_common_struct
      */
 
     size_t nrow ;	/* size of Flag and Head */
-    UF_long mark ;	/* mark value for Flag array */
+    SuiteSparse_long mark ;	/* mark value for Flag array */
     size_t iworksize ;	/* size of Iwork.  Upper bound: 6*nrow+ncol */
     size_t xworksize ;	/* size of Xwork,  in bytes.
 			 * maxrank*nrow*sizeof(double) for update/downdate.
@@ -847,8 +858,8 @@ typedef struct cholmod_common_struct
     void *Iwork ;	/* size iworksize, 2*nrow+ncol for most routines,
 			 * up to 6*nrow+ncol for cholmod_analyze. */
 
-    int itype ;		/* If CHOLMOD_LONG, Flag, Head, and Iwork are UF_long.
-			 * Otherwise all three arrays are int. */
+    int itype ;		/* If CHOLMOD_LONG, Flag, Head, and Iwork are
+                         * SuiteSparse_long.  Otherwise all three are int. */
 
     int dtype ;		/* double or float */
 
@@ -891,32 +902,27 @@ typedef struct cholmod_common_struct
     double aatfl ;	    /* # of flops to compute A(:,f)*A(:,f)' */
 
     /* ---------------------------------------------------------------------- */
-    /* future expansion */
+    /* statistics, parameters, and future expansion */
     /* ---------------------------------------------------------------------- */
 
-    /* To allow CHOLMOD to be updated without recompiling the user application,
-     * additional space is set aside here for future statistics, parameters,
-     * and workspace.  Note:  additional entries were added in v1.1 to the
-     * method array, above, and thus v1.0 and v1.1 are not binary compatible.
-     *
-     * v1.1 to the current version are binary compatible.
-     */
+    /* The goal for future expansion is to keep sizeof(Common) unchanged. */
 
-    /* ---------------------------------------------------------------------- */
-    double other1 [12] ;        /* reduced from size 16 in v1.6 */
+    double other1 [10] ;        /* [0..9] for CHOLMOD GPU/CPU numerical
+                                   factorization statistics, and  [0..3]
+                                   used by SuiteSparseQR statistics */
 
-    double SPQR_xstat [2] ;     /* for SuiteSparseQR statistics */
+    double SPQR_xstat [4] ;     /* for SuiteSparseQR statistics */
 
     /* SuiteSparseQR control parameters: */
     double SPQR_grain ;         /* task size is >= max (total flops / grain) */
     double SPQR_small ;         /* task size is >= small */
 
     /* ---------------------------------------------------------------------- */
-    UF_long SPQR_istat [10] ;   /* for SuiteSparseQR statistics */
-    UF_long other2 [6] ;        /* reduced from size 16 in v1.6 */
+    SuiteSparse_long SPQR_istat [10] ;   /* for SuiteSparseQR statistics */
+    SuiteSparse_long other2 [6] ;        /* unused (for future expansion) */
 
     /* ---------------------------------------------------------------------- */
-    int other3 [10] ;       /* reduced from size 16 in v1.1. */
+    int other3 [10] ;           /* unused (for future expansion) */
 
     int prefer_binary ;	    /* cholmod_read_triplet converts a symmetric
 			     * pattern-only matrix into a real matrix.  If
@@ -945,12 +951,60 @@ typedef struct cholmod_common_struct
     int SPQR_nthreads ;      /* number of TBB threads, 0 = auto */
 
     /* ---------------------------------------------------------------------- */
-    size_t  other4 [16] ;
+    size_t  other4 [16] ;    /* [0..7] for CHOLMOD GPU/CPU numerical
+                                factorization statistics, remainder
+                                unused (for future expansion) */
 
     /* ---------------------------------------------------------------------- */
-    void   *other5 [16] ;
+    void   *other5 [16] ;    /* unused (for future expansion) */
+
+    /* ---------------------------------------------------------------------- */
+    /* GPU configuration */
+    /* ---------------------------------------------------------------------- */
+
+#ifdef GPU_BLAS
+    /* gpuConfig_t gpuConfig ; */
+
+    cublasHandle_t cublasHandle ;
+    cudaStream_t   cudaStreamSyrk ;
+    cudaStream_t   cudaStreamGemm ;
+    cudaStream_t   cudaStreamTrsm ;
+    cudaStream_t   cudaStreamPotrf [3] ;
+    cudaEvent_t    cublasEventPotrf [2] ;
+    void *HostPinnedMemory ;
+    void *devPotrfWork ;
+    void *devSyrkGemmPtrLx ;
+    void *devSyrkGemmPtrC ;
+    int GemmUsed ;              /* TRUE if cuda dgemm used, false otherwise */
+    int SyrkUsed ;              /* TRUE if cuda dsyrk used, false otherwise */
+    double syrkStart ;          /* time syrk started */
+
+#endif
 
 } cholmod_common ;
+
+/* size_t BLAS statistcs in Common: */
+#define CHOLMOD_CPU_GEMM_CALLS      other4 [0]
+#define CHOLMOD_CPU_SYRK_CALLS      other4 [1]
+#define CHOLMOD_CPU_TRSM_CALLS      other4 [2]
+#define CHOLMOD_CPU_POTRF_CALLS     other4 [3]
+#define CHOLMOD_GPU_GEMM_CALLS      other4 [4]
+#define CHOLMOD_GPU_SYRK_CALLS      other4 [5]
+#define CHOLMOD_GPU_TRSM_CALLS      other4 [6]
+#define CHOLMOD_GPU_POTRF_CALLS     other4 [7]
+
+/* double BLAS statistics in Common: */
+#define CHOLMOD_CPU_GEMM_TIME       other1 [0]
+#define CHOLMOD_CPU_SYRK_TIME       other1 [1]
+#define CHOLMOD_CPU_TRSM_TIME       other1 [2]
+#define CHOLMOD_CPU_POTRF_TIME      other1 [3]
+#define CHOLMOD_GPU_GEMM_TIME       other1 [4]
+#define CHOLMOD_GPU_SYRK_TIME       other1 [5]
+#define CHOLMOD_GPU_TRSM_TIME       other1 [6]
+#define CHOLMOD_GPU_POTRF_TIME      other1 [7]
+#define CHOLMOD_ASSEMBLE_TIME       other1 [8]
+#define CHOLMOD_ASSEMBLE_TIME2      other1 [9]
+
 
 /* -------------------------------------------------------------------------- */
 /* cholmod_start:  first call to CHOLMOD */
@@ -1041,12 +1095,12 @@ int cholmod_l_free_work (cholmod_common *) ;
     } \
 }
 
-UF_long cholmod_clear_flag
+SuiteSparse_long cholmod_clear_flag
 (
     cholmod_common *Common
 ) ;
 
-UF_long cholmod_l_clear_flag (cholmod_common *) ;
+SuiteSparse_long cholmod_l_clear_flag (cholmod_common *) ;
 
 /* -------------------------------------------------------------------------- */
 /* cholmod_error:  called when CHOLMOD encounters an error */
@@ -1119,7 +1173,7 @@ typedef struct cholmod_sparse_struct
     size_t ncol ;
     size_t nzmax ;	/* maximum number of entries in the matrix */
 
-    /* pointers to int or UF_long: */
+    /* pointers to int or SuiteSparse_long: */
     void *p ;		/* p [0..ncol], the column pointers */
     void *i ;		/* i [0..nzmax-1], the row indices */
 
@@ -1152,8 +1206,9 @@ typedef struct cholmod_sparse_struct
 	*/
 
     int itype ;		/* CHOLMOD_INT:     p, i, and nz are int.
-			 * CHOLMOD_INTLONG: p is UF_long, i and nz are int.
-			 * CHOLMOD_LONG:    p, i, and nz are UF_long.  */
+			 * CHOLMOD_INTLONG: p is SuiteSparse_long,
+                         *                  i and nz are int.
+			 * CHOLMOD_LONG:    p, i, and nz are SuiteSparse_long */
 
     int xtype ;		/* pattern, real, complex, or zomplex */
     int dtype ;		/* x and z are double or float */
@@ -1218,7 +1273,7 @@ int cholmod_l_reallocate_sparse ( size_t, cholmod_sparse *, cholmod_common *) ;
 /* cholmod_nnz:  return number of nonzeros in a sparse matrix */
 /* -------------------------------------------------------------------------- */
 
-UF_long cholmod_nnz
+SuiteSparse_long cholmod_nnz
 (
     /* ---- input ---- */
     cholmod_sparse *A,
@@ -1226,7 +1281,7 @@ UF_long cholmod_nnz
     cholmod_common *Common
 ) ;
 
-UF_long cholmod_l_nnz (cholmod_sparse *, cholmod_common *) ;
+SuiteSparse_long cholmod_l_nnz (cholmod_sparse *, cholmod_common *) ;
 
 /* -------------------------------------------------------------------------- */
 /* cholmod_speye:  sparse identity matrix */
@@ -1303,8 +1358,8 @@ int cholmod_transpose_unsym
     cholmod_common *Common
 ) ;
 
-int cholmod_l_transpose_unsym (cholmod_sparse *, int, UF_long *, UF_long *,
-    size_t, cholmod_sparse *, cholmod_common *) ;
+int cholmod_l_transpose_unsym (cholmod_sparse *, int, SuiteSparse_long *,
+    SuiteSparse_long *, size_t, cholmod_sparse *, cholmod_common *) ;
 
 /* -------------------------------------------------------------------------- */
 /* cholmod_transpose_sym:  transpose a symmetric sparse matrix */
@@ -1325,8 +1380,8 @@ int cholmod_transpose_sym
     cholmod_common *Common
 ) ;
 
-int cholmod_l_transpose_sym (cholmod_sparse *, int, UF_long *, cholmod_sparse *,
-    cholmod_common *) ;
+int cholmod_l_transpose_sym (cholmod_sparse *, int, SuiteSparse_long *,
+    cholmod_sparse *, cholmod_common *) ;
 
 /* -------------------------------------------------------------------------- */
 /* cholmod_ptranspose:  transpose a sparse matrix */
@@ -1347,8 +1402,8 @@ cholmod_sparse *cholmod_ptranspose
     cholmod_common *Common
 ) ;
 
-cholmod_sparse *cholmod_l_ptranspose (cholmod_sparse *, int, UF_long *,
-    UF_long *, size_t, cholmod_common *) ;
+cholmod_sparse *cholmod_l_ptranspose (cholmod_sparse *, int, SuiteSparse_long *,
+    SuiteSparse_long *, size_t, cholmod_common *) ;
 
 /* -------------------------------------------------------------------------- */
 /* cholmod_sort:  sort row indices in each column of sparse matrix */
@@ -1372,15 +1427,15 @@ cholmod_sparse *cholmod_band
 (
     /* ---- input ---- */
     cholmod_sparse *A,	/* matrix to extract band matrix from */
-    UF_long k1,		/* ignore entries below the k1-st diagonal */
-    UF_long k2,		/* ignore entries above the k2-nd diagonal */
+    SuiteSparse_long k1,    /* ignore entries below the k1-st diagonal */
+    SuiteSparse_long k2,    /* ignore entries above the k2-nd diagonal */
     int mode,		/* >0: numerical, 0: pattern, <0: pattern (no diag) */
     /* --------------- */
     cholmod_common *Common
 ) ;
 
-cholmod_sparse *cholmod_l_band (cholmod_sparse *, UF_long, UF_long, int,
-    cholmod_common *) ;
+cholmod_sparse *cholmod_l_band (cholmod_sparse *, SuiteSparse_long,
+    SuiteSparse_long, int, cholmod_common *) ;
 
 /* -------------------------------------------------------------------------- */
 /* cholmod_band_inplace:  A = tril (triu (A,k1), k2) */
@@ -1389,8 +1444,8 @@ cholmod_sparse *cholmod_l_band (cholmod_sparse *, UF_long, UF_long, int,
 int cholmod_band_inplace
 (
     /* ---- input ---- */
-    UF_long k1,		/* ignore entries below the k1-st diagonal */
-    UF_long k2,		/* ignore entries above the k2-nd diagonal */
+    SuiteSparse_long k1,    /* ignore entries below the k1-st diagonal */
+    SuiteSparse_long k2,    /* ignore entries above the k2-nd diagonal */
     int mode,		/* >0: numerical, 0: pattern, <0: pattern (no diag) */
     /* ---- in/out --- */
     cholmod_sparse *A,	/* matrix from which entries not in band are removed */
@@ -1398,8 +1453,8 @@ int cholmod_band_inplace
     cholmod_common *Common
 ) ;
 
-int cholmod_l_band_inplace (UF_long, UF_long, int, cholmod_sparse *,
-    cholmod_common *) ;
+int cholmod_l_band_inplace (SuiteSparse_long, SuiteSparse_long, int,
+    cholmod_sparse *, cholmod_common *) ;
 
 /* -------------------------------------------------------------------------- */
 /* cholmod_aat:  C = A*A' or A(:,f)*A(:,f)' */
@@ -1418,8 +1473,8 @@ cholmod_sparse *cholmod_aat
     cholmod_common *Common
 ) ;
 
-cholmod_sparse *cholmod_l_aat (cholmod_sparse *, UF_long *, size_t, int,
-    cholmod_common *) ;
+cholmod_sparse *cholmod_l_aat (cholmod_sparse *, SuiteSparse_long *, size_t,
+    int, cholmod_common *) ;
 
 /* -------------------------------------------------------------------------- */
 /* cholmod_copy_sparse:  C = A, create an exact copy of a sparse matrix */
@@ -1515,6 +1570,9 @@ typedef struct cholmod_factor_struct
     void *Perm ;	/* size n, permutation used */
     void *ColCount ;	/* size n, column counts for simplicial L */
 
+    void *IPerm ;       /* size n, inverse permutation.  Only created by
+                         * cholmod_solve2 if Bset is used. */
+
     /* ---------------------------------------------------------------------- */
     /* simplicial factorization */
     /* ---------------------------------------------------------------------- */
@@ -1606,13 +1664,13 @@ typedef struct cholmod_factor_struct
      *	    except for the numerical values (x and z).
      */
 
-    int itype ;		/* The integer arrays are Perm, ColCount, p, i, nz,
-			 * next, prev, super, pi, px, and s.  If itype is
-			 * CHOLMOD_INT, all of these are int arrays.
-			 * CHOLMOD_INTLONG: p, pi, px are UF_long, others int.
-			 * CHOLMOD_LONG:    all integer arrays are UF_long. */
-    int xtype ;		/* pattern, real, complex, or zomplex */
-    int dtype ;		/* x and z double or float */
+    int itype ; /* The integer arrays are Perm, ColCount, p, i, nz,
+                 * next, prev, super, pi, px, and s.  If itype is
+		 * CHOLMOD_INT, all of these are int arrays.
+		 * CHOLMOD_INTLONG: p, pi, px are SuiteSparse_long, others int.
+		 * CHOLMOD_LONG:    all integer arrays are SuiteSparse_long. */
+    int xtype ; /* pattern, real, complex, or zomplex */
+    int dtype ; /* x and z double or float */
 
 } cholmod_factor ;
 
@@ -1868,6 +1926,26 @@ int cholmod_free_dense
 int cholmod_l_free_dense (cholmod_dense **, cholmod_common *) ;
 
 /* -------------------------------------------------------------------------- */
+/* cholmod_ensure_dense:  ensure a dense matrix has a given size and type */
+/* -------------------------------------------------------------------------- */
+
+cholmod_dense *cholmod_ensure_dense
+(
+    /* ---- input/output ---- */
+    cholmod_dense **XHandle,    /* matrix handle to check */
+    /* ---- input ---- */
+    size_t nrow,	/* # of rows of matrix */
+    size_t ncol,	/* # of columns of matrix */
+    size_t d,		/* leading dimension */
+    int xtype,		/* CHOLMOD_REAL, _COMPLEX, or _ZOMPLEX */
+    /* --------------- */
+    cholmod_common *Common
+) ;
+
+cholmod_dense *cholmod_l_ensure_dense (cholmod_dense **, size_t, size_t, size_t,
+    int, cholmod_common *) ;
+
+/* -------------------------------------------------------------------------- */
 /* cholmod_sparse_to_dense:  create a dense matrix copy of a sparse matrix */
 /* -------------------------------------------------------------------------- */
 
@@ -2008,9 +2086,9 @@ typedef struct cholmod_triplet_struct
 	* no entry in a triplet matrix is ever ignored.
 	*/
 
-    int itype ;		/* CHOLMOD_LONG: i and j are UF_long.  Otherwise int. */
-    int xtype ;		/* pattern, real, complex, or zomplex */
-    int dtype ;		/* x and z are double or float */
+    int itype ; /* CHOLMOD_LONG: i and j are SuiteSparse_long.  Otherwise int */
+    int xtype ; /* pattern, real, complex, or zomplex */
+    int dtype ; /* x and z are double or float */
 
 } cholmod_triplet ;
 
@@ -2198,13 +2276,13 @@ int cholmod_realloc_multiple
 (
     /* ---- input ---- */
     size_t nnew,	/* requested # of items in reallocated blocks */
-    int nint,		/* number of int/UF_long blocks */
+    int nint,		/* number of int/SuiteSparse_long blocks */
     int xtype,		/* CHOLMOD_PATTERN, _REAL, _COMPLEX, or _ZOMPLEX */
     /* ---- in/out --- */
-    void **I,		/* int or UF_long block */
-    void **J,		/* int or UF_long block */
-    void **X,		/* complex, double, or float block */
-    void **Z,		/* zomplex case only: double or float block */
+    void **Iblock,	/* int or SuiteSparse_long block */
+    void **Jblock,	/* int or SuiteSparse_long block */
+    void **Xblock,	/* complex, double, or float block */
+    void **Zblock,	/* zomplex case only: double or float block */
     size_t *n,		/* current size of the I,J,X,Z blocks on input,
 			 * nnew on output if successful */
     /* --------------- */

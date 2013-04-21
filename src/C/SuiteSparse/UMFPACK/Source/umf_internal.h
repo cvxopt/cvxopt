@@ -3,9 +3,8 @@
 /* ========================================================================== */
 
 /* -------------------------------------------------------------------------- */
-/* UMFPACK Copyright (c) Timothy A. Davis, CISE,                              */
-/* Univ. of Florida.  All Rights Reserved.  See ../Doc/License for License.   */
-/* web: http://www.cise.ufl.edu/research/sparse/umfpack                       */
+/* Copyright (c) 2005-2012 by Timothy A. Davis, http://www.suitesparse.com.   */
+/* All Rights Reserved.  See ../Doc/License for License.                      */
 /* -------------------------------------------------------------------------- */
 
 /*
@@ -45,6 +44,10 @@
 #elif defined (__linux) || defined (MGLNX86) || defined (ARCH_GLNX86)
 #define UMF_LINUX
 #define UMFPACK_ARCHITECTURE "Linux"
+
+#elif defined (__APPLE__)
+#define UMF_MAC
+#define UMFPACK_ARCHITECTURE "Mac"
 
 #elif defined (_AIX) || defined (MIBM_RS) || defined (ARCH_IBM_RS)
 #define UMF_AIX
@@ -103,7 +106,7 @@
 #endif
 
 /* -------------------------------------------------------------------------- */
-/* Real/complex and int/UF_long definitions, double relops */
+/* Real/complex and int/SuiteSparse_long definitions, double relops */
 /* -------------------------------------------------------------------------- */
 
 #include "umf_version.h"
@@ -668,7 +671,7 @@ typedef struct	/* SymbolicType */
 	maxnrows,		/* largest number of rows in any front */
 	maxncols,		/* largest number of columns in any front */
 	*Front_npivcol,		/* Front_npivcol [j] = size of jth supercolumn*/
-	*Front_1strow,		/* first row index in front j */
+	*Front_1strow,		/* first row in front j */
 	*Front_leftmostdesc,	/* leftmost desc of front j */
 	*Front_parent,		/* super-column elimination tree */
 	*Cperm_init,		/* initial column ordering */
@@ -678,7 +681,7 @@ typedef struct	/* SymbolicType */
 	dense_row_threshold,
 	n1,			/* number of singletons */
 	nempty,			/* MIN (nempty_row, nempty_col) */
-	*Diagonal_map,		/* initial "diagonal" (after 2by2) */
+	*Diagonal_map,		/* initial "diagonal" */
 	esize,			/* size of Esize array */
 	nfr,
 	n_row, n_col,		/* matrix A is n_row-by-n_col */

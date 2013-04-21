@@ -9,7 +9,7 @@
 \newcommand{\new}[1]{\overline{#1}}
 
 \topmargin 0in
-\textheight 9in
+\textheight 8.5in
 \oddsidemargin 0pt
 \evensidemargin 0pt
 \textwidth 6.5in
@@ -17,11 +17,11 @@
 \begin{document}
 
 \author{Timothy A. Davis \\
-Dept. of Computer and Information Science and Engineering \\
-Univ. of Florida, Gainesville, FL}
+DrTimothyAldenDavis@gmail.com, http://www.suitesparse.com }
 \title{User Guide for CHOLMOD: a sparse Cholesky factorization and
 modification package}
-\date{Version 1.7, Sept 20, 2008}
+
+\date{VERSION 2.1.0, March 27, 2013}
 \maketitle
 
 %-------------------------------------------------------------------------------
@@ -37,13 +37,17 @@ modification package}
     Its supernodal Cholesky factorization
     relies on LAPACK and the Level-3 BLAS, and obtains a substantial fraction
     of the peak performance of the BLAS.  Both real and complex matrices
-    are supported.  CHOLMOD is written in ANSI/ISO C, with both
+    are supported.  
+    It also includes a non-supernodal $\m{LDL}^T$ factorization method
+    that can factorize symmetric indefinite matrices if all of their
+    leading submatrices are well-conditioned ($\m{D}$ is diagonal).
+    CHOLMOD is written in ANSI/ISO C, with both
     C and MATLAB interfaces.  This code works on Microsoft Windows and many versions
     of Unix and Linux.
 \end{abstract}
 %-------------------------------------------------------------------------------
 
-CHOLMOD Copyright\copyright 2005-2008 by Timothy A. Davis.  Portions are also
+CHOLMOD Copyright\copyright 2005-2013 by Timothy A. Davis.  Portions are also
 copyrighted by William W. Hager (the {\tt Modify} Module),
 and the University of Florida (the {\tt Partition} and {\tt Core} Modules).
 All Rights Reserved.  Some of CHOLMOD's Modules are distributed under the GNU
@@ -51,7 +55,7 @@ General Public License, and others under the GNU Lesser General Public License.
 Refer to each Module for details.
 CHOLMOD is also available under other licenses that permit its use in
 proprietary applications; contact the authors for details.
-See http://www.cise.ufl.edu/research/sparse for the code and all documentation,
+See http://www.suitesparse.com for the code and all documentation,
 including this User Guide.
 
 \newpage
@@ -82,6 +86,10 @@ COLAMD \cite{DavisGilbertLarimoreNg00_algo,DavisGilbertLarimoreNg00}),
 constrained minimum degree (CSYMAMD, CCOLAMD, CAMD), and
 graph-partitioning-based nested dissection (METIS \cite{KarypisKumar98}).
 Most of its operations are available within MATLAB via mexFunction interfaces.
+
+    CHOLMOD also includes a non-supernodal $\m{LDL}^T$ factorization method
+    that can factorize symmetric indefinite matrices if all of their
+    leading submatrices are well-conditioned ($\m{D}$ is diagonal).
 
 A pair of articles on CHOLMOD has been submitted to the ACM Transactions
 on Mathematical Softare:
@@ -239,13 +247,14 @@ along with CHOLMOD, but three of which are not.  Those included with CHOLMOD are
     algorithm,
     by Tim Davis and Siva Rajamanickam, based directly on COLAMD.
     This package is not required if CHOLMOD is compiled with the
-    {\tt -DNPARTITION} flag.
+    {\tt -DNCAMD} flag.
 \item CAMD: a constrained approximate minimum degree ordering
     algorithm,
     by Tim Davis and Yanqing Chen, based directly on AMD.
     This package is not required if CHOLMOD is compiled with the
-    {\tt -DNPARTITION} flag.
-\item {\tt UFconfig}: a single place where all sparse matrix packages authored
+    {\tt -DNCAMD} flag.
+\item {\tt SuiteSparse\_config}:
+    a single place where all sparse matrix packages authored
     or co-authored by Davis are configured.  Also includes a version of the
     {\tt xerbla} routine for the BLAS.
 \end{itemize}
@@ -269,34 +278,44 @@ Three other packages are required for optimal performance:
 \item LAPACK: the Basic Linear Algebra Subprograms.
     Not needed if {\tt -DNSUPERNODAL} is used.
     See http://www.netlib.org.
+\item CUDA BLAS:  CHOLMOD can exploit an NVIDIA GPU by using the CUDA BLAS
+    for large supernodes.  This feature is new to CHOLMOD v2.0.0.
 \end{itemize}
 
 You must first obtain and install METIS, LAPACK, and the BLAS.
 Next edit the system-dependent configurations in the
-{\tt UFconfig/UFconfig.mk} file.  Sample configurations are provided
+{\tt SuiteSparse\_config/SuiteSparse\_config.mk} file.
+Sample configurations are provided
 for Linux, Macintosh, Sun Solaris, SGI IRIX, IBM AIX, and the DEC/Compaq Alpha.
 The most important configuration is the location of the BLAS, LAPACK, and METIS
 packages, since in its default configuration CHOLMOD cannot be compiled without them.
 
 \noindent
-Here are the various parameters that you can control in your {\tt UFconfig/UFconfig.mk} file:
+Here are the various parameters that you can control in your
+{\tt SuiteSparse\_config/SuiteSparse\_config.mk} file:
 \begin{itemize}
 \item {\tt CC = } your C compiler, such as {\tt cc}.
-\item {\tt CFLAGS = } optimization flags, such as {\tt -O}.
+\item {\tt CF = } optimization flags, such as {\tt -O}.
 \item {\tt RANLIB = } your system's {\tt ranlib} program, if needed.
-\item {\tt AR =} the command to create a library (such as {\tt ar}).
+\item {\tt ARCHIVE =} the command to create a library (such as {\tt ar}).
 \item {\tt RM =} the command to delete a file.
 \item {\tt MV =} the command to rename a file.
 \item {\tt F77 =} the command to compile a Fortran program (optional).
 \item {\tt F77FLAGS =} the Fortran compiler flags (optional).
 \item {\tt F77LIB =} the Fortran libraries (optional).
 \item {\tt LIB = } basic libraries, such as {\tt -lm}.
-\item {\tt MEX =} the command to compile a MATLAB mexFunction.
 \item {\tt BLAS =} your BLAS library.
 \item {\tt LAPACK =} your LAPACK library.
 \item {\tt XERBLA =} a library containing the BLAS {\tt xerbla} routine, if required.
 \item {\tt METIS\_PATH =} the path to your copy of the METIS 4.0.1 source code.
 \item {\tt METIS =} your METIS library.
+\item {\tt GPU\_CONFIG = } configuration settings specific to the CUDA BLAS.
+    To enable the CUDA BLAS, use {\tt GPU\_CONFIG = -DGPU\_BLAS
+    -I\$(GPU\_BLAS\_PACK)/include}, and set
+    {\tt GPU\_BLAS\_PATH =} to your CUDA library installation path.
+    Then include {\tt \$(GPU\_CONFIG)} as one of the settings for
+    {\tt CHOLMOD\_CONFIG}.  See the {\tt SuiteSparse\_config.mk}
+    file for details.
 \item {\tt CHOLMOD\_CONFIG = } configuration settings specific to CHOLMOD.
 \end{itemize}
 
@@ -305,7 +324,10 @@ CHOLMOD's specific settings are given by the {\tt CHOLMOD\_CONFIG} string:
 \begin{itemize}
 \item {\tt -DNCHECK}:	    do not include the Check module.	   License: GNU LGPL.
 \item {\tt -DNCHOLESKY}:    do not include the Cholesky module.	   License: GNU LGPL.
-\item {\tt -DNPARTITION}:   do not include the Partition module.   License: GNU LGPL.
+\item {\tt -DNPARTITION}:   do not include the interface to METIS in
+the Partition module.   License: GNU LGPL.
+\item {\tt -DCAMD}:   do not include the interfaces to CAMD, CCOLAMD,
+and CSYMAMD in the Partition module.   License: GNU LGPL.
 \item {\tt -DNGPL}:	    do not include any GNU GPL Modules in the CHOLMOD library.
 \item {\tt -DNMATRIXOPS}:   do not include the MatrixOps module.   License: GNU GPL.
 \item {\tt -DNMODIFY}:	    do not include the Modify module.      License: GNU GPL.
@@ -335,16 +357,17 @@ your programs with the
 {\tt CHOLMOD/Lib/libcholmod.a},
 {\tt AMD/Lib/libamd.a},
 {\tt COLAMD/libcolamd.a},
-{\tt CAMD/libcamd.a}, \newline
-{\tt CCOLAMD/libccolamd.a},
-{\tt metis-4.0/libmetis.a},
 LAPACK,
 and
 BLAS libraries,
 as well as the {\tt xerbla} library if you need it
-({\tt UFconfig/xerlib/libcerbla.a} for the C version or
+({\tt SuiteSparse\_config/xerlib/libcerbla.a} for the C version or
 \newline
- {\tt UFconfig/xerlib/libxerbla.a} for the Fortran version).
+ {\tt SuiteSparse\_config/xerlib/libxerbla.a} for the Fortran version).
+Unless you use {\tt -DNPARTITION}, you must also link with
+{\tt metis-4.0/libmetis.a}.
+Unless {\tt -DNCAMD} is present at compile time,
+you must link with {\tt CAMD/libcamd.a}, and {\tt CCOLAMD/libccolamd.a}.
 Your compiler needs to know the location of the CHOLMOD {\tt Include} directory,
 so that it can find the {\tt cholmod.h} include file, by
 adding the {\tt -ICHOLMOD/Include} to your C compiler options
@@ -400,6 +423,7 @@ Each function is described in the next sections.
 \subsection{{\tt cholmod\_make}: compile CHOLMOD in MATLAB}			\input{_cholmod_make_m.tex}
 \newpage
 \subsection{{\tt etree2}: same as {\tt etree}}					\input{_etree2_m.tex}
+\newpage
 \subsection{{\tt graph\_demo}: graph partitioning demo}				\input{_graph_demo_m.tex}
 \newpage
 \subsection{{\tt lchol}: $\m{LL}\tr$ factorization}				\input{_lchol_m.tex}
@@ -470,37 +494,6 @@ The {\tt cholmod\_make} handles this redefinition without making any
 changes to your METIS source code.
 
 %-------------------------------------------------------------------------------
-\subsection{Unix {\tt make} for compiling CHOLMOD}
-%-------------------------------------------------------------------------------
-
-You can also compile the CHOLMOD mexFunctions using the Unix/Linux {\tt make}
-command.  When using the {\tt gcc} compiler, I strongly recommend editing the
-{\tt metis-4.0/Makefile.in} file and changing {\tt COPTIONS} to
-\begin{verbatim}
-        COPTIONS = -fexceptions
-\end{verbatim}
-Also ensure {\tt -fexceptions} is in the {\tt CFLAGS} option in the
-{\tt UFconfig/UFconfig.mk} file that comes with CHOLMOD.
-If you do not make these modifications, the CHOLMOD mexFunctions
-will terminate MATLAB if they encounter an error.
-
-If you have MATLAB 7.2 or earlier and use {\tt make mex} in the
-{\tt CHOLMOD} directory (equivalently, {\tt make} in {\tt CHOLMOD/MATLAB}),
-you must first edit
-{\tt UFconfig/UFconfig.h} to remove the {\tt -largeArrayDims}
-option from the MEX command
-(or just use {\tt cholmod\_make.m} inside MATLAB).
-
-Next, compile your METIS 4.0.1 library by typing {\tt make} in the
-{\tt metis-4.0} directory.  Then type {\tt make} in the {\tt CHOLMOD/MATLAB}
-directory.  This will compile the C-callable libraries for
-AMD, COLAMD, CAMD, CCOLAMD, METIS, and CHOLMOD, and then compile the
-mexFunction interfaces to those libraries.
-If METIS tries {\tt malloc} and encounters an out-of-memory condition,
-it calls {\tt abort}, which will terminate MATLAB.  This problem does not
-occur using the method described in the previous section.
-
-%-------------------------------------------------------------------------------
 \newpage \section{Integer and floating-point types, and notation used}
 %-------------------------------------------------------------------------------
 
@@ -509,11 +502,11 @@ routines with the prefix {\tt cholmod\_} use {\tt int} integers,
 {\tt cholmod\_l\_} routines use {\tt long}.  All floating-point
 values are {\tt double}.
 
-The {\tt long} integer is redefinable, via {\tt UFconfig.h}.
-That file defines a C preprocessor token {\tt UF\_long} which is
+The {\tt long} integer is redefinable, via {\tt SuiteSparse\_config.h}.
+That file defines a C preprocessor token {\tt SuiteSparse\_long} which is
 {\tt long} on all systems except for Windows-64, in which case it is
 defined as {\tt \_\_int64}.  The intent is that with suitable compile-time
-switches, {\tt int} is a 32-bit integer and {\tt UF\_long} is a 64-bit
+switches, {\tt int} is a 32-bit integer and {\tt SuiteSparse\_long} is a 64-bit
 integer.  The term {\tt long} is used to describe the latter
 integer throughout this document (except in the prototypes).
 
@@ -945,6 +938,7 @@ required by the {\tt Partition} Module.
     \item {\tt cholmod\_analyze\_p}: analyze, with user-provided permutation or $\m{f}$ set.
     \item {\tt cholmod\_factorize\_p}: factorize, with user-provided permutation or $\m{f}$.
     \item {\tt cholmod\_analyze\_ordering}:  analyze a permutation
+    \item {\tt cholmod\_solve2}: solve a linear system, reusing workspace.
     \item {\tt cholmod\_etree}: find the elimination tree.
     \item {\tt cholmod\_rowcolcounts}: compute the row/column counts of $\m{L}$.
     \item {\tt cholmod\_amd}: order using AMD.
@@ -952,6 +946,7 @@ required by the {\tt Partition} Module.
     \item {\tt cholmod\_rowfac}: incremental simplicial factorization.
     \item {\tt cholmod\_row\_subtree}: find the nonzero pattern of a row of $\m{L}$.
     \item {\tt cholmod\_row\_lsubtree}: find the nonzero pattern of a row of $\m{L}$.
+    \item {\tt cholmod\_row\_lsubtree}: find the nonzero pattern of $\m{L}^{-1}b$.
     \item {\tt cholmod\_resymbol}: recompute the symbolic pattern of $\m{L}$.
     \item {\tt cholmod\_resymbol\_noperm}: recompute the symbolic pattern of $\m{L}$, no permutation.
     \item {\tt cholmod\_postorder}: postorder a tree.
@@ -1272,7 +1267,7 @@ that is not a part of CHOLMOD, but can be used via the function pointer.
 Stores a sparse matrix in compressed-column form.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_allocate\_sparse}: allocate sparse matrix}
+\subsection{{\tt cholmod\_allocate\_sparse}: allocate sparse matrix}
 %---------------------------------------
 
 \input{_allocate_sparse.tex}
@@ -1294,7 +1289,7 @@ Frees a sparse matrix.
 Reallocates a sparse matrix, so that it can contain {\tt nznew} entries.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_nnz}: number of entries in sparse matrix}
+\subsection{{\tt cholmod\_nnz}: number of entries in sparse matrix}
 %---------------------------------------
 
 \input{_nnz.tex}
@@ -1444,7 +1439,7 @@ of {\tt F->p} contain the column pointers of the resulting matrix, where
 not modified.  {\tt F} can still be properly freed with {\tt cholmod\_free\_sparse}.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_band}: extract band of a sparse matrix}
+\subsection{{\tt cholmod\_band}: extract band of a sparse matrix}
 %---------------------------------------
 
 \input{_band.tex}
@@ -1482,7 +1477,7 @@ Same as {\tt cholmod\_band}, except that it always operates in place.
 Only packed matrices can be converted in place.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_aat}: compute $\m{AA}\tr$}
+\subsection{{\tt cholmod\_aat}: compute $\m{AA}\tr$}
 %---------------------------------------
 
 \input{_aat.tex}
@@ -1505,7 +1500,7 @@ by changing {\tt C->stype} to 1 or -1, respectively, after calling this routine.
 Returns an exact copy of the input sparse matrix {\tt A}.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_copy}: copy (and change) sparse matrix}
+\subsection{{\tt cholmod\_copy}: copy (and change) sparse matrix}
 %---------------------------------------
 
 \input{_copy.tex}
@@ -1793,6 +1788,16 @@ Allocates a dense matrix.
 
 \input{_free_dense.tex}
 Frees a dense matrix.
+
+%---------------------------------------
+\subsection{{\tt cholmod\_ensure\_dense}: ensure dense matrix has a given size
+and type}
+%---------------------------------------
+
+\input{_ensure_dense.tex}
+Ensures a dense matrix has a given size and type.
+
+%---------------------------------------
 
 %---------------------------------------
 \newpage \subsection{{\tt cholmod\_zeros}: dense zero matrix}
@@ -2418,7 +2423,7 @@ a supernodal $\m{LL}\tr$ factorization, however.
 Refer to {\tt cholmod\_transpose\_unsym} for a description of {\tt f}.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_factorize}: numeric factorization}
+\subsection{{\tt cholmod\_factorize}: numeric factorization}
 %---------------------------------------
 
 \input{_factorize.tex}
@@ -2464,7 +2469,7 @@ a supernodal zomplex factor, since it is incompatible with how complex numbers a
 stored in LAPACK and the BLAS.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_analyze\_p}: symbolic factorization, given permutation}
+\subsection{{\tt cholmod\_analyze\_p}: symbolic factorization, given permutation}
 %---------------------------------------
 
 \input{_analyze_p.tex}
@@ -2485,7 +2490,7 @@ the matrix before it is factorized, where {\tt beta} is real.
 Only the real part, {\tt beta[0]}, is used.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_solve}: solve a linear system}
+\subsection{{\tt cholmod\_solve}: solve a linear system}
 %---------------------------------------
 
 \input{_solve.tex}
@@ -2527,10 +2532,110 @@ the {\tt MatrixOps} Module.  See {\tt Demo/cholmod\_demo.c} for an example.
 %---------------------------------------
 
 \input{_spsolve.tex}
-Identical to {\tt cholmod\_spsolve}, except that {\tt B} and {\tt X} are sparse.
+Identical to {\tt cholmod\_solve}, except that {\tt B} and {\tt X} are sparse.
+This function converts {\tt B} to full format, solves the system, and then
+converts {\tt X} back to sparse.  If you want to solve with a sparse {\tt B}
+and get just a partial solution back in {\tt X} (corresponding to the pattern
+of {\tt B}), use {\tt cholmod\_solve2} below.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_etree}: find elimination tree}
+\subsection{{\tt cholmod\_solve2}: solve a linear system, reusing workspace}
+%---------------------------------------
+
+\input{_solve2.tex}
+Solve a linear system, optionally reusing workspace from a prior call
+to {\tt cholmod\_solve2}.
+
+The inputs to this function are the same as {\tt cholmod\_solve},
+with the addition of three parameters:
+{\tt X},
+{\tt Y},
+and
+{\tt E}.  The dense matrix {\tt X} is the solution on output.
+On input, {\tt \&X} can point to a NULL matrix, or be the wrong size.
+If that is the case, it is freed and allocated to be the proper size. 
+If {\tt X} has the right size and type on input, then the allocation
+is skipped.  In contrast, the {\tt cholmod\_solve} function always
+allocates its output {\tt X}.  This {\tt cholmod\_solve2} function
+allows you to reuse the memory space of a prior {\tt X}, thereby
+saving time.
+
+The two workspace matrices {\tt Y} and {\tt E} can also be reused
+between calls.
+You must free
+{\tt X}
+{\tt Y},
+and 
+{\tt E} yourself, when your computations are done.  Below is an
+example of usage.
+Note that 
+{\tt X}
+{\tt Y},
+and 
+{\tt E} must be defined on input (either NULL, or valid dense matrices).
+
+\begin{verbatim}
+        cholmod_dense *X = NULL, *Y = NULL, *E = NULL ;
+        ...
+        cholmod_l_solve2 (sys, L, B1, NULL, &X, NULL, &Y, &E, Common) ;
+        cholmod_l_solve2 (sys, L, B2, NULL, &X, NULL, &Y, &E, Common) ;
+        cholmod_l_solve2 (sys, L, B3, NULL, &X, NULL, &Y, &E, Common) ;
+        cholmod_l_free_dense (&X, Common) ;
+        cholmod_l_free_dense (&Y, Common) ;
+        cholmod_l_free_dense (&E, Common) ;
+\end{verbatim}
+
+The equivalent when using {\tt cholmod\_solve} is:
+
+\begin{verbatim}
+        cholmod_dense *X = NULL, *Y = NULL, *E = NULL ;
+        ...
+        X = cholmod_l_solve (sys, L, B1, Common) ;
+        cholmod_l_free_dense (&X, Common) ;
+        X = cholmod_l_solve (sys, L, B2, Common) ;
+        cholmod_l_free_dense (&X, Common) ;
+        X = cholmod_l_solve (sys, L, B3, Common) ;
+        cholmod_l_free_dense (&X, Common) ;
+\end{verbatim}
+
+Both methods work fine, but in the second method with {\tt cholmod\_solve},
+the internal workspaces ({\tt Y} and {\tt E}) and the solution ({\tt X})
+are allocated and freed on each call.
+
+The {\tt cholmod\_solve2 function} can also solve for a subset of the solution
+vector {\tt X}, if the optional {\tt Bset} parameter is non-NULL.  The
+right-hand-side {\tt B} must be a single column vector, and its complexity
+(real, complex, zomplex) must match that of {\tt L}.  The vector {\tt B} is
+dense, but it is assumed to be zero except for row indices specified in {\tt
+Bset}.  The vector {\tt Bset} must be a sparse column vector, of dimension the
+same as {\tt B}.  Only the pattern of {\tt Bset} is used.  The solution {\tt X}
+(a dense column vector) is modified on output, but is defined only in the rows
+defined by the sparse vector {\tt Xset}.  The entries in {\tt Bset} are a
+subset of {\tt Xset} (except if {\tt sys} is {\tt CHOLMOD\_P} or {\tt
+CHOLMOD\_Pt}).
+
+No memory allocations are done if the outputs and internal
+workspaces ({\tt X}, {\tt Xset}, {\tt Y}, and {\tt E}) have been allocated
+by a prior call (or if allocated by the user).  To let {\tt cholmod\_solve2}
+allocate these outputs and workspaces for you, simply initialize them to
+NULL (as in the example above).  Since it is possible for this function
+to reallocate these 4 arrays, you should always reaquire the pointers to
+their internal data ({\tt X->x} for example) after calling
+{\tt cholmod\_solve2}), since they may change.  They normally will not
+change except in the first call to this function.
+
+On the first call to {\tt cholmod\_solve2} when {\tt Bset} is NULL,
+the factorization is converted from supernodal to simplicial, if needed.
+The inverse permutation is also computed and stored in the factoriation
+object, {\tt L}.  This can take a modest amount of time.  Subsequent
+calls to {\tt cholmod\_solve2} with a small {\tt Bset}
+are very fast (both asympotically and in practice).
+
+You can find an example of how to use {\tt cholmod\_solve2} in the
+two demo programs, {\tt cholmod\_demo} and {\tt cholmod\_l\_demo}.
+
+%---------------------------------------
+\subsection{{\tt cholmod\_etree}: find elimination tree}
 %---------------------------------------
 
 \input{_etree.tex}
@@ -2568,7 +2673,7 @@ The algorithm is described in \cite{GilbertLiNgPeyton01,GilbertNgPeyton94}.
 % sparse QR and LU factorization", BIT, vol 41, 2001, pp. 693-710.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_analyze\_ordering}: analyze a permutation}
+\subsection{{\tt cholmod\_analyze\_ordering}: analyze a permutation}
 %---------------------------------------
 
 \input{_analyze_ordering.tex}
@@ -2586,7 +2691,7 @@ The column counts of {\tt L}, flop count, and other statistics from
 {\tt cholmod\_rowcolcounts} are not computed if {\tt ColCount} is {\tt NULL}.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_amd}: interface to AMD}
+\subsection{{\tt cholmod\_amd}: interface to AMD}
 %---------------------------------------
 
 \input{_amd.tex}
@@ -2619,7 +2724,7 @@ combined with its postordering (COLAMD itself does not perform this postordering
 {\tt A} must be unsymmetric ({\tt A->stype = 0}).
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_rowfac}: row-oriented Cholesky factorization}
+\subsection{{\tt cholmod\_rowfac}: row-oriented Cholesky factorization}
 %---------------------------------------
 
 \input{_rowfac.tex}
@@ -2674,7 +2779,7 @@ For use in LPDASA only.
 
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_row\_subtree}: pattern of row of a factor}
+\subsection{{\tt cholmod\_row\_subtree}: pattern of row of a factor}
 %---------------------------------------
 
 \input{_row_subtree.tex}
@@ -2698,7 +2803,7 @@ with {\tt R->nzmax >= nrow}.  {\tt R} is assumed to be packed ({\tt Rnz [0]} is 
 the number of entries in {\tt R} is given by {\tt Rp [0]}.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_row\_lsubtree}: pattern of row of a factor}
+\subsection{{\tt cholmod\_row\_lsubtree}: pattern of row of a factor}
 %---------------------------------------
 
 \input{_row_lsubtree.tex}
@@ -2708,7 +2813,7 @@ the nonzero pattern of the {\tt k}th column of {\tt F} is given by
 {\tt Fi} and {\tt fnz} instead.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_resymbol}: re-do symbolic factorization}
+\subsection{{\tt cholmod\_resymbol}: re-do symbolic factorization}
 %---------------------------------------
 
 \input{_resymbol.tex}
@@ -2737,7 +2842,7 @@ Identical to {\tt cholmod\_resymbol}, except that the fill-reducing
 ordering {\tt L->Perm} is not used.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_postorder}: tree postorder}
+\subsection{{\tt cholmod\_postorder}: tree postorder}
 %---------------------------------------
 
 \input{_postorder.tex}
@@ -2850,7 +2955,6 @@ reducing permutation {\tt L->Perm} is not used.  The vectors $\m{x}$ and $\m{b}$
 ordering, not your original ordering.  This routine does not handle multiple right-hand-sides.
 
 %---------------------------------------
-\newpage
 \subsection{{\tt cholmod\_updown\_mark}: update/downdate}
 %---------------------------------------
 
@@ -2869,7 +2973,7 @@ by Hager and Davis.
 For use in LPDASA only.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_rowadd}: add row to factor}
+\subsection{{\tt cholmod\_rowadd}: add row to factor}
 %---------------------------------------
 
 \input{_rowadd.tex}
@@ -2887,7 +2991,7 @@ The algorithm is described in \cite{DavisHager05}.
 Identical to {\tt cholmod\_rowadd}, except the system $\m{Lx}=\m{b}$ is also updated/downdated, just like {\tt cholmod\_updown\_solve}.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_rowdel}: delete row from factor}
+\subsection{{\tt cholmod\_rowdel}: delete row from factor}
 %---------------------------------------
 
 \input{_rowdel.tex}
@@ -2908,7 +3012,7 @@ If this is the case, the kth entry of $\m{y}$ is required as input ({\tt yk}).
 The algorithm is described in \cite{DavisHager05}.
 
 %---------------------------------------
-\newpage \subsection{{\tt cholmod\_rowadd\_mark}: add row to factor}
+\subsection{{\tt cholmod\_rowadd\_mark}: add row to factor}
 %---------------------------------------
 
 \input{_rowadd_mark.tex}
@@ -3010,8 +3114,12 @@ Only real matrices are supported.
 Sparse matrix times dense matrix:
 {\tt Y = alpha*(A*X) + beta*Y} or {\tt Y = alpha*(A'*X) + beta*Y},
 where {\tt A} is sparse and {\tt X} and {\tt Y} are dense.
-When using {\tt A},  {\tt X} has {\tt A->ncol} columns and {\tt Y} has {\tt A->nrow} rows.
-When using {\tt A'}, {\tt X} has {\tt A->nrow} columns and {\tt Y} has {\tt A->ncol} rows.
+When using {\tt A},
+{\tt X} has {\tt A->ncol} rows and
+{\tt Y} has {\tt A->nrow} rows.
+When using {\tt A'},
+{\tt X} has {\tt A->nrow} rows and
+{\tt Y} has {\tt A->ncol} rows.
 If {\tt transpose = 0}, then {\tt A} is used;
 otherwise, {\tt A'} is used (the complex conjugate transpose).
 The {\tt transpose} parameter is ignored if the matrix is symmetric or Hermitian.

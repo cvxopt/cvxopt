@@ -16,7 +16,6 @@
 %   camd         - constrained amd.
 %   ccolamd      - constrained colamd.
 %   csymamd      - constrained symamd.
-%   meshnd       - nested dissection of regular 2D and 3D meshes
 %
 %-------------------------------------------------------------------------------
 % CHOLMOD: a sparse supernodal Cholesky update/downdate package:
@@ -125,18 +124,26 @@
 % Other packages:
 %-------------------------------------------------------------------------------
 %
-%   UFGET           MATLAB interface to the UF Sparse Matrix Collection
-%   MATLAB_Tools    various simple m-files
-%   SSMULT          sparse matrix times sparse matrix
-%   LINFACTOR       solve Ax=b using LU or CHOL
+%   MATLAB_Tools    various MATLAB tools, most in M, some as C mexFunctions:
+%
+%       ssmult          sparse matrix times sparse matrix
+%       meshnd          nested dissection of regular 2D and 3D meshes
+%       linfactor       solve Ax=b using LU or CHOL
+%       dimacs10        MATLAB interface for the DIMACS10 collection
+%       factorize       object-oriented system solver
+%       sparseinv       sparse inverse subset
+%       spqr_rank       toolbox for sparse rank-deficient matrices
+%
+%   UFcollection    for managing the UF Sparse Matrix Collection
+%   RBio            for reading/writing Rutherford/Boeing sparse matrices
+%   UFget           MATLAB interface to the UF Sparse Matrix Collection,
+%                   located in C*Sparse*/MATLAB
 %
 %-------------------------------------------------------------------------------
 %
 % For help on compiling SuiteSparse or the demos, testing functions, etc.,
-% please see the help for each individual package.   UFcollection and RBio
-% are two additional toolboxes, for managing the UF Sparse Matrix Collection.
+% please see the help for each individual package.
 %
-% Copyright 2008, Timothy A. Davis
-% http://www.cise.ufl.edu/research/sparse
+% Copyright 2013, Timothy A. Davis, http://www.suitesparse.com.
 
 help SuiteSparse

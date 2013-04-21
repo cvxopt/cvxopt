@@ -1,29 +1,22 @@
 #-------------------------------------------------------------------------------
-# UMFPACK makefile (for GNU make or original make)
+# UMFPACK Makefile
 #-------------------------------------------------------------------------------
+
+VERSION = 5.6.1
 
 # UMFPACK requires the AMD package to be in ../AMD
 
-default: library
+default: all
 
-include ../UFconfig/UFconfig.mk
+include ../SuiteSparse_config/SuiteSparse_config.mk
 
-# compile all C code (except hb, fortran, and fortran64), including AMD and the
-# MATLAB mexFunctions
+# compile all C code (except hb, fortran, and fortran64), incl. AMD and demos
 all:
-	( cd ../AMD ; $(MAKE) library )
-	( cd ../AMD ; $(MAKE) mex )
-	( cd Lib    ; $(MAKE) )
 	( cd Demo   ; $(MAKE) )
-	( cd MATLAB ; $(MAKE) )
-	- cat Doc/License
 
-# compile just the C-callable libraries and demo programs (not mexFunctions)
+# compile just the C-callable UMFPACK library
 library:
-	( cd ../AMD ; $(MAKE) library )
 	( cd Lib    ; $(MAKE) )
-	( cd Demo   ; $(MAKE) )
-	- cat Doc/License
 
 # compile the FORTRAN interface and demo program
 fortran:
@@ -39,28 +32,25 @@ hb:
 
 # remove object files, but keep the compiled programs and library archives
 clean:
-	( cd ../AMD ; $(MAKE) clean )
 	( cd Lib    ; $(MAKE) clean )
 	( cd Demo   ; $(MAKE) clean )
-	( cd MATLAB ; $(MAKE) clean )
 	( cd Doc    ; $(MAKE) clean )
+	( cd MATLAB ; $(RM) $(CLEAN) rename.h )
 
 # clean, and then remove compiled programs and library archives
 purge:
-	( cd ../AMD ; $(MAKE) purge )
 	( cd Lib    ; $(MAKE) purge )
 	( cd Demo   ; $(MAKE) purge )
-	( cd MATLAB ; $(MAKE) purge )
 	( cd Doc    ; $(MAKE) purge )
+	( cd Tcov   ; $(MAKE) purge )
+	( cd MATLAB ; $(RM) $(CLEAN) rename.h *.mex* )
 
 # create PDF documents for the original distribution
-doc:
-	( cd ../AMD ; $(MAKE) doc )
+docs:
 	( cd Doc    ; $(MAKE) )
 
 # get ready for distribution
 dist: purge
-	( cd ../AMD ; $(MAKE) dist )
 	( cd Demo   ; $(MAKE) dist )
 	( cd Doc    ; $(MAKE) )
 
@@ -68,12 +58,20 @@ distclean: purge
 
 ccode: library
 
-# compile the MATLAB mexFunction
-mex:
-	( cd ../AMD/MATLAB ; $(MAKE) )
-	( cd MATLAB ; $(MAKE) )
-
 # statement coverage (requires Linux; takes a lot of time and disk space)
 cov: purge
-	( cd Tcov ; ./DO.linux ; ./covall )
+	( cd Tcov ; ./DO.linux )
+
+# install UMFPACK
+install:
+	$(CP) Lib/libumfpack.a $(INSTALL_LIB)/libumfpack.$(VERSION).a
+	( cd $(INSTALL_LIB) ; ln -sf libumfpack.$(VERSION).a libumfpack.a )
+	$(CP) Include/*.h $(INSTALL_INCLUDE)
+	chmod 644 $(INSTALL_LIB)/libumfpack*.a
+	chmod 644 $(INSTALL_INCLUDE)/umfpack*.h
+
+# uninstall UMFPACK
+uninstall:
+	$(RM) $(INSTALL_LIB)/libumfpack*.a
+	$(RM) $(INSTALL_INCLUDE)/umfpack*.h
 
