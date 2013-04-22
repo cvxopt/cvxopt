@@ -1,0 +1,1578 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The LAPACK Interface &mdash; CVXOPT User&#39;s Guide</title>
+    
+    <link rel="stylesheet" href="_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="top" title="CVXOPT User&#39;s Guide" href="index.html" />
+    <link rel="next" title="Discrete Transforms" href="fftw.html" />
+    <link rel="prev" title="The BLAS Interface" href="blas.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="fftw.html" title="Discrete Transforms"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="blas.html" title="The BLAS Interface"
+             accesskey="P">previous</a> |</li>
+    <li><a href="http://cvxopt.org">CVXOPT home</a> |</li>
+    
+        <li><a href="index.html">user&#39;s guide</a> </li>
+ 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="the-lapack-interface">
+<span id="c-lapack"></span><h1>The LAPACK Interface<a class="headerlink" href="#the-lapack-interface" title="Permalink to this headline">¶</a></h1>
+<p>The module <tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.lapack</span></tt> includes functions for solving dense sets
+of linear equations, for the corresponding matrix factorizations (LU,
+Cholesky, <span class="raw-html">LDL<sup><small>T</small></sup></span>),
+for solving least-squares and least-norm problems, for
+QR factorization, for symmetric eigenvalue problems, singular value
+decomposition, and Schur factorization.</p>
+<p>In this chapter we briefly describe the Python calling sequences.  For
+further details on the underlying LAPACK functions we refer to the LAPACK
+Users&#8217; Guide and manual pages.</p>
+<p>The BLAS conventional storage scheme of the section <a class="reference internal" href="blas.html#s-conventions"><em>Matrix Classes</em></a>
+is used. As in the previous chapter, we omit from the function definitions
+less important arguments that are useful for selecting submatrices.  The
+complete definitions are documented in the docstrings in the source code.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://www.netlib.org/lapack/lug/lapack_lug.html">LAPACK Users&#8217; Guide, Third Edition, SIAM, 1999</a></p>
+</div>
+<div class="section" id="general-linear-equations">
+<h2>General Linear Equations<a class="headerlink" href="#general-linear-equations" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="cvxopt.lapack.gesv">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">gesv</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>ipiv = None</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.gesv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves</p>
+<div class="math">
+<p><img src="_images/math/d0dac11eda62458e1a814cf846ef2425e83d3362.png" alt="A X = B,"/></p>
+</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> and <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/> are real or complex matrices, with
+<img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> square and nonsingular.</p>
+<p>The arguments <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>
+or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  On entry, <tt class="docutils literal"><span class="pre">B</span></tt>  contains the right-hand side
+<img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/>; on exit it contains the solution <img class="math" src="_images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>.  The optional
+argument <tt class="docutils literal"><span class="pre">ipiv</span></tt> is an integer matrix of length at least <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.
+If <tt class="docutils literal"><span class="pre">ipiv</span></tt> is provided, then <tt class="xref py py-func docutils literal"><span class="pre">gesv</span></tt> solves the system, replaces
+<tt class="docutils literal"><span class="pre">A</span></tt> with the triangular factors in an LU factorization, and returns
+the permutation matrix in <tt class="docutils literal"><span class="pre">ipiv</span></tt>.  If <tt class="docutils literal"><span class="pre">ipiv</span></tt> is not specified,
+then <tt class="xref py py-func docutils literal"><span class="pre">gesv</span></tt> solves the system but does not return the LU
+factorization and does not modify <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is singular.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.getrf">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">getrf</tt><big>(</big><em>A</em>, <em>ipiv</em><big>)</big><a class="headerlink" href="#cvxopt.lapack.getrf" title="Permalink to this definition">¶</a></dt>
+<dd><p>LU factorization of a general, possibly rectangular, real or
+complex matrix,</p>
+<div class="math">
+<p><img src="_images/math/33266dab31dfb57b3570ab76c2ebc2ffcf617831.png" alt="A = PLU,"/></p>
+</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.</p>
+<p>The argument <tt class="docutils literal"><span class="pre">ipiv</span></tt> is an integer matrix of length at least
+min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>}.  On exit, the lower triangular part of
+<tt class="docutils literal"><span class="pre">A</span></tt> is replaced by <img class="math" src="_images/math/859ccf4cd60c7bc6b8fa1afc9a42dc811a826d6f.png" alt="L"/>, the upper triangular part by <img class="math" src="_images/math/e2bbebb3bd73f1ae5c64098ab0244f739abf7ca4.png" alt="U"/>,
+and the permutation matrix is returned in <tt class="docutils literal"><span class="pre">ipiv</span></tt>.</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is not full rank.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.getrs">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">getrs</tt><big>(</big><em>A</em>, <em>ipiv</em>, <em>B</em><span class="optional">[</span>, <em>trans = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.getrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves a general set of linear equations</p>
+<div class="math">
+<p><img src="_images/math/be84cdc9b0fad064ed72e90e2315398f701d03e3.png" alt="AX &amp; = B  \quad (\mathrm{trans} = \mathrm{'N'}), \\
+A^TX &amp; = B \quad (\mathrm{trans} = \mathrm{'T'}), \\
+A^HX &amp; = B \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
+</div><p>given the LU factorization computed by
+<a class="reference internal" href="#cvxopt.lapack.gesv" title="cvxopt.lapack.gesv"><tt class="xref py py-func docutils literal"><span class="pre">gesv</span></tt></a> or
+<a class="reference internal" href="#cvxopt.lapack.getrf" title="cvxopt.lapack.getrf"><tt class="xref py py-func docutils literal"><span class="pre">getrf</span></tt></a>.</p>
+<p>On entry, <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">ipiv</span></tt> must contain the factorization as computed
+by <tt class="xref py py-func docutils literal"><span class="pre">gesv</span></tt> or <tt class="xref py py-func docutils literal"><span class="pre">getrf</span></tt>.  On entry, <tt class="docutils literal"><span class="pre">B</span></tt> contains the
+right-hand side <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/>; on exit it contains the solution <img class="math" src="_images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>.
+<tt class="docutils literal"><span class="pre">B</span></tt> must have the same type as <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.getri">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">getri</tt><big>(</big><em>A</em>, <em>ipiv</em><big>)</big><a class="headerlink" href="#cvxopt.lapack.getri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the inverse of a matrix.</p>
+<p>On entry, <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">ipiv</span></tt> must contain the factorization as computed
+by <a class="reference internal" href="#cvxopt.lapack.gesv" title="cvxopt.lapack.gesv"><tt class="xref py py-func docutils literal"><span class="pre">gesv</span></tt></a> or
+<a class="reference internal" href="#cvxopt.lapack.getrf" title="cvxopt.lapack.getrf"><tt class="xref py py-func docutils literal"><span class="pre">getrf</span></tt></a>.  On exit, <tt class="docutils literal"><span class="pre">A</span></tt> contains the
+matrix inverse.</p>
+</dd></dl>
+
+<p>In the following example we compute</p>
+<div class="math">
+<p><img src="_images/math/d2266db6938a671063ce99deff14d437b0bbefbe.png" alt="x = (A^{-1} + A^{-T})b"/></p>
+</div><p>for randomly generated problem data, factoring the coefficient matrix once.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.lapack</span> <span class="kn">import</span> <span class="n">gesv</span><span class="p">,</span> <span class="n">getrs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ipiv</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="o">+</span><span class="n">b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gesv</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">ipiv</span><span class="p">)</span>               <span class="c"># x = A^{-1}*b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">=</span> <span class="o">+</span><span class="n">b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">getrs</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">ipiv</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s">&#39;T&#39;</span><span class="p">)</span>  <span class="c"># x2 = A^{-T}*b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">+=</span> <span class="n">x2</span>
+</pre></div>
+</div>
+<p>Separate functions are provided for equations with band matrices.</p>
+<dl class="function">
+<dt id="cvxopt.lapack.gbsv">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">gbsv</tt><big>(</big><em>A</em>, <em>kl</em>, <em>B</em><span class="optional">[</span>, <em>ipiv = None</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.gbsv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves</p>
+<div class="math">
+<p><img src="_images/math/d0dac11eda62458e1a814cf846ef2425e83d3362.png" alt="A X = B,"/></p>
+</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> and <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/> are real or complex matrices, with
+<img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> and banded with <img class="math" src="_images/math/e505767c729ddb13cbb73d25556a9d0e9068a0e6.png" alt="k_l"/>
+subdiagonals.</p>
+<p>The arguments <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>
+or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  On entry, <tt class="docutils literal"><span class="pre">B</span></tt> contains the right-hand side
+<img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/>; on exit it contains the solution <img class="math" src="_images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>.  The optional
+argument <tt class="docutils literal"><span class="pre">ipiv</span></tt> is an integer matrix of length at least <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.
+If <tt class="docutils literal"><span class="pre">ipiv</span></tt> is provided, then <tt class="docutils literal"><span class="pre">A</span></tt> must have <img class="math" src="_images/math/e8c45072a555e2c11a8eae7d163a733eac11cb24.png" alt="2k_l + k_u + 1"/>
+rows.  On entry the diagonals of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> are stored in rows
+<img class="math" src="_images/math/58e0fbcb55cee6fa8f2b8c341eec5f1859c453b8.png" alt="k_l + 1"/> to <img class="math" src="_images/math/e8c45072a555e2c11a8eae7d163a733eac11cb24.png" alt="2k_l + k_u + 1"/> of <tt class="docutils literal"><span class="pre">A</span></tt>, using the BLAS
+format for general band matrices (see the section
+<a class="reference internal" href="blas.html#s-conventions"><em>Matrix Classes</em></a>).  On exit, the factorization is returned in
+<tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">ipiv</span></tt>.  If <tt class="docutils literal"><span class="pre">ipiv</span></tt> is not provided, then <tt class="docutils literal"><span class="pre">A</span></tt> must have
+<img class="math" src="_images/math/fd01517a0c59ac672be7ebe5d531b3f04e7d92b0.png" alt="k_l + k_u + 1"/> rows.  On entry the diagonals of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> are
+stored in the rows of <tt class="docutils literal"><span class="pre">A</span></tt>, following the standard BLAS format for
+general band matrices.  In this case, <tt class="xref py py-func docutils literal"><span class="pre">gbsv</span></tt> does not modify
+<tt class="docutils literal"><span class="pre">A</span></tt> and does not return the factorization.</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is singular.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.gbtrf">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">gbtrf</tt><big>(</big><em>A</em>, <em>m</em>, <em>kl</em>, <em>ipiv</em><big>)</big><a class="headerlink" href="#cvxopt.lapack.gbtrf" title="Permalink to this definition">¶</a></dt>
+<dd><p>LU factorization of a general <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> real or complex
+band matrix with <img class="math" src="_images/math/e505767c729ddb13cbb73d25556a9d0e9068a0e6.png" alt="k_l"/> subdiagonals.</p>
+<p>The matrix is stored using the BLAS format for general band matrices
+(see the section <a class="reference internal" href="blas.html#s-conventions"><em>Matrix Classes</em></a>), by providing the diagonals
+(stored as rows of a <img class="math" src="_images/math/3549b27670a997ad5bae81038fb982ef5d2c28f0.png" alt="k_u + k_l + 1"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> matrix <tt class="docutils literal"><span class="pre">A</span></tt>),
+the number of rows <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, and the number of subdiagonals
+<img class="math" src="_images/math/e505767c729ddb13cbb73d25556a9d0e9068a0e6.png" alt="k_l"/>.  The argument <tt class="docutils literal"><span class="pre">ipiv</span></tt> is an integer matrix of length at
+least min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>}.  On exit, <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">ipiv</span></tt> contain
+the details of the factorization.</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is not full rank.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.gbtrs">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">gbtrs</tt><big>(</big><em>{A</em>, <em>kl</em>, <em>ipiv</em>, <em>B</em><span class="optional">[</span>, <em>trans = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.gbtrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves a set of linear equations</p>
+<div class="math">
+<p><img src="_images/math/c296af07f14575e62741a278a3550ce5ecb4b11e.png" alt="AX   &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
+A^TX &amp; = B \quad (\mathrm{trans} = \mathrm{'T'}), \\
+A^HX &amp; = B \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
+</div><p>with <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> a general band matrix with <img class="math" src="_images/math/e505767c729ddb13cbb73d25556a9d0e9068a0e6.png" alt="k_l"/> subdiagonals,
+given the LU factorization computed by
+<a class="reference internal" href="#cvxopt.lapack.gbsv" title="cvxopt.lapack.gbsv"><tt class="xref py py-func docutils literal"><span class="pre">gbsv</span></tt></a> or
+<a class="reference internal" href="#cvxopt.lapack.gbtrf" title="cvxopt.lapack.gbtrf"><tt class="xref py py-func docutils literal"><span class="pre">gbtrf</span></tt></a>.</p>
+<p>On entry, <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">ipiv</span></tt> must contain the factorization as computed
+by <tt class="xref py py-func docutils literal"><span class="pre">gbsv</span></tt> or <tt class="xref py py-func docutils literal"><span class="pre">gbtrf</span></tt>.  On entry, <tt class="docutils literal"><span class="pre">B</span></tt> contains the
+right-hand side <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/>; on exit it contains the solution <img class="math" src="_images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>.
+<tt class="docutils literal"><span class="pre">B</span></tt> must have the same type as <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+</dd></dl>
+
+<p>As an example, we solve a linear equation with</p>
+<div class="math">
+<p><img src="_images/math/088678597f59c16fea047bea9d1975beb919da52.png" alt="A = \left[ \begin{array}{cccc}
+    1 &amp; 2 &amp; 0 &amp; 0 \\
+    3 &amp; 4 &amp; 5 &amp; 0 \\
+    6 &amp; 7 &amp; 8 &amp; 9 \\
+    0 &amp; 10 &amp; 11 &amp; 12
+    \end{array}\right], \qquad
+B = \left[\begin{array}{c} 1 \\ 1 \\ 1 \\ 1 \end{array}\right]."/></p>
+</div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.lapack</span> <span class="kn">import</span> <span class="n">gbsv</span><span class="p">,</span> <span class="n">gbtrf</span><span class="p">,</span> <span class="n">gbtrs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="p">,</span> <span class="n">kl</span><span class="p">,</span> <span class="n">ku</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="mf">7.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">],</span> <span class="p">[</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">11.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">9.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gbsv</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">kl</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">[ 7.14e-02]</span>
+<span class="go">[ 4.64e-01]</span>
+<span class="go">[-2.14e-01]</span>
+<span class="go">[-1.07e-01]</span>
+</pre></div>
+</div>
+<p>The code below illustrates how one can reuse the factorization returned
+by <a class="reference internal" href="#cvxopt.lapack.gbsv" title="cvxopt.lapack.gbsv"><tt class="xref py py-func docutils literal"><span class="pre">gbsv</span></tt></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Ac</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">kl</span><span class="o">+</span><span class="n">ku</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Ac</span><span class="p">[</span><span class="n">kl</span><span class="p">:,:]</span> <span class="o">=</span> <span class="n">A</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ipiv</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gbsv</span><span class="p">(</span><span class="n">Ac</span><span class="p">,</span> <span class="n">kl</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">ipiv</span><span class="p">)</span>                 <span class="c"># solves A*x = 1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">[ 7.14e-02]</span>
+<span class="go">[ 4.64e-01]</span>
+<span class="go">[-2.14e-01]</span>
+<span class="go">[-1.07e-01]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gbtrs</span><span class="p">(</span><span class="n">Ac</span><span class="p">,</span> <span class="n">kl</span><span class="p">,</span> <span class="n">ipiv</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s">&#39;T&#39;</span><span class="p">)</span>     <span class="c"># solve A^T*x = 1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">[ 7.14e-02]</span>
+<span class="go">[ 2.38e-02]</span>
+<span class="go">[ 1.43e-01]</span>
+<span class="go">[-2.38e-02]</span>
+</pre></div>
+</div>
+<p>An alternative method uses <a class="reference internal" href="#cvxopt.lapack.gbtrf" title="cvxopt.lapack.gbtrf"><tt class="xref py py-func docutils literal"><span class="pre">gbtrf</span></tt></a> for the
+factorization.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Ac</span><span class="p">[</span><span class="n">kl</span><span class="p">:,:]</span> <span class="o">=</span> <span class="n">A</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gbtrf</span><span class="p">(</span><span class="n">Ac</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">kl</span><span class="p">,</span> <span class="n">ipiv</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gbtrs</span><span class="p">(</span><span class="n">Ac</span><span class="p">,</span> <span class="n">kl</span><span class="p">,</span> <span class="n">ipiv</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>                <span class="c"># solve A^T*x = 1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">[ 7.14e-02]</span>
+<span class="go">[ 4.64e-01]</span>
+<span class="go">[-2.14e-01]</span>
+<span class="go">[-1.07e-01]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gbtrs</span><span class="p">(</span><span class="n">Ac</span><span class="p">,</span> <span class="n">kl</span><span class="p">,</span> <span class="n">ipiv</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s">&#39;T&#39;</span><span class="p">)</span>     <span class="c"># solve A^T*x = 1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">[ 7.14e-02]</span>
+<span class="go">[ 2.38e-02]</span>
+<span class="go">[ 1.43e-01]</span>
+<span class="go">[-2.38e-02]</span>
+</pre></div>
+</div>
+<p>The following functions can be used for tridiagonal matrices. They use a
+simpler matrix format, with the diagonals stored in three separate vectors.</p>
+<dl class="function">
+<dt id="cvxopt.lapack.gtsv">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">gtsv</tt><big>(</big><em>dl</em>, <em>d</em>, <em>du</em>, <em>B)</em><big>)</big><a class="headerlink" href="#cvxopt.lapack.gtsv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves</p>
+<div class="math">
+<p><img src="_images/math/d0dac11eda62458e1a814cf846ef2425e83d3362.png" alt="A X = B,"/></p>
+</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is an <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> tridiagonal matrix.</p>
+<p>The subdiagonal of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is stored as a matrix <tt class="docutils literal"><span class="pre">dl</span></tt> of length
+<img class="math" src="_images/math/4bdca93962a2beaffc172ca394e04fe05bd74ffd.png" alt="n-1"/>, the diagonal is stored as a matrix <tt class="docutils literal"><span class="pre">d</span></tt> of length
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, and the superdiagonal is stored as a matrix <tt class="docutils literal"><span class="pre">du</span></tt> of
+length <img class="math" src="_images/math/4bdca93962a2beaffc172ca394e04fe05bd74ffd.png" alt="n-1"/>.  The four arguments must have the same type
+(<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  On exit <tt class="docutils literal"><span class="pre">dl</span></tt>, <tt class="docutils literal"><span class="pre">d</span></tt>, <tt class="docutils literal"><span class="pre">du</span></tt> are
+overwritten with the details of the LU factorization of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.
+On entry, <tt class="docutils literal"><span class="pre">B</span></tt> contains the right-hand side <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/>; on exit it
+contains the solution <img class="math" src="_images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>.</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is singular.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.gttrf">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">gttrf</tt><big>(</big><em>dl</em>, <em>d</em>, <em>du</em>, <em>du2</em>, <em>ipiv</em><big>)</big><a class="headerlink" href="#cvxopt.lapack.gttrf" title="Permalink to this definition">¶</a></dt>
+<dd><p>LU factorization of an <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> tridiagonal matrix.</p>
+<p>The subdiagonal of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is stored as a matrix <tt class="docutils literal"><span class="pre">dl</span></tt> of length
+<img class="math" src="_images/math/4bdca93962a2beaffc172ca394e04fe05bd74ffd.png" alt="n-1"/>, the diagonal is stored as a matrix <tt class="docutils literal"><span class="pre">d</span></tt> of length
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, and the superdiagonal is stored as a matrix <tt class="docutils literal"><span class="pre">du</span></tt> of length
+<img class="math" src="_images/math/4bdca93962a2beaffc172ca394e04fe05bd74ffd.png" alt="n-1"/>.  <tt class="docutils literal"><span class="pre">dl</span></tt>, <tt class="docutils literal"><span class="pre">d</span></tt> and <tt class="docutils literal"><span class="pre">du</span></tt> must have the same type.
+<tt class="docutils literal"><span class="pre">du2</span></tt> is a matrix of length <img class="math" src="_images/math/ef9b02e32cfba0db0f9038a8d077596720f62e91.png" alt="n-2"/>, and of the same type as
+<tt class="docutils literal"><span class="pre">dl</span></tt>.  <tt class="docutils literal"><span class="pre">ipiv</span></tt> is an <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt> matrix of length <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.
+On exit, the five arguments contain the details of the factorization.</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is singular.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.gttrs">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">gttrs</tt><big>(</big><em>dl</em>, <em>d</em>, <em>du</em>, <em>du2</em>, <em>ipiv</em>, <em>B</em><span class="optional">[</span>, <em>trans = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.gttrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves a set of linear equations</p>
+<div class="math">
+<p><img src="_images/math/c296af07f14575e62741a278a3550ce5ecb4b11e.png" alt="AX   &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
+A^TX &amp; = B \quad (\mathrm{trans} = \mathrm{'T'}), \\
+A^HX &amp; = B \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
+</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is an <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> tridiagonal matrix.</p>
+<p>The arguments <tt class="docutils literal"><span class="pre">dl</span></tt>, <tt class="docutils literal"><span class="pre">d</span></tt>, <tt class="docutils literal"><span class="pre">du</span></tt>, <tt class="docutils literal"><span class="pre">du2</span></tt>, and <tt class="docutils literal"><span class="pre">ipiv</span></tt> contain
+the details of the LU factorization as returned by
+<a class="reference internal" href="#cvxopt.lapack.gttrf" title="cvxopt.lapack.gttrf"><tt class="xref py py-func docutils literal"><span class="pre">gttrf</span></tt></a>.
+On entry, <tt class="docutils literal"><span class="pre">B</span></tt> contains the right-hand side <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/>; on exit it
+contains the solution <img class="math" src="_images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>.  <tt class="docutils literal"><span class="pre">B</span></tt> must have the same type as
+the other arguments.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="positive-definite-linear-equations">
+<h2>Positive Definite Linear Equations<a class="headerlink" href="#positive-definite-linear-equations" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="cvxopt.lapack.posv">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">posv</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.posv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves</p>
+<div class="math">
+<p><img src="_images/math/d0dac11eda62458e1a814cf846ef2425e83d3362.png" alt="A X = B,"/></p>
+</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a real symmetric or complex Hermitian positive
+definite matrix.</p>
+<p>On exit, <tt class="docutils literal"><span class="pre">B</span></tt> is replaced by the solution, and <tt class="docutils literal"><span class="pre">A</span></tt> is overwritten
+with the Cholesky factor.  The matrices <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> must have
+the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is not positive
+definite.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.potrf">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">potrf</tt><big>(</big><em>A</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.potrf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cholesky factorization</p>
+<div class="math">
+<p><img src="_images/math/7c7d8b7d91d512e775fc1d163a421bccf3e69629.png" alt="A = LL^T \qquad \mbox{or} \qquad A = LL^H"/></p>
+</div><p>of a positive definite real symmetric or complex Hermitian matrix
+<img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.</p>
+<p>On exit, the lower triangular part of <tt class="docutils literal"><span class="pre">A</span></tt> (if <tt class="docutils literal"><span class="pre">uplo</span></tt> is
+<tt class="xref py py-const docutils literal"><span class="pre">'L'</span></tt>) or the upper triangular part (if <tt class="docutils literal"><span class="pre">uplo</span></tt> is
+<tt class="xref py py-const docutils literal"><span class="pre">'U'</span></tt>) is overwritten with the Cholesky factor or its
+(conjugate) transpose.</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is not positive
+definite.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.potrs">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">potrs</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.potrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves a set of linear equations</p>
+<div class="math">
+<p><img src="_images/math/57a233e4bced8a9e14812ddb76241c0e78d32d86.png" alt="AX = B"/></p>
+</div><p>with a positive definite real symmetric or complex Hermitian matrix,
+given the Cholesky factorization computed by
+<a class="reference internal" href="#cvxopt.lapack.posv" title="cvxopt.lapack.posv"><tt class="xref py py-func docutils literal"><span class="pre">posv</span></tt></a> or
+<a class="reference internal" href="#cvxopt.lapack.potrf" title="cvxopt.lapack.potrf"><tt class="xref py py-func docutils literal"><span class="pre">potrf</span></tt></a>.</p>
+<p>On entry, <tt class="docutils literal"><span class="pre">A</span></tt> contains the triangular factor, as computed by
+<tt class="xref py py-func docutils literal"><span class="pre">posv</span></tt> or <tt class="xref py py-func docutils literal"><span class="pre">potrf</span></tt>.  On exit, <tt class="docutils literal"><span class="pre">B</span></tt> is replaced by the
+solution.  <tt class="docutils literal"><span class="pre">B</span></tt> must have the same type as <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.potri">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">potri</tt><big>(</big><em>A</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.potri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the inverse of a positive definite matrix.</p>
+<p>On entry, <tt class="docutils literal"><span class="pre">A</span></tt> contains the Cholesky factorization computed by
+<a class="reference internal" href="#cvxopt.lapack.potri" title="cvxopt.lapack.potri"><tt class="xref py py-func docutils literal"><span class="pre">potrf</span></tt></a> or
+<a class="reference internal" href="#cvxopt.lapack.posv" title="cvxopt.lapack.posv"><tt class="xref py py-func docutils literal"><span class="pre">posv</span></tt></a>.  On exit, it contains the matrix
+inverse.</p>
+</dd></dl>
+
+<p>As an example, we use <a class="reference internal" href="#cvxopt.lapack.posv" title="cvxopt.lapack.posv"><tt class="xref py py-func docutils literal"><span class="pre">posv</span></tt></a> to solve the
+linear system</p>
+<div class="math" id="equation-e-kkt-example">
+<p><span class="eqno">(1)</span><img src="_images/math/2a8ca6a7009ee5385d73e61d462a58f248c80986.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
+\left[ \begin{array}{cc}
+    -\diag(d)^2  &amp; A \\ A^T  &amp; 0
+\end{array} \right]
+\left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right]
+=
+\left[ \begin{array}{c} b_1 \\ b_2 \end{array} \right]"/></p>
+</div><p>by block-elimination.  We first pick a random problem.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">uniform</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.blas</span> <span class="kn">import</span> <span class="n">syrk</span><span class="p">,</span> <span class="n">gemv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.lapack</span> <span class="kn">import</span> <span class="n">posv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b1</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">normal</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">uniform</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We then solve the equations</p>
+<div class="math">
+<p><img src="_images/math/b6e63abdbe3938d90b05bd699a4ea54ad9e77421.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
+\begin{split}
+A^T \diag(d)^{-2}A x_2 &amp; = b_2 + A^T \diag(d)^{-2} b_1 \\
+\diag(d)^2 x_1 &amp; = Ax_2 - b_1.
+\end{split}"/></p>
+</div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Asc</span> <span class="o">=</span> <span class="n">div</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">d</span><span class="p">[:,</span> <span class="n">n</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>                <span class="c"># Asc := diag(d)^{-1}*A</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">syrk</span><span class="p">(</span><span class="n">Asc</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s">&#39;T&#39;</span><span class="p">)</span>                  <span class="c"># B := Asc^T * Asc = A^T * diag(d)^{-2} * A</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="n">div</span><span class="p">(</span><span class="n">b1</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>                          <span class="c"># x1 := diag(d)^{-1}*b1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">=</span> <span class="o">+</span><span class="n">b2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gemv</span><span class="p">(</span><span class="n">Asc</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s">&#39;T&#39;</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>   <span class="c"># x2 := x2 + Asc^T*x1 = b2 + A^T*diag(d)^{-2}*b1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">posv</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>                              <span class="c"># x2 := B^{-1}*x2 = B^{-1}*(b2 + A^T*diag(d)^{-2}*b1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gemv</span><span class="p">(</span><span class="n">Asc</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">beta</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">)</span>             <span class="c"># x1 := Asc*x2 - x1 = diag(d)^{-1} * (A*x2 - b1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="n">div</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>                          <span class="c"># x1 := diag(d)^{-1}*x1 = diag(d)^{-2} * (A*x2 - b1)</span>
+</pre></div>
+</div>
+<p>There are separate routines for equations with positive definite band
+matrices.</p>
+<dl class="function">
+<dt id="cvxopt.lapack.pbsv">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">pbsv</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>uplo='L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.pbsv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves</p>
+<div class="math">
+<p><img src="_images/math/57a233e4bced8a9e14812ddb76241c0e78d32d86.png" alt="AX = B"/></p>
+</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a real symmetric or complex Hermitian positive
+definite band matrix.</p>
+<p>On entry, the diagonals of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> are stored in <tt class="docutils literal"><span class="pre">A</span></tt>, using the
+BLAS format for symmetric or Hermitian band matrices (see
+section <a class="reference internal" href="blas.html#s-conventions"><em>Matrix Classes</em></a>).  On exit, <tt class="docutils literal"><span class="pre">B</span></tt> is replaced by the
+solution, and <tt class="docutils literal"><span class="pre">A</span></tt> is overwritten with the Cholesky factor (in the
+BLAS format for triangular band matrices).  The matrices <tt class="docutils literal"><span class="pre">A</span></tt> and
+<tt class="docutils literal"><span class="pre">B</span></tt> must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is not positive
+definite.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.pbtrf">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">pbtrf</tt><big>(</big><em>A</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.pbtrf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cholesky factorization</p>
+<div class="math">
+<p><img src="_images/math/7c7d8b7d91d512e775fc1d163a421bccf3e69629.png" alt="A = LL^T \qquad \mbox{or} \qquad A = LL^H"/></p>
+</div><p>of a positive definite real symmetric or complex Hermitian band matrix
+<img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.</p>
+<p>On entry, the diagonals of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> are stored in <tt class="docutils literal"><span class="pre">A</span></tt>, using the
+BLAS format for symmetric or Hermitian band matrices.  On exit, <tt class="docutils literal"><span class="pre">A</span></tt>
+contains the Cholesky factor, in the BLAS format for triangular band
+matrices.</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is not positive
+definite.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.pbtrs">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">pbtrs</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.pbtrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves a set of linear equations</p>
+<div class="math">
+<p><img src="_images/math/5b0a4f7d762ef4289bef542eb87ea9dd5de2e848.png" alt="AX=B"/></p>
+</div><p>with a positive definite real symmetric or complex Hermitian band
+matrix, given the Cholesky factorization computed by
+<a class="reference internal" href="#cvxopt.lapack.pbsv" title="cvxopt.lapack.pbsv"><tt class="xref py py-func docutils literal"><span class="pre">pbsv</span></tt></a> or
+<a class="reference internal" href="#cvxopt.lapack.pbtrf" title="cvxopt.lapack.pbtrf"><tt class="xref py py-func docutils literal"><span class="pre">pbtrf</span></tt></a>.</p>
+<p>On entry, <tt class="docutils literal"><span class="pre">A</span></tt> contains the triangular factor, as computed by
+<tt class="xref py py-func docutils literal"><span class="pre">pbsv</span></tt> or <tt class="xref py py-func docutils literal"><span class="pre">pbtrf</span></tt>.  On exit, <tt class="docutils literal"><span class="pre">B</span></tt> is replaced by the
+solution.  <tt class="docutils literal"><span class="pre">B</span></tt> must have the same type as <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+</dd></dl>
+
+<p>The following functions are useful for tridiagonal systems.</p>
+<dl class="function">
+<dt id="cvxopt.lapack.ptsv">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">ptsv</tt><big>(</big><em>d</em>, <em>e</em>, <em>B</em><big>)</big><a class="headerlink" href="#cvxopt.lapack.ptsv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves</p>
+<div class="math">
+<p><img src="_images/math/d0dac11eda62458e1a814cf846ef2425e83d3362.png" alt="A X = B,"/></p>
+</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is an <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> positive definite real
+symmetric or complex Hermitian tridiagonal matrix.</p>
+<p>The diagonal of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is stored as a <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix <tt class="docutils literal"><span class="pre">d</span></tt> of
+length <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> and its subdiagonal as a <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>
+matrix <tt class="docutils literal"><span class="pre">e</span></tt> of length <img class="math" src="_images/math/4bdca93962a2beaffc172ca394e04fe05bd74ffd.png" alt="n-1"/>.  The arguments <tt class="docutils literal"><span class="pre">e</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt>
+must have the same type.  On exit <tt class="docutils literal"><span class="pre">d</span></tt> contains the diagonal elements
+of <img class="math" src="_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/> in the
+<span class="raw-html">LDL<sup><small>T</small></sup></span>
+or
+<span class="raw-html">LDL<sup><small>H</small></sup></span>
+factorization of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>, and
+<tt class="docutils literal"><span class="pre">e</span></tt> contains the subdiagonal elements of the unit lower bidiagonal
+matrix <img class="math" src="_images/math/859ccf4cd60c7bc6b8fa1afc9a42dc811a826d6f.png" alt="L"/>.  <tt class="docutils literal"><span class="pre">B</span></tt> is overwritten with the solution <img class="math" src="_images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>.
+Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is singular.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.pttrf">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">pttrf</tt><big>(</big><em>d</em>, <em>e</em><big>)</big><a class="headerlink" href="#cvxopt.lapack.pttrf" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="raw-html">LDL<sup><small>T</small></sup></span>
+or
+<span class="raw-html">LDL<sup><small>H</small></sup></span>
+factorization of an <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> positive
+definite real symmetric or complex Hermitian tridiagonal matrix
+<img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.</p>
+<p>On entry, the argument <tt class="docutils literal"><span class="pre">d</span></tt> is a <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix with the diagonal
+elements of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.  The argument <tt class="docutils literal"><span class="pre">e</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or
+<tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> matrix containing the subdiagonal of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.  On exit
+<tt class="docutils literal"><span class="pre">d</span></tt> contains the diagonal elements of <img class="math" src="_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/>, and <tt class="docutils literal"><span class="pre">e</span></tt> contains
+the subdiagonal elements of the unit lower bidiagonal matrix <img class="math" src="_images/math/859ccf4cd60c7bc6b8fa1afc9a42dc811a826d6f.png" alt="L"/>.</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is singular.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.pttrs">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">pttrs</tt><big>(</big><em>d</em>, <em>e</em>, <em>B</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.pttrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves a set of linear equations</p>
+<div class="math">
+<p><img src="_images/math/57a233e4bced8a9e14812ddb76241c0e78d32d86.png" alt="AX = B"/></p>
+</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is an <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> positive definite real
+symmetric or complex Hermitian tridiagonal matrix, given its
+<span class="raw-html">LDL<sup><small>T</small></sup></span>
+or
+<span class="raw-html">LDL<sup><small>H</small></sup></span>
+factorization.</p>
+<p>The argument <tt class="docutils literal"><span class="pre">d</span></tt> is the diagonal of the diagonal matrix <img class="math" src="_images/math/9ffb448918db29f2a72f8f87f421b3b3cad18f95.png" alt="D"/>.
+The argument <tt class="docutils literal"><span class="pre">uplo</span></tt> only matters for complex matrices.  If <tt class="docutils literal"><span class="pre">uplo</span></tt>
+is <tt class="xref py py-const docutils literal"><span class="pre">'L'</span></tt>, then on exit <tt class="docutils literal"><span class="pre">e</span></tt> contains the subdiagonal elements
+of the unit bidiagonal matrix <img class="math" src="_images/math/859ccf4cd60c7bc6b8fa1afc9a42dc811a826d6f.png" alt="L"/>.  If <tt class="docutils literal"><span class="pre">uplo</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'U'</span></tt>,
+then <tt class="docutils literal"><span class="pre">e</span></tt> contains the complex conjugates of the elements of the unit
+bidiagonal matrix <img class="math" src="_images/math/859ccf4cd60c7bc6b8fa1afc9a42dc811a826d6f.png" alt="L"/>.  On exit, <tt class="docutils literal"><span class="pre">B</span></tt> is overwritten with the
+solution <img class="math" src="_images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>.  <tt class="docutils literal"><span class="pre">B</span></tt> must have the same type as <tt class="docutils literal"><span class="pre">e</span></tt>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="symmetric-and-hermitian-linear-equations">
+<h2>Symmetric and Hermitian Linear Equations<a class="headerlink" href="#symmetric-and-hermitian-linear-equations" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="cvxopt.lapack.sysv">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">sysv</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>ipiv = None</em>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.sysv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves</p>
+<div class="math">
+<p><img src="_images/math/57a233e4bced8a9e14812ddb76241c0e78d32d86.png" alt="AX = B"/></p>
+</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a real or complex symmetric matrix  of order
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.</p>
+<p>On exit, <tt class="docutils literal"><span class="pre">B</span></tt> is replaced by the solution.  The matrices <tt class="docutils literal"><span class="pre">A</span></tt> and
+<tt class="docutils literal"><span class="pre">B</span></tt> must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  The
+optional argument <tt class="docutils literal"><span class="pre">ipiv</span></tt> is an integer matrix of length at least
+equal to <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.  If <tt class="docutils literal"><span class="pre">ipiv</span></tt> is provided, <tt class="xref py py-func docutils literal"><span class="pre">sysv</span></tt> solves the
+system and returns the factorization in <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">ipiv</span></tt>.  If
+<tt class="docutils literal"><span class="pre">ipiv</span></tt> is not specified, <tt class="xref py py-func docutils literal"><span class="pre">sysv</span></tt> solves the system but does not
+return the factorization and does not modify <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is singular.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.sytrf">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">sytrf</tt><big>(</big><em>A</em>, <em>ipiv</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.sytrf" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="raw-html">LDL<sup><small>T</small></sup></span>
+factorization</p>
+<div class="math">
+<p><img src="_images/math/6055e1f59fece64d0154c25751b65aa2fb0e8d3d.png" alt="PAP^T = LDL^T"/></p>
+</div><p>of a real or complex symmetric matrix <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> of order <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.</p>
+<p><tt class="docutils literal"><span class="pre">ipiv</span></tt> is an <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt> matrix of length at least <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.  On
+exit, <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">ipiv</span></tt> contain the factorization.</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is singular.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.sytrs">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">sytrs</tt><big>(</big><em>A</em>, <em>ipiv</em>, <em>B</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.sytrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves</p>
+<div class="math">
+<p><img src="_images/math/92cf69fa5ec2c3089468cecc8da1268b3608cce9.png" alt="A X = B"/></p>
+</div><p>given the
+<span class="raw-html">LDL<sup><small>T</small></sup></span>
+factorization computed by
+<a class="reference internal" href="#cvxopt.lapack.sytrf" title="cvxopt.lapack.sytrf"><tt class="xref py py-func docutils literal"><span class="pre">sytrf</span></tt></a> or
+<a class="reference internal" href="#cvxopt.lapack.sysv" title="cvxopt.lapack.sysv"><tt class="xref py py-func docutils literal"><span class="pre">sysv</span></tt></a>. <tt class="docutils literal"><span class="pre">B</span></tt> must have the same type as
+<tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.sytri">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">sytri</tt><big>(</big><em>A</em>, <em>ipiv</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.sytri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the inverse of a real or complex symmetric matrix.</p>
+<p>On entry, <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">ipiv</span></tt> contain the
+<span class="raw-html">LDL<sup><small>T</small></sup></span>
+factorization computed by <a class="reference internal" href="#cvxopt.lapack.sytrf" title="cvxopt.lapack.sytrf"><tt class="xref py py-func docutils literal"><span class="pre">sytrf</span></tt></a> or
+<a class="reference internal" href="#cvxopt.lapack.sysv" title="cvxopt.lapack.sysv"><tt class="xref py py-func docutils literal"><span class="pre">sysv</span></tt></a>.
+On exit, <tt class="docutils literal"><span class="pre">A</span></tt> contains the inverse.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.hesv">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">hesv</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>ipiv = None</em>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.hesv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves</p>
+<div class="math">
+<p><img src="_images/math/92cf69fa5ec2c3089468cecc8da1268b3608cce9.png" alt="A X = B"/></p>
+</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a real symmetric or complex Hermitian of order
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.</p>
+<p>On exit, <tt class="docutils literal"><span class="pre">B</span></tt> is replaced by the solution.  The matrices <tt class="docutils literal"><span class="pre">A</span></tt> and
+<tt class="docutils literal"><span class="pre">B</span></tt> must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  The
+optional argument <tt class="docutils literal"><span class="pre">ipiv</span></tt> is an integer matrix of length at least
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.  If <tt class="docutils literal"><span class="pre">ipiv</span></tt> is provided, then <tt class="xref py py-func docutils literal"><span class="pre">hesv</span></tt> solves the
+system and returns the factorization in <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">ipiv</span></tt>.  If
+<tt class="docutils literal"><span class="pre">ipiv</span></tt> is not specified, then <tt class="xref py py-func docutils literal"><span class="pre">hesv</span></tt> solves the system but does
+not return the factorization and does not modify <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is singular.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.hetrf">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">hetrf</tt><big>(</big><em>A</em>, <em>ipiv</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.hetrf" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="raw-html">LDL<sup><small>H</small></sup></span>
+factorization</p>
+<div class="math">
+<p><img src="_images/math/a651686b04a35a123ebb96a288e71d45a4bb6069.png" alt="PAP^T = LDL^H"/></p>
+</div><p>of a real symmetric or complex Hermitian matrix of order <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.
+<tt class="docutils literal"><span class="pre">ipiv</span></tt> is an <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt> matrix of length at least <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.
+On exit, <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">ipiv</span></tt> contain the factorization.</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is singular.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.hetrs">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">hetrs</tt><big>(</big><em>A</em>, <em>ipiv</em>, <em>B</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.hetrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves</p>
+<div class="math">
+<p><img src="_images/math/92cf69fa5ec2c3089468cecc8da1268b3608cce9.png" alt="A X = B"/></p>
+</div><p>given the
+<span class="raw-html">LDL<sup><small>H</small></sup></span>
+factorization computed by
+<a class="reference internal" href="#cvxopt.lapack.hetrf" title="cvxopt.lapack.hetrf"><tt class="xref py py-func docutils literal"><span class="pre">hetrf</span></tt></a> or
+<a class="reference internal" href="#cvxopt.lapack.hesv" title="cvxopt.lapack.hesv"><tt class="xref py py-func docutils literal"><span class="pre">hesv</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.hetri">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">hetri</tt><big>(</big><em>A</em>, <em>ipiv</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.hetri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the inverse of a real symmetric or complex Hermitian  matrix.</p>
+<p>On entry, <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">ipiv</span></tt> contain the
+<span class="raw-html">LDL<sup><small>H</small></sup></span>
+factorization computed
+by <a class="reference internal" href="#cvxopt.lapack.hetrf" title="cvxopt.lapack.hetrf"><tt class="xref py py-func docutils literal"><span class="pre">hetrf</span></tt></a> or
+<a class="reference internal" href="#cvxopt.lapack.hesv" title="cvxopt.lapack.hesv"><tt class="xref py py-func docutils literal"><span class="pre">hesv</span></tt></a>.  On exit, <tt class="docutils literal"><span class="pre">A</span></tt> contains the
+inverse.</p>
+</dd></dl>
+
+<p>As an example we solve the KKT system <a href="#equation-e-kkt-example">(1)</a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.lapack</span> <span class="kn">import</span> <span class="n">sysv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">K</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">K</span><span class="p">[:</span> <span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="n">m</span> <span class="p">:</span> <span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">d</span><span class="o">**</span><span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">K</span><span class="p">[:</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">:]</span> <span class="o">=</span> <span class="n">A</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[:</span><span class="n">m</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">m</span><span class="p">:]</span> <span class="o">=</span> <span class="n">b1</span><span class="p">,</span> <span class="n">b2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sysv</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">uplo</span><span class="o">=</span><span class="s">&#39;U&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="triangular-linear-equations">
+<h2>Triangular Linear Equations<a class="headerlink" href="#triangular-linear-equations" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="cvxopt.lapack.trtrs">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">trtrs</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>trans = 'N'</em>, <em>diag = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.trtrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves a triangular set of equations</p>
+<div class="math">
+<p><img src="_images/math/c296af07f14575e62741a278a3550ce5ecb4b11e.png" alt="AX   &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
+A^TX &amp; = B \quad (\mathrm{trans} = \mathrm{'T'}), \\
+A^HX &amp; = B \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
+</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is real or complex and triangular of order <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>,
+and <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/> is a matrix with <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> rows.</p>
+<p><tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> are matrices with the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or
+<tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  <tt class="xref py py-func docutils literal"><span class="pre">trtrs</span></tt> is similar to
+<a class="reference internal" href="blas.html#cvxopt.blas.trsm" title="cvxopt.blas.trsm"><tt class="xref py py-func docutils literal"><span class="pre">blas.trsm</span></tt></a>, except
+that it raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if a diagonal element of <tt class="docutils literal"><span class="pre">A</span></tt>
+is zero (whereas <tt class="xref py py-func docutils literal"><span class="pre">blas.trsm</span></tt> returns <tt class="xref py py-const docutils literal"><span class="pre">inf</span></tt> values).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.trtri">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">trtri</tt><big>(</big><em>A</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>diag = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.trtri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the inverse of a real or complex triangular matrix <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.
+On exit, <tt class="docutils literal"><span class="pre">A</span></tt> contains the inverse.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.tbtrs">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">tbtrs</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>trans = 'T'</em>, <em>diag = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.tbtrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves a triangular set of equations</p>
+<div class="math">
+<p><img src="_images/math/c296af07f14575e62741a278a3550ce5ecb4b11e.png" alt="AX   &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
+A^TX &amp; = B \quad (\mathrm{trans} = \mathrm{'T'}), \\
+A^HX &amp; = B \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
+</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is real or complex triangular band matrix of order
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, and <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/> is a matrix with <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> rows.</p>
+<p>The diagonals of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> are stored in <tt class="docutils literal"><span class="pre">A</span></tt> using the BLAS
+conventions for triangular band matrices.  <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> are
+matrices with the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  On exit,
+<tt class="docutils literal"><span class="pre">B</span></tt> is replaced by the solution <img class="math" src="_images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="least-squares-and-least-norm-problems">
+<h2>Least-Squares and Least-Norm Problems<a class="headerlink" href="#least-squares-and-least-norm-problems" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="cvxopt.lapack.gels">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">gels</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>trans = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.gels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves least-squares and least-norm problems with a full rank <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>
+by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> matrix <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.</p>
+<ol class="arabic">
+<li><p class="first"><tt class="docutils literal"><span class="pre">trans</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt>.  If <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is greater than or equal
+to <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, <tt class="xref py py-func docutils literal"><span class="pre">gels</span></tt> solves the least-squares problem</p>
+<div class="math">
+<p><img src="_images/math/19a25b18df260149489eac1d37664296def89476.png" alt="\begin{array}{ll}
+\mbox{minimize} &amp; \|AX-B\|_F.
+\end{array}"/></p>
+</div><p>If <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is less than or equal to <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, <tt class="xref py py-func docutils literal"><span class="pre">gels</span></tt> solves
+the least-norm problem</p>
+<div class="math">
+<p><img src="_images/math/89d01bca157792b91e0ba9db5e444cbb19a9d755.png" alt="\begin{array}{ll}
+\mbox{minimize} &amp; \|X\|_F \\
+\mbox{subject to} &amp; AX = B.
+\end{array}"/></p>
+</div></li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">trans</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'T'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'C'</span></tt> and <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> are
+real.  If <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is greater than or equal to <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>,
+<tt class="xref py py-func docutils literal"><span class="pre">gels</span></tt> solves the least-norm problem</p>
+<div class="math">
+<p><img src="_images/math/b968737245c900af760202033b17f2d159658f93.png" alt="\begin{array}{ll}
+\mbox{minimize} &amp; \|X\|_F \\
+\mbox{subject to} &amp; A^TX=B.
+\end{array}"/></p>
+</div><p>If <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is less than or equal to <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, <tt class="xref py py-func docutils literal"><span class="pre">gels</span></tt> solves
+the least-squares problem</p>
+<div class="math">
+<p><img src="_images/math/3b768d10ffde750b75e396ad22ac2c8192bd72d5.png" alt="\begin{array}{ll}
+\mbox{minimize} &amp; \|A^TX-B\|_F.
+\end{array}"/></p>
+</div></li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">trans</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'C'</span></tt> and <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> are complex. If
+<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is greater than or equal to <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, <tt class="xref py py-func docutils literal"><span class="pre">gels</span></tt> solves
+the least-norm problem</p>
+<div class="math">
+<p><img src="_images/math/243bee50f19fb6b984ac05f7892cfbbc64520e51.png" alt="\begin{array}{ll}
+\mbox{minimize} &amp; \|X\|_F \\
+\mbox{subject to} &amp; A^HX=B.
+\end{array}"/></p>
+</div><p>If <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is less than or equal to <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, <tt class="xref py py-func docutils literal"><span class="pre">gels</span></tt> solves
+the least-squares problem</p>
+<div class="math">
+<p><img src="_images/math/b0305128e647c1cf75c0df0b958a690962afc23c.png" alt="\begin{array}{ll}
+\mbox{minimize} &amp; \|A^HX-B\|_F.
+\end{array}"/></p>
+</div></li>
+</ol>
+<p><tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> must have the same typecode (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or
+<tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  <tt class="docutils literal"><span class="pre">trans</span></tt> = <tt class="xref py py-const docutils literal"><span class="pre">'T'</span></tt> is not allowed if <tt class="docutils literal"><span class="pre">A</span></tt> is
+complex.  On exit, the solution <img class="math" src="_images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/> is stored as the leading
+submatrix of <tt class="docutils literal"><span class="pre">B</span></tt>.  The matrix <tt class="docutils literal"><span class="pre">A</span></tt> is overwritten with details of
+the QR or the LQ factorization of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.</p>
+<p>Note that <tt class="xref py py-func docutils literal"><span class="pre">gels</span></tt> does not check whether <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is full rank.</p>
+</dd></dl>
+
+<p>The following functions compute QR and LQ factorizations.</p>
+<dl class="function">
+<dt id="cvxopt.lapack.geqrf">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">geqrf</tt><big>(</big><em>A</em>, <em>tau</em><big>)</big><a class="headerlink" href="#cvxopt.lapack.geqrf" title="Permalink to this definition">¶</a></dt>
+<dd><p>QR factorization of a real or complex matrix <tt class="docutils literal"><span class="pre">A</span></tt>:</p>
+<div class="math">
+<p><img src="_images/math/a05da4f69517c5d741d690224fcc07e0b6e93f2a.png" alt="A = Q R."/></p>
+</div><p>If <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, then <img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> is <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by
+<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> and orthogonal/unitary, and <img class="math" src="_images/math/eff43e84f8a3bcf7b6965f0a3248bc4d3a9d0cd4.png" alt="R"/> is <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> and upper triangular (if <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is greater than or equal
+to <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>), or upper trapezoidal (if <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is less than or
+equal to <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>).</p>
+<p><tt class="docutils literal"><span class="pre">tau</span></tt>  is a matrix of the same type as <tt class="docutils literal"><span class="pre">A</span></tt> and of length
+min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>}.  On exit, <img class="math" src="_images/math/eff43e84f8a3bcf7b6965f0a3248bc4d3a9d0cd4.png" alt="R"/> is stored in the upper
+triangular/trapezoidal part of <tt class="docutils literal"><span class="pre">A</span></tt>.  The matrix <img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> is stored
+as a product of min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} elementary reflectors in
+the first min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} columns of <tt class="docutils literal"><span class="pre">A</span></tt> and in <tt class="docutils literal"><span class="pre">tau</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.gelqf">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">gelqf</tt><big>(</big><em>A</em>, <em>tau</em><big>)</big><a class="headerlink" href="#cvxopt.lapack.gelqf" title="Permalink to this definition">¶</a></dt>
+<dd><p>LQ factorization of a real or complex matrix <tt class="docutils literal"><span class="pre">A</span></tt>:</p>
+<div class="math">
+<p><img src="_images/math/7a2b5e1418da350cc4f82a9580e216362c567170.png" alt="A = L Q."/></p>
+</div><p>If <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, then <img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> is <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> by
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> and orthogonal/unitary, and <img class="math" src="_images/math/859ccf4cd60c7bc6b8fa1afc9a42dc811a826d6f.png" alt="L"/> is <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> and lower triangular (if <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is less than or equal to
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>), or lower trapezoidal (if <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is greater than or equal
+to <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>).</p>
+<p><tt class="docutils literal"><span class="pre">tau</span></tt>  is a matrix of the same type as <tt class="docutils literal"><span class="pre">A</span></tt> and of length
+min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>}.  On exit, <img class="math" src="_images/math/859ccf4cd60c7bc6b8fa1afc9a42dc811a826d6f.png" alt="L"/> is stored in the lower
+triangular/trapezoidal part of <tt class="docutils literal"><span class="pre">A</span></tt>.  The matrix <img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> is stored
+as a product of min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} elementary reflectors in the
+first min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} rows of <tt class="docutils literal"><span class="pre">A</span></tt> and in <tt class="docutils literal"><span class="pre">tau</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.geqp3">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">geqp3</tt><big>(</big><em>A</em>, <em>jpvt</em>, <em>tau</em><big>)</big><a class="headerlink" href="#cvxopt.lapack.geqp3" title="Permalink to this definition">¶</a></dt>
+<dd><p>QR factorization with column pivoting of a real or complex matrix
+<img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>:</p>
+<div class="math">
+<p><img src="_images/math/efcae820abe49f870e4cd1607dd26665490f1e01.png" alt="A P = Q R."/></p>
+</div><p>If <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, then <img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> is <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>
+by <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> and orthogonal/unitary, and <img class="math" src="_images/math/eff43e84f8a3bcf7b6965f0a3248bc4d3a9d0cd4.png" alt="R"/> is <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> and upper triangular (if <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is greater than or equal
+to <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>), or upper trapezoidal (if <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is less than or equal
+to <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>).</p>
+<p><tt class="docutils literal"><span class="pre">tau</span></tt> is a matrix of the same type as <tt class="docutils literal"><span class="pre">A</span></tt> and of length
+min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>}.  <tt class="docutils literal"><span class="pre">jpvt</span></tt> is an integer matrix of
+length <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.  On entry, if <tt class="docutils literal"><span class="pre">jpvt[k]</span></tt> is nonzero, then
+column <img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is permuted to the front of <img class="math" src="_images/math/e3bb4eeb347e74e025fd175c22f1f7275af0555e.png" alt="AP"/>.
+Otherwise, column <img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> is a free column.</p>
+<p>On exit, <tt class="docutils literal"><span class="pre">jpvt</span></tt> contains the permutation <img class="math" src="_images/math/4b4cade9ca8a2c8311fafcf040bc5b15ca507f52.png" alt="P"/>:  the operation
+<img class="math" src="_images/math/e3bb4eeb347e74e025fd175c22f1f7275af0555e.png" alt="AP"/> is equivalent to <tt class="docutils literal"><span class="pre">A[:,</span> <span class="pre">jpvt-1]</span></tt>.  <img class="math" src="_images/math/eff43e84f8a3bcf7b6965f0a3248bc4d3a9d0cd4.png" alt="R"/> is stored
+in the upper triangular/trapezoidal part of <tt class="docutils literal"><span class="pre">A</span></tt>.  The matrix
+<img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> is stored as a product of min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>}
+elementary reflectors in the first min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>,:math:<cite>n</cite>} columns
+of <tt class="docutils literal"><span class="pre">A</span></tt> and in <tt class="docutils literal"><span class="pre">tau</span></tt>.</p>
+</dd></dl>
+
+<p>In most applications, the matrix <img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> is not needed explicitly, and
+it is sufficient to be able to make products with <img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> or its
+transpose.  The functions <a class="reference internal" href="#cvxopt.lapack.unmqr" title="cvxopt.lapack.unmqr"><tt class="xref py py-func docutils literal"><span class="pre">unmqr</span></tt></a> and
+<a class="reference internal" href="#cvxopt.lapack.ormqr" title="cvxopt.lapack.ormqr"><tt class="xref py py-func docutils literal"><span class="pre">ormqr</span></tt></a> multiply a matrix
+with the orthogonal matrix computed by
+<a class="reference internal" href="#cvxopt.lapack.geqrf" title="cvxopt.lapack.geqrf"><tt class="xref py py-func docutils literal"><span class="pre">geqrf</span></tt></a>.</p>
+<dl class="function">
+<dt id="cvxopt.lapack.unmqr">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">unmqr</tt><big>(</big><em>A</em>, <em>tau</em>, <em>C</em><span class="optional">[</span>, <em>side = 'L'</em>, <em>trans = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.unmqr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Product with a real orthogonal or complex unitary matrix:</p>
+<div class="math">
+<p><img src="_images/math/575bf21b82581301988bc21a230e4834fbd8920d.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
+\begin{split}
+C &amp; := \op(Q)C \quad (\mathrm{side} = \mathrm{'L'}), \\
+C &amp; := C\op(Q) \quad (\mathrm{side} = \mathrm{'R'}), \\
+\end{split}"/></p>
+</div><p>where</p>
+<div class="math">
+<p><img src="_images/math/d3d1038f9001a56757279c19ca3ebe865caebf66.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
+\op(Q) =  \left\{ \begin{array}{ll}
+    Q &amp; \mathrm{trans} = \mathrm{'N'} \\
+    Q^T &amp; \mathrm{trans} = \mathrm{'T'} \\
+    Q^H &amp; \mathrm{trans} = \mathrm{'C'}.
+\end{array}\right."/></p>
+</div><p>If <tt class="docutils literal"><span class="pre">A</span></tt> is <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, then <img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> is square of order
+<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> and orthogonal or unitary.  <img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> is stored in the first
+min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} columns of <tt class="docutils literal"><span class="pre">A</span></tt> and in <tt class="docutils literal"><span class="pre">tau</span></tt> as a
+product of min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} elementary reflectors, as
+computed by <a class="reference internal" href="#cvxopt.lapack.geqrf" title="cvxopt.lapack.geqrf"><tt class="xref py py-func docutils literal"><span class="pre">geqrf</span></tt></a>.
+The matrices <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">tau</span></tt>, and <tt class="docutils literal"><span class="pre">C</span></tt>
+must have the same type.  <tt class="docutils literal"><span class="pre">trans</span></tt> = <tt class="xref py py-const docutils literal"><span class="pre">'T'</span></tt> is only allowed if
+the typecode is <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.ormqr">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">ormqr</tt><big>(</big><em>A</em>, <em>tau</em>, <em>C</em><span class="optional">[</span>, <em>side = 'L'</em>, <em>trans = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.ormqr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identical to <a class="reference internal" href="#cvxopt.lapack.unmqr" title="cvxopt.lapack.unmqr"><tt class="xref py py-func docutils literal"><span class="pre">unmqr</span></tt></a> but works only for
+real matrices, and the
+possible values of <tt class="docutils literal"><span class="pre">trans</span></tt> are <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">'T'</span></tt>.</p>
+</dd></dl>
+
+<p>As an example, we solve a least-squares problem by a direct call to
+<a class="reference internal" href="#cvxopt.lapack.gels" title="cvxopt.lapack.gels"><tt class="xref py py-func docutils literal"><span class="pre">gels</span></tt></a>, and by separate calls to
+<a class="reference internal" href="#cvxopt.lapack.geqrf" title="cvxopt.lapack.geqrf"><tt class="xref py py-func docutils literal"><span class="pre">geqrf</span></tt></a>,
+<a class="reference internal" href="#cvxopt.lapack.ormqr" title="cvxopt.lapack.ormqr"><tt class="xref py py-func docutils literal"><span class="pre">ormqr</span></tt></a>, and
+<a class="reference internal" href="#cvxopt.lapack.trtrs" title="cvxopt.lapack.trtrs"><tt class="xref py py-func docutils literal"><span class="pre">trtrs</span></tt></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="o">+</span><span class="n">b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">gels</span><span class="p">(</span><span class="o">+</span><span class="n">A</span><span class="p">,</span> <span class="n">x1</span><span class="p">)</span>                  <span class="c"># x1[:n] minimizes || A*x - b ||_2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tau</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">geqrf</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>                 <span class="c"># A = [Q1, Q2] * [R1; 0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">=</span> <span class="o">+</span><span class="n">b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">ormqr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s">&#39;T&#39;</span><span class="p">)</span>  <span class="c"># x2 := [Q1, Q2]&#39; * x2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">trtrs</span><span class="p">(</span><span class="n">A</span><span class="p">[:</span><span class="n">n</span><span class="p">,:],</span> <span class="n">x2</span><span class="p">,</span> <span class="n">uplo</span><span class="o">=</span><span class="s">&#39;U&#39;</span><span class="p">)</span>  <span class="c"># x2[:n] := R1^{-1} * x2[:n]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blas</span><span class="o">.</span><span class="n">nrm2</span><span class="p">(</span><span class="n">x1</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">x2</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span>
+<span class="go">3.0050798580569307e-16</span>
+</pre></div>
+</div>
+<p>The next two functions make products with the orthogonal matrix computed
+by <a class="reference internal" href="#cvxopt.lapack.gelqf" title="cvxopt.lapack.gelqf"><tt class="xref py py-func docutils literal"><span class="pre">gelqf</span></tt></a>.</p>
+<dl class="function">
+<dt id="cvxopt.lapack.unmlq">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">unmlq</tt><big>(</big><em>A</em>, <em>tau</em>, <em>C</em><span class="optional">[</span>, <em>side = 'L'</em>, <em>trans = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.unmlq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Product with a real orthogonal or complex unitary matrix:</p>
+<div class="math">
+<p><img src="_images/math/575bf21b82581301988bc21a230e4834fbd8920d.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
+\begin{split}
+C &amp; := \op(Q)C \quad (\mathrm{side} = \mathrm{'L'}), \\
+C &amp; := C\op(Q) \quad (\mathrm{side} = \mathrm{'R'}), \\
+\end{split}"/></p>
+</div><p>where</p>
+<div class="math">
+<p><img src="_images/math/db9a90b635245756d6e2ad40bb43ae2605558b7f.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
+    \op(Q) =  \left\{ \begin{array}{ll}
+        Q &amp; \mathrm{trans} = \mathrm{'N'}, \\
+        Q^T &amp; \mathrm{trans} = \mathrm{'T'}, \\
+        Q^H &amp; \mathrm{trans} = \mathrm{'C'}.
+    \end{array}\right."/></p>
+</div><p>If <tt class="docutils literal"><span class="pre">A</span></tt> is <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, then <img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> is square of order
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> and orthogonal or unitary.  <img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> is stored in the first
+min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} rows of <tt class="docutils literal"><span class="pre">A</span></tt> and in <tt class="docutils literal"><span class="pre">tau</span></tt> as a product of
+min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} elementary reflectors, as computed by
+<a class="reference internal" href="#cvxopt.lapack.gelqf" title="cvxopt.lapack.gelqf"><tt class="xref py py-func docutils literal"><span class="pre">gelqf</span></tt></a>.
+The matrices <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">tau</span></tt>, and <tt class="docutils literal"><span class="pre">C</span></tt> must have the
+same type.  <tt class="docutils literal"><span class="pre">trans</span></tt> = <tt class="xref py py-const docutils literal"><span class="pre">'T'</span></tt> is only allowed if the typecode
+is <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.ormlq">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">ormlq</tt><big>(</big><em>A</em>, <em>tau</em>, <em>C</em><span class="optional">[</span>, <em>side = 'L'</em>, <em>trans = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.ormlq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identical to <a class="reference internal" href="#cvxopt.lapack.unmlq" title="cvxopt.lapack.unmlq"><tt class="xref py py-func docutils literal"><span class="pre">unmlq</span></tt></a> but works only for
+real matrices, and the
+possible values of <tt class="docutils literal"><span class="pre">trans</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">'T'</span></tt>.</p>
+</dd></dl>
+
+<p>As an example, we solve a least-norm problem by a direct call to
+<a class="reference internal" href="#cvxopt.lapack.gels" title="cvxopt.lapack.gels"><tt class="xref py py-func docutils literal"><span class="pre">gels</span></tt></a>, and by separate calls to
+<a class="reference internal" href="#cvxopt.lapack.gelqf" title="cvxopt.lapack.gelqf"><tt class="xref py py-func docutils literal"><span class="pre">gelqf</span></tt></a>,
+<a class="reference internal" href="#cvxopt.lapack.ormlq" title="cvxopt.lapack.ormlq"><tt class="xref py py-func docutils literal"><span class="pre">ormlq</span></tt></a>,
+and <a class="reference internal" href="#cvxopt.lapack.trtrs" title="cvxopt.lapack.trtrs"><tt class="xref py py-func docutils literal"><span class="pre">trtrs</span></tt></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span><span class="p">[:</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">gels</span><span class="p">(</span><span class="o">+</span><span class="n">A</span><span class="p">,</span> <span class="n">x1</span><span class="p">)</span>                  <span class="c"># x1 minimizes ||x||_2 subject to A*x = b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tau</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">gelqf</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>                 <span class="c"># A = [L1, 0] * [Q1; Q2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x2</span><span class="p">[:</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span>                           <span class="c"># x2 = [b; 0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">trtrs</span><span class="p">(</span><span class="n">A</span><span class="p">[:,:</span><span class="n">m</span><span class="p">],</span> <span class="n">x2</span><span class="p">)</span>            <span class="c"># x2[:m] := L1^{-1} * x2[:m]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">ormlq</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s">&#39;T&#39;</span><span class="p">)</span>  <span class="c"># x2 := [Q1, Q2]&#39; * x2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blas</span><span class="o">.</span><span class="n">nrm2</span><span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">)</span>
+<span class="go">0.0</span>
+</pre></div>
+</div>
+<p>Finally, if the matrix <img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> is needed explicitly, it can be generated
+from the output of <a class="reference internal" href="#cvxopt.lapack.geqrf" title="cvxopt.lapack.geqrf"><tt class="xref py py-func docutils literal"><span class="pre">geqrf</span></tt></a> and
+<a class="reference internal" href="#cvxopt.lapack.gelqf" title="cvxopt.lapack.gelqf"><tt class="xref py py-func docutils literal"><span class="pre">gelqf</span></tt></a> using one of the following functions.</p>
+<dl class="function">
+<dt id="cvxopt.lapack.ungqr">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">ungqr</tt><big>(</big><em>A</em>, <em>tau</em><big>)</big><a class="headerlink" href="#cvxopt.lapack.ungqr" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <tt class="docutils literal"><span class="pre">A</span></tt> has size <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, and <tt class="docutils literal"><span class="pre">tau</span></tt> has length
+<img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>, then, on entry, the first <tt class="docutils literal"><span class="pre">k</span></tt> columns of the matrix <tt class="docutils literal"><span class="pre">A</span></tt>
+and the entries of <tt class="docutils literal"><span class="pre">tau</span></tt> contai an unitary or orthogonal matrix
+<img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> of order <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, as computed by
+<a class="reference internal" href="#cvxopt.lapack.geqrf" title="cvxopt.lapack.geqrf"><tt class="xref py py-func docutils literal"><span class="pre">geqrf</span></tt></a>.  On exit,
+the first min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} columns of <img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> are contained
+in the leading columns of <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.orgqr">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">orgqr</tt><big>(</big><em>A</em>, <em>tau</em><big>)</big><a class="headerlink" href="#cvxopt.lapack.orgqr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identical to <a class="reference internal" href="#cvxopt.lapack.ungqr" title="cvxopt.lapack.ungqr"><tt class="xref py py-func docutils literal"><span class="pre">ungqr</span></tt></a> but works only for
+real matrices.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.unglq">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">unglq</tt><big>(</big><em>A</em>, <em>tau</em><big>)</big><a class="headerlink" href="#cvxopt.lapack.unglq" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <tt class="docutils literal"><span class="pre">A</span></tt> has size <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, and <tt class="docutils literal"><span class="pre">tau</span></tt> has length
+<img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>, then, on entry, the first <tt class="docutils literal"><span class="pre">k</span></tt> rows of the matrix <tt class="docutils literal"><span class="pre">A</span></tt>
+and the entries of <tt class="docutils literal"><span class="pre">tau</span></tt> contain a unitary or orthogonal matrix
+<img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> of order <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, as computed by
+<a class="reference internal" href="#cvxopt.lapack.gelqf" title="cvxopt.lapack.gelqf"><tt class="xref py py-func docutils literal"><span class="pre">gelqf</span></tt></a>.
+On exit, the first min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} rows of <img class="math" src="_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> are
+contained in the leading rows of <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.orglq">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">orglq</tt><big>(</big><em>A</em>, <em>tau</em><big>)</big><a class="headerlink" href="#cvxopt.lapack.orglq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identical to <a class="reference internal" href="#cvxopt.lapack.unglq" title="cvxopt.lapack.unglq"><tt class="xref py py-func docutils literal"><span class="pre">unglq</span></tt></a> but works only for
+real matrices.</p>
+</dd></dl>
+
+<p>We illustrate this with the QR factorization of the matrix</p>
+<div class="math">
+<p><img src="_images/math/e355e8d282fa4ef5357c9a612727d3b43bc0ea82.png" alt="A = \left[\begin{array}{rrr}
+    6 &amp; -5 &amp; 4 \\ 6 &amp; 3 &amp; -4 \\ 19 &amp; -2 &amp; 7 \\ 6 &amp; -10 &amp; -5
+    \end{array} \right]
+  = \left[\begin{array}{cc}
+    Q_1 &amp; Q_2 \end{array}\right]
+    \left[\begin{array}{c} R \\ 0 \end{array}\right]."/></p>
+</div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">lapack</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span> <span class="p">[</span><span class="mf">6.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">,</span> <span class="mf">19.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">7.</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">]</span> <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tau</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">geqrf</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span> <span class="p">:])</span>              <span class="c"># Upper triangular part is R.</span>
+<span class="go">[-2.17e+01  5.08e+00 -4.76e+00]</span>
+<span class="go">[ 2.17e-01 -1.06e+01 -2.66e+00]</span>
+<span class="go">[ 6.87e-01  3.12e-01 -8.74e+00]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Q1</span> <span class="o">=</span> <span class="o">+</span><span class="n">A</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">orgqr</span><span class="p">(</span><span class="n">Q1</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">Q1</span><span class="p">)</span>
+<span class="go">[-2.77e-01  3.39e-01 -4.10e-01]</span>
+<span class="go">[-2.77e-01 -4.16e-01  7.35e-01]</span>
+<span class="go">[-8.77e-01 -2.32e-01 -2.53e-01]</span>
+<span class="go">[-2.77e-01  8.11e-01  4.76e-01]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Q</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Q</span><span class="p">[:,</span> <span class="p">:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">orgqr</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>                     <span class="c"># Q = [ Q1, Q2]</span>
+<span class="go">[-2.77e-01  3.39e-01 -4.10e-01 -8.00e-01]</span>
+<span class="go">[-2.77e-01 -4.16e-01  7.35e-01 -4.58e-01]</span>
+<span class="go">[-8.77e-01 -2.32e-01 -2.53e-01  3.35e-01]</span>
+<span class="go">[-2.77e-01  8.11e-01  4.76e-01  1.96e-01]</span>
+</pre></div>
+</div>
+<p>The orthogonal matrix in the factorization</p>
+<div class="math">
+<p><img src="_images/math/646800699122480b28203a978deddb945eb19d98.png" alt="A = \left[ \begin{array}{rrrr}
+    3 &amp; -16 &amp; -10 &amp; -1 \\
+   -2 &amp; -12 &amp;  -3 &amp;  4 \\
+    9 &amp;  19 &amp;   6 &amp; -6
+    \end{array}\right]
+  = Q \left[\begin{array}{cc} R_1 &amp; R_2 \end{array}\right]"/></p>
+</div><p>can be generated as follows.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span> <span class="p">[</span><span class="mf">3.</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">16.</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.</span><span class="p">,</span> <span class="mf">19.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">10.</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.</span><span class="p">]</span> <span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tau</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">geqrf</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">R</span> <span class="o">=</span> <span class="o">+</span><span class="n">A</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>                     <span class="c"># Upper trapezoidal part is [R1, R2].</span>
+<span class="go">[-9.70e+00 -1.52e+01 -3.09e+00  6.70e+00]</span>
+<span class="go">[-1.58e-01  2.30e+01  1.14e+01 -1.92e+00]</span>
+<span class="go">[ 7.09e-01 -5.57e-01  2.26e+00  2.09e+00]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">orgqr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="p">:</span><span class="n">m</span><span class="p">])</span>              <span class="c"># Q is in the first m columns of A.</span>
+<span class="go">[-3.09e-01 -8.98e-01 -3.13e-01]</span>
+<span class="go">[ 2.06e-01 -3.85e-01  9.00e-01]</span>
+<span class="go">[-9.28e-01  2.14e-01  3.04e-01]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="symmetric-and-hermitian-eigenvalue-decomposition">
+<h2>Symmetric and Hermitian Eigenvalue Decomposition<a class="headerlink" href="#symmetric-and-hermitian-eigenvalue-decomposition" title="Permalink to this headline">¶</a></h2>
+<p>The first four routines compute all or selected  eigenvalues and
+eigenvectors of a real symmetric matrix <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>:</p>
+<div class="math">
+<p><img src="_images/math/8e3cd7144270d02f18f633b78d085c8433ff8c92.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
+A = V\diag(\lambda)V^T,\qquad  V^TV = I."/></p>
+</div><dl class="function">
+<dt id="cvxopt.lapack.syev">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">syev</tt><big>(</big><em>A</em>, <em>W</em><span class="optional">[</span>, <em>jobz = 'N'</em>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.syev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Eigenvalue decomposition of a real symmetric matrix of order <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.</p>
+<p><tt class="docutils literal"><span class="pre">W</span></tt> is a real matrix of length at least <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.  On exit, <tt class="docutils literal"><span class="pre">W</span></tt>
+contains the eigenvalues in ascending order.  If <tt class="docutils literal"><span class="pre">jobz</span></tt> is
+<tt class="xref py py-const docutils literal"><span class="pre">'V'</span></tt>, the eigenvectors are also computed and returned in <tt class="docutils literal"><span class="pre">A</span></tt>.
+If <tt class="docutils literal"><span class="pre">jobz</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt>, the eigenvectors are not returned and the
+contents of <tt class="docutils literal"><span class="pre">A</span></tt> are destroyed.</p>
+<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the eigenvalue decomposition fails.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.syevd">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">syevd</tt><big>(</big><em>A</em>, <em>W</em><span class="optional">[</span>, <em>jobz = 'N'</em>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.syevd" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is an alternative to <a class="reference internal" href="#cvxopt.lapack.syev" title="cvxopt.lapack.syev"><tt class="xref py py-func docutils literal"><span class="pre">syev</span></tt></a>, based
+on a different
+algorithm.  It is faster on large problems, but also uses more memory.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.syevx">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">syevx</tt><big>(</big><em>A</em>, <em>W</em><span class="optional">[</span>, <em>jobz = 'N'</em>, <em>range = 'A'</em>, <em>uplo = 'L'</em>, <em>vl = 0.0</em>, <em>vu = 0.0</em>, <em>il = 1</em>, <em>iu = 1</em>, <em>Z = None</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.syevx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes selected eigenvalues and eigenvectors of a real symmetric
+matrix of order <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.</p>
+<p><tt class="docutils literal"><span class="pre">W</span></tt> is a real matrix of length at least <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.  On exit, <tt class="docutils literal"><span class="pre">W</span></tt>
+contains the eigenvalues in ascending order.  If <tt class="docutils literal"><span class="pre">range</span></tt> is
+<tt class="xref py py-const docutils literal"><span class="pre">'A'</span></tt>, all the eigenvalues are computed.  If <tt class="docutils literal"><span class="pre">range</span></tt> is
+<tt class="xref py py-const docutils literal"><span class="pre">'I'</span></tt>, eigenvalues <img class="math" src="_images/math/034a6cc900fafbe63299305a19ba860fea7649c6.png" alt="i_l"/> through <img class="math" src="_images/math/7a1678661c9e3d02a8d260c7cdfc5d154fdf6048.png" alt="i_u"/> are
+computed, where <img class="math" src="_images/math/653de16fdaccadda89726ca6c4853e1804a3087b.png" alt="1 \leq i_l \leq i_u \leq n"/>.  If <tt class="docutils literal"><span class="pre">range</span></tt> is
+<tt class="xref py py-const docutils literal"><span class="pre">'V'</span></tt>, the eigenvalues in the interval <img class="math" src="_images/math/b6fe8380f75a1a57d2ab93a8089d1574c4733a69.png" alt="(v_l, v_u]"/> are
+computed.</p>
+<p>If <tt class="docutils literal"><span class="pre">jobz</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'V'</span></tt>, the (normalized) eigenvectors are
+computed, and returned in <tt class="docutils literal"><span class="pre">Z</span></tt>.  If <tt class="docutils literal"><span class="pre">jobz</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt>, the
+eigenvectors are not computed.  In both cases, the contents of <tt class="docutils literal"><span class="pre">A</span></tt>
+are destroyed on exit.</p>
+<p><tt class="docutils literal"><span class="pre">Z</span></tt> is optional (and not referenced) if <tt class="docutils literal"><span class="pre">jobz</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt>.
+It is required if <tt class="docutils literal"><span class="pre">jobz</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'V'</span></tt> and must have at least
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> columns if <tt class="docutils literal"><span class="pre">range</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'A'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'V'</span></tt> and  at
+least <img class="math" src="_images/math/b29eaf334ae25f9ba06c86ff5e692df7cfaf3c6e.png" alt="i_u - i_l + 1"/> columns if <tt class="docutils literal"><span class="pre">range</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'I'</span></tt>.</p>
+<p><tt class="xref py py-func docutils literal"><span class="pre">syevx</span></tt> returns the number of computed eigenvalues.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.syevr">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">syevr</tt><big>(</big><em>A</em>, <em>W</em><span class="optional">[</span>, <em>jobz = 'N'</em>, <em>range = 'A'</em>, <em>uplo = 'L'</em>, <em>vl = 0.0</em>, <em>vu = 0.0</em>, <em>il = 1</em>, <em>iu = n</em>, <em>Z =  None</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.syevr" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is an alternative to <a class="reference internal" href="#cvxopt.lapack.syevr" title="cvxopt.lapack.syevr"><tt class="xref py py-func docutils literal"><span class="pre">syevx</span></tt></a>.
+<tt class="xref py py-func docutils literal"><span class="pre">syevr</span></tt> is the most
+recent LAPACK routine for symmetric eigenvalue problems, and expected
+to supersede the three other routines in future releases.</p>
+</dd></dl>
+
+<p>The next four routines can be used to compute eigenvalues and eigenvectors
+for complex Hermitian matrices:</p>
+<div class="math">
+<p><img src="_images/math/debe5ba497f4589b66dfc69f4e18d73c3995d372.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
+A = V\diag(\lambda)V^H,\qquad  V^HV = I."/></p>
+</div><p>For real symmetric matrices they are identical to the corresponding
+<tt class="xref py py-func docutils literal"><span class="pre">syev*</span></tt> routines.</p>
+<dl class="function">
+<dt id="cvxopt.lapack.heev">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">heev</tt><big>(</big><em>A</em>, <em>W</em><span class="optional">[</span>, <em>jobz = 'N'</em>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.heev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Eigenvalue decomposition of a real symmetric or complex Hermitian
+matrix of order <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.</p>
+<p>The calling sequence is identical to
+<a class="reference internal" href="#cvxopt.lapack.syev" title="cvxopt.lapack.syev"><tt class="xref py py-func docutils literal"><span class="pre">syev</span></tt></a>,
+except that <tt class="docutils literal"><span class="pre">A</span></tt> can be real or complex.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.heevd">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">heevd</tt><big>(</big><em>A</em>, <em>W</em><span class="optional">[</span>, <em>jobz = 'N'</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.heevd" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is an alternative to <a class="reference internal" href="#cvxopt.lapack.heevd" title="cvxopt.lapack.heevd"><tt class="xref py py-func docutils literal"><span class="pre">heev</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.heevx">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">heevx</tt><big>(</big><em>A</em>, <em>W</em><span class="optional">[</span>, <em>jobz = 'N'</em>, <em>range = 'A'</em>, <em>uplo = 'L'</em>, <em>vl = 0.0</em>, <em>vu = 0.0</em>, <em>il = 1</em>, <em>iu = n</em>, <em>Z = None</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.heevx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes selected eigenvalues and eigenvectors of a real symmetric
+or complex Hermitian matrix.</p>
+<p>The calling sequence is identical to
+<a class="reference internal" href="#cvxopt.lapack.syevx" title="cvxopt.lapack.syevx"><tt class="xref py py-func docutils literal"><span class="pre">syevx</span></tt></a>, except that <tt class="docutils literal"><span class="pre">A</span></tt>
+can be real or complex.  <tt class="docutils literal"><span class="pre">Z</span></tt> must have the same type as <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.heevr">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">heevr</tt><big>(</big><em>A</em>, <em>W</em><span class="optional">[</span>, <em>jobz = 'N'</em>, <em>range = 'A'</em>, <em>uplo = 'L'</em>, <em>vl = 0.0</em>, <em>vu = 0.0</em>, <em>il = 1</em>, <em>iu = n</em>, <em>Z = None</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.heevr" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is an alternative to <a class="reference internal" href="#cvxopt.lapack.heevx" title="cvxopt.lapack.heevx"><tt class="xref py py-func docutils literal"><span class="pre">heevx</span></tt></a>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="generalized-symmetric-definite-eigenproblems">
+<h2>Generalized Symmetric Definite Eigenproblems<a class="headerlink" href="#generalized-symmetric-definite-eigenproblems" title="Permalink to this headline">¶</a></h2>
+<p>Three types of generalized eigenvalue problems can be solved:</p>
+<div class="math" id="equation-e-gevd">
+<p><span class="eqno">(2)</span><img src="_images/math/4a77a2b64f03f526dd41a84c12565858df391e4f.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
+\begin{split}
+    AZ  &amp; = BZ\diag(\lambda)\quad \mbox{(type 1)}, \\
+    ABZ &amp; = Z\diag(\lambda) \quad \mbox{(type 2)}, \\
+    BAZ &amp; = Z\diag(\lambda) \quad \mbox{(type 3)},
+\end{split}"/></p>
+</div><p>with <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> and <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/> real symmetric or complex Hermitian, and
+<img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/> is positive definite.  The matrix of eigenvectors is normalized
+as follows:</p>
+<div class="math">
+<p><img src="_images/math/d006b62a4fac9204d655641e7dad8d151f9035bc.png" alt="Z^H BZ = I \quad \mbox{(types 1 and 2)}, \qquad
+Z^H B^{-1}Z = I \quad \mbox{(type 3)}."/></p>
+</div><dl class="function">
+<dt id="cvxopt.lapack.sygv">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">sygv</tt><big>(</big><em>A</em>, <em>B</em>, <em>W</em><span class="optional">[</span>, <em>itype = 1</em>, <em>jobz = 'N'</em>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.sygv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves the generalized eigenproblem <a href="#equation-e-gevd">(2)</a> for real symmetric
+matrices of order <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, stored in real matrices <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt>.
+<tt class="docutils literal"><span class="pre">itype</span></tt> is an integer with possible values 1, 2, 3, and specifies
+the type of eigenproblem.  <tt class="docutils literal"><span class="pre">W</span></tt> is a real matrix of length at least
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.  On exit, it contains the eigenvalues in ascending order.
+On exit, <tt class="docutils literal"><span class="pre">B</span></tt> contains the Cholesky factor of <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/>.  If <tt class="docutils literal"><span class="pre">jobz</span></tt>
+is <tt class="xref py py-const docutils literal"><span class="pre">'V'</span></tt>, the eigenvectors are computed and returned in <tt class="docutils literal"><span class="pre">A</span></tt>.
+If <tt class="docutils literal"><span class="pre">jobz</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt>, the eigenvectors are not returned and the
+contents of <tt class="docutils literal"><span class="pre">A</span></tt> are destroyed.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.hegv">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">hegv</tt><big>(</big><em>A</em>, <em>B</em>, <em>W</em><span class="optional">[</span>, <em>itype = 1</em>, <em>jobz = 'N'</em>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.hegv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generalized eigenvalue problem <a href="#equation-e-gevd">(2)</a> of real symmetric or
+complex Hermitian matrix of order <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.  The calling sequence is
+identical to <a class="reference internal" href="#cvxopt.lapack.sygv" title="cvxopt.lapack.sygv"><tt class="xref py py-func docutils literal"><span class="pre">sygv</span></tt></a>, except that
+<tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> can be real or complex.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="singular-value-decomposition">
+<h2>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="cvxopt.lapack.gesvd">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">gesvd</tt><big>(</big><em>A</em>, <em>S</em><span class="optional">[</span>, <em>jobu = 'N'</em>, <em>jobvt = 'N'</em>, <em>U = None</em>, <em>Vt = None</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.gesvd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Singular value decomposition</p>
+<div class="math">
+<p><img src="_images/math/c3416ee6a95674c8610bb9db728b39fa530d8b5b.png" alt="A = U \Sigma V^T, \qquad A = U \Sigma V^H"/></p>
+</div><p>of a real or complex <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> matrix <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.</p>
+<p><tt class="docutils literal"><span class="pre">S</span></tt> is a real matrix of length at least min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>}.
+On exit, its first  min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} elements are the
+singular values in descending order.</p>
+<p>The argument <tt class="docutils literal"><span class="pre">jobu</span></tt> controls how many left singular vectors are
+computed.  The possible values are <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'A'</span></tt>,
+<tt class="xref py py-const docutils literal"><span class="pre">'S'</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">'O'</span></tt>.  If <tt class="docutils literal"><span class="pre">jobu</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt>, no left
+singular vectors are computed.  If <tt class="docutils literal"><span class="pre">jobu</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'A'</span></tt>, all left
+singular vectors are computed and returned as columns of <tt class="docutils literal"><span class="pre">U</span></tt>.
+If <tt class="docutils literal"><span class="pre">jobu</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'S'</span></tt>, the first min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} left
+singular vectors are computed and returned as columns of <tt class="docutils literal"><span class="pre">U</span></tt>.
+If <tt class="docutils literal"><span class="pre">jobu</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'O'</span></tt>, the first min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} left
+singular vectors are computed and returned as columns of <tt class="docutils literal"><span class="pre">A</span></tt>.
+The argument <tt class="docutils literal"><span class="pre">U</span></tt> is None(if <tt class="docutils literal"><span class="pre">jobu</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt>
+or <tt class="xref py py-const docutils literal"><span class="pre">'A'</span></tt>) or a matrix of the same type as <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+<p>The argument <tt class="docutils literal"><span class="pre">jobvt</span></tt> controls how many right singular vectors are
+computed.  The possible values are <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'A'</span></tt>,
+<tt class="xref py py-const docutils literal"><span class="pre">'S'</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">'O'</span></tt>.  If <tt class="docutils literal"><span class="pre">jobvt</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt>, no right
+singular vectors are computed.  If <tt class="docutils literal"><span class="pre">jobvt</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'A'</span></tt>, all right
+singular vectors are computed and returned as rows of <tt class="docutils literal"><span class="pre">Vt</span></tt>.
+If <tt class="docutils literal"><span class="pre">jobvt</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'S'</span></tt>, the first min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>}
+right singular vectors are computed and their (conjugate) transposes
+are returned as rows of <tt class="docutils literal"><span class="pre">Vt</span></tt>.  If <tt class="docutils literal"><span class="pre">jobvt</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'O'</span></tt>, the
+first min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} right singular vectors are computed
+and their (conjugate) transposes are returned as rows of <tt class="docutils literal"><span class="pre">A</span></tt>.
+Note that the (conjugate) transposes of the right singular vectors
+(i.e., the matrix <img class="math" src="_images/math/c002f537f1dbe8a31902882fd1084c70c7eb9994.png" alt="V^H"/>) are returned in <tt class="docutils literal"><span class="pre">Vt</span></tt> or <tt class="docutils literal"><span class="pre">A</span></tt>.
+The argument <tt class="docutils literal"><span class="pre">Vt</span></tt> can be <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt> (if <tt class="docutils literal"><span class="pre">jobvt</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt>
+or <tt class="xref py py-const docutils literal"><span class="pre">'A'</span></tt>) or a matrix of the same type as <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+<p>On exit, the contents of <tt class="docutils literal"><span class="pre">A</span></tt> are destroyed.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cvxopt.lapack.gesdd">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">gesdd</tt><big>(</big><em>A</em>, <em>S</em><span class="optional">[</span>, <em>jobz = 'N'</em>, <em>U = None</em>, <em>Vt = None</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.gesdd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Singular value decomposition of a real or complex <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> matrix..  This function is based on a divide-and-conquer
+algorithm and is faster than <a class="reference internal" href="#cvxopt.lapack.gesdd" title="cvxopt.lapack.gesdd"><tt class="xref py py-func docutils literal"><span class="pre">gesvd</span></tt></a>.</p>
+<p><tt class="docutils literal"><span class="pre">S</span></tt> is a real matrix of length at least min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>}.
+On exit, its first min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} elements are the
+singular values in descending order.</p>
+<p>The argument <tt class="docutils literal"><span class="pre">jobz</span></tt> controls how many singular vectors are computed.
+The possible values are <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'A'</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'S'</span></tt> and
+<tt class="xref py py-const docutils literal"><span class="pre">'O'</span></tt>.  If <tt class="docutils literal"><span class="pre">jobz</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt>, no singular vectors are
+computed.  If <tt class="docutils literal"><span class="pre">jobz</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'A'</span></tt>, all <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> left singular
+vectors are computed and returned as columns of <tt class="docutils literal"><span class="pre">U</span></tt> and all
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> right singular vectors are computed and returned as rows of
+<tt class="docutils literal"><span class="pre">Vt</span></tt>.  If <tt class="docutils literal"><span class="pre">jobz</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'S'</span></tt>, the first
+min{<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>} left and right singular vectors are computed
+and returned as columns of <tt class="docutils literal"><span class="pre">U</span></tt> and rows of <tt class="docutils literal"><span class="pre">Vt</span></tt>.
+If <tt class="docutils literal"><span class="pre">jobz</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'O'</span></tt> and <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is greater than or equal
+to <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, the first <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> left singular vectors are returned as
+columns of <tt class="docutils literal"><span class="pre">A</span></tt> and the <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> right singular vectors are returned
+as rows of <tt class="docutils literal"><span class="pre">Vt</span></tt>.  If <tt class="docutils literal"><span class="pre">jobz</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'O'</span></tt> and <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is less
+than <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, the <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> left singular vectors are returned as
+columns of <tt class="docutils literal"><span class="pre">U</span></tt> and the first <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> right singular vectors are
+returned as rows of <tt class="docutils literal"><span class="pre">A</span></tt>.  Note that the (conjugate) transposes of
+the right singular vectors are returned in <tt class="docutils literal"><span class="pre">Vt</span></tt> or <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+<p>The argument <tt class="docutils literal"><span class="pre">U</span></tt> can be <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt> (if <tt class="docutils literal"><span class="pre">jobz</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt>
+or <tt class="xref py py-const docutils literal"><span class="pre">'A'</span></tt> of <tt class="docutils literal"><span class="pre">jobz</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'O'</span></tt> and <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> is greater
+than or equal to  <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>)  or a matrix of the same type as <tt class="docutils literal"><span class="pre">A</span></tt>.
+The argument <tt class="docutils literal"><span class="pre">Vt</span></tt> can be None(if <tt class="docutils literal"><span class="pre">jobz</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt>
+or <tt class="xref py py-const docutils literal"><span class="pre">'A'</span></tt> or <tt class="docutils literal"><span class="pre">jobz</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'O'</span></tt> and :math`m` is less than
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>) or a matrix of the same type as <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+<p>On exit, the contents of <tt class="docutils literal"><span class="pre">A</span></tt> are destroyed.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="schur-and-generalized-schur-factorization">
+<h2>Schur and Generalized Schur Factorization<a class="headerlink" href="#schur-and-generalized-schur-factorization" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="cvxopt.lapack.gees">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">gees</tt><big>(</big><em>A</em><span class="optional">[</span>, <em>w = None</em>, <em>V = None</em>, <em>select = None</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.gees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the Schur factorization</p>
+<div class="math">
+<p><img src="_images/math/7542cd5dd2b14f353c7b4981ca6970458044f2d4.png" alt="A = V S V^T \quad \mbox{($A$ real)}, \qquad
+A = V S V^H \quad \mbox{($A$ complex)}"/></p>
+</div><p>of a real or complex <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> matrix <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.</p>
+<p>If <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is real, the matrix of Schur vectors <img class="math" src="_images/math/12d58aa29201da09d8e620f8698e3a37547f6b4a.png" alt="V"/> is
+orthogonal, and <img class="math" src="_images/math/ad28c83c99a8fd0dd2e2e594c9d02ee532765a0a.png" alt="S"/> is a real upper quasi-triangular matrix with
+1 by 1 or 2 by 2 diagonal blocks.  The 2 by 2 blocks correspond to
+complex conjugate pairs of eigenvalues of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.
+If <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is complex, the matrix of Schur vectors <img class="math" src="_images/math/12d58aa29201da09d8e620f8698e3a37547f6b4a.png" alt="V"/> is
+unitary, and <img class="math" src="_images/math/ad28c83c99a8fd0dd2e2e594c9d02ee532765a0a.png" alt="S"/> is a complex upper triangular matrix with the
+eigenvalues of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> on the diagonal.</p>
+<p>The optional argument <tt class="docutils literal"><span class="pre">w</span></tt> is a complex matrix of length at least
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.  If it is provided, the eigenvalues of <tt class="docutils literal"><span class="pre">A</span></tt> are returned
+in <tt class="docutils literal"><span class="pre">w</span></tt>.  The optional argument <tt class="docutils literal"><span class="pre">V</span></tt> is an <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>
+matrix of the same type as <tt class="docutils literal"><span class="pre">A</span></tt>.  If it is provided, then the Schur
+vectors are returned in <tt class="docutils literal"><span class="pre">V</span></tt>.</p>
+<p>The argument <tt class="docutils literal"><span class="pre">select</span></tt> is an optional ordering routine.  It must be a
+Python function that can be called as <tt class="docutils literal"><span class="pre">f(s)</span></tt> with a complex
+argument <tt class="docutils literal"><span class="pre">s</span></tt>, and returns <tt class="xref py py-const docutils literal"><span class="pre">True</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">False</span></tt>.  The
+eigenvalues for which <tt class="docutils literal"><span class="pre">select</span></tt> returns <tt class="xref py py-const docutils literal"><span class="pre">True</span></tt> will be selected
+to appear first along the diagonal.  (In the real Schur factorization,
+if either one of a complex conjugate pair of eigenvalues is selected,
+then both are selected.)</p>
+<p>On exit, <tt class="docutils literal"><span class="pre">A</span></tt> is replaced with the matrix <img class="math" src="_images/math/ad28c83c99a8fd0dd2e2e594c9d02ee532765a0a.png" alt="S"/>.  The function
+<tt class="xref py py-func docutils literal"><span class="pre">gees</span></tt> returns an integer equal to the number of eigenvalues
+that were selected by the ordering routine.  If <tt class="docutils literal"><span class="pre">select</span></tt> is
+<tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>, then <tt class="xref py py-func docutils literal"><span class="pre">gees</span></tt> returns 0.</p>
+</dd></dl>
+
+<p>As an example we compute the complex Schur form of the matrix</p>
+<div class="math">
+<p><img src="_images/math/29dd6e523d1d84cf56aaffc9c949b4ecb8e10339.png" alt="A = \left[\begin{array}{rrrrr}
+    -7 &amp;  -11 &amp; -6  &amp; -4 &amp;  11 \\
+     5 &amp;  -3  &amp;  3  &amp; -12 &amp; 0 \\
+    11 &amp;  11  &amp; -5  &amp; -14 &amp; 9 \\
+    -4 &amp;   8  &amp;  0  &amp;  8 &amp;  6 \\
+    13 &amp; -19  &amp; -12 &amp; -8 &amp; 10
+    \end{array}\right]."/></p>
+</div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="o">-</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">11.</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">13.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">11.</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">11.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="o">-</span><span class="mf">19.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">6.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.</span><span class="p">],</span>
+<span class="go">                [-4., -12., -14., 8., -8.], [11., 0., 9., 6., 10.]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">tc</span><span class="o">=</span><span class="s">&#39;z&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">w</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="s">&#39;z&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">gees</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+<span class="go">[ 5.67e+00+j1.69e+01 -2.13e+01+j2.85e+00  1.40e+00+j5.88e+00 -4.19e+00+j2.05e-01  3.19e+00-j1.01e+01]</span>
+<span class="go">[ 0.00e+00-j0.00e+00  5.67e+00-j1.69e+01  1.09e+01+j5.93e-01 -3.29e+00-j1.26e+00 -1.26e+01+j7.80e+00]</span>
+<span class="go">[ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  1.27e+01+j3.43e-17 -6.83e+00+j2.18e+00  5.31e+00-j1.69e+00]</span>
+<span class="go">[ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00 -1.31e+01-j0.00e+00 -2.60e-01-j0.00e+00]</span>
+<span class="go">[ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00 -7.86e+00-j0.00e+00]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="go">[ 5.67e+00+j1.69e+01]</span>
+<span class="go">[ 5.67e+00-j1.69e+01]</span>
+<span class="go">[ 1.27e+01+j3.43e-17]</span>
+<span class="go">[-1.31e+01-j0.00e+00]</span>
+<span class="go">[-7.86e+00-j0.00e+00]</span>
+</pre></div>
+</div>
+<p>An ordered Schur factorization with the eigenvalues in the left half of
+the complex plane ordered first, can be computed as follows.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">S</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">tc</span><span class="o">=</span><span class="s">&#39;z&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">real</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">gees</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">select</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+<span class="go">[-1.31e+01-j0.00e+00 -1.72e-01+j7.93e-02 -2.81e+00+j1.46e+00  3.79e+00-j2.67e-01  5.14e+00-j4.84e+00]</span>
+<span class="go">[ 0.00e+00-j0.00e+00 -7.86e+00-j0.00e+00 -1.43e+01+j8.31e+00  5.17e+00+j8.79e+00  2.35e+00-j7.86e-01]</span>
+<span class="go">[ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  5.67e+00+j1.69e+01 -1.71e+01-j1.41e+01  1.83e+00-j4.63e+00]</span>
+<span class="go">[ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  5.67e+00-j1.69e+01 -8.75e+00+j2.88e+00]</span>
+<span class="go">[ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  1.27e+01+j3.43e-17]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+<span class="go">[-1.31e+01-j0.00e+00]</span>
+<span class="go">[-7.86e+00-j0.00e+00]</span>
+<span class="go">[ 5.67e+00+j1.69e+01]</span>
+<span class="go">[ 5.67e+00-j1.69e+01]</span>
+<span class="go">[ 1.27e+01+j3.43e-17]</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="cvxopt.lapack.gges">
+<tt class="descclassname">cvxopt.lapack.</tt><tt class="descname">gges</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>a = None</em>, <em>b = None</em>, <em>Vl = None</em>, <em>Vr = None</em>, <em>select = None</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.lapack.gges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the generalized Schur factorization</p>
+<div class="math">
+<p><img src="_images/math/d8ead8d0c08802317dbb19dd6ff1837172f6c3c2.png" alt="A = V_l S V_r^T, \quad B = V_l T V_r^T \quad
+    \mbox{($A$ and $B$ real)},
+
+A = V_l S V_r^H, \quad B = V_l T V_r^H, \quad
+    \mbox{($A$ and $B$ complex)}"/></p>
+</div><p>of a pair of real or complex <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> matrices
+<img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>, <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/>.</p>
+<p>If <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> and <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/> are real, then the matrices of left and
+right Schur vectors <img class="math" src="_images/math/254ff34a45363b0e441b4adb30285d637d1a93af.png" alt="V_l"/> and <img class="math" src="_images/math/667c22d87327a3131f679693c81686e89c383f4f.png" alt="V_r"/> are orthogonal,
+<img class="math" src="_images/math/ad28c83c99a8fd0dd2e2e594c9d02ee532765a0a.png" alt="S"/> is a real upper quasi-triangular matrix with 1 by 1 or 2 by
+2 diagonal blocks, and <img class="math" src="_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> is a real triangular matrix with
+nonnegative diagonal.  The 2 by 2 blocks along the diagonal of
+<img class="math" src="_images/math/ad28c83c99a8fd0dd2e2e594c9d02ee532765a0a.png" alt="S"/> correspond to complex conjugate pairs of generalized
+eigenvalues of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>, <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/>.  If <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> and <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/> are
+complex, the matrices of left and right Schur vectors <img class="math" src="_images/math/254ff34a45363b0e441b4adb30285d637d1a93af.png" alt="V_l"/> and
+<img class="math" src="_images/math/667c22d87327a3131f679693c81686e89c383f4f.png" alt="V_r"/> are unitary, <img class="math" src="_images/math/ad28c83c99a8fd0dd2e2e594c9d02ee532765a0a.png" alt="S"/> is complex upper triangular, and
+<img class="math" src="_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/> is complex upper triangular with nonnegative real diagonal.</p>
+<p>The optional arguments <tt class="docutils literal"><span class="pre">a</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> and
+<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrices of length at least <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>.  If these are
+provided, the generalized eigenvalues of <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">B</span></tt> are returned in
+<tt class="docutils literal"><span class="pre">a</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt>.  (The generalized eigenvalues are the ratios
+<tt class="docutils literal"><span class="pre">a[k]</span> <span class="pre">/</span> <span class="pre">b[k]</span></tt>.)  The optional arguments <tt class="docutils literal"><span class="pre">Vl</span></tt> and <tt class="docutils literal"><span class="pre">Vr</span></tt> are
+<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> matrices of the same type as <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt>.
+If they are provided, then the left Schur vectors are returned in
+<tt class="docutils literal"><span class="pre">Vl</span></tt> and the right Schur vectors are returned in <tt class="docutils literal"><span class="pre">Vr</span></tt>.</p>
+<p>The argument <tt class="docutils literal"><span class="pre">select</span></tt> is an optional ordering routine.  It must be
+a Python function that can be called as <tt class="docutils literal"><span class="pre">f(x,y)</span></tt> with a complex
+argument <tt class="docutils literal"><span class="pre">x</span></tt> and a real argument <tt class="docutils literal"><span class="pre">y</span></tt>, and returns <tt class="xref py py-const docutils literal"><span class="pre">True</span></tt> or
+<tt class="xref py py-const docutils literal"><span class="pre">False</span></tt>.  The eigenvalues for which <tt class="docutils literal"><span class="pre">select</span></tt> returns
+<tt class="xref py py-const docutils literal"><span class="pre">True</span></tt> will be selected to appear first on the diagonal.
+(In the real Schur factorization, if either one of a complex conjugate
+pair of eigenvalues is selected, then both are selected.)</p>
+<p>On exit, <tt class="docutils literal"><span class="pre">A</span></tt> is replaced with the matrix <img class="math" src="_images/math/ad28c83c99a8fd0dd2e2e594c9d02ee532765a0a.png" alt="S"/> and <tt class="docutils literal"><span class="pre">B</span></tt> is
+replaced with the matrix <img class="math" src="_images/math/2554b6496c3b678897e9b060ef00aa9f0a7d7ece.png" alt="T"/>.  The function <tt class="xref py py-func docutils literal"><span class="pre">gges</span></tt> returns
+an integer equal to the number of eigenvalues that were selected by
+the ordering routine.  If <tt class="docutils literal"><span class="pre">select</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>, then
+<tt class="xref py py-func docutils literal"><span class="pre">gges</span></tt> returns 0.</p>
+</dd></dl>
+
+<p>As an example, we compute the generalized complex Schur form of the
+matrix <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> of the previous example, and</p>
+<div class="math">
+<p><img src="_images/math/509aa8b7818d1bdc414b739659748e8d49bdab6f.png" alt="B = \left[\begin{array}{ccccc}
+    1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+    0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\
+    0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
+    0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\
+    0 &amp; 0 &amp; 0 &amp; 0 &amp; 0
+    \end{array}\right]."/></p>
+</div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="o">-</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">11.</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">13.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">11.</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">11.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="o">-</span><span class="mf">19.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">6.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.</span><span class="p">],</span>
+<span class="go">                [-4., -12., -14., 8., -8.], [11., 0., 9., 6., 10.]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span><span class="p">[:</span><span class="mi">19</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">tc</span><span class="o">=</span><span class="s">&#39;z&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">T</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">tc</span><span class="o">=</span><span class="s">&#39;z&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="s">&#39;z&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">gges</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+<span class="go">[ 6.64e+00-j8.87e+00 -7.81e+00-j7.53e+00  6.16e+00-j8.51e-01  1.18e+00+j9.17e+00  5.88e+00-j4.51e+00]</span>
+<span class="go">[ 0.00e+00-j0.00e+00  8.48e+00+j1.13e+01 -2.12e-01+j1.00e+01  5.68e+00+j2.40e+00 -2.47e+00+j9.38e+00]</span>
+<span class="go">[ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00 -1.39e+01-j0.00e+00  6.78e+00-j0.00e+00  1.09e+01-j0.00e+00]</span>
+<span class="go">[ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00 -6.62e+00-j0.00e+00 -2.28e-01-j0.00e+00]</span>
+<span class="go">[ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00 -2.89e+01-j0.00e+00]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="go">[ 6.46e-01-j0.00e+00  4.29e-01-j4.79e-02  2.02e-01-j3.71e-01  1.08e-01-j1.98e-01 -1.95e-01+j3.58e-01]</span>
+<span class="go">[ 0.00e+00-j0.00e+00  8.25e-01-j0.00e+00 -2.17e-01+j3.11e-01 -1.16e-01+j1.67e-01  2.10e-01-j3.01e-01]</span>
+<span class="go">[ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  7.41e-01-j0.00e+00 -3.25e-01-j0.00e+00  5.87e-01-j0.00e+00]</span>
+<span class="go">[ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  8.75e-01-j0.00e+00  4.84e-01-j0.00e+00]</span>
+<span class="go">[ 0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00  0.00e+00-j0.00e+00]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">[ 6.64e+00-j8.87e+00]</span>
+<span class="go">[ 8.48e+00+j1.13e+01]</span>
+<span class="go">[-1.39e+01-j0.00e+00]</span>
+<span class="go">[-6.62e+00-j0.00e+00]</span>
+<span class="go">[-2.89e+01-j0.00e+00]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="go">[ 6.46e-01]</span>
+<span class="go">[ 8.25e-01]</span>
+<span class="go">[ 7.41e-01]</span>
+<span class="go">[ 8.75e-01]</span>
+<span class="go">[ 0.00e+00]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-analytic-centering">
+<h2>Example: Analytic Centering<a class="headerlink" href="#example-analytic-centering" title="Permalink to this headline">¶</a></h2>
+<p>The analytic centering problem is defined as</p>
+<div class="math">
+<p><img src="_images/math/a58cff71c9142b4afabdf2463db8f859f51fbfb9.png" alt="\begin{array}{ll}
+    \mbox{minimize} &amp; -\sum\limits_{i=1}^m \log(b_i-a_i^Tx).
+\end{array}"/></p>
+</div><p>In the code below we solve the problem using Newton&#8217;s method.  At each
+iteration the Newton direction is computed by solving a positive definite
+set of linear equations</p>
+<div class="math">
+<p><img src="_images/math/c1de36bc9290bb7cac164a695c6c21af9f1c808b.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
+\newcommand{\ones}{\mathbf 1}
+A^T \diag(b-Ax)^{-2} A v = -\diag(b-Ax)^{-1}\ones"/></p>
+</div><p>(where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> has rows <img class="math" src="_images/math/002d337a82f7a9dbcea5bf01e9cb2e0b115af530.png" alt="a_i^T"/>), and a suitable step size is
+determined by a backtracking line search.</p>
+<p>We use the level-3 BLAS function <a class="reference internal" href="blas.html#cvxopt.blas.syrk" title="cvxopt.blas.syrk"><tt class="xref py py-func docutils literal"><span class="pre">blas.syrk</span></tt></a> to
+form the Hessian
+matrix and the LAPACK function <a class="reference internal" href="#cvxopt.lapack.posv" title="cvxopt.lapack.posv"><tt class="xref py py-func docutils literal"><span class="pre">posv</span></tt></a> to
+solve the Newton system.
+The code can be further optimized by replacing the matrix-vector products
+with the level-2 BLAS function <a class="reference internal" href="blas.html#cvxopt.blas.gemv" title="cvxopt.blas.gemv"><tt class="xref py py-func docutils literal"><span class="pre">blas.gemv</span></tt></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+
+<span class="k">def</span> <span class="nf">acent</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the analytic center of A*x &lt;= b.</span>
+<span class="sd">    We assume that b &gt; 0 and the feasible set is bounded.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">MAXITERS</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">ALPHA</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="n">BETA</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">TOL</span> <span class="o">=</span> <span class="mf">1e-8</span>
+
+    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">MAXITERS</span><span class="p">):</span>
+
+        <span class="c"># Gradient is g = A^T * (1./(b-A*x)).</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">A</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">**-</span><span class="mi">1</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">d</span>
+
+        <span class="c"># Hessian is H = A^T * diag(d)^2 * A.</span>
+        <span class="n">Asc</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span> <span class="n">d</span><span class="p">[:,</span><span class="n">n</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">A</span> <span class="p">)</span>
+        <span class="n">blas</span><span class="o">.</span><span class="n">syrk</span><span class="p">(</span><span class="n">Asc</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s">&#39;T&#39;</span><span class="p">)</span>
+
+        <span class="c"># Newton step is v = -H^-1 * g.</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="o">-</span><span class="n">g</span>
+        <span class="n">lapack</span><span class="o">.</span><span class="n">posv</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+        <span class="c"># Terminate if Newton decrement is less than TOL.</span>
+        <span class="n">lam</span> <span class="o">=</span> <span class="n">blas</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sqrt</span><span class="p">(</span><span class="o">-</span><span class="n">lam</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">TOL</span><span class="p">:</span> <span class="k">return</span> <span class="n">x</span>
+
+        <span class="c"># Backtracking line search.</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">v</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="k">while</span> <span class="mi">1</span><span class="o">-</span><span class="n">step</span><span class="o">*</span><span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">step</span> <span class="o">*=</span> <span class="n">BETA</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="o">-</span><span class="nb">sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">step</span><span class="o">*</span><span class="n">y</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">ALPHA</span><span class="o">*</span><span class="n">step</span><span class="o">*</span><span class="n">lam</span><span class="p">:</span> <span class="k">break</span>
+            <span class="n">step</span> <span class="o">*=</span> <span class="n">BETA</span>
+        <span class="n">x</span> <span class="o">+=</span> <span class="n">step</span><span class="o">*</span><span class="n">v</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The LAPACK Interface</a><ul>
+<li><a class="reference internal" href="#general-linear-equations">General Linear Equations</a></li>
+<li><a class="reference internal" href="#positive-definite-linear-equations">Positive Definite Linear Equations</a></li>
+<li><a class="reference internal" href="#symmetric-and-hermitian-linear-equations">Symmetric and Hermitian Linear Equations</a></li>
+<li><a class="reference internal" href="#triangular-linear-equations">Triangular Linear Equations</a></li>
+<li><a class="reference internal" href="#least-squares-and-least-norm-problems">Least-Squares and Least-Norm Problems</a></li>
+<li><a class="reference internal" href="#symmetric-and-hermitian-eigenvalue-decomposition">Symmetric and Hermitian Eigenvalue Decomposition</a></li>
+<li><a class="reference internal" href="#generalized-symmetric-definite-eigenproblems">Generalized Symmetric Definite Eigenproblems</a></li>
+<li><a class="reference internal" href="#singular-value-decomposition">Singular Value Decomposition</a></li>
+<li><a class="reference internal" href="#schur-and-generalized-schur-factorization">Schur and Generalized Schur Factorization</a></li>
+<li><a class="reference internal" href="#example-analytic-centering">Example: Analytic Centering</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="blas.html"
+                        title="previous chapter">The BLAS Interface</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="fftw.html"
+                        title="next chapter">Discrete Transforms</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="fftw.html" title="Discrete Transforms"
+             >next</a></li>
+        <li class="right" >
+          <a href="blas.html" title="The BLAS Interface"
+             >previous</a> |</li>
+    <li><a href="http://cvxopt.org">CVXOPT home</a> |</li>
+    
+        <li><a href="index.html">user&#39;s guide</a> </li>
+ 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

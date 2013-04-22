@@ -1,0 +1,161 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Introduction &mdash; CVXOPT User&#39;s Guide</title>
+    
+    <link rel="stylesheet" href="_static/cvxopt.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.1.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="top" title="CVXOPT User&#39;s Guide" href="index.html" />
+    <link rel="next" title="Dense and Sparse Matrices" href="matrices.html" />
+    <link rel="prev" title="Copyright and License" href="copyright.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="matrices.html" title="Dense and Sparse Matrices"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="copyright.html" title="Copyright and License"
+             accesskey="P">previous</a> |</li>
+    <li><a href="http://cvxopt.org">CVXOPT home</a> |</li>
+    
+        <li><a href="index.html">user&#39;s guide</a> </li>
+ 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="introduction">
+<span id="intro"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>CVXOPT is a free software package for convex optimization based on the
+Python programming language.  It can be used with the interactive Python
+interpreter, on the command line by executing Python scripts, or integrated
+in other software via Python extension modules.  Its main purpose is to
+make the development of software for convex optimization applications
+straightforward by building on Python&#8217;s extensive standard library and on
+the strengths of Python as a high-level programming language.</p>
+<p>CVXOPT extends the built-in Python objects with two matrix objects: a
+<a class="reference internal" href="matrices.html#cvxopt.matrix" title="cvxopt.matrix"><tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt></a>  object for dense matrices and an
+<a class="reference internal" href="matrices.html#cvxopt.spmatrix" title="cvxopt.spmatrix"><tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt></a> object for sparse matrices.  These two
+matrix types are introduced in the chapter <a class="reference internal" href="matrices.html#c-matrices"><em>Dense and Sparse Matrices</em></a>, together
+with the arithmetic operations and functions defined for them.  The
+following chapters (<a class="reference internal" href="blas.html#c-blas"><em>The BLAS Interface</em></a> and <a class="reference internal" href="spsolvers.html#c-spsolvers"><em>Sparse Linear Equations</em></a>) describe
+interfaces to several libraries for dense and sparse matrix computations.
+The CVXOPT optimization routines are described in the chapters
+<a class="reference internal" href="coneprog.html#c-coneprog"><em>Cone Programming</em></a> and <a class="reference internal" href="modeling.html#c-modeling"><em>Modeling</em></a>.
+These include convex optimization solvers written in Python,
+interfaces to a few other optimization libraries, and a modeling tool
+for piecewise-linear convex optimization problems.</p>
+<p>CVXOPT is organized in different modules.</p>
+<dl class="docutils">
+<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.blas</span></tt></dt>
+<dd>Interface to most of the double-precision real and complex BLAS
+(<a class="reference internal" href="blas.html#c-blas"><em>The BLAS Interface</em></a>).</dd>
+<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.lapack</span></tt></dt>
+<dd>Interface to dense double-precision real and complex linear equation
+solvers and eigenvalue routines from LAPACK (<a class="reference internal" href="lapack.html#c-lapack"><em>The LAPACK Interface</em></a>).</dd>
+<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.fftw</span></tt></dt>
+<dd>An optional interface to the discrete transform routines from FFTW
+(<a class="reference internal" href="fftw.html#c-fftw"><em>Discrete Transforms</em></a>).</dd>
+<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.amd</span></tt></dt>
+<dd>Interface to the approximate minimum degree ordering routine from AMD
+(<a class="reference internal" href="spsolvers.html#s-orderings"><em>Matrix Orderings</em></a>).</dd>
+<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.umfpack</span></tt></dt>
+<dd>Interface to the sparse LU solver from UMFPACK (<a class="reference internal" href="spsolvers.html#s-umfpack"><em>General Linear Equations</em></a>).</dd>
+<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.cholmod</span></tt></dt>
+<dd>Interface to the sparse Cholesky solver from CHOLMOD (<a class="reference internal" href="spsolvers.html#s-cholmod"><em>Positive Definite Linear Equations</em></a>).</dd>
+<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.solvers</span></tt></dt>
+<dd>Convex optimization routines and optional interfaces to solvers from
+GLPK, MOSEK, and DSDP5 (<a class="reference internal" href="coneprog.html#c-coneprog"><em>Cone Programming</em></a> and <a class="reference internal" href="solvers.html#c-solvers"><em>Nonlinear Convex Optimization</em></a>).</dd>
+<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.modeling</span></tt></dt>
+<dd>Routines for specifying and solving linear programs and convex
+optimization problems with piecewise-linear cost and constraint functions
+(<a class="reference internal" href="modeling.html#c-modeling"><em>Modeling</em></a>).</dd>
+<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.info</span></tt></dt>
+<dd>Defines a string <tt class="xref py py-const docutils literal"><span class="pre">version</span></tt> with the version number of the CVXOPT
+installation and a function <tt class="xref py py-func docutils literal"><span class="pre">license</span></tt> that prints the CVXOPT
+license.</dd>
+<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.printing</span></tt></dt>
+<dd>Contains functions and parameters that control how matrices are formatted.</dd>
+</dl>
+<p>The modules are described in detail in this manual and in the on-line Python
+help facility <strong class="program">pydoc</strong>.  Several example scripts are included in
+the distribution.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="copyright.html"
+                        title="previous chapter">Copyright and License</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="matrices.html"
+                        title="next chapter">Dense and Sparse Matrices</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="matrices.html" title="Dense and Sparse Matrices"
+             >next</a></li>
+        <li class="right" >
+          <a href="copyright.html" title="Copyright and License"
+             >previous</a> |</li>
+    <li><a href="http://cvxopt.org">CVXOPT home</a> |</li>
+    
+        <li><a href="index.html">user&#39;s guide</a> </li>
+ 
+      </ul>
+    </div>
+    <div class="footer">
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
