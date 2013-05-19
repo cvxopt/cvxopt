@@ -947,7 +947,7 @@ same meaning as in the output of
 <p>We illustrate the calling sequence with a small example.</p>
 <blockquote>
 <div><div class="math">
-<p><img src="_images/math/131c4578e1d0555aabdbdc52cdbe7b840cecb293.png" alt="\begin{array}{ll}
+<p><img src="_images/math/d116f7ab7f0290d22c904074fd8fd1382cffd5c9.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; x_1 - x_2 + x_3 \\
 \mbox{subject to}
     &amp; x_1 \left[ \begin{array}{cc}
@@ -974,7 +974,7 @@ same meaning as in the output of
           \end{array}\right] +
       x_3 \left[ \begin{array}{ccc}
                -5  &amp; 2 &amp; -17 \\
-                2  &amp; -6 &amp; -7 \\
+                2  &amp; -6 &amp; 8 \\
                -17 &amp; 8 &amp; 6
            \end{array}\right]  \preceq
       \left[ \begin{array}{ccc}
@@ -991,7 +991,7 @@ same meaning as in the output of
 <span class="go">                  [-2.,  -8.,  -8., 1.]]) ]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">+=</span> <span class="p">[</span> <span class="n">matrix</span><span class="p">([[</span><span class="o">-</span><span class="mf">21.</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.</span><span class="p">,</span>  <span class="mf">10.</span><span class="p">,</span>   <span class="mf">8.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>   <span class="mf">8.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">],</span>
 <span class="go">                   [  0.,  10.,  16.,  10., -10., -10.,  16., -10., 3.],</span>
-<span class="go">                   [ -5.,   2., -17.,   2.,  -6.,   8., -17.,  -7., 6.]]) ]</span>
+<span class="go">                   [ -5.,   2., -17.,   2.,  -6.,   8., -17.,  8., 6.]]) ]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="p">[</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">33.</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">9.</span><span class="p">,</span> <span class="mf">26.</span><span class="p">]])</span> <span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">+=</span> <span class="p">[</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">14.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">,</span> <span class="mf">40.</span><span class="p">],</span> <span class="p">[</span><span class="mf">9.</span><span class="p">,</span> <span class="mf">91.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">],</span> <span class="p">[</span><span class="mf">40.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">15.</span><span class="p">]])</span> <span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sol</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">sdp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">Gs</span><span class="o">=</span><span class="n">G</span><span class="p">,</span> <span class="n">hs</span><span class="o">=</span><span class="n">h</span><span class="p">)</span>
