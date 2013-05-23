@@ -251,6 +251,8 @@ spmatrix_repr = printing.spmatrix_repr_default
 from cvxopt.base import matrix, spmatrix, sparse, spdiag, sqrt, sin, cos, \
     exp, log 
 
+from cvxopt import solvers
+
 __all__ = [ 'blas', 'lapack', 'amd', 'umfpack', 'cholmod', 'solvers',
     'modeling', 'printing', 'info', 'matrix', 'spmatrix', 'sparse', 
     'spdiag', 'sqrt', 'sin', 'cos', 'exp', 'log', 'min', 'max', 'mul', 
