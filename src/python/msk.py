@@ -49,8 +49,8 @@ def lp(c, G, h, A=None, b=None):
 
     Input arguments 
 
-        G is m x n, h is m x 1, A is p x n, b is p x 1.  G and A must be 
-        dense or sparse 'd' matrices.   h and b are dense 'd' matrices 
+        c is n x 1, G is m x n, h is m x 1, A is p x n, b is p x 1.  G and A must be 
+        dense or sparse 'd' matrices.   c, h and b are dense 'd' matrices 
         with one column.  The default values for A and b are empty 
         matrices with zero rows.
 
