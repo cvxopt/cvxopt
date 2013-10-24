@@ -1127,7 +1127,8 @@ def kkt_reg_ldl(G, dims, A, mnl = 0):
     """
     Solution of KKT equations by a dense LDL factorization of the 
     3 x 3 system.
-    Regularized to handle low rank systems. 
+    
+    Regularized to handle low rank systems.
     
     Returns a function that (1) computes the LDL factorization of
     
@@ -1182,7 +1183,6 @@ def kkt_reg_ldl(G, dims, A, mnl = 0):
             #
             # On entry, x, y, z contain bx, by, bz.  On exit, they contain
             # the solution ux, uy, W*uz.
-
             blas.copy(x, u)
             blas.copy(y, u, offsety = n)
             scale(z, W, trans = 'T', inverse = 'I') 
@@ -1191,7 +1191,7 @@ def kkt_reg_ldl(G, dims, A, mnl = 0):
             blas.copy(u, x, n = n)
             blas.copy(u, y, offsetx = n, n = p)
             unpack(u, z, dims, mnl, offsetx = n + p)
-    
+
         return solve
 
     return factor
