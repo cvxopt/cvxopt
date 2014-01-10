@@ -316,7 +316,7 @@ matrix * Matrix_NewFromSequence(PyObject *x, int id)
     }
   }
 
-  if (!len) return Matrix_New(0, 1, (id < 0 ? INT : id));
+  if (!len) { Py_DECREF(seq); return Matrix_New(0, 1, (id < 0 ? INT : id)); }
 
   matrix *L = Matrix_New(len,1,id);
   if (!L) { Py_DECREF(seq); return (matrix *)PyErr_NoMemory(); }
