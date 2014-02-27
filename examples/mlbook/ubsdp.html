@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -45,15 +43,15 @@
 <h1>SDPs with upper bounds<a class="headerlink" href="#sdps-with-upper-bounds" title="Permalink to this headline">¶</a></h1>
 <p>Consider a standard form SDP with an added upper bound</p>
 <div class="math" id="equation-ubsdp">
-<p><span class="eqno">(1)</span><img src="../../_images/math/70f0eb40552f762f4c286cfd9a85792179cbfcc2.png" alt="\begin{array}{ll}
+<p><span class="eqno">(1)</span><img src="../../_images/math/6e37c251ec95d8fbdcd494280d77369a6640340a.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; \mathbf{Tr}(BX) \\
 \mbox{subject to} &amp; \mathbf{Tr}(A_iX) + c_i = 0, \quad i =
                      1,\ldots, n \\
                   &amp; 0 \preceq X \preceq I
 \end{array}"/></p>
-</div><p>with variable <img class="math" src="../../_images/math/504a841f9ed96c0ab5e32d4a26b0e164b0e6c6c9.png" alt="X \in \mathbf{S}^m"/>. The problem <a href="#equation-ubsdp">(1)</a> can be reformulated by introducing a slack variable <img class="math" src="../../_images/math/ad28c83c99a8fd0dd2e2e594c9d02ee532765a0a.png" alt="S"/></p>
+</div><p>with variable <img class="math" src="../../_images/math/b35dcebef0ff4fd2210234252f2153e4238044d2.png" alt="X \in \mathbf{S}^m"/>. The problem <a href="#equation-ubsdp">(1)</a> can be reformulated by introducing a slack variable <img class="math" src="../../_images/math/11a85f3c69ae6702cb1d99d3de451913b8f84c04.png" alt="S"/></p>
 <div class="math" id="equation-ubsdp_2">
-<p><span class="eqno">(2)</span><img src="../../_images/math/d6aeed233d1acdddb5a88ae154eae6d06e99ce0d.png" alt="\begin{array}{ll}
+<p><span class="eqno">(2)</span><img src="../../_images/math/09ff0d2652f2d4dbf284fe3e313ebdc29b9e013d.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; \mathbf{Tr}(BX) \\
 \mbox{subject to} &amp; \mathbf{Tr}(A_iX) + c_i = 0, \quad i =
                      1,\ldots, n \\
@@ -67,12 +65,12 @@ module <a class="reference download internal" href="../../_downloads/ubsdp.py"><
 <dt id="ubsdp">
 <tt class="descname">ubsdp</tt><big>(</big><em>c</em>, <em>A</em>, <em>B</em>, <em>pstart = None</em>, <em>dstart = None</em><big>)</big><a class="headerlink" href="#ubsdp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a href="#equation-ubsdp_2">(2)</a> using a custom KKT solver.</p>
-<p>The input arguments are <img class="math" src="../../_images/math/575f34ca99f4f8f4980f2bd64034861ee7919b5a.png" alt="c \in \mathbf{R}^n"/>, a matrix
-<img class="math" src="../../_images/math/0bb6e12511b86a89ad7a1d9903f982d33c1ca6d7.png" alt="A \in \mathbf{R}^{m^2 \times n}"/>, and a matrix <img class="math" src="../../_images/math/35c90ffc7244bfe9aafbdd7833722e11ff90adfc.png" alt="B
-\in \mathbf{S}^m"/>. The columns of <img class="math" src="../../_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> are
-<img class="math" src="../../_images/math/e490c633b13011cf59b288d0ac25821f4f57bf0e.png" alt="\mathbf{vec}(A_i)"/> where <img class="math" src="../../_images/math/2470d16367addaa6a4be88fc67cf4b356d87ddfb.png" alt="A_i \in \mathbf{S}^m"/> is
+<p>The input arguments are <img class="math" src="../../_images/math/8f6db979b5febba46afc5299b78d48b04d43e82e.png" alt="c \in \mathbf{R}^n"/>, a matrix
+<img class="math" src="../../_images/math/54880be388aba93c2538bebb450ea7bbd3ce66e3.png" alt="A \in \mathbf{R}^{m^2 \times n}"/>, and a matrix <img class="math" src="../../_images/math/077f695125dd034e7a82ff189337cf818a07c5e8.png" alt="B
+\in \mathbf{S}^m"/>. The columns of <img class="math" src="../../_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> are
+<img class="math" src="../../_images/math/05de33f2e50ed38ce2b4feea96151d1e2f6e6d18.png" alt="\mathbf{vec}(A_i)"/> where <img class="math" src="../../_images/math/536b2293b48b40d315a582c3936bb3285240284a.png" alt="A_i \in \mathbf{S}^m"/> is
 the i&#8217;th data matrix.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/f026aecf11ec7f6141ab863f260d395f94b10f51.png" alt="X"/>.</p>
 </dd></dl>
 
 </div></blockquote>
@@ -144,7 +142,7 @@ the i&#8217;th data matrix.</p>
       </ul>
     </div>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
     </div>
 
 <script type="text/javascript">

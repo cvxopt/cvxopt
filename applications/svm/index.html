@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -47,9 +45,9 @@
 using matrix completion techniques</a> by
 Martin Andersen and Lieven Vandenberghe. The code can be downloaded as
 a <a class="reference download internal" href="../../_downloads/svmcmpl.zip"><tt class="xref download docutils literal"><span class="pre">zip</span> <span class="pre">file</span></tt></a> and
-requires the Python extensions <a class="reference external" href="http://abel.ee.ucla.edu/cvxopt">CVXOPT</a> and <a class="reference external" href="http://abel.ee.ucla.edu/chompack">CHOMPACK</a>.</p>
+requires the Python extensions <a class="reference external" href="http://abel.ee.ucla.edu/cvxopt">CVXOPT</a> and <a class="reference external" href="http://abel.ee.ucla.edu/chompack">CHOMPACK 1.1.1</a>.</p>
 <h4> Feedback and bug reports </h4><p>We welcome feedback, and bug reports are much appreciated. Please
-email bug reports to <span class="raw-html"><kbd>msa@ee.ucla.edu</kbd></span>.</p>
+email bug reports to <span class="raw-html"><kbd>martin.skovgaard.andersen@gmail.com</kbd></span>.</p>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This software provides two routines for soft-margin support vector
@@ -74,52 +72,52 @@ larger problems than <a class="reference internal" href="#softmargin" title="sof
 <tt class="descname">softmargin</tt><big>(</big><em>X</em>, <em>d</em>, <em>gamma</em>, <em>kernel = 'linear'</em>, <em>sigma = 1.0</em>, <em>degree = 1</em>, <em>theta = 1.0</em><big>)</big><a class="headerlink" href="#softmargin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the &#8216;soft-margin&#8217; SVM problem</p>
 <div class="math">
-<p><img src="../../_images/math/53b1635c907783b3c1f4fd8c8808bab9a8d0bf48.png" alt="\begin{array}{ll}
+<p><img src="../../_images/math/15fd145a99df8486825512d8dbb0129cbec5e0f0.png" alt="\begin{array}{ll}
 \mbox{maximize}   &amp; -(1/2) z^T Q z + d^Tz \\
 \mbox{subject to} &amp; 0 \preceq \mathrm{diag}(d) z \preceq \gamma \mathbf{1} \\
 &amp; \mathbf{1}^T z =0
 \end{array}"/></p>
-</div><p>(with variables <img class="math" src="../../_images/math/b13f21416d84e13708696f34dea81026cda583c9.png" alt="z"/>), and its dual problem</p>
+</div><p>(with variables <img class="math" src="../../_images/math/84d7271dd9e78c1e05d6c3c6ecb60309ef7dfc73.png" alt="z"/>), and its dual problem</p>
 <div class="math">
-<p><img src="../../_images/math/b7c1045941a2c4c5b4cbdfd0b9441d6dd9b49da1.png" alt="\begin{array}{ll}
+<p><img src="../../_images/math/65ccba47973120e5bb0c8a17c5c696cde72baf2b.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; (1/2) y^T Q^{-1} y + \gamma \mathbf{1}^Tv \\
 \mbox{subject to} &amp;  \mathrm{diag}(d) (y + b \mathbf{1}) \succeq \mathbf{1} - v \\
 &amp; v \succeq 0
 \end{array}"/></p>
-</div><p>(with variables <img class="math" src="../../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/>, <img class="math" src="../../_images/math/a9f23bf124b6b2b2a993eb313c72e678664ac74a.png" alt="v"/>, <img class="math" src="../../_images/math/8136a7ef6a03334a7246df9097e5bcc31ba33fd2.png" alt="b"/>).</p>
-<p>The <img class="math" src="../../_images/math/e75357f2d8c8407da3c37e1fa3524fbe8490e3f1.png" alt="m \times m"/> kernel matrix <img class="math" src="../../_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> is given by
-<img class="math" src="../../_images/math/dd189f58da88b83eb11fe0d239bc6c9a890e88bc.png" alt="Q_{ij} = h(x_i, x_j)"/> where <img class="math" src="../../_images/math/8189a5b5a0917b8c93350827be4038af1839139d.png" alt="h"/> is a kernel function
-and <img class="math" src="../../_images/math/8dc1ad02ea8728df79a2685e5f8ece035d555cb2.png" alt="x_i^T"/> is the i&#8217;th row of the <img class="math" src="../../_images/math/dc5c773a00becebf2fe78e775d5953e138efea9e.png" alt="m \times n"/> data
-matrix <img class="math" src="../../_images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>, and <img class="math" src="../../_images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d"/> is an <img class="math" src="../../_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>-vector with labels
-(<em>i.e.</em> <img class="math" src="../../_images/math/64ec7230e802f94c03fafa2ec6cf936f9f9c4b2e.png" alt="d_i \in \{ -1,1\}"/>).  If <img class="math" src="../../_images/math/9866e3a998d628ba0941eb4fea0666ac391d149a.png" alt="Q"/> is singular, we
-replace <img class="math" src="../../_images/math/fa9fc986c845bdc80695fb750ad04c2fd299bd90.png" alt="Q^{-1}"/> in the dual with its pseudo-inverse and add
-a constraint <img class="math" src="../../_images/math/fd09e3fee8b33de6917dc2a8f8a655e177877112.png" alt="y \in \mathrm{Range}(Q)"/>.</p>
+</div><p>(with variables <img class="math" src="../../_images/math/b124ff74afb0914bb434e8fb849eb56d734412f8.png" alt="y"/>, <img class="math" src="../../_images/math/0e22076955898e6c9bb38aa079135195c24dc81e.png" alt="v"/>, <img class="math" src="../../_images/math/5e87bf41a96deddf6cb485ff530f153f2590e9cc.png" alt="b"/>).</p>
+<p>The <img class="math" src="../../_images/math/745f3493312cd221d17617b05e1ff74af67b9c1f.png" alt="m \times m"/> kernel matrix <img class="math" src="../../_images/math/7b1816c51f7d31275cd3ad400208fb7b3ce136a0.png" alt="Q"/> is given by
+<img class="math" src="../../_images/math/3c9046be0f9dcff3b3624fe74aaf2b1e57d43d2e.png" alt="Q_{ij} = h(x_i, x_j)"/> where <img class="math" src="../../_images/math/cbb80ad77aa7a5e227d5a46bc44d235284106cfc.png" alt="h"/> is a kernel function
+and <img class="math" src="../../_images/math/35d06a2aa8de54e78a4b0902eeb76f8a46587dc2.png" alt="x_i^T"/> is the i&#8217;th row of the <img class="math" src="../../_images/math/333494eb009c3c5a93166d4ec2d46e71d98339a0.png" alt="m \times n"/> data
+matrix <img class="math" src="../../_images/math/f026aecf11ec7f6141ab863f260d395f94b10f51.png" alt="X"/>, and <img class="math" src="../../_images/math/425d86ba2f2979d75b7535c2bcf92c33ed6b285a.png" alt="d"/> is an <img class="math" src="../../_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/>-vector with labels
+(<em>i.e.</em> <img class="math" src="../../_images/math/337dadbb9a41349ca41eeba2ca7b40f9be6bce8d.png" alt="d_i \in \{ -1,1\}"/>).  If <img class="math" src="../../_images/math/7b1816c51f7d31275cd3ad400208fb7b3ce136a0.png" alt="Q"/> is singular, we
+replace <img class="math" src="../../_images/math/e91d6bf459708da80b35dd80a97ca21f4b4ba757.png" alt="Q^{-1}"/> in the dual with its pseudo-inverse and add
+a constraint <img class="math" src="../../_images/math/1e783d8c66a01776947a12de57523f662e19df50.png" alt="y \in \mathrm{Range}(Q)"/>.</p>
 <p>Valid kernel functions are:</p>
 <dl class="docutils">
 <dt><tt class="xref py py-const docutils literal"><span class="pre">'linear'</span></tt></dt>
-<dd>the linear kernel: <img class="math" src="../../_images/math/236392056452ad28e3d88f670e8040a88448d647.png" alt="h(x_i,x_j) = x_i^Tx_j/\sigma"/></dd>
+<dd>the linear kernel: <img class="math" src="../../_images/math/9ed7fde04b3b2bdc2fa7cc732b99fdea88ceb905.png" alt="h(x_i,x_j) = x_i^Tx_j/\sigma"/></dd>
 <dt><tt class="xref py py-const docutils literal"><span class="pre">'poly'</span></tt></dt>
-<dd>the polynomial kernel: <img class="math" src="../../_images/math/cba09bc85d801e0fbc91c3f47800ce0041cea42a.png" alt="h(x_i,x_j) = (x_i^Tx_j/\sigma)^d"/></dd>
+<dd>the polynomial kernel: <img class="math" src="../../_images/math/b24b6987e11c9cf76686f469c46b17af12fb666b.png" alt="h(x_i,x_j) = (x_i^Tx_j/\sigma)^d"/></dd>
 <dt><tt class="xref py py-const docutils literal"><span class="pre">'rbf'</span></tt></dt>
-<dd>the radial basis function: <img class="math" src="../../_images/math/132b110917fc9a3e1501a276497017a0db394e4b.png" alt="h(x_i,x_j) = \exp\{ -\|x_i-x_j\|^2/(2\sigma)\}"/></dd>
+<dd>the radial basis function: <img class="math" src="../../_images/math/adeac025a436f7193bd5ed107200575106e6a372.png" alt="h(x_i,x_j) = \exp\{ -\|x_i-x_j\|^2/(2\sigma)\}"/></dd>
 <dt><tt class="xref py py-const docutils literal"><span class="pre">'tanh'</span></tt></dt>
-<dd>the sigmoid kernel: <img class="math" src="../../_images/math/91efd18d75a3c8a2a1e475a6ced365942bc1aea0.png" alt="h(x_i,x_j) = \tanh(x_i^Tx_j/\sigma - \theta)"/></dd>
+<dd>the sigmoid kernel: <img class="math" src="../../_images/math/f22bf017ac69b46d0553f3338aadb1f3473f83f6.png" alt="h(x_i,x_j) = \tanh(x_i^Tx_j/\sigma - \theta)"/></dd>
 </dl>
-<p>The kernel parameters <img class="math" src="../../_images/math/fa35d9fc104207e09a712110ac81612c5b279a6c.png" alt="\sigma"/>, <img class="math" src="../../_images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d"/>, and <img class="math" src="../../_images/math/52e8ed7a3ba22130ad3984eb2cd413406475a689.png" alt="\theta"/>
+<p>The kernel parameters <img class="math" src="../../_images/math/2298cf1485084afe72757a9c8483af49a138d81f.png" alt="\sigma"/>, <img class="math" src="../../_images/math/425d86ba2f2979d75b7535c2bcf92c33ed6b285a.png" alt="d"/>, and <img class="math" src="../../_images/math/a9cfbeb8ebee1f365919e147a79e242dcb67ee5d.png" alt="\theta"/>
 are specified using the input arguments <cite>sigma</cite>, <cite>degree</cite>, and <cite>theta</cite>,
 respectively.</p>
 <p><a class="reference internal" href="#softmargin" title="softmargin"><tt class="xref py py-func docutils literal"><span class="pre">softmargin()</span></tt></a> returns a dictionary with the following keys:</p>
 <dl class="docutils">
 <dt><tt class="xref py py-const docutils literal"><span class="pre">'classifier'</span></tt></dt>
 <dd>a Python function object that takes an
-<img class="math" src="../../_images/math/e33e2ba3e206f98ba5aed5091b1f59b588115665.png" alt="M \times n"/> matrix with test vectors as rows and returns a vector with labels</dd>
+<img class="math" src="../../_images/math/4efd6046ef1817ebb9ca0aebc0dae35b31bc95d1.png" alt="M \times n"/> matrix with test vectors as rows and returns a vector with labels</dd>
 <dt><tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt></dt>
-<dd>a sparse <img class="math" src="../../_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>-vector</dd>
+<dd>a sparse <img class="math" src="../../_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/>-vector</dd>
 <dt><tt class="xref py py-const docutils literal"><span class="pre">'cputime'</span></tt></dt>
-<dd>a tuple (<img class="math" src="../../_images/math/294182e48abb2df54006ab495d26b45d0104a4c3.png" alt="T_{\rm tot}"/>, <img class="math" src="../../_images/math/ce14948d0925847886e886488ee7e9e0e20f9f0f.png" alt="T_{\rm qp}"/>,
-<img class="math" src="../../_images/math/4041ff460b103d50ec1ae4956227053c90909fff.png" alt="T_{\rm ker}"/>) where <img class="math" src="../../_images/math/294182e48abb2df54006ab495d26b45d0104a4c3.png" alt="T_{\rm tot}"/> is the
-total CPU time, <img class="math" src="../../_images/math/ce14948d0925847886e886488ee7e9e0e20f9f0f.png" alt="T_{\rm qp}"/> is the CPU time spent
-solving the QP, and <img class="math" src="../../_images/math/4041ff460b103d50ec1ae4956227053c90909fff.png" alt="T_{\rm ker}"/> is the CPU time spent
+<dd>a tuple (<img class="math" src="../../_images/math/4db3926db38318e1fd48103dab953b9c60b9771e.png" alt="T_{\rm tot}"/>, <img class="math" src="../../_images/math/b934d361120be9ebfde969a2fe2442866b4269aa.png" alt="T_{\rm qp}"/>,
+<img class="math" src="../../_images/math/ceb7e2f98524feec27c2187d4ef203d09f307437.png" alt="T_{\rm ker}"/>) where <img class="math" src="../../_images/math/4db3926db38318e1fd48103dab953b9c60b9771e.png" alt="T_{\rm tot}"/> is the
+total CPU time, <img class="math" src="../../_images/math/b934d361120be9ebfde969a2fe2442866b4269aa.png" alt="T_{\rm qp}"/> is the CPU time spent
+solving the QP, and <img class="math" src="../../_images/math/ceb7e2f98524feec27c2187d4ef203d09f307437.png" alt="T_{\rm ker}"/> is the CPU time spent
 computing the kernel matrix</dd>
 <dt><tt class="xref py py-const docutils literal"><span class="pre">'iterations'</span></tt></dt>
 <dd>the number of interior point iterations</dd>
@@ -136,27 +134,27 @@ class 2</dd>
 <tt class="descname">softmargin_appr</tt><big>(</big><em>X</em>, <em>d</em>, <em>gamma</em>, <em>width</em>, <em>kernel = 'linear'</em>, <em>sigma = 1.0</em>, <em>degree = 1</em>, <em>theta = 1.0</em><big>)</big><a class="headerlink" href="#softmargin_appr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the &#8216;soft-margin&#8217; SVM problem</p>
 <div class="math">
-<p><img src="../../_images/math/9d835a638b0396b4a0fc6e701dde1bab98153f27.png" alt="\begin{array}{ll}
+<p><img src="../../_images/math/c539d025288b6762b0879709510f115cee4440bc.png" alt="\begin{array}{ll}
 \mbox{maximize}   &amp; -(1/2) z^T \tilde{Q} z + d^Tz \\
 \mbox{subject to} &amp; 0 \preceq \mathrm{diag}(d) z \preceq \gamma \mathbf{1} \\
 &amp; \mathbf{1}^T z =0
 \end{array}"/></p>
-</div><p>(with variables <img class="math" src="../../_images/math/b13f21416d84e13708696f34dea81026cda583c9.png" alt="z"/>), and its dual problem</p>
+</div><p>(with variables <img class="math" src="../../_images/math/84d7271dd9e78c1e05d6c3c6ecb60309ef7dfc73.png" alt="z"/>), and its dual problem</p>
 <div class="math">
-<p><img src="../../_images/math/90f4c0343fe53d851b7ae25ad29b4511bf53fbdc.png" alt="\begin{array}{ll}
+<p><img src="../../_images/math/3fbab8775761c64d637bc29966ce33277b232f11.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; (1/2) y^T \tilde{Q}^{-1} y + \gamma \mathbf{1}^Tv \\
 \mbox{subject to} &amp;  \mathrm{diag}(d) (y + b \mathbf{1}) \succeq \mathbf{1} - v \\
 &amp; v \succeq 0
 \end{array}"/></p>
-</div><p>(with variables <img class="math" src="../../_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/>, <img class="math" src="../../_images/math/a9f23bf124b6b2b2a993eb313c72e678664ac74a.png" alt="v"/>, <img class="math" src="../../_images/math/8136a7ef6a03334a7246df9097e5bcc31ba33fd2.png" alt="b"/>).</p>
-<p>The <img class="math" src="../../_images/math/e75357f2d8c8407da3c37e1fa3524fbe8490e3f1.png" alt="m \times m"/> kernel matrix <img class="math" src="../../_images/math/4df3d41f7ad18701c08febd524face293d826dc9.png" alt="\tilde{Q}"/> is the
+</div><p>(with variables <img class="math" src="../../_images/math/b124ff74afb0914bb434e8fb849eb56d734412f8.png" alt="y"/>, <img class="math" src="../../_images/math/0e22076955898e6c9bb38aa079135195c24dc81e.png" alt="v"/>, <img class="math" src="../../_images/math/5e87bf41a96deddf6cb485ff530f153f2590e9cc.png" alt="b"/>).</p>
+<p>The <img class="math" src="../../_images/math/745f3493312cd221d17617b05e1ff74af67b9c1f.png" alt="m \times m"/> kernel matrix <img class="math" src="../../_images/math/5c38da98661a77c63b2183cc6f824084d8093315.png" alt="\tilde{Q}"/> is the
 maximum determinant completion of the projection of Q on a band
-with bandwidth <img class="math" src="../../_images/math/5c32a6aa4ebe757e48c710bc37535999137258d4.png" alt="2w+1"/>. Here <img class="math" src="../../_images/math/dd189f58da88b83eb11fe0d239bc6c9a890e88bc.png" alt="Q_{ij} = h(x_i, x_j)"/> where
-<img class="math" src="../../_images/math/8189a5b5a0917b8c93350827be4038af1839139d.png" alt="h"/> is one of the kernel functions defined under
-<a class="reference internal" href="#softmargin" title="softmargin"><tt class="xref py py-func docutils literal"><span class="pre">softmargin()</span></tt></a> and <img class="math" src="../../_images/math/8dc1ad02ea8728df79a2685e5f8ece035d555cb2.png" alt="x_i^T"/> is the i&#8217;th row of the
-<img class="math" src="../../_images/math/dc5c773a00becebf2fe78e775d5953e138efea9e.png" alt="m \times n"/> data matrix <img class="math" src="../../_images/math/6a47ca0fe7cb276abc022af6ac88ddae1a9d6894.png" alt="X"/>. The <img class="math" src="../../_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>-vector
-<img class="math" src="../../_images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d"/> is a vector with labels (<em>i.e.</em> <img class="math" src="../../_images/math/284b511ee62758bd3b1f5bcf6b848a3ebd8b2bb2.png" alt="d_i \in \{
--1,1\}"/>).  The half-bandwidth parameter <img class="math" src="../../_images/math/9ee4b825a2e36ae093ed7be5e4851ef453b34914.png" alt="w"/> is set using the
+with bandwidth <img class="math" src="../../_images/math/7fe6069aa7e741b99f6b7fe911ad086a274d3ec3.png" alt="2w+1"/>. Here <img class="math" src="../../_images/math/3c9046be0f9dcff3b3624fe74aaf2b1e57d43d2e.png" alt="Q_{ij} = h(x_i, x_j)"/> where
+<img class="math" src="../../_images/math/cbb80ad77aa7a5e227d5a46bc44d235284106cfc.png" alt="h"/> is one of the kernel functions defined under
+<a class="reference internal" href="#softmargin" title="softmargin"><tt class="xref py py-func docutils literal"><span class="pre">softmargin()</span></tt></a> and <img class="math" src="../../_images/math/35d06a2aa8de54e78a4b0902eeb76f8a46587dc2.png" alt="x_i^T"/> is the i&#8217;th row of the
+<img class="math" src="../../_images/math/333494eb009c3c5a93166d4ec2d46e71d98339a0.png" alt="m \times n"/> data matrix <img class="math" src="../../_images/math/f026aecf11ec7f6141ab863f260d395f94b10f51.png" alt="X"/>. The <img class="math" src="../../_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/>-vector
+<img class="math" src="../../_images/math/425d86ba2f2979d75b7535c2bcf92c33ed6b285a.png" alt="d"/> is a vector with labels (<em>i.e.</em> <img class="math" src="../../_images/math/75830cb22d97b70687b5b2a05673e25fb16a889f.png" alt="d_i \in \{
+-1,1\}"/>).  The half-bandwidth parameter <img class="math" src="../../_images/math/8659700e6646cd91bc02c32affaa5ec046ee9935.png" alt="w"/> is set using the
 input argument <cite>width</cite>.</p>
 <p><tt class="xref py py-func docutils literal"><span class="pre">softmaring_appr()</span></tt> returns a dictionary that contains the same
 keys as the dictionary returned by <a class="reference internal" href="#softmargin" title="softmargin"><tt class="xref py py-func docutils literal"><span class="pre">softmargin()</span></tt></a>. In
@@ -165,7 +163,7 @@ addition to these keys, the dictionary returned by
 <dl class="docutils">
 <dt><tt class="xref py py-const docutils literal"><span class="pre">'completion</span> <span class="pre">classifier'</span></tt></dt>
 <dd>a Python function object that
-takes an <img class="math" src="../../_images/math/e33e2ba3e206f98ba5aed5091b1f59b588115665.png" alt="M \times n"/> matrix with test vectors as rows
+takes an <img class="math" src="../../_images/math/4efd6046ef1817ebb9ca0aebc0dae35b31bc95d1.png" alt="M \times n"/> matrix with test vectors as rows
 and returns a vector with labels</dd>
 </dl>
 </dd></dl>
@@ -174,11 +172,11 @@ and returns a vector with labels</dd>
 <div class="section" id="example-1">
 <h2>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline">¶</a></h2>
 <p>As a toy example, consider the following classification problem with
-two (nonlinearly) separable classes.  We use as training set <img class="math" src="../../_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>
-points in <img class="math" src="../../_images/math/e89fe3f49396ca3fbf1f65bf8d276de262680fcc.png" alt="\mathbf{R}^2"/> generated according to a uniform
-distribution over the box <img class="math" src="../../_images/math/f8d21ae40a4c7633ccd1eeeb710bed2cf071ea7a.png" alt="\mathcal{B} = \{ x\,|\,\|x\|_\infty
+two (nonlinearly) separable classes.  We use as training set <img class="math" src="../../_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/>
+points in <img class="math" src="../../_images/math/7cbc892effb19c4e88c7fd8ce97a06bcaf00ca7e.png" alt="\mathbf{R}^2"/> generated according to a uniform
+distribution over the box <img class="math" src="../../_images/math/37f23c000bd3a50dd09d03b0c0aac47e20f673d5.png" alt="\mathcal{B} = \{ x\,|\,\|x\|_\infty
 \leq 1 \}"/>. We assign labels using the function
-<img class="math" src="../../_images/math/9f1aa249913115a0e7ed5f0924ceb17cf34ce49a.png" alt="\mathrm{sign}(f(x)) = \mathrm{sign}(x_1 x_2)"/>, <em>i.e.</em>, points
+<img class="math" src="../../_images/math/9a1aaaaa43274b501c4fb65795ccb0420a69a2e7.png" alt="\mathrm{sign}(f(x)) = \mathrm{sign}(x_1 x_2)"/>, <em>i.e.</em>, points
 in the first and third quadrants belong to class 1 and points in the
 second and fourth quadrants belong to class 2. We remark that in this
 simple example, the degree 2 polynomial kernel can separate the two
@@ -186,8 +184,8 @@ classes.</p>
 <p>The following Python code illustrates how to solve this classification
 problem using each of the two routines provided in SVMCMPL.  In this
 example we solve a problem instance with 2,000 training
-points, and we use <img class="math" src="../../_images/math/8ab3d760ffa0294d7d4cd26e979767f51c676a24.png" alt="\gamma = 2.0"/> and the RBF kernel with
-<img class="math" src="../../_images/math/1ce2a843a1917ff90480379a349baed419185551.png" alt="\sigma = 1.0"/>.</p>
+points, and we use <img class="math" src="../../_images/math/c9c2b0e84210a1498c2c237e7e57b55be42b673c.png" alt="\gamma = 2.0"/> and the RBF kernel with
+<img class="math" src="../../_images/math/2bb8d774dc2d8245b1c680b89fb834f05bc402da.png" alt="\sigma = 1.0"/>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">cvxopt</span><span class="o">,</span> <span class="nn">svmcmpl</span>
 <span class="n">m</span> <span class="o">=</span> <span class="mi">2000</span>
 <span class="n">X</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">cvxopt</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mf">1.0</span>
@@ -199,24 +197,24 @@ points, and we use <img class="math" src="../../_images/math/8ab3d760ffa0294d7d4
 </div>
 <p>Solving the standard (dense) SVM problem produced 445 support
 vectors, marked with white dots in the plot below:</p>
-<img alt="../../_images/xor_N2000_rbf.png" src="../../_images/xor_N2000_rbf.png" style="width: 450px;" />
+<a class="reference internal image-reference" href="../../_images/xor_N2000_rbf.png"><img alt="../../_images/xor_N2000_rbf.png" src="../../_images/xor_N2000_rbf.png" style="width: 450px;" /></a>
 <p>The solid curve marks the decision boundry whereas the dashed curves
-are the -1 and +1 contours of <img class="math" src="../../_images/math/659a6a2610357101d77dbae8eb9bf0b3100c08fd.png" alt="g(x)"/> where
-<img class="math" src="../../_images/math/0ca421acb2142f92b6b91084bfe7fb294b2343e8.png" alt="\mathrm{sign}(g(x))"/> is the decision function.</p>
-<p>Solving the approximation problem with half-bandwidth <img class="math" src="../../_images/math/ed030775cf20cc4c52f0dcd9b4c6a5a074ce9025.png" alt="w = 10"/>
+are the -1 and +1 contours of <img class="math" src="../../_images/math/3af1f844d2ef477235eb582f56085d4b53bf7568.png" alt="g(x)"/> where
+<img class="math" src="../../_images/math/db525ae34803c452f4fda6290e2a8bf983e15a6f.png" alt="\mathrm{sign}(g(x))"/> is the decision function.</p>
+<p>Solving the approximation problem with half-bandwidth <img class="math" src="../../_images/math/2807354865472bf17fb3de469f3b71ce82d55e57.png" alt="w = 10"/>
 produced 1,054 support vectors.</p>
-<img alt="../../_images/xor_N2000_rbf_skc_w10.png" src="../../_images/xor_N2000_rbf_skc_w10.png" style="width: 450px;" />
-<img alt="../../_images/xor_N2000_rbf_ckc_w10.png" src="../../_images/xor_N2000_rbf_ckc_w10.png" style="width: 450px;" />
+<a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_skc_w10.png"><img alt="../../_images/xor_N2000_rbf_skc_w10.png" src="../../_images/xor_N2000_rbf_skc_w10.png" style="width: 450px;" /></a>
+<a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_ckc_w10.png"><img alt="../../_images/xor_N2000_rbf_ckc_w10.png" src="../../_images/xor_N2000_rbf_ckc_w10.png" style="width: 450px;" /></a>
 <p>In this example, the standard kernel classifier is clearly better than
 the completion kernel classifier at this bandwidth. Increasing the
-half-bandwidth to <img class="math" src="../../_images/math/908b2adac4b4dd629221cf1c3a3f7e73efa69912.png" alt="w = 20"/> produced 467 support vectors.</p>
-<img alt="../../_images/xor_N2000_rbf_skc_w20.png" src="../../_images/xor_N2000_rbf_skc_w20.png" style="width: 450px;" />
-<img alt="../../_images/xor_N2000_rbf_ckc_w20.png" src="../../_images/xor_N2000_rbf_ckc_w20.png" style="width: 450px;" />
+half-bandwidth to <img class="math" src="../../_images/math/9a766ad8bb0d93519e3cc05c53c6928f4be940ea.png" alt="w = 20"/> produced 467 support vectors.</p>
+<a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_skc_w20.png"><img alt="../../_images/xor_N2000_rbf_skc_w20.png" src="../../_images/xor_N2000_rbf_skc_w20.png" style="width: 450px;" /></a>
+<a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_ckc_w20.png"><img alt="../../_images/xor_N2000_rbf_ckc_w20.png" src="../../_images/xor_N2000_rbf_ckc_w20.png" style="width: 450px;" /></a>
 <p>Notice that both the standard kernel and completion kernel classifiers
 are now nearly identical to classifier obtained by solving the
 standard SVM QP.</p>
 <p>Solving the dense SVM QP required 7.0 seconds whereas the approximation
-QPs required 0.3 seconds and 0.7 seconds for <img class="math" src="../../_images/math/ed030775cf20cc4c52f0dcd9b4c6a5a074ce9025.png" alt="w = 10"/> and <img class="math" src="../../_images/math/d080c79acd2d9d6776636261c17d304911243fa4.png" alt="w =
+QPs required 0.3 seconds and 0.7 seconds for <img class="math" src="../../_images/math/2807354865472bf17fb3de469f3b71ce82d55e57.png" alt="w = 10"/> and <img class="math" src="../../_images/math/25b2f60afca5d2379297afcfbfd460a2f254ca51.png" alt="w =
 20"/>, respectively.</p>
 </div>
 <div class="section" id="example-2">
@@ -254,7 +252,7 @@ a binary classifier using as training set 4,000 examples of the digit
 </pre></div>
 </div>
 <p>In this example, both the standard kernel classifier and the completion kernel classifier misclassified 8 out of 2,115 test examples (digits &#8216;0&#8217; and &#8216;1&#8217; from the MNIST test set):</p>
-<img alt="../../_images/mnist_miscls.png" src="../../_images/mnist_miscls.png" style="width: 450px;" />
+<a class="reference internal image-reference" href="../../_images/mnist_miscls.png"><img alt="../../_images/mnist_miscls.png" src="../../_images/mnist_miscls.png" style="width: 450px;" /></a>
 </div>
 </div>
 
@@ -299,7 +297,7 @@ a binary classifier using as training set 4,000 examples of the digit
       </ul>
     </div>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
     </div>
 
 <script type="text/javascript">

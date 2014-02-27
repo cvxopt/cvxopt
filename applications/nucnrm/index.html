@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -54,13 +52,13 @@ and requires CVXOPT version 1.1.1 or higher and Python 2.7.</p>
 in the nuclear norm, possibly with quadratic regularization.
 The general optimization problem  is</p>
 <div class="math">
-<p><img src="../../_images/math/e8f53f5c3c8a56ff1d8df8cd05ac1395e08efb87.png" alt="\begin{array}[t]{ll}
+<p><img src="../../_images/math/a1f138159d9a3f41738a8a352e2cdfe6238e90e9.png" alt="\begin{array}[t]{ll}
 \mbox{minimize} &amp; \|A(x) - B\|_* + (1/2) x^T C x + d^T x \\
 \mbox{subject to} &amp;  Gx \preceq  h
 \end{array}"/></p>
 </div><p>where</p>
 <div class="math">
-<p><img src="../../_images/math/a78ae28760ef966f6aa62dc1f26993a394573c7b.png" alt="A(x) = x_1 A_1 + x_2 A_2 + \cdots + x_n A_n"/></p>
+<p><img src="../../_images/math/9748ab655ffdd24b436379c59f2242175b95ae90.png" alt="A(x) = x_1 A_1 + x_2 A_2 + \cdots + x_n A_n"/></p>
 </div><p>is a linear matrix valued function.  The norm in the first term of the
 objective is the <em>nuclear norm</em> (sum of singular values).  The second term
 is a general convex quadratic function.  The constraints are componentwise
@@ -68,7 +66,7 @@ linear inequalities.</p>
 <p>This problem is of interest as a convex heuristic for a regularized
 rank minimization problem</p>
 <div class="math">
-<p><img src="../../_images/math/6496e716451646b5fc08f751a0ce517912e51f61.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
+<p><img src="../../_images/math/96ab9c663cc6a24e452b1cb8c1faeeca17fde415.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
 \begin{array}[t]{ll}
 \mbox{minimize} &amp; \Rank(A(x) - B) + (1/2) x^T C x + d^T x \\
 \mbox{subject to} &amp;  Gx \preceq  h
@@ -79,34 +77,34 @@ problem.  In this example, we fit a linear state space model to measured
 inputs and outputs of a dynamical system.  The model is constructed from
 the solution of a regularized nuclear norm minimization problem</p>
 <div class="math">
-<p><img src="../../_images/math/b9aa042a634b4b25aaeae439749149878560567c.png" alt="\begin{array}{ll}
+<p><img src="../../_images/math/78159da5f333e7841bcb1eb69426e25544d1246f.png" alt="\begin{array}{ll}
 \mbox{minimize} &amp; \displaystyle \| Y U^\perp \|_* +
      \gamma \sum_{t=1}^N \|y(t) - y_\mathrm{meas}(t)\|_2^2.
 \end{array}"/></p>
-</div><p>The optimization variables <img class="math" src="../../_images/math/1340561888dcb4122a0844f6edc3acaa4dfc4a63.png" alt="y(t)"/> in the problem are the model
-outputs.  The vectors <img class="math" src="../../_images/math/e46f3ba0c1a588d9d9fbb3435e6879f26ebebe37.png" alt="y_\mathrm{meas}(t)"/> are given, measured,
-outputs.  The matrix <img class="math" src="../../_images/math/ce58e4af225c93d08606c26554caaa5ae32edeba.png" alt="Y"/> is a block Hankel matrix constructed from
-the variables <img class="math" src="../../_images/math/1340561888dcb4122a0844f6edc3acaa4dfc4a63.png" alt="y(t)"/>.   The matrix <img class="math" src="../../_images/math/17da61b54a0ba3c815f9aae3bc5444c86af6e010.png" alt="U^\perp"/> is a matrix whose
-columns span the nullspace of a block Hankel matrix <img class="math" src="../../_images/math/e2bbebb3bd73f1ae5c64098ab0244f739abf7ca4.png" alt="U"/> constructed
-from measured inputs <img class="math" src="../../_images/math/c1c8c30961383c64eb68fb05a8f582566fb283e3.png" alt="u_\mathrm{meas}(t)"/>.
-At the optimum the matrix <img class="math" src="../../_images/math/a0c6507114b977c7f6304a7fdcf9726d0e8d02f0.png" alt="Y U^\perp"/> is low rank, and its rank is
+</div><p>The optimization variables <img class="math" src="../../_images/math/6ef4611104bb98b4035f37ce6bbafb0ec7a38a60.png" alt="y(t)"/> in the problem are the model
+outputs.  The vectors <img class="math" src="../../_images/math/775c25d47cf3c5318cb19d11122a309ab5602d60.png" alt="y_\mathrm{meas}(t)"/> are given, measured,
+outputs.  The matrix <img class="math" src="../../_images/math/b018f9153661cd702305aecc28713fd9705e7cb3.png" alt="Y"/> is a block Hankel matrix constructed from
+the variables <img class="math" src="../../_images/math/6ef4611104bb98b4035f37ce6bbafb0ec7a38a60.png" alt="y(t)"/>.   The matrix <img class="math" src="../../_images/math/0091f49da7dbb2dbbd19b5f3b7186c5744ceb2e1.png" alt="U^\perp"/> is a matrix whose
+columns span the nullspace of a block Hankel matrix <img class="math" src="../../_images/math/73f5e249c88b2b3068263480f576b051cb5c4f6e.png" alt="U"/> constructed
+from measured inputs <img class="math" src="../../_images/math/f5a92f31881a0c96e8a26ddf0596c64ed62ad49f.png" alt="u_\mathrm{meas}(t)"/>.
+At the optimum the matrix <img class="math" src="../../_images/math/f49c13cc4b496a852b73801dd0ad300f847625fd.png" alt="Y U^\perp"/> is low rank, and its rank is
 equal to the order of a linear model that maps the measured inputs to
 the corrected outputs.</p>
 <p>The figures illustrate the results for the compact disc arm data
 of the <a class="reference external" href="http://homes.esat.kuleuven.be/~smc/daisy">Daisy</a>
 collection.
 The first figure shows the singular values of the matrix
-<img class="math" src="../../_images/math/c25fc4515957a392169cd38fdb897be36f5aa4b9.png" alt="YU^\perp"/> constructed from the optimized outputs, and the matrix
-<img class="math" src="../../_images/math/e24a96cd25061aee54a9adf5b930db30d3068454.png" alt="Y_\mathrm{meas}U^\perp"/> constructed from the measured outputs.
+<img class="math" src="../../_images/math/c487a9233c984864981a6fdbcd25a1878439558a.png" alt="YU^\perp"/> constructed from the optimized outputs, and the matrix
+<img class="math" src="../../_images/math/52babfb7139bcbebf7f7c7b8e88e4ecb71af2928.png" alt="Y_\mathrm{meas}U^\perp"/> constructed from the measured outputs.
 The plot suggests a model of order three.
 The second figure compares the actual outputs with the outputs of the
 identified model.</p>
-<img alt="../../_images/sv.png" src="../../_images/sv.png" style="width: 500px;" />
-<img alt="../../_images/outputs.png" src="../../_images/outputs.png" style="width: 500px;" />
+<a class="reference internal image-reference" href="../../_images/sv.png"><img alt="../../_images/sv.png" src="../../_images/sv.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="../../_images/outputs.png"><img alt="../../_images/outputs.png" src="../../_images/outputs.png" style="width: 500px;" /></a>
 <h2> Trade-off curve envelope </h2><p>In this example we compute bounds on the trade-off curve of the
 bicriterion problem</p>
 <div class="math">
-<p><img src="../../_images/math/5cd216b44661b8f9d7b78e172eeca6613419c60d.png" alt="\newcommand{\reals}{\mbox{\bf R}}
+<p><img src="../../_images/math/1a12a0c3d68199259fb840ea6150801d4a58ad72.png" alt="\newcommand{\reals}{\mbox{\bf R}}
 \begin{array}{ll}
 \mbox{minimize (w.r.t. $\reals_2^+$)} &amp;
   (\|A(x) - B\|_*, \;\;  \| x-x_0\|_2^2)
@@ -114,7 +112,7 @@ bicriterion problem</p>
 </div><p>for a randomly generated problem.  Points on the trade-off curve can be
 computed by solving the scalarized problem</p>
 <div class="math">
-<p><img src="../../_images/math/4935eadda3a7cb43657c7f6b5b7f8eedd52b54cb.png" alt="\begin{array}{ll}
+<p><img src="../../_images/math/20130c2f332a65f6b0cdde1a9a543fa76ac8ed76.png" alt="\begin{array}{ll}
 \mbox{minimize} &amp; \|A(x) - B\|_* + \gamma \| x-x_0\|_2^2
 \end{array}"/></p>
 </div><p>for different weights.  Since the trade-off curve is convex, we can also
@@ -122,9 +120,9 @@ derive upper and lower bounds from the solutions of the scalarized problems.
 The figures show the bounds after the computation of 3, 5, and 10
 scalarized problems.   The trade-off curve is in the union of
 the triangular areas enclosed by the solid and dashed lines.</p>
-<img alt="../../_images/tradeoff-1.png" src="../../_images/tradeoff-1.png" style="width: 500px;" />
-<img alt="../../_images/tradeoff-3.png" src="../../_images/tradeoff-3.png" style="width: 500px;" />
-<img alt="../../_images/tradeoff-8.png" src="../../_images/tradeoff-8.png" style="width: 500px;" />
+<a class="reference internal image-reference" href="../../_images/tradeoff-1.png"><img alt="../../_images/tradeoff-1.png" src="../../_images/tradeoff-1.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="../../_images/tradeoff-3.png"><img alt="../../_images/tradeoff-3.png" src="../../_images/tradeoff-3.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="../../_images/tradeoff-8.png"><img alt="../../_images/tradeoff-8.png" src="../../_images/tradeoff-8.png" style="width: 500px;" /></a>
 </div>
 
 
@@ -158,7 +156,7 @@ the triangular areas enclosed by the solid and dashed lines.</p>
       </ul>
     </div>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
     </div>
 
 <script type="text/javascript">

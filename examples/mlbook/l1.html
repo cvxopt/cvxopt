@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -43,31 +41,31 @@
             
   <div class="section" id="l1-norm-approximation">
 <h1>L1-norm approximation<a class="headerlink" href="#l1-norm-approximation" title="Permalink to this headline">¶</a></h1>
-<p>The <img class="math" src="../../_images/math/3ff9d2add1273f7f294d4f0318b0ed4340c07768.png" alt="\ell_1"/>-norm approximation problem is given by</p>
+<p>The <img class="math" src="../../_images/math/ed1224e5faf752a5cd66f7e2468ecc4f14208cf9.png" alt="\ell_1"/>-norm approximation problem is given by</p>
 <div class="math" id="equation-l1approx">
-<p><span class="eqno">(1)</span><img src="../../_images/math/f031fda2630924d0de3c76dadd1fabeeee16901e.png" alt="\begin{array}{ll}
+<p><span class="eqno">(1)</span><img src="../../_images/math/1222bac1b391b9b09472475ebdeef605687241d0.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp;  \| Pu - q \|_1
 \end{array}"/></p>
-</div><p>with variable <img class="math" src="../../_images/math/673b2a1a101e97494d200eb59b1ac29a73608e79.png" alt="u \in \mathbf{R}^n"/> and problem data <img class="math" src="../../_images/math/6d3b1d1cea2c783905be7b1c0d77166a119cae16.png" alt="P \in \mathbf{R}^{m \times n}"/> and <img class="math" src="../../_images/math/aaff9a9020ae22751cba7a6ffe4b4f67e7570795.png" alt="q \in
+</div><p>with variable <img class="math" src="../../_images/math/dc72ca06d7861d123b191e1a84827963f3ab4ccb.png" alt="u \in \mathbf{R}^n"/> and problem data <img class="math" src="../../_images/math/8aa602af267771040bf3f92219afc3a9e17f0fdb.png" alt="P \in \mathbf{R}^{m \times n}"/> and <img class="math" src="../../_images/math/1c4206561abbb24be36e9d54ac35fd8a0a666133.png" alt="q \in
 \mathbf{R}^m"/>. The problem is equivalent to an LP</p>
 <div class="math" id="equation-l1approx_lp">
-<p><span class="eqno">(2)</span><img src="../../_images/math/5bfe3d212a40d5329b0a994d1c35669a487f5e67.png" alt="\begin{array}{ll}
+<p><span class="eqno">(2)</span><img src="../../_images/math/08dbaee82f3de872328a50cb454f0cdcd52ea679.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; \mathbf{1}^Tv \\
 \mbox{subject to} &amp;  \begin{bmatrix} P &amp; -I\\ -P &amp; - I \end{bmatrix}
                     \begin{bmatrix} u \\ v \end{bmatrix}
                     \preceq
                     \begin{bmatrix} q \\ -q \end{bmatrix}
 \end{array}"/></p>
-</div><p>with <img class="math" src="../../_images/math/53bf1afcb274a3bb84338109fffec8a1f1c02008.png" alt="m + n"/> variables and <img class="math" src="../../_images/math/c93d829d38f1f73cd97c8fd926e636e968d0c158.png" alt="2m"/> constraints. Yet another
+</div><p>with <img class="math" src="../../_images/math/19f23420c347c21e84c8a3321c550161bca31c1d.png" alt="m + n"/> variables and <img class="math" src="../../_images/math/592302bcc3f06db050b8f31a31bea6e3430f6056.png" alt="2m"/> constraints. Yet another
 equivalent formulation is the problem</p>
 <div class="math" id="equation-l1approx_lp2">
-<p><span class="eqno">(3)</span><img src="../../_images/math/19472453e96d47e1f88452a2d6eec1858e8b216b.png" alt="\begin{array}{ll}
+<p><span class="eqno">(3)</span><img src="../../_images/math/e01a70c539bfce528e6cbc7139a608313d3c680f.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; e^Ts + e^Tt \\
 \mbox{subject to} &amp;  Pu - q = s - t \\
                   &amp; s, t \geq 0
 \end{array}"/></p>
-</div><p>with variables <img class="math" src="../../_images/math/673b2a1a101e97494d200eb59b1ac29a73608e79.png" alt="u \in \mathbf{R}^n"/>, <img class="math" src="../../_images/math/6a801021c87850a757e62d88110f0af6ace1ace3.png" alt="s \in \mathbf{R}^m"/>, and <img class="math" src="../../_images/math/54e2e479a27c34f7f2d0041fa10008ad9f4b42eb.png" alt="t \in \mathbf{R}^m"/>.</p>
-<h3> Documentation </h3><p>A custom solver for the <img class="math" src="../../_images/math/3ff9d2add1273f7f294d4f0318b0ed4340c07768.png" alt="\ell_1"/>-norm approximation problem is
+</div><p>with variables <img class="math" src="../../_images/math/dc72ca06d7861d123b191e1a84827963f3ab4ccb.png" alt="u \in \mathbf{R}^n"/>, <img class="math" src="../../_images/math/0c0965dc06500911f8d993a13082a3e987121ea7.png" alt="s \in \mathbf{R}^m"/>, and <img class="math" src="../../_images/math/d25533f2e1d5e755097c7a8f49bdd69b144b1853.png" alt="t \in \mathbf{R}^m"/>.</p>
+<h3> Documentation </h3><p>A custom solver for the <img class="math" src="../../_images/math/ed1224e5faf752a5cd66f7e2468ecc4f14208cf9.png" alt="\ell_1"/>-norm approximation problem is
 available as a Python module <a class="reference download internal" href="../../_downloads/l1.py"><tt class="xref download docutils literal"><span class="pre">l1.py</span></tt></a>. The module implements
 the following four functions:</p>
 <blockquote>
@@ -75,7 +73,7 @@ the following four functions:</p>
 <dt id="l1">
 <tt class="descname">l1</tt><big>(</big><em>P</em>, <em>q</em><big>)</big><a class="headerlink" href="#l1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a href="#equation-l1approx_lp">(2)</a> using a custom KKT solver.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/9ad99798ec4c38e165cf517cb9e02b1c9e824103.png" alt="u"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/e5fc41b391867da81606413e3389c7efc73abaf0.png" alt="u"/>.</p>
 </dd></dl>
 
 <dl class="function">
@@ -84,7 +82,7 @@ the following four functions:</p>
 <dd><p>Solves the problem <a href="#equation-l1approx_lp">(2)</a> using a custom KKT solver. This
 function implements the same custom KKT solver as <a class="reference internal" href="#l1" title="l1"><tt class="xref py py-func docutils literal"><span class="pre">l1()</span></tt></a>, but it
 uses BLAS routines instead of overloaded arithmetic.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/9ad99798ec4c38e165cf517cb9e02b1c9e824103.png" alt="u"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/e5fc41b391867da81606413e3389c7efc73abaf0.png" alt="u"/>.</p>
 </dd></dl>
 
 <dl class="function">
@@ -92,7 +90,7 @@ uses BLAS routines instead of overloaded arithmetic.</p>
 <tt class="descname">l1mosek</tt><big>(</big><em>P</em>, <em>q</em><big>)</big><a class="headerlink" href="#l1mosek" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a href="#equation-l1approx_lp">(2)</a> using MOSEK. This function
 is only available if MOSEK is installed.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/9ad99798ec4c38e165cf517cb9e02b1c9e824103.png" alt="u"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/e5fc41b391867da81606413e3389c7efc73abaf0.png" alt="u"/>.</p>
 </dd></dl>
 
 <dl class="function">
@@ -100,7 +98,7 @@ is only available if MOSEK is installed.</p>
 <tt class="descname">l1mosek2</tt><big>(</big><em>P</em>, <em>q</em><big>)</big><a class="headerlink" href="#l1mosek2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a href="#equation-l1approx_lp2">(3)</a> using MOSEK. This function
 is only available if MOSEK is installed.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/9ad99798ec4c38e165cf517cb9e02b1c9e824103.png" alt="u"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/e5fc41b391867da81606413e3389c7efc73abaf0.png" alt="u"/>.</p>
 </dd></dl>
 
 </div></blockquote>
@@ -145,7 +143,7 @@ is only available if MOSEK is installed.</p>
       </ul>
     </div>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
     </div>
 
 <script type="text/javascript">

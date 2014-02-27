@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -43,28 +41,28 @@
             
   <div class="section" id="l1-norm-regularized-least-squares">
 <h1>L1-norm regularized least-squares<a class="headerlink" href="#l1-norm-regularized-least-squares" title="Permalink to this headline">¶</a></h1>
-<p>We consider a least-squares problem with <img class="math" src="../../_images/math/3ff9d2add1273f7f294d4f0318b0ed4340c07768.png" alt="\ell_1"/>-norm
+<p>We consider a least-squares problem with <img class="math" src="../../_images/math/ed1224e5faf752a5cd66f7e2468ecc4f14208cf9.png" alt="\ell_1"/>-norm
 regularization</p>
 <div class="math" id="equation-regls">
-<p><span class="eqno">(1)</span><img src="../../_images/math/43a05b14583aae2475acb62a22f00ffd08f69db0.png" alt="\begin{array}{ll}
+<p><span class="eqno">(1)</span><img src="../../_images/math/eb5ed41a29eacbafb1e38c0ed39d12be8f6cadc4.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp;  \| Ax - b \|_2^2  + \| x \|_1
 \end{array}"/></p>
-</div><p>with variable <img class="math" src="../../_images/math/2eac89afc12ea6dcdcdaef65d8d2dcb8b02536fb.png" alt="x \in \mathbf{R}^n"/> and problem data <img class="math" src="../../_images/math/0b1720d6ab3512194d6a38d765fedbe601577f9b.png" alt="A \in \mathbf{R}^{m \times n}"/> and <img class="math" src="../../_images/math/94ef0a277d03edba295611258568d953f4c710d5.png" alt="b \in
+</div><p>with variable <img class="math" src="../../_images/math/896492040fde43f6f2f24406593e9fedbf52a2be.png" alt="x \in \mathbf{R}^n"/> and problem data <img class="math" src="../../_images/math/99fdb1b8210428a1b5757b885dfd5678cda31fe8.png" alt="A \in \mathbf{R}^{m \times n}"/> and <img class="math" src="../../_images/math/65f9647f44d4ddf5609e52cd69ac1a0bd1770908.png" alt="b \in
 \mathbf{R}^m"/>. The problem is equivalent to a QP</p>
 <div class="math" id="equation-regls_qp">
-<p><span class="eqno">(2)</span><img src="../../_images/math/99782b2fe88ce777d2f4cb199792e9f63665295e.png" alt="\begin{array}{ll}
+<p><span class="eqno">(2)</span><img src="../../_images/math/7c0ca6bdc5c1bb7d547e764a50330794b6d10aac.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; \| Ax - b \|_2^2  +  \mathbf{1}^Tv\\
 \mbox{subject to} &amp; -v \preceq x \preceq v
 \end{array}"/></p>
-</div><p>with <img class="math" src="../../_images/math/f93f5c51ea4b04b4992b003b39479f29018f6bda.png" alt="2n"/> variables and <img class="math" src="../../_images/math/f93f5c51ea4b04b4992b003b39479f29018f6bda.png" alt="2n"/> constraints. The problem can
+</div><p>with <img class="math" src="../../_images/math/d21790ee4259a72b655b00bfa761aaa3727ff1f6.png" alt="2n"/> variables and <img class="math" src="../../_images/math/d21790ee4259a72b655b00bfa761aaa3727ff1f6.png" alt="2n"/> constraints. The problem can
 also be written as a separable QP</p>
 <div class="math" id="equation-regls_qp2">
-<p><span class="eqno">(3)</span><img src="../../_images/math/ae7d510acda395a6f3c09764594b713b2999d3a7.png" alt="\begin{array}{ll}
+<p><span class="eqno">(3)</span><img src="../../_images/math/ac62b548f339a34427cd697d99fd1be4d999603f.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; w^Tw + e^Tu\\
 \mbox{subject to} &amp; -u \preceq x \preceq u \\
                   &amp; Ax - w = b.
 \end{array}"/></p>
-</div><h3> Documentation </h3><p>Solvers for the <img class="math" src="../../_images/math/3ff9d2add1273f7f294d4f0318b0ed4340c07768.png" alt="\ell_1"/>-norm regularized least-squares problem are
+</div><h3> Documentation </h3><p>Solvers for the <img class="math" src="../../_images/math/ed1224e5faf752a5cd66f7e2468ecc4f14208cf9.png" alt="\ell_1"/>-norm regularized least-squares problem are
 available as a Python module <a class="reference download internal" href="../../_downloads/l1regls.py"><tt class="xref download docutils literal"><span class="pre">l1regls.py</span></tt></a>. The module implements
 the following three functions:</p>
 <blockquote>
@@ -72,7 +70,7 @@ the following three functions:</p>
 <dt id="l1regls">
 <tt class="descname">l1regls</tt><big>(</big><em>A</em>, <em>b</em><big>)</big><a class="headerlink" href="#l1regls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a href="#equation-regls_qp">(2)</a> using a custom KKT solver.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/>.</p>
 </dd></dl>
 
 <dl class="function">
@@ -80,7 +78,7 @@ the following three functions:</p>
 <tt class="descname">l1regls_mosek</tt><big>(</big><em>A</em>, <em>b</em><big>)</big><a class="headerlink" href="#l1regls_mosek" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a href="#equation-regls_qp">(2)</a> using MOSEK. This function is
 only available if MOSEK is installed.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/>.</p>
 </dd></dl>
 
 <dl class="function">
@@ -88,7 +86,7 @@ only available if MOSEK is installed.</p>
 <tt class="descname">l1regls_mosek2</tt><big>(</big><em>A</em>, <em>b</em><big>)</big><a class="headerlink" href="#l1regls_mosek2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a href="#equation-regls_qp2">(3)</a> using MOSEK. This function is
 only available if MOSEK is installed.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/>.</p>
 </dd></dl>
 
 </div></blockquote>
@@ -133,7 +131,7 @@ only available if MOSEK is installed.</p>
       </ul>
     </div>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
     </div>
 
 <script type="text/javascript">

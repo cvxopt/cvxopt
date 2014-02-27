@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -64,15 +62,18 @@ header files and libraries must be installed.</p>
 <p class="rubric">Installation</p>
 <p>CVXOPT can be installed globally (for all users on a UNIX system) by
 writing:</p>
-<div class="highlight-python"><pre>python setup.py install</pre>
+<div class="highlight-python"><div class="highlight"><pre>python setup.py install
+</pre></div>
 </div>
 <p>It can also be installed locally (for a single user) by typing:</p>
-<div class="highlight-python"><pre>python setup.py install --user</pre>
+<div class="highlight-python"><div class="highlight"><pre>python setup.py install --user
+</pre></div>
 </div>
 <p>To test that the installation was successful, go to the examples directory
 and try one of the examples, for example,</p>
-<div class="highlight-python"><pre>cd examples/doc/chap8
-python lp.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>cd examples/doc/chap8
+python lp.py
+</pre></div>
 </div>
 <p>If Python does not issue an error message, installation was successful.</p>
 <p>Additional information can be found in the
@@ -113,8 +114,9 @@ pymosek.so is found in the user&#8217;s PYTHONPATH.</p>
 installation instructions. If multiple BLAS and LAPACK libraries have
 been installed, you can verify the current configuration using the following
 commands:</p>
-<div class="highlight-python"><pre>update-alternatives --config libblas.so.3
-update-alternatives --config liblapack.so.3</pre>
+<div class="highlight-python"><div class="highlight"><pre>update-alternatives --config libblas.so.3
+update-alternatives --config liblapack.so.3
+</pre></div>
 </div>
 </div>
 <div class="section" id="mac-os-x">
@@ -172,7 +174,8 @@ See <a class="reference external" href="http://math-atlas.sourceforge.net/atlas_
 </div></blockquote>
 </li>
 <li><p class="first">Open the Command Prompt and set the path variable with the following command:</p>
-<div class="highlight-python"><pre>set path=%path%;c:\Python27;c:\MinGW\bin;c:\MinGW\msys\1.0\bin</pre>
+<div class="highlight-python"><div class="highlight"><pre>set path=%path%;c:\Python27;c:\MinGW\bin;c:\MinGW\msys\1.0\bin
+</pre></div>
 </div>
 </li>
 <li><p class="first">Download and compile BLAS source:</p>
@@ -183,11 +186,12 @@ See <a class="reference external" href="http://math-atlas.sourceforge.net/atlas_
 <li><p class="first">In the Command Prompt, change to the directory containing blas.tgz</p>
 </li>
 <li><p class="first">Run the following commands to unpack and compile reference BLAS:</p>
-<div class="highlight-python"><pre>tar -xvf blas.tgz
+<div class="highlight-python"><div class="highlight"><pre>tar -xvf blas.tgz
 cd BLAS
-sed 's/_LINUX/_WIN/' make.inc -i
+sed &#39;s/_LINUX/_WIN/&#39; make.inc -i
 make &amp;&amp; cp blas_WIN.a ../libblas.a
-cd ..</pre>
+cd ..
+</pre></div>
 </div>
 </li>
 </ul>
@@ -201,10 +205,11 @@ cd ..</pre>
 <li><p class="first">In the Command Prompt, change to directory containing lapack-3.4.0.tgz</p>
 </li>
 <li><p class="first">Run the following commands to unpack and compile LAPACK:</p>
-<div class="highlight-python"><pre>tar -xvf lapack-3.4.0.tgz
+<div class="highlight-python"><div class="highlight"><pre>tar -xvf lapack-3.4.0.tgz
 cd lapack-3.4.0
 cp make.inc.example make.inc
-make lapacklib &amp;&amp; cp liblapack.a ..</pre>
+make lapacklib &amp;&amp; cp liblapack.a ..
+</pre></div>
 </div>
 </li>
 </ul>
@@ -218,8 +223,9 @@ make lapacklib &amp;&amp; cp liblapack.a ..</pre>
 <li><p class="first">In the Command Prompt, change to the directory containing the CVXOPT source distribution.</p>
 </li>
 <li><p class="first">Unpack the source distribution and change the directory to cvxopt-1.1.5/src:</p>
-<div class="highlight-python"><pre>tar -xvf cvxopt-1.1.5.tar.gz
-cd cvxopt-1.1.5/src</pre>
+<div class="highlight-python"><div class="highlight"><pre>tar -xvf cvxopt-1.1.5.tar.gz
+cd cvxopt-1.1.5/src
+</pre></div>
 </div>
 </li>
 <li><p class="first">Copy libblas.a and liblapack.a to the src directory</p>
@@ -233,21 +239,25 @@ cd cvxopt-1.1.5/src</pre>
 </div></blockquote>
 </li>
 <li><p class="first">Remove all instances of &#8216;-mno-cygwin&#8217; from c:\Python27\Lib\distutils\cygwinccompiler.py using the command:</p>
-<div class="highlight-python"><pre>sed 's/-mno-cygwin//g' -i'.bak' c:\Python27\Lib\distutils\cygwinccompiler.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>sed &#39;s/-mno-cygwin//g&#39; -i&#39;.bak&#39; c:\Python27\Lib\distutils\cygwinccompiler.py
+</pre></div>
 </div>
 <p><strong>Remark</strong>: This command changes the Python installation. We will undo these changes
 in the last step of the installation.</p>
 </li>
 <li><p class="first">Run the following commands to build and install CVXOPT:</p>
-<div class="highlight-python"><pre>python setup.py build --compiler=mingw32
-python setup.py install</pre>
+<div class="highlight-python"><div class="highlight"><pre>python setup.py build --compiler=mingw32
+python setup.py install
+</pre></div>
 </div>
 <p><strong>Remark</strong>: It is also possible to build a binary Windows installer with the command:</p>
-<div class="highlight-python"><pre>python setup.py build --compiler=mingw32 bdist --format=wininst</pre>
+<div class="highlight-python"><div class="highlight"><pre>python setup.py build --compiler=mingw32 bdist --format=wininst
+</pre></div>
 </div>
 </li>
 <li><p class="first">Restore c:\Python27\Lib\distutils\cygwinccompiler.py with the following command:</p>
-<div class="highlight-python"><pre>mv c:\Python27\Lib\distutils\cygwinccompiler.py.bak c:\Python27\Lib\distutils\cygwinccompiler.py</pre>
+<div class="highlight-python"><div class="highlight"><pre>mv c:\Python27\Lib\distutils\cygwinccompiler.py.bak c:\Python27\Lib\distutils\cygwinccompiler.py
+</pre></div>
 </div>
 </li>
 </ul>
@@ -302,7 +312,7 @@ python setup.py install</pre>
       </ul>
     </div>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
     </div>
 
 <script type="text/javascript">
