@@ -378,9 +378,12 @@ static PyObject *simplex(PyObject *self, PyObject *args,
       smcpParm = (pysmcp*)malloc(sizeof(*smcpParm));
       glp_init_smcp(&(smcpParm->obj));
     }
-    Py_INCREF(&(smcpParm));
-    
-    options->presolve = 1;
+    if(smcpParm) 
+    {
+      Py_INCREF(smcpParm);
+      options = &smcpParm->obj;
+      options->presolve = 1;
+    }
 
     lp = glp_create_prob();
     glp_add_rows(lp, m+p);
@@ -462,7 +465,7 @@ static PyObject *simplex(PyObject *self, PyObject *args,
                 Py_XDECREF(z);
                 Py_XDECREF(y);
                 Py_XDECREF(t);
-                Py_DECREF(&(smcpParm));
+                Py_XDECREF(smcpParm);
                 glp_delete_prob(lp);
                 return PyErr_NoMemory();
             }
@@ -483,7 +486,7 @@ static PyObject *simplex(PyObject *self, PyObject *args,
                 PyTuple_SET_ITEM(t, 3, (PyObject *) y);
             }
 
-            Py_DECREF(&(smcpParm));
+            Py_XDECREF(smcpParm);
             glp_delete_prob(lp);
             return (PyObject *) t;
         case GLP_EBADB:
@@ -524,7 +527,7 @@ static PyObject *simplex(PyObject *self, PyObject *args,
             break;
     }
 
-    Py_DECREF(&(smcpParm));
+    Py_XDECREF(smcpParm);
     glp_delete_prob(lp);
 
     PyTuple_SET_ITEM(t, 1, Py_BuildValue(""));
@@ -576,12 +579,16 @@ static PyObject *integer(PyObject *self, PyObject *args,
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|OOOOO!", kwlist, &c,
 	    &G, &h, &A, &b, &IntSet, &BinSet,iocp_t,&iocpParm)) return NULL;
 
-    if(!iocpParm)
-        options = &(iocpParm->obj);
-    else
+    if(!iocpParm) 
     {
-        options = malloc(sizeof(*options));
-        glp_init_iocp(options);
+      iocpParm = (pyiocp*)malloc(sizeof(*iocpParm));
+      glp_init_iocp(&(iocpParm->obj));
+    }
+    if(iocpParm) 
+    {
+      Py_INCREF(iocpParm);
+      options = &iocpParm->obj;
+      options->presolve = 1;
     }
 
     if ((Matrix_Check(G) && MAT_ID(G) != DOUBLE) ||
@@ -698,8 +705,6 @@ static PyObject *integer(PyObject *self, PyObject *args,
         return PyErr_NoMemory();
     }
 
-    options->presolve=1;
-
     if (IntSet) {
       PyObject *iter = PySequence_Fast(IntSet, "Critical error: not sequence");
 
@@ -770,6 +775,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
 
               x = (matrix *) Matrix_New(n,1,DOUBLE);
               if (!x) {
+                  Py_XDECREF(iocpParm);
                   Py_XDECREF(t);
                   glp_delete_prob(lp);
                   return PyErr_NoMemory();
@@ -781,6 +787,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
                   MAT_BUFD(x)[i] = glp_mip_col_val(lp, i+1);
               PyTuple_SET_ITEM(t, 1, (PyObject *) x);
 
+              Py_XDECREF(iocpParm);
               glp_delete_prob(lp);
               return (PyObject *) t;
 
@@ -789,6 +796,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
               x = (matrix *) Matrix_New(n,1,DOUBLE);
               if (!x) {
                   Py_XDECREF(t);
+                  Py_XDECREF(iocpParm);
                   glp_delete_prob(lp);
                   return PyErr_NoMemory();
               }
@@ -798,6 +806,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
                   MAT_BUFD(x)[i] = glp_mip_col_val(lp, i+1);
               PyTuple_SET_ITEM(t, 1, (PyObject *) x);
 
+              Py_XDECREF(iocpParm);
               glp_delete_prob(lp);
               return (PyObject *) t;
 
@@ -837,6 +846,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
               set_output_string(t,"unknown");
       }
 
+      Py_XDECREF(iocpParm);
     glp_delete_prob(lp);
 
     PyTuple_SET_ITEM(t, 1, Py_BuildValue(""));
