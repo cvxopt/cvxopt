@@ -26,7 +26,6 @@ import mosek
 from cvxopt import matrix, spmatrix, sparse
 from mosek.array import array, zeros
 env = mosek.Env()
-env.init()
 def streamprinter(text): print(text)
 env.set_Stream (mosek.streamtype.log, streamprinter)
 
@@ -159,7 +158,8 @@ def lp(c, G, h, A=None, b=None):
 
     task.solutionsummary (mosek.streamtype.msg); 
 
-    prosta, solsta = task.getsolutionstatus(mosek.soltype.bas)
+    
+    solsta = task.getsolsta(mosek.soltype.bas)
 
     x, z = zeros(n, float), zeros(m, float)
     task.getsolutionslice(mosek.soltype.bas, mosek.solitem.xx, 0, n, x) 
@@ -356,7 +356,7 @@ def conelp(c, G, h, dims = None):
 
     task.solutionsummary (mosek.streamtype.msg); 
 
-    prosta, solsta = task.getsolutionstatus(mosek.soltype.itr)
+    solsta = task.getsolsta(mosek.soltype.itr)
 
     xu, xl, zq = zeros(n, float), zeros(n, float), zeros(sum(mq), float)
     task.getsolutionslice(mosek.soltype.itr, mosek.solitem.slc, 0, n, xl) 
@@ -535,7 +535,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
 
     task.solutionsummary (mosek.streamtype.msg); 
 
-    prosta, solsta = task.getsolutionstatus(mosek.soltype.itr)
+    solsta = task.getsolsta(mosek.soltype.itr)
 
     xu, xl, zq = zeros(n, float), zeros(n, float), zeros(sum(mq), float)
     task.getsolutionslice(mosek.soltype.itr, mosek.solitem.slc, 0, n, xl) 
@@ -603,7 +603,6 @@ def qp(P, q, G=None, h=None, A=None, b=None):
     
     see chapter 15 of the MOSEK Python API manual.                    
     """
-
     if (type(P) is not matrix and type(P) is not spmatrix) or \
         P.typecode != 'd' or P.size[0] != P.size[1]:
         raise TypeError("'P' must be a square dense or sparse 'd' matrix ")
@@ -689,8 +688,7 @@ def qp(P, q, G=None, h=None, A=None, b=None):
     task.optimize()
 
     task.solutionsummary (mosek.streamtype.msg); 
-
-    prosta, solsta = task.getsolutionstatus(mosek.soltype.itr)
+    solsta = task.getsolsta(mosek.soltype.itr)
 
     x = zeros(n, float)
     task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, 0, n, x) 
@@ -865,9 +863,9 @@ def ilp(c, G, h, A=None, b=None, I=None):
     task.solutionsummary (mosek.streamtype.msg); 
 
     if len(I) > 0:
-        prosta, solsta = task.getsolutionstatus(mosek.soltype.itg)
+        solsta = task.getsolsta(mosek.soltype.itg)
     else:
-        prosta, solsta = task.getsolutionstatus(mosek.soltype.bas)
+        solsta = task.getsolsta(amosek.soltype.bas)
         
     x = zeros(n, float)
     if len(I) > 0:
