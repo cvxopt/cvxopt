@@ -1,3 +1,9 @@
+# Use setuptools if available
+try:
+    import setuptools
+except ImportError:
+    pass
+
 from distutils.core import setup, Extension
 from glob import glob
 
