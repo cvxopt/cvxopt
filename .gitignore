@@ -1,0 +1,4 @@
+build/
+cvxopt.egg-info/
+dist/
+*.pyc
