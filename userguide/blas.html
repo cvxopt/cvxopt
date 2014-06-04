@@ -1,56 +1,176 @@
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>The BLAS Interface &mdash; CVXOPT User&#39;s Guide</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+        <link rel="copyright" title="Copyright" href="copyright.html"/>
+    <link rel="top" title="CVXOPT User&#39;s Guide" href="index.html"/>
+        <link rel="next" title="The LAPACK Interface" href="lapack.html"/>
+        <link rel="prev" title="Dense and Sparse Matrices" href="matrices.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> CVXOPT User's Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="matrices.html">Dense and Sparse Matrices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#dense-matrices">Dense Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#sparse-matrices">Sparse Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#arithmetic-operations">Arithmetic Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#indexing-and-slicing">Indexing and Slicing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#attributes-and-methods">Attributes and Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#built-in-functions">Built-In Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#other-matrix-functions">Other Matrix Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#randomly-generated-matrices">Randomly Generated Matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">The BLAS Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#matrix-classes">Matrix Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#level-1-blas">Level 1 BLAS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#level-2-blas">Level 2 BLAS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#level-3-blas">Level 3 BLAS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lapack.html">The LAPACK Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#general-linear-equations">General Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#positive-definite-linear-equations">Positive Definite Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#symmetric-and-hermitian-linear-equations">Symmetric and Hermitian Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#triangular-linear-equations">Triangular Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#least-squares-and-least-norm-problems">Least-Squares and Least-Norm Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#symmetric-and-hermitian-eigenvalue-decomposition">Symmetric and Hermitian Eigenvalue Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#generalized-symmetric-definite-eigenproblems">Generalized Symmetric Definite Eigenproblems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#singular-value-decomposition">Singular Value Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#schur-and-generalized-schur-factorization">Schur and Generalized Schur Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#example-analytic-centering">Example: Analytic Centering</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fftw.html">Discrete Transforms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fftw.html#discrete-fourier-transform">Discrete Fourier Transform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fftw.html#discrete-cosine-transform">Discrete Cosine Transform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fftw.html#discrete-sine-transform">Discrete Sine Transform</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="spsolvers.html">Sparse Linear Equations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="spsolvers.html#matrix-orderings">Matrix Orderings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spsolvers.html#general-linear-equations">General Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spsolvers.html#positive-definite-linear-equations">Positive Definite Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spsolvers.html#example-covariance-selection">Example: Covariance Selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="coneprog.html">Cone Programming</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#linear-cone-programs">Linear Cone Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#quadratic-cone-programs">Quadratic Cone Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#linear-programming">Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#quadratic-programming">Quadratic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#second-order-cone-programming">Second-Order Cone Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#semidefinite-programming">Semidefinite Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#exploiting-structure">Exploiting Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#optional-solvers">Optional Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coneprog.html#algorithm-parameters">Algorithm Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="solvers.html">Nonlinear Convex Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#problems-with-nonlinear-objectives">Problems with Nonlinear Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#problems-with-linear-objectives">Problems with Linear Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#geometric-programming">Geometric Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#exploiting-structure">Exploiting Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#algorithm-parameters">Algorithm Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modeling.html">Modeling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#variables">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#constraints">Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#optimization-problems">Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="c-api.html">C API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="c-api.html#dense-matrices">Dense Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="c-api.html#sparse-matrices">Sparse Matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="printing.html">Matrix Formatting</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://cvxopt.org">cvxopt.org</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">CVXOPT User's Guide</a>
+      </nav>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>The BLAS Interface &mdash; CVXOPT User&#39;s Guide</title>
-    
-    <link rel="stylesheet" href="_static/cvxopt.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '1.1.5',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  false
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="copyright" title="Copyright" href="copyright.html" />
-    <link rel="top" title="CVXOPT User&#39;s Guide" href="index.html" />
-    <link rel="next" title="The LAPACK Interface" href="lapack.html" />
-    <link rel="prev" title="Dense and Sparse Matrices" href="matrices.html" /> 
-  </head>
-  <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="lapack.html" title="The LAPACK Interface"
-             accesskey="N">next</a></li>
-        <li class="right" >
-          <a href="matrices.html" title="Dense and Sparse Matrices"
-             accesskey="P">previous</a> |</li>
-    <li><a href="http://cvxopt.org">CVXOPT home</a> |</li>
-    
-        <li><a href="index.html">user&#39;s guide</a> </li>
- 
-      </ul>
-    </div>  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>The BLAS Interface</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
             
   <div class="section" id="the-blas-interface">
 <span id="c-blas"></span><h1>The BLAS Interface<a class="headerlink" href="#the-blas-interface" title="Permalink to this headline">¶</a></h1>
@@ -75,7 +195,7 @@ directly on their matrix arguments and never require any copying to
 temporary matrices.  Thus they can be viewed as generalizations of the
 in-place matrix addition and scalar multiplication of the section
 <a class="reference internal" href="matrices.html#s-arithmetic"><em>Arithmetic Operations</em></a> to more complicated operations.</p>
-<div class="admonition-see-also admonition seealso">
+<div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <ul class="last simple">
 <li>C. L. Lawson, R. J. Hanson, D. R. Kincaid, F. T. Krogh,
@@ -97,23 +217,23 @@ real or complex <a class="reference internal" href="matrices.html#cvxopt.matrix"
 arguments that specify the structure.</p>
 <dl class="docutils">
 <dt><strong>Vector</strong></dt>
-<dd>A real or complex <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>-vector is represented by a <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt>
-of type <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> and length <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, with the
+<dd>A real or complex <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>-vector is represented by a <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt>
+of type <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> and length <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, with the
 entries of the vector stored in column-major order.</dd>
 <dt><strong>General matrix</strong></dt>
-<dd>A general real or complex <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> matrix is represented
-by a real or complex <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> of size (<img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>).</dd>
+<dd>A general real or complex <img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/> by <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> matrix is represented
+by a real or complex <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> of size (<img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>).</dd>
 <dt><strong>Symmetric matrix</strong></dt>
-<dd><p class="first">A real or complex symmetric matrix of order <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> is represented
-by a real or complex <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> of size (<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>),
+<dd><p class="first">A real or complex symmetric matrix of order <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> is represented
+by a real or complex <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> of size (<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>),
 and a character argument <tt class="docutils literal"><span class="pre">uplo</span></tt>  with two possible values:
 <tt class="xref py py-const docutils literal"><span class="pre">'L'</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">'U'</span></tt>.  If <tt class="docutils literal"><span class="pre">uplo</span></tt>  is <tt class="xref py py-const docutils literal"><span class="pre">'L'</span></tt>, the lower
 triangular part of the symmetric matrix is stored; if <tt class="docutils literal"><span class="pre">uplo</span></tt> is
 <tt class="xref py py-const docutils literal"><span class="pre">'U'</span></tt>, the upper triangular part is stored.  A square
-<tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> <tt class="docutils literal"><span class="pre">X</span></tt> of size (<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>) can therefore be
+<tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> <tt class="docutils literal"><span class="pre">X</span></tt> of size (<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>) can therefore be
 used to represent the symmetric matrices</p>
 <div class="last math">
-<p><img src="_images/math/52e0ff1161373cc9cd64457d457939a0cdf63750.png" alt="\left[\begin{array}{ccccc}
+<p><img src="_images/math/dfdb481523b4f08cc85ceaa14507fd7419bd1f14.png" alt="\left[\begin{array}{ccccc}
     X[0,0]   &amp; X[1,0]   &amp; X[2,0]   &amp; \cdots &amp; X[n-1,0] \\
     X[1,0]   &amp; X[1,1]   &amp; X[2,1]   &amp; \cdots &amp; X[n-1,1] \\
     X[2,0]   &amp; X[2,1]   &amp; X[2,2]   &amp; \cdots &amp; X[n-1,2] \\
@@ -130,13 +250,13 @@ used to represent the symmetric matrices</p>
 \end{array}\right] \quad \mbox{(uplo = U')}."/></p>
 </div></dd>
 <dt><strong>Complex Hermitian matrix</strong></dt>
-<dd><p class="first">A complex Hermitian matrix of order <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> is represented by a
-<tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> of type <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> and size (<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>),
+<dd><p class="first">A complex Hermitian matrix of order <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> is represented by a
+<tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> of type <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> and size (<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>),
 and a character argument <tt class="docutils literal"><span class="pre">uplo</span></tt>  with the same meaning as for
 symmetric matrices.  A complex <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> <tt class="docutils literal"><span class="pre">X</span></tt> of size
-(<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>) can represent the Hermitian  matrices</p>
+(<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>) can represent the Hermitian  matrices</p>
 <div class="last math">
-<p><img src="_images/math/d61de824765ec1e71fab547965361cde159d3af8.png" alt="\left[\begin{array}{ccccc}
+<p><img src="_images/math/5308e7e88533ca4ea02a94c0429e96337438173c.png" alt="\left[\begin{array}{ccccc}
     \Re X[0,0]   &amp; \bar X[1,0]   &amp; \bar X[2,0] &amp; \cdots &amp;
         \bar X[n-1,0] \\
     X[1,0]   &amp; \Re X[1,1]   &amp; \bar X[2,1]   &amp; \cdots &amp;
@@ -157,16 +277,16 @@ symmetric matrices.  A complex <tt class="xref py py-class docutils literal"><sp
 \end{array}\right] \quad \mbox{(uplo = 'U')}."/></p>
 </div></dd>
 <dt><strong>Triangular matrix</strong></dt>
-<dd><p class="first">A real or complex triangular matrix of order <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> is represented
-by a real or complex <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> of size (<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>),
+<dd><p class="first">A real or complex triangular matrix of order <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> is represented
+by a real or complex <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> of size (<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>),
 and two character arguments: an argument <tt class="docutils literal"><span class="pre">uplo</span></tt>  with possible values
 <tt class="xref py py-const docutils literal"><span class="pre">'L'</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">'U'</span></tt> to distinguish between lower and upper
 triangular matrices, and an argument <tt class="docutils literal"><span class="pre">diag</span></tt>  with possible values
 <tt class="xref py py-const docutils literal"><span class="pre">'U'</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">'N'</span></tt> to distinguish between unit and non-unit
 triangular matrices.  A square <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> <tt class="docutils literal"><span class="pre">X</span></tt> of size
-(<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>) can represent the triangular matrices</p>
+(<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>) can represent the triangular matrices</p>
 <div class="last math">
-<p><img src="_images/math/867c5e4b34778fd3c6fa395079ad365668a137d7.png" alt="\left[\begin{array}{ccccc}
+<p><img src="_images/math/29100cf129a9537d4dfef53eafcfd467ee7056b1.png" alt="\left[\begin{array}{ccccc}
     X[0,0]   &amp; 0        &amp; 0        &amp; \cdots &amp; 0 \\
     X[1,0]   &amp; X[1,1]   &amp; 0        &amp; \cdots &amp; 0 \\
     X[2,0]   &amp; X[2,1]   &amp; X[2,2]   &amp; \cdots &amp; 0 \\
@@ -199,18 +319,18 @@ triangular matrices.  A square <tt class="xref py py-class docutils literal"><sp
 \end{array}\right] \quad \mbox{(uplo = 'U', diag = 'U')}."/></p>
 </div></dd>
 <dt><strong>General band matrix</strong></dt>
-<dd><p class="first">A general real or complex <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> band matrix  with
-<img class="math" src="_images/math/e505767c729ddb13cbb73d25556a9d0e9068a0e6.png" alt="k_l"/> subdiagonals and <img class="math" src="_images/math/f3f323357467e7e665c0bf7dd0ae17c1a8569e8c.png" alt="k_u"/> superdiagonals is represented
+<dd><p class="first">A general real or complex <img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/> by <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> band matrix  with
+<img class="math" src="_images/math/92d23ba3d0cf03e961e3c70407948e15a3239435.png" alt="k_l"/> subdiagonals and <img class="math" src="_images/math/0fc275b425cf69c4703c19ecbc7723811ba670cf.png" alt="k_u"/> superdiagonals is represented
 by a real or complex <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> <tt class="docutils literal"><span class="pre">X</span></tt> of size
-(<img class="math" src="_images/math/fd01517a0c59ac672be7ebe5d531b3f04e7d92b0.png" alt="k_l + k_u + 1"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>), and the two integers <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> and
-<img class="math" src="_images/math/e505767c729ddb13cbb73d25556a9d0e9068a0e6.png" alt="k_l"/>.   The diagonals of the band matrix are stored in the rows
+(<img class="math" src="_images/math/faba65ef70827bc1839211eafd2d9573b6aa64b0.png" alt="k_l + k_u + 1"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>), and the two integers <img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/> and
+<img class="math" src="_images/math/92d23ba3d0cf03e961e3c70407948e15a3239435.png" alt="k_l"/>.   The diagonals of the band matrix are stored in the rows
 of <tt class="docutils literal"><span class="pre">X</span></tt>, starting at the top diagonal, and shifted horizontally so that
-the entries of column <img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> of the band matrix are stored in column
-<img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> of <tt class="docutils literal"><span class="pre">X</span></tt>.  A <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> <tt class="docutils literal"><span class="pre">X</span></tt> of size
-(<img class="math" src="_images/math/fd01517a0c59ac672be7ebe5d531b3f04e7d92b0.png" alt="k_l + k_u + 1"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>) therefore represents the <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/>
-by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> band matrix</p>
+the entries of column <img class="math" src="_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> of the band matrix are stored in column
+<img class="math" src="_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> of <tt class="docutils literal"><span class="pre">X</span></tt>.  A <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> <tt class="docutils literal"><span class="pre">X</span></tt> of size
+(<img class="math" src="_images/math/faba65ef70827bc1839211eafd2d9573b6aa64b0.png" alt="k_l + k_u + 1"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>) therefore represents the <img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/>
+by <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> band matrix</p>
 <div class="last math">
-<p><img src="_images/math/7a7c5981a10b05257be74ff3f4854903bfa9052b.png" alt="\left[ \begin{array}{ccccccc}
+<p><img src="_images/math/51cdd82f300c6154550f86854c3834537fdec1e8.png" alt="\left[ \begin{array}{ccccccc}
     X[k_u,0]     &amp; X[k_u-1,1]   &amp; X[k_u-2,2]     &amp; \cdots &amp;
         X[0,k_u] &amp; 0               &amp; \cdots \\
     X[k_u+1,0]   &amp; X[k_u,1]     &amp; X[k_u-1,2]     &amp; \cdots &amp;
@@ -228,19 +348,19 @@ by <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.
 \end{array}\right]."/></p>
 </div></dd>
 <dt><strong>Symmetric band matrix</strong></dt>
-<dd><p class="first">A real or complex symmetric band matrix of order <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> with
-<img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> subdiagonals, is represented by a real or complex matrix <tt class="docutils literal"><span class="pre">X</span></tt>
-of size (<img class="math" src="_images/math/f05f085f774fc8ab50676b778b86a1f1d1114fc8.png" alt="k+1"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>), and an argument <tt class="docutils literal"><span class="pre">uplo</span></tt> to indicate
+<dd><p class="first">A real or complex symmetric band matrix of order <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> with
+<img class="math" src="_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> subdiagonals, is represented by a real or complex matrix <tt class="docutils literal"><span class="pre">X</span></tt>
+of size (<img class="math" src="_images/math/3494d6c050dcba63488def5cd4e3c183f1234306.png" alt="k+1"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>), and an argument <tt class="docutils literal"><span class="pre">uplo</span></tt> to indicate
 whether the subdiagonals (<tt class="docutils literal"><span class="pre">uplo</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'L'</span></tt>) or superdiagonals
-(<tt class="docutils literal"><span class="pre">uplo</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'U'</span></tt>) are stored.  The <img class="math" src="_images/math/f05f085f774fc8ab50676b778b86a1f1d1114fc8.png" alt="k+1"/> diagonals are
+(<tt class="docutils literal"><span class="pre">uplo</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'U'</span></tt>) are stored.  The <img class="math" src="_images/math/3494d6c050dcba63488def5cd4e3c183f1234306.png" alt="k+1"/> diagonals are
 stored as rows of <tt class="docutils literal"><span class="pre">X</span></tt>, starting at the top diagonal (i.e., the main
-diagonal if <tt class="docutils literal"><span class="pre">uplo</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'L'</span></tt>,  or the <img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>-th superdiagonal
+diagonal if <tt class="docutils literal"><span class="pre">uplo</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'L'</span></tt>,  or the <img class="math" src="_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/>-th superdiagonal
 if <tt class="docutils literal"><span class="pre">uplo</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'U'</span></tt>) and shifted horizontally so that the
-entries of the <img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>-th column of the band matrix are stored in
-column <img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> of <tt class="docutils literal"><span class="pre">X</span></tt>.  A <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> <tt class="docutils literal"><span class="pre">X</span></tt> of size
-(<img class="math" src="_images/math/f05f085f774fc8ab50676b778b86a1f1d1114fc8.png" alt="k+1"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>) can therefore represent the band matrices</p>
+entries of the <img class="math" src="_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/>-th column of the band matrix are stored in
+column <img class="math" src="_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> of <tt class="docutils literal"><span class="pre">X</span></tt>.  A <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> <tt class="docutils literal"><span class="pre">X</span></tt> of size
+(<img class="math" src="_images/math/3494d6c050dcba63488def5cd4e3c183f1234306.png" alt="k+1"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>) can therefore represent the band matrices</p>
 <div class="last math">
-<p><img src="_images/math/f316b0ec14c19c1b6879b9d0dda291b1b3eacaf8.png" alt="\left[ \begin{array}{ccccccc}
+<p><img src="_images/math/9db05ed7f916830e24071ea1ac13f9200438f256.png" alt="\left[ \begin{array}{ccccccc}
     X[0,0] &amp; X[1,0]   &amp; X[2,0]   &amp; \cdots &amp; X[k,0]   &amp; 0
         &amp; \cdots \\
     X[1,0] &amp; X[0,1]   &amp; X[1,1]   &amp; \cdots &amp; X[k-1,1] &amp; X[k,1]
@@ -269,13 +389,13 @@ column <img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f
 \end{array}\right] \quad \mbox{(uplo='U')}."/></p>
 </div></dd>
 <dt><strong>Hermitian  band matrix</strong></dt>
-<dd><p class="first">A complex Hermitian band matrix of order <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> with <img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/>
+<dd><p class="first">A complex Hermitian band matrix of order <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> with <img class="math" src="_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/>
 subdiagonals is represented by a complex matrix of size
-(<img class="math" src="_images/math/f05f085f774fc8ab50676b778b86a1f1d1114fc8.png" alt="k+1"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>) and an argument <tt class="docutils literal"><span class="pre">uplo</span></tt>, with the same meaning
+(<img class="math" src="_images/math/3494d6c050dcba63488def5cd4e3c183f1234306.png" alt="k+1"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>) and an argument <tt class="docutils literal"><span class="pre">uplo</span></tt>, with the same meaning
 as for symmetric band matrices.  A <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> <tt class="docutils literal"><span class="pre">X</span></tt> of size
-(<img class="math" src="_images/math/f05f085f774fc8ab50676b778b86a1f1d1114fc8.png" alt="k+1"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>) can represent the band matrices</p>
+(<img class="math" src="_images/math/3494d6c050dcba63488def5cd4e3c183f1234306.png" alt="k+1"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>) can represent the band matrices</p>
 <div class="last math">
-<p><img src="_images/math/c3f5a2b8b364fd6006f57a0b03d27d57344fad31.png" alt="\left[ \begin{array}{ccccccc}
+<p><img src="_images/math/c888fcb025bde0ed335be8d5f932ac56d5950d45.png" alt="\left[ \begin{array}{ccccccc}
     \Re X[0,0] &amp; \bar X[1,0]   &amp; \bar X[2,0]   &amp; \cdots &amp;
         \bar X[k,0]   &amp; 0        &amp; \cdots \\
     X[1,0] &amp; \Re X[0,1]   &amp; \bar X[1,1]   &amp; \cdots &amp;
@@ -305,14 +425,14 @@ as for symmetric band matrices.  A <tt class="xref py py-class docutils literal"
 \end{array}\right] \quad \mbox{(uplo='U')}."/></p>
 </div></dd>
 <dt><strong>Triangular band matrix</strong></dt>
-<dd><p class="first">A triangular band matrix of order <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> with <img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> subdiagonals
+<dd><p class="first">A triangular band matrix of order <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> with <img class="math" src="_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> subdiagonals
 or superdiagonals is represented by a real complex matrix of size
-(<img class="math" src="_images/math/f05f085f774fc8ab50676b778b86a1f1d1114fc8.png" alt="k+1"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>) and two character arguments <tt class="docutils literal"><span class="pre">uplo</span></tt>  and
+(<img class="math" src="_images/math/3494d6c050dcba63488def5cd4e3c183f1234306.png" alt="k+1"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>) and two character arguments <tt class="docutils literal"><span class="pre">uplo</span></tt>  and
 <tt class="docutils literal"><span class="pre">diag</span></tt>, with similar conventions as for symmetric band matrices.
-A <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> <tt class="docutils literal"><span class="pre">X</span></tt> of size (<img class="math" src="_images/math/f05f085f774fc8ab50676b778b86a1f1d1114fc8.png" alt="k+1"/>, <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>) can represent
+A <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> <tt class="docutils literal"><span class="pre">X</span></tt> of size (<img class="math" src="_images/math/3494d6c050dcba63488def5cd4e3c183f1234306.png" alt="k+1"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>) can represent
 the band matrices</p>
 <div class="last math">
-<p><img src="_images/math/1682dfd5865597e4ae2222e7e9de20cb5eadd543.png" alt="\left[ \begin{array}{cccc}
+<p><img src="_images/math/eb00f840427485fbf0601b84d2126406edc0f392.png" alt="\left[ \begin{array}{cccc}
     X[0,0] &amp; 0        &amp; 0        &amp; \cdots \\
     X[1,0] &amp; X[0,1]   &amp; 0        &amp; \cdots  \\
     X[2,0] &amp; X[1,1]   &amp; X[0,2]   &amp; \cdots \\
@@ -369,7 +489,7 @@ documented in the docstrings of the source code, and can be viewed with the
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">scal</tt><big>(</big><em>alpha</em>, <em>x</em><big>)</big><a class="headerlink" href="#cvxopt.blas.scal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scales a vector by a constant:</p>
 <div class="math">
-<p><img src="_images/math/bb61f81a64370408f0551fc4353d23e18ef98d4c.png" alt="x := \alpha x."/></p>
+<p><img src="_images/math/ef03e779d72e2e413d309e114a6b43cb0aa0a79d.png" alt="x := \alpha x."/></p>
 </div><p>If <tt class="docutils literal"><span class="pre">x</span></tt> is a real <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt>, the scalar argument <tt class="docutils literal"><span class="pre">alpha</span></tt> must
 be a Python integer or float.  If <tt class="docutils literal"><span class="pre">x</span></tt> is complex, <tt class="docutils literal"><span class="pre">alpha</span></tt> can be an
 integer, float, or complex.</p>
@@ -380,7 +500,7 @@ integer, float, or complex.</p>
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">nrm2</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#cvxopt.blas.nrm2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Euclidean norm of a vector:  returns</p>
 <div class="math">
-<p><img src="_images/math/29fc3d86ed16d5fbe4a492dfeb0b42778cb9d7ee.png" alt="\|x\|_2."/></p>
+<p><img src="_images/math/bb47877556480ddd060e47647cade1b212b9cde5.png" alt="\|x\|_2."/></p>
 </div></dd></dl>
 
 <dl class="function">
@@ -388,7 +508,7 @@ integer, float, or complex.</p>
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">asum</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#cvxopt.blas.asum" title="Permalink to this definition">¶</a></dt>
 <dd><p>1-Norm of a vector: returns</p>
 <div class="math">
-<p><img src="_images/math/331fc28185082cbfa8c57029e65f9a6bd91cc2aa.png" alt="\|x\|_1 \quad \mbox{($x$ real)}, \qquad
+<p><img src="_images/math/8ccf00431f4274015c9bc2048bc21b7d8b01a1d6.png" alt="\|x\|_1 \quad \mbox{($x$ real)}, \qquad
 \|\Re x\|_1 + \|\Im x\|_1 \quad \mbox{($x$ complex)}."/></p>
 </div></dd></dl>
 
@@ -397,12 +517,12 @@ integer, float, or complex.</p>
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">iamax</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#cvxopt.blas.iamax" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns</p>
 <div class="math">
-<p><img src="_images/math/68407b248f3e418bdb58269534bdfe5a9469e8f2.png" alt="\mathop{\rm argmax}_{k=0,\ldots,n-1} |x_k| \quad \mbox{($x$ real)},
+<p><img src="_images/math/fcc3930195947f4188f6a6042495d139c80e173f.png" alt="\mathop{\rm argmax}_{k=0,\ldots,n-1} |x_k| \quad \mbox{($x$ real)},
 \qquad
 \mathop{\rm argmax}_{k=0,\ldots,n-1} |\Re x_k| + |\Im x_k| \quad
     \mbox{($x$ complex)}."/></p>
 </div><p>If more than one coefficient achieves the maximum, the index of the
-first <img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> is returned.</p>
+first <img class="math" src="_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> is returned.</p>
 </dd></dl>
 
 <dl class="function">
@@ -410,7 +530,7 @@ first <img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f6
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">swap</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#cvxopt.blas.swap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interchanges two vectors:</p>
 <div class="math">
-<p><img src="_images/math/61fe866fa7cfeca631c397262ad092802ea37a45.png" alt="x \leftrightarrow y."/></p>
+<p><img src="_images/math/de8abededa5bdbf7dd749842436f6456587dc3b6.png" alt="x \leftrightarrow y."/></p>
 </div><p><tt class="docutils literal"><span class="pre">x</span></tt>  and <tt class="docutils literal"><span class="pre">y</span></tt> are matrices of the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or
 <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).</p>
 </dd></dl>
@@ -420,7 +540,7 @@ first <img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f6
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">copy</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#cvxopt.blas.copy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copies a vector to another vector:</p>
 <div class="math">
-<p><img src="_images/math/acfa751f702680bc6b604771354d26e601da497b.png" alt="y := x."/></p>
+<p><img src="_images/math/71fb275b87fc895a155092b9c7726b05dce93eab.png" alt="y := x."/></p>
 </div><p><tt class="docutils literal"><span class="pre">x</span></tt> and <tt class="docutils literal"><span class="pre">y</span></tt> are matrices of the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or
 <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).</p>
 </dd></dl>
@@ -430,7 +550,7 @@ first <img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f6
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">axpy</tt><big>(</big><em>x</em>, <em>y</em><span class="optional">[</span>, <em>alpha = 1.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.axpy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constant times a vector plus a vector:</p>
 <div class="math">
-<p><img src="_images/math/90a07d7ff36fa67dc19d3031fec4a29567cf5ea7.png" alt="y := \alpha x + y."/></p>
+<p><img src="_images/math/fa936b47d91813a2d099353200d65b79527bab6b.png" alt="y := \alpha x + y."/></p>
 </div><p><tt class="docutils literal"><span class="pre">x</span></tt> and <tt class="docutils literal"><span class="pre">y</span></tt> are matrices of the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or
 <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  If <tt class="docutils literal"><span class="pre">x</span></tt> is real, the scalar argument <tt class="docutils literal"><span class="pre">alpha</span></tt> must be
 a Python integer or float.  If <tt class="docutils literal"><span class="pre">x</span></tt> is complex, <tt class="docutils literal"><span class="pre">alpha</span></tt> can be an
@@ -442,7 +562,7 @@ integer, float, or complex.</p>
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">dot</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#cvxopt.blas.dot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns</p>
 <div class="math">
-<p><img src="_images/math/4bce221ce644a2b528da32b012c6275b6271e32b.png" alt="x^Hy."/></p>
+<p><img src="_images/math/1c14caa1473d005003d6d7a8cf2f5260735eede2.png" alt="x^Hy."/></p>
 </div><p><tt class="docutils literal"><span class="pre">x</span></tt> and <tt class="docutils literal"><span class="pre">y</span></tt> are matrices of the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or
 <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).</p>
 </dd></dl>
@@ -452,7 +572,7 @@ integer, float, or complex.</p>
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">dotu</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#cvxopt.blas.dotu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns</p>
 <div class="math">
-<p><img src="_images/math/e01558de5153188b3cc8b1243c0dd845c5a3e06a.png" alt="x^Ty."/></p>
+<p><img src="_images/math/8f2359ded4ff57243e264242d0f12aa98be5666b.png" alt="x^Ty."/></p>
 </div><p><tt class="docutils literal"><span class="pre">x</span></tt> and <tt class="docutils literal"><span class="pre">y</span></tt> are matrices of the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or
 <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).</p>
 </dd></dl>
@@ -468,7 +588,7 @@ using the conventions of the section <a class="reference internal" href="#s-conv
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">gemv</tt><big>(</big><em>A</em>, <em>x</em>, <em>y</em><span class="optional">[</span>, <em>trans = 'N'</em>, <em>alpha = 1.0</em>, <em>beta = 0.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.gemv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Matrix-vector product with a general matrix:</p>
 <div class="math">
-<p><img src="_images/math/fc0ad97dd45bc8aa577476f2505b0b03f95b2d54.png" alt="y &amp; := \alpha Ax + \beta y \quad
+<p><img src="_images/math/b57b6b6bf761902ccdea737725a89486be6e32d0.png" alt="y &amp; := \alpha Ax + \beta y \quad
     (\mathrm{trans} = \mathrm{'N'}), \\
 y &amp; := \alpha A^T x + \beta y \quad
     (\mathrm{trans} = \mathrm{'T'}),  \\
@@ -484,8 +604,8 @@ y &amp; := \alpha A^H x + \beta y \quad
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">symv</tt><big>(</big><em>A</em>, <em>x</em>, <em>y</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>alpha = 1.0</em>, <em>beta = 0.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.symv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Matrix-vector  product with a real symmetric matrix:</p>
 <div class="math">
-<p><img src="_images/math/ba43bc2b06256b6e07fab088703404fadb26d608.png" alt="y := \alpha A x + \beta y,"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a real symmetric matrix.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt>,
+<p><img src="_images/math/04f87626ae5b9c318a229434e01daa158140d18c.png" alt="y := \alpha A x + \beta y,"/></p>
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a real symmetric matrix.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt>,
 <tt class="docutils literal"><span class="pre">x</span></tt>, and <tt class="docutils literal"><span class="pre">y</span></tt> must have type <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>, and <tt class="docutils literal"><span class="pre">alpha</span></tt> and
 <tt class="docutils literal"><span class="pre">beta</span></tt> must be real.</p>
 </dd></dl>
@@ -496,8 +616,8 @@ y &amp; := \alpha A^H x + \beta y \quad
 <dd><p>Matrix-vector  product with a real symmetric or complex Hermitian
 matrix:</p>
 <div class="math">
-<p><img src="_images/math/ba43bc2b06256b6e07fab088703404fadb26d608.png" alt="y := \alpha A x + \beta y,"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is real symmetric or complex Hermitian.  The arguments
+<p><img src="_images/math/04f87626ae5b9c318a229434e01daa158140d18c.png" alt="y := \alpha A x + \beta y,"/></p>
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is real symmetric or complex Hermitian.  The arguments
 <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">x</span></tt>, <tt class="docutils literal"><span class="pre">y</span></tt> must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or
 <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  Complex values of <tt class="docutils literal"><span class="pre">alpha</span></tt> and <tt class="docutils literal"><span class="pre">beta</span></tt> are only
 allowed if <tt class="docutils literal"><span class="pre">A</span></tt>  is complex.</p>
@@ -508,10 +628,10 @@ allowed if <tt class="docutils literal"><span class="pre">A</span></tt>  is comp
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">trmv</tt><big>(</big><em>A</em>, <em>x</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>trans = 'N'</em>, <em>diag = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.trmv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Matrix-vector  product with a triangular matrix:</p>
 <div class="math">
-<p><img src="_images/math/754d5ef3c6d24a1becd4e5b7cbbb77ba590f1953.png" alt="x &amp; := Ax \quad (\mathrm{trans} = \mathrm{'N'}), \\
+<p><img src="_images/math/3eb1b11cbb2adbb474beb16112fc1cc0446baade.png" alt="x &amp; := Ax \quad (\mathrm{trans} = \mathrm{'N'}), \\
 x &amp; := A^T x \quad (\mathrm{trans} = \mathrm{'T'}), \\
 x &amp; := A^H x \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is square and triangular.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt> and
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is square and triangular.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt> and
 <tt class="docutils literal"><span class="pre">x</span></tt> must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).</p>
 </dd></dl>
 
@@ -520,10 +640,10 @@ x &amp; := A^H x \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">trsv</tt><big>(</big><em>A</em>, <em>x</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>trans = 'N'</em>, <em>diag = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.trsv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solution of a nonsingular triangular set of linear equations:</p>
 <div class="math">
-<p><img src="_images/math/7a99df5a9041f467f8002a277dedba09aa30420d.png" alt="x &amp; := A^{-1}x \quad (\mathrm{trans} = \mathrm{'N'}), \\
+<p><img src="_images/math/c138ee6943c33ad686fbcc19f6b8987bca18788c.png" alt="x &amp; := A^{-1}x \quad (\mathrm{trans} = \mathrm{'N'}), \\
 x &amp; := A^{-T}x \quad (\mathrm{trans} = \mathrm{'T'}), \\
 x &amp; := A^{-H}x \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is square and triangular with nonzero diagonal elements.
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is square and triangular with nonzero diagonal elements.
 The arguments <tt class="docutils literal"><span class="pre">A</span></tt>  and <tt class="docutils literal"><span class="pre">x</span></tt> must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or
 <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).</p>
 </dd></dl>
@@ -533,14 +653,14 @@ The arguments <tt class="docutils literal"><span class="pre">A</span></tt>  and 
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">gbmv</tt><big>(</big><em>A</em>, <em>m</em>, <em>kl</em>, <em>x</em>, <em>y</em><span class="optional">[</span>, <em>trans = 'N'</em>, <em>alpha = 1.0</em>, <em>beta = 0.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.gbmv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Matrix-vector product with a general band matrix:</p>
 <div class="math">
-<p><img src="_images/math/1a877016ae6db3fb612a56ec2989e72844db99f7.png" alt="y &amp; := \alpha Ax + \beta y \quad
+<p><img src="_images/math/11afd70b9a3fac8d7ed4ec2c7fa5a51eedb8cc6c.png" alt="y &amp; := \alpha Ax + \beta y \quad
     (\mathrm{trans} = \mathrm{'N'}), \\
 y &amp; := \alpha A^T x + \beta y \quad
     (\mathrm{trans} = \mathrm{'T'}),  \\
 y &amp; := \alpha A^H x + \beta y \quad
     (\mathrm{trans} = \mathrm{'C'}),"/></p>
-</div><p>where  <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a rectangular band matrix with <img class="math" src="_images/math/f5047d1e0cbb50ec208923a22cd517c55100fa7b.png" alt="m"/> rows and
-<img class="math" src="_images/math/e505767c729ddb13cbb73d25556a9d0e9068a0e6.png" alt="k_l"/> subdiagonals.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">x</span></tt>, <tt class="docutils literal"><span class="pre">y</span></tt>  must have
+</div><p>where  <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a rectangular band matrix with <img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/> rows and
+<img class="math" src="_images/math/92d23ba3d0cf03e961e3c70407948e15a3239435.png" alt="k_l"/> subdiagonals.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">x</span></tt>, <tt class="docutils literal"><span class="pre">y</span></tt>  must have
 the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  Complex values of
 <tt class="docutils literal"><span class="pre">alpha</span></tt>  and <tt class="docutils literal"><span class="pre">beta</span></tt>  are only allowed if <tt class="docutils literal"><span class="pre">A</span></tt> is complex.</p>
 </dd></dl>
@@ -550,8 +670,8 @@ the same type (<tt class="xref py py-const docutils literal"><span class="pre">'
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">sbmv</tt><big>(</big><em>A</em>, <em>x</em>, <em>y</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>alpha = 1.0</em>, <em>beta = 0.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.sbmv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Matrix-vector  product with a real symmetric band matrix:</p>
 <div class="math">
-<p><img src="_images/math/02fddc92b9ba6d1b1edb8918191220db96c48859.png" alt="y := \alpha Ax + \beta y,"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>  is a real symmetric band matrix.  The arguments
+<p><img src="_images/math/64f647808deab7ef08f8e07fa9bd7fd0591e0ab5.png" alt="y := \alpha Ax + \beta y,"/></p>
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/>  is a real symmetric band matrix.  The arguments
 <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">x</span></tt>, <tt class="docutils literal"><span class="pre">y</span></tt>  must have type <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>, and <tt class="docutils literal"><span class="pre">alpha</span></tt> and
 <tt class="docutils literal"><span class="pre">beta</span></tt> must be real.</p>
 </dd></dl>
@@ -562,8 +682,8 @@ the same type (<tt class="xref py py-const docutils literal"><span class="pre">'
 <dd><p>Matrix-vector  product with a real symmetric or complex Hermitian band
 matrix:</p>
 <div class="math">
-<p><img src="_images/math/02fddc92b9ba6d1b1edb8918191220db96c48859.png" alt="y := \alpha Ax + \beta y,"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a real symmetric or complex Hermitian band matrix.
+<p><img src="_images/math/64f647808deab7ef08f8e07fa9bd7fd0591e0ab5.png" alt="y := \alpha Ax + \beta y,"/></p>
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a real symmetric or complex Hermitian band matrix.
 The arguments <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">x</span></tt>,  <tt class="docutils literal"><span class="pre">y</span></tt>  must have the same type
 (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  Complex values of <tt class="docutils literal"><span class="pre">alpha</span></tt> and
 <tt class="docutils literal"><span class="pre">beta</span></tt>  are only allowed if <tt class="docutils literal"><span class="pre">A</span></tt>  is complex.</p>
@@ -574,7 +694,7 @@ The arguments <tt class="docutils literal"><span class="pre">A</span></tt>, <tt 
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">tbmv</tt><big>(</big><em>A</em>, <em>x</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>trans = 'N'</em>, <em>diag = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.tbmv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Matrix-vector  product with a triangular band matrix:</p>
 <div class="math">
-<p><img src="_images/math/cad47014eeee6c0af4656757866126b36f1b9c0f.png" alt="x &amp; := Ax \quad (\mathrm{trans} = \mathrm{'N'}), \\
+<p><img src="_images/math/95b533418f20fc19e5a7c52bd3e324ce5cd4a652.png" alt="x &amp; := Ax \quad (\mathrm{trans} = \mathrm{'N'}), \\
 x &amp; := A^T x \quad (\mathrm{trans} = \mathrm{'T'}), \\
 x &amp; := A^H x \quad (\mathrm{trans} = \mathrm{'C'})."/></p>
 </div><p>The arguments <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">x</span></tt>  must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or
@@ -586,10 +706,10 @@ x &amp; := A^H x \quad (\mathrm{trans} = \mathrm{'C'})."/></p>
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">tbsv</tt><big>(</big><em>A</em>, <em>x</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>trans = 'N'</em>, <em>diag = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.tbsv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solution of a triangular banded set of linear equations:</p>
 <div class="math">
-<p><img src="_images/math/e16fb4f37439c49cd32f0cb017826e80af2b5330.png" alt="x &amp; := A^{-1}x \quad (\mathrm{trans} = \mathrm{'N'}), \\
+<p><img src="_images/math/36aca10ddac71d0dfa118b71798b39f02f0a9726.png" alt="x &amp; := A^{-1}x \quad (\mathrm{trans} = \mathrm{'N'}), \\
 x &amp; := A^{-T} x \quad (\mathrm{trans} = \mathrm{'T'}), \\
 x &amp; := A^{-H} x \quad (\mathrm{trans} = \mathrm{'T'}),"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a triangular band matrix of with nonzero diagonal
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a triangular band matrix of with nonzero diagonal
 elements.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt>  and <tt class="docutils literal"><span class="pre">x</span></tt>  must have the same type
 (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).</p>
 </dd></dl>
@@ -599,8 +719,8 @@ elements.  The arguments <tt class="docutils literal"><span class="pre">A</span>
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">ger</tt><big>(</big><em>x</em>, <em>y</em>, <em>A</em><span class="optional">[</span>, <em>alpha = 1.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.ger" title="Permalink to this definition">¶</a></dt>
 <dd><p>General rank-1 update:</p>
 <div class="math">
-<p><img src="_images/math/5a1d0cfaccab316e80ee73f75d7a3259def3ffd2.png" alt="A := A + \alpha x y^H,"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a general matrix.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">x</span></tt>, and
+<p><img src="_images/math/c59f33685835e497f8b4d66cbff87e46afa6e30d.png" alt="A := A + \alpha x y^H,"/></p>
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a general matrix.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">x</span></tt>, and
 <tt class="docutils literal"><span class="pre">y</span></tt>  must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  Complex
 values of <tt class="docutils literal"><span class="pre">alpha</span></tt>  are only allowed if <tt class="docutils literal"><span class="pre">A</span></tt>  is complex.</p>
 </dd></dl>
@@ -610,8 +730,8 @@ values of <tt class="docutils literal"><span class="pre">alpha</span></tt>  are 
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">geru</tt><big>(</big><em>x</em>, <em>y</em>, <em>A</em><span class="optional">[</span>, <em>alpha = 1.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.geru" title="Permalink to this definition">¶</a></dt>
 <dd><p>General rank-1 update:</p>
 <div class="math">
-<p><img src="_images/math/a2cd54430a2ef28aec0877c9ad824d0f93ad5d58.png" alt="A := A + \alpha x y^T,"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a general matrix.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">x</span></tt>,  and
+<p><img src="_images/math/e7239335d875a754186e9932b8906570a49cbefe.png" alt="A := A + \alpha x y^T,"/></p>
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a general matrix.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">x</span></tt>,  and
 <tt class="docutils literal"><span class="pre">y</span></tt>  must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  Complex
 values of <tt class="docutils literal"><span class="pre">alpha</span></tt>  are only allowed if <tt class="docutils literal"><span class="pre">A</span></tt>  is complex.</p>
 </dd></dl>
@@ -621,8 +741,8 @@ values of <tt class="docutils literal"><span class="pre">alpha</span></tt>  are 
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">syr</tt><big>(</big><em>x</em>, <em>A</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>alpha = 1.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.syr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Symmetric rank-1 update:</p>
 <div class="math">
-<p><img src="_images/math/4b0d8c7c85d040eab00b7b39b8267acccc40dc84.png" alt="A := A + \alpha xx^T,"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a real symmetric matrix.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt>  and
+<p><img src="_images/math/aa47517e24a51fb89da8cd0899238d4758406d33.png" alt="A := A + \alpha xx^T,"/></p>
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a real symmetric matrix.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt>  and
 <tt class="docutils literal"><span class="pre">x</span></tt>  must have type <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>.  <tt class="docutils literal"><span class="pre">alpha</span></tt>  must be a real number.</p>
 </dd></dl>
 
@@ -631,8 +751,8 @@ values of <tt class="docutils literal"><span class="pre">alpha</span></tt>  are 
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">her</tt><big>(</big><em>x</em>, <em>A</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>alpha = 1.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.her" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hermitian rank-1 update:</p>
 <div class="math">
-<p><img src="_images/math/61d28c051484889a582fdaefefe98db6b31ce347.png" alt="A := A + \alpha xx^H,"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a real symmetric or complex Hermitian matrix.  The
+<p><img src="_images/math/62427a6fca421a1163a5acdd2a4358db51fe648d.png" alt="A := A + \alpha xx^H,"/></p>
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a real symmetric or complex Hermitian matrix.  The
 arguments <tt class="docutils literal"><span class="pre">A</span></tt>  and <tt class="docutils literal"><span class="pre">x</span></tt>  must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or
 <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  <tt class="docutils literal"><span class="pre">alpha</span></tt>  must be a real number.</p>
 </dd></dl>
@@ -642,8 +762,8 @@ arguments <tt class="docutils literal"><span class="pre">A</span></tt>  and <tt 
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">syr2</tt><big>(</big><em>x</em>, <em>y</em>, <em>A</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>alpha = 1.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.syr2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Symmetric rank-2  update:</p>
 <div class="math">
-<p><img src="_images/math/193a10d6257248249fc9ba6a97ebf8db48d8dd96.png" alt="A := A + \alpha (xy^T + yx^T),"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a real symmetric matrix.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">x</span></tt>,
+<p><img src="_images/math/8ae3de0b7f36ecd8ce55762fd04636f2d562ec4a.png" alt="A := A + \alpha (xy^T + yx^T),"/></p>
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a real symmetric matrix.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">x</span></tt>,
 and <tt class="docutils literal"><span class="pre">y</span></tt> must have type <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>.  <tt class="docutils literal"><span class="pre">alpha</span></tt>  must be real.</p>
 </dd></dl>
 
@@ -652,8 +772,8 @@ and <tt class="docutils literal"><span class="pre">y</span></tt> must have type 
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">her2</tt><big>(</big><em>x</em>, <em>y</em>, <em>A</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>alpha = 1.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.her2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Symmetric rank-2  update:</p>
 <div class="math">
-<p><img src="_images/math/1c1f67a0734afc239885815cb3fdca712cdeee34.png" alt="A := A + \alpha xy^H + \bar \alpha yx^H,"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a a real symmetric or complex Hermitian matrix.
+<p><img src="_images/math/4d6932bf96d15f8796e6c888eebd5315e29bc092.png" alt="A := A + \alpha xy^H + \bar \alpha yx^H,"/></p>
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a a real symmetric or complex Hermitian matrix.
 The arguments <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">x</span></tt>, and <tt class="docutils literal"><span class="pre">y</span></tt> must have the same type
 (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  Complex values of <tt class="docutils literal"><span class="pre">alpha</span></tt> are only
 allowed if <tt class="docutils literal"><span class="pre">A</span></tt> is complex.</p>
@@ -661,12 +781,12 @@ allowed if <tt class="docutils literal"><span class="pre">A</span></tt> is compl
 
 <p>As an example, the following code multiplies the tridiagonal matrix</p>
 <div class="math">
-<p><img src="_images/math/b000af80200fdf7effeeb2515d90d10fddd5e710.png" alt="A = \left[\begin{array}{rrrr}
+<p><img src="_images/math/084599ed05bd45d2433207ae99842473f3cdd567.png" alt="A = \left[\begin{array}{rrrr}
       1 &amp;  6 &amp;  0 &amp; 0 \\
       2 &amp; -4 &amp;  3 &amp; 0 \\
       0 &amp; -3 &amp; -1 &amp; 1
 \end{array}\right]"/></p>
-</div><p>with the vector <img class="math" src="_images/math/2234314d95cdb2e0ee644869eeb7bd365fd64fca.png" alt="x = (1,-1,2,-2)"/>.</p>
+</div><p>with the vector <img class="math" src="_images/math/05b96f8b501e969ecd99e2b84f7892fa2a8e203b.png" alt="x = (1,-1,2,-2)"/>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.blas</span> <span class="kn">import</span> <span class="n">gbmv</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span>  <span class="p">[</span><span class="mf">6.</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.</span><span class="p">],</span>  <span class="p">[</span><span class="mf">3.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>  <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])</span>
@@ -702,11 +822,11 @@ allowed if <tt class="docutils literal"><span class="pre">A</span></tt> is compl
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">gemm</tt><big>(</big><em>A</em>, <em>B</em>, <em>C</em><span class="optional">[</span>, <em>transA = 'N'</em>, <em>transB = 'N'</em>, <em>alpha = 1.0</em>, <em>beta = 0.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.gemm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Matrix-matrix product of two general matrices:</p>
 <div class="math">
-<p><img src="_images/math/5c402c86863bfced2e5a4bdcb849f659c2518762.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
+<p><img src="_images/math/361979f771f1b6ebc76432f1e72dc4463deab580.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
 C := \alpha \op(A) \op(B) + \beta C"/></p>
 </div><p>where</p>
 <div class="math">
-<p><img src="_images/math/e39b614d32f074ae2f65c950cb3786a70353230d.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
+<p><img src="_images/math/dad488d02bdf01d0de39f3dcd6fed9fd66d9d8e6.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
 \op(A) =  \left\{ \begin{array}{ll}
     A &amp; \mathrm{transA} = \mathrm{'N'} \\
     A^T &amp; \mathrm{transA} = \mathrm{'T'} \\
@@ -724,10 +844,10 @@ C := \alpha \op(A) \op(B) + \beta C"/></p>
 <dl class="function">
 <dt id="cvxopt.blas.symm">
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">symm</tt><big>(</big><em>A</em>, <em>B</em>, <em>C</em><span class="optional">[</span>, <em>side = 'L'</em>, <em>uplo = 'L'</em>, <em>alpha =1.0</em>, <em>beta = 0.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.symm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Product of a real or complex symmetric matrix <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> and a general
-matrix <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/>:</p>
+<dd><p>Product of a real or complex symmetric matrix <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> and a general
+matrix <img class="math" src="_images/math/83956e92fcc80dee17fce864543216939a3c9da7.png" alt="B"/>:</p>
 <div class="math">
-<p><img src="_images/math/1321ae4fe422737feacf3c1da9c8d2f78b542272.png" alt="C &amp; := \alpha AB + \beta C \quad (\mathrm{side} = \mathrm{'L'}), \\
+<p><img src="_images/math/b4b77eb87eaf7b5cec38b838667240420953bf95.png" alt="C &amp; := \alpha AB + \beta C \quad (\mathrm{side} = \mathrm{'L'}), \\
 C &amp; := \alpha BA + \beta C \quad (\mathrm{side} = \mathrm{'R'})."/></p>
 </div><p>The arguments <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">B</span></tt>, and <tt class="docutils literal"><span class="pre">C</span></tt>  must have the same type
 (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  Complex values of <tt class="docutils literal"><span class="pre">alpha</span></tt>  and
@@ -737,10 +857,10 @@ C &amp; := \alpha BA + \beta C \quad (\mathrm{side} = \mathrm{'R'})."/></p>
 <dl class="function">
 <dt id="cvxopt.blas.hemm">
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">hemm</tt><big>(</big><em>A</em>, <em>B</em>, <em>C</em><span class="optional">[</span>, <em>side = 'L'</em>, <em>uplo = 'L'</em>, <em>alpha = 1.0</em>, <em>beta = 0.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.hemm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Product of a real symmetric or complex Hermitian matrix <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> and a
-general matrix <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/>:</p>
+<dd><p>Product of a real symmetric or complex Hermitian matrix <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> and a
+general matrix <img class="math" src="_images/math/83956e92fcc80dee17fce864543216939a3c9da7.png" alt="B"/>:</p>
 <div class="math">
-<p><img src="_images/math/1321ae4fe422737feacf3c1da9c8d2f78b542272.png" alt="C &amp; := \alpha AB + \beta C \quad (\mathrm{side} = \mathrm{'L'}), \\
+<p><img src="_images/math/b4b77eb87eaf7b5cec38b838667240420953bf95.png" alt="C &amp; := \alpha AB + \beta C \quad (\mathrm{side} = \mathrm{'L'}), \\
 C &amp; := \alpha BA + \beta C \quad (\mathrm{side} = \mathrm{'R'})."/></p>
 </div><p>The arguments <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">B</span></tt>,  and <tt class="docutils literal"><span class="pre">C</span></tt> must have the same type
 (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  Complex values of <tt class="docutils literal"><span class="pre">alpha</span></tt> and
@@ -750,16 +870,16 @@ C &amp; := \alpha BA + \beta C \quad (\mathrm{side} = \mathrm{'R'})."/></p>
 <dl class="function">
 <dt id="cvxopt.blas.trmm">
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">trmm</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>side = 'L'</em>, <em>uplo = 'L'</em>, <em>transA = 'N'</em>, <em>diag = 'N'</em>, <em>alpha = 1.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.trmm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Product of a triangular matrix <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> and a general matrix <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/>:</p>
+<dd><p>Product of a triangular matrix <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> and a general matrix <img class="math" src="_images/math/83956e92fcc80dee17fce864543216939a3c9da7.png" alt="B"/>:</p>
 <div class="math">
-<p><img src="_images/math/695db815f33ead3599bc6fec853a3eb11e540537.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
+<p><img src="_images/math/508fc704035c2701c87f20328fc1dc5fb2b339cf.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
 \begin{split}
 B &amp; := \alpha\op(A)B \quad (\mathrm{side} = \mathrm{'L'}), \\
 B &amp; := \alpha B\op(A) \quad (\mathrm{side} = \mathrm{'R'})
 \end{split}"/></p>
 </div><p>where</p>
 <div class="math">
-<p><img src="_images/math/8546ca19769179ea1a2b09343f28b2329052a2c8.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
+<p><img src="_images/math/1259a43ca7fc336c314fd9e818f723369d738d9a.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
 \op(A) =  \left\{ \begin{array}{ll}
      A &amp; \mathrm{transA} = \mathrm{'N'} \\
      A^T &amp; \mathrm{transA} = \mathrm{'T'} \\
@@ -774,19 +894,19 @@ is complex.</p>
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">trsm</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>side = 'L'</em>, <em>uplo = 'L'</em>, <em>transA = 'N'</em>, <em>diag = 'N'</em>, <em>alpha = 1.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.trsm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solution of a nonsingular triangular system of equations:</p>
 <div class="math">
-<p><img src="_images/math/f3a22d01b8bc69ba4c61c8228fd70aa5579f6f43.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
+<p><img src="_images/math/1f00e3f9a85af83df8dbb9267e41d53b18be6801.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
 \begin{split}
 B &amp; := \alpha \op(A)^{-1}B \quad (\mathrm{side} = \mathrm{'L'}), \\
 B &amp; := \alpha B\op(A)^{-1} \quad (\mathrm{side} = \mathrm{'R'}),
 \end{split}"/></p>
 </div><p>where</p>
 <div class="math">
-<p><img src="_images/math/8eca721b4bae76ad5931d7308ced32d4c72d258d.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
+<p><img src="_images/math/60230b9d07628d38e7e9695d7b938de174d52a3d.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
 \op(A) =  \left\{ \begin{array}{ll}
     A &amp; \mathrm{transA} = \mathrm{'N'} \\
     A^T &amp; \mathrm{transA} = \mathrm{'T'} \\
     A^H &amp; \mathrm{transA} = \mathrm{'C'}, \end{array} \right."/></p>
-</div><p><img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is triangular and <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/> is a general matrix.  The
+</div><p><img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is triangular and <img class="math" src="_images/math/83956e92fcc80dee17fce864543216939a3c9da7.png" alt="B"/> is a general matrix.  The
 arguments <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or
 <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  Complex values of <tt class="docutils literal"><span class="pre">alpha</span></tt> are only allowed if <tt class="docutils literal"><span class="pre">A</span></tt>
 is complex.</p>
@@ -795,13 +915,13 @@ is complex.</p>
 <dl class="function">
 <dt id="cvxopt.blas.syrk">
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">syrk</tt><big>(</big><em>A</em>, <em>C</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>trans = 'N'</em>, <em>alpha = 1.0</em>, <em>beta = 0.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.syrk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rank-<img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> update of a real or complex symmetric matrix <img class="math" src="_images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/>:</p>
+<dd><p>Rank-<img class="math" src="_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> update of a real or complex symmetric matrix <img class="math" src="_images/math/2bcc65482aa8e15cd4c9e9f2542451fb4e971a91.png" alt="C"/>:</p>
 <div class="math">
-<p><img src="_images/math/6a09e3e0c4b107e714bab1fdaf94303d5ea63905.png" alt="C &amp; := \alpha AA^T + \beta C \quad
+<p><img src="_images/math/05b154e50ec84f68ecf21e2ed17bf6f5935f1dd2.png" alt="C &amp; := \alpha AA^T + \beta C \quad
     (\mathrm{trans} = \mathrm{'N'}),  \\
 C &amp; := \alpha A^TA + \beta C \quad
     (\mathrm{trans} = \mathrm{'T'}),"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a general matrix.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">C</span></tt>
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a general matrix.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">C</span></tt>
 must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  Complex values
 of <tt class="docutils literal"><span class="pre">alpha</span></tt>  and <tt class="docutils literal"><span class="pre">beta</span></tt> are only allowed if <tt class="docutils literal"><span class="pre">A</span></tt> is complex.</p>
 </dd></dl>
@@ -809,14 +929,14 @@ of <tt class="docutils literal"><span class="pre">alpha</span></tt>  and <tt cla
 <dl class="function">
 <dt id="cvxopt.blas.herk">
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">herk</tt><big>(</big><em>A</em>, <em>C</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>trans = 'N'</em>, <em>alpha = 1.0</em>, <em>beta = 0.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.herk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rank-<img class="math" src="_images/math/8c325612684d41304b9751c175df7bcc0f61f64f.png" alt="k"/> update of a real symmetric or complex Hermitian matrix
-<img class="math" src="_images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/>:</p>
+<dd><p>Rank-<img class="math" src="_images/math/e9203da50e1059455123460d4e716c9c7f440cc3.png" alt="k"/> update of a real symmetric or complex Hermitian matrix
+<img class="math" src="_images/math/2bcc65482aa8e15cd4c9e9f2542451fb4e971a91.png" alt="C"/>:</p>
 <div class="math">
-<p><img src="_images/math/b6a3fce6771deb11df3b1a91787c94bb4cc59b6b.png" alt="C &amp; := \alpha AA^H + \beta C \quad
+<p><img src="_images/math/10258285048b087b264bdafb31b19b457ce6d82b.png" alt="C &amp; := \alpha AA^H + \beta C \quad
     (\mathrm{trans} = \mathrm{'N'}), \\
 C &amp; := \alpha A^HA + \beta C \quad
     (\mathrm{trans} = \mathrm{'C'}),"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is a general matrix.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">C</span></tt>
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a general matrix.  The arguments <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">C</span></tt>
 must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).  <tt class="docutils literal"><span class="pre">alpha</span></tt> and
 <tt class="docutils literal"><span class="pre">beta</span></tt> must be real.</p>
 </dd></dl>
@@ -824,13 +944,13 @@ must have the same type (<tt class="xref py py-const docutils literal"><span cla
 <dl class="function">
 <dt id="cvxopt.blas.syr2k">
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">syr2k</tt><big>(</big><em>A</em>, <em>B</em>, <em>C</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>trans = 'N'</em>, <em>alpha = 1.0</em>, <em>beta = 0.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.syr2k" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rank-<img class="math" src="_images/math/b8ea7ee8a282949fd853a01537ec7a2b55e56f75.png" alt="2k"/> update of a real or complex symmetric matrix <img class="math" src="_images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/>:</p>
+<dd><p>Rank-<img class="math" src="_images/math/dee8ae46a5b8057f8d7d48bb39deae1fbf9bfeb3.png" alt="2k"/> update of a real or complex symmetric matrix <img class="math" src="_images/math/2bcc65482aa8e15cd4c9e9f2542451fb4e971a91.png" alt="C"/>:</p>
 <div class="math">
-<p><img src="_images/math/10f1c810b7aea1fee7dd21cd0de10161957cf7e8.png" alt="C &amp; := \alpha (AB^T + BA^T) + \beta C \quad
+<p><img src="_images/math/f550d35baced9ff07145881ea1b76d6167735056.png" alt="C &amp; := \alpha (AB^T + BA^T) + \beta C \quad
     (\mathrm{trans} = \mathrm{'N'}), \\
 C &amp; := \alpha (A^TB + B^TA) + \beta C \quad
     (\mathrm{trans} = \mathrm{'T'})."/></p>
-</div><p><img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> and <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/> are general real or complex matrices.  The
+</div><p><img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> and <img class="math" src="_images/math/83956e92fcc80dee17fce864543216939a3c9da7.png" alt="B"/> are general real or complex matrices.  The
 arguments <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">B</span></tt>, and <tt class="docutils literal"><span class="pre">C</span></tt> must have the same type.  Complex
 values of <tt class="docutils literal"><span class="pre">alpha</span></tt>  and <tt class="docutils literal"><span class="pre">beta</span></tt> are only allowed if <tt class="docutils literal"><span class="pre">A</span></tt> is complex.</p>
 </dd></dl>
@@ -838,14 +958,14 @@ values of <tt class="docutils literal"><span class="pre">alpha</span></tt>  and 
 <dl class="function">
 <dt id="cvxopt.blas.her2k">
 <tt class="descclassname">cvxopt.blas.</tt><tt class="descname">her2k</tt><big>(</big><em>A</em>, <em>B</em>, <em>C</em><span class="optional">[</span>, <em>uplo = 'L'</em>, <em>trans = 'N'</em>, <em>alpha = 1.0</em>, <em>beta = 0.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.blas.her2k" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rank-<img class="math" src="_images/math/b8ea7ee8a282949fd853a01537ec7a2b55e56f75.png" alt="2k"/> update of a real symmetric or complex Hermitian matrix
-<img class="math" src="_images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/>:</p>
+<dd><p>Rank-<img class="math" src="_images/math/dee8ae46a5b8057f8d7d48bb39deae1fbf9bfeb3.png" alt="2k"/> update of a real symmetric or complex Hermitian matrix
+<img class="math" src="_images/math/2bcc65482aa8e15cd4c9e9f2542451fb4e971a91.png" alt="C"/>:</p>
 <div class="math">
-<p><img src="_images/math/cfe6974cf103f98bc985a9c34598a50b100a6c6b.png" alt="C &amp; := \alpha AB^H + \bar \alpha BA^H + \beta C \quad
+<p><img src="_images/math/2d2ea095bd0ec381d83e7a65423f81bb8caeba6e.png" alt="C &amp; := \alpha AB^H + \bar \alpha BA^H + \beta C \quad
     (\mathrm{trans} = \mathrm{'N'}), \\
 C &amp; := \alpha A^HB + \bar\alpha B^HA + \beta C \quad
     (\mathrm{trans} = \mathrm{'C'}),"/></p>
-</div><p>where <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> and <img class="math" src="_images/math/ff5fb3d775862e2123b007eb4373ff6cc1a34d4e.png" alt="B"/> are general matrices.  The arguments
+</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> and <img class="math" src="_images/math/83956e92fcc80dee17fce864543216939a3c9da7.png" alt="B"/> are general matrices.  The arguments
 <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">B</span></tt>, and <tt class="docutils literal"><span class="pre">C</span></tt> must have the same type (<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or
 <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).   Complex values of <tt class="docutils literal"><span class="pre">alpha</span></tt> are only allowed if <tt class="docutils literal"><span class="pre">A</span></tt>
 is complex.  <tt class="docutils literal"><span class="pre">beta</span></tt> must be real.</p>
@@ -856,61 +976,71 @@ is complex.  <tt class="docutils literal"><span class="pre">beta</span></tt> mus
 
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">The BLAS Interface</a><ul>
-<li><a class="reference internal" href="#matrix-classes">Matrix Classes</a></li>
-<li><a class="reference internal" href="#level-1-blas">Level 1 BLAS</a></li>
-<li><a class="reference internal" href="#level-2-blas">Level 2 BLAS</a></li>
-<li><a class="reference internal" href="#level-3-blas">Level 3 BLAS</a></li>
-</ul>
-</li>
-</ul>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="lapack.html" class="btn btn-neutral float-right" title="The LAPACK Interface">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="matrices.html" class="btn btn-neutral" title="Dense and Sparse Matrices"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="matrices.html"
-                        title="previous chapter">Dense and Sparse Matrices</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="lapack.html"
-                        title="next chapter">The LAPACK Interface</a></p>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; <a href="copyright.html">Copyright</a> .
+      Last updated on Jun 04, 2014.
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="lapack.html" title="The LAPACK Interface"
-             >next</a></li>
-        <li class="right" >
-          <a href="matrices.html" title="Dense and Sparse Matrices"
-             >previous</a> |</li>
-    <li><a href="http://cvxopt.org">CVXOPT home</a> |</li>
-    
-        <li><a href="index.html">user&#39;s guide</a> </li>
- 
-      </ul>
-    </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  false
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
     </div>
-  </body>
+
+</body>
 </html>
