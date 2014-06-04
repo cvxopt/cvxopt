@@ -1,62 +1,182 @@
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cone Programming &mdash; CVXOPT User&#39;s Guide</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+        <link rel="copyright" title="Copyright" href="copyright.html"/>
+    <link rel="top" title="CVXOPT User&#39;s Guide" href="index.html"/>
+        <link rel="next" title="Nonlinear Convex Optimization" href="solvers.html"/>
+        <link rel="prev" title="Sparse Linear Equations" href="spsolvers.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> CVXOPT User's Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="matrices.html">Dense and Sparse Matrices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#dense-matrices">Dense Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#sparse-matrices">Sparse Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#arithmetic-operations">Arithmetic Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#indexing-and-slicing">Indexing and Slicing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#attributes-and-methods">Attributes and Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#built-in-functions">Built-In Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#other-matrix-functions">Other Matrix Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="matrices.html#randomly-generated-matrices">Randomly Generated Matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">The BLAS Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="blas.html#matrix-classes">Matrix Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blas.html#level-1-blas">Level 1 BLAS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blas.html#level-2-blas">Level 2 BLAS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blas.html#level-3-blas">Level 3 BLAS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lapack.html">The LAPACK Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#general-linear-equations">General Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#positive-definite-linear-equations">Positive Definite Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#symmetric-and-hermitian-linear-equations">Symmetric and Hermitian Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#triangular-linear-equations">Triangular Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#least-squares-and-least-norm-problems">Least-Squares and Least-Norm Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#symmetric-and-hermitian-eigenvalue-decomposition">Symmetric and Hermitian Eigenvalue Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#generalized-symmetric-definite-eigenproblems">Generalized Symmetric Definite Eigenproblems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#singular-value-decomposition">Singular Value Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#schur-and-generalized-schur-factorization">Schur and Generalized Schur Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lapack.html#example-analytic-centering">Example: Analytic Centering</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fftw.html">Discrete Transforms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fftw.html#discrete-fourier-transform">Discrete Fourier Transform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fftw.html#discrete-cosine-transform">Discrete Cosine Transform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fftw.html#discrete-sine-transform">Discrete Sine Transform</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="spsolvers.html">Sparse Linear Equations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="spsolvers.html#matrix-orderings">Matrix Orderings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spsolvers.html#general-linear-equations">General Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spsolvers.html#positive-definite-linear-equations">Positive Definite Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spsolvers.html#example-covariance-selection">Example: Covariance Selection</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Cone Programming</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#linear-cone-programs">Linear Cone Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quadratic-cone-programs">Quadratic Cone Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linear-programming">Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quadratic-programming">Quadratic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#second-order-cone-programming">Second-Order Cone Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#semidefinite-programming">Semidefinite Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exploiting-structure">Exploiting Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optional-solvers">Optional Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#algorithm-parameters">Algorithm Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="solvers.html">Nonlinear Convex Optimization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#problems-with-nonlinear-objectives">Problems with Nonlinear Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#problems-with-linear-objectives">Problems with Linear Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#geometric-programming">Geometric Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#exploiting-structure">Exploiting Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html#algorithm-parameters">Algorithm Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modeling.html">Modeling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#variables">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#constraints">Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#optimization-problems">Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="c-api.html">C API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="c-api.html#dense-matrices">Dense Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="c-api.html#sparse-matrices">Sparse Matrices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="printing.html">Matrix Formatting</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://cvxopt.org">cvxopt.org</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">CVXOPT User's Guide</a>
+      </nav>
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Cone Programming &mdash; CVXOPT User&#39;s Guide</title>
-    
-    <link rel="stylesheet" href="_static/cvxopt.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
-        VERSION:     '1.1.5',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  false
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="copyright" title="Copyright" href="copyright.html" />
-    <link rel="top" title="CVXOPT User&#39;s Guide" href="index.html" />
-    <link rel="next" title="Nonlinear Convex Optimization" href="solvers.html" />
-    <link rel="prev" title="Sparse Linear Equations" href="spsolvers.html" /> 
-  </head>
-  <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="solvers.html" title="Nonlinear Convex Optimization"
-             accesskey="N">next</a></li>
-        <li class="right" >
-          <a href="spsolvers.html" title="Sparse Linear Equations"
-             accesskey="P">previous</a> |</li>
-    <li><a href="http://cvxopt.org">CVXOPT home</a> |</li>
-    
-        <li><a href="index.html">user&#39;s guide</a> </li>
- 
-      </ul>
-    </div>  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Cone Programming</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
             
   <div class="section" id="cone-programming">
 <span id="c-coneprog"></span><h1>Cone Programming<a class="headerlink" href="#cone-programming" title="Permalink to this headline">¶</a></h1>
 <p>In this chapter we consider convex optimization problems of the form</p>
 <div class="math">
-<p><img src="_images/math/77b87703b14d3f1b59ac092865ee19b0f85cf188.png" alt="\begin{array}{ll}
+<p><img src="_images/math/f737c57f30b69731860640f7b2408b8103df0cd8.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; (1/2) x^TPx + q^T x \\
 \mbox{subject to} &amp; G x \preceq h \\
                   &amp; Ax = b.
@@ -86,7 +206,7 @@ algorithm parameters that control the cone programming solvers.</p>
 <tt class="descclassname">cvxopt.solvers.</tt><tt class="descname">conelp</tt><big>(</big><em>c</em>, <em>G</em>, <em>h</em><span class="optional">[</span>, <em>dims</em><span class="optional">[</span>, <em>A</em>, <em>b</em><span class="optional">[</span>, <em>primalstart</em><span class="optional">[</span>, <em>dualstart</em><span class="optional">[</span>, <em>kktsolver</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.solvers.conelp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a pair of primal and dual cone programs</p>
 <div class="math">
-<p><img src="_images/math/1a8d47fe4c6b9295f4c73ecb0181d7cdc2f265bd.png" alt="\begin{array}[t]{ll}
+<p><img src="_images/math/57b5c2817ccca5f67197e2d35ede3a4bb0aeeee7.png" alt="\begin{array}[t]{ll}
 \mbox{minimize}   &amp; c^T x \\
 \mbox{subject to} &amp; G x + s = h \\
                   &amp; Ax = b \\
@@ -98,17 +218,17 @@ algorithm parameters that control the cone programming solvers.</p>
 \mbox{subject to} &amp; G^T z + A^T y + c = 0 \\
                   &amp; z \succeq 0.
 \end{array}"/></p>
-</div><p>The primal variables are <img class="math" src="_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/> and <img class="math" src="_images/math/f37bba504894945c07a32f5496d74299a37aa51c.png" alt="s"/>.  The dual variables
-are <img class="math" src="_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/>, <img class="math" src="_images/math/b13f21416d84e13708696f34dea81026cda583c9.png" alt="z"/>.  The inequalities are interpreted as
-<img class="math" src="_images/math/a0bfc2010a37ca5ee8d8553f74881b8e12ea4bfd.png" alt="s \in C"/>, <img class="math" src="_images/math/d22f3a5882fad95b5a9af193c57e3db91989d676.png" alt="z\in C"/>, where <img class="math" src="_images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/> is a cone defined as
+</div><p>The primal variables are <img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/> and <img class="math" src="_images/math/6859317dd1b439cef34131bcd4bafee8393444e0.png" alt="s"/>.  The dual variables
+are <img class="math" src="_images/math/b124ff74afb0914bb434e8fb849eb56d734412f8.png" alt="y"/>, <img class="math" src="_images/math/84d7271dd9e78c1e05d6c3c6ecb60309ef7dfc73.png" alt="z"/>.  The inequalities are interpreted as
+<img class="math" src="_images/math/e46a26135e0ceb7bf8a11ec2c0b76d0692cb242d.png" alt="s \in C"/>, <img class="math" src="_images/math/135e55b6f4cddbbf41397f28329812f7abd7c9b7.png" alt="z\in C"/>, where <img class="math" src="_images/math/2bcc65482aa8e15cd4c9e9f2542451fb4e971a91.png" alt="C"/> is a cone defined as
 a Cartesian product of a nonnegative orthant, a number of second-order
 cones, and a number of positive semidefinite cones:</p>
 <div class="math">
-<p><img src="_images/math/975932e25b8d20b8ef19bccfe15bfc80e9960ca2.png" alt="C = C_0 \times C_1 \times \cdots \times C_M \times C_{M+1} \times
+<p><img src="_images/math/ec0606574b5c69317afdafe1c02bce1ce201f7a7.png" alt="C = C_0 \times C_1 \times \cdots \times C_M \times C_{M+1} \times
     \cdots \times C_{M+N}"/></p>
 </div><p>with</p>
 <div class="math">
-<p><img src="_images/math/a34d96670035ec4b9d538485aca155388900d586.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
+<p><img src="_images/math/80bee4e7ca18b9e178cbe36de0a963d928f0dd7a.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
 \newcommand{\svec}{\mathop{\mathbf{vec}}}
 \newcommand{\symm}{{\mbox{\bf S}}}
 \begin{split}
@@ -119,19 +239,19 @@ cones, and a number of positive semidefinite cones:</p>
     C_{k+M+1} &amp;= \left\{ \svec(u) \; | \; u \in \symm^{t_k}_+
         \right\}, \quad k=0,\ldots,N-1.
 \end{split}"/></p>
-</div><p>In this definition, <img class="math" src="_images/math/1caa3e3ac8919174afb2c7d55599b897ea724bd1.png" alt="\mathbf{vec}(u)"/> denotes a symmetric matrix
-<img class="math" src="_images/math/9ad99798ec4c38e165cf517cb9e02b1c9e824103.png" alt="u"/> stored as a vector in column major order.  The structure of
-<img class="math" src="_images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/> is specified by <tt class="docutils literal"><span class="pre">dims</span></tt>.  This argument is a dictionary with
+</div><p>In this definition, <img class="math" src="_images/math/4b78615a721358c983b51554b59f51f691a9494e.png" alt="\mathbf{vec}(u)"/> denotes a symmetric matrix
+<img class="math" src="_images/math/e5fc41b391867da81606413e3389c7efc73abaf0.png" alt="u"/> stored as a vector in column major order.  The structure of
+<img class="math" src="_images/math/2bcc65482aa8e15cd4c9e9f2542451fb4e971a91.png" alt="C"/> is specified by <tt class="docutils literal"><span class="pre">dims</span></tt>.  This argument is a dictionary with
 three fields.</p>
 <dl class="docutils">
 <dt><tt class="docutils literal"><span class="pre">dims['l']</span></tt>:</dt>
-<dd><img class="math" src="_images/math/9b25f8e64b484493fda944d25cad453423041fe6.png" alt="l"/>, the dimension of the nonnegative orthant (a nonnegative
+<dd><img class="math" src="_images/math/d99efde75c84ef402a92cd4497530d2366fb112f.png" alt="l"/>, the dimension of the nonnegative orthant (a nonnegative
 integer).</dd>
 <dt><tt class="docutils literal"><span class="pre">dims['q']</span></tt>:</dt>
-<dd><img class="math" src="_images/math/f9408643dfec56ef1bdd651b0858bed3b41a899b.png" alt="[r_0, \ldots, r_{M-1}]"/>, a list with the dimensions of the
+<dd><img class="math" src="_images/math/4a5a1bbcc3881a422d50385a7b28ba2f8b138058.png" alt="[r_0, \ldots, r_{M-1}]"/>, a list with the dimensions of the
 second-order cones (positive integers).</dd>
 <dt><tt class="docutils literal"><span class="pre">dims['s']</span></tt>:</dt>
-<dd><img class="math" src="_images/math/15c9e0d5b18ecfcec0dc5faf60950122d134d40e.png" alt="[t_0, \ldots, t_{N-1}]"/>, a list with the dimensions of the
+<dd><img class="math" src="_images/math/7949c78c45dd5977a07f55aab72d3f7d7b991f19.png" alt="[t_0, \ldots, t_{N-1}]"/>, a list with the dimensions of the
 positive semidefinite cones (nonnegative integers).</dd>
 </dl>
 <p>The default value of <tt class="docutils literal"><span class="pre">dims</span></tt> is
@@ -142,14 +262,14 @@ inequality is interpreted as a componentwise vector inequality.</p>
 matrices.  <tt class="docutils literal"><span class="pre">G</span></tt> and <tt class="docutils literal"><span class="pre">A</span></tt> are real dense or sparse matrices.  The
 number of rows of <tt class="docutils literal"><span class="pre">G</span></tt> and <tt class="docutils literal"><span class="pre">h</span></tt> is equal to</p>
 <div class="math">
-<p><img src="_images/math/0fb35d76d5ee3a9cea74866affcb223883174be3.png" alt="K = l + \sum_{k=0}^{M-1} r_k + \sum_{k=0}^{N-1} t_k^2."/></p>
+<p><img src="_images/math/1a6d47f6a30b97355a4f98e1d0a9b292e6d6caf8.png" alt="K = l + \sum_{k=0}^{M-1} r_k + \sum_{k=0}^{N-1} t_k^2."/></p>
 </div><p>The columns of <tt class="docutils literal"><span class="pre">G</span></tt> and <tt class="docutils literal"><span class="pre">h</span></tt> are vectors in</p>
 <div class="math">
-<p><img src="_images/math/c620bdffc558c7c84614e360601c181863f7860c.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
+<p><img src="_images/math/1326e652fceec639bac58f329d8b397f2fe251d2.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
 \reals^l \times \reals^{r_0} \times \cdots \times
 \reals^{r_{M-1}} \times \reals^{t_0^2}  \times \cdots \times
 \reals^{t_{N-1}^2},"/></p>
-</div><p>where the last <img class="math" src="_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> components represent symmetric matrices
+</div><p>where the last <img class="math" src="_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> components represent symmetric matrices
 stored in column major order.  The strictly upper triangular entries
 of these matrices are not accessed (i.e.,  the symmetric matrices are
 stored in the <tt class="xref py py-const docutils literal"><span class="pre">'L'</span></tt>-type column major order used in the
@@ -159,16 +279,16 @@ equality constraints.</p>
 <p><tt class="docutils literal"><span class="pre">primalstart</span></tt> is a dictionary with keys <tt class="xref py py-const docutils literal"><span class="pre">'x'</span></tt> and
 <tt class="xref py py-const docutils literal"><span class="pre">'s'</span></tt>, used as an optional primal starting point.
 <tt class="docutils literal"><span class="pre">primalstart['x']</span></tt> and <tt class="docutils literal"><span class="pre">primalstart['s']</span></tt> are real dense
-matrices of size (<img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/>, 1) and (<img class="math" src="_images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/>, 1), respectively,
-where <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> is the length of <tt class="docutils literal"><span class="pre">c</span></tt>.  The vector
+matrices of size (<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, 1) and (<img class="math" src="_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/>, 1), respectively,
+where <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> is the length of <tt class="docutils literal"><span class="pre">c</span></tt>.  The vector
 <tt class="docutils literal"><span class="pre">primalstart['s']</span></tt> must be strictly positive with respect
-to the cone <img class="math" src="_images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/>.</p>
+to the cone <img class="math" src="_images/math/2bcc65482aa8e15cd4c9e9f2542451fb4e971a91.png" alt="C"/>.</p>
 <p><tt class="docutils literal"><span class="pre">dualstart</span></tt> is a dictionary with keys <tt class="xref py py-const docutils literal"><span class="pre">'y'</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>,
 used as an optional dual starting point.  <tt class="docutils literal"><span class="pre">dualstart['y']</span></tt> and
-<tt class="docutils literal"><span class="pre">dualstart['z']</span></tt> are real dense matrices of size (<img class="math" src="_images/math/36f73fc1312ee0349b3f3a0f3bd9eb5504339011.png" alt="p"/>, 1)
-and (<img class="math" src="_images/math/dfb064112b6c94470339f6571f69d07afc1c024c.png" alt="K"/>, 1), respectively, where <img class="math" src="_images/math/36f73fc1312ee0349b3f3a0f3bd9eb5504339011.png" alt="p"/> is the number of
+<tt class="docutils literal"><span class="pre">dualstart['z']</span></tt> are real dense matrices of size (<img class="math" src="_images/math/3eca8557203e86160952e1c0f735f7417f3285b1.png" alt="p"/>, 1)
+and (<img class="math" src="_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/>, 1), respectively, where <img class="math" src="_images/math/3eca8557203e86160952e1c0f735f7417f3285b1.png" alt="p"/> is the number of
 rows in <tt class="docutils literal"><span class="pre">A</span></tt>.  The vector <tt class="docutils literal"><span class="pre">dualstart['s']</span></tt> must be strictly
-positive with respect to the cone <img class="math" src="_images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/>.</p>
+positive with respect to the cone <img class="math" src="_images/math/2bcc65482aa8e15cd4c9e9f2542451fb4e971a91.png" alt="C"/>.</p>
 <p>The role of the optional argument <tt class="docutils literal"><span class="pre">kktsolver</span></tt> is explained in
 the section <a class="reference internal" href="#s-conelp-struct"><em>Exploiting Structure</em></a>.</p>
 <p><tt class="xref py py-func docutils literal"><span class="pre">conelp</span></tt> returns a dictionary that contains the result and
@@ -185,24 +305,24 @@ depends on the value of <tt class="xref py py-const docutils literal"><span clas
 <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> entries contain the primal and dual solutions, which
 approximately satisfy</p>
 <div class="math">
-<p><img src="_images/math/b7416ae850a4be262250cf738c69746b8c161976.png" alt="Gx + s = h, \qquad Ax = b, \qquad G^T z  + A^T y + c = 0,
+<p><img src="_images/math/1e14a62291a70962b57d6b268d20d00056346d3c.png" alt="Gx + s = h, \qquad Ax = b, \qquad G^T z  + A^T y + c = 0,
 
 s \succeq 0, \qquad z \succeq 0, \qquad  s^T z = 0."/></p>
 </div><p>The other entries in the output dictionary summarize the accuracy
 with which these optimality conditions are satisfied.  The fields
 <tt class="xref py py-const docutils literal"><span class="pre">'primal</span> <span class="pre">objective'</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'dual</span> <span class="pre">objective'</span></tt>, and
-<tt class="xref py py-const docutils literal"><span class="pre">'gap'</span></tt> give the primal objective <img class="math" src="_images/math/343d0b1bdf0a89348e54e78243206b00921891fa.png" alt="c^Tx"/>, dual
-objective <img class="math" src="_images/math/e3a39e1f9f23b6b48180b47a6941803e150acf02.png" alt="-h^Tz - b^Ty"/>, and the gap <img class="math" src="_images/math/2bd21984207bb64a4af86d045947fdb01d050f8f.png" alt="s^Tz"/>.  The
+<tt class="xref py py-const docutils literal"><span class="pre">'gap'</span></tt> give the primal objective <img class="math" src="_images/math/567d706970f5fafe73762cfb27d1c51c65bd49e2.png" alt="c^Tx"/>, dual
+objective <img class="math" src="_images/math/aad007aad36276e84b88349a62e466b615cc30e4.png" alt="-h^Tz - b^Ty"/>, and the gap <img class="math" src="_images/math/9812a102ddba49461ec38204d13a46cc35d13ec5.png" alt="s^Tz"/>.  The
 field <tt class="xref py py-const docutils literal"><span class="pre">'relative</span> <span class="pre">gap'</span></tt> is the relative gap, defined as</p>
 <div class="math">
-<p><img src="_images/math/e227404751bdf9353900cfa8acb3db338ffb45bd.png" alt="\frac{ s^Tz }{ \max\{ -c^Tx, -h^Tz-b^Ty \} }
+<p><img src="_images/math/1303f291f9f1bb1b13ce614a71db9ac06982675d.png" alt="\frac{ s^Tz }{ \max\{ -c^Tx, -h^Tz-b^Ty \} }
 \quad \mbox{if} \quad \max\{ -c^Tx, -h^Tz-b^Ty \} &gt; 0"/></p>
 </div><p>and <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt> otherwise.  The fields
 <tt class="xref py py-const docutils literal"><span class="pre">'primal</span> <span class="pre">infeasibility'</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">'dual</span> <span class="pre">infeasibility'</span></tt>
 are the residuals in the primal and dual equality constraints,
 defined as</p>
 <div class="math">
-<p><img src="_images/math/4d98c2c2a240fd3ece215d33344d6861c464542a.png" alt="\max\{ \frac{ \|Gx+s-h\|_2 }{ \max\{1, \|h\|_2\} },
+<p><img src="_images/math/9e3f7a73ad343d876522dc29fa778c661cd0bc73.png" alt="\max\{ \frac{ \|Gx+s-h\|_2 }{ \max\{1, \|h\|_2\} },
     \frac{ \|Ax-b\|_2 }{ \max\{1,\|b\|_2\} } \}, \qquad
 \frac{ \|G^Tz + A^Ty + c\|_2 }{ \max\{1, \|c\|_2\} },"/></p>
 </div><p class="last">respectively.</p>
@@ -213,24 +333,24 @@ the <tt class="xref py py-const docutils literal"><span class="pre">'y'</span></
 certificate of infeasibility, i.e., vectors that approximately
 satisfy</p>
 <div class="math">
-<p><img src="_images/math/b57720e648d18f104bebca376094c72e087519ca.png" alt="G^T z + A^T y = 0, \qquad h^T z + b^T y = -1, \qquad
+<p><img src="_images/math/ec45b525199e9ca199573bf72bbebde0a0aaf8f2.png" alt="G^T z + A^T y = 0, \qquad h^T z + b^T y = -1, \qquad
 z \succeq 0."/></p>
 </div><p>The field <tt class="xref py py-const docutils literal"><span class="pre">'residual</span> <span class="pre">as</span> <span class="pre">primal</span> <span class="pre">infeasibility</span> <span class="pre">certificate'</span></tt>
 gives the residual</p>
 <div class="last math">
-<p><img src="_images/math/c917b15b2cdc303898562683b1ac6a34297c70df.png" alt="\frac{ \|G^Tz + A^Ty\|_2 }{ \max\{1, \|c\|_2\} }."/></p>
+<p><img src="_images/math/a47ccc33ac0f8662ee27020d71ec5bca4b6218bc.png" alt="\frac{ \|G^Tz + A^Ty\|_2 }{ \max\{1, \|c\|_2\} }."/></p>
 </div></dd>
 <dt><tt class="xref py py-const docutils literal"><span class="pre">'dual</span> <span class="pre">infeasible'</span></tt></dt>
 <dd><p class="first">The <tt class="xref py py-const docutils literal"><span class="pre">'y'</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> entries are <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>, and
 the <tt class="xref py py-const docutils literal"><span class="pre">'x'</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">'s'</span></tt> entries contain an approximate
 certificate of dual infeasibility</p>
 <div class="math">
-<p><img src="_images/math/6489ee228737f4d9d3366e3a7432230c580b2266.png" alt="Gx + s = 0, \qquad Ax=0, \qquad  c^T x = -1, \qquad
+<p><img src="_images/math/d6882108988b75f2c185ff66d8ca996834b46260.png" alt="Gx + s = 0, \qquad Ax=0, \qquad  c^T x = -1, \qquad
 s \succeq 0."/></p>
 </div><p>The field <tt class="xref py py-const docutils literal"><span class="pre">'residual</span> <span class="pre">as</span> <span class="pre">dual</span> <span class="pre">infeasibility</span> <span class="pre">certificate'</span></tt>
 gives the residual</p>
 <div class="last math">
-<p><img src="_images/math/723b55830eebda94339bddfe5032d381c449a3fd.png" alt="\max\{ \frac{ \|Gx + s\|_2 }{ \max\{1, \|h\|_2\} },
+<p><img src="_images/math/9e64d39bc789763f5e7b0226e4e577d6701be82d.png" alt="\max\{ \frac{ \|Gx + s\|_2 }{ \max\{1, \|h\|_2\} },
 \frac{ \|Ax\|_2 }{ \max\{1, \|b\|_2\} } \}."/></p>
 </div></dd>
 <dt><tt class="xref py py-const docutils literal"><span class="pre">'unknown'</span></tt></dt>
@@ -249,32 +369,32 @@ is <tt class="xref py py-const docutils literal"><span class="pre">'optimal'</sp
 <tt class="xref py py-const docutils literal"><span class="pre">'residual</span> <span class="pre">as</span> <span class="pre">primal</span> <span class="pre">infeasibility</span> <span class="pre">certificate'</span></tt> is defined
 as</p>
 <div class="math">
-<p><img src="_images/math/373f482f73854e03e6ed7bd3e56010dedac0a40f.png" alt="\frac{ \|G^Tz+A^Ty\|_2 }{ -(h^Tz + b^Ty) \max\{1, \|h\|_2 \} }."/></p>
-</div><p>if <img class="math" src="_images/math/ae2badac9a46b59f50871f2bb8d27dbc0e781580.png" alt="h^Tz+b^Ty &lt; 0"/>, and <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt> otherwise.  A small
-value of this residual indicates that <img class="math" src="_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/> and <img class="math" src="_images/math/b13f21416d84e13708696f34dea81026cda583c9.png" alt="z"/>,
-divided by <img class="math" src="_images/math/eb1d31d3ef53ada239a7c1ebcfc362b3739e5fb5.png" alt="-h^Tz-b^Ty"/>, are an approximate proof of primal
+<p><img src="_images/math/e2faf4578b5333a790f89cf2c080a9e297bde7d4.png" alt="\frac{ \|G^Tz+A^Ty\|_2 }{ -(h^Tz + b^Ty) \max\{1, \|h\|_2 \} }."/></p>
+</div><p>if <img class="math" src="_images/math/878c3440b3937563378692ea68e4a8915a548704.png" alt="h^Tz+b^Ty &lt; 0"/>, and <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt> otherwise.  A small
+value of this residual indicates that <img class="math" src="_images/math/b124ff74afb0914bb434e8fb849eb56d734412f8.png" alt="y"/> and <img class="math" src="_images/math/84d7271dd9e78c1e05d6c3c6ecb60309ef7dfc73.png" alt="z"/>,
+divided by <img class="math" src="_images/math/8867a6f23bdc90d9850c212da3b1f6c85da9cfa9.png" alt="-h^Tz-b^Ty"/>, are an approximate proof of primal
 infeasibility.  The field
 <tt class="xref py py-const docutils literal"><span class="pre">'residual</span> <span class="pre">as</span> <span class="pre">dual</span> <span class="pre">infeasibility</span> <span class="pre">certificate'</span></tt> is defined as</p>
 <div class="math">
-<p><img src="_images/math/7c7417a29910bcf840b52428dbb9ec70f1d85cd9.png" alt="\max\{ \frac{ \|Gx+s\|_2 }{ -c^Tx \max\{ 1, \|h\|_2 \} },
+<p><img src="_images/math/b5ddd66f365b65ac1d67353904f48cd161730514.png" alt="\max\{ \frac{ \|Gx+s\|_2 }{ -c^Tx \max\{ 1, \|h\|_2 \} },
 \frac{ \|Ax\|_2 }{ -c^Tx \max\{1,\|b\|_2\} }\}"/></p>
-</div><p class="last">if <img class="math" src="_images/math/3d5748e90487d80ee689dc7c8ea13ef316542389.png" alt="c^Tx &lt; 0"/>, and as <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt> otherwise.  A small value
-indicates that <img class="math" src="_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/> and <img class="math" src="_images/math/f37bba504894945c07a32f5496d74299a37aa51c.png" alt="s"/>, divided by <img class="math" src="_images/math/2f2c7e1863869b3b250c3397ca8146a4d4863f1b.png" alt="-c^Tx"/>
+</div><p class="last">if <img class="math" src="_images/math/55826404e30a9012f804c4eac5d19b0598af8d30.png" alt="c^Tx &lt; 0"/>, and as <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt> otherwise.  A small value
+indicates that <img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/> and <img class="math" src="_images/math/6859317dd1b439cef34131bcd4bafee8393444e0.png" alt="s"/>, divided by <img class="math" src="_images/math/0bc936c22de06c6b0ea722218217731a24b30f6e.png" alt="-c^Tx"/>
 are an approximate proof of dual infeasibility.</p>
 </dd>
 </dl>
 <p>It is required that</p>
 <div class="math">
-<p><img src="_images/math/eebbe23287e11c882a2db71db881db3bb8dc23c4.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
+<p><img src="_images/math/f0c84551b5a2d13213791afff102b42d3416c913.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
 \Rank(A) = p, \qquad
 \Rank(\left[\begin{array}{c} G \\ A \end{array}\right]) = n,"/></p>
-</div><p>where <img class="math" src="_images/math/36f73fc1312ee0349b3f3a0f3bd9eb5504339011.png" alt="p"/> is the number or rows of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> and <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> is
-the number of columns of <img class="math" src="_images/math/6e28ce12d49d39f160d5a0ef54077fc98e4b9d2b.png" alt="G"/> and <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.</p>
+</div><p>where <img class="math" src="_images/math/3eca8557203e86160952e1c0f735f7417f3285b1.png" alt="p"/> is the number or rows of <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> and <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> is
+the number of columns of <img class="math" src="_images/math/b92c09a649305a0aef3239729d93cdf941e0e5cf.png" alt="G"/> and <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/>.</p>
 </dd></dl>
 
 <p>As an example we solve the problem</p>
 <div class="math">
-<p><img src="_images/math/ec3d0c1e0e6c4dc7823c2bdefd3004179a4338c3.png" alt="\begin{array}{ll}
+<p><img src="_images/math/7ccc306d0b1a362ea794e28e35f620ae8f3da1e5.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp;  -6x_1 - 4x_2 - 5x_3 \\*[1ex]
 \mbox{subject to}
     &amp; 16x_1 - 14x_2 + 5x_3 \leq -3 \\*[1ex]
@@ -361,7 +481,7 @@ obtain the same result if we define <tt class="docutils literal"><span class="pr
 <tt class="descclassname">cvxopt.solvers.</tt><tt class="descname">coneqp</tt><big>(</big><em>P</em>, <em>q</em><span class="optional">[</span>, <em>G</em>, <em>h</em><span class="optional">[</span>, <em>dims</em><span class="optional">[</span>, <em>A</em>, <em>b</em><span class="optional">[</span>, <em>initvals</em><span class="optional">[</span>, <em>kktsolver</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.solvers.coneqp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a pair of primal and dual quadratic cone programs</p>
 <div class="math">
-<p><img src="_images/math/e91b9a70b0279938a93a0ec387ee7359ddb67098.png" alt="\begin{array}[t]{ll}
+<p><img src="_images/math/57f23d18fa879e51e776968c9e8ed86e6856b728.png" alt="\begin{array}[t]{ll}
 \mbox{minimize}   &amp; (1/2) x^T Px + q^T x \\
 \mbox{subject to} &amp; G x + s = h \\
                   &amp; Ax = b \\
@@ -369,24 +489,24 @@ obtain the same result if we define <tt class="docutils literal"><span class="pr
 \end{array}"/></p>
 </div><p>and</p>
 <div class="math">
-<p><img src="_images/math/35cf8b0b6e5f53cc10c6ef43b8bc6fc921888521.png" alt="\newcommand{\Range}{\mbox{\textrm{range}}}
+<p><img src="_images/math/4597d4c954c896f007283312ad9225476a27cbe6.png" alt="\newcommand{\Range}{\mbox{\textrm{range}}}
 \begin{array}[t]{ll}
 \mbox{maximize}   &amp; -(1/2) (q+G^Tz+A^Ty)^T P^\dagger
                    (q+G^Tz+A^Ty) -h^T z - b^T y \\
 \mbox{subject to} &amp; q + G^T z + A^T y \in \Range(P) \\
                   &amp; z \succeq 0.
 \end{array}"/></p>
-</div><p>The primal variables are <img class="math" src="_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/> and the slack variable <img class="math" src="_images/math/f37bba504894945c07a32f5496d74299a37aa51c.png" alt="s"/>.
-The dual variables are <img class="math" src="_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/> and <img class="math" src="_images/math/b13f21416d84e13708696f34dea81026cda583c9.png" alt="z"/>.  The inequalities are
-interpreted as <img class="math" src="_images/math/a0bfc2010a37ca5ee8d8553f74881b8e12ea4bfd.png" alt="s \in C"/>, <img class="math" src="_images/math/d22f3a5882fad95b5a9af193c57e3db91989d676.png" alt="z\in C"/>, where <img class="math" src="_images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/> is a
+</div><p>The primal variables are <img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/> and the slack variable <img class="math" src="_images/math/6859317dd1b439cef34131bcd4bafee8393444e0.png" alt="s"/>.
+The dual variables are <img class="math" src="_images/math/b124ff74afb0914bb434e8fb849eb56d734412f8.png" alt="y"/> and <img class="math" src="_images/math/84d7271dd9e78c1e05d6c3c6ecb60309ef7dfc73.png" alt="z"/>.  The inequalities are
+interpreted as <img class="math" src="_images/math/e46a26135e0ceb7bf8a11ec2c0b76d0692cb242d.png" alt="s \in C"/>, <img class="math" src="_images/math/135e55b6f4cddbbf41397f28329812f7abd7c9b7.png" alt="z\in C"/>, where <img class="math" src="_images/math/2bcc65482aa8e15cd4c9e9f2542451fb4e971a91.png" alt="C"/> is a
 cone defined as a Cartesian product of a nonnegative orthant, a number
 of second-order cones, and a number of positive semidefinite cones:</p>
 <div class="math">
-<p><img src="_images/math/975932e25b8d20b8ef19bccfe15bfc80e9960ca2.png" alt="C = C_0 \times C_1 \times \cdots \times C_M \times C_{M+1} \times
+<p><img src="_images/math/ec0606574b5c69317afdafe1c02bce1ce201f7a7.png" alt="C = C_0 \times C_1 \times \cdots \times C_M \times C_{M+1} \times
     \cdots \times C_{M+N}"/></p>
 </div><p>with</p>
 <div class="math">
-<p><img src="_images/math/a34d96670035ec4b9d538485aca155388900d586.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
+<p><img src="_images/math/80bee4e7ca18b9e178cbe36de0a963d928f0dd7a.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
 \newcommand{\svec}{\mathop{\mathbf{vec}}}
 \newcommand{\symm}{{\mbox{\bf S}}}
 \begin{split}
@@ -397,19 +517,19 @@ of second-order cones, and a number of positive semidefinite cones:</p>
     C_{k+M+1} &amp;= \left\{ \svec(u) \; | \; u \in \symm^{t_k}_+
         \right\}, \quad k=0,\ldots,N-1.
 \end{split}"/></p>
-</div><p>In this definition, <img class="math" src="_images/math/1caa3e3ac8919174afb2c7d55599b897ea724bd1.png" alt="\mathbf{vec}(u)"/> denotes a symmetric matrix
-<img class="math" src="_images/math/9ad99798ec4c38e165cf517cb9e02b1c9e824103.png" alt="u"/> stored as a vector in column major order.  The structure of
-<img class="math" src="_images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/> is specified by <tt class="docutils literal"><span class="pre">dims</span></tt>.  This argument is a dictionary with
+</div><p>In this definition, <img class="math" src="_images/math/4b78615a721358c983b51554b59f51f691a9494e.png" alt="\mathbf{vec}(u)"/> denotes a symmetric matrix
+<img class="math" src="_images/math/e5fc41b391867da81606413e3389c7efc73abaf0.png" alt="u"/> stored as a vector in column major order.  The structure of
+<img class="math" src="_images/math/2bcc65482aa8e15cd4c9e9f2542451fb4e971a91.png" alt="C"/> is specified by <tt class="docutils literal"><span class="pre">dims</span></tt>.  This argument is a dictionary with
 three fields.</p>
 <dl class="docutils">
 <dt><tt class="docutils literal"><span class="pre">dims['l']</span></tt>:</dt>
-<dd><img class="math" src="_images/math/9b25f8e64b484493fda944d25cad453423041fe6.png" alt="l"/>, the dimension of the nonnegative orthant (a nonnegative
+<dd><img class="math" src="_images/math/d99efde75c84ef402a92cd4497530d2366fb112f.png" alt="l"/>, the dimension of the nonnegative orthant (a nonnegative
 integer).</dd>
 <dt><tt class="docutils literal"><span class="pre">dims['q']</span></tt>:</dt>
-<dd><img class="math" src="_images/math/f9408643dfec56ef1bdd651b0858bed3b41a899b.png" alt="[r_0, \ldots, r_{M-1}]"/>, a list with the dimensions of the
+<dd><img class="math" src="_images/math/4a5a1bbcc3881a422d50385a7b28ba2f8b138058.png" alt="[r_0, \ldots, r_{M-1}]"/>, a list with the dimensions of the
 second-order cones (positive integers).</dd>
 <dt><tt class="docutils literal"><span class="pre">dims['s']</span></tt>:</dt>
-<dd><img class="math" src="_images/math/15c9e0d5b18ecfcec0dc5faf60950122d134d40e.png" alt="[t_0, \ldots, t_{N-1}]"/>, a list with the dimensions of the
+<dd><img class="math" src="_images/math/7949c78c45dd5977a07f55aab72d3f7d7b991f19.png" alt="[t_0, \ldots, t_{N-1}]"/>, a list with the dimensions of the
 positive semidefinite cones (nonnegative integers).</dd>
 </dl>
 <p>The default value of <tt class="docutils literal"><span class="pre">dims</span></tt> is <tt class="docutils literal"><span class="pre">{'l':</span> <span class="pre">G.size[0],</span> <span class="pre">'q':</span> <span class="pre">[],</span>
@@ -423,14 +543,14 @@ single-column dense matrix.</p>
 <tt class="docutils literal"><span class="pre">G</span></tt> and <tt class="docutils literal"><span class="pre">A</span></tt> are real dense or sparse matrices.  The number of rows
 of <tt class="docutils literal"><span class="pre">G</span></tt> and <tt class="docutils literal"><span class="pre">h</span></tt> is equal to</p>
 <div class="math">
-<p><img src="_images/math/0fb35d76d5ee3a9cea74866affcb223883174be3.png" alt="K = l + \sum_{k=0}^{M-1} r_k + \sum_{k=0}^{N-1} t_k^2."/></p>
+<p><img src="_images/math/1a6d47f6a30b97355a4f98e1d0a9b292e6d6caf8.png" alt="K = l + \sum_{k=0}^{M-1} r_k + \sum_{k=0}^{N-1} t_k^2."/></p>
 </div><p>The columns of <tt class="docutils literal"><span class="pre">G</span></tt> and <tt class="docutils literal"><span class="pre">h</span></tt> are vectors in</p>
 <div class="math">
-<p><img src="_images/math/c620bdffc558c7c84614e360601c181863f7860c.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
+<p><img src="_images/math/1326e652fceec639bac58f329d8b397f2fe251d2.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
 \reals^l \times \reals^{r_0} \times \cdots \times
 \reals^{r_{M-1}} \times \reals^{t_0^2}  \times \cdots \times
 \reals^{t_{N-1}^2},"/></p>
-</div><p>where the last <img class="math" src="_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> components represent symmetric matrices stored
+</div><p>where the last <img class="math" src="_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> components represent symmetric matrices stored
 in column major order.  The strictly upper triangular entries of these
 matrices are not accessed (i.e.,  the symmetric matrices are stored
 in the <tt class="xref py py-const docutils literal"><span class="pre">'L'</span></tt>-type column major order used in the <tt class="xref py py-mod docutils literal"><span class="pre">blas</span></tt> and
@@ -440,7 +560,7 @@ inequality or equality constraints.</p>
 <p><tt class="docutils literal"><span class="pre">initvals</span></tt> is a dictionary with keys <tt class="xref py py-const docutils literal"><span class="pre">'x'</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'s'</span></tt>,
 <tt class="xref py py-const docutils literal"><span class="pre">'y'</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> used as an optional starting point.  The
 vectors <tt class="docutils literal"><span class="pre">initvals['s']</span></tt> and <tt class="docutils literal"><span class="pre">initvals['z']</span></tt> must be
-strictly positive with respect to the cone <img class="math" src="_images/math/c3355896da590fc491a10150a50416687626d7cc.png" alt="C"/>.  If the argument
+strictly positive with respect to the cone <img class="math" src="_images/math/2bcc65482aa8e15cd4c9e9f2542451fb4e971a91.png" alt="C"/>.  If the argument
 <tt class="docutils literal"><span class="pre">initvals</span></tt> or any the four entries in it are missing, default
 starting points are used for the corresponding variables.</p>
 <p>The role of the optional argument <tt class="docutils literal"><span class="pre">kktsolver</span></tt> is explained in the
@@ -456,7 +576,7 @@ with possible values <tt class="xref py py-const docutils literal"><span class="
 <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> entries contain primal and dual solutions, which
 approximately satisfy</p>
 <div class="last math">
-<p><img src="_images/math/a6277fabd6505c22d4f7ba27b0ab165c49656e11.png" alt="Gx+s = h, \qquad Ax = b, \qquad Px + G^Tz + A^T y + q = 0,
+<p><img src="_images/math/40927c2139d8e7ce9f9746651d5f28351835e658.png" alt="Gx+s = h, \qquad Ax = b, \qquad Px + G^Tz + A^T y + q = 0,
 
 s \succeq 0, \qquad z \succeq 0, \qquad s^T z  = 0."/></p>
 </div></dd>
@@ -470,14 +590,14 @@ terminated.</dd>
 <p>The other entries in the output dictionary summarize the accuracy
 with which the optimality conditions are satisfied.  The fields
 <tt class="xref py py-const docutils literal"><span class="pre">'primal</span> <span class="pre">objective'</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'dual</span> <span class="pre">objective'</span></tt>, and
-<tt class="xref py py-const docutils literal"><span class="pre">'gap'</span></tt> give the primal objective <img class="math" src="_images/math/343d0b1bdf0a89348e54e78243206b00921891fa.png" alt="c^Tx"/>, the dual
+<tt class="xref py py-const docutils literal"><span class="pre">'gap'</span></tt> give the primal objective <img class="math" src="_images/math/567d706970f5fafe73762cfb27d1c51c65bd49e2.png" alt="c^Tx"/>, the dual
 objective calculated as</p>
 <div class="math">
-<p><img src="_images/math/29324e89cd738bc7e99f3eee77329a7a044b9454.png" alt="(1/2) x^TPx + q^T x + z^T(Gx-h) + y^T(Ax-b)"/></p>
-</div><p>and the gap <img class="math" src="_images/math/2bd21984207bb64a4af86d045947fdb01d050f8f.png" alt="s^Tz"/>.  The field <tt class="xref py py-const docutils literal"><span class="pre">'relative</span> <span class="pre">gap'</span></tt> is the
+<p><img src="_images/math/a6a7e011236d9329c082e3494416f1d23d431080.png" alt="(1/2) x^TPx + q^T x + z^T(Gx-h) + y^T(Ax-b)"/></p>
+</div><p>and the gap <img class="math" src="_images/math/9812a102ddba49461ec38204d13a46cc35d13ec5.png" alt="s^Tz"/>.  The field <tt class="xref py py-const docutils literal"><span class="pre">'relative</span> <span class="pre">gap'</span></tt> is the
 relative gap, defined as</p>
 <div class="math">
-<p><img src="_images/math/53e61f3814931a26816d64670ceadf602354dd4b.png" alt="\frac{s^Tz}{-\mbox{primal objective}}
+<p><img src="_images/math/33ffc60872c5747b1dd8cd93ddcf05362f0d2333.png" alt="\frac{s^Tz}{-\mbox{primal objective}}
 \quad \mbox{if\ } \mbox{primal objective} &lt; 0, \qquad
 \frac{s^Tz}{\mbox{dual objective}}
 \quad \mbox{if\ } \mbox{dual objective} &gt; 0, \qquad"/></p>
@@ -485,29 +605,29 @@ relative gap, defined as</p>
 <tt class="xref py py-const docutils literal"><span class="pre">'primal</span> <span class="pre">infeasibility'</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">'dual</span> <span class="pre">infeasibility'</span></tt> are
 the residuals in the primal and dual equality constraints, defined as</p>
 <div class="math">
-<p><img src="_images/math/6bd8152c9dce040652f4d9e2725ff6a2522621ff.png" alt="\max\{ \frac{\|Gx+s-h\|_2}{\max\{1, \|h\|_2\}},
+<p><img src="_images/math/1c2c566872b99f46e83caa352f7645417b861cec.png" alt="\max\{ \frac{\|Gx+s-h\|_2}{\max\{1, \|h\|_2\}},
 \frac{\|Ax-b\|_2}{\max\{1,\|b\|_2\}} \}, \qquad
 \frac{\|Px + G^Tz + A^Ty + q\|_2}{\max\{1, \|q\|_2\}},"/></p>
 </div><p>respectively.</p>
 <p>It is required that the problem is solvable and that</p>
 <div class="math">
-<p><img src="_images/math/50b918c649afff9a6fe0b5f81d4e02355ff5ee65.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
+<p><img src="_images/math/3b344fee0435b4b969e4fefb5ccb44f50efa14f8.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
 \Rank(A) = p, \qquad
 \Rank(\left[\begin{array}{c} P \\ G \\ A \end{array}\right]) = n,"/></p>
-</div><p>where <img class="math" src="_images/math/36f73fc1312ee0349b3f3a0f3bd9eb5504339011.png" alt="p"/> is the number or rows of <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> and <img class="math" src="_images/math/174fadd07fd54c9afe288e96558c92e0c1da733a.png" alt="n"/> is the
-number of columns of <img class="math" src="_images/math/6e28ce12d49d39f160d5a0ef54077fc98e4b9d2b.png" alt="G"/> and <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/>.</p>
+</div><p>where <img class="math" src="_images/math/3eca8557203e86160952e1c0f735f7417f3285b1.png" alt="p"/> is the number or rows of <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> and <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> is the
+number of columns of <img class="math" src="_images/math/b92c09a649305a0aef3239729d93cdf941e0e5cf.png" alt="G"/> and <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/>.</p>
 </dd></dl>
 
 <p>As an example, we solve a constrained least-squares problem</p>
 <div class="math">
-<p><img src="_images/math/d5a265356676b2bb4fbe1c50e2007bfd318074d8.png" alt="\begin{array}{ll}
+<p><img src="_images/math/4ecc882685570bb0542e7bedddfdf46f42d162c6.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; \|Ax - b\|_2^2 \\
 \mbox{subject to} &amp;  x \succeq 0 \\
                   &amp; \|x\|_2 \leq 1
 \end{array}"/></p>
 </div><p>with</p>
 <div class="math">
-<p><img src="_images/math/6453fe08f902148e82972f42be74529a8c609deb.png" alt="A = \left[ \begin{array}{rrr}
+<p><img src="_images/math/233b2765b8b21be343e63f23226320d0738d9706.png" alt="A = \left[ \begin{array}{rrr}
     0.3 &amp;  0.6 &amp; -0.3 \\
    -0.4 &amp;  1.2 &amp;  0.0 \\
    -0.2 &amp; -1.7 &amp;  0.6 \\
@@ -546,7 +666,7 @@ solvers from GLPK or MOSEK.</p>
 <tt class="descclassname">cvxopt.solvers.</tt><tt class="descname">lp</tt><big>(</big><em>c</em>, <em>G</em>, <em>h</em><span class="optional">[</span>, <em>A</em>, <em>b</em><span class="optional">[</span>, <em>solver</em><span class="optional">[</span>, <em>primalstart</em><span class="optional">[</span>, <em>dualstart</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.solvers.lp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the pair of primal and dual linear programs</p>
 <div class="math">
-<p><img src="_images/math/1a8d47fe4c6b9295f4c73ecb0181d7cdc2f265bd.png" alt="\begin{array}[t]{ll}
+<p><img src="_images/math/57b5c2817ccca5f67197e2d35ede3a4bb0aeeee7.png" alt="\begin{array}[t]{ll}
 \mbox{minimize}   &amp; c^T x \\
 \mbox{subject to} &amp; G x + s = h \\
                   &amp; Ax = b \\
@@ -579,7 +699,7 @@ all the other fields in the output dictionary are <tt class="xref py py-const do
 
 <p>As a simple example we solve the LP</p>
 <div class="math">
-<p><img src="_images/math/20b4c4466ff23a0c6d3864f869c1c4a80c0fd408.png" alt="\begin{array}[t]{ll}
+<p><img src="_images/math/d8001236f7a0a1c28d770b1f7bf892316f2aad57.png" alt="\begin{array}[t]{ll}
 \mbox{minimize}   &amp; -4x_1 - 5x_2 \\
 \mbox{subject to} &amp;  2x_1 + x_2 \leq 3 \\
                   &amp; x_1 + 2x_2 \leq 3 \\
@@ -607,13 +727,13 @@ solver from MOSEK.</p>
 <tt class="descclassname">cvxopt.solvers.</tt><tt class="descname">qp</tt><big>(</big><em>P</em>, <em>q</em><span class="optional">[</span>, <em>G</em>, <em>h</em><span class="optional">[</span>, <em>A</em>, <em>b</em><span class="optional">[</span>, <em>solver</em><span class="optional">[</span>, <em>initvals</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.solvers.qp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the pair of primal and dual convex quadratic programs</p>
 <div class="math">
-<p><img src="_images/math/0a37188505ca27207357560da7b13319912482a8.png" alt="\begin{array}[t]{ll}
+<p><img src="_images/math/305efdce8b67069139cfdce108379dd0f9c13e14.png" alt="\begin{array}[t]{ll}
 \mbox{minimize} &amp; (1/2) x^TPx + q^T x \\
 \mbox{subject to} &amp; Gx \preceq h \\ &amp; Ax = b
 \end{array}"/></p>
 </div><p>and</p>
 <div class="math">
-<p><img src="_images/math/05f225c5fa71605f1d627bf6731b4b5d7020a83d.png" alt="\newcommand{\Range}{\mbox{\textrm{range}}}
+<p><img src="_images/math/162e6fffc996b6d4f1c2861cbc608ff103b166e4.png" alt="\newcommand{\Range}{\mbox{\textrm{range}}}
 \begin{array}[t]{ll}
 \mbox{maximize}   &amp; -(1/2) (q+G^Tz+A^Ty)^T P^\dagger
                      (q+G^Tz+A^Ty) -h^T z - b^T y \\
@@ -639,7 +759,7 @@ found.  The <tt class="xref py py-const docutils literal"><span class="pre">'x'<
 <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>, and the <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">'y'</span></tt> entries are
 vectors that approximately satisfy</p>
 <div class="last math">
-<p><img src="_images/math/e5dd15b60906f6540af7dbca5853d6a37a7f06b8.png" alt="G^Tz + A^T y = 0, \qquad h^Tz + b^Ty = -1, \qquad z \succeq 0."/></p>
+<p><img src="_images/math/830aa83ce734c51e198b4204591c7e5c58d40fcc.png" alt="G^Tz + A^T y = 0, \qquad h^Tz + b^Ty = -1, \qquad z \succeq 0."/></p>
 </div></dd>
 <dt><tt class="xref py py-const docutils literal"><span class="pre">'dual</span> <span class="pre">infeasible'</span></tt></dt>
 <dd><p class="first">This means that a certificate of dual infeasibility has been found.
@@ -647,7 +767,7 @@ The <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></
 the <tt class="xref py py-const docutils literal"><span class="pre">'x'</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">'s'</span></tt> entries are vectors that
 approximately satisfy</p>
 <div class="last math">
-<p><img src="_images/math/d115e96624cc837dba5b4dda34873b8da01f8061.png" alt="Px = 0, \qquad q^Tx = -1, \qquad Gx + s = 0, \qquad Ax=0,
+<p><img src="_images/math/b9cc307099bb9947c8a56f892a3ea6e731d1cac5.png" alt="Px = 0, \qquad q^Tx = -1, \qquad Gx + s = 0, \qquad Ax=0,
 \qquad s \succeq  0."/></p>
 </div></dd>
 </dl>
@@ -657,16 +777,16 @@ approximately satisfy</p>
 <a class="reference external" href="http://www.stanford.edu/~boyd/cvxbook">Convex Optimization</a>,
 by solving the quadratic program</p>
 <div class="math">
-<p><img src="_images/math/af45084f926e60a499b6acab3a790e2e4e0735d9.png" alt="\newcommand{\ones}{{\bf 1}}
+<p><img src="_images/math/51740ecb092f1303e28a2ef073ffe22771df6fde.png" alt="\newcommand{\ones}{{\bf 1}}
 \begin{array}{ll}
 \mbox{minimize}   &amp; -\bar p^T x + \mu x^T S x \\
 \mbox{subject to} &amp; \ones^T x = 1, \quad x \succeq 0
 \end{array}"/></p>
-</div><p>for a sequence of positive values of <img class="math" src="_images/math/2d8c833ed800824727cd7bd2fb9de1a12ad7e674.png" alt="\mu"/>.  The code below computes
+</div><p>for a sequence of positive values of <img class="math" src="_images/math/126e84ba38f7dece5f0ad64e929b9588b20f6440.png" alt="\mu"/>.  The code below computes
 the trade-off curve and produces two figures using the
 <a class="reference external" href="http://matplotlib.sourceforge.net">Matplotlib</a> package.</p>
-<img alt="_images/portfolio2.png" src="_images/portfolio2.png" style="width: 400px;" />
-<img alt="_images/portfolio1.png" src="_images/portfolio1.png" style="width: 400px;" />
+<a class="reference internal image-reference" href="_images/portfolio2.png"><img alt="_images/portfolio2.png" src="_images/portfolio2.png" style="width: 400px;" /></a>
+<a class="reference internal image-reference" href="_images/portfolio1.png"><img alt="_images/portfolio1.png" src="_images/portfolio1.png" style="width: 400px;" /></a>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
 <span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
 <span class="kn">from</span> <span class="nn">cvxopt.blas</span> <span class="kn">import</span> <span class="n">dot</span>
@@ -726,14 +846,14 @@ the trade-off curve and produces two figures using the
 <div class="section" id="second-order-cone-programming">
 <span id="s-socpsolver"></span><h2>Second-Order Cone Programming<a class="headerlink" href="#second-order-cone-programming" title="Permalink to this headline">¶</a></h2>
 <p>The function <a class="reference internal" href="#cvxopt.solvers.socp" title="cvxopt.solvers.socp"><tt class="xref py py-func docutils literal"><span class="pre">socp</span></tt></a> is a simpler interface to
-<a class="reference internal" href="#cvxopt.solvers.coneqp" title="cvxopt.solvers.coneqp"><tt class="xref py py-func docutils literal"><span class="pre">conelp</span></tt></a> for
+<a class="reference internal" href="#cvxopt.solvers.conelp" title="cvxopt.solvers.conelp"><tt class="xref py py-func docutils literal"><span class="pre">conelp</span></tt></a> for
 cone programs with no linear matrix inequality constraints.</p>
 <dl class="function">
 <dt id="cvxopt.solvers.socp">
 <tt class="descclassname">cvxopt.solvers.</tt><tt class="descname">socp</tt><big>(</big><em>c</em><span class="optional">[</span>, <em>Gl</em>, <em>hl</em><span class="optional">[</span>, <em>Gq</em>, <em>hq</em><span class="optional">[</span>, <em>A</em>, <em>b</em><span class="optional">[</span>, <em>solver</em><span class="optional">[</span>, <em>primalstart</em><span class="optional">[</span>, <em>dualstart</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.solvers.socp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the pair of primal and dual second-order cone programs</p>
 <div class="math">
-<p><img src="_images/math/cdd797a6ddbbc6d531d242e8477e3d03ef039677.png" alt="\begin{array}[t]{ll}
+<p><img src="_images/math/2d951060c95bb45762fdb5e3de91f646ee0fe08b.png" alt="\begin{array}[t]{ll}
 \mbox{minimize}   &amp; c^T x \\
 \mbox{subject to} &amp; G_k x + s_k = h_k, \quad k = 0, \ldots, M  \\
                   &amp; Ax = b \\
@@ -742,7 +862,7 @@ cone programs with no linear matrix inequality constraints.</p>
 \end{array}"/></p>
 </div><p>and</p>
 <div class="math">
-<p><img src="_images/math/48959eadc206a5205ea6220c002e34ecfc56db25.png" alt="\begin{array}[t]{ll}
+<p><img src="_images/math/398c3d618b009a88e125501c25cb69118705dd92.png" alt="\begin{array}[t]{ll}
 \mbox{maximize}   &amp; - \sum_{k=0}^M h_k^Tz_k - b^T y \\
 \mbox{subject to} &amp; \sum_{k=0}^M G_k^T z_k + A^T y + c = 0 \\
                   &amp; z_0 \succeq 0 \\
@@ -750,24 +870,24 @@ cone programs with no linear matrix inequality constraints.</p>
 \end{array}"/></p>
 </div><p>The inequalities</p>
 <div class="math">
-<p><img src="_images/math/f5e4cd18619ee7f651ab49db6de2bb97de14bd98.png" alt="s_0 \succeq 0, \qquad z_0 \succeq 0"/></p>
+<p><img src="_images/math/ba1be82ee324edf53ae6c1811f327002883c18ee.png" alt="s_0 \succeq 0, \qquad z_0 \succeq 0"/></p>
 </div><p>are componentwise vector inequalities.  In the other inequalities, it
 is assumed that the variables are partitioned as</p>
 <div class="math">
-<p><img src="_images/math/208cbfe014aba5e7e2a46a6d382991da92f36f74.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
+<p><img src="_images/math/e0ea47f3b1a636373372f1d3fdc4d49842592724.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
 s_k = (s_{k0}, s_{k1}) \in\reals\times\reals^{r_{k}-1}, \qquad
 z_k = (z_{k0}, z_{k1}) \in\reals\times\reals^{r_{k}-1}, \qquad
 k=1,\ldots,M."/></p>
 </div><p>The input argument <tt class="docutils literal"><span class="pre">c</span></tt> is a real single-column dense matrix.  The
-arguments <tt class="docutils literal"><span class="pre">Gl</span></tt> and <tt class="docutils literal"><span class="pre">hl</span></tt> are the coefficient matrix <img class="math" src="_images/math/ece9cd1cf6a947d28fd135a387023993c1cff4fc.png" alt="G_0"/> and
-the right-hand side <img class="math" src="_images/math/2ccfe97aad19720278a939bedb093af63f8ec959.png" alt="h_0"/> of the componentwise inequalities.
+arguments <tt class="docutils literal"><span class="pre">Gl</span></tt> and <tt class="docutils literal"><span class="pre">hl</span></tt> are the coefficient matrix <img class="math" src="_images/math/787db56b15092dd4d749cdf10fe3d67ddd0fc985.png" alt="G_0"/> and
+the right-hand side <img class="math" src="_images/math/fda7c606710a3011192999c39b6c862d9db414d6.png" alt="h_0"/> of the componentwise inequalities.
 <tt class="docutils literal"><span class="pre">Gl</span></tt> is a real dense or sparse matrix; <tt class="docutils literal"><span class="pre">hl</span></tt> is a real single-column
 dense matrix.  The default values for <tt class="docutils literal"><span class="pre">Gl</span></tt> and <tt class="docutils literal"><span class="pre">hl</span></tt> are matrices
 with zero rows.</p>
-<p>The argument <tt class="docutils literal"><span class="pre">Gq</span></tt> is a list of <img class="math" src="_images/math/5d1e4485dc90c450e8c76826516c1b2ccb8fce16.png" alt="M"/> dense or sparse matrices
-<img class="math" src="_images/math/8db8d2c3b6325306a87e8a10b0e5358afb2f23eb.png" alt="G_1"/>, ..., <img class="math" src="_images/math/4bb8d1af6d1d1da03c879b4d35c7ea51813c4e9a.png" alt="G_M"/>.  The argument <tt class="docutils literal"><span class="pre">hq</span></tt> is a list of
-<img class="math" src="_images/math/5d1e4485dc90c450e8c76826516c1b2ccb8fce16.png" alt="M"/> dense single-column matrices <img class="math" src="_images/math/32d78aae1741ff43c6f40e2077f1ab67900cca2c.png" alt="h_1"/>, ldots,
-<img class="math" src="_images/math/4554cc0b90e8722fe8ca11c108832c9fbaeb647d.png" alt="h_M"/>.  The elements of <tt class="docutils literal"><span class="pre">Gq</span></tt> and <tt class="docutils literal"><span class="pre">hq</span></tt> must have at least one
+<p>The argument <tt class="docutils literal"><span class="pre">Gq</span></tt> is a list of <img class="math" src="_images/math/2de38926392ba23abeac75effc66c37a5f5be5fd.png" alt="M"/> dense or sparse matrices
+<img class="math" src="_images/math/7fb876996f317119f4a67c585344c9d153432a9b.png" alt="G_1"/>, ..., <img class="math" src="_images/math/d5657b2f0822ec6051e030822e03d104dbb946d2.png" alt="G_M"/>.  The argument <tt class="docutils literal"><span class="pre">hq</span></tt> is a list of
+<img class="math" src="_images/math/2de38926392ba23abeac75effc66c37a5f5be5fd.png" alt="M"/> dense single-column matrices <img class="math" src="_images/math/a0386a36f70af7ebf114810dc9670c273b60092e.png" alt="h_1"/>, ldots,
+<img class="math" src="_images/math/eaf624467206a87efe3bd482abed3cc36875d59f.png" alt="h_M"/>.  The elements of <tt class="docutils literal"><span class="pre">Gq</span></tt> and <tt class="docutils literal"><span class="pre">hq</span></tt> must have at least one
 row.  The default values of <tt class="docutils literal"><span class="pre">Gq</span></tt> and <tt class="docutils literal"><span class="pre">hq</span></tt> are empty lists.</p>
 <p><tt class="docutils literal"><span class="pre">A</span></tt> is dense or sparse matrix and <tt class="docutils literal"><span class="pre">b</span></tt> is a single-column dense
 matrix.  The default values for <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are matrices with
@@ -783,16 +903,16 @@ constraints.</p>
 primal, respectively, dual starting points.  <tt class="docutils literal"><span class="pre">primalstart</span></tt> has
 elements <tt class="xref py py-const docutils literal"><span class="pre">'x'</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'sl'</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'sq'</span></tt>.
 <tt class="docutils literal"><span class="pre">primalstart['x']</span></tt> and <tt class="docutils literal"><span class="pre">primalstart['sl']</span></tt> are
-single-column dense matrices with the initial values of <img class="math" src="_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/> and
-<img class="math" src="_images/math/058418cc5858eeab7f1ceb92f70b1c00fe7fe5d6.png" alt="s_0"/>;  <tt class="docutils literal"><span class="pre">primalstart['sq']</span></tt> is a list of single-column
-matrices with the initial values of <img class="math" src="_images/math/7ae90d71491f591ab5a16d19ee7629e8226ec9ce.png" alt="s_1"/>, ldots, <img class="math" src="_images/math/699b12aae3e02312980eb11d3b32acff89a71ff9.png" alt="s_M"/>.
+single-column dense matrices with the initial values of <img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/> and
+<img class="math" src="_images/math/a716012e7386039e71ab4fed061d9ae7bb567ab8.png" alt="s_0"/>;  <tt class="docutils literal"><span class="pre">primalstart['sq']</span></tt> is a list of single-column
+matrices with the initial values of <img class="math" src="_images/math/8695ed280e712cc4490c3e60810b4c6b6881cd1e.png" alt="s_1"/>, ldots, <img class="math" src="_images/math/4558d1a86459cbf3f41c913dbfeb39b4d3e4c00e.png" alt="s_M"/>.
 The initial values must satisfy the inequalities in the primal problem
 strictly, but not necessarily the equality constraints.</p>
 <p><tt class="docutils literal"><span class="pre">dualstart</span></tt> has elements <tt class="xref py py-const docutils literal"><span class="pre">'y'</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'zl'</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'zq'</span></tt>.
 <tt class="docutils literal"><span class="pre">dualstart['y']</span></tt> and <tt class="docutils literal"><span class="pre">dualstart['zl']</span></tt> are single-column
-dense matrices with the initial values of <img class="math" src="_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/> and <img class="math" src="_images/math/bab9abe98679312d2a3308c76188cf2cbc492f68.png" alt="z_0"/>.
+dense matrices with the initial values of <img class="math" src="_images/math/b124ff74afb0914bb434e8fb849eb56d734412f8.png" alt="y"/> and <img class="math" src="_images/math/693faad2f042b0565c90df7cfced16cb9413c166.png" alt="z_0"/>.
 <tt class="docutils literal"><span class="pre">dualstart['zq']</span></tt> is a list of single-column matrices with the
-initial values of <img class="math" src="_images/math/9ea31e5c5613f025b5be8aca425d318168491d89.png" alt="z_1"/>, ldots, <img class="math" src="_images/math/0f40544ba8e65435a6bd704399b347d25ce947fc.png" alt="z_M"/>.  These values must
+initial values of <img class="math" src="_images/math/92c25fa25f006cdfe8ef28f3d3141e558aaac740.png" alt="z_1"/>, ldots, <img class="math" src="_images/math/abf754938d86994e8b9cd5ed7c22814cdd8265a3.png" alt="z_M"/>.  These values must
 satisfy the dual inequalities strictly, but not necessarily the
 equality constraint.</p>
 <p>The arguments <tt class="docutils literal"><span class="pre">primalstart</span></tt> and <tt class="docutils literal"><span class="pre">dualstart</span></tt> are ignored when the
@@ -811,7 +931,7 @@ same meaning as in the output of
 
 <p>As an example, we solve  the second-order cone program</p>
 <div class="math">
-<p><img src="_images/math/f429bacb9935d242fb93509e5b154822ed2d1df7.png" alt="\begin{array}{ll}
+<p><img src="_images/math/f56f7bbc4271cd2930fb8434a6b1f448f806677c.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; -2x_1 + x_2 + 5x_3 \\*[2ex]
 \mbox{subject to} &amp; \left\| \left[\begin{array}{c}
     -13 x_1 +  3 x_2 + 5 x_3 - 3 \\
@@ -858,7 +978,7 @@ option of using the DSDP semidefinite programming solver.</p>
 <tt class="descclassname">cvxopt.solvers.</tt><tt class="descname">sdp</tt><big>(</big><em>c</em><span class="optional">[</span>, <em>Gl</em>, <em>hl</em><span class="optional">[</span>, <em>Gs</em>, <em>hs</em><span class="optional">[</span>, <em>A</em>, <em>b</em><span class="optional">[</span>, <em>solver</em><span class="optional">[</span>, <em>primalstart</em><span class="optional">[</span>, <em>dualstart</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.solvers.sdp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the pair of primal and dual semidefinite programs</p>
 <div class="math">
-<p><img src="_images/math/c123375fddc2a35885eb9c2b060ad0c41a37e224.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
+<p><img src="_images/math/0ac7d0604f94ddf588a784d17ccf161dd03809c7.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
 \begin{array}[t]{ll}
 \mbox{minimize}   &amp; c^T x \\
 \mbox{subject to} &amp; G_0 x + s_0 = h_0 \\
@@ -870,7 +990,7 @@ option of using the DSDP semidefinite programming solver.</p>
 \end{array}"/></p>
 </div><p>and</p>
 <div class="math">
-<p><img src="_images/math/f5937df8d764f5fe56c90796b10f06456eaea62a.png" alt="\newcommand{\Tr}{\mathop{\mathbf{tr}}}
+<p><img src="_images/math/449cc2343a5592f974e22266e8c12d6a008c8a5e.png" alt="\newcommand{\Tr}{\mathop{\mathbf{tr}}}
 \newcommand{\svec}{\mathop{\mathbf{vec}}}
 \begin{array}[t]{ll}
 \mbox{maximize}   &amp; -h_0^Tz_0 - \sum_{k=1}^N \Tr(h_kz_k) - b^Ty \\
@@ -881,26 +1001,26 @@ option of using the DSDP semidefinite programming solver.</p>
 \end{array}"/></p>
 </div><p>The inequalities</p>
 <div class="math">
-<p><img src="_images/math/f5e4cd18619ee7f651ab49db6de2bb97de14bd98.png" alt="s_0 \succeq 0, \qquad z_0 \succeq 0"/></p>
+<p><img src="_images/math/ba1be82ee324edf53ae6c1811f327002883c18ee.png" alt="s_0 \succeq 0, \qquad z_0 \succeq 0"/></p>
 </div><p>are componentwise vector inequalities.  The other inequalities are
 matrix inequalities (ie, the require the left-hand sides to be
-positive semidefinite).  We use the notation <img class="math" src="_images/math/bf7782808286990f4316d2e900ae9022e0fb7689.png" alt="\mathbf{vec}(z)"/>
-to denote a symmetric matrix <img class="math" src="_images/math/b13f21416d84e13708696f34dea81026cda583c9.png" alt="z"/> stored in column major order
+positive semidefinite).  We use the notation <img class="math" src="_images/math/cdb26bb9819bf8adb395cdada207cbb0e095ec3f.png" alt="\mathbf{vec}(z)"/>
+to denote a symmetric matrix <img class="math" src="_images/math/84d7271dd9e78c1e05d6c3c6ecb60309ef7dfc73.png" alt="z"/> stored in column major order
 as a column vector.</p>
 <p>The input argument <tt class="docutils literal"><span class="pre">c</span></tt> is a real single-column dense matrix.  The
-arguments <tt class="docutils literal"><span class="pre">Gl</span></tt> and <tt class="docutils literal"><span class="pre">hl</span></tt> are the coefficient matrix <img class="math" src="_images/math/ece9cd1cf6a947d28fd135a387023993c1cff4fc.png" alt="G_0"/> and
-the right-hand side <img class="math" src="_images/math/2ccfe97aad19720278a939bedb093af63f8ec959.png" alt="h_0"/> of the componentwise inequalities.
+arguments <tt class="docutils literal"><span class="pre">Gl</span></tt> and <tt class="docutils literal"><span class="pre">hl</span></tt> are the coefficient matrix <img class="math" src="_images/math/787db56b15092dd4d749cdf10fe3d67ddd0fc985.png" alt="G_0"/> and
+the right-hand side <img class="math" src="_images/math/fda7c606710a3011192999c39b6c862d9db414d6.png" alt="h_0"/> of the componentwise inequalities.
 <tt class="docutils literal"><span class="pre">Gl</span></tt> is a real dense or sparse matrix;  <tt class="docutils literal"><span class="pre">hl</span></tt> is a real
 single-column dense matrix.   The default values for <tt class="docutils literal"><span class="pre">Gl</span></tt> and <tt class="docutils literal"><span class="pre">hl</span></tt>
 are matrices with zero rows.</p>
-<p><tt class="docutils literal"><span class="pre">Gs</span></tt> and <tt class="docutils literal"><span class="pre">hs</span></tt> are lists of length <img class="math" src="_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> that specify the
-linear matrix inequality constraints.  <tt class="docutils literal"><span class="pre">Gs</span></tt> is a list of <img class="math" src="_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/>
-dense or sparse real matrices <img class="math" src="_images/math/8db8d2c3b6325306a87e8a10b0e5358afb2f23eb.png" alt="G_1"/>, ldots, <img class="math" src="_images/math/4bb8d1af6d1d1da03c879b4d35c7ea51813c4e9a.png" alt="G_M"/>.  The
+<p><tt class="docutils literal"><span class="pre">Gs</span></tt> and <tt class="docutils literal"><span class="pre">hs</span></tt> are lists of length <img class="math" src="_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> that specify the
+linear matrix inequality constraints.  <tt class="docutils literal"><span class="pre">Gs</span></tt> is a list of <img class="math" src="_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/>
+dense or sparse real matrices <img class="math" src="_images/math/7fb876996f317119f4a67c585344c9d153432a9b.png" alt="G_1"/>, ldots, <img class="math" src="_images/math/d5657b2f0822ec6051e030822e03d104dbb946d2.png" alt="G_M"/>.  The
 columns of these matrices can be interpreted as symmetric matrices
 stored in column major order, using the BLAS <tt class="xref py py-const docutils literal"><span class="pre">'L'</span></tt>-type storage
 (i.e., only the entries corresponding to lower triangular positions
-are accessed).  <tt class="docutils literal"><span class="pre">hs</span></tt> is a list of <img class="math" src="_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> dense symmetric matrices
-<img class="math" src="_images/math/32d78aae1741ff43c6f40e2077f1ab67900cca2c.png" alt="h_1"/>, ldots, <img class="math" src="_images/math/e626b4609099cd3fc0c2fd48091b8153b57417c9.png" alt="h_N"/>.  Only the lower triangular elements
+are accessed).  <tt class="docutils literal"><span class="pre">hs</span></tt> is a list of <img class="math" src="_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> dense symmetric matrices
+<img class="math" src="_images/math/a0386a36f70af7ebf114810dc9670c273b60092e.png" alt="h_1"/>, ldots, <img class="math" src="_images/math/87da707293d2f36ee9c5e0026ac69dfbe0722a1f.png" alt="h_N"/>.  Only the lower triangular elements
 of these matrices are accessed.  The default values for <tt class="docutils literal"><span class="pre">Gs</span></tt> and
 <tt class="docutils literal"><span class="pre">hs</span></tt> are empty lists.</p>
 <p><tt class="docutils literal"><span class="pre">A</span></tt> is a dense or sparse matrix and <tt class="docutils literal"><span class="pre">b</span></tt> is a single-column dense
@@ -917,17 +1037,17 @@ constraints.</p>
 <tt class="xref py py-const docutils literal"><span class="pre">'x'</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'sl'</span></tt>, and <tt class="xref py py-const docutils literal"><span class="pre">'ss'</span></tt>, used as an optional
 primal starting point.  <tt class="docutils literal"><span class="pre">primalstart['x']</span></tt> and
 <tt class="docutils literal"><span class="pre">primalstart['sl']</span></tt> are single-column dense matrices with the
-initial values of <img class="math" src="_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/> and <img class="math" src="_images/math/058418cc5858eeab7f1ceb92f70b1c00fe7fe5d6.png" alt="s_0"/>;
+initial values of <img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/> and <img class="math" src="_images/math/a716012e7386039e71ab4fed061d9ae7bb567ab8.png" alt="s_0"/>;
 <tt class="docutils literal"><span class="pre">primalstart['ss']</span></tt> is a list of square matrices with the initial
-values of <img class="math" src="_images/math/7ae90d71491f591ab5a16d19ee7629e8226ec9ce.png" alt="s_1"/>, ldots, <img class="math" src="_images/math/ebb25f78e509bd7d344981884394d69d4ccef94d.png" alt="s_N"/>.  The initial values must
+values of <img class="math" src="_images/math/8695ed280e712cc4490c3e60810b4c6b6881cd1e.png" alt="s_1"/>, ldots, <img class="math" src="_images/math/a18a2efee809525e5d5e2b90234d90492605910b.png" alt="s_N"/>.  The initial values must
 satisfy the inequalities in the primal problem strictly, but not
 necessarily the equality constraints.</p>
 <p><tt class="docutils literal"><span class="pre">dualstart</span></tt> is a dictionary with keys <tt class="xref py py-const docutils literal"><span class="pre">'y'</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'zl'</span></tt>,
 <tt class="xref py py-const docutils literal"><span class="pre">'zs'</span></tt>, used as an optional dual starting point.
 <tt class="docutils literal"><span class="pre">dualstart['y']</span></tt> and <tt class="docutils literal"><span class="pre">dualstart['zl']</span></tt> are single-column
-dense matrices with the initial values of <img class="math" src="_images/math/092e364e1d9d19ad5fffb0b46ef4cc7f2da02c1c.png" alt="y"/> and <img class="math" src="_images/math/bab9abe98679312d2a3308c76188cf2cbc492f68.png" alt="z_0"/>.
+dense matrices with the initial values of <img class="math" src="_images/math/b124ff74afb0914bb434e8fb849eb56d734412f8.png" alt="y"/> and <img class="math" src="_images/math/693faad2f042b0565c90df7cfced16cb9413c166.png" alt="z_0"/>.
 <tt class="docutils literal"><span class="pre">dualstart['zs']</span></tt> is a list of square matrices with the initial
-values of <img class="math" src="_images/math/9ea31e5c5613f025b5be8aca425d318168491d89.png" alt="z_1"/>, ldots, <img class="math" src="_images/math/9bb5bea50ae28bd840c3d2b526f4104435879613.png" alt="z_N"/>.  These values must satisfy
+values of <img class="math" src="_images/math/92c25fa25f006cdfe8ef28f3d3141e558aaac740.png" alt="z_1"/>, ldots, <img class="math" src="_images/math/18ae0cad4f637a940f0867ed9ca4b9339e97ac4a.png" alt="z_N"/>.  These values must satisfy
 the dual inequalities strictly, but not necessarily the equality
 constraint.</p>
 <p>The arguments <tt class="docutils literal"><span class="pre">primalstart</span></tt> and <tt class="docutils literal"><span class="pre">dualstart</span></tt> are ignored when the
@@ -947,7 +1067,7 @@ same meaning as in the output of
 <p>We illustrate the calling sequence with a small example.</p>
 <blockquote>
 <div><div class="math">
-<p><img src="_images/math/131c4578e1d0555aabdbdc52cdbe7b840cecb293.png" alt="\begin{array}{ll}
+<p><img src="_images/math/cd963d5c6113215ea256c383c90369f9e79d0b05.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; x_1 - x_2 + x_3 \\
 \mbox{subject to}
     &amp; x_1 \left[ \begin{array}{cc}
@@ -974,7 +1094,7 @@ same meaning as in the output of
           \end{array}\right] +
       x_3 \left[ \begin{array}{ccc}
                -5  &amp; 2 &amp; -17 \\
-                2  &amp; -6 &amp; -7 \\
+                2  &amp; -6 &amp; 8 \\
                -17 &amp; 8 &amp; 6
            \end{array}\right]  \preceq
       \left[ \begin{array}{ccc}
@@ -991,7 +1111,7 @@ same meaning as in the output of
 <span class="go">                  [-2.,  -8.,  -8., 1.]]) ]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">+=</span> <span class="p">[</span> <span class="n">matrix</span><span class="p">([[</span><span class="o">-</span><span class="mf">21.</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.</span><span class="p">,</span>  <span class="mf">10.</span><span class="p">,</span>   <span class="mf">8.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>   <span class="mf">8.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">],</span>
 <span class="go">                   [  0.,  10.,  16.,  10., -10., -10.,  16., -10., 3.],</span>
-<span class="go">                   [ -5.,   2., -17.,   2.,  -6.,   8., -17.,  -7., 6.]]) ]</span>
+<span class="go">                   [ -5.,   2., -17.,   2.,  -6.,   8., -17.,  8., 6.]]) ]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="p">[</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">33.</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">9.</span><span class="p">,</span> <span class="mf">26.</span><span class="p">]])</span> <span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">+=</span> <span class="p">[</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">14.</span><span class="p">,</span> <span class="mf">9.</span><span class="p">,</span> <span class="mf">40.</span><span class="p">],</span> <span class="p">[</span><span class="mf">9.</span><span class="p">,</span> <span class="mf">91.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">],</span> <span class="p">[</span><span class="mf">40.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">15.</span><span class="p">]])</span> <span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sol</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">sdp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">Gs</span><span class="o">=</span><span class="n">G</span><span class="p">,</span> <span class="n">hs</span><span class="o">=</span><span class="n">h</span><span class="p">)</span>
@@ -1037,7 +1157,7 @@ problem structure.</p>
 <a class="reference internal" href="#cvxopt.solvers.coneqp" title="cvxopt.solvers.coneqp"><tt class="xref py py-func docutils literal"><span class="pre">coneqp</span></tt></a> is the solution of a set of
 linear equations (<em>KKT equations</em>) of the form</p>
 <div class="math" id="equation-e-conelp-kkt">
-<p><span class="eqno">(1)</span><img src="_images/math/b8b7119bfcdc51fa8538564d5633d180c2271df6.png" alt="\left[\begin{array}{ccc}
+<p><span class="eqno">(1)</span><img src="_images/math/77eb5b629a0ce4f734ad13638babf1ececb73c70.png" alt="\left[\begin{array}{ccc}
     P &amp; A^T &amp; G^T \\
     A &amp; 0   &amp; 0  \\
     G &amp; 0   &amp; -W^T W
@@ -1045,11 +1165,11 @@ linear equations (<em>KKT equations</em>) of the form</p>
 \left[\begin{array}{c} u_x \\ u_y \\ u_z \end{array}\right]
 =
 \left[\begin{array}{c} b_x \\ b_y \\ b_z \end{array}\right]"/></p>
-</div><p>(with <img class="math" src="_images/math/7339a7b861543525b6c1d74544fc0f2b79e65611.png" alt="P = 0"/> in <tt class="xref py py-func docutils literal"><span class="pre">conelp</span></tt>).  The matrix <img class="math" src="_images/math/10cb764f88509fb1c8012366993fdbee98f31bc5.png" alt="W"/> depends
+</div><p>(with <img class="math" src="_images/math/4bd01d9da8529d13bb84945da2a23c92fefc4103.png" alt="P = 0"/> in <tt class="xref py py-func docutils literal"><span class="pre">conelp</span></tt>).  The matrix <img class="math" src="_images/math/fa34489cf430b7630b30f28b2eb050e2489e3523.png" alt="W"/> depends
 on the current iterates and is defined as follows.  We use the notation
 of the sections <a class="reference internal" href="#s-conelp"><em>Linear Cone Programs</em></a> and <a class="reference internal" href="#s-coneqp"><em>Quadratic Cone Programs</em></a>.  Let</p>
 <div class="math">
-<p><img src="_images/math/9324affab9ba9d5021117be41d8b14381c5a5448.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
+<p><img src="_images/math/35a8e2ecd7dcf9d4782ba19863364e13dd621356.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
 u = \left(u_\mathrm{l}, \; u_{\mathrm{q},0}, \; \ldots, \;
     u_{\mathrm{q},M-1}, \; \svec{(u_{\mathrm{s},0})}, \;
     \ldots, \; \svec{(u_{\mathrm{s},N-1})}\right), \qquad
@@ -1059,9 +1179,9 @@ u = \left(u_\mathrm{l}, \; u_{\mathrm{q},0}, \; \ldots, \;
 u_\mathrm{l} \in\reals^l, \qquad
 u_{\mathrm{q},k} \in\reals^{r_k}, \quad k = 0,\ldots,M-1, \qquad
 u_{\mathrm{s},k} \in\symm^{t_k},  \quad k = 0,\ldots,N-1."/></p>
-</div><p>Then <img class="math" src="_images/math/10cb764f88509fb1c8012366993fdbee98f31bc5.png" alt="W"/> is a block-diagonal matrix,</p>
+</div><p>Then <img class="math" src="_images/math/fa34489cf430b7630b30f28b2eb050e2489e3523.png" alt="W"/> is a block-diagonal matrix,</p>
 <div class="math">
-<p><img src="_images/math/fc7c8d2c4d8382a728d705c58741344d7787112f.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
+<p><img src="_images/math/063b83ec3e5c8ab1cd493011e9e45ef6465f84d7.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
 Wu = \left( W_\mathrm{l} u_\mathrm{l}, \;
     W_{\mathrm{q},0} u_{\mathrm{q},0}, \; \ldots, \;
     W_{\mathrm{q},M-1} u_{\mathrm{q},M-1},\;
@@ -1070,33 +1190,33 @@ Wu = \left( W_\mathrm{l} u_\mathrm{l}, \;
 </div><p>with the following diagonal blocks.</p>
 <ul>
 <li><p class="first">The first block is a <em>positive diagonal scaling</em> with a vector
-<img class="math" src="_images/math/96ab646de7704969b91c76a214126b45f2b07b25.png" alt="d"/>:</p>
+<img class="math" src="_images/math/425d86ba2f2979d75b7535c2bcf92c33ed6b285a.png" alt="d"/>:</p>
 <div class="math">
-<p><img src="_images/math/29169a7341170ee1c3bc87f30bcfec4fc1fddb1c.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
+<p><img src="_images/math/ba6b90460b73c045bb825f6609b3415e301bb2b8.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
 W_\mathrm{l} = \diag(d), \qquad
 W_\mathrm{l}^{-1} = \diag(d)^{-1}."/></p>
 </div><p>This transformation is symmetric:</p>
 <div class="math">
-<p><img src="_images/math/81dbf963b31f68c91c05f21b40ed2f9199978e1e.png" alt="W_\mathrm{l}^T = W_\mathrm{l}."/></p>
+<p><img src="_images/math/a54708fe7e95067497dd42cdf40c2b0c8023b956.png" alt="W_\mathrm{l}^T = W_\mathrm{l}."/></p>
 </div></li>
-<li><p class="first">The next <img class="math" src="_images/math/5d1e4485dc90c450e8c76826516c1b2ccb8fce16.png" alt="M"/> blocks are positive multiples of <em>hyperbolic
+<li><p class="first">The next <img class="math" src="_images/math/2de38926392ba23abeac75effc66c37a5f5be5fd.png" alt="M"/> blocks are positive multiples of <em>hyperbolic
 Householder transformations</em>:</p>
 <div class="math">
-<p><img src="_images/math/fc20ea3a2b3a3d97990a8d2095b1b1252c5fdfa4.png" alt="W_{\mathrm{q},k} = \beta_k ( 2 v_k v_k^T - J), \qquad
+<p><img src="_images/math/b94be0ad0fc90fa2e4e61c0c2c094ebc202d7729.png" alt="W_{\mathrm{q},k} = \beta_k ( 2 v_k v_k^T - J), \qquad
 W_{\mathrm{q},k}^{-1} = \frac{1}{\beta_k} ( 2 Jv_k v_k^T J - J),
 \qquad k = 0,\ldots,M-1,"/></p>
 </div><p>where</p>
 <div class="math">
-<p><img src="_images/math/5f835d2d4a213eff54596ede687eff1c913db934.png" alt="\beta_k &gt; 0, \qquad v_{k0} &gt; 0, \qquad v_k^T Jv_k = 1, \qquad
+<p><img src="_images/math/0246a989dbd0daa3dc3c6fecbf683b226a79b7f1.png" alt="\beta_k &gt; 0, \qquad v_{k0} &gt; 0, \qquad v_k^T Jv_k = 1, \qquad
 J = \left[\begin{array}{cc} 1 &amp; 0 \\ 0 &amp; -I \end{array}\right]."/></p>
 </div><p>These transformations are also symmetric:</p>
 <div class="math">
-<p><img src="_images/math/a5bae4d3ef0ce383b5baf135e82b596b52067dcf.png" alt="W_{\mathrm{q},k}^T = W_{\mathrm{q},k}."/></p>
+<p><img src="_images/math/52031bf68ee42296146e8a3e4f5033b6173dcf51.png" alt="W_{\mathrm{q},k}^T = W_{\mathrm{q},k}."/></p>
 </div></li>
-<li><p class="first">The last <img class="math" src="_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> blocks are <em>congruence transformations</em> with
+<li><p class="first">The last <img class="math" src="_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> blocks are <em>congruence transformations</em> with
 nonsingular matrices:</p>
 <div class="math">
-<p><img src="_images/math/fbd258f087f50a0416d11bc990440a6d32ec879a.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
+<p><img src="_images/math/75c046897f0096f476a55496317bd0ef6dd1fda8.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
 W_{\mathrm{s},k} \svec{(u_{\mathrm{s},k})} =
     \svec{(r_k^T u_{\mathrm{s},k} r_k)}, \qquad
 W_{\mathrm{s},k}^{-1} \svec{(u_{\mathrm{s},k})} =
@@ -1104,7 +1224,7 @@ W_{\mathrm{s},k}^{-1} \svec{(u_{\mathrm{s},k})} =
 k = 0,\ldots,N-1."/></p>
 </div><p>In  general, this operation is not symmetric:</p>
 <div class="math">
-<p><img src="_images/math/37a07a60f26280afd1716c6202e5d5c410456463.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
+<p><img src="_images/math/61b1d49d589b4261653044f5426a95e3841cc3db.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
 W_{\mathrm{s},k}^T \svec{(u_{\mathrm{s},k})} =
     \svec{(r_k u_{\mathrm{s},k} r_k^T)}, \qquad \qquad
 W_{\mathrm{s},k}^{-T} \svec{(u_{\mathrm{s},k})} =
@@ -1122,12 +1242,12 @@ dictionary that contains the parameters of the scaling:</p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">W['d']</span></tt> is the positive vector that defines the diagonal
 scaling.   <tt class="docutils literal"><span class="pre">W['di']</span></tt> is its componentwise inverse.</li>
-<li><tt class="docutils literal"><span class="pre">W['beta']</span></tt> and <tt class="docutils literal"><span class="pre">W['v']</span></tt> are lists of length <img class="math" src="_images/math/5d1e4485dc90c450e8c76826516c1b2ccb8fce16.png" alt="M"/>
+<li><tt class="docutils literal"><span class="pre">W['beta']</span></tt> and <tt class="docutils literal"><span class="pre">W['v']</span></tt> are lists of length <img class="math" src="_images/math/2de38926392ba23abeac75effc66c37a5f5be5fd.png" alt="M"/>
 with the coefficients and vectors that define the hyperbolic
 Householder transformations.</li>
-<li><tt class="docutils literal"><span class="pre">W['r']</span></tt> is a list of length <img class="math" src="_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> with the matrices that
+<li><tt class="docutils literal"><span class="pre">W['r']</span></tt> is a list of length <img class="math" src="_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> with the matrices that
 define the the congruence transformations.  <tt class="docutils literal"><span class="pre">W['rti']</span></tt> is a
-list of length <img class="math" src="_images/math/fc97ef67268cd4e91bacdf12b8901d7036c9a056.png" alt="N"/> with the transposes of the inverses of the
+list of length <img class="math" src="_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> with the transposes of the inverses of the
 matrices in <tt class="docutils literal"><span class="pre">W['r']</span></tt>.</li>
 </ul>
 <p>The function call <tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">kktsolver(W)</span></tt> should return a routine for
@@ -1136,10 +1256,10 @@ be called as <tt class="docutils literal"><span class="pre">f(bx,</span> <span c
 contain the right-hand side.  On exit, they should contain the solution
 of the KKT system, with the last component scaled, i.e., on exit,</p>
 <div class="math">
-<p><img src="_images/math/3649d418d0750fb66f68e828cfec83faca966498.png" alt="b_x := u_x, \qquad b_y := u_y, \qquad b_z := W u_z."/></p>
+<p><img src="_images/math/c7c0674ced05ddaa94bd705d1a836882a49c5b85.png" alt="b_x := u_x, \qquad b_y := u_y, \qquad b_z := W u_z."/></p>
 </div><p>In other words, the function returns the solution of</p>
 <div class="last math">
-<p><img src="_images/math/b64d772fd47d88c4e63bef5ba1cb73e8627e9088.png" alt="\left[\begin{array}{ccc}
+<p><img src="_images/math/95c816a6adaedb425dfaa2baa4162ad150db679d.png" alt="\left[\begin{array}{ccc}
     P &amp; A^T &amp; G^TW^{-1} \\
     A &amp; 0   &amp; 0  \\
     G &amp; 0   &amp; -W^T
@@ -1166,7 +1286,7 @@ Python function, then
 should evaluate the matrix-vector products</p>
 <blockquote>
 <div><div class="math">
-<p><img src="_images/math/821e47dcc0a42053d3c3c5a35937cd39888d4bf1.png" alt="y := \alpha Gx + \beta y \quad
+<p><img src="_images/math/140c896568502ceb7c765a977e35eaf507e45ab1.png" alt="y := \alpha Gx + \beta y \quad
     (\mathrm{trans} = \mathrm{'N'}), \qquad
 y := \alpha G^T x + \beta y \quad
     (\mathrm{trans} = \mathrm{'T'})."/></p>
@@ -1177,7 +1297,7 @@ y := \alpha G^T x + \beta y \quad
 should evaluate the matrix-vector products</p>
 <blockquote>
 <div><div class="math">
-<p><img src="_images/math/49ac9835ee2e9a28724b6b48183cc8082f2181b1.png" alt="y := \alpha Ax + \beta y \quad
+<p><img src="_images/math/6d30c08912d4ce82399fcafc9e108b39746be281.png" alt="y := \alpha Ax + \beta y \quad
     (\mathrm{trans} = \mathrm{'N'}), \qquad
 y := \alpha A^T x + \beta y \quad
     (\mathrm{trans} = \mathrm{'T'})."/></p>
@@ -1188,7 +1308,7 @@ y := \alpha A^T x + \beta y \quad
 should evaluate the matrix-vector products</p>
 <blockquote>
 <div><div class="math">
-<p><img src="_images/math/2f877c26508a30a5c47ee96f8b69027da87c62f7.png" alt="y := \alpha Px + \beta y."/></p>
+<p><img src="_images/math/76bacccf4cec63f756095d309f1d0625a5c79952.png" alt="y := \alpha Px + \beta y."/></p>
 </div></div></blockquote>
 </li>
 </ul>
@@ -1201,12 +1321,12 @@ should evaluate the matrix-vector products</p>
 <blockquote>
 <div><p>The optimization problem</p>
 <div class="math">
-<p><img src="_images/math/3ca0e9bfd6892d48d77c87a33bcc228c3a017ec0.png" alt="\begin{array}{ll}
+<p><img src="_images/math/8e474a33274085c7c884dba1c98a91ef2c13ebfa.png" alt="\begin{array}{ll}
 \mbox{minimize} &amp; \|Pu-q\|_1
 \end{array}"/></p>
 </div><p>can be formulated as a linear program</p>
 <div class="math">
-<p><img src="_images/math/8f89ee4ea94d9b2fbe9036b74316e5cb4951ad09.png" alt="\newcommand{\ones}{{\bf 1}}
+<p><img src="_images/math/48fc33825c4a21511eb640baa57e792ccb79a0d7.png" alt="\newcommand{\ones}{{\bf 1}}
 \begin{array}{ll}
 \mbox{minimize} &amp; \ones^T v \\
 \mbox{subject to} &amp; -v \preceq Pu - q  \preceq v.
@@ -1217,67 +1337,67 @@ least-squares problem of the same dimensions.  (See section 11.8.2 in
 the book
 <a class="reference external" href="http://www.stanford.edu/~boyd/cvxbook">Convex Optimization</a>.)
 The code below takes advantage of this fact.</p>
-<div class="highlight-python"><pre>from cvxopt import blas, lapack, solvers, matrix, spmatrix, mul, div
+<div class="highlight-python"><div class="highlight"><pre>from cvxopt import blas, lapack, solvers, matrix, spmatrix, mul, div
 
 def l1(P, q):
-    """
+    &quot;&quot;&quot;
 
     Returns the solution u, w of the l1 approximation problem
 
         (primal) minimize    ||P*u - q||_1
 
-        (dual)   maximize    q'*w
-                 subject to  P'*w = 0
+        (dual)   maximize    q&#39;*w
+                 subject to  P&#39;*w = 0
                              ||w||_infty &lt;= 1.
-    """
+    &quot;&quot;&quot;
 
     m, n = P.size
 
     # Solve the equivalent LP
     #
-    #     minimize    [0; 1]' * [u; v]
+    #     minimize    [0; 1]&#39; * [u; v]
     #     subject to  [P, -I; -P, -I] * [u; v] &lt;= [q; -q]
     #
-    #     maximize    -[q; -q]' * z
-    #     subject to  [P', -P']*z  = 0
+    #     maximize    -[q; -q]&#39; * z
+    #     subject to  [P&#39;, -P&#39;]*z  = 0
     #                 [-I, -I]*z + 1 = 0
     #                 z &gt;= 0.
 
     c = matrix(n*[0.0] + m*[1.0])
 
-    def G(x, y, alpha = 1.0, beta = 0.0, trans = 'N'):
+    def G(x, y, alpha = 1.0, beta = 0.0, trans = &#39;N&#39;):
 
-        if trans=='N':
+        if trans==&#39;N&#39;:
             # y := alpha * [P, -I; -P, -I] * x + beta*y
             u = P*x[:n]
             y[:m] = alpha * ( u - x[n:]) + beta * y[:m]
             y[m:] = alpha * (-u - x[n:]) + beta * y[m:]
 
         else:
-            # y := alpha * [P', -P'; -I, -I] * x + beta*y
+            # y := alpha * [P&#39;, -P&#39;; -I, -I] * x + beta*y
             y[:n] =  alpha * P.T * (x[:m] - x[m:]) + beta * y[:n]
             y[n:] = -alpha * (x[:m] + x[m:]) + beta * y[n:]
 
     h = matrix([q, -q])
-    dims = {'l': 2*m, 'q': [], 's': []}
+    dims = {&#39;l&#39;: 2*m, &#39;q&#39;: [], &#39;s&#39;: []}
 
     def F(W):
 
-        """
+        &quot;&quot;&quot;
         Returns a function f(x, y, z) that solves
 
-            [ 0  0  P'      -P'      ] [ x[:n] ]   [ bx[:n] ]
+            [ 0  0  P&#39;      -P&#39;      ] [ x[:n] ]   [ bx[:n] ]
             [ 0  0 -I       -I       ] [ x[n:] ]   [ bx[n:] ]
             [ P -I -D1^{-1}  0       ] [ z[:m] ] = [ bz[:m] ]
             [-P -I  0       -D2^{-1} ] [ z[m:] ]   [ bz[m:] ]
 
-        where D1 = diag(di[:m])^2, D2 = diag(di[m:])^2 and di = W['di'].
-        """
+        where D1 = diag(di[:m])^2, D2 = diag(di[m:])^2 and di = W[&#39;di&#39;].
+        &quot;&quot;&quot;
 
-        # Factor A = 4*P'*D*P where D = d1.*d2 ./(d1+d2) and
+        # Factor A = 4*P&#39;*D*P where D = d1.*d2 ./(d1+d2) and
         # d1 = di[:m].^2, d2 = di[m:].^2.
 
-        di = W['di']
+        di = W[&#39;di&#39;]
         d1, d2 = di[:m]**2, di[m:]**2
         D = div( mul(d1,d2), d1+d2 )
         A = P.T * spmatrix(4*D, range(m), range(m)) * P
@@ -1285,14 +1405,14 @@ def l1(P, q):
 
         def f(x, y, z):
 
-            """
+            &quot;&quot;&quot;
             On entry bx, bz are stored in x, z.  On exit x, z contain the solution,
             with z scaled: z./di is returned instead of z.
-            """"
+            &quot;&quot;&quot;&quot;
 
             # Solve for x[:n]:
             #
-            #    A*x[:n] = bx[:n] + P' * ( ((D1-D2)*(D1+D2)^{-1})*bx[n:]
+            #    A*x[:n] = bx[:n] + P&#39; * ( ((D1-D2)*(D1+D2)^{-1})*bx[n:]
             #              + (2*D1*D2*(D1+D2)^{-1}) * (bz[:m] - bz[m:]) ).
 
             x[:n] += P.T * ( mul(div(d1-d2, d1+d2), x[n:]) + mul(2*D, z[:m]-z[m:]) )
@@ -1312,14 +1432,15 @@ def l1(P, q):
         return f
 
     sol = solvers.conelp(c, G, h, dims, kktsolver = F)
-    return sol['x'][:n],  sol['z'][m:] - sol['z'][:m]</pre>
+    return sol[&#39;x&#39;][:n],  sol[&#39;z&#39;][m:] - sol[&#39;z&#39;][:m]
+</pre></div>
 </div>
 </div></blockquote>
 <p><strong>Example: SDP with diagonal linear term</strong></p>
 <blockquote>
 <div><p>The SDP</p>
 <div class="math">
-<p><img src="_images/math/dcb8f8492ae1de33fb0a0d243d10ae040422e12f.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
+<p><img src="_images/math/dc587b1b1e755bddb49ec6d1eab6cf0e169cefec.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
 \newcommand{\ones}{{\bf 1}}
 \begin{array}{ll}
 \mbox{minimize} &amp; \ones^T x \\
@@ -1445,12 +1566,12 @@ operator.</p>
 <dt><strong>Example: Minimizing 1-norm subject to a 2-norm constraint</strong></dt>
 <dd><p class="first">In the second example, we use a similar trick to solve the problem</p>
 <div class="math">
-<p><img src="_images/math/3e2caf480789aba90884fce313eff58bbd1edcfd.png" alt="\begin{array}{ll}
+<p><img src="_images/math/939a9dbe9eed7a3842b6d7eacd5621587127ef00.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; \|u\|_1 \\
 \mbox{subject to} &amp; \|Au - b\|_2 \leq 1.
 \end{array}"/></p>
 </div><p>The code below is efficient, if we assume that the number of rows in
-<img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> is greater than or equal to the number of columns.</p>
+<img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is greater than or equal to the number of columns.</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">qcl1</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the solution u, z of</span>
@@ -1580,19 +1701,19 @@ operator.</p>
 <a class="reference internal" href="#cvxopt.solvers.coneqp" title="cvxopt.solvers.coneqp"><tt class="xref py py-func docutils literal"><span class="pre">coneqp</span></tt></a>, we consider the 1-norm
 regularized least-squares problem</p>
 <div class="math">
-<p><img src="_images/math/98a42473d3645f925ce069e48a478746fb82e9b6.png" alt="\begin{array}{ll}
+<p><img src="_images/math/4204a71d348a21dafe10f112f5c8e7c436d34957.png" alt="\begin{array}{ll}
 \mbox{minimize} &amp; \|Ax - y\|_2^2 + \|x\|_1
 \end{array}"/></p>
-</div><p>with variable <img class="math" src="_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/>.  The problem is equivalent to the quadratic
+</div><p>with variable <img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/>.  The problem is equivalent to the quadratic
 program</p>
 <div class="math">
-<p><img src="_images/math/7da7f3d84cc8689757c290b7e2f239e242887694.png" alt="\newcommand{\ones}{{\bf 1}}
+<p><img src="_images/math/d1b0f996b995464353b9222ef666f5b6f63580c9.png" alt="\newcommand{\ones}{{\bf 1}}
 \begin{array}{ll}
 \mbox{minimize} &amp; \|Ax - y\|_2^2 + \ones^T u \\
 \mbox{subject to} &amp; -u \preceq x \preceq u
 \end{array}"/></p>
-</div><p>with variables <img class="math" src="_images/math/26eeb5258ca5099acf8fe96b2a1049c48c89a5e6.png" alt="x"/> and <img class="math" src="_images/math/9ad99798ec4c38e165cf517cb9e02b1c9e824103.png" alt="u"/>.  The implementation below is
-efficient when <img class="math" src="_images/math/019e9892786e493964e145e7c5cf7b700314e53b.png" alt="A"/> has many more columns than rows.</p>
+</div><p>with variables <img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/> and <img class="math" src="_images/math/e5fc41b391867da81606413e3389c7efc73abaf0.png" alt="u"/>.  The implementation below is
+efficient when <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> has many more columns than rows.</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">sqrt</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
@@ -1787,32 +1908,32 @@ inequality constraints; <tt class="xref py py-const docutils literal"><span clas
 have the following meaning.  <a class="reference internal" href="#cvxopt.solvers.conelp" title="cvxopt.solvers.conelp"><tt class="xref py py-func docutils literal"><span class="pre">conelp</span></tt></a>
 terminates with status <tt class="xref py py-const docutils literal"><span class="pre">'optimal'</span></tt> if</p>
 <div class="math">
-<p><img src="_images/math/a8d0548e81d41514430788f0faf3d247c82a6b64.png" alt="s \succeq 0, \qquad
+<p><img src="_images/math/6fdc9fd7f741378b1513fd6a50d2beb900c205fe.png" alt="s \succeq 0, \qquad
 \frac{\|Gx + s - h\|_2} {\max\{1,\|h\|_2\}} \leq
     \epsilon_\mathrm{feas}, \qquad
 \frac{\|Ax-b\|_2}{\max\{1,\|b\|_2\}} \leq \epsilon_\mathrm{feas},
     \qquad"/></p>
 </div><p>and</p>
 <div class="math">
-<p><img src="_images/math/9cb4d73f6ab0d3b8d69adb041e6659d7408e2b9c.png" alt="z \succeq 0, \qquad
+<p><img src="_images/math/4e16b64d140d24f2c624f3ecea15c6b54e963888.png" alt="z \succeq 0, \qquad
 \frac{\|G^Tz +  A^Ty + c\|_2}{\max\{1,\|c\|_2\}} \leq
     \epsilon_\mathrm{feas},"/></p>
 </div><p>and</p>
 <div class="math">
-<p><img src="_images/math/7694bb8a11c78790d1c12572c04a6df59e94c05c.png" alt="s^T z \leq \epsilon_\mathrm{abs} \qquad \mbox{or} \qquad
+<p><img src="_images/math/81724a45ae0ea76d9390da91f126e17e9ddf2cc7.png" alt="s^T z \leq \epsilon_\mathrm{abs} \qquad \mbox{or} \qquad
 \left( \min\left\{c^Tx,  h^T z + b^Ty \right\} &lt; 0 \quad
     \mbox{and} \quad
 \frac{s^Tz} {-\min\{c^Tx, h^Tz + b^T y\}} \leq \epsilon_\mathrm{rel}
 \right)."/></p>
 </div><p>It returns with status <tt class="xref py py-const docutils literal"><span class="pre">'primal</span> <span class="pre">infeasible'</span></tt> if</p>
 <div class="math">
-<p><img src="_images/math/a27183e0007f4567dab53885ee2d927f4d50e99b.png" alt="z \succeq 0, \qquad \qquad
+<p><img src="_images/math/63c066dc8bf940c63186bcaf5d0bdf30a7956df9.png" alt="z \succeq 0, \qquad \qquad
 \frac{\|G^Tz +A^Ty\|_2}{\max\{1, \|c\|_2\}} \leq
     \epsilon_\mathrm{feas}, \qquad
 h^Tz +b^Ty = -1."/></p>
 </div><p>It returns with status <tt class="xref py py-const docutils literal"><span class="pre">'dual</span> <span class="pre">infeasible'</span></tt> if</p>
 <div class="math">
-<p><img src="_images/math/bb097746083c5ae7ae0044d78c10841dde34c10d.png" alt="s \succeq 0, \qquad \qquad
+<p><img src="_images/math/00d82d538c7fa6c6c3059574dec22d3e7692feb1.png" alt="s \succeq 0, \qquad \qquad
 \frac{\|Gx+s\|_2}{\max\{1, \|h\|_2\}} \leq \epsilon_\mathrm{feas},
 \qquad
 \frac{\|Ax\|_2}{\max\{1, \|b\|_2\}} \leq \epsilon_\mathrm{feas},
@@ -1824,30 +1945,30 @@ and hence use the same stopping criteria.</p>
 <p>The function <a class="reference internal" href="#cvxopt.solvers.coneqp" title="cvxopt.solvers.coneqp"><tt class="xref py py-func docutils literal"><span class="pre">coneqp</span></tt></a> terminates with
 status <tt class="xref py py-const docutils literal"><span class="pre">'optimal'</span></tt> if</p>
 <div class="math">
-<p><img src="_images/math/35966a8389b47f5a99dc5c8d378f99a4bbff5068.png" alt="s \succeq 0, \qquad
+<p><img src="_images/math/fee01d5bc4ab0ae7122cf4cc3ce5fd16e75b82c4.png" alt="s \succeq 0, \qquad
 \frac{\|Gx + s - h\|_2} {\max\{1,\|h\|_2\}} \leq
     \epsilon_\mathrm{feas}, \qquad
 \frac{\|Ax-b\|_2}{\max\{1,\|b\|_2\}} \leq \epsilon_\mathrm{feas},"/></p>
 </div><p>and</p>
 <div class="math">
-<p><img src="_images/math/128a89e677c6def54cb57ef44a64cc8307b73877.png" alt="z \succeq 0, \qquad
+<p><img src="_images/math/60111a617c52fd240dc8ecbe5ba3c92f721041f2.png" alt="z \succeq 0, \qquad
 \frac{\|Px + G^Tz +  A^Ty + q\|_2}{\max\{1,\|q\|_2\}} \leq
     \epsilon_\mathrm{feas},"/></p>
 </div><p>and at least one of the following three conditions is satisfied:</p>
 <div class="math">
-<p><img src="_images/math/c48cfb5af92e06a6a0527d035f9d5e76400dfb79.png" alt="s^T z \leq \epsilon_\mathrm{abs}"/></p>
+<p><img src="_images/math/b6afb9cb106e21d5944296c61fa1e7161e2f6c69.png" alt="s^T z \leq \epsilon_\mathrm{abs}"/></p>
 </div><p>or</p>
 <div class="math">
-<p><img src="_images/math/95694f9b1e540b7079bdfc5f79c1f6b8fb13a9eb.png" alt="\left( \frac{1}{2}x^TPx + q^Tx &lt; 0, \quad
+<p><img src="_images/math/417cf98ea074fe2be69f48ae0235eb405c1d0282.png" alt="\left( \frac{1}{2}x^TPx + q^Tx &lt; 0, \quad
 \mbox{and}\quad \frac{s^Tz} {-(1/2)x^TPx - q^Tx} \leq
     \epsilon_\mathrm{rel} \right)"/></p>
 </div><p>or</p>
 <div class="math">
-<p><img src="_images/math/a78f26c0461f724d749e656e8ee0ce1b2d636c23.png" alt="\left( L(x,y,z) &gt; 0 \quad \mbox{and} \quad \frac{s^Tz}
+<p><img src="_images/math/20f03cf3a222b762a907e9172086fa7aa9e283b3.png" alt="\left( L(x,y,z) &gt; 0 \quad \mbox{and} \quad \frac{s^Tz}
     {L(x,y,z)} \leq \epsilon_\mathrm{rel} \right)."/></p>
 </div><p>Here</p>
 <div class="math">
-<p><img src="_images/math/c69fb9977daf1ac7d84818c99c45e2afaf8dce8d.png" alt="L(x,y,z) = \frac{1}{2}x^TPx + q^Tx  + z^T (Gx-h) + y^T(Ax-b)."/></p>
+<p><img src="_images/math/5e8d847f99a6188e8c177b540a963731cc8c4932.png" alt="L(x,y,z) = \frac{1}{2}x^TPx + q^Tx  + z^T (Gx-h) + y^T(Ax-b)."/></p>
 </div><p>The function <a class="reference internal" href="#cvxopt.solvers.qp" title="cvxopt.solvers.qp"><tt class="xref py py-func docutils literal"><span class="pre">qp</span></tt></a> calls
 <tt class="xref py py-func docutils literal"><span class="pre">coneqp</span></tt> and hence uses the same
 stopping criteria.</p>
@@ -1856,7 +1977,7 @@ default values and can be customized by making an entry in
 <tt class="xref py py-attr docutils literal"><span class="pre">solvers.options</span></tt>.  The keys in the dictionary are strings with the
 name of the GLPK parameter.  For example, the command</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;LPX_K_MSGLEV&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;msg_lev&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;GLP_MSG_OFF&#39;</span>
 </pre></div>
 </div>
 <p>turns off the screen output subsequent calls
@@ -1891,66 +2012,71 @@ the screen (default: <tt class="xref py py-const docutils literal"><span class="
 
 
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Cone Programming</a><ul>
-<li><a class="reference internal" href="#linear-cone-programs">Linear Cone Programs</a></li>
-<li><a class="reference internal" href="#quadratic-cone-programs">Quadratic Cone Programs</a></li>
-<li><a class="reference internal" href="#linear-programming">Linear Programming</a></li>
-<li><a class="reference internal" href="#quadratic-programming">Quadratic Programming</a></li>
-<li><a class="reference internal" href="#second-order-cone-programming">Second-Order Cone Programming</a></li>
-<li><a class="reference internal" href="#semidefinite-programming">Semidefinite Programming</a></li>
-<li><a class="reference internal" href="#exploiting-structure">Exploiting Structure</a></li>
-<li><a class="reference internal" href="#optional-solvers">Optional Solvers</a></li>
-<li><a class="reference internal" href="#algorithm-parameters">Algorithm Parameters</a></li>
-</ul>
-</li>
-</ul>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="solvers.html" class="btn btn-neutral float-right" title="Nonlinear Convex Optimization">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="spsolvers.html" class="btn btn-neutral" title="Sparse Linear Equations"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="spsolvers.html"
-                        title="previous chapter">Sparse Linear Equations</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="solvers.html"
-                        title="next chapter">Nonlinear Convex Optimization</a></p>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; <a href="copyright.html">Copyright</a> .
+      Last updated on Jun 04, 2014.
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="solvers.html" title="Nonlinear Convex Optimization"
-             >next</a></li>
-        <li class="right" >
-          <a href="spsolvers.html" title="Sparse Linear Equations"
-             >previous</a> |</li>
-    <li><a href="http://cvxopt.org">CVXOPT home</a> |</li>
-    
-        <li><a href="index.html">user&#39;s guide</a> </li>
- 
-      </ul>
-    </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1.7',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  false
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
     </div>
-  </body>
+
+</body>
 </html>
