@@ -1,12 +1,12 @@
 """
-CVXOPT interface for MOSEK 6.0
+CVXOPT interface for MOSEK 7.0
 """
 
-# Copyright 2012-2013 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2014 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.6.
+# This file is part of CVXOPT version 1.1.7.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ import mosek
 from cvxopt import matrix, spmatrix, sparse
 from mosek.array import array, zeros
 env = mosek.Env()
-env.init()
+
 def streamprinter(text): print(text)
 env.set_Stream (mosek.streamtype.log, streamprinter)
 
@@ -43,16 +43,16 @@ def lp(c, G, h, A=None, b=None):
                     A*x = b                      z >= 0.
                     s >= 0
                     
-    using MOSEK 6.0.
+    using MOSEK 7.0.
 
     (solsta, x, z, y) = lp(c, G, h, A=None, b=None).
 
     Input arguments 
 
-        G is m x n, h is m x 1, A is p x n, b is p x 1.  G and A must be 
-        dense or sparse 'd' matrices.   h and b are dense 'd' matrices 
-        with one column.  The default values for A and b are empty 
-        matrices with zero rows.
+        c is n x 1, G is m x n, h is m x 1, A is p x n, b is p x 1.  G and 
+        A must be dense or sparse 'd' matrices.  c, h and b are dense 'd' 
+        matrices with one column.  The default values for A and b are 
+        empty matrices with zero rows.
 
 
     Return values
@@ -159,7 +159,7 @@ def lp(c, G, h, A=None, b=None):
 
     task.solutionsummary (mosek.streamtype.msg); 
 
-    prosta, solsta = task.getsolutionstatus(mosek.soltype.bas)
+    solsta = task.getsolsta(mosek.soltype.bas)
 
     x, z = zeros(n, float), zeros(m, float)
     task.getsolutionslice(mosek.soltype.bas, mosek.solitem.xx, 0, n, x) 
@@ -194,7 +194,7 @@ def conelp(c, G, h, dims = None):
         subject to  G'*z + c = 0
                     z >= 0 
 
-    using MOSEK 6.0.   
+    using MOSEK 7.0.   
 
     The inequalities are with respect to a cone C defined as the Cartesian
     product of N + 1 cones:
@@ -356,7 +356,7 @@ def conelp(c, G, h, dims = None):
 
     task.solutionsummary (mosek.streamtype.msg); 
 
-    prosta, solsta = task.getsolutionstatus(mosek.soltype.itr)
+    solsta = task.getsolsta(mosek.soltype.itr)
 
     xu, xl, zq = zeros(n, float), zeros(n, float), zeros(sum(mq), float)
     task.getsolutionslice(mosek.soltype.itr, mosek.solitem.slc, 0, n, xl) 
@@ -394,7 +394,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
         subject to  Gl'*zl + sum_k Gq[k]'*zq[k] + c = 0
                     zl >= 0,  zq[k] >= 0, k = 0, ..., N-1.
                     
-    using MOSEK 6.0.
+    using MOSEK 7.0.
 
     solsta, x, zl, zq = socp(c, Gl = None, hl = None, Gq = None, hq = None)
 
@@ -535,13 +535,13 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
 
     task.solutionsummary (mosek.streamtype.msg); 
 
-    prosta, solsta = task.getsolutionstatus(mosek.soltype.itr)
+    solsta = task.getsolsta(mosek.soltype.itr)
 
     xu, xl, zq = zeros(n, float), zeros(n, float), zeros(sum(mq), float)
     task.getsolutionslice(mosek.soltype.itr, mosek.solitem.slc, 0, n, xl) 
     task.getsolutionslice(mosek.soltype.itr, mosek.solitem.suc, 0, n, xu) 
     task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, ml, N, zq) 
-    x = matrix(xu-xl)
+    x = matrix(xu) - matrix(xl)
 
     zq = [ matrix(zq[sum(mq[:k]):sum(mq[:k+1])]) for k in range(len(mq)) ]
     
@@ -567,7 +567,7 @@ def qp(P, q, G=None, h=None, A=None, b=None):
         subject to  G*x <= h      
                     A*x = b.                    
                     
-    using MOSEK 6.0.
+    using MOSEK 7.0.
 
     solsta, x, z, y = qp(P, q, G=None, h=None, A=None, b=None)
 
@@ -690,7 +690,7 @@ def qp(P, q, G=None, h=None, A=None, b=None):
 
     task.solutionsummary (mosek.streamtype.msg); 
 
-    prosta, solsta = task.getsolutionstatus(mosek.soltype.itr)
+    solsta = task.getsolsta(mosek.soltype.itr)
 
     x = zeros(n, float)
     task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, 0, n, x) 
@@ -730,7 +730,7 @@ def ilp(c, G, h, A=None, b=None, I=None):
                     s >= 0
                     xi integer, forall i in I
                     
-    using MOSEK 6.0.
+    using MOSEK 7.0.
 
     solsta, x = ilp(c, G, h, A=None, b=None, I=None).
 
@@ -865,9 +865,9 @@ def ilp(c, G, h, A=None, b=None, I=None):
     task.solutionsummary (mosek.streamtype.msg); 
 
     if len(I) > 0:
-        prosta, solsta = task.getsolutionstatus(mosek.soltype.itg)
+        solsta = task.getsolsta(mosek.soltype.itg)
     else:
-        prosta, solsta = task.getsolutionstatus(mosek.soltype.bas)
+        solsta = task.getsolsta(mosek.soltype.bas)
         
     x = zeros(n, float)
     if len(I) > 0:

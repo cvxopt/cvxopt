@@ -11,11 +11,11 @@ library and on the strengths of Python as a high-level programming
 language.
 """ 
 
-# Copyright 2012-2013 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2014 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.6.
+# This file is part of CVXOPT version 1.1.7.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -48,6 +48,7 @@ def normal(nrows, ncols=1, mean=0.0, std=1.0):
     ncols     number of columns
 
     mean      approximate mean of the distribution
+    
     std       standard deviation of the distribution
     '''
 
@@ -249,7 +250,9 @@ spmatrix_str  = printing.spmatrix_str_default
 spmatrix_repr = printing.spmatrix_repr_default
 
 from cvxopt.base import matrix, spmatrix, sparse, spdiag, sqrt, sin, cos, \
-    exp, log 
+    exp, log
+
+from cvxopt import solvers, blas, lapack
 
 __all__ = [ 'blas', 'lapack', 'amd', 'umfpack', 'cholmod', 'solvers',
     'modeling', 'printing', 'info', 'matrix', 'spmatrix', 'sparse', 

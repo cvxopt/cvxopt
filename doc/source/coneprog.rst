@@ -827,7 +827,7 @@ Second-Order Cone Programming
 =============================
 
 The function :func:`socp <cvxopt.solvers.socp>` is a simpler interface to 
-:func:`conelp <cvxopt.solvers.coneqp>` for 
+:func:`conelp <cvxopt.solvers.conelp>` for 
 cone programs with no linear matrix inequality constraints.
 
 .. function:: cvxopt.solvers.socp(c[, Gl, hl[, Gq, hq[, A, b[, solver[, primalstart[, dualstart]]]]]])
@@ -1116,7 +1116,7 @@ We illustrate the calling sequence with a small example.
                   \end{array}\right] + 
               x_3 \left[ \begin{array}{ccc} 
                        -5  & 2 & -17 \\
-                        2  & -6 & -7 \\
+                        2  & -6 & 8 \\
                        -17 & 8 & 6 
                    \end{array}\right]  \preceq  
               \left[ \begin{array}{ccc}
@@ -1133,7 +1133,7 @@ We illustrate the calling sequence with a small example.
                   [-2.,  -8.,  -8., 1.]]) ]
 >>> G += [ matrix([[-21., -11.,   0., -11.,  10.,   8.,   0.,   8., 5.], 
                    [  0.,  10.,  16.,  10., -10., -10.,  16., -10., 3.], 
-                   [ -5.,   2., -17.,   2.,  -6.,   8., -17.,  -7., 6.]]) ]
+                   [ -5.,   2., -17.,   2.,  -6.,   8., -17.,  8., 6.]]) ]
 >>> h = [ matrix([[33., -9.], [-9., 26.]]) ]
 >>> h += [ matrix([[14., 9., 40.], [9., 91., 10.], [40., 10., 15.]]) ]
 >>> sol = solvers.sdp(c, Gs=G, hs=h)  
@@ -2111,7 +2111,7 @@ default values and can be customized by making an entry in
 name of the GLPK parameter.  For example, the command
 
 >>> from cvxopt import solvers 
->>> solvers.options['LPX_K_MSGLEV'] = 0
+>>> solvers.options['msg_lev'] = 'GLP_MSG_OFF' 
 
 turns off the screen output subsequent calls 
 :func:`lp <cvxopt.solvers.lp>` with the :const:`'glpk'` option.

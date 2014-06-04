@@ -5,10 +5,10 @@
 Copyright and License
 *********************
 
-|
-| :raw-html:`&copy;` 2012-2013 M. Andersen and L. Vandenberghe. 
+| :raw-html:`&copy;` 2012-2014 M. Andersen and L. Vandenberghe. 
 | :raw-html:`&copy;` 2010-2011 L. Vandenberghe. 
 | :raw-html:`&copy;` 2004-2009 J. Dahl and L. Vandenberghe. 
+|
 
 CVXOPT is free software; you can redistribute it and/or modify it under 
 the terms of the 
@@ -24,9 +24,8 @@ See the
 for more details. 
 
 
-.. raw:: html
-   
-   <hr>
+----
+
 
 The CVXOPT distribution includes the source code of part of the 
 `SuiteSparse <http://www.cise.ufl.edu/research/sparse>`_

@@ -1,8 +1,10 @@
-######
-CVXOPT 
-######
+.. title:: Table of Contents
 
-**Release 1.1.6 -- April 22, 2013**
+####################
+CVXOPT User's Guide
+####################
+
+**Release 1.1.7 -- June 3, 2014**
 
 **Martin Andersen, Joachim Dahl, and Lieven Vandenberghe**
 
@@ -20,4 +22,4 @@ CVXOPT
     modeling.rst
     c-api.rst
     printing.rst
-
+    cvxopt.org <http://cvxopt.org>

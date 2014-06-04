@@ -35,16 +35,16 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General substitutions.
-project = 'CVXOPT'
+project = "CVXOPT User's Guide"
 #copyright = '2004-2009, Joachim Dahl, Lieven Vandenberghe'
 
 # The default replacements for |version| and |release|, also used in various
 # other places throughout the built documents.
 #
 # The short X.Y version.
-version = '1.1.5'
+version = '1.1.7'
 # The full version, including alpha/beta/rc tags.
-release = '1.1.5'
+release = '1.1.7'
 
 
 # There are two options for replacing |today|: either, you set today to some
@@ -84,7 +84,9 @@ pygments_style = 'sphinx'
 # The style sheet to use for HTML and HTML Help pages. A file of that name
 # must exist either in Sphinx' static/ path, or in one of the custom paths
 # given in html_static_path.
-html_style = 'cvxopt.css'
+#html_style = 'cvxopt.css'
+html_theme = "sphinx_rtd_theme"
+html_theme_path = [".themes", ]
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
@@ -161,7 +163,7 @@ htmlhelp_basename = 'CVXOPTdoc'
 # (source start file, target name, title, author, document class [howto/manual]).
 latex_documents = [
   ('index', 'CVXOPT.tex', 'CVXOPT Documentation',
-   'Joachim Dahl, Lieven Vandenberghe', 'manual'),
+   'Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

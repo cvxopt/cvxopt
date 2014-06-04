@@ -1,5 +1,10 @@
+try:
+    import setuptools
+except ImportError:
+    pass
 from distutils.core import setup, Extension
 from glob import glob
+import os
 
 # Modifiy this if BLAS and LAPACK libraries are not in /usr/lib.
 BLAS_LIB_DIR = '/usr/lib'
@@ -51,6 +56,27 @@ DSDP_LIB_DIR = '/usr/lib'
 DSDP_INC_DIR = '/usr/include/dsdp'
 
 # No modifications should be needed below this line.
+
+BLAS_NOUNDERSCORES = int(os.environ.get("CVXOPT_BLAS_NOUNDERSCORES",BLAS_NOUNDERSCORES)) == True
+BLAS_LIB = os.environ.get("CVXOPT_BLAS_LIB",BLAS_LIB)
+LAPACK_LIB = os.environ.get("CVXOPT_LAPACK_LIB",LAPACK_LIB)
+BLAS_LIB_DIR = os.environ.get("CVXOPT_BLAS_LIB_DIR",BLAS_LIB_DIR)
+BLAS_EXTRA_LINK_ARGS = os.environ.get("CVXOPT_BLAS_EXTRA_LINK_ARGS",BLAS_EXTRA_LINK_ARGS)
+if type(BLAS_LIB) is str: BLAS_LIB = BLAS_LIB.strip().split(',')
+if type(LAPACK_LIB) is str: LAPACK_LIB = LAPACK_LIB.strip().split(',')
+if type(BLAS_EXTRA_LINK_ARGS) is str: BLAS_EXTRA_LINK_ARGS = BLAS_EXTRA_LINK_ARGS.strip().split(',')
+BUILD_GSL = int(os.environ.get("CVXOPT_BUILD_GSL",BUILD_GSL))
+GSL_LIB_DIR = os.environ.get("CVXOPT_GSL_LIB_DIR",GSL_LIB_DIR)
+GSL_INC_DIR = os.environ.get("CVXOPT_GSL_INC_DIR",GSL_INC_DIR)
+BUILD_FFTW = int(os.environ.get("CVXOPT_BUILD_FFTW",BUILD_FFTW))
+FFTW_LIB_DIR = os.environ.get("CVXOPT_FFTW_LIB_DIR",FFTW_LIB_DIR)
+FFTW_INC_DIR = os.environ.get("CVXOPT_FFTW_INC_DIR",FFTW_INC_DIR)
+BUILD_GLPK = int(os.environ.get("CVXOPT_BUILD_GLPK",BUILD_GLPK))
+GLPK_LIB_DIR = os.environ.get("CVXOPT_GLPK_LIB_DIR",GLPK_LIB_DIR)
+GLPK_INC_DIR = os.environ.get("CVXOPT_GLPK_INC_DIR",GLPK_INC_DIR)
+BUILD_DSDP = int(os.environ.get("CVXOPT_BUILD_DSDP",BUILD_DSDP))
+DSDP_LIB_DIR = os.environ.get("CVXOPT_DSDP_LIB_DIR",DSDP_LIB_DIR)
+DSDP_INC_DIR = os.environ.get("CVXOPT_DSDP_INC_DIR",DSDP_INC_DIR)
 
 extmods = []
 
@@ -169,7 +195,7 @@ extmods += [base, blas, lapack, umfpack, cholmod, amd, misc_solvers]
 
 setup (name = 'cvxopt', 
     description = 'Convex optimization package',
-    version = '1.1.6', 
+    version = '1.1.7', 
     long_description = '''
 CVXOPT is a free software package for convex optimization based on the 
 Python programming language. It can be used with the interactive Python 
@@ -181,7 +207,7 @@ library and on the strengths of Python as a high-level programming
 language.''', 
     author = 'M. Andersen, J. Dahl, and L. Vandenberghe',
     author_email = 'martin.skovgaard.andersen@gmail.com, dahl.joachim@gmail.com, vandenbe@ee.ucla.edu',
-    url = 'http://abel.ee.ucla.edu/cvxopt',
+    url = 'http://cvxopt.org',
     license = 'GNU GPL version 3',
     ext_package = "cvxopt",
     ext_modules = extmods,

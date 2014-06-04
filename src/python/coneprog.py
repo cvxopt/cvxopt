@@ -2,11 +2,11 @@
 Solver for linear and quadratic cone programs. 
 """
 
-# Copyright 2012-2013 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2014 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.6.
+# This file is part of CVXOPT version 1.1.7.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -421,42 +421,38 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
     EXPON = 3
     STEP = 0.99
 
-    try: DEBUG = options['debug']
-    except KeyError: DEBUG = False
+    DEBUG = options.get('debug', False)
 
-    try: MAXITERS = options['maxiters']
-    except KeyError: MAXITERS = 100
-    else:
-        if type(MAXITERS) is not int or MAXITERS < 1:
-           raise ValueError("options['maxiters'] must be a positive "\
-               "integer")
+    KKTREG = options.get('kktreg',None)
+    if KKTREG is None:
+        pass
+    elif type(KKTREG) is not float:
+        raise ValueError("options['kktreg'] must be a scalar")
+    elif KKTREG < 0.0:
+        raise ValueError("options['kktreg'] must be nonnegative")
+        
+    MAXITERS = options.get('maxiters',100)
+    if type(MAXITERS) is not int or MAXITERS < 1:
+        raise ValueError("options['maxiters'] must be a positive integer")
 
-    try: ABSTOL = options['abstol']
-    except KeyError: ABSTOL = 1e-7
-    else:
-        if type(ABSTOL) is not float and type(ABSTOL) is not int:
-            raise ValueError("options['abstol'] must be a scalar")
+    ABSTOL = options.get('abstol',1e-7)
+    if type(ABSTOL) is not float and type(ABSTOL) is not int:
+        raise ValueError("options['abstol'] must be a scalar")
 
-    try: RELTOL = options['reltol']
-    except KeyError: RELTOL = 1e-6
-    else:
-        if type(RELTOL) is not float and type(RELTOL) is not int:
-            raise ValueError("options['reltol'] must be a scalar")
+    RELTOL = options.get('reltol',1e-6)
+    if type(RELTOL) is not float and type(RELTOL) is not int:
+        raise ValueError("options['reltol'] must be a scalar")
 
     if RELTOL <= 0.0 and ABSTOL <= 0.0 :
         raise ValueError("at least one of options['reltol'] and " \
             "options['abstol'] must be positive")
 
-    try: FEASTOL = options['feastol']
-    except KeyError: FEASTOL = 1e-7
-    else:
-        if (type(FEASTOL) is not float and type(FEASTOL) is not int) or \
-            FEASTOL <= 0.0:
-            raise ValueError("options['feastol'] must be a positive "\
-                "scalar")
+    FEASTOL = options.get('feastol',1e-7)
+    if (type(FEASTOL) is not float and type(FEASTOL) is not int) or \
+      FEASTOL <= 0.0:
+        raise ValueError("options['feastol'] must be a positive scalar")
 
-    try: show_progress = options['show_progress']
-    except KeyError: show_progress = True
+    show_progress = options.get('show_progress', True)
 
     if kktsolver is None: 
         if dims and (dims['q'] or dims['s']):  
@@ -577,7 +573,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         if b.size[0] > c.size[0] or b.size[0] + cdim_pckd < c.size[0]:
            raise ValueError("Rank(A) < p or Rank([G; A]) < n")
         if kktsolver == 'ldl': 
-            factor = misc.kkt_ldl(G, dims, A)
+            factor = misc.kkt_ldl(G, dims, A, kktreg = KKTREG)
         elif kktsolver == 'ldl2':
             factor = misc.kkt_ldl2(G, dims, A)
         elif kktsolver == 'qr':
@@ -1772,48 +1768,41 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
     STEP = 0.99
     EXPON = 3
 
-    try: DEBUG = options['debug']
-    except KeyError: DEBUG = False
+    DEBUG = options.get('debug',False)
+
+    KKTREG = options.get('kktreg',None)
+    if KKTREG is None:
+        pass
+    elif type(KKTREG) is not float:
+        raise ValueError("options['kktreg'] must be a scalar")
+    elif KKTREG < 0.0:
+        raise ValueError("options['kktreg'] must be nonnegative")
 
     # Use Mehrotra correction or not.
-    try: correction = options['use_correction']
-    except KeyError: correction = True
+    correction = options.get('use_correction', True)
 
+    MAXITERS = options.get('maxiters',100)
+    if type(MAXITERS) is not int or MAXITERS < 1: 
+        raise ValueError("options['maxiters'] must be a positive integer")
 
-    try: MAXITERS = options['maxiters']
-    except KeyError: MAXITERS = 100
-    else: 
-        if type(MAXITERS) is not int or MAXITERS < 1: 
-            raise ValueError("options['maxiters'] must be a positive "\
-                "integer")
+    ABSTOL = options.get('abstol',1e-7)
+    if type(ABSTOL) is not float and type(ABSTOL) is not int: 
+        raise ValueError("options['abstol'] must be a scalar")
 
-    try: ABSTOL = options['abstol']
-    except KeyError: ABSTOL = 1e-7
-    else: 
-        if type(ABSTOL) is not float and type(ABSTOL) is not int: 
-            raise ValueError("options['abstol'] must be a scalar")
-
-    try: RELTOL = options['reltol']
-    except KeyError: RELTOL = 1e-6
-    else: 
-        if type(RELTOL) is not float and type(RELTOL) is not int: 
-            raise ValueError("options['reltol'] must be a scalar")
+    RELTOL = options.get('reltol',1e-6)
+    if type(RELTOL) is not float and type(RELTOL) is not int: 
+        raise ValueError("options['reltol'] must be a scalar")
 
     if RELTOL <= 0.0 and ABSTOL <= 0.0 :
         raise ValueError("at least one of options['reltol'] and " \
             "options['abstol'] must be positive")
 
-    try: FEASTOL = options['feastol']
-    except KeyError: FEASTOL = 1e-7
-    else: 
-        if (type(FEASTOL) is not float and type(FEASTOL) is not int) or \
-            FEASTOL <= 0.0:
-            raise ValueError("options['feastol'] must be a positive "\
-                "scalar")
+    FEASTOL = options.get('feastol',1e-7)
+    if (type(FEASTOL) is not float and type(FEASTOL) is not int) or \
+      FEASTOL <= 0.0:
+        raise ValueError("options['feastol'] must be a positive scalar")
 
-    try: show_progress = options['show_progress']
-    except KeyError: show_progress = True
-
+    show_progress = options.get('show_progress',True)
 
     if kktsolver is None: 
         if dims and (dims['q'] or dims['s']):  
@@ -1985,7 +1974,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
          if b.size[0] > q.size[0]:
              raise ValueError("Rank(A) < p or Rank([P; G; A]) < n")
          if kktsolver == 'ldl': 
-             factor = misc.kkt_ldl(G, dims, A)
+             factor = misc.kkt_ldl(G, dims, A, kktreg = KKTREG)
          elif kktsolver == 'ldl2': 
              factor = misc.kkt_ldl2(G, dims, A)
          elif kktsolver == 'chol':
@@ -2578,10 +2567,10 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
 
     Input arguments. 
 
-        G is m x n, h is m x 1, A is p x n, b is p x 1.  G and A must be 
-        dense or sparse 'd' matrices.   h and b are dense 'd' matrices 
-        with one column.  The default values for A and b are empty 
-        matrices with zero rows.
+        c is n x 1, G is m x n, h is m x 1, A is p x n, b is p x 1.  G and 
+        A must be dense or sparse 'd' matrices.  c, h and b are dense 'd' 
+        matrices with one column.  The default values for A and b are 
+        empty matrices with zero rows.
 
         solver is None, 'glpk' or 'mosek'.  The default solver (None)
         uses the cvxopt conelp() function.  The 'glpk' solver is the 

@@ -6,11 +6,11 @@ for quadratic and geometric programming.  Also includes an interface
 to the quadratic programming solver from MOSEK.
 """
 
-# Copyright 2012-2013 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2014 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.6.
+# This file is part of CVXOPT version 1.1.7.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -1904,8 +1904,10 @@ def cp(F, G = None, h = None, dims = None, A = None, b = None,
         g = kktsolver(x[0], znl, We)
 
         f, Df = F(x[0])
-        if type(Df) is matrix or type(Df) is spmatrix:
+        if type(Df) is matrix:
             gradf0 = Df[0,:].T
+        elif type(Df) is spmatrix:        
+            gradf0 = matrix(Df[0,:].T)
         else:
             gradf0 = xnewcopy(x[0])
             e0 = matrix(0.0, (mnl + 1, 1))

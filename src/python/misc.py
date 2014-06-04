@@ -1,8 +1,8 @@
-# Copyright 2012-2013 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2014 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.6.
+# This file is part of CVXOPT version 1.1.7.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -1052,7 +1052,7 @@ else:
     else: return 0.0
 
 
-def kkt_ldl(G, dims, A, mnl = 0):
+def kkt_ldl(G, dims, A, mnl = 0, kktreg = None):
     """
     Solution of KKT equations by a dense LDL factorization of the 
     3 x 3 system.
@@ -1093,6 +1093,9 @@ def kkt_ldl(G, dims, A, mnl = 0):
             scale(g, W, trans = 'T', inverse = 'I')
             pack(g, K, dims, mnl, offsety = k*ldK + n + p)
         K[(ldK+1)*(p+n) :: ldK+1]  = -1.0
+        if kktreg:
+            K[0 : (ldK+1)*n : ldK+1]  += kktreg  # Reg. term, 1x1 block (positive)
+            K[(ldK+1)*n :: ldK+1]  -= kktreg     # Reg. term, 2x2 block (negative)
         lapack.sytrf(K, ipiv)
 
         def solve(x, y, z):

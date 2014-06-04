@@ -17,7 +17,7 @@ and nested evaluations of :func:`max <cvxopt.modeling.max>`,
 :func:`sum <cvxopt.modeling.sum>` (see the section :ref:`s-functions`).
 
 A more general Python convex modeling package is 
-`CVXMOD <http://cvxmod.net>`_.
+`CVXPY <http://cvxpy.org>`_.
 
 .. _s-variables:
 

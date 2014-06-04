@@ -1,9 +1,9 @@
 /*
- * Copyright 2012-2013 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2014 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.6.
+ * This file is part of CVXOPT version 1.1.7.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -316,7 +316,7 @@ matrix * Matrix_NewFromSequence(PyObject *x, int id)
     }
   }
 
-  if (!len) return Matrix_New(0, 1, (id < 0 ? INT : id));
+  if (!len) { Py_DECREF(seq); return Matrix_New(0, 1, (id < 0 ? INT : id)); }
 
   matrix *L = Matrix_New(len,1,id);
   if (!L) { Py_DECREF(seq); return (matrix *)PyErr_NoMemory(); }
@@ -1106,7 +1106,8 @@ matrix_tofile(matrix *self, PyObject *args, PyObject *kwrds)
   if (!(fp = PyFile_AsFile(file_obj)))
     PY_ERR(PyExc_IOError,"file not open for writing");
 
-  if (fwrite(self->buffer, E_SIZE[self->id], MAT_LGT(self), fp)) ;
+  if (fwrite(self->buffer, E_SIZE[self->id], MAT_LGT(self), fp)) 
+    ;
   return Py_BuildValue("");
 }
 
