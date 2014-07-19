@@ -1,8 +1,7 @@
 try:
-    import setuptools
+    from setuptools import setup, Extension
 except ImportError:
-    pass
-from distutils.core import setup, Extension
+    from distutils.core import setup, Extension
 from glob import glob
 import os
 
@@ -212,4 +211,15 @@ language.''',
     ext_package = "cvxopt",
     ext_modules = extmods,
     package_dir = {"cvxopt": "src/python"},
-    packages = ["cvxopt"])
+    packages = ["cvxopt"],
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Science/Research',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'Operating System :: OS Independent',
+        'Programming Language :: C',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Topic :: Scientific/Engineering',
+        ],
+    )
