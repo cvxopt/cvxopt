@@ -23,8 +23,8 @@
 #include "amd.h"
 #include "misc.h"
 
-/* defined in pyconfig.h */
-#if (SIZEOF_INT < SIZEOF_LONG)
+/* defined on command line */
+#ifdef DLONG
 #define amd_order amd_l_order
 #define amd_defaults amd_l_defaults
 #endif
