@@ -2893,7 +2893,7 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
         resy0 = max(1.0, blas.nrm2(b))
         resz0 = max(1.0, blas.nrm2(h))
 
-        if solsta is mosek.solsta.optimal:
+        if solsta in (mosek.solsta.optimal, mosek.solsta.near_optimal):
             status = 'optimal'
 
             pcost = blas.dot(c,x)
