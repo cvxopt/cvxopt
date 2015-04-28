@@ -157,6 +157,10 @@ klu = Extension('klu',
     include_dirs = [ 'src/C/SuiteSparse/KLU/Include',
         'src/C/SuiteSparse/BTF/Include', 
         'src/C/SuiteSparse/BTF/Source', 
+        'src/C/SuiteSparse/COLAMD/Include', 
+        'src/C/SuiteSparse/COLAMD/Source', 
+        'src/C/SuiteSparse/AMD/Include', 
+        'src/C/SuiteSparse/AMD/Source', 
         'src/C/SuiteSparse/SuiteSparse_config' ],
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
@@ -206,7 +210,7 @@ misc_solvers = Extension('misc_solvers',
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
     sources = ['src/C/misc_solvers.c'] )
 
-extmods += [base, blas, lapack, umfpack, klu,cholmod, amd, misc_solvers] 
+extmods += [base, blas, lapack, umfpack, klu, cholmod, amd, misc_solvers] 
 
 setup (name = 'cvxopt', 
     description = 'Convex optimization package',

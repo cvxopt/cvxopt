@@ -19,6 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+
 #include "cvxopt.h"
 #include "klu.h"
 #include "misc.h"
@@ -41,32 +43,32 @@ PyDoc_STRVAR(klu__doc__,"Interface to the KLU library.\n\n"
     "The default control settings of UMPFACK are used.\n\n"
     "See also http://www.cise.ufl.edu/research/sparse/klu.");
 
-#if PY_MAJOR_VERSION >= 3
-static void free_klu_d_symbolic(void *F)
-{
-    void *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
-    KLUD(free_symbolic)(&Fptr);
-}
-#else
-static void free_klu_d_symbolic(void *F, void *descr)
-{
-    KLUD(free_symbolic)(&F);
-}
-#endif
+// #if PY_MAJOR_VERSION >= 3
+// static void free_klu_d_symbolic(void *F)
+// {
+//     void *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
+//     KLUD(free_symbolic)(&Fptr);
+// }
+// #else
+// static void free_klu_d_symbolic(void *F, void *descr)
+// {
+//     KLUD(free_symbolic)(&F);
+// }
+// #endif
 
 
-#if PY_MAJOR_VERSION >= 3
-static void free_klu_d_numeric(void *F)
-{
-    void *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
-    KLUD(free_numeric)(&Fptr);
-}
-#else
-static void free_klu_d_numeric(void *F, void *descr)
-{
-    KLUD(free_numeric)(&F);
-}
-#endif
+// #if PY_MAJOR_VERSION >= 3
+// static void free_klu_d_numeric(void *F)
+// {
+//     void *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
+//     KLUD(free_numeric)(&Fptr);
+// }
+// #else
+// static void free_klu_d_numeric(void *F, void *descr)
+// {
+//     KLUD(free_numeric)(&F);
+// }
+// #endif
 
 
 
@@ -522,6 +524,9 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
     return Py_BuildValue("");
 }
 */
+
+
+
 
 static PyMethodDef klu_functions[] = {
     {"linsolve", (PyCFunction) linsolve, METH_VARARGS|METH_KEYWORDS,
