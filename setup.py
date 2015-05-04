@@ -17,7 +17,7 @@ SS_LIB_DIR = '/usr/local/Cellar/suite-sparse/4.2.1/lib'
 SS_INC_DIR = '/usr/local/Cellar/suite-sparse/4.2.1/include'
 
 # Default names of KLU, UMFPACK, CHOLMOD and AMD libraries
-SS_LIB = ['klu', 'umfpack', 'cholmod', 'amd', 'colamd', 'suitesparseconfig']
+SS_LIB = ['klu', 'umfpack', 'cholmod', 'amd', 'colamd', 'suitesparseconfig', 'btf']
 
 
 # Modifiy this if BLAS and LAPACK libraries are not in /usr/lib.

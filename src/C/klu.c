@@ -2,7 +2,7 @@
 * @Author: Uriel Sandoval
 * @Date:   2015-04-28 18:56:49
 * @Last Modified by:   Uriel Sandoval
-* @Last Modified time: 2015-05-01 20:52:12
+* @Last Modified time: 2015-05-02 20:12:51
 */
 
 
@@ -384,11 +384,13 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
                           "factor of a 'd' matrix");
         if (!(Fsptr = (void *) PyCapsule_GetPointer(Fs, descrdFs)))
             err_CO("Fs");
+
+
         if (F != NULL) {
             // printf("Refactorizando\n");
             TypeCheck_Capsule(F, descrdF, "F is not the KLU numeric "
                               "factor of a 'd' matrix");
-            if (!(Fptr = (void *) PyCapsule_GetPointer(F, descrdF)))
+            if (!(Fptr = (KLUS(numeric) *) PyCapsule_GetPointer(F, descrdF)))
                 err_CO("F");
 
             KLUD(rcond)(Fsptr, Fptr, &Common);
@@ -397,10 +399,14 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
                 Numeric = KLUD(factor)(SP_COL(A), SP_ROW(A), SP_VAL(A), Fsptr,
                                        &Common);
 
+                // free(F);    
+                // KLUD(free_numeric)(&Fptr, &CommonFree);
+
                 if (Common.status == KLU_OK)
                     return (PyObject *) PyCapsule_New(
                                (void *) Numeric, "KLU NUM D FACTOR",
                                (PyCapsule_Destructor) &free_klu_d_numeric);
+
             }
             else {
                 KLUD(refactor)(SP_COL(A), SP_ROW(A), SP_VAL(A), Fsptr,
