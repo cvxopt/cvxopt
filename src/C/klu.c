@@ -2,13 +2,14 @@
 * @Author: Uriel Sandoval
 * @Date:   2015-04-28 18:56:49
 * @Last Modified by:   Uriel Sandoval
-* @Last Modified time: 2015-05-02 20:12:51
+* @Last Modified time: 2015-05-04 14:19:41
 */
 
 
 #include "cvxopt.h"
 #include "klu.h"
 #include "misc.h"
+#include "complex.h"
 
 #if (SIZEOF_INT < SIZEOF_LONG)
 #define KLUD(name) klu_l_ ## name
@@ -30,44 +31,34 @@
 const int E_SIZE[] = {sizeof(int_t), sizeof(double), sizeof(double complex)};
 
 
-double klu_l_get_determinant(KLUS(numeric) *Numeric) {
-    double det =  1;
+void klu_l_get_determinant(double *det, KLUS(numeric) *Numeric) {
+    double *Udiag = Numeric->Udiag;
+    int i, n =  Numeric->n;
+    det[0] = 1;
+
+    for (i = 0; i < n; i++) {
+        det[0] *= Udiag[i];
+        printf("%f\n", Udiag[i]);
+    }
+
+}
+
+
+void klu_zl_get_determinant(double *det, KLUS(numeric) *Numeric) {
+    det[0] = 1;
     double *Udiag = Numeric->Udiag;
     int i, n =  Numeric->n;
 
 
 
-    for (i = 0; i < n; i++)
-        det *= Udiag[i];
+    for (i = 0; i < n; i++) {
+        det[0] *= Udiag[i];
 
 
-    return det;
+    }
+
+
 }
-
-
-double complex klu_zl_get_determinant(KLUS(numeric) *Numeric) {
-    double complex det =  1;
-    double complex *Udiag = Numeric->Udiag;
-    int i, n =  Numeric->n;
-
-
-
-    for (i = 0; i < n; i++)
-        det *= Udiag[i];
-
-
-    return det;
-}
-
-
-
-static char klu_error[20];
-
-PyDoc_STRVAR(klu__doc__, "Interface to the KLU library.\n\n"
-             "Routines for symbolic and numeric LU factorization of sparse\n"
-             "matrices and for solving sparse sets of linear equations.\n"
-             "The default control settings of KLU are used.\n\n"
-             "See also http://www.cise.ufl.edu/research/sparse/klu.");
 
 static void free_klu_d_symbolic(PyObject *F)
 {
@@ -87,6 +78,18 @@ static void free_klu_d_numeric(PyObject *F)
     KLUS(numeric) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
     KLUD(free_numeric)(&Fptr, &Common);
 }
+
+
+
+static char klu_error[20];
+
+PyDoc_STRVAR(klu__doc__, "Interface to the KLU library.\n\n"
+             "Routines for symbolic and numeric LU factorization of sparse\n"
+             "matrices and for solving sparse sets of linear equations.\n"
+             "The default control settings of KLU are used.\n\n"
+             "See also http://www.cise.ufl.edu/research/sparse/klu.");
+
+
 
 
 
@@ -122,9 +125,6 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
 #endif
     char trans = 'N';
     int oB = 0, n, nrhs = -1, ldB = 0, k;
-
-
-
 
     void *x;
     char *kwlist[] = {"A", "B", "trans", "nrhs", "ldB", "offsetB",
@@ -399,7 +399,7 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
                 Numeric = KLUD(factor)(SP_COL(A), SP_ROW(A), SP_VAL(A), Fsptr,
                                        &Common);
 
-                // free(F);    
+                // free(F);
                 // KLUD(free_numeric)(&Fptr, &CommonFree);
 
                 if (Common.status == KLU_OK)
@@ -477,7 +477,7 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 
             if (Common.status == KLU_OK)
                 return (PyObject *) PyCapsule_New(
-                           (void *) Numeric, "KLU NUM D FACTOR",
+                           (void *) Numeric, "KLU NUM Z FACTOR",
                            (PyCapsule_Destructor) &free_klu_d_numeric);
 
             else
@@ -498,6 +498,58 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
         }
         return NULL;
     }
+}
+
+
+static char doc_det[] =
+    "Obtains the determinant of a numeric object.\n\n"
+    "d = det(A, N)\n"
+    "ARGUMENTS\n"
+    "A        square sparse matrix\n"
+    "N        numeric factorization, as returned by klu.numeric\n\n"
+    "d        determinant value";
+
+
+static PyObject* det(PyObject *self, PyObject *args) {
+
+    void *Fptr;
+    PyObject *F;
+    spmatrix *A;
+    double det[] = {0};
+
+    const char *descrdF = "KLU NUM D FACTOR";
+    const char *descrzF = "KLU NUM Z FACTOR";
+
+    if (!PyArg_ParseTuple(args, "OO", &A, &F))
+        return NULL;
+
+
+    if (!PyCapsule_CheckExact(F))
+        err_CO("F");
+
+    if (SP_ID(A) == DOUBLE) {
+        TypeCheck_Capsule(F, descrdF, "F is not the KLU numeric "
+                          "factor of a 'd' matrix");
+        if (!(Fptr = (KLUS(numeric) *) PyCapsule_GetPointer(F, descrdF)))
+            err_CO("F");
+
+        KLUD(get_determinant)(det, Fptr);
+    }
+    else {
+        TypeCheck_Capsule(F, descrzF, "F is not the KLU numeric "
+                          "factor of a 'z' matrix");
+        if (!(Fptr = (KLUS(numeric) *) PyCapsule_GetPointer(F, descrzF)))
+            err_CO("F");
+
+        KLUZ(get_determinant)(det, Fptr);
+    }
+
+    printf("determinant %f\n", det[0]);
+
+    return Py_BuildValue("d", det[0]);
+
+
+
 }
 
 
@@ -641,16 +693,8 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
             return NULL;
         }
     }
-    else{
-        // Return determinant
 
-        if(SP_ID(A) == DOUBLE)
-            return Py_BuildValue("f", KLUD(get_determinant)(PyCapsule_GetPointer(F, descrdF)));
-        else
-            return Py_BuildValue("f", KLUZ(get_determinant)(PyCapsule_GetPointer(F, descrzF)));
-        
-        
-    }
+    Py_RETURN_NONE;
 
 }
 
@@ -666,6 +710,7 @@ static PyMethodDef klu_functions[] = {
     {"symbolic", (PyCFunction) symbolic, METH_VARARGS, doc_symbolic},
     {"numeric", (PyCFunction) numeric, METH_VARARGS, doc_numeric},
     {"solve", (PyCFunction) solve, METH_VARARGS | METH_KEYWORDS, doc_solve},
+    {"det", (PyCFunction) det, METH_VARARGS | METH_KEYWORDS, doc_det},
     {NULL}  /* Sentinel */
 };
 
