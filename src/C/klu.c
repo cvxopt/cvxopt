@@ -2,7 +2,7 @@
 * @Author: Uriel Sandoval
 * @Date:   2015-04-28 18:56:49
 * @Last Modified by:   Uriel Sandoval
-* @Last Modified time: 2015-05-10 22:49:55
+* @Last Modified time: 2015-05-11 11:06:27
 */
 
 
@@ -52,10 +52,17 @@ static void free_klu_d_symbolic(PyObject *F)
 }
 static void free_klu_d_numeric(PyObject *F)
 {
-    KLUD(common) Common;
+    KLUS(common) Common;
     KLUD(defaults)(&Common);
     KLUS(numeric) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
     KLUD(free_numeric)(&Fptr, &Common);
+}
+static void free_klu_z_numeric(PyObject *F)
+{
+    KLUS(common) Common;
+    KLUD(defaults)(&Common);
+    KLUS(numeric) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
+    KLUZ(free_numeric)(&Fptr, &Common);
 }
 
 
@@ -93,10 +100,10 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
 #endif
     char trans = 'N';
     int oB = 0, n, nrhs = -1, ldB = 0, k;
-
-
-
     void *x;
+    KLUS(common) Common, CommonFree;
+    KLUS(symbolic) *Symbolic;
+    KLUS(numeric) *Numeric;
     char *kwlist[] = {"A", "B", "trans", "nrhs", "ldB", "offsetB",
                       NULL
                      };
@@ -114,15 +121,11 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
         PY_ERR_TYPE("A must be a square sparse matrix");
     n = SP_NROWS(A);
 
-    if (!SP_ID(A) == DOUBLE)
-        PY_ERR_TYPE("A must be a sparse real matrix")
-        if (!Matrix_Check(B) || MAT_ID(B) != SP_ID(A))
-            PY_ERR_TYPE("B must a dense matrix of the same numeric type "
-                        "as A");
+    if (!Matrix_Check(B) || MAT_ID(B) != SP_ID(A))
+        PY_ERR_TYPE("B must a dense matrix of the same numeric type "
+                    "as A");
 
-    KLUS(common) Common, CommonFree;
-    KLUS(symbolic) *Symbolic;
-    KLUS(numeric) *Numeric;
+
 
     if (nrhs < 0) nrhs = B->ncols;
     if (n == 0 || nrhs == 0) return Py_BuildValue("i", 0);
@@ -161,11 +164,16 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
     if (SP_ID(A) == DOUBLE)
         Numeric = KLUD(factor)(SP_COL(A), SP_ROW(A), SP_VAL(A), Symbolic, &Common);
     else
-        Numeric = KLUD(factor)(SP_COL(A), SP_ROW(A), SP_VAL(A), Symbolic, &Common);
+        Numeric = KLUZ(factor)(SP_COL(A), SP_ROW(A), SP_VAL(A), Symbolic, &Common);
 
     if (Common.status != KLU_OK) {
-        KLUD(free_numeric)(&Numeric, &CommonFree);
         KLUD(free_symbolic)(&Symbolic, &CommonFree);
+        if (SP_ID(A) == DOUBLE)
+            KLUD(free_numeric)(&Numeric, &CommonFree);
+        else
+            KLUZ(free_numeric)(&Numeric, &CommonFree);
+
+
         if (Common.status == KLU_OUT_OF_MEMORY)
             return PyErr_NoMemory();
         else {
@@ -443,7 +451,7 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
             if (Common.status == KLU_OK)
                 return (PyObject *) PyCapsule_New(
                            (void *) Numeric, "KLU NUM Z FACTOR",
-                           (PyCapsule_Destructor) &free_klu_d_numeric);
+                           (PyCapsule_Destructor) &free_klu_z_numeric);
 
             else
                 KLUZ(free_numeric)(&Numeric, &CommonFree);
@@ -510,6 +518,8 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
     char *kwlist[] = {"A", "Fs", "F", "B", "trans", "nrhs", "ldB", "offsetB",
                       NULL
                      };
+    KLUS(common) Common, CommonFree;
+
 
 #if PY_MAJOR_VERSION >= 3
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOOO|Ciii", kwlist,
@@ -555,14 +565,14 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
         err_char("trans", "'N', 'T', 'C'");
 
     if (!(x = malloc(n * E_SIZE[SP_ID(A)]))) return PyErr_NoMemory();
-    KLUS(common) Common, CommonFree;
     KLUD(defaults)(&Common);
     KLUD(defaults)(&CommonFree);
     for (k = 0; k < nrhs; k++) {
 
+
         memcpy(x, B->buffer + (k * ldB + oB)*E_SIZE[SP_ID(A)],
                n * E_SIZE[SP_ID(A)]);
-        if (SP_ID(A) == DOUBLE)
+        if (SP_ID(A) == DOUBLE) {
             if (trans == 'N')
                 KLUD(solve)(PyCapsule_GetPointer(Fs, descrdFs),
                             PyCapsule_GetPointer(F, descrdF)
@@ -571,17 +581,18 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
                 KLUD(tsolve)(PyCapsule_GetPointer(Fs, descrdFs),
                              PyCapsule_GetPointer(F, descrdF)
                              , n, nrhs, x, &Common);
-
-        else if (trans == 'N')
-            KLUZ(solve)(PyCapsule_GetPointer(Fs, descrdFs),
-                        PyCapsule_GetPointer(F, descrdF)
-                        , n, nrhs, x, &Common);
-        else
-            KLUZ(tsolve)(PyCapsule_GetPointer(Fs, descrdFs),
-                         PyCapsule_GetPointer(F, descrdF)
-                         , n, nrhs, x,  trans == 'C' ? 1 : 0,
-                         &Common);
-
+        }
+        else {
+            if (trans == 'N')
+                KLUZ(solve)(PyCapsule_GetPointer(Fs, descrzFs),
+                            PyCapsule_GetPointer(F, descrzF)
+                            , n, nrhs, x, &Common);
+            else
+                KLUZ(tsolve)(PyCapsule_GetPointer(Fs, descrzFs),
+                             PyCapsule_GetPointer(F, descrzF)
+                             , n, nrhs, x,  trans == 'C' ? 1 : 0,
+                             &Common);
+        }
 
         if (Common.status == KLU_OK)
             memcpy(B->buffer + (k * ldB + oB)*E_SIZE[SP_ID(A)], x,
