@@ -154,23 +154,37 @@ lapack = Extension('lapack', libraries = LAPACK_LIB + BLAS_LIB,
     sources = ['src/C/lapack.c'] )
 
 umfpack = Extension('umfpack', 
-    include_dirs = [SS_INC_DIR]+['../lib/cvxopt-1.1.7/src/C/'],
-    library_dirs = [ SS_LIB_DIR ],
+    include_dirs = [ 'src/C/SuiteSparse/UMFPACK/Include',
+        'src/C/SuiteSparse/AMD/Include', 
+        'src/C/SuiteSparse/AMD/Source', 
+        'src/C/SuiteSparse/SuiteSparse_config' ],
+    library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
-    libraries = LAPACK_LIB + BLAS_LIB + SS_LIB,
+    libraries = LAPACK_LIB + BLAS_LIB,
     extra_compile_args = ['-Wno-unknown-pragmas'],
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    sources = [ 'src/C/umfpack.c'])
+    sources = [ 'src/C/umfpack.c',
+        'src/C/SuiteSparse/UMFPACK/Source/umfpack_global.c',
+        'src/C/SuiteSparse/UMFPACK/Source/umfpack_tictoc.c' ] +
+        ['src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
+        glob('src/C/SuiteSparse_cvxopt_extra/umfpack/*'))
 
 
 klu = Extension('klu', 
-    include_dirs = [SS_INC_DIR]+['../lib/cvxopt-1.1.7/src/C/'],
-    library_dirs = [ SS_LIB_DIR ],
+    include_dirs = [ 'src/C/SuiteSparse/KLU/Include',
+        'src/C/SuiteSparse/AMD/Include', 
+        'src/C/SuiteSparse/AMD/Source', 
+        'src/C/SuiteSparse/BTF/Include', 
+        'src/C/SuiteSparse/BTF/Source', 
+        'src/C/SuiteSparse/SuiteSparse_config' ],
+    library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
-    libraries = LAPACK_LIB + BLAS_LIB + SS_LIB,
+    libraries = LAPACK_LIB + BLAS_LIB,
     extra_compile_args = ['-Wno-unknown-pragmas'],
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    sources = ['src/C/klu.c'])
+    sources = ['src/C/klu.c' ] +
+        ['src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
+        glob('src/C/SuiteSparse_cvxopt_extra/klu/*'))
 
 
 

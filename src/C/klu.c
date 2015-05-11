@@ -2,7 +2,7 @@
 * @Author: Uriel Sandoval
 * @Date:   2015-04-28 18:56:49
 * @Last Modified by:   Uriel Sandoval
-* @Last Modified time: 2015-05-10 21:27:12
+* @Last Modified time: 2015-05-10 22:49:55
 */
 
 #include "python.h"
@@ -32,36 +32,6 @@
 const int E_SIZE[] = {sizeof(int_t), sizeof(double), sizeof(double complex)};
 
 
-double klu_l_get_determinant(KLUS(numeric) *Numeric) {
-    double det =  1;
-    double *Udiag = Numeric->Udiag;
-    int i, n =  Numeric->n;
-
-
-
-    for (i = 0; i < n; i++)
-        det *= Udiag[i];
-
-
-    return det;
-}
-
-
-double complex klu_zl_get_determinant(KLUS(numeric) *Numeric) {
-    double complex det =  1;
-    double complex *Udiag = Numeric->Udiag;
-    int i, n =  Numeric->n;
-
-
-
-    for (i = 0; i < n; i++)
-        det *= Udiag[i];
-
-
-    return det;
-}
-
-
 
 static char klu_error[20];
 
@@ -73,7 +43,6 @@ PyDoc_STRVAR(klu__doc__, "Interface to the KLU library.\n\n"
              "See also http://faculty.cse.tamu.edu/davis/suitesparse.html");
 
 
-#if PY_MAJOR_VERSION >=3
 static void free_klu_d_symbolic(PyObject *F)
 {
     KLUS(common) Common;
@@ -88,21 +57,7 @@ static void free_klu_d_numeric(PyObject *F)
     KLUS(numeric) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
     KLUD(free_numeric)(&Fptr, &Common);
 }
-#else
-static void free_klu_d_symbolic(KLUS(symbolic) *F)
-{
-    KLUS(common) Common;
-    KLUD(defaults)(&Common);
-    KLUD(free_symbolic)(&F, &Common);
-}
-static void free_klu_d_numeric(KLUS(numeric) *F)
-{
 
-    KLUD(common) Common;
-    KLUD(defaults)(&Common);
-    KLUD(free_numeric)(&F, &Common);
-}
-#endif
 
 
 
@@ -138,7 +93,6 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
 #endif
     char trans = 'N';
     int oB = 0, n, nrhs = -1, ldB = 0, k;
-
 
 
 
@@ -436,7 +390,6 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 
             }
 
-
         }
 
         if (F == NULL || factorize) {
@@ -456,12 +409,12 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 
     case COMPLEX:
         TypeCheck_Capsule(Fs, descrzFs, "Fs is not the KLU symbolic "
-                          "factor of a 'd' matrix");
+                          "factor of a 'z' matrix");
         if (!(Fsptr = (void *) PyCapsule_GetPointer(Fs, descrzFs)))
             err_CO("Fs");
         if (F != NULL) {
             TypeCheck_Capsule(F, descrzF, "F is not the KLU numeric "
-                              "factor of a 'd' matrix");
+                              "factor of a 'z' matrix");
             if (!(Fptr = (void *) PyCapsule_GetPointer(F, descrzF)))
                 err_CO("F");
 
@@ -489,7 +442,7 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 
             if (Common.status == KLU_OK)
                 return (PyObject *) PyCapsule_New(
-                           (void *) Numeric, "KLU NUM D FACTOR",
+                           (void *) Numeric, "KLU NUM Z FACTOR",
                            (PyCapsule_Destructor) &free_klu_d_numeric);
 
             else
