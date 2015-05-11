@@ -57,16 +57,13 @@ typedef union {
 #define X_NCOLS(O) (Matrix_Check(O) ? MAT_NCOLS(O) : SP_NCOLS(O))
 #define X_Matrix_Check(O) (Matrix_Check(O) || SpMatrix_Check(O))
 
-#if PY_MAJOR_VERSION >= 3
 #define TypeCheck_Capsule(O,str,errstr) { \
     if (!PyCapsule_CheckExact(O)) PY_ERR(PyExc_TypeError, errstr); \
     const char *descr = PyCapsule_GetName(O);  \
     if (!descr || strcmp(descr,str)) PY_ERR(PyExc_TypeError,errstr); }
-#else
 #define TypeCheck_CObject(O,str,errstr) { \
     char *descr = PyCObject_GetDesc(O);   \
     if (!descr || strcmp(descr,str)) PY_ERR(PyExc_TypeError,errstr); }
-#endif
 
 
 #define len(x) (Matrix_Check(x) ? MAT_LGT(x) : SP_LGT(x))
@@ -79,7 +76,7 @@ typedef union {
     PY_ERR_TYPE("conflicting types for matrix arguments"); }
 
 #define err_invalid_id {PY_ERR_TYPE( \
-	"matrix arguments must have type 'd' or 'z'") }
+  "matrix arguments must have type 'd' or 'z'") }
 
 #define err_nz_int(s) PY_ERR_TYPE(s " must be a nonzero integer")
 
