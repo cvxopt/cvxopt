@@ -76,7 +76,7 @@ typedef union {
     PY_ERR_TYPE("conflicting types for matrix arguments"); }
 
 #define err_invalid_id {PY_ERR_TYPE( \
-	"matrix arguments must have type 'd' or 'z'") }
+  "matrix arguments must have type 'd' or 'z'") }
 
 #define err_nz_int(s) PY_ERR_TYPE(s " must be a nonzero integer")
 

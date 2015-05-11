@@ -2,15 +2,15 @@
 * @Author: Uriel Sandoval
 * @Date:   2015-04-28 18:56:49
 * @Last Modified by:   Uriel Sandoval
-* @Last Modified time: 2015-05-04 14:19:41
+* @Last Modified time: 2015-05-10 22:49:55
 */
 
 
 #include "cvxopt.h"
 #include "klu.h"
 #include "misc.h"
-#include "complex.h"
 
+// KLU functions
 #if (SIZEOF_INT < SIZEOF_LONG)
 #define KLUD(name) klu_l_ ## name
 #define KLUZ(name) klu_zl_ ## name
@@ -20,7 +20,7 @@
 #endif
 
 
-// KLU structures
+// KLU types
 #if (SIZEOF_INT < SIZEOF_LONG)
 #define KLUS(name) klu_l_ ## name
 #else
@@ -28,56 +28,8 @@
 #endif
 
 
+
 const int E_SIZE[] = {sizeof(int_t), sizeof(double), sizeof(double complex)};
-
-
-void klu_l_get_determinant(double *det, KLUS(numeric) *Numeric) {
-    double *Udiag = Numeric->Udiag;
-    int i, n =  Numeric->n;
-    det[0] = 1;
-
-    for (i = 0; i < n; i++) {
-        det[0] *= Udiag[i];
-        printf("%f\n", Udiag[i]);
-    }
-
-}
-
-
-void klu_zl_get_determinant(double *det, KLUS(numeric) *Numeric) {
-    det[0] = 1;
-    double *Udiag = Numeric->Udiag;
-    int i, n =  Numeric->n;
-
-
-
-    for (i = 0; i < n; i++) {
-        det[0] *= Udiag[i];
-
-
-    }
-
-
-}
-
-static void free_klu_d_symbolic(PyObject *F)
-{
-    KLUS(common) Common;
-    KLUD(defaults)(&Common);
-    KLUS(symbolic) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
-    KLUD(free_symbolic)(&Fptr, &Common);
-}
-
-
-
-static void free_klu_d_numeric(PyObject *F)
-{
-
-    KLUD(common) Common;
-    KLUD(defaults)(&Common);
-    KLUS(numeric) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
-    KLUD(free_numeric)(&Fptr, &Common);
-}
 
 
 
@@ -86,9 +38,25 @@ static char klu_error[20];
 PyDoc_STRVAR(klu__doc__, "Interface to the KLU library.\n\n"
              "Routines for symbolic and numeric LU factorization of sparse\n"
              "matrices and for solving sparse sets of linear equations.\n"
+             "This library is well-suited for circuit simulation.\n\n"
              "The default control settings of KLU are used.\n\n"
-             "See also http://www.cise.ufl.edu/research/sparse/klu.");
+             "See also http://faculty.cse.tamu.edu/davis/suitesparse.html");
 
+
+static void free_klu_d_symbolic(PyObject *F)
+{
+    KLUS(common) Common;
+    KLUD(defaults)(&Common);
+    KLUS(symbolic) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
+    KLUD(free_symbolic)(&Fptr, &Common);
+}
+static void free_klu_d_numeric(PyObject *F)
+{
+    KLUD(common) Common;
+    KLUD(defaults)(&Common);
+    KLUS(numeric) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
+    KLUD(free_numeric)(&Fptr, &Common);
+}
 
 
 
@@ -125,6 +93,8 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
 #endif
     char trans = 'N';
     int oB = 0, n, nrhs = -1, ldB = 0, k;
+
+
 
     void *x;
     char *kwlist[] = {"A", "B", "trans", "nrhs", "ldB", "offsetB",
@@ -315,13 +285,13 @@ static PyObject* symbolic(PyObject *self, PyObject *args)
     Symbolic = KLUD(analyze)(n, SP_COL(A), SP_ROW(A), &Common);
     if (Common.status == KLU_OK) {
         if (SP_ID(A) == DOUBLE)
-            return (PyObject *) PyCapsule_New( (void *) Symbolic,
-                                               "KLU SYM D FACTOR",
-                                               (PyCapsule_Destructor) &free_klu_d_symbolic);
+            return (PyObject *) PyCapsule_New(
+                       (void *) Symbolic, "KLU SYM D FACTOR",
+                       (PyCapsule_Destructor) &free_klu_d_symbolic);
         else
-            return (PyObject *) PyCapsule_New( (void *) Symbolic,
-                                               "KLU SYM Z FACTOR",
-                                               (PyCapsule_Destructor) &free_klu_d_symbolic);
+            return (PyObject *) PyCapsule_New(
+                       (void *) Symbolic, "KLU SYM Z FACTOR",
+                       (PyCapsule_Destructor) &free_klu_d_symbolic);
     }
     else
         KLUD(free_symbolic)(&Symbolic, &CommonFree);
@@ -343,14 +313,18 @@ static PyObject* symbolic(PyObject *self, PyObject *args)
 
 static char doc_numeric[] =
     "Numeric LU factorization of a sparse matrix, given a symbolic\n"
-    "factorization computed by klu.symbolic.  Raises an\n"
-    "ArithmeticError if A is singular.\n\n"
+    "factorization computed by klu.symbolic. To speed-up de factorization\n"
+    "a previous numeric factorization can be provided. In case that this \n"
+    "refactorization leads to numerical issues a new (full) numeric factorization"
+    "is returned.  Raises an ArithmeticError if A is singular.\n\n"
     "Fn = numeric(A, Fs, F)\n\n"
     "ARGUMENTS\n"
     "A         sparse matrix; may be rectangular\n\n"
     "Fs        symbolic factorization of A, or a matrix with the same\n"
     "          sparsity pattern, dimensions, and typecode as A, \n"
-    "          created by klu.symbolic\n\n"
+    "          created by klu.symbolic,\n"
+    "F         numeric factorization of A, or  a matrix with the same\n"
+    "          sparsity patthern, dimensions, and typecode as A.\n\n"
     "F         the numeric factorization, as an opaque C object";
 
 static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
@@ -359,6 +333,7 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
     PyObject *Fs;
     PyObject *F = NULL;
     void *Fsptr, *Fptr;
+    int factorize = 0;
     const char *descrdFs = "KLU SYM D FACTOR";
     const char *descrzFs = "KLU SYM Z FACTOR";
     const char *descrdF = "KLU NUM D FACTOR";
@@ -387,25 +362,19 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 
 
         if (F != NULL) {
-            // printf("Refactorizando\n");
+
             TypeCheck_Capsule(F, descrdF, "F is not the KLU numeric "
                               "factor of a 'd' matrix");
             if (!(Fptr = (KLUS(numeric) *) PyCapsule_GetPointer(F, descrdF)))
                 err_CO("F");
 
+            // F is a previous numeric factorization, hence, a "fast" computation
+            // of the condition number of A is performed.
+
             KLUD(rcond)(Fsptr, Fptr, &Common);
 
             if (Common.rcond < 1E-20) {
-                Numeric = KLUD(factor)(SP_COL(A), SP_ROW(A), SP_VAL(A), Fsptr,
-                                       &Common);
-
-                // free(F);
-                // KLUD(free_numeric)(&Fptr, &CommonFree);
-
-                if (Common.status == KLU_OK)
-                    return (PyObject *) PyCapsule_New(
-                               (void *) Numeric, "KLU NUM D FACTOR",
-                               (PyCapsule_Destructor) &free_klu_d_numeric);
+                factorize =  1;
 
             }
             else {
@@ -414,14 +383,16 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 
                 if (Common.status == KLU_OK)
                     Py_RETURN_NONE;
+                else {
+                    // Refactorization failed, tries to perform a full factorization.
+                    factorize = 1;
+                }
 
             }
 
-
         }
 
-
-        else {
+        if (F == NULL || factorize) {
 
             Numeric = KLUD(factor)(SP_COL(A), SP_ROW(A), SP_VAL(A), Fsptr,
                                    &Common);
@@ -438,25 +409,19 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 
     case COMPLEX:
         TypeCheck_Capsule(Fs, descrzFs, "Fs is not the KLU symbolic "
-                          "factor of a 'd' matrix");
+                          "factor of a 'z' matrix");
         if (!(Fsptr = (void *) PyCapsule_GetPointer(Fs, descrzFs)))
             err_CO("Fs");
         if (F != NULL) {
             TypeCheck_Capsule(F, descrzF, "F is not the KLU numeric "
-                              "factor of a 'd' matrix");
+                              "factor of a 'z' matrix");
             if (!(Fptr = (void *) PyCapsule_GetPointer(F, descrzF)))
                 err_CO("F");
 
             KLUZ(rcond)(Fsptr, Fptr, &Common);
 
             if (Common.rcond < 1E-20) {
-                Numeric = KLUZ(factor)(SP_COL(A), SP_ROW(A), SP_VAL(A), Fsptr,
-                                       &Common);
-
-                if (Common.status == KLU_OK)
-                    return (PyObject *) PyCapsule_New(
-                               (void *) Numeric, "KLU NUM Z FACTOR",
-                               (PyCapsule_Destructor) &free_klu_d_numeric);
+                factorize = 1;
             }
             else {
                 KLUZ(refactor)(SP_COL(A), SP_ROW(A), SP_VAL(A), Fsptr,
@@ -464,13 +429,13 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 
                 if (Common.status == KLU_OK)
                     Py_RETURN_NONE;
+                else
+                    factorize = 1;
 
             }
 
-
-
         }
-        else {
+        if (F == NULL || factorize) {
 
             Numeric = KLUZ(factor)(SP_COL(A), SP_ROW(A), SP_VAL(A), Fsptr,
                                    &Common);
@@ -498,58 +463,6 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
         }
         return NULL;
     }
-}
-
-
-static char doc_det[] =
-    "Obtains the determinant of a numeric object.\n\n"
-    "d = det(A, N)\n"
-    "ARGUMENTS\n"
-    "A        square sparse matrix\n"
-    "N        numeric factorization, as returned by klu.numeric\n\n"
-    "d        determinant value";
-
-
-static PyObject* det(PyObject *self, PyObject *args) {
-
-    void *Fptr;
-    PyObject *F;
-    spmatrix *A;
-    double det[] = {0};
-
-    const char *descrdF = "KLU NUM D FACTOR";
-    const char *descrzF = "KLU NUM Z FACTOR";
-
-    if (!PyArg_ParseTuple(args, "OO", &A, &F))
-        return NULL;
-
-
-    if (!PyCapsule_CheckExact(F))
-        err_CO("F");
-
-    if (SP_ID(A) == DOUBLE) {
-        TypeCheck_Capsule(F, descrdF, "F is not the KLU numeric "
-                          "factor of a 'd' matrix");
-        if (!(Fptr = (KLUS(numeric) *) PyCapsule_GetPointer(F, descrdF)))
-            err_CO("F");
-
-        KLUD(get_determinant)(det, Fptr);
-    }
-    else {
-        TypeCheck_Capsule(F, descrzF, "F is not the KLU numeric "
-                          "factor of a 'z' matrix");
-        if (!(Fptr = (KLUS(numeric) *) PyCapsule_GetPointer(F, descrzF)))
-            err_CO("F");
-
-        KLUZ(get_determinant)(det, Fptr);
-    }
-
-    printf("determinant %f\n", det[0]);
-
-    return Py_BuildValue("d", det[0]);
-
-
-
 }
 
 
@@ -694,7 +607,7 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
         }
     }
 
-    Py_RETURN_NONE;
+    return Py_BuildValue("");
 
 }
 
@@ -710,7 +623,6 @@ static PyMethodDef klu_functions[] = {
     {"symbolic", (PyCFunction) symbolic, METH_VARARGS, doc_symbolic},
     {"numeric", (PyCFunction) numeric, METH_VARARGS, doc_numeric},
     {"solve", (PyCFunction) solve, METH_VARARGS | METH_KEYWORDS, doc_solve},
-    {"det", (PyCFunction) det, METH_VARARGS | METH_KEYWORDS, doc_det},
     {NULL}  /* Sentinel */
 };
 

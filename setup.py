@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 try:
     import setuptools
 except ImportError:
@@ -7,17 +5,6 @@ except ImportError:
 from distutils.core import setup, Extension
 from glob import glob
 import os
-
-
-# Modify this if SuiteSparse libraries ar not in /usr/lib
-# SS_LIB_DIR =  '/usr/lib'
-SS_LIB_DIR = '/usr/local/Cellar/suite-sparse/4.2.1/lib'
-# Directory containing the SuiteSparse header files (used only when BUILD_GSL = 1)
-# SS_INC_DIR =  '/usr/include/suitesparse'
-SS_INC_DIR = '/usr/local/Cellar/suite-sparse/4.2.1/include'
-
-# Default names of KLU, UMFPACK, CHOLMOD and AMD libraries
-SS_LIB = ['klu', 'umfpack', 'cholmod', 'camd', 'amd', 'colamd', 'suitesparseconfig', 'btf']
 
 
 # Modifiy this if BLAS and LAPACK libraries are not in /usr/lib.
@@ -82,8 +69,6 @@ if type(BLAS_EXTRA_LINK_ARGS) is str: BLAS_EXTRA_LINK_ARGS = BLAS_EXTRA_LINK_ARG
 BUILD_GSL = int(os.environ.get("CVXOPT_BUILD_GSL",BUILD_GSL))
 GSL_LIB_DIR = os.environ.get("CVXOPT_GSL_LIB_DIR",GSL_LIB_DIR)
 GSL_INC_DIR = os.environ.get("CVXOPT_GSL_INC_DIR",GSL_INC_DIR)
-SS_LIB_DIR = os.environ.get("CVXOPT_SS_LIB_DIR",SS_LIB_DIR)
-SS_INC_DIR = os.environ.get("CVXOPT_SS_INC_DIR",SS_INC_DIR)
 BUILD_FFTW = int(os.environ.get("CVXOPT_BUILD_FFTW",BUILD_FFTW))
 FFTW_LIB_DIR = os.environ.get("CVXOPT_FFTW_LIB_DIR",FFTW_LIB_DIR)
 FFTW_INC_DIR = os.environ.get("CVXOPT_FFTW_INC_DIR",FFTW_INC_DIR)
@@ -154,23 +139,39 @@ lapack = Extension('lapack', libraries = LAPACK_LIB + BLAS_LIB,
     sources = ['src/C/lapack.c'] )
 
 umfpack = Extension('umfpack', 
-    include_dirs = [SS_INC_DIR]+['../lib/cvxopt-1.1.7/src/C/'],
-    library_dirs = [ SS_LIB_DIR ],
+    include_dirs = [ 'src/C/SuiteSparse/UMFPACK/Include',
+        'src/C/SuiteSparse/AMD/Include', 
+        'src/C/SuiteSparse/AMD/Source', 
+        'src/C/SuiteSparse/SuiteSparse_config' ],
+    library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
-    libraries = LAPACK_LIB + BLAS_LIB + SS_LIB,
+    libraries = LAPACK_LIB + BLAS_LIB,
     extra_compile_args = ['-Wno-unknown-pragmas'],
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    sources = [ 'src/C/umfpack.c'])
+    sources = [ 'src/C/umfpack.c',
+        'src/C/SuiteSparse/UMFPACK/Source/umfpack_global.c',
+        'src/C/SuiteSparse/UMFPACK/Source/umfpack_tictoc.c' ] +
+        ['src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
+        glob('src/C/SuiteSparse_cvxopt_extra/umfpack/*'))
 
 
 klu = Extension('klu', 
-    include_dirs = [SS_INC_DIR]+['../lib/cvxopt-1.1.7/src/C/'],
-    library_dirs = [ SS_LIB_DIR ],
+    include_dirs = [ 'src/C/SuiteSparse/KLU/Include',
+        'src/C/SuiteSparse/AMD/Include', 
+        'src/C/SuiteSparse/AMD/Source', 
+        'src/C/SuiteSparse/COLAMD/Include', 
+        'src/C/SuiteSparse/COLAMD/Source', 
+        'src/C/SuiteSparse/BTF/Include', 
+        'src/C/SuiteSparse/BTF/Source', 
+        'src/C/SuiteSparse/SuiteSparse_config' ],
+    library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
-    libraries = LAPACK_LIB + BLAS_LIB + SS_LIB,
+    libraries = LAPACK_LIB + BLAS_LIB,
     extra_compile_args = ['-Wno-unknown-pragmas'],
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    sources = ['src/C/klu.c'])
+    sources = ['src/C/klu.c' ] +
+        ['src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
+        glob('src/C/SuiteSparse_cvxopt_extra/klu/*'))
 
 
 
@@ -178,23 +179,33 @@ klu = Extension('klu',
 import sys
 if sys.maxsize > 2**31: MACROS += [('DLONG',None)]
 
+
 cholmod = Extension('cholmod',
-    include_dirs = [SS_INC_DIR]+['../lib/cvxopt-1.1.7/src/C/'],
-    library_dirs = [ SS_LIB_DIR ],
-    define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
-    libraries = LAPACK_LIB + BLAS_LIB + SS_LIB,
-    extra_compile_args = ['-Wno-unknown-pragmas'],
+    library_dirs = [ BLAS_LIB_DIR ],
+    libraries = LAPACK_LIB + BLAS_LIB,
+    include_dirs = [ 'src/C/SuiteSparse/CHOLMOD/Include', 
+        'src/C/SuiteSparse/COLAMD', 
+        'src/C/SuiteSparse/AMD/Include', 
+        'src/C/SuiteSparse/COLAMD/Include',
+        'src/C/SuiteSparse/SuiteSparse_config' ],
+    define_macros = MACROS + [('NPARTITION', '1'), ('NTIMER', '1')],
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    sources = [ 'src/C/cholmod.c' ])
+    sources = [ 'src/C/cholmod.c' ] + 
+        ['src/C/SuiteSparse/AMD/Source/' + s for s in ['amd_global.c',
+            'amd_postorder.c', 'amd_post_tree.c', 'amd_2.c']] +
+        ['src/C/SuiteSparse/COLAMD/Source/' + s for s in ['colamd.c',
+            'colamd_global.c']] +
+        ['src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
+        glob('src/C/SuiteSparse/CHOLMOD/Core/c*.c') +
+        glob('src/C/SuiteSparse/CHOLMOD/Cholesky/c*.c') +
+        ['src/C/SuiteSparse/CHOLMOD/Check/cholmod_check.c'] +
+        glob('src/C/SuiteSparse/CHOLMOD/Supernodal/c*.c') )
 
 amd = Extension('amd', 
-    include_dirs = [SS_INC_DIR]+['../lib/cvxopt-1.1.7/src/C/'],
-    library_dirs = [ SS_LIB_DIR ],
-    define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
-    libraries = LAPACK_LIB + BLAS_LIB + SS_LIB,
-    extra_compile_args = ['-Wno-unknown-pragmas'],
-    extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    sources = [ 'src/C/amd.c' ])
+    include_dirs = [ 'src/C/SuiteSparse/AMD/Include', 
+        'src/C/SuiteSparse/SuiteSparse_config' ],
+    define_macros = MACROS,
+    sources = [ 'src/C/amd.c' ] + glob('src/C/SuiteSparse/AMD/Source/*.c') )
 
 misc_solvers = Extension('misc_solvers',
     libraries = LAPACK_LIB + BLAS_LIB,
