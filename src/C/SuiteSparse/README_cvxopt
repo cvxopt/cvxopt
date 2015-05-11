@@ -4,7 +4,7 @@ with the following files and directories removed.
 
 AMD/Demo
 AMD/MATLAB
-BTF 
+BTF/MATLAB 
 CAMD
 CCOLAMD 
 CHOLMOD/Demo
@@ -19,10 +19,14 @@ Csparse_to_CXsparse
 CXSparse
 CXSparse_newfiles
 CXSparse_newfiles.tar.gz
-KLU
+KLU/Demo
+KLU/MATLAB
+KLU/Tcov
+KLU/User
 LDL
 MATLAB_Tools
 RBio
 UMFPACK/Demo
 UMFPACK/MATLAB
 UMFPACK/Tcov
+
