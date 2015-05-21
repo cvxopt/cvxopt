@@ -2,13 +2,14 @@
 * @Author: Uriel Sandoval
 * @Date:   2015-04-28 18:56:49
 * @Last Modified by:   Uriel Sandoval
-* @Last Modified time: 2015-05-11 11:34:33
+* @Last Modified time: 2015-05-21 14:55:07
 */
 
 
 #include "cvxopt.h"
 #include "klu.h"
 #include "misc.h"
+
 
 // KLU functions
 #if (SIZEOF_INT < SIZEOF_LONG)
@@ -68,6 +69,68 @@ static void free_klu_z_numeric(PyObject *F)
 
 
 
+
+static char doc_det[] = "Determinant of a KLU numeric object";
+
+
+static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds){
+    spmatrix *A;
+
+    PyObject *F;
+    PyObject *Fs;
+
+    KLUS(symbolic) *Fsptr;
+    KLUS(numeric) *Fptr;
+
+    KLUS(common) Common;
+    const char *descrdFs = "KLU SYM D FACTOR";
+    const char *descrdF = "KLU NUM D FACTOR";
+
+    double *Udiag;
+    double det = 1;
+    int n;
+
+    if (!PyArg_ParseTuple(args, "OOO", &A, &Fs, &F))
+        return NULL;
+
+    if (!SpMatrix_Check(A)) PY_ERR_TYPE("A must be a sparse matrix");
+    if (!PyCapsule_CheckExact(F)) err_CO("F");
+    if (!PyCapsule_CheckExact(Fs)) err_CO("Fs");
+
+    if (SP_ID(A)==COMPLEX)
+        PY_ERR_TYPE("A must be a real sparse matrix");
+
+    if (!(Fptr =  (KLUS(numeric) *) PyCapsule_GetPointer(F, descrdF)))
+        err_CO("F");
+
+    if (!(Fsptr =  (KLUS(symbolic) *) PyCapsule_GetPointer(Fs, descrdFs)))
+        err_CO("Fs");
+
+
+    long int *Lp, *Li, *Up, *Ui, *Fp, *Fi, *P, *Q, *R;
+    double *Lx, *Ux, *Fx, *Rs;
+
+    KLUD(defaults)(&Common) ;
+
+
+    KLUD(extract)(Fptr, Fsptr, Lp, Li, Lx, Up, Ui, Ux, Fp, Fi, Fx, P, Q, Rs, R, &Common);
+
+    Udiag = Fptr->Udiag;
+    n =  Fptr->n;
+    int k;
+    int p,q;
+    for(k=0; k<n; k++){
+        p = P[k];
+        q = Q[k];
+
+        det *=  Udiag[k]*Rs[k];
+    }
+
+
+    return Py_BuildValue("d", det);
+
+
+}
 
 
 static char doc_linsolve[] =
@@ -340,7 +403,8 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
     spmatrix *A;
     PyObject *Fs;
     PyObject *F = NULL;
-    void *Fsptr, *Fptr;
+    KLUS(symbolic) *Fsptr;
+    KLUS(numeric) *Fptr;
     int factorize = 0;
     const char *descrdFs = "KLU SYM D FACTOR";
     const char *descrzFs = "KLU SYM Z FACTOR";
@@ -365,7 +429,7 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
     case DOUBLE:
         TypeCheck_Capsule(Fs, descrdFs, "Fs is not the KLU symbolic "
                           "factor of a 'd' matrix");
-        if (!(Fsptr = (void *) PyCapsule_GetPointer(Fs, descrdFs)))
+        if (!(Fsptr = (KLUS(symbolic) *) PyCapsule_GetPointer(Fs, descrdFs)))
             err_CO("Fs");
 
 
@@ -418,7 +482,7 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
     case COMPLEX:
         TypeCheck_Capsule(Fs, descrzFs, "Fs is not the KLU symbolic "
                           "factor of a 'z' matrix");
-        if (!(Fsptr = (void *) PyCapsule_GetPointer(Fs, descrzFs)))
+        if (!(Fsptr = (KLUS(symbolic) *) PyCapsule_GetPointer(Fs, descrzFs)))
             err_CO("Fs");
         if (F != NULL) {
             TypeCheck_Capsule(F, descrzF, "F is not the KLU numeric "
@@ -633,6 +697,7 @@ static PyMethodDef klu_functions[] = {
     {"symbolic", (PyCFunction) symbolic, METH_VARARGS, doc_symbolic},
     {"numeric", (PyCFunction) numeric, METH_VARARGS, doc_numeric},
     {"solve", (PyCFunction) solve, METH_VARARGS | METH_KEYWORDS, doc_solve},
+    {"det", (PyCFunction) det, METH_VARARGS | METH_KEYWORDS, doc_det},
     {NULL}  /* Sentinel */
 };
 
