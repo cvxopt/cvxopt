@@ -2,7 +2,7 @@
 * @Author: Uriel Sandoval
 * @Date:   2015-04-28 18:56:49
 * @Last Modified by:   Uriel Sandoval
-* @Last Modified time: 2015-05-21 14:55:07
+* @Last Modified time: 2015-05-21 19:08:05
 */
 
 
@@ -86,9 +86,10 @@ static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds){
     const char *descrdFs = "KLU SYM D FACTOR";
     const char *descrdF = "KLU NUM D FACTOR";
 
-    double *Udiag;
-    double det = 1;
-    int n;
+    double *Udiag, *Rs;
+    SuiteSparse_long *P, *Q, *Wi;
+    double det = 1, d_sign;
+    int n, npiv, itmp;
 
     if (!PyArg_ParseTuple(args, "OOO", &A, &Fs, &F))
         return NULL;
@@ -107,27 +108,76 @@ static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds){
         err_CO("Fs");
 
 
-    long int *Lp, *Li, *Up, *Ui, *Fp, *Fi, *P, *Q, *R;
-    double *Lx, *Ux, *Fx, *Rs;
 
-    KLUD(defaults)(&Common) ;
-
-
-    KLUD(extract)(Fptr, Fsptr, Lp, Li, Lx, Up, Ui, Ux, Fp, Fi, Fx, P, Q, Rs, R, &Common);
 
     Udiag = Fptr->Udiag;
     n =  Fptr->n;
-    int k;
-    int p,q;
-    for(k=0; k<n; k++){
-        p = P[k];
-        q = Q[k];
+    P = Fptr->Pnum;
+    Q = Fsptr->Q;
+    Rs =  Fptr->Rs;
 
-        det *=  Udiag[k]*Rs[k];
+
+
+    int i, k;
+    for(k=0; k<n; k++)
+        det *= Udiag[k];
+
+
+    for(k=0; k<n; k++)
+        det *= Rs[k];    
+
+
+
+    Wi=malloc(n*sizeof(SuiteSparse_long));
+
+    /* ---------------------------------------------------------------------- */
+    /* determine if P and Q are odd or even permutations */
+    /* ---------------------------------------------------------------------- */
+
+    npiv = 0 ;
+
+    for (i = 0 ; i < n ; i++)
+    {
+        Wi [i] = P [i] ;
+    }
+
+    for (i = 0 ; i < n ; i++)
+    {
+        while (Wi [i] != i)
+        {
+            itmp = Wi [Wi [i]] ;
+            Wi [Wi [i]] = Wi [i] ;
+            Wi [i] = itmp ;
+            npiv++ ;
+        }
     }
 
 
-    return Py_BuildValue("d", det);
+    for (i = 0 ; i < n ; i++)
+    {
+        Wi [i] = Q [i] ;
+    }
+
+    for (i = 0 ; i < n ; i++)
+    {
+        while (Wi [i] != i)
+        {
+            itmp = Wi [Wi [i]] ;
+            Wi [Wi [i]] = Wi [i] ;
+            Wi [i] = itmp ;
+            npiv++ ;
+        }
+    }
+
+    /* if npiv is odd, the sign is -1.  if it is even, the sign is +1 */
+    d_sign = (npiv % 2) ? -1. : 1. ;
+
+
+
+
+
+
+    return Py_BuildValue("d", det*d_sign);
 
 
 }
