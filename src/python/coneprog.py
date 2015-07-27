@@ -31,7 +31,7 @@ options = {}
 def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None, 
     dualstart = None, kktsolver = None, xnewcopy = None, xdot = None,
     xaxpy = None, xscal = None, ynewcopy = None, ydot = None, yaxpy = None,
-    yscal = None):
+    yscal = None, options = options):
 
     """
     Solves a pair of primal and dual cone programs
@@ -1439,7 +1439,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
 def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
     initvals = None, kktsolver = None, xnewcopy = None, xdot = None,
     xaxpy = None, xscal = None, ynewcopy = None, ydot = None, yaxpy = None,
-    yscal = None):
+    yscal = None, options = options):
     """
 
     Solves a pair of primal and dual convex quadratic cone programs
@@ -2543,7 +2543,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
 
 
 def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
-    dualstart = None):
+    dualstart = None, options = options):
     """
 
     Solves a pair of primal and dual LPs
@@ -2802,7 +2802,7 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
         try: from cvxopt import glpk
         except ImportError: raise ValueError("invalid option "\
             "(solver = 'glpk'): cvxopt.glpk is not installed")
-        glpk.options = options
+        glpk.options = options['glpk']
         status, x, z, y = glpk.lp(c, G, h, A, b)
 
         if status == 'optimal':
@@ -2873,8 +2873,8 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
             raise ValueError("invalid option (solver = 'mosek'): "\
                 "cvxopt.mosek is not installed")
 
-        if 'MOSEK' in options:
-            msk.options = options['MOSEK']
+        if 'mosek' in options:
+            msk.options = options['mosek']
         else:
             msk.options = {}
 
@@ -2996,11 +2996,11 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
             'primal slack': pslack, 'dual slack': dslack} 
 
     return conelp(c, G, h, {'l': m, 'q': [], 's': []}, A,  b, primalstart,
-        dualstart)
+        dualstart, options = options)
 
 
 def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
-    solver = None, primalstart = None, dualstart = None):
+    solver = None, primalstart = None, dualstart = None, options = options):
 
     """
     Solves a pair of primal and dual SOCPs
@@ -3524,8 +3524,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
     else: 
         ds = None
 
-    sol = conelp(c, G, h, dims, A = A, b = b, primalstart = ps, dualstart
-        = ds)
+    sol = conelp(c, G, h, dims, A = A, b = b, primalstart = ps, dualstart = ds, options = options)
     if sol['s'] is None:  
         sol['sl'] = None
         sol['sq'] = None
@@ -3554,7 +3553,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
 
     
 def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None, 
-    solver = None, primalstart = None, dualstart = None):
+    solver = None, primalstart = None, dualstart = None, options = options):
     """
 
     Solves a pair of primal and dual SDPs
@@ -4108,8 +4107,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
     else: 
         ds = None
 
-    sol = conelp(c, G, h, dims, A = A, b = b, primalstart = ps, dualstart
-        = ds)
+    sol = conelp(c, G, h, dims, A = A, b = b, primalstart = ps, dualstart = ds, options = options)
     if sol['s'] is None:
         sol['sl'] = None
         sol['ss'] = None
@@ -4140,7 +4138,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
 
 
 def qp(P, q, G = None, h = None, A = None, b = None, solver = None, 
-    initvals = None):
+    initvals = None, options = options):
 
     """
     Solves a quadratic program
@@ -4465,4 +4463,4 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
             'residual as primal infeasibility certificate': pinfres, 
             'residual as dual infeasibility certificate': dinfres} 
 
-    return coneqp(P, q, G, h, None, A,  b, initvals)
+    return coneqp(P, q, G, h, None, A,  b, initvals, options = options)
