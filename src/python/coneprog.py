@@ -3550,7 +3550,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
 
     
 def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None, 
-    solver = None, primalstart = None, dualstart = None, options = options):
+    solver = None, primalstart = None, dualstart = None, options = options, **kwargs):
     """
 
     Solves a pair of primal and dual SDPs
@@ -3880,7 +3880,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
         try: from cvxopt import dsdp
         except ImportError: raise ValueError("invalid option "\
             "(solver = 'dsdp'): cvxopt.dsdp is not installed")
-        dsdp.options = options
+        dsdp.options = options.get('dsdp',{})
         if p: raise ValueError("sdp() with the solver = 'dsdp' option "\
             "does not handle problems with equality constraints")
         dsdpstatus, x, r, zl, zs = dsdp.sdp(c, Gl, hl, Gs, hs)
