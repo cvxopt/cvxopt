@@ -31,7 +31,7 @@ options = {}
 def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None, 
     dualstart = None, kktsolver = None, xnewcopy = None, xdot = None,
     xaxpy = None, xscal = None, ynewcopy = None, ydot = None, yaxpy = None,
-    yscal = None, options = options):
+    yscal = None, **kwargs):
 
     """
     Solves a pair of primal and dual cone programs
@@ -423,6 +423,8 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
     EXPON = 3
     STEP = 0.99
 
+    options = kwargs.get('options',globals()['options'])
+
     DEBUG = options.get('debug', False)
 
     KKTREG = options.get('kktreg',None)
@@ -497,15 +499,14 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         raise TypeError("'dims['s']' must be a list of nonnegative " \
             "integers")
 
-    try: refinement = options['refinement']
-    except KeyError: 
-        if dims['q'] or dims['s']: refinement = 1
-        else: refinement = 0
-    else:
-        if not isinstance(refinement,(int,long)) or refinement < 0:
-            raise ValueError("options['refinement'] must be a "\
-                "nonnegative integer")
-
+    refinement = options.get('refinement',None)
+    if refinement is None:
+        if dims['q'] or dims['s']:
+            refinement = 1
+        else:
+            refinement = 0
+    elif not isinstance(refinement,(int,long)) or refinement < 0:
+        raise ValueError("options['refinement'] must be a nonnegative integer")
 
     cdim = dims['l'] + sum(dims['q']) + sum([k**2 for k in dims['s']])
     cdim_pckd = dims['l'] + sum(dims['q']) + sum([k*(k+1)/2 for k in 
@@ -1439,7 +1440,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
 def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
     initvals = None, kktsolver = None, xnewcopy = None, xdot = None,
     xaxpy = None, xscal = None, ynewcopy = None, ydot = None, yaxpy = None,
-    yscal = None, options = options):
+    yscal = None, **kwargs):
     """
 
     Solves a pair of primal and dual convex quadratic cone programs
@@ -1766,6 +1767,8 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
     STEP = 0.99
     EXPON = 3
 
+    options = kwargs.get('options',globals()['options'])
+    
     DEBUG = options.get('debug',False)
 
     KKTREG = options.get('kktreg',None)
@@ -2543,7 +2546,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
 
 
 def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
-    dualstart = None, options = options):
+    dualstart = None, **kwargs):
     """
 
     Solves a pair of primal and dual LPs
@@ -2772,7 +2775,8 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
         Options that are not recognized are replaced by their default 
         values.
     """
-
+    options = kwargs.get('options',globals()['options'])
+    
     import math
     from cvxopt import base, blas, misc
     from cvxopt.base import matrix, spmatrix
@@ -2802,7 +2806,7 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
         try: from cvxopt import glpk
         except ImportError: raise ValueError("invalid option "\
             "(solver = 'glpk'): cvxopt.glpk is not installed")
-        glpk.options = options['glpk']
+        glpk.options = options.get('glpk',{})
         status, x, z, y = glpk.lp(c, G, h, A, b)
 
         if status == 'optimal':
@@ -2873,11 +2877,7 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
             raise ValueError("invalid option (solver = 'mosek'): "\
                 "cvxopt.mosek is not installed")
 
-        if 'mosek' in options:
-            msk.options = options['mosek']
-        else:
-            msk.options = {}
-
+        msk.options = options.get('mosek',{})
         solsta, x, z, y  = msk.lp(c, G, h, A, b)
 
         resx0 = max(1.0, blas.nrm2(c))
@@ -3000,7 +3000,7 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
 
 
 def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
-    solver = None, primalstart = None, dualstart = None, options = options):
+    solver = None, primalstart = None, dualstart = None, **kwargs):
 
     """
     Solves a pair of primal and dual SOCPs
@@ -3326,10 +3326,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
         except ImportError: 
             raise ValueError("invalid option (solver = 'mosek'): "\
                 "cvxopt.mosek is not installed")
-        if 'MOSEK' in options:
-            msk.options = options['MOSEK']
-        else:
-            msk.options = {}
+        msk.options = options.get('mosek',{})
         if p: raise ValueError("socp() with the solver = 'mosek' option "\
             "does not handle problems with equality constraints")
 
@@ -3826,6 +3823,8 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
             options['DSDP_GapTolerance'] scalar (default: 1e-5).
     """
 
+    options = kwargs.get('options',globals()['options'])
+    
     import math
     from cvxopt import base, blas, misc
     from cvxopt.base import matrix, spmatrix
@@ -4138,7 +4137,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
 
 
 def qp(P, q, G = None, h = None, A = None, b = None, solver = None, 
-    initvals = None, options = options):
+    initvals = None, **kwargs):
 
     """
     Solves a quadratic program
@@ -4319,6 +4318,8 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
         values.
     """
 
+    options = kwargs.get('options',globals()['options'])
+
     from cvxopt import base, blas
     from cvxopt.base import matrix, spmatrix
 
@@ -4330,10 +4331,7 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
         except ImportError: raise ValueError("invalid option "\
             "(solver='mosek'): cvxopt.msk is not installed")
 
-        if 'MOSEK' in options:
-            msk.options = options['MOSEK']
-        else:
-            msk.options = {}
+        msk.options = options.get('mosek',{})
         solsta, x, z, y = msk.qp(P, q, G, h, A, b)
 
         n = q.size[0]
