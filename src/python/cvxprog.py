@@ -33,7 +33,7 @@ options = {}
 def cpl(c, F, G = None, h = None, dims = None, A = None, b = None, 
     kktsolver = None, xnewcopy = None, xdot = None, xaxpy = None,
     xscal = None, ynewcopy = None, ydot = None, yaxpy = None, 
-    yscal = None):
+    yscal = None, **kwargs):
 
     """
     Solves a convex optimization problem with a linear objective
@@ -385,49 +385,41 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
     EXPON = 3
     MAX_RELAXED_ITERS = 8
 
-    try: DEBUG = options['debug']
-    except KeyError: DEBUG = False
+    options = kwargs.get('options',globals()['options'])
 
-    try: MAXITERS = options['maxiters']
-    except KeyError: MAXITERS = 100
-    else: 
-        if type(MAXITERS) is not int or MAXITERS < 1: 
-            raise ValueError("options['maxiters'] must be a positive "\
-                "integer")
+    DEBUG = options.get('debug',False)
 
-    try: ABSTOL = options['abstol']
-    except KeyError: ABSTOL = 1e-7
-    else: 
-        if type(ABSTOL) is not float and type(ABSTOL) is not int: 
-            raise ValueError("options['abstol'] must be a scalar")
+    KKTREG = options.get('kktreg',None)
+    if KKTREG is None:
+        pass
+    elif not isinstance(KKTREG,(float,int,long)) or KKTREG < 0.0:
+        raise ValueError("options['kktreg'] must be a nonnegative scalar")
+    
+    MAXITERS = options.get('maxiters',100)
+    if not isinstance(MAXITERS,(int,long)) or MAXITERS < 1:
+        raise ValueError("options['maxiters'] must be a positive integer")
 
-    try: RELTOL = options['reltol']
-    except KeyError: RELTOL = 1e-6
-    else: 
-        if type(RELTOL) is not float and type(RELTOL) is not int: 
-            raise ValueError("options['reltol'] must be a scalar")
+    ABSTOL = options.get('abstol',1e-7)
+    if not isinstance(ABSTOL,(float,int,long)):
+        raise ValueError("options['abstol'] must be a scalar")
 
-    try: FEASTOL = options['feastol']
-    except KeyError: FEASTOL = 1e-7
-    else: 
-        if (type(FEASTOL) is not float and type(FEASTOL) is not int) or \
-            FEASTOL <= 0.0: 
-            raise ValueError("options['feastol'] must be a positive "\
-                "scalar")
+    RELTOL = options.get('reltol',1e-6)
+    if not isinstance(RELTOL,(float,int,long)):
+        raise ValueError("options['reltol'] must be a scalar")
 
-    if RELTOL <= 0.0 and ABSTOL <= 0.0:
+    if RELTOL <= 0.0 and ABSTOL <= 0.0 :
         raise ValueError("at least one of options['reltol'] and " \
             "options['abstol'] must be positive")
 
-    try: show_progress = options['show_progress']
-    except KeyError: show_progress = True
+    FEASTOL = options.get('feastol',1e-7)
+    if not isinstance(FEASTOL,(float,int,long)) or FEASTOL <= 0.0:
+        raise ValueError("options['feastol'] must be a positive scalar")
 
-    try: refinement = options['refinement']
-    except KeyError: refinement = 1
-    else:
-        if type(refinement) is not int or refinement < 0:
-            raise ValueError("options['refinement'] must be a "\
-                "nonnegative integer")
+    show_progress = options.get('show_progress', True)
+
+    refinement = options.get('refinement',1)
+    if not isinstance(refinement,(int,long)) or refinement < 0:
+        raise ValueError("options['refinement'] must be a nonnegative integer")
 
     if kktsolver is None: 
         if dims and (dims['q'] or dims['s']):  
@@ -531,7 +523,7 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
 
     if kktsolver in defaultsolvers:
          if kktsolver == 'ldl': 
-             factor = misc.kkt_ldl(G, dims, A, mnl)
+             factor = misc.kkt_ldl(G, dims, A, mnl, kktreg = KKTREG)
          elif kktsolver == 'ldl2': 
              factor = misc.kkt_ldl2(G, dims, A, mnl)
          elif kktsolver == 'chol':
@@ -1371,7 +1363,7 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
 def cp(F, G = None, h = None, dims = None, A = None, b = None,
     kktsolver = None, xnewcopy = None, xdot = None, xaxpy = None,
     xscal = None, ynewcopy = None, ydot = None, yaxpy = None, 
-    yscal = None):
+    yscal = None, **kwargs):
 
     """
     Solves a convex optimization problem
@@ -1655,6 +1647,9 @@ def cp(F, G = None, h = None, dims = None, A = None, b = None,
 
     """
 
+    options = kwargs.get('options',globals()['options'])
+    KKTREG = options.get('kktreg',None)
+    
     import math 
     from cvxopt import base, blas, misc
     from cvxopt.base import matrix, spmatrix 
@@ -1884,7 +1879,7 @@ def cp(F, G = None, h = None, dims = None, A = None, b = None,
             kktsolver = 'chol2'            
     if kktsolver in ('ldl', 'chol', 'chol2', 'qr'):
         if kktsolver == 'ldl':
-            factor = misc.kkt_ldl(G, dims, A, mnl)
+            factor = misc.kkt_ldl(G, dims, A, mnl, kktreg = KKTREG)
         elif kktsolver == 'qr':
             factor = misc.kkt_qr(G, dims, A, mnl)
         elif kktsolver == 'chol':
@@ -1966,14 +1961,14 @@ def cp(F, G = None, h = None, dims = None, A = None, b = None,
         x[1] *= alpha
 
     sol = cpl(c, F_e, G_e, h, dims, A_e, b, kktsolver_e, xnewcopy_e, 
-         xdot_e, xaxpy_e, xscal_e)
+         xdot_e, xaxpy_e, xscal_e, options = options)
 
     sol['x'] = sol['x'][0]
     sol['znl'], sol['snl'] = sol['znl'][1:], sol['snl'][1:]
     return sol
 
 
-def gp(K, F, g, G=None, h=None, A=None, b=None):
+def gp(K, F, g, G=None, h=None, A=None, b=None, kktsolver=None, **kwargs):
 
     """
     Solves a geometric program
@@ -2055,6 +2050,8 @@ def gp(K, F, g, G=None, h=None, A=None, b=None):
        options['reltol'] scalar (default: 1e-6)
        options['feastol'] scalar (default: 1e-7).
     """
+
+    options = kwargs.get('options',globals()['options'])
 
     import math 
     from cvxopt import base, blas, misc
@@ -2159,4 +2156,4 @@ def gp(K, F, g, G=None, h=None, A=None, b=None):
         if z is None: return f, Df
         else: return f, Df, H
 
-    return cp(Fgp, G, h, dims, A, b)
+    return cp(Fgp, G, h, dims, A, b, kktsolver = kktsolver, options = options)
