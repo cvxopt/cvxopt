@@ -2,7 +2,7 @@
 * @Author: Uriel Sandoval
 * @Date:   2015-04-28 18:56:49
 * @Last Modified by:   Uriel Sandoval
-* @Last Modified time: 2015-05-21 19:08:05
+* @Last Modified time: 2015-07-25 21:54:46
 */
 
 
@@ -79,10 +79,12 @@ static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds){
     PyObject *F;
     PyObject *Fs;
 
+    klu_common Common;
     KLUS(symbolic) *Fsptr;
     KLUS(numeric) *Fptr;
+    klu_defaults(&Common);
 
-    KLUS(common) Common;
+
     const char *descrdFs = "KLU SYM D FACTOR";
     const char *descrdF = "KLU NUM D FACTOR";
 
@@ -98,7 +100,7 @@ static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds){
     if (!PyCapsule_CheckExact(F)) err_CO("F");
     if (!PyCapsule_CheckExact(Fs)) err_CO("Fs");
 
-    if (SP_ID(A)==COMPLEX)
+    if (SP_ID(A) == COMPLEX)
         PY_ERR_TYPE("A must be a real sparse matrix");
 
     if (!(Fptr =  (KLUS(numeric) *) PyCapsule_GetPointer(F, descrdF)))
@@ -108,6 +110,7 @@ static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds){
         err_CO("Fs");
 
 
+    /* This code is very similar to umfpack_get_determinan.c */
 
 
     Udiag = Fptr->Udiag;
@@ -119,16 +122,16 @@ static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds){
 
 
     int i, k;
-    for(k=0; k<n; k++)
+    for (k = 0; k < n; k++)
         det *= Udiag[k];
 
 
-    for(k=0; k<n; k++)
-        det *= Rs[k];    
+    for (k = 0; k < n; k++)
+        det *= Rs[k];
 
 
 
-    Wi=malloc(n*sizeof(SuiteSparse_long));
+    Wi = malloc(n * sizeof(SuiteSparse_long));
 
     /* ---------------------------------------------------------------------- */
     /* determine if P and Q are odd or even permutations */
@@ -173,11 +176,9 @@ static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds){
     d_sign = (npiv % 2) ? -1. : 1. ;
 
 
+    klu_free(Wi, n, sizeof (SuiteSparse_long), &Common);
 
-
-
-
-    return Py_BuildValue("d", det*d_sign);
+    return Py_BuildValue("d", det * d_sign);
 
 
 }
@@ -212,8 +213,7 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
     int trans_ = 'N';
 #endif
     char trans = 'N';
-    int oB = 0, n, nrhs = -1, ldB = 0, k;
-    void *x;
+    int oB = 0, n, nrhs = -1, ldB = 0;
     KLUS(common) Common, CommonFree;
     KLUS(symbolic) *Symbolic;
     KLUS(numeric) *Numeric;
@@ -303,49 +303,25 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
     }
 
 
-    if (!(x = malloc(n * E_SIZE[SP_ID(A)]))) {
-        KLUD(free_symbolic)(&Symbolic, &CommonFree);
-        if (SP_ID(A) == DOUBLE)
-            KLUD(free_numeric)(&Numeric, &CommonFree);
+    if (SP_ID(A) == DOUBLE) {
+        if (trans == 'N')
+            KLUD(solve)(Symbolic, Numeric, n, nrhs, MAT_BUFD(B), &Common);
         else
-            KLUZ(free_numeric)(&Numeric, &CommonFree);
-
-        return PyErr_NoMemory();
+            KLUD(tsolve)(Symbolic, Numeric, n, nrhs, MAT_BUFD(B), &Common);
     }
-    for (k = 0; k < nrhs; k++) {
-        memcpy(x, B->buffer + (k * ldB + oB)*E_SIZE[SP_ID(A)],
-               n * E_SIZE[SP_ID(A)]);
-        if (SP_ID(A) == DOUBLE) {
-            if (trans == 'N')
-                KLUD(solve)(Symbolic, Numeric, n, nrhs, x, &Common);
-            else
-                KLUD(tsolve)(Symbolic, Numeric, n, nrhs, x, &Common);
-        }
-        else {
-            if (trans == 'N')
-                KLUZ(solve)(Symbolic, Numeric, n, nrhs, x, &Common);
-            else
-                KLUZ(tsolve)(Symbolic, Numeric, n, nrhs, x,
-                             trans == 'C' ? 1 : 0, &Common);
-        }
-
-
-        if (Common.status == KLU_OK) {
-
-            memcpy(B->buffer + (k * ldB + oB)*E_SIZE[SP_ID(A)], x,
-                   n * E_SIZE[SP_ID(A)]);
-
-        }
+    else {
+        if (trans == 'N')
+            KLUZ(solve)(Symbolic, Numeric, n, nrhs, (double *) MAT_BUFZ(B), &Common);
         else
-            break;
+            KLUZ(tsolve)(Symbolic, Numeric, n, nrhs, (double *) MAT_BUFZ(B),
+                         trans == 'C' ? 1 : 0, &Common);
     }
-    free(x);
 
 
     if (Common.status != KLU_OK) {
         KLUD(free_symbolic)(&Symbolic, &CommonFree);
         if (SP_ID(A) == DOUBLE)
-            KLUD(free_numeric)(&Numeric, &CommonFree);
+            KLUD(free_numeric)(&numeric, &CommonFree);
         else
             KLUZ(free_numeric)(&Numeric, &CommonFree);
 
@@ -508,6 +484,7 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
                 else {
                     // Refactorization failed, tries to perform a full factorization.
                     factorize = 1;
+                    KLUD(free_numeric)(&Fptr, &CommonFree);
                 }
 
             }
@@ -627,8 +604,7 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
     const char *descrzF = "KLU NUM Z FACTOR";
 
     char trans = 'N';
-    double *x;
-    int oB = 0, n, ldB = 0, nrhs = -1, k;
+    int oB = 0, n, ldB = 0, nrhs = -1;
     char *kwlist[] = {"A", "Fs", "F", "B", "trans", "nrhs", "ldB", "offsetB",
                       NULL
                      };
@@ -678,42 +654,31 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
     if (trans != 'N' && trans != 'T' && trans != 'C')
         err_char("trans", "'N', 'T', 'C'");
 
-    if (!(x = malloc(n * E_SIZE[SP_ID(A)]))) return PyErr_NoMemory();
     KLUD(defaults)(&Common);
     KLUD(defaults)(&CommonFree);
-    for (k = 0; k < nrhs; k++) {
 
-        memcpy(x, B->buffer + (k * ldB + oB)*E_SIZE[SP_ID(A)],
-               n * E_SIZE[SP_ID(A)]);
-        if (SP_ID(A) == DOUBLE) {
-            if (trans == 'N')
-                KLUD(solve)(PyCapsule_GetPointer(Fs, descrdFs),
-                            PyCapsule_GetPointer(F, descrdF)
-                            , n, nrhs, x, &Common);
-            else
-                KLUD(tsolve)(PyCapsule_GetPointer(Fs, descrdFs),
-                             PyCapsule_GetPointer(F, descrdF)
-                             , n, nrhs, x, &Common);
-        }
-        else {
-            if (trans == 'N')
-                KLUZ(solve)(PyCapsule_GetPointer(Fs, descrzFs),
-                            PyCapsule_GetPointer(F, descrzF)
-                            , n, nrhs, x, &Common);
-            else
-                KLUZ(tsolve)(PyCapsule_GetPointer(Fs, descrzFs),
-                             PyCapsule_GetPointer(F, descrzF)
-                             , n, nrhs, x,  trans == 'C' ? 1 : 0,
-                             &Common);
-        }
-
-        if (Common.status == KLU_OK)
-            memcpy(B->buffer + (k * ldB + oB)*E_SIZE[SP_ID(A)], x,
-                   n * E_SIZE[SP_ID(A)]);
+    if (SP_ID(A) == DOUBLE) {
+        if (trans == 'N')
+            KLUD(solve)(PyCapsule_GetPointer(Fs, descrdFs),
+                        PyCapsule_GetPointer(F, descrdF)
+                        , n, nrhs, MAT_BUFD(B), &Common);
         else
-            break;
+            KLUD(tsolve)(PyCapsule_GetPointer(Fs, descrdFs),
+                         PyCapsule_GetPointer(F, descrdF)
+                         , n, nrhs, MAT_BUFD(B), &Common);
     }
-    free(x);
+    else {
+        if (trans == 'N')
+            KLUZ(solve)(PyCapsule_GetPointer(Fs, descrzFs),
+                        PyCapsule_GetPointer(F, descrzF)
+                        , n, nrhs, (double *) MAT_BUFZ(B), &Common);
+        else
+            KLUZ(tsolve)(PyCapsule_GetPointer(Fs, descrzFs),
+                         PyCapsule_GetPointer(F, descrzF)
+                         , n, nrhs, (double *) MAT_BUFZ(B),  trans == 'C' ? 1 : 0,
+                         &Common);
+    }
+
 
     if (Common.status != KLU_OK) {
         if (Common.status == KLU_OUT_OF_MEMORY)
