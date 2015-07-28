@@ -2,7 +2,7 @@
 * @Author: Uriel Sandoval
 * @Date:   2015-04-28 18:56:49
 * @Last Modified by:   Uriel Sandoval
-* @Last Modified time: 2015-07-25 21:54:46
+* @Last Modified time: 2015-07-27 22:13:29
 */
 
 
@@ -321,7 +321,7 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
     if (Common.status != KLU_OK) {
         KLUD(free_symbolic)(&Symbolic, &CommonFree);
         if (SP_ID(A) == DOUBLE)
-            KLUD(free_numeric)(&numeric, &CommonFree);
+            KLUD(free_numeric)(&Numeric, &CommonFree);
         else
             KLUZ(free_numeric)(&Numeric, &CommonFree);
 
