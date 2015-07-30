@@ -25,12 +25,11 @@ if __MOSEK:
 
         m, n = A.size
 
-        env  = mosek.Env()
         task = env.Task(0,0)
         task.set_Stream(mosek.streamtype.log, lambda x: sys.stdout.write(x))
 
-        task.appendvars( 2*n)            # number of variables
-        task.appendcons( 2*n)            # number of constraints
+        task.append(mosek.accmode.var, 2*n)            # number of variables
+        task.append(mosek.accmode.con, 2*n)            # number of constraints
 
         # input quadratic objective
         Q = matrix(0.0, (n,n)) 
@@ -49,8 +48,8 @@ if __MOSEK:
 
         # input constraint matrix row by row
         for i in range(n):
-            task.putarow(   i, [i, n+i], [1.0, -1.0])
-            task.putarow( n+i, [i, n+i], [1.0,  1.0])
+            task.putavec(mosek.accmode.con,   i, [i, n+i], [1.0, -1.0])
+            task.putavec(mosek.accmode.con, n+i, [i, n+i], [1.0,  1.0])
 
         # setup bounds on constraints
         task.putboundslice(mosek.accmode.con,
@@ -89,12 +88,12 @@ if __MOSEK:
 
         m, n = A.size
 
-        env  = mosek.Env()
+    #    env  = mosek.Env()
         task = env.Task(0,0)
         task.set_Stream(mosek.streamtype.log, lambda x: sys.stdout.write(x))
 
-        task.appendvars(2*n + m)     # number of variables
-        task.appendcons(2*n + m)     # number of constraints
+        task.append(mosek.accmode.var, 2*n + m)     # number of variables
+        task.append(mosek.accmode.con, 2*n + m)     # number of constraints
 
         # input quadratic objective
         task.putqobj(range(2*n,2*n+m), range(2*n,2*n+m), m*[2.0])
@@ -103,11 +102,11 @@ if __MOSEK:
 
         # input constraint matrix row by row
         for i in range(n):
-            task.putarow(   i, [i, n+i], [1.0, -1.0])
-            task.putarow( n+i, [i, n+i], [1.0,  1.0])
+            task.putavec(mosek.accmode.con,     i, [i, n+i], [1.0, -1.0])
+            task.putavec(mosek.accmode.con,   n+i, [i, n+i], [1.0,  1.0])
 
         for i in range(m):
-            task.putarow( 2*n+i, range(n) + [2*n+i], list(A[i,:]) + [-1.0])
+            task.putavec(mosek.accmode.con, 2*n+i, range(n) + [2*n+i], list(A[i,:]) + [-1.0])
 
         # setup bounds on constraints
         task.putboundslice(mosek.accmode.con,

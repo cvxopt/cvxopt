@@ -22,18 +22,19 @@ if __MOSEK:
 
         m, n = P.size
 
-        env = mosek.Env()
         task = env.Task(0,0)
         task.set_Stream(mosek.streamtype.log, lambda x: sys.stdout.write(x))
 
-        task.appendvars( n + m)            # number of variables
-        task.appendcons(  2*m )              # number of constraints
+        task.append(mosek.accmode.var, n + m)            # number of variables
+        task.append(mosek.accmode.con, 2*m)              # number of constraints
         task.putclist(range(n+m), n*[0.0] + m*[1.0])     # setup objective
 
         # input A matrix row by row
         for i in range(m):
-            task.putarow( i, range(n) + [n+i] , list(P[i,:]) + [-1.0])
-            task.putarow( i+m, range(n) + [n+i] , list(-P[i,:]) + [-1.0])
+            task.putavec(mosek.accmode.con, i, 
+                         range(n) + [n+i] , list(P[i,:]) + [-1.0])
+            task.putavec(mosek.accmode.con, i+m, 
+                         range(n) + [n+i] , list(-P[i,:]) + [-1.0])
 
         # setup bounds on constraints
         task.putboundslice(mosek.accmode.con,
@@ -65,17 +66,18 @@ if __MOSEK:
 
         m, n = P.size
 
-        env  = mosek.Env()
+    #    env  = mosek.Env()
         task = env.Task(0,0)
         task.set_Stream(mosek.streamtype.log, lambda x: sys.stdout.write(x))
 
-        task.appendvars( n + 2*m)          # number of variables
-        task.appendcons( m)                # number of constraints
+        task.append(mosek.accmode.var, n + 2*m)          # number of variables
+        task.append(mosek.accmode.con, m)                # number of constraints
         task.putclist(range(n+2*m), n*[0.0] + 2*m*[1.0]) # setup objective
 
         # input A matrix row by row
         for i in range(m):
-            task.putarow( i, range(n) + [n+i, n+m+i] , list(P[i,:]) + [-1.0, 1.0])
+            task.putavec(mosek.accmode.con, i, 
+                         range(n) + [n+i, n+m+i] , list(P[i,:]) + [-1.0, 1.0])
 
         # setup bounds on constraints
         task.putboundslice(mosek.accmode.con,

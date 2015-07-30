@@ -208,15 +208,19 @@ pymosek.so is found in the user&#8217;s PYTHONPATH.</p>
 </div>
 <div class="section" id="building-cvxopt-with-atlas">
 <h2>Building CVXOPT with ATLAS<a class="headerlink" href="#building-cvxopt-with-atlas" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="ubuntu">
-<h3>Ubuntu<a class="headerlink" href="#ubuntu" title="Permalink to this headline">¶</a></h3>
-<p>In Ubuntu, simply install the libatlas package and follow the standard
+<div class="section" id="debian-ubuntu">
+<h3>Debian/Ubuntu<a class="headerlink" href="#debian-ubuntu" title="Permalink to this headline">¶</a></h3>
+<p>In Debian/Ubuntu, simply install the libatlas package and follow the standard
 installation instructions. If multiple BLAS and LAPACK libraries have
 been installed, you can verify the current configuration using the following
 commands:</p>
 <div class="highlight-python"><div class="highlight"><pre>update-alternatives --config libblas.so.3
 update-alternatives --config liblapack.so.3
 </pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">Debian Science: <a class="reference external" href="https://wiki.debian.org/DebianScience/LinearAlgebraLibraries">Handle different versions of BLAS and LAPACK</a>.</p>
 </div>
 </div>
 <div class="section" id="mac-os-x">
@@ -281,7 +285,7 @@ See <a class="reference external" href="http://math-atlas.sourceforge.net/atlas_
 <li><p class="first">Download and compile BLAS source:</p>
 <blockquote>
 <div><ul>
-<li><p class="first">Download the reference <a class="reference external" href="http://www.netlib.org/blas.tgz">BLAS source distribution</a></p>
+<li><p class="first">Download the reference <a class="reference external" href="http://www.netlib.org/blas/blas.tgz">BLAS source distribution</a></p>
 </li>
 <li><p class="first">In the Command Prompt, change to the directory containing blas.tgz</p>
 </li>
@@ -386,7 +390,7 @@ python setup.py install
   <div role="contentinfo">
     <p>
         &copy; <a href="../copyright.html">Copyright</a> 2014, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Jun 04, 2014.
+      Last updated on Jul 30, 2015.
     </p>
   </div>
 
@@ -432,7 +436,7 @@ python setup.py install
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.3.
     </div>
 
 <script>
