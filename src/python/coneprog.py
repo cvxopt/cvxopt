@@ -21,6 +21,8 @@ Solver for linear and quadratic cone programs.
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import sys
+if sys.version > '3': long = int
 
 __all__ = []
 options = {}
@@ -29,7 +31,7 @@ options = {}
 def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None, 
     dualstart = None, kktsolver = None, xnewcopy = None, xdot = None,
     xaxpy = None, xscal = None, ynewcopy = None, ydot = None, yaxpy = None,
-    yscal = None):
+    yscal = None, **kwargs):
 
     """
     Solves a pair of primal and dual cone programs
@@ -421,26 +423,26 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
     EXPON = 3
     STEP = 0.99
 
+    options = kwargs.get('options',globals()['options'])
+
     DEBUG = options.get('debug', False)
 
     KKTREG = options.get('kktreg',None)
     if KKTREG is None:
         pass
-    elif type(KKTREG) is not float:
-        raise ValueError("options['kktreg'] must be a scalar")
-    elif KKTREG < 0.0:
-        raise ValueError("options['kktreg'] must be nonnegative")
+    elif not isinstance(KKTREG,(float,int,long)) or KKTREG < 0.0:
+        raise ValueError("options['kktreg'] must be a nonnegative scalar")
         
     MAXITERS = options.get('maxiters',100)
-    if type(MAXITERS) is not int or MAXITERS < 1:
+    if not isinstance(MAXITERS,(int,long)) or MAXITERS < 1:
         raise ValueError("options['maxiters'] must be a positive integer")
 
     ABSTOL = options.get('abstol',1e-7)
-    if type(ABSTOL) is not float and type(ABSTOL) is not int:
+    if not isinstance(ABSTOL,(float,int,long)):
         raise ValueError("options['abstol'] must be a scalar")
 
     RELTOL = options.get('reltol',1e-6)
-    if type(RELTOL) is not float and type(RELTOL) is not int:
+    if not isinstance(RELTOL,(float,int,long)):
         raise ValueError("options['reltol'] must be a scalar")
 
     if RELTOL <= 0.0 and ABSTOL <= 0.0 :
@@ -448,8 +450,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
             "options['abstol'] must be positive")
 
     FEASTOL = options.get('feastol',1e-7)
-    if (type(FEASTOL) is not float and type(FEASTOL) is not int) or \
-      FEASTOL <= 0.0:
+    if not isinstance(FEASTOL,(float,int,long)) or FEASTOL <= 0.0:
         raise ValueError("options['feastol'] must be a positive scalar")
 
     show_progress = options.get('show_progress', True)
@@ -460,14 +461,14 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         else:
             kktsolver = 'chol2'
     defaultsolvers = ('ldl', 'ldl2', 'qr', 'chol', 'chol2')
-    if type(kktsolver) is str and kktsolver not in defaultsolvers:
+    if isinstance(kktsolver,str) and kktsolver not in defaultsolvers:
         raise ValueError("'%s' is not a valid value for kktsolver" \
             %kktsolver)
 
     # Argument error checking depends on level of customization.
-    customkkt = type(kktsolver) is not str
-    matrixG = type(G) in (matrix, spmatrix)
-    matrixA = type(A) in (matrix, spmatrix)
+    customkkt = not isinstance(kktsolver,str)
+    matrixG = isinstance(G, (matrix, spmatrix))
+    matrixA = isinstance(A, (matrix, spmatrix))
     if (not matrixG or (not matrixA and A is not None)) and not customkkt:
         raise ValueError("use of function valued G, A requires a "\
             "user-provided kktsolver")
@@ -483,31 +484,29 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
             "function valued A and user-provided kktsolver")
 
 
-    if not customx and (type(c) is not matrix or c.typecode != 'd' or 
-        c.size[1] != 1):
+    if not customx and (not isinstance(c,matrix) or c.typecode != 'd' or c.size[1] != 1):
         raise TypeError("'c' must be a 'd' matrix with one column")
 
-    if type(h) is not matrix or h.typecode != 'd' or h.size[1] != 1:
+    if not isinstance(h,matrix) or h.typecode != 'd' or h.size[1] != 1:
         raise TypeError("'h' must be a 'd' matrix with 1 column")
 
     if not dims: dims = {'l': h.size[0], 'q': [], 's': []}
-    if type(dims['l']) is not int or dims['l'] < 0: 
+    if not isinstance(dims['l'],(int,long)) or dims['l'] < 0:
         raise TypeError("'dims['l']' must be a nonnegative integer")
-    if [ k for k in dims['q'] if type(k) is not int or k < 1 ]:
+    if [ k for k in dims['q'] if not isinstance(k,(int,long)) or k < 1 ]:
         raise TypeError("'dims['q']' must be a list of positive integers")
-    if [ k for k in dims['s'] if type(k) is not int or k < 0 ]:
+    if [ k for k in dims['s'] if not isinstance(k,(int,long)) or k < 0 ]:
         raise TypeError("'dims['s']' must be a list of nonnegative " \
             "integers")
 
-    try: refinement = options['refinement']
-    except KeyError: 
-        if dims['q'] or dims['s']: refinement = 1
-        else: refinement = 0
-    else:
-        if type(refinement) is not int or refinement < 0: 
-            raise ValueError("options['refinement'] must be a "\
-                "nonnegative integer")
-
+    refinement = options.get('refinement',None)
+    if refinement is None:
+        if dims['q'] or dims['s']:
+            refinement = 1
+        else:
+            refinement = 0
+    elif not isinstance(refinement,(int,long)) or refinement < 0:
+        raise ValueError("options['refinement'] must be a nonnegative integer")
 
     cdim = dims['l'] + sum(dims['q']) + sum([k**2 for k in dims['s']])
     cdim_pckd = dims['l'] + sum(dims['q']) + sum([k*(k+1)/2 for k in 
@@ -554,7 +553,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
 
     if not customy:
         if b is None: b = matrix(0.0, (0,1))
-        if type(b) is not matrix or b.typecode != 'd' or b.size[1] != 1:
+        if not isinstance(b,matrix) or b.typecode != 'd' or b.size[1] != 1:
             raise TypeError("'b' must be a 'd' matrix with one column")
         if matrixA and b.size[0] != A.size[0]:
             raise TypeError("'b' must have length %d" %A.size[0])
@@ -570,7 +569,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
     #     [ G   0   -W'       ] [ uz ]   [ bz ]
 
     if kktsolver in defaultsolvers:
-        if b.size[0] > c.size[0] or b.size[0] + cdim_pckd < c.size[0]:
+        if KKTREG is None and (b.size[0] > c.size[0] or b.size[0] + cdim_pckd < c.size[0]):
            raise ValueError("Rank(A) < p or Rank([G; A]) < n")
         if kktsolver == 'ldl': 
             factor = misc.kkt_ldl(G, dims, A, kktreg = KKTREG)
@@ -742,7 +741,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
     nrms = misc.snrm2(s, dims)
     nrmz = misc.snrm2(z, dims)
 
-    if primalstart is None and dualstart is None: 
+    if primalstart is None and dualstart is None:
 
         gap = misc.sdot(s, z, dims) 
         pcost = xdot(c,x)
@@ -754,8 +753,8 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         else: 
             relgap = None
 
-        if ts <= 0 and tz <= 0 and (gap <= ABSTOL or ( relgap is not None
-            and relgap <= RELTOL )):
+        if (ts <= 0 and tz <= 0 and (gap <= ABSTOL or ( relgap is not None
+            and relgap <= RELTOL ))) and KKTREG is None:
 
             # The initial points we constructed happen to be feasible and 
             # optimal.  
@@ -1441,7 +1440,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
 def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
     initvals = None, kktsolver = None, xnewcopy = None, xdot = None,
     xaxpy = None, xscal = None, ynewcopy = None, ydot = None, yaxpy = None,
-    yscal = None):
+    yscal = None, **kwargs):
     """
 
     Solves a pair of primal and dual convex quadratic cone programs
@@ -1768,29 +1767,29 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
     STEP = 0.99
     EXPON = 3
 
+    options = kwargs.get('options',globals()['options'])
+    
     DEBUG = options.get('debug',False)
 
     KKTREG = options.get('kktreg',None)
     if KKTREG is None:
         pass
-    elif type(KKTREG) is not float:
-        raise ValueError("options['kktreg'] must be a scalar")
-    elif KKTREG < 0.0:
-        raise ValueError("options['kktreg'] must be nonnegative")
+    elif not isinstance(KKTREG,(float,int,long)) or KKTREG < 0.0:
+        raise ValueError("options['kktreg'] must be a nonnegative scalar")
 
     # Use Mehrotra correction or not.
     correction = options.get('use_correction', True)
 
     MAXITERS = options.get('maxiters',100)
-    if type(MAXITERS) is not int or MAXITERS < 1: 
+    if not isinstance(MAXITERS,(int,long)) or MAXITERS < 1:
         raise ValueError("options['maxiters'] must be a positive integer")
 
     ABSTOL = options.get('abstol',1e-7)
-    if type(ABSTOL) is not float and type(ABSTOL) is not int: 
+    if not isinstance(ABSTOL,(float,int,long)):
         raise ValueError("options['abstol'] must be a scalar")
 
     RELTOL = options.get('reltol',1e-6)
-    if type(RELTOL) is not float and type(RELTOL) is not int: 
+    if not isinstance(RELTOL,(float,int,long)):
         raise ValueError("options['reltol'] must be a scalar")
 
     if RELTOL <= 0.0 and ABSTOL <= 0.0 :
@@ -1798,8 +1797,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
             "options['abstol'] must be positive")
 
     FEASTOL = options.get('feastol',1e-7)
-    if (type(FEASTOL) is not float and type(FEASTOL) is not int) or \
-      FEASTOL <= 0.0:
+    if not isinstance(FEASTOL,(float,int,long)) or FEASTOL <= 0.0:
         raise ValueError("options['feastol'] must be a positive scalar")
 
     show_progress = options.get('show_progress',True)
@@ -1810,16 +1808,15 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
         else:
             kktsolver = 'chol2'            
     defaultsolvers = ('ldl', 'ldl2', 'chol', 'chol2')
-    if type(kktsolver) is str and kktsolver not in defaultsolvers:
+    if isinstance(kktsolver,str) and kktsolver not in defaultsolvers:
         raise ValueError("'%s' is not a valid value for kktsolver" \
             %kktsolver)
 
-
     # Argument error checking depends on level of customization.
-    customkkt = type(kktsolver) is not str
-    matrixP = type(P) in (matrix, spmatrix)
-    matrixG = type(G) in (matrix, spmatrix)
-    matrixA = type(A) in (matrix, spmatrix)
+    customkkt = not isinstance(kktsolver,str)
+    matrixP = isinstance(P, (matrix, spmatrix))
+    matrixG = isinstance(G, (matrix, spmatrix))
+    matrixA = isinstance(A, (matrix, spmatrix))
     if (not matrixP or (not matrixG and G is not None) or 
         (not matrixA and A is not None)) and not customkkt:
         raise ValueError("use of function valued P, G, A requires a "\
@@ -1836,8 +1833,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
             "function valued A and user-provided kktsolver")
 
 
-    if not customx and (type(q) is not matrix or q.typecode != 'd' or
-        q.size[1] != 1):
+    if not customx and (not isinstance(q,matrix) or q.typecode != 'd' or q.size[1] != 1):
         raise TypeError("'q' must be a 'd' matrix with one column")
 
     if matrixP:
@@ -1851,15 +1847,15 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
 
 
     if h is None: h = matrix(0.0, (0,1))
-    if type(h) is not matrix or h.typecode != 'd' or h.size[1] != 1:
+    if not isinstance(h, matrix) or h.typecode != 'd' or h.size[1] != 1:
         raise TypeError("'h' must be a 'd' matrix with one column")
 
     if not dims: dims = {'l': h.size[0], 'q': [], 's': []}
-    if type(dims['l']) is not int or dims['l'] < 0: 
+    if not isinstance(dims['l'],(int,long)) or dims['l'] < 0:
         raise TypeError("'dims['l']' must be a nonnegative integer")
-    if [ k for k in dims['q'] if type(k) is not int or k < 1 ]:
+    if [ k for k in dims['q'] if not isinstance(k,(int,long)) or k < 1 ]:
         raise TypeError("'dims['q']' must be a list of positive integers")
-    if [ k for k in dims['s'] if type(k) is not int or k < 0 ]:
+    if [ k for k in dims['s'] if not isinstance(k,(int,long)) or k < 0 ]:
         raise TypeError("'dims['s']' must be a list of nonnegative " \
             "integers")
 
@@ -1868,7 +1864,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
         if dims['q'] or dims['s']: refinement = 1
         else: refinement = 0
     else:
-        if type(refinement) is not int or refinement < 0: 
+        if not isinstance(refinement,(int,long)) or refinement < 0:
             raise ValueError("options['refinement'] must be a "\
                 "nonnegative integer")
 
@@ -1922,7 +1918,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
         fA = A
     if not customy:
         if b is None: b = matrix(0.0, (0,1))
-        if type(b) is not matrix or b.typecode != 'd' or b.size[1] != 1:
+        if not isinstance(b, matrix) or b.typecode != 'd' or b.size[1] != 1:
             raise TypeError("'b' must be a 'd' matrix with one column")
         if matrixA and b.size[0] != A.size[0]:
             raise TypeError("'b' must have length %d" %A.size[0])
@@ -1971,7 +1967,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
     #     [ G   0   -W'       ] [ uz ]   [ bz ]
 
     if kktsolver in defaultsolvers:
-         if b.size[0] > q.size[0]:
+         if KKTREG is None and b.size[0] > q.size[0]:
              raise ValueError("Rank(A) < p or Rank([P; G; A]) < n")
          if kktsolver == 'ldl': 
              factor = misc.kkt_ldl(G, dims, A, kktreg = KKTREG)
@@ -2550,7 +2546,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
 
 
 def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
-    dualstart = None):
+    dualstart = None, **kwargs):
     """
 
     Solves a pair of primal and dual LPs
@@ -2779,39 +2775,38 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
         Options that are not recognized are replaced by their default 
         values.
     """
-
+    options = kwargs.get('options',globals()['options'])
+    
     import math
     from cvxopt import base, blas, misc
     from cvxopt.base import matrix, spmatrix
 
-    if type(c) is not matrix or c.typecode != 'd' or c.size[1] != 1: 
+    if not isinstance(c, matrix) or c.typecode != 'd' or c.size[1] != 1: 
         raise TypeError("'c' must be a dense column matrix")
     n = c.size[0]
     if n < 1: raise ValueError("number of variables must be at least 1")
 
-    if (type(G) is not matrix and type(G) is not spmatrix) or \
-        G.typecode != 'd' or G.size[1] != n:
+    if not isinstance(G, (matrix,spmatrix)) or G.typecode != 'd' or G.size[1] != n:
         raise TypeError("'G' must be a dense or sparse 'd' matrix "\
             "with %d columns" %n)
     m = G.size[0]
-    if type(h) is not matrix or h.typecode != 'd' or h.size != (m,1):
+    if not isinstance(h, matrix) or h.typecode != 'd' or h.size != (m,1):
         raise TypeError("'h' must be a 'd' matrix of size (%d,1)" %m)
 
     if A is None:  A = spmatrix([], [], [], (0,n), 'd')
-    if (type(A) is not matrix and type(A) is not spmatrix) or \
-        A.typecode != 'd' or A.size[1] != n:
+    if not isinstance(A,(matrix,spmatrix)) or A.typecode != 'd' or A.size[1] != n:
         raise TypeError("'A' must be a dense or sparse 'd' matrix "\
             "with %d columns" %n)
     p = A.size[0]
     if b is None: b = matrix(0.0, (0,1))
-    if type(b) is not matrix or b.typecode != 'd' or b.size != (p,1): 
+    if not isinstance(b,matrix) or b.typecode != 'd' or b.size != (p,1): 
         raise TypeError("'b' must be a dense matrix of size (%d,1)" %p)
 
     if solver == 'glpk':
         try: from cvxopt import glpk
         except ImportError: raise ValueError("invalid option "\
             "(solver = 'glpk'): cvxopt.glpk is not installed")
-        glpk.options = options
+        glpk.options = options.get('glpk',{})
         status, x, z, y = glpk.lp(c, G, h, A, b)
 
         if status == 'optimal':
@@ -2882,20 +2877,17 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
             raise ValueError("invalid option (solver = 'mosek'): "\
                 "cvxopt.mosek is not installed")
 
-        if 'MOSEK' in options:
-            msk.options = options['MOSEK']
-        else:
-            msk.options = {}
-
+        msk.options = options.get('mosek',{})
         solsta, x, z, y  = msk.lp(c, G, h, A, b)
 
         resx0 = max(1.0, blas.nrm2(c))
         resy0 = max(1.0, blas.nrm2(b))
         resz0 = max(1.0, blas.nrm2(h))
 
-        if solsta is mosek.solsta.optimal:
-            status = 'optimal'
-
+        if solsta in (mosek.solsta.optimal, mosek.solsta.near_optimal):
+            if solsta is mosek.solsta.optimal: status = 'optimal'
+            else: status = 'near optimal'
+                
             pcost = blas.dot(c,x)
             dcost = -blas.dot(h,z) - blas.dot(b,y)
 
@@ -3005,11 +2997,11 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
             'primal slack': pslack, 'dual slack': dslack} 
 
     return conelp(c, G, h, {'l': m, 'q': [], 's': []}, A,  b, primalstart,
-        dualstart)
+        dualstart, options = options)
 
 
 def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
-    solver = None, primalstart = None, dualstart = None):
+    solver = None, primalstart = None, dualstart = None, **kwargs):
 
     """
     Solves a pair of primal and dual SOCPs
@@ -3280,36 +3272,33 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
     from cvxopt import base, blas
     from cvxopt.base import matrix, spmatrix
 
-    if type(c) is not matrix or c.typecode != 'd' or c.size[1] != 1: 
+    if not isinstance(c,matrix) or c.typecode != 'd' or c.size[1] != 1:
         raise TypeError("'c' must be a dense column matrix")
     n = c.size[0]
     if n < 1: raise ValueError("number of variables must be at least 1")
 
     if Gl is None:  Gl = spmatrix([], [], [], (0,n), tc='d')
-    if (type(Gl) is not matrix and type(Gl) is not spmatrix) or \
-        Gl.typecode != 'd' or Gl.size[1] != n:
+    if not isinstance(Gl,(matrix,spmatrix)) or Gl.typecode != 'd' or Gl.size[1] != n:
         raise TypeError("'Gl' must be a dense or sparse 'd' matrix "\
             "with %d columns" %n)
     ml = Gl.size[0]
     if hl is None: hl = matrix(0.0, (0,1))
-    if type(hl) is not matrix or hl.typecode != 'd' or \
+    if not isinstance(hl, matrix) or hl.typecode != 'd' or \
         hl.size != (ml,1):
         raise TypeError("'hl' must be a dense 'd' matrix of " \
             "size (%d,1)" %ml)
 
     if Gq is None: Gq = []
-    if type(Gq) is not list or [ G for G in Gq if (type(G) is not matrix 
-        and type(G) is not spmatrix) or G.typecode != 'd' or 
-        G.size[1] != n ]:
+    if not isinstance(Gq,list) or [ G for G in Gq if not isinstance(G,(matrix,spmatrix)) \
+                                    or G.typecode != 'd' or G.size[1] != n ]:
         raise TypeError("'Gq' must be a list of sparse or dense 'd' "\
             "matrices with %d columns" %n)
     mq = [ G.size[0] for G in Gq ]
     a = [ k for k in range(len(mq)) if mq[k] == 0 ] 
     if a: raise TypeError("the number of rows of Gq[%d] is zero" %a[0])
     if hq is None: hq = []
-    if type(hq) is not list or len(hq) != len(mq) or [ h for h in hq if
-        (type(h) is not matrix and type(h) is not spmatrix) or 
-        h.typecode != 'd' ]: 
+    if not isinstance(hq,list) or len(hq) != len(mq) or \
+      [ h for h in hq if not isinstance(h,(matrix,spmatrix)) or h.typecode != 'd' ]: 
         raise TypeError("'hq' must be a list of %d dense or sparse "\
             "'d' matrices" %len(mq))
     a = [ k for k in range(len(mq)) if hq[k].size != (mq[k], 1) ]
@@ -3319,13 +3308,12 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             "is (%d,1)." %(k, hq[k].size[0], hq[k].size[1], mq[k]))
 
     if A is None: A = spmatrix([], [], [], (0,n), 'd')
-    if (type(A) is not matrix and type(A) is not spmatrix) or \
-        A.typecode != 'd' or A.size[1] != n:
+    if not isinstance(A,(matrix,spmatrix)) or A.typecode != 'd' or A.size[1] != n:
         raise TypeError("'A' must be a dense or sparse 'd' matrix "\
             "with %d columns" %n)
     p = A.size[0]
     if b is None: b = matrix(0.0, (0,1))
-    if type(b) is not matrix or b.typecode != 'd' or b.size != (p,1): 
+    if not isinstance(b,matrix) or b.typecode != 'd' or b.size != (p,1):
         raise TypeError("'b' must be a dense matrix of size (%d,1)" %p)
 
     dims = {'l': ml, 'q': mq, 's': []}
@@ -3339,10 +3327,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
         except ImportError: 
             raise ValueError("invalid option (solver = 'mosek'): "\
                 "cvxopt.mosek is not installed")
-        if 'MOSEK' in options:
-            msk.options = options['MOSEK']
-        else:
-            msk.options = {}
+        msk.options = options.get('mosek',{})
         if p: raise ValueError("socp() with the solver = 'mosek' option "\
             "does not handle problems with equality constraints")
 
@@ -3352,8 +3337,10 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
         rh = matrix([ blas.nrm2(hl) ] + [ blas.nrm2(hqk) for hqk in hq ])
         resz0 = max(1.0, blas.nrm2(rh))
 
-        if solsta is mosek.solsta.optimal:
-            status = 'optimal'
+        if solsta in (mosek.solsta.optimal, mosek.solsta.near_optimal):
+            if solsta is mosek.solsta.optimal: status = 'optimal'
+            else: status = 'near optimal'
+
             y = matrix(0.0, (0,1))
             pcost = blas.dot(c,x)
             dcost = -blas.dot(hl,zl) - \
@@ -3499,7 +3486,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             'primal slack': pslack, 'dual slack': dslack} 
 
     h = matrix(0.0, (N,1))
-    if type(Gl) is matrix or [ Gk for Gk in Gq if type(Gk) is matrix ]:
+    if isinstance(Gl,matrix) or [ Gk for Gk in Gq if isinstance(Gk,matrix) ]:
         G = matrix(0.0, (N, n))
     else:
         G = spmatrix([], [], [], (N, n), 'd')
@@ -3537,8 +3524,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
     else: 
         ds = None
 
-    sol = conelp(c, G, h, dims, A = A, b = b, primalstart = ps, dualstart
-        = ds)
+    sol = conelp(c, G, h, dims, A = A, b = b, primalstart = ps, dualstart = ds, options = options)
     if sol['s'] is None:  
         sol['sl'] = None
         sol['sq'] = None
@@ -3567,7 +3553,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
 
     
 def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None, 
-    solver = None, primalstart = None, dualstart = None):
+    solver = None, primalstart = None, dualstart = None, options = options, **kwargs):
     """
 
     Solves a pair of primal and dual SDPs
@@ -3840,30 +3826,30 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
             options['DSDP_GapTolerance'] scalar (default: 1e-5).
     """
 
+    options = kwargs.get('options',globals()['options'])
+    
     import math
     from cvxopt import base, blas, misc
     from cvxopt.base import matrix, spmatrix
 
-    if type(c) is not matrix or c.typecode != 'd' or c.size[1] != 1: 
+    if not isinstance(c,matrix) or c.typecode != 'd' or c.size[1] != 1: 
         raise TypeError("'c' must be a dense column matrix")
     n = c.size[0]
     if n < 1: raise ValueError("number of variables must be at least 1")
 
     if Gl is None: Gl = spmatrix([], [], [], (0,n), tc='d')
-    if (type(Gl) is not matrix and type(Gl) is not spmatrix) or \
-        Gl.typecode != 'd' or Gl.size[1] != n:
+    if not isinstance(Gl,(matrix,spmatrix)) or Gl.typecode != 'd' or Gl.size[1] != n:
         raise TypeError("'Gl' must be a dense or sparse 'd' matrix "\
             "with %d columns" %n)
     ml = Gl.size[0]
     if hl is None: hl = matrix(0.0, (0,1))
-    if type(hl) is not matrix or hl.typecode != 'd' or \
+    if not isinstance(hl,matrix) or hl.typecode != 'd' or \
         hl.size != (ml,1):
         raise TypeError("'hl' must be a 'd' matrix of size (%d,1)" %ml)
 
     if Gs is None: Gs = []
-    if type(Gs) is not list or [ G for G in Gs if (type(G) is not matrix 
-        and type(G) is not spmatrix) or G.typecode != 'd' or 
-        G.size[1] != n ]:
+    if not isinstance(Gs,list) or [ G for G in Gs if not isinstance(G,(matrix,spmatrix)) \
+      or G.typecode != 'd' or G.size[1] != n ]:
         raise TypeError("'Gs' must be a list of sparse or dense 'd' "\
             "matrices with %d columns" %n)
     ms = [ int(math.sqrt(G.size[0])) for G in Gs ]
@@ -3871,9 +3857,8 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
     if a: raise TypeError("the squareroot of the number of rows in "\
         "'Gs[%d]' is not an integer" %k)
     if hs is None: hs = []
-    if type(hs) is not list or len(hs) != len(ms) or [ h for h in hs if
-        (type(h) is not matrix and type(h) is not spmatrix) or
-        h.typecode != 'd' ]:
+    if not isinstance(hs,list) or len(hs) != len(ms) \
+      or [ h for h in hs if not isinstance(h,(matrix,spmatrix)) or h.typecode != 'd' ]:
         raise TypeError("'hs' must be a list of %d dense or sparse "\
             "'d' matrices" %len(ms))
     a = [ k for k in range(len(ms)) if hs[k].size != (ms[k],ms[k]) ]
@@ -3883,13 +3868,12 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
             "(%d,%d)." %(k,hs[k].size[0], hs[k].size[1], ms[k], ms[k]))
 
     if A is None: A = spmatrix([], [], [], (0,n), 'd')
-    if (type(A) is not matrix and type(A) is not spmatrix) or \
-        A.typecode != 'd' or A.size[1] != n:
+    if not isinstance(A,(matrix,spmatrix)) or A.typecode != 'd' or A.size[1] != n:
         raise TypeError("'A' must be a dense or sparse 'd' matrix "\
             "with %d columns" %n)
     p = A.size[0]
     if b is None: b = matrix(0.0, (0,1))
-    if type(b) is not matrix or b.typecode != 'd' or b.size != (p,1): 
+    if not isinstance(b,matrix) or b.typecode != 'd' or b.size != (p,1): 
         raise TypeError("'b' must be a dense matrix of size (%d,1)" %p)
 
     dims = {'l': ml, 'q': [], 's': ms}
@@ -3899,7 +3883,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
         try: from cvxopt import dsdp
         except ImportError: raise ValueError("invalid option "\
             "(solver = 'dsdp'): cvxopt.dsdp is not installed")
-        dsdp.options = options
+        dsdp.options = options.get('dsdp',{})
         if p: raise ValueError("sdp() with the solver = 'dsdp' option "\
             "does not handle problems with equality constraints")
         dsdpstatus, x, r, zl, zs = dsdp.sdp(c, Gl, hl, Gs, hs)
@@ -4084,7 +4068,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
             'primal slack': pslack, 'dual slack': dslack} 
          
     h = matrix(0.0, (N,1))
-    if type(Gl) is matrix or [ Gk for Gk in Gs if type(Gk) is matrix ]:
+    if isinstance(Gl,matrix) or [ Gk for Gk in Gs if isinstance(Gk,matrix) ]:
         G = matrix(0.0, (N, n))
     else:
         G = spmatrix([], [], [], (N, n), 'd')
@@ -4125,8 +4109,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
     else: 
         ds = None
 
-    sol = conelp(c, G, h, dims, A = A, b = b, primalstart = ps, dualstart
-        = ds)
+    sol = conelp(c, G, h, dims, A = A, b = b, primalstart = ps, dualstart = ds, options = options)
     if sol['s'] is None:
         sol['sl'] = None
         sol['ss'] = None
@@ -4157,7 +4140,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
 
 
 def qp(P, q, G = None, h = None, A = None, b = None, solver = None, 
-    initvals = None):
+    initvals = None, **kwargs):
 
     """
     Solves a quadratic program
@@ -4338,6 +4321,8 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
         values.
     """
 
+    options = kwargs.get('options',globals()['options'])
+
     from cvxopt import base, blas
     from cvxopt.base import matrix, spmatrix
 
@@ -4349,10 +4334,7 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
         except ImportError: raise ValueError("invalid option "\
             "(solver='mosek'): cvxopt.msk is not installed")
 
-        if 'MOSEK' in options:
-            msk.options = options['MOSEK']
-        else:
-            msk.options = {}
+        msk.options = options.get('mosek',{})
         solsta, x, z, y = msk.qp(P, q, G, h, A, b)
 
         n = q.size[0]
@@ -4366,8 +4348,9 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
         resy0 = max(1.0, blas.nrm2(b))
         resz0 = max(1.0, blas.nrm2(h))
 
-        if solsta == mosek.solsta.optimal:
-            status = 'optimal'
+        if solsta in (mosek.solsta.optimal, mosek.solsta.near_optimal):
+            if solsta is mosek.solsta.optimal: status = 'optimal'
+            else: status = 'near optimal'
 
             s = matrix(h)
             base.gemv(G, x, s, alpha = -1.0, beta = 1.0)
@@ -4482,4 +4465,4 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
             'residual as primal infeasibility certificate': pinfres, 
             'residual as dual infeasibility certificate': dinfres} 
 
-    return coneqp(P, q, G, h, None, A,  b, initvals)
+    return coneqp(P, q, G, h, None, A,  b, initvals, options = options)

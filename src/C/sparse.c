@@ -2415,8 +2415,12 @@ spmatrix_repr(matrix *self) {
 
 static PyObject *
 spmatrix_richcompare(PyObject *self, PyObject *other, int op) {
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
 
-  PY_ERR(PyExc_NotImplementedError, "matrix comparison not implemented");
+int * spmatrix_compare(PyObject *self, PyObject *other) {
+  PyErr_SetString(PyExc_NotImplementedError, "matrix comparison not implemented"); return 0;
 }
 
 static PyObject * spmatrix_get_size(spmatrix *self, void *closure)
@@ -4236,7 +4240,11 @@ PyTypeObject spmatrix_tp = {
     0,                                         /* tp_print */
     0,                                         /* tp_getattr */
     0,                                         /* tp_setattr */
+#if PY_MAJOR_VERSION >= 3
     0,                                         /* tp_compare */
+#else
+    (cmpfunc)spmatrix_compare,                 /* tp_compare */
+#endif
     (reprfunc)spmatrix_repr,                   /* tp_repr */
     &spmatrix_as_number,                       /* tp_as_number */
     0,                                         /* tp_as_sequence */

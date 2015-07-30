@@ -25,7 +25,7 @@ The following software libraries are optional.
 * GLPK <www.gnu.org/software/glpk/glpk.html> is a linear programming 
   package.  
 
-* MOSEK version 6 <www.mosek.com> is a commercial library of convex 
+* MOSEK version 7 <www.mosek.com> is a commercial library of convex 
   optimization solvers.  
 
 * DSDP5.8 <www-unix.mcs.anl.gov/DSDP> is a semidefinite programming solver. 
