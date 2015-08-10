@@ -72,7 +72,7 @@ def matrix_str_default(X):
     if height < m: 
         s += "[" + min(n,width)*(':'.center(twidth)+' ')
 
-        if width < n: s += '   ]\n'
+        if width < n: s += '    ]\n'
         else: s = s[:-1] + ']\n'
 
     return s
