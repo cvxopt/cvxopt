@@ -2649,6 +2649,7 @@ class op(object):
 
         constraints = self.constraints()
         variables = self.variables()
+        nontrivial_variable_indices = {}
         inequalities = self.inequalities()
         equalities = self.equalities()
 
@@ -2687,6 +2688,10 @@ class op(object):
                 if v in self.objective._linear._coeff:
                     cf = self.objective._linear._coeff[v]
                     if cf[i] != 0.0:
+                        if v not in nontrivial_variable_indices:
+                            nontrivial_variable_indices[v] = [i]
+                        elif i not in nontrivial_variable_indices[v]:
+                            nontrivial_variable_indices[v].append(i)
                         f.write(4*' ' + varname[:8].rjust(8))
                         f.write(2*' ' + '%8s' %'cost')
                         f.write(2*' ' + '% 7.5E\n' %cf[i])
@@ -2702,6 +2707,10 @@ class op(object):
                          if cf.size == (len(c),len(v)):
                              nz = [k for k in range(cf.size[0]) 
                                  if cf[k,i] != 0.0]
+                             if nz and v not in nontrivial_variable_indices:
+                                 nontrivial_variable_indices[v] = [i]
+                             elif nz and i not in nontrivial_variable_indices[v]:
+                                 nontrivial_variable_indices[v].append(i)
                              for l in nz:
                                  conname = cname[:(7-len(str(l)))] \
                                      + '_' + str(l)
@@ -2710,6 +2719,10 @@ class op(object):
                                  f.write(2*' ' + '% 7.5E\n' %cf[l,i])
                          elif cf.size == (1,len(v)):
                              if cf[0,i] != 0.0:
+                                 if len(c) > 0 and v not in nontrivial_variable_indices:
+                                     nontrivial_variable_indices[v] = [i]
+                                 elif len(c) > 0 and i not in nontrivial_variable_indices[v]:
+                                     nontrivial_variable_indices[v].append(i)
                                  for l in range(len(c)):
                                      conname = cname[:(7-len(str(l)))] \
                                          + '_' + str(l)
@@ -2720,6 +2733,10 @@ class op(object):
                                      f.write(2*' '+'% 7.5E\n' %cf[0,i])
                          elif _isscalar(cf):
                              if cf[0,0] != 0.0:
+                                 if v not in nontrivial_variable_indices:
+                                     nontrivial_variable_indices[v] = [i]
+                                 elif i not in nontrivial_variable_indices[v]:
+                                     nontrivial_variable_indices[v].append(i)
                                  conname = cname[:(7-len(str(i)))] \
                                      + '_' + str(i)
                                  f.write(4*' ' + varname[:8].rjust(8))
@@ -2747,13 +2764,14 @@ class op(object):
         f.write('BOUNDS\n') 
         for k in range(len(variables)):
             v = variables[k]
-            for i in range(len(v)):
-                if v.name:
-                    varname = v.name
-                else:
-                    varname = str(k)
-                varname = varname[:(7-len(str(i)))] + '_' + str(i)
-                f.write(' FR ' + 10*' ' + varname[:8].rjust(8) + '\n')
+            if v in nontrivial_variable_indices:
+                for i in nontrivial_variable_indices[v]:
+                    if v.name:
+                        varname = v.name
+                    else:
+                        varname = str(k)
+                    varname = varname[:(7-len(str(i)))] + '_' + str(i)
+                    f.write(' FR ' + 10*' ' + varname[:8].rjust(8) + '\n')
 
         f.write('ENDATA\n')
         f.close()
