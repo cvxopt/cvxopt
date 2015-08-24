@@ -42,10 +42,14 @@ information for the included libraries is as follows.
 
 * **UMFPACK** Version 5.6.1.  Copyright (c) 1995-2012 by Timothy A. Davis.
 
+* **KLU** Version 1.2.1.  Copyright (c) 2004-2012 by Timothy A. Davis and Ekanathan Palamadai.
+
+* **BTF** Version 1.2.0.  Copyright (c) 2004-2012 by Timothy A. Davis.
+
 UMFPACK and the Supernodal and MatrixOps modules of CHOLMOD are licensed 
 under the terms of the `GNU General Public License, version 2 
 <http://www.gnu.org/licenses/old-licenses/gpl-2.0.html>`_ or higher.
-The other CHOLMOD modules, AMD, and COLAMD are licensed under the terms of 
+The other CHOLMOD modules, AMD, COLAMD, BTF, and KLU are licensed under the terms of 
 the `GNU Lesser General Public License, version 2.1 
 <http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html>`_ or higher.
 For more details, consult the README files in the source directories or 

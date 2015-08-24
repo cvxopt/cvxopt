@@ -2,7 +2,7 @@
 * @Author: Uriel Sandoval
 * @Date:   2015-04-28 18:56:49
 * @Last Modified by:   Uriel Sandoval
-* @Last Modified time: 2015-07-27 22:13:29
+* @Last Modified time: 2015-07-30 09:47:53
 */
 
 
@@ -21,7 +21,7 @@
 #endif
 
 
-// KLU types
+// KLU types/structures
 #if (SIZEOF_INT < SIZEOF_LONG)
 #define KLUS(name) klu_l_ ## name
 #else
@@ -79,10 +79,10 @@ static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds){
     PyObject *F;
     PyObject *Fs;
 
-    klu_common Common;
+    KLUS(common) Common;
     KLUS(symbolic) *Fsptr;
     KLUS(numeric) *Fptr;
-    klu_defaults(&Common);
+    KLUD(defaults)(&Common) ;
 
 
     const char *descrdFs = "KLU SYM D FACTOR";
@@ -176,7 +176,7 @@ static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds){
     d_sign = (npiv % 2) ? -1. : 1. ;
 
 
-    klu_free(Wi, n, sizeof (SuiteSparse_long), &Common);
+    KLUD(free)(Wi, n, sizeof (SuiteSparse_long), &Common);
 
     return Py_BuildValue("d", det * d_sign);
 

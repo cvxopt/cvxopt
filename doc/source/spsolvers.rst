@@ -236,6 +236,166 @@ code computes
 [-1.31e-01]
 
 
+.. _s-klu:
+
+Linear Equations Arising from Circuit Simulations
+*************************************************
+
+The module :mod:`cvxopt.klu` includes five functions for solving and computing
+the determinant of sparse square non-symmetric linear equations. These functions
+call routines from the KLU library which is well-suited for solving matrices
+arising in SPICE-like circuits and power systems analysis simulations. 
+
+.. seealso::
+
+    * `KLU code, documentation, copyright, and license
+      <http://faculty.cse.tamu.edu/davis/suitesparse.html>`_
+
+    * Davis, T. A., & Palamadai Natarajan, E., 
+      Algorithm 907: KLU, a direct sparse solver for circuit simulation problems. 
+      ACM Transactions on Mathematical Software, 37(3), 36, 2010.
+
+
+
+.. function:: cvxopt.klu.linsolve(A, B[, trans = 'N'])
+
+    Solves a sparse set of linear equations 
+    
+    .. math::
+
+         AX & = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
+         A^TX & = B \quad (\mathrm{trans} = \mathrm{'T'}), \\
+         A^HX & = B \quad (\mathrm{trans} = \mathrm{'C'}),
+    
+    where :math:`A` is a sparse matrix and :math:`B` is a dense matrix.
+    The arguments ``A`` and ``B`` must have the same type 
+    (:const:`'d'` or :const:`'z'`) as ``A``.  On exit ``B`` contains 
+    the solution.  Raises an :exc:`ArithmeticError` if the coefficient 
+    matrix is singular.
+
+In the following example we solve an equation with coefficient matrix 
+
+.. math:: 
+    :label: e-sp-Adef-klu
+
+    A = \left[\begin{array}{rrrrr}
+        2 & 3 & 0 & 0 & 0 \\
+        3 & 0 & 4 & 0 & 6 \\
+        0 &-1 &-3 & 2 & 0 \\
+        0 & 0 & 1 & 0 & 0 \\
+        0 & 4 & 2 & 0 & 1 
+        \end{array}\right].
+
+
+>>> from cvxopt import spmatrix, matrix, klu
+>>> V = [2, 3, 3, -1, 4, 4, -3, 1, 2, 2, 6, 1]
+>>> I = [0, 1, 0,  2, 4, 1,  2, 3, 4, 2, 1, 4]
+>>> J = [0, 0, 1,  1, 1, 2,  2, 2, 2, 3, 4, 4]
+>>> A = spmatrix(V,I,J)
+>>> B = matrix(range(5), tc='d')
+>>> klu.linsolve(A,B)
+>>> print(B)
+[ 5.26e-02]
+[-3.51e-02]
+[ 3.00e+00]
+[ 5.48e+00]
+[-1.86e+00]
+
+The function :func:`linsolve <cvxopt.klu.linsolve>`  is 
+equivalent to the following three functions called in sequence.  
+
+.. function:: cvxopt.klu.symbolic(A)
+
+    Returns the fill-reducing ordering needed to factorize the matrix A. 
+    This symbolic factorization is returned as an opaque C object that can be 
+    passed on to :func:`numeric <cvxopt.klu.numeric>`.
+
+
+.. function:: cvxopt.klu.numeric(A, F[, N = None])
+
+    Performs a numeric LU factorization by using a sparse left-looking method with
+    threshold partial pivoting of matrix ''A''.   
+    The argument ``F`` is the symbolic factorization
+    computed by :func:`symbolic <cvxopt.klu.symbolic>` 
+    applied to the matrix ``A``,
+    or another sparse matrix with the same sparsity pattern, dimensions,
+    and type.  The numeric factorization is returned as an opaque C object 
+    that that can be passed on to 
+    :func:`solve <cvxopt.klu.solve>`. In case a previous ''N'' numeric
+    factorization is provided a refactorization is performed which need the
+    same nonzero pattern as that given to call the symbolic function.  Raises an
+    :exc:`ArithmeticError` if the matrix is singular.
+
+
+.. function:: cvxopt.klu.solve(A, F, B[, trans = 'N'])
+
+    Solves a set of linear equations
+
+    .. math:: 
+
+        AX & = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
+        A^TX & = B \quad (\mathrm{trans} = \mathrm{'T'}), \\
+        A^HX & = B \quad (\mathrm{trans} = \mathrm{'C'}),
+
+    where :math:`A` is a sparse matrix and :math:`B` is a dense matrix.
+    The arguments ``A`` and ``B`` must have the same type.  The argument  
+    ``F`` is a numeric factorization computed 
+    by :func:`numeric <cvxopt.klu.numeric>`.  
+    On exit ``B`` is overwritten by the 
+    solution.
+
+
+These separate functions are useful for solving several sets of linear 
+equations with the same coefficient matrix and different right-hand sides, 
+or with coefficient matrices that share the same sparsity pattern.
+The symbolic factorization depends only on the sparsity pattern of
+the matrix, and not on the numerical values of the nonzero coefficients. 
+The numerical factorization on the other hand depends on the sparsity 
+pattern of the matrix and on its the numerical values.
+
+As an example, suppose :math:`A` is the matrix :eq:`e-sp-Adef-klu` and 
+
+.. math::
+
+    B = \left[\begin{array}{rrrrr}
+        4 & 3 & 0 & 0 & 0 \\
+        3 & 0 & 4 & 0 & 6 \\
+        0 &-1 &-3 & 2 & 0 \\
+        0 & 0 & 1 & 0 & 0 \\
+        0 & 4 & 2 & 0 & 2 
+        \end{array}\right],
+
+which differs from :math:`A` in its first and last entries.  The following 
+code computes
+
+.. math::
+
+    \newcommand{\ones}{\mathbf 1}
+    x = A^{-T}B^{-1}A^{-1}\ones.
+
+
+>>> from cvxopt import spmatrix, matrix, klu
+>>> VA = [2, 3, 3, -1, 4, 4, -3, 1, 2, 2, 6, 1]
+>>> VB = [4, 3, 3, -1, 4, 4, -3, 1, 2, 2, 6, 2]
+>>> I =  [0, 1, 0,  2, 4, 1,  2, 3, 4, 2, 1, 4]
+>>> J =  [0, 0, 1,  1, 1, 2,  2, 2, 2, 3, 4, 4]
+>>> A = spmatrix(VA, I, J)
+>>> B = spmatrix(VB, I, J)
+>>> x = matrix(1.0, (5,1))
+>>> Fs = klu.symbolic(A)
+>>> FA = klu.numeric(A, Fs)
+>>> FB = klu.numeric(B, Fs)
+>>> klu.solve(A, FA, x)
+>>> klu.solve(B, FB, x)
+>>> klu.solve(A, FA, x, trans='T')
+>>> print(x)
+[ 5.81e-01]
+[-2.37e-01]
+[ 1.63e+00]
+[ 8.07e+00]
+[-1.31e-01]
+
+
 .. _s-cholmod:
 
 Positive Definite Linear Equations

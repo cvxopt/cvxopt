@@ -55,13 +55,13 @@ DSDP_LIB_DIR = '/usr/lib'
 DSDP_INC_DIR = '/usr/include/dsdp'
 
 # Set to 1 to use external SuiteSparse library
-SUITESPARSE_EXT_LIB = 0
+SUITESPARSE_EXT_LIB = 1
 
 # Directory containing external SuiteSparse library
-SUITESPARSE_LIB_DIR = '/usr/local/lib'
+SUITESPARSE_LIB_DIR = '/usr/local/Cellar/suite-sparse/4.4.4/lib'
 
 # Directory containing SuiteSparse header files
-SUITESPARSE_INC_DIR = '/usr/local/include'
+SUITESPARSE_INC_DIR = '/usr/local/Cellar/suite-sparse/4.4.4/include'
 
 # No modifications should be needed below this line.
 
@@ -171,23 +171,30 @@ else:
             ['src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
             glob('src/C/SuiteSparse_cvxopt_extra/umfpack/*'))
 
-klu = Extension('klu', 
-    include_dirs = [ 'src/C/SuiteSparse/KLU/Include',
-        'src/C/SuiteSparse/AMD/Include', 
-        'src/C/SuiteSparse/AMD/Source', 
-        'src/C/SuiteSparse/COLAMD/Include', 
-        'src/C/SuiteSparse/COLAMD/Source', 
-        'src/C/SuiteSparse/BTF/Include', 
-        'src/C/SuiteSparse/BTF/Source', 
-        'src/C/SuiteSparse/SuiteSparse_config' ],
-    library_dirs = [ BLAS_LIB_DIR ],
-    define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
-    libraries = LAPACK_LIB + BLAS_LIB,
-    extra_compile_args = ['-Wno-unknown-pragmas'],
-    extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    sources = ['src/C/klu.c' ] +
-        ['src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
-        glob('src/C/SuiteSparse_cvxopt_extra/klu/*'))
+if SUITESPARSE_EXT_LIB:
+    klu = Extension('klu',
+    libraries=['amd', 'colamd', 'btf', 'suitesparseconfig', 'klu'],
+    include_dirs = [SUITESPARSE_INC_DIR],
+    library_dirs = [SUITESPARSE_LIB_DIR],
+    sources = ['src/C/klu.c'])
+else:
+    klu = Extension('klu', 
+        include_dirs = [ 'src/C/SuiteSparse/KLU/Include',
+            'src/C/SuiteSparse/AMD/Include', 
+            'src/C/SuiteSparse/AMD/Source', 
+            'src/C/SuiteSparse/COLAMD/Include', 
+            'src/C/SuiteSparse/COLAMD/Source', 
+            'src/C/SuiteSparse/BTF/Include', 
+            'src/C/SuiteSparse/BTF/Source', 
+            'src/C/SuiteSparse/SuiteSparse_config' ],
+        library_dirs = [ BLAS_LIB_DIR ],
+        define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
+        libraries = LAPACK_LIB + BLAS_LIB,
+        extra_compile_args = ['-Wno-unknown-pragmas'],
+        extra_link_args = BLAS_EXTRA_LINK_ARGS,
+        sources = ['src/C/klu.c' ] +
+            ['src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
+            glob('src/C/SuiteSparse_cvxopt_extra/klu/*'))
 
 # Build for int or long? 
 import sys
