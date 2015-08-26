@@ -321,13 +321,13 @@ equivalent to the following three functions called in sequence.
     or another sparse matrix with the same sparsity pattern, dimensions,
     and type.  The numeric factorization is returned as an opaque C object 
     that that can be passed on to 
-    :func:`solve <cvxopt.klu.solve>`. In case a previous ''N'' numeric
+    :func:`solve <cvxopt.klu.solve>`. In case a previous ``N`` numeric
     factorization is provided a refactorization is performed which need the
     same nonzero pattern as that given to call the symbolic function.  Raises an
     :exc:`ArithmeticError` if the matrix is singular.
 
 
-.. function:: cvxopt.klu.solve(A, F, B[, trans = 'N'])
+.. function:: cvxopt.klu.solve(A, F, N, B[, trans = 'N'])
 
     Solves a set of linear equations
 
@@ -339,10 +339,10 @@ equivalent to the following three functions called in sequence.
 
     where :math:`A` is a sparse matrix and :math:`B` is a dense matrix.
     The arguments ``A`` and ``B`` must have the same type.  The argument  
-    ``F`` is a numeric factorization computed 
-    by :func:`numeric <cvxopt.klu.numeric>`.  
-    On exit ``B`` is overwritten by the 
-    solution.
+    ``N`` is a numeric factorization computed 
+    by :func:`numeric <cvxopt.klu.numeric>`, and ``F`` is the symbolic 
+    factorization computed by :func:`numeric <cvxopt.klu.symbolic>`.  
+    On exit ``B`` is overwritten by the solution.
 
 
 These separate functions are useful for solving several sets of linear 
@@ -385,9 +385,9 @@ code computes
 >>> Fs = klu.symbolic(A)
 >>> FA = klu.numeric(A, Fs)
 >>> FB = klu.numeric(B, Fs)
->>> klu.solve(A, FA, x)
->>> klu.solve(B, FB, x)
->>> klu.solve(A, FA, x, trans='T')
+>>> klu.solve(A, FS, FA, x)
+>>> klu.solve(B, FS, FB, x)
+>>> klu.solve(A, FS, FA, x, trans='T')
 >>> print(x)
 [ 5.81e-01]
 [-2.37e-01]
@@ -396,6 +396,16 @@ code computes
 [-1.31e-01]
 
 
+Additionally, this module includes a function for computing the determinant of
+a sparse matrix.
+
+.. function:: cvxopt.klu.det(A, F, N)
+
+    Computes the determinant value of matrix ``A``. On exit a float number
+    is returned with the value of the determinant. The arguments ``F`` and ``N``
+    are the symbolic and numeric factorizations of matrix ``A``, respectively.
+
+    
 .. _s-cholmod:
 
 Positive Definite Linear Equations

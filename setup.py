@@ -55,7 +55,7 @@ DSDP_LIB_DIR = '/usr/lib'
 DSDP_INC_DIR = '/usr/include/dsdp'
 
 # Set to 1 to use external SuiteSparse library
-SUITESPARSE_EXT_LIB = 1
+SUITESPARSE_EXT_LIB = 0
 
 # Directory containing external SuiteSparse library
 SUITESPARSE_LIB_DIR = '/usr/local/Cellar/suite-sparse/4.4.4/lib'

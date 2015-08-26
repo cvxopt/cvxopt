@@ -2,7 +2,7 @@
 * @Author: Uriel Sandoval
 * @Date:   2015-04-28 18:56:49
 * @Last Modified by:   Uriel Sandoval
-* @Last Modified time: 2015-07-30 09:47:53
+* @Last Modified time: 2015-08-26 11:45:59
 */
 
 
@@ -70,10 +70,20 @@ static void free_klu_z_numeric(PyObject *F)
 
 
 
-static char doc_det[] = "Determinant of a KLU numeric object";
+static char doc_det[] = "Determinant of a KLU numeric object\n"
+                        "d = det(A, F, N)\n\n"
+                        "PURPOSE\n"
+                        "A is a real sparse n by n matrix, F and N its symbolic and numeric \n"
+                        "factorizations respectively.\n"
+                        "On exit a float is returned with the value of the determinant.\n\n"
+                        "ARGUMENTS\n"
+                        "A         square sparse matrix\n\n"
+                        "F         the symbolic factorization as an opaque C object\n\n"
+                        "N         the numeric factorization as an opaque C object\n\n"
+                        "d         the determinant value of the matrix\n\n";
 
 
-static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds){
+static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds) {
     spmatrix *A;
 
     PyObject *F;
@@ -111,7 +121,6 @@ static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds){
 
 
     /* This code is very similar to umfpack_get_determinan.c */
-
 
     Udiag = Fptr->Udiag;
     n =  Fptr->n;
@@ -414,15 +423,15 @@ static char doc_numeric[] =
     "a previous numeric factorization can be provided. In case that this \n"
     "refactorization leads to numerical issues a new (full) numeric factorization"
     "is returned.  Raises an ArithmeticError if A is singular.\n\n"
-    "Fn = numeric(A, Fs, F)\n\n"
+    "N2 = numeric(A, F, N)\n\n"
     "ARGUMENTS\n"
     "A         sparse matrix; may be rectangular\n\n"
-    "Fs        symbolic factorization of A, or a matrix with the same\n"
+    "F         symbolic factorization of A, or a matrix with the same\n"
     "          sparsity pattern, dimensions, and typecode as A, \n"
     "          created by klu.symbolic,\n"
-    "F         numeric factorization of A, or  a matrix with the same\n"
+    "N         numeric factorization of A, or  a matrix with the same\n"
     "          sparsity patthern, dimensions, and typecode as A.\n\n"
-    "F         the numeric factorization, as an opaque C object";
+    "N2        the numeric factorization, as an opaque C object";
 
 static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 {
@@ -568,7 +577,7 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 
 static char doc_solve[] =
     "Solves a factored set of linear equations.\n\n"
-    "solve(A, Fs, F, B, trans='N', nrhs=B.size[1], ldB=max(1,B.size[0]),\n"
+    "solve(A, F, N, B, trans='N', nrhs=B.size[1], ldB=max(1,B.size[0]),\n"
     "      offsetB=0)\n\n"
     "PURPOSE\n"
     "If trans is 'N', solves A*X = B.\n"
@@ -579,8 +588,8 @@ static char doc_solve[] =
     "On exit B is replaced by the solution.  A is not modified.\n\n"
     "ARGUMENTS\n"
     "A         square sparse matrix\n\n"
-    "Fs        symbolic factorization, as returned by klu.symbolic\n"
-    "F         numeric factorization, as returned by klu.numeric\n"
+    "F        symbolic factorization, as returned by klu.symbolic\n"
+    "N         numeric factorization, as returned by klu.numeric\n"
     "\n"
     "B         dense matrix of the same type as A, stored following \n"
     "          the BLAS conventions\n\n"
