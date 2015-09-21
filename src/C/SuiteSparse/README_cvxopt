@@ -1,6 +1,6 @@
-This is version 4.1.0 of the SuiteSparse package 
-from www.cise.ufl.edu/research/sparse/SuiteSparse/, 
-with the following files and directories removed.
+This is version 4.4.5 of the SuiteSparse package 
+from www.suitesparse.com with the following files 
+and directories removed.
 
 AMD/Demo
 AMD/MATLAB
@@ -18,11 +18,17 @@ CSparse
 Csparse_to_CXsparse
 CXSparse
 CXSparse_newfiles
-CXSparse_newfiles.tar.gz
+GPUQREngine
 KLU
 LDL
 MATLAB_Tools
 RBio
+SPQR
+SuiteSparse_demo.m
+SuiteSparse_GPURuntime
+SuiteSparse_install.m
+SuiteSparse_test.m
+UFget
 UMFPACK/Demo
 UMFPACK/MATLAB
 UMFPACK/Tcov

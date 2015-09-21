@@ -87,6 +87,7 @@
  * regardless of the value of the option parameter.
  */
 
+#ifndef NGPL
 #ifndef NMATRIXOPS
 
 #include "cholmod_internal.h"
@@ -441,7 +442,7 @@ int CHOLMOD(symmetry)
 	/* quick return if not Cholesky candidate */
 	/* ------------------------------------------------------------------ */
 
-	if (option < 1 && (!posdiag || nzdiag < ncol))
+	if (option < 1 && (!posdiag || nzdiag <= j))
 	{
 	    /* Diagonal entry not present, or present but negative or with
 	     * nonzero imaginary part.  Quick return for option 0. */
@@ -485,4 +486,5 @@ int CHOLMOD(symmetry)
     }
     return (result) ;
 }
+#endif
 #endif

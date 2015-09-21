@@ -1,9 +1,9 @@
 /*
- * Copyright 2012-2014 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2015 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.7.
+ * This file is part of CVXOPT version 1.1.8.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,26 +45,29 @@ PyDoc_STRVAR(cholmod__doc__, "Interface to the CHOLMOD library.\n\n"
 "entry in the dictionary cholmod.options, with key value 'supernodal', "
 "\n'print', 'nmethods', 'postorder', or 'dbound', respectively.\n \n"
 "These parameters have the following meaning.\n\n"
-"options['supernodal']: If equal to 0, an LDL^T or LDL^H factorization"
-"\n    is computed using a simplicial algorithm.  If equal to 2, an\n"
+"options['supernodal']: If equal to 0, an LDL^T or LDL^H factorization\n"
+"    is computed using a simplicial algorithm.  If equal to 2, an\n"
 "    LL^T or LL^H factorization is computed using a supernodal\n"
 "    algorithm.  If equal to 1, the most efficient of the two\n"
 "    factorizations is selected, based on the sparsity pattern.\n\n"
 "options['print']:  A nonnegative integer that controls the amount of\n"
 "    output printed to the screen.\n\n"
 "options['nmethods']: A nonnegative integer that specifies how many\n"
-"    orderings are attempted prior to factorization.  If equal to 0,\n"
-"    the AMD ordering and the user-provided permutation (if any) are\n"
-"    compared, and the best one is used.  If equal to 1, the AMD\n"
-"    ordering is used when no permutation is provided by the user,\n"
-"    and the user-provided permutation is used otherwise.  Default: 0."
-"\n\noptions['postorder']: True or False.  If True the symbolic\n"
+"    orderings are attempted prior to factorization.  If equal to 2,\n"
+"    the user-provided ordering and the AMD ordering are compared, and \n"
+"    the best ordering is used. (If the user does not provide an \n"
+"    ordering the AMD ordering is used.)  If nmethods is equal to 1, \n"
+"    the user-provided ordering is used. (In this case, the user must \n" 
+"    provide an ordering.   If nmethods is equal to 0, the user-provided\n"
+"    ordering (if any), the AMD ordering, and (if installed during the \n"
+"    the CHOLMOD installation) a number of other orderings are compared,\n"
+"    and the best ordering is used.  Default: 0.\n\n"
+"noptions['postorder']: True or False.  If True the symbolic\n"
 "    analysis is followed by a postordering.  Default: True.\n\n"
 "options['dbound']: Smallest absolute value for the diagonal\n"
 "    elements of D in an LDL^T factorization, or the diagonal\n"
 "    elements of L in a Cholesky factorization.  Default: 0.0.\n\n"
-"CHOLMOD is available from http://www.cise.ufl.edu/research/sparse.");
-
+"CHOLMOD is available from www.suitesparse.com.");
 
 static PyObject *cholmod_module;
 static cholmod_common Common;

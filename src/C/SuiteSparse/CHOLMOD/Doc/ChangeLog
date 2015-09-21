@@ -1,3 +1,66 @@
+July 14, 2015: version 3.0.6
+
+    * NGPL did not disable MatrixOps, Modify, and Supernodal modules,
+        contradicting its definition in the User Guide.  Fixed in this release.
+    * added MATLAB interface for row add/delete (lurowmod mexFunction)
+
+Jan 19, 2015: version 3.0.5
+
+    * minor bug fix to cholmod_symmetry.c for the 'quick return'
+        (option == 0).
+
+Jan 7, 2015: version 3.0.4
+
+    * serious bug fix to supernodal factorization.  The bug was introduced in
+	CHOLMOD v3.0.0 when the GPU acceleration was given a major update.
+	The bug can cause a segfault, whether or not the GPU is used.
+
+Oct 23, 2014: version 3.0.3
+
+    * minor fix for CHOLMOD/Supernodal/cholmod_super_symbolic.c (was using a
+      non-ANSI C method to declare and initialize a variable).
+    * added additional paper in CHOLMOD/Doc
+
+Oct 10, 2014: version 3.0.2
+
+    * changes to accomodate GPU-accelerated SPQR
+    * added CHOLMOD/Include/cholmod_function.h for backward compatibility
+        for function pointers (moved from Common to SuiteSparse_config,
+        as of v2.2.0)
+
+July 18, 2014: version 3.0.1
+
+    * minor correction to 3.0.0 Beta build process, to compile SPQR when
+        CHOLMOD is compiled on the GPU
+    * added cholmod_rowfac_mask2 function for LPDASA
+    * to test the GPU, use 'make big' in CHOLMOD/Demo.  You will need to first
+        download the GHS_psdef/audikw_1.mtx from the UF collection:
+        http://www.cise.ufl.edu/research/sparse/matrices/GHS_psdef/audikw_1.html
+
+March 26, 2014: version 3.0.0 (beta)
+
+    * major update to GPU acceleration.  Released at NVIDIA GTC 2014.
+
+July 31, 2013: version 2.2.0
+
+    * modified the CHOLMOD Common so that it is the same size regardless
+        of whether or not the GPU is used.
+    * changed malloc, printf, hypot, and divcomplex pointers to use
+        SuiteSparse_config.  Removed CHOLMOD Common-> function pointers.
+
+Apr 25, 2013: version 2.1.2
+
+    * minor update for CHOLMOD/Cholesky/*solve*.c:
+        version 2.1.0 broke the Microsoft Visual C/C++ compiler
+
+Apr 16, 2013: version 2.1.1
+
+    * bug fix to Lib/Makefile and Demo/Makefile, to handle -DNCAMD correctly.
+    * changes to Supernodal/t_cholmod_gpu.c: to fix a GPU memory leak,
+        to fix the statistics on TRSM timing, and to reduce CPU-GPU memory
+        traffic.
+    * added cholmod_version function.
+
 Mar 27, 2013: version 2.1.0
 
     * added the -DNCAMD option.  Formerly, the -DNPARTITION option disabled

@@ -9,26 +9,38 @@ ccode: all
 include ../../SuiteSparse_config/SuiteSparse_config.mk
 
 #-------------------------------------------------------------------------------
-# the optional Partition module requires METIS, CAMD, and CCOLAMD
+# the optional Partition module requires METIS, CAMD, and CCOLAMD.
+# CAMD and CCOLAMD can be installed without METIS, but are optional.
 I_WITH_PARTITION = 
 LIB_WITH_PARTITION =
-CONFIG = -DNPARTITION
-# check if METIS is requested and available
-ifeq (,$(findstring -DNPARTITION, $(CHOLMOD_CONFIG)))
-    # METIS is requested.  See if it is available
-    ifeq ($(METIS_PATH), $(wildcard $(METIS_PATH)))
-        ifeq (../../CAMD, $(wildcard ../../CAMD))
-            ifeq (../../CCOLAMD, $(wildcard ../../CCOLAMD))
-                # METIS, CAMD, and CCOLAMD are available
-                LIB_WITH_PARTITION = $(METIS) ../../CCOLAMD/Lib/libccolamd.a \
-                    ../../CAMD/Lib/libcamd.a
-                I_WITH_PARTITION = -I$(METIS_PATH)/Lib \
-                    -I../../CCOLAMD/Include -I../../CAMD/Include
-                CONFIG =
+CONFIG = -DNPARTITION -DNCAMD
+# check if CAMD/CCOLAMD and METIS are requested and available
+ifeq (,$(findstring -DNCAMD, $(CHOLMOD_CONFIG)))
+    # CAMD and CCOLAMD are requested.  See if they are available
+    ifeq (../../CAMD, $(wildcard ../../CAMD))
+        ifeq (../../CCOLAMD, $(wildcard ../../CCOLAMD))
+            # CAMD and CCOLAMD are requested and available
+            LIB_WITH_PARTITION = \
+                        ../../CCOLAMD/Lib/libccolamd.a ../../CAMD/Lib/libcamd.a
+            I_WITH_PARTITION = \
+                        -I../../CCOLAMD/Include -I../../CAMD/Include
+            CONFIG = -DNPARTITION
+            # check if METIS is requested and available
+            ifeq (,$(findstring -DNPARTITION, $(CHOLMOD_CONFIG)))
+                # METIS is requested.  See if it is available
+                ifeq ($(METIS_PATH), $(wildcard $(METIS_PATH)))
+                    # METIS is available
+                    LIB_WITH_PARTITION = $(METIS) \
+                        ../../CCOLAMD/Lib/libccolamd.a ../../CAMD/Lib/libcamd.a
+                    I_WITH_PARTITION = -I$(METIS_PATH)/Lib \
+                        -I../../CCOLAMD/Include -I../../CAMD/Include
+                    CONFIG =
+                endif
             endif
         endif
     endif
 endif
+
 #-------------------------------------------------------------------------------
 
 I = -I../../AMD/Include -I../../AMD/Source -I../../COLAMD/Include \
@@ -66,7 +78,8 @@ INC =   ../Include/cholmod.h \
 	../Include/cholmod_modify.h \
 	../Include/cholmod_partition.h \
 	../Include/cholmod_supernodal.h \
-	../Include/cholmod_template.h
+	../Include/cholmod_template.h \
+	../Include/cholmod_gpu.h
 
 #-------------------------------------------------------------------------------
 # The 7 CHOLMOD library modules (int, double)
@@ -76,7 +89,8 @@ CORE = cholmod_aat.o cholmod_add.o cholmod_band.o \
 	cholmod_change_factor.o cholmod_common.o cholmod_complex.o \
 	cholmod_copy.o cholmod_dense.o cholmod_error.o cholmod_factor.o \
 	cholmod_memory.o cholmod_sparse.o \
-	cholmod_transpose.o cholmod_triplet.o
+	cholmod_transpose.o cholmod_triplet.o \
+        cholmod_version.o
 
 CHECK = cholmod_check.o cholmod_read.o cholmod_write.o
 
@@ -97,8 +111,14 @@ MODIFY = cholmod_rowadd.o cholmod_rowdel.o cholmod_updown.o
 SUPERNODAL = cholmod_super_numeric.o cholmod_super_solve.o \
 	cholmod_super_symbolic.o
 
+ifneq ($(GPU_CONFIG),)
+GPU = cholmod_gpu.o cholmod_gpu_kernels.o
+else
+GPU =
+endif
+
 DI = $(CORE) $(CHECK) $(CHOLESKY) $(MATRIXOPS) $(MODIFY) $(SUPERNODAL) \
-	$(PARTITION)
+	$(GPU) $(PARTITION) 
 
 #-------------------------------------------------------------------------------
 # CHOLMOD library modules (long, double)
@@ -108,7 +128,8 @@ LCORE = cholmod_l_aat.o cholmod_l_add.o cholmod_l_band.o \
 	cholmod_l_change_factor.o cholmod_l_common.o cholmod_l_complex.o \
 	cholmod_l_copy.o cholmod_l_dense.o cholmod_l_error.o \
 	cholmod_l_factor.o cholmod_l_memory.o \
-	cholmod_l_sparse.o cholmod_l_transpose.o cholmod_l_triplet.o
+	cholmod_l_sparse.o cholmod_l_transpose.o cholmod_l_triplet.o \
+        cholmod_l_version.o
 
 LCHECK = cholmod_l_check.o cholmod_l_read.o cholmod_l_write.o
 
@@ -129,8 +150,14 @@ LMODIFY = cholmod_l_rowadd.o cholmod_l_rowdel.o cholmod_l_updown.o
 LSUPERNODAL = cholmod_l_super_numeric.o cholmod_l_super_solve.o \
 	cholmod_l_super_symbolic.o
 
+ifneq ($(GPU_CONFIG),)
+LGPU = cholmod_l_gpu.o cholmod_gpu_kernels.o
+else
+LGPU =
+endif
+
 DL = $(LCORE) $(LCHECK) $(LCHOLESKY) $(LMATRIXOPS) $(LMODIFY) $(LSUPERNODAL) \
-	$(LPARTITION)
+	$(LPARTITION) $(LGPU)
 
 #-------------------------------------------------------------------------------
 
@@ -215,6 +242,9 @@ cholmod_aat.o: ../Core/cholmod_aat.c
 cholmod_add.o: ../Core/cholmod_add.c
 	$(C) -c $(I) $<
 
+cholmod_version.o: ../Core/cholmod_version.c
+	$(C) -c $(I) $<
+
 #-------------------------------------------------------------------------------
 
 cholmod_l_common.o: ../Core/cholmod_common.c
@@ -258,6 +288,9 @@ cholmod_l_aat.o: ../Core/cholmod_aat.c
 	$(C) -DDLONG -c $(I) $< -o $@
 
 cholmod_l_add.o: ../Core/cholmod_add.c
+	$(C) -DDLONG -c $(I) $< -o $@
+
+cholmod_l_version.o: ../Core/cholmod_version.c
 	$(C) -DDLONG -c $(I) $< -o $@
 
 
@@ -472,7 +505,7 @@ cholmod_l_updown.o: ../Modify/cholmod_updown.c \
 #-------------------------------------------------------------------------------
 
 cholmod_super_numeric.o: ../Supernodal/cholmod_super_numeric.c \
-        ../Supernodal/t_cholmod_gpu.c \
+        ../GPU/t_cholmod_gpu.c \
 	../Supernodal/t_cholmod_super_numeric.c
 	$(C) -c $(I) $<
 
@@ -495,3 +528,17 @@ cholmod_l_super_symbolic.o: ../Supernodal/cholmod_super_symbolic.c
 cholmod_l_super_solve.o: ../Supernodal/cholmod_super_solve.c \
 	../Supernodal/t_cholmod_super_solve.c
 	$(C) -DDLONG -c $(I) $< -o $@
+
+#-------------------------------------------------------------------------------
+# GPU module
+#-------------------------------------------------------------------------------
+
+cholmod_gpu_kernels.o: ../GPU/cholmod_gpu_kernels.cu
+	$(NVCC) -I../../SuiteSparse_config -Xcompiler -fPIC -O3  -gencode=arch=compute_20,code=sm_20 -gencode=arch=compute_30,code=sm_30 -gencode=arch=compute_35,code=sm_35 -c ../GPU/cholmod_gpu_kernels.cu
+
+cholmod_gpu.o: ../GPU/cholmod_gpu.c 
+	$(C) -c $(I) $<
+
+cholmod_l_gpu.o: ../GPU/cholmod_gpu.c 
+	$(C) -DDLONG -c $(I) $< -o $@
+

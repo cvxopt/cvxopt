@@ -1,9 +1,9 @@
 /*
- * Copyright 2012-2014 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2015 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.7.
+ * This file is part of CVXOPT version 1.1.8.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ PyDoc_STRVAR(amd__doc__,"Interface to the AMD library.\n\n"
 "making an entry in the dictionary amd.options, with possible key "
 "values\n"
 "'AMD_DENSE' and 'AMD_AGGRESSIVE'.\n\n"
-"AMD is available from http://www.cise.ufl.edu/research/sparse/amd.");
+"AMD is available from www.suitesparse.com.");
 
 
 static  PyObject *amd_module;
