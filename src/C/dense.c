@@ -1,9 +1,9 @@
 /*
- * Copyright 2012-2014 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2015 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.7.
+ * This file is part of CVXOPT version 1.1.8.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -563,8 +563,12 @@ PyObject *matrix_sub(PyObject *, PyObject *);
 
 static PyObject *
 matrix_richcompare(PyObject *self, PyObject *other, int op) {
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
 
-  PY_ERR(PyExc_NotImplementedError, "matrix comparison not implemented");
+int * matrix_compare(PyObject *self, PyObject *other) {
+  PyErr_SetString(PyExc_NotImplementedError, "matrix comparison not implemented"); return 0;
 }
 
 static PyObject *
@@ -1382,7 +1386,11 @@ PyTypeObject matrix_tp = {
     0,                           /* tp_print */
     0,                           /* tp_getattr */
     0,                           /* tp_setattr */
+#if PY_MAJOR_VERSION >= 3
     0,                           /* tp_compare */
+#else
+    (cmpfunc)matrix_compare,     /* tp_compare */
+#endif
     (reprfunc)matrix_repr,       /* tp_repr */
     &matrix_as_number,           /* tp_as_number */
     0,                           /* tp_as_sequence */

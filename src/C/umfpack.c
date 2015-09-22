@@ -1,9 +1,9 @@
 /*
- * Copyright 2012-2014 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2015 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.7.
+ * This file is part of CVXOPT version 1.1.8.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ PyDoc_STRVAR(umfpack__doc__,"Interface to the UMFPACK library.\n\n"
     "Routines for symbolic and numeric LU factorization of sparse\n"
     "matrices and for solving sparse sets of linear equations.\n"
     "The default control settings of UMPFACK are used.\n\n"
-    "See also http://www.cise.ufl.edu/research/sparse/umfpack.");
+    "See also www.suitesparse.com.");
 
 #if PY_MAJOR_VERSION >= 3
 static void free_umfpack_d_symbolic(void *F)

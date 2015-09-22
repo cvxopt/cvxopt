@@ -174,55 +174,55 @@
             
   <div class="section" id="modeling">
 <span id="c-modeling"></span><h1>Modeling<a class="headerlink" href="#modeling" title="Permalink to this headline">¶</a></h1>
-<p>The module <tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.modeling</span></tt>  can be used to specify and solve
+<p>The module <code class="xref py py-mod docutils literal"><span class="pre">cvxopt.modeling</span></code>  can be used to specify and solve
 optimization problems  with convex piecewise-linear objective and
 constraint functions.  Using this modeling tool, one can specify an
 optimization problem by first defining the optimization variables (see the
-section <a class="reference internal" href="#s-variables"><em>Variables</em></a>), and then specifying the objective and
+section <a class="reference internal" href="#s-variables"><span>Variables</span></a>), and then specifying the objective and
 constraint functions using linear operations (vector addition and
 subtraction, matrix-vector multiplication, indexing and slicing)
-and nested evaluations of <tt class="xref py py-func docutils literal"><span class="pre">max</span></tt>,
-<tt class="xref py py-func docutils literal"><span class="pre">min</span></tt>,
-<tt class="xref py py-func docutils literal"><span class="pre">abs</span></tt> and
-<a class="reference internal" href="#cvxopt.modeling.sum" title="cvxopt.modeling.sum"><tt class="xref py py-func docutils literal"><span class="pre">sum</span></tt></a> (see the section <a class="reference internal" href="#s-functions"><em>Functions</em></a>).</p>
+and nested evaluations of <code class="xref py py-func docutils literal"><span class="pre">max</span></code>,
+<code class="xref py py-func docutils literal"><span class="pre">min</span></code>,
+<code class="xref py py-func docutils literal"><span class="pre">abs</span></code> and
+<a class="reference internal" href="#cvxopt.modeling.sum" title="cvxopt.modeling.sum"><code class="xref py py-func docutils literal"><span class="pre">sum</span></code></a> (see the section <a class="reference internal" href="#s-functions"><span>Functions</span></a>).</p>
 <p>A more general Python convex modeling package is
 <a class="reference external" href="http://cvxpy.org">CVXPY</a>.</p>
 <div class="section" id="variables">
 <span id="s-variables"></span><h2>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h2>
-<p>Optimization variables are represented by <tt class="xref py py-class docutils literal"><span class="pre">variable</span></tt> objects.</p>
+<p>Optimization variables are represented by <code class="xref py py-class docutils literal"><span class="pre">variable</span></code> objects.</p>
 <dl class="function">
 <dt id="cvxopt.modeling.variable">
-<tt class="descclassname">cvxopt.modeling.</tt><tt class="descname">variable</tt><big>(</big><span class="optional">[</span><em>size</em><span class="optional">[</span>, <em>name</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.modeling.variable" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cvxopt.modeling.</code><code class="descname">variable</code><span class="sig-paren">(</span><span class="optional">[</span><em>size</em><span class="optional">[</span>, <em>name</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.variable" title="Permalink to this definition">¶</a></dt>
 <dd><p>A vector variable.  The first argument is the dimension of the vector
 (a positive integer with default value 1).  The second argument is a
 string with a name for the variable.  The name is optional and has
-default value <tt class="xref py py-const docutils literal"><span class="pre">&quot;&quot;</span></tt>. It is only used when displaying variables
+default value <code class="xref py py-const docutils literal"><span class="pre">&quot;&quot;</span></code>. It is only used when displaying variables
 (or objects that depend on variables, such as functions or constraints)
-using <tt class="xref py py-func docutils literal"><span class="pre">print</span></tt> statements, when calling the built-in functions
-<tt class="xref py py-func docutils literal"><span class="pre">repr</span></tt>  or <tt class="xref py py-func docutils literal"><span class="pre">str</span></tt>, or when writing linear programs to MPS
+using <code class="xref py py-func docutils literal"><span class="pre">print</span></code> statements, when calling the built-in functions
+<code class="xref py py-func docutils literal"><span class="pre">repr</span></code>  or <code class="xref py py-func docutils literal"><span class="pre">str</span></code>, or when writing linear programs to MPS
 files.</p>
 </dd></dl>
 
-<p>The function <tt class="xref py py-func docutils literal"><span class="pre">len</span></tt> returns the length of a <tt class="xref py py-class docutils literal"><span class="pre">variable</span></tt>.
-A <tt class="xref py py-class docutils literal"><span class="pre">variable</span></tt> <tt class="docutils literal"><span class="pre">x</span></tt> has two attributes.</p>
+<p>The function <code class="xref py py-func docutils literal"><span class="pre">len</span></code> returns the length of a <code class="xref py py-class docutils literal"><span class="pre">variable</span></code>.
+A <code class="xref py py-class docutils literal"><span class="pre">variable</span></code> <code class="docutils literal"><span class="pre">x</span></code> has two attributes.</p>
 <dl class="attribute">
 <dt id="name">
-<tt class="descname">name</tt><a class="headerlink" href="#name" title="Permalink to this definition">¶</a></dt>
+<code class="descname">name</code><a class="headerlink" href="#name" title="Permalink to this definition">¶</a></dt>
 <dd><p>The name of the variable.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="value">
-<tt class="descname">value</tt><a class="headerlink" href="#value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Either <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt> or a dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix of size
-<tt class="docutils literal"><span class="pre">len(x)</span></tt> by 1.</p>
-<p>The attribute <tt class="docutils literal"><span class="pre">x.value</span></tt> is set to <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt> when the variable
-<tt class="docutils literal"><span class="pre">x</span></tt> is created.   It can be given a numerical value later, typically
-by solving an LP that has <tt class="docutils literal"><span class="pre">x</span></tt> as one of its variables.  One can also
-make an explicit assignment <tt class="docutils literal"><span class="pre">x.value</span> <span class="pre">=</span> <span class="pre">y</span></tt>.  The assigned value
-<tt class="docutils literal"><span class="pre">y</span></tt> must be an integer or float, or a dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix of
-size <tt class="docutils literal"><span class="pre">(len(x),</span> <span class="pre">1)</span></tt>.  If <tt class="docutils literal"><span class="pre">y</span></tt> is an integer or float, all the
-elements of <tt class="docutils literal"><span class="pre">x.value</span></tt> are set to the value of <tt class="docutils literal"><span class="pre">y</span></tt>.</p>
+<code class="descname">value</code><a class="headerlink" href="#value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Either <code class="xref py py-const docutils literal"><span class="pre">None</span></code> or a dense <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix of size
+<code class="docutils literal"><span class="pre">len(x)</span></code> by 1.</p>
+<p>The attribute <code class="docutils literal"><span class="pre">x.value</span></code> is set to <code class="xref py py-const docutils literal"><span class="pre">None</span></code> when the variable
+<code class="docutils literal"><span class="pre">x</span></code> is created.   It can be given a numerical value later, typically
+by solving an LP that has <code class="docutils literal"><span class="pre">x</span></code> as one of its variables.  One can also
+make an explicit assignment <code class="docutils literal"><span class="pre">x.value</span> <span class="pre">=</span> <span class="pre">y</span></code>.  The assigned value
+<code class="docutils literal"><span class="pre">y</span></code> must be an integer or float, or a dense <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix of
+size <code class="docutils literal"><span class="pre">(len(x),</span> <span class="pre">1)</span></code>.  If <code class="docutils literal"><span class="pre">y</span></code> is an integer or float, all the
+elements of <code class="docutils literal"><span class="pre">x.value</span></code> are set to the value of <code class="docutils literal"><span class="pre">y</span></code>.</p>
 </dd></dl>
 
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
@@ -250,23 +250,23 @@ elements of <tt class="docutils literal"><span class="pre">x.value</span></tt> a
 <div class="section" id="functions">
 <span id="s-functions"></span><h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
 <p>Objective and constraint functions can be defined via overloaded operations
-on variables and other functions.  A function <tt class="docutils literal"><span class="pre">f</span></tt> is interpreted as a
-column vector, with length <tt class="docutils literal"><span class="pre">len(f)</span></tt> and with a value that depends on
+on variables and other functions.  A function <code class="docutils literal"><span class="pre">f</span></code> is interpreted as a
+column vector, with length <code class="docutils literal"><span class="pre">len(f)</span></code> and with a value that depends on
 the values of its variables.  Functions have two public attributes.</p>
 <dl class="attribute">
 <dt>
-<tt class="descname">variables</tt></dt>
+<code class="descname">variables</code></dt>
 <dd><p>Returns a copy of the list of variables of the function.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<tt class="descname">value</tt></dt>
-<dd><p>The function value.  If any of the variables of <tt class="docutils literal"><span class="pre">f</span></tt> has value
-<tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>, then <tt class="docutils literal"><span class="pre">f.value()</span></tt> returns <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>.  Otherwise,
-it returns a dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix of size <tt class="docutils literal"><span class="pre">(len(f),1)</span></tt> with
-the function value computed from the <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of the
-variables of <tt class="docutils literal"><span class="pre">f</span></tt>.</p>
+<code class="descname">value</code></dt>
+<dd><p>The function value.  If any of the variables of <code class="docutils literal"><span class="pre">f</span></code> has value
+<code class="xref py py-const docutils literal"><span class="pre">None</span></code>, then <code class="docutils literal"><span class="pre">f.value()</span></code> returns <code class="xref py py-const docutils literal"><span class="pre">None</span></code>.  Otherwise,
+it returns a dense <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix of size <code class="docutils literal"><span class="pre">(len(f),1)</span></code> with
+the function value computed from the <a class="reference internal" href="#value" title="value"><code class="xref py py-attr docutils literal"><span class="pre">value</span></code></a> attributes of the
+variables of <code class="docutils literal"><span class="pre">f</span></code>.</p>
 </dd></dl>
 
 <p>Three types of functions are supported: affine, convex piecewise-linear,
@@ -279,38 +279,38 @@ constant term is a scalar or a column vector.</p>
 <p>Affine functions result from the following operations.</p>
 <dl class="docutils">
 <dt><strong>Unary operations</strong></dt>
-<dd>For a variable <tt class="docutils literal"><span class="pre">x</span></tt>, the unary operation <tt class="docutils literal"><span class="pre">+x</span></tt> results in an
-affine function with <tt class="docutils literal"><span class="pre">x</span></tt> as variable, coefficient 1.0, and constant
-term 0.0.  The unary operation <tt class="docutils literal"><span class="pre">-x</span></tt> returns an affine function
-with <tt class="docutils literal"><span class="pre">x</span></tt> as variable, coefficient -1.0, and constant term 0.0.  For
-an affine function <tt class="docutils literal"><span class="pre">f</span></tt>, <tt class="docutils literal"><span class="pre">+f</span></tt> is a copy of <tt class="docutils literal"><span class="pre">f</span></tt>, and
-<tt class="docutils literal"><span class="pre">-f</span></tt> is a copy of <tt class="docutils literal"><span class="pre">f</span></tt> with the signs of its coefficients and
+<dd>For a variable <code class="docutils literal"><span class="pre">x</span></code>, the unary operation <code class="docutils literal"><span class="pre">+x</span></code> results in an
+affine function with <code class="docutils literal"><span class="pre">x</span></code> as variable, coefficient 1.0, and constant
+term 0.0.  The unary operation <code class="docutils literal"><span class="pre">-x</span></code> returns an affine function
+with <code class="docutils literal"><span class="pre">x</span></code> as variable, coefficient -1.0, and constant term 0.0.  For
+an affine function <code class="docutils literal"><span class="pre">f</span></code>, <code class="docutils literal"><span class="pre">+f</span></code> is a copy of <code class="docutils literal"><span class="pre">f</span></code>, and
+<code class="docutils literal"><span class="pre">-f</span></code> is a copy of <code class="docutils literal"><span class="pre">f</span></code> with the signs of its coefficients and
 constant term reversed.</dd>
 <dt><strong>Addition and subtraction</strong></dt>
 <dd><p class="first">Sums and differences of affine functions, variables and constants result
 in new affine functions.  The constant terms in the sum can be of type
-integer or float, or dense or sparse <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrices with one
+integer or float, or dense or sparse <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrices with one
 column.</p>
 <p class="last">The rules for addition and subtraction follow the conventions for
-matrix addition and subtraction in the section <a class="reference internal" href="matrices.html#s-arithmetic"><em>Arithmetic Operations</em></a>,
-with variables and affine functions interpreted as dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>
+matrix addition and subtraction in the section <a class="reference internal" href="matrices.html#s-arithmetic"><span>Arithmetic Operations</span></a>,
+with variables and affine functions interpreted as dense <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code>
 matrices with one column.  In particular, a scalar term (integer, float,
-1 by 1 dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix, variable of length 1, or affine
+1 by 1 dense <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix, variable of length 1, or affine
 function of length 1) can be added to an affine function or variable of
 length greater than 1.</p>
 </dd>
 <dt><strong>Multiplication</strong></dt>
-<dd>Suppose <tt class="docutils literal"><span class="pre">v</span></tt> is an affine function or a variable, and <tt class="docutils literal"><span class="pre">a</span></tt> is an
-integer, float, sparse or dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix.  The products
-<tt class="docutils literal"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">v</span></tt> and  <tt class="docutils literal"><span class="pre">v</span> <span class="pre">*</span> <span class="pre">a</span></tt> are valid affine functions whenever
+<dd>Suppose <code class="docutils literal"><span class="pre">v</span></code> is an affine function or a variable, and <code class="docutils literal"><span class="pre">a</span></code> is an
+integer, float, sparse or dense <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix.  The products
+<code class="docutils literal"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">v</span></code> and  <code class="docutils literal"><span class="pre">v</span> <span class="pre">*</span> <span class="pre">a</span></code> are valid affine functions whenever
 the product is allowed under the rules for matrix and scalar
-multiplication of the section <a class="reference internal" href="matrices.html#s-arithmetic"><em>Arithmetic Operations</em></a>, with <tt class="docutils literal"><span class="pre">v</span></tt>
+multiplication of the section <a class="reference internal" href="matrices.html#s-arithmetic"><span>Arithmetic Operations</span></a>, with <code class="docutils literal"><span class="pre">v</span></code>
 interpreted
-as a <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix with one column.  In particular, the product
-<tt class="docutils literal"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">v</span></tt> is defined if <tt class="docutils literal"><span class="pre">a</span></tt> is a scalar (integer, float, or
-1 by 1 dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix), or a matrix (dense or sparse) with
-<tt class="docutils literal"><span class="pre">a.size[1]</span></tt> equal to <tt class="docutils literal"><span class="pre">len(v)</span></tt>.   The operation <tt class="docutils literal"><span class="pre">v</span> <span class="pre">*</span> <span class="pre">a</span></tt>
-is defined if <tt class="docutils literal"><span class="pre">a</span></tt> is scalar, or if <tt class="docutils literal"><span class="pre">len(v)</span></tt> is 1 and <tt class="docutils literal"><span class="pre">a</span></tt> is a
+as a <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix with one column.  In particular, the product
+<code class="docutils literal"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">v</span></code> is defined if <code class="docutils literal"><span class="pre">a</span></code> is a scalar (integer, float, or
+1 by 1 dense <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix), or a matrix (dense or sparse) with
+<code class="docutils literal"><span class="pre">a.size[1]</span></code> equal to <code class="docutils literal"><span class="pre">len(v)</span></code>.   The operation <code class="docutils literal"><span class="pre">v</span> <span class="pre">*</span> <span class="pre">a</span></code>
+is defined if <code class="docutils literal"><span class="pre">a</span></code> is scalar, or if <code class="docutils literal"><span class="pre">len(v)</span></code> is 1 and <code class="docutils literal"><span class="pre">a</span></code> is a
 matrix with one column.</dd>
 <dt><strong>Inner products</strong></dt>
 <dd><p class="first">The following two functions return scalar affine functions defined
@@ -318,28 +318,28 @@ as inner products of a constant vector with  a variable or affine
 function.</p>
 <dl class="function">
 <dt id="cvxopt.modeling.sum">
-<tt class="descclassname">cvxopt.modeling.</tt><tt class="descname">sum</tt><big>(</big><em>v</em><big>)</big><a class="headerlink" href="#cvxopt.modeling.sum" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cvxopt.modeling.</code><code class="descname">sum</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.sum" title="Permalink to this definition">¶</a></dt>
 <dd><p>The argument is an affine function or a variable.  The result is an
 affine function of length 1, with the sum of the components of the
-argument <tt class="docutils literal"><span class="pre">v</span></tt>.</p>
+argument <code class="docutils literal"><span class="pre">v</span></code>.</p>
 </dd></dl>
 
 <dl class="last function">
 <dt id="cvxopt.modeling.dot">
-<tt class="descclassname">cvxopt.modeling.</tt><tt class="descname">dot</tt><big>(</big><em>u</em>, <em>v</em><big>)</big><a class="headerlink" href="#cvxopt.modeling.dot" title="Permalink to this definition">¶</a></dt>
-<dd><p>If <tt class="docutils literal"><span class="pre">v</span></tt> is a variable or affine function and <tt class="docutils literal"><span class="pre">u</span></tt> is a
-<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix of size <tt class="docutils literal"><span class="pre">(len(v),</span> <span class="pre">1)</span></tt>, then
-<tt class="docutils literal"><span class="pre">dot(u,</span> <span class="pre">v)</span></tt> and <tt class="docutils literal"><span class="pre">dot(v,</span> <span class="pre">u)</span></tt> are equivalent to
-<tt class="docutils literal"><span class="pre">u.trans()</span> <span class="pre">*</span> <span class="pre">v</span></tt>.</p>
-<p>If <tt class="docutils literal"><span class="pre">u</span></tt> and <tt class="docutils literal"><span class="pre">v</span></tt> are dense matrices, then <tt class="xref py py-func docutils literal"><span class="pre">dot</span></tt>
-is equivalent to the function <a class="reference internal" href="blas.html#cvxopt.blas.dot" title="cvxopt.blas.dot"><tt class="xref py py-func docutils literal"><span class="pre">blas.dot</span></tt></a>,
+<code class="descclassname">cvxopt.modeling.</code><code class="descname">dot</code><span class="sig-paren">(</span><em>u</em>, <em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.dot" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <code class="docutils literal"><span class="pre">v</span></code> is a variable or affine function and <code class="docutils literal"><span class="pre">u</span></code> is a
+<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix of size <code class="docutils literal"><span class="pre">(len(v),</span> <span class="pre">1)</span></code>, then
+<code class="docutils literal"><span class="pre">dot(u,</span> <span class="pre">v)</span></code> and <code class="docutils literal"><span class="pre">dot(v,</span> <span class="pre">u)</span></code> are equivalent to
+<code class="docutils literal"><span class="pre">u.trans()</span> <span class="pre">*</span> <span class="pre">v</span></code>.</p>
+<p>If <code class="docutils literal"><span class="pre">u</span></code> and <code class="docutils literal"><span class="pre">v</span></code> are dense matrices, then <code class="xref py py-func docutils literal"><span class="pre">dot</span></code>
+is equivalent to the function <a class="reference internal" href="blas.html#cvxopt.blas.dot" title="cvxopt.blas.dot"><code class="xref py py-func docutils literal"><span class="pre">blas.dot</span></code></a>,
 i.e., it returns the inner product of the two matrices.</p>
 </dd></dl>
 
 </dd>
 </dl>
-<p>In the following example, the variable <tt class="docutils literal"><span class="pre">x</span></tt> has length 1 and <tt class="docutils literal"><span class="pre">y</span></tt> has
-length 2.  The functions <tt class="docutils literal"><span class="pre">f</span></tt> and <tt class="docutils literal"><span class="pre">g</span></tt> are given by</p>
+<p>In the following example, the variable <code class="docutils literal"><span class="pre">x</span></code> has length 1 and <code class="docutils literal"><span class="pre">y</span></code> has
+length 2.  The functions <code class="docutils literal"><span class="pre">f</span></code> and <code class="docutils literal"><span class="pre">g</span></code> are given by</p>
 <div class="math">
 <p><img src="_images/math/198ab32e382c82002570f58df80b131d525f6bfd.png" alt="f(x,y) &amp;= \left[ \begin{array}{c} 2 \\ 2 \end{array}\right] x
     + y + \left[ \begin{array}{c} 3 \\ 3 \end{array}\right], \\
@@ -373,15 +373,15 @@ g(x,y) &amp;=
 </div>
 <dl class="docutils">
 <dt><strong>In-place operations</strong></dt>
-<dd>For an affine function <tt class="docutils literal"><span class="pre">f</span></tt> the operations <tt class="docutils literal"><span class="pre">f</span> <span class="pre">+=</span> <span class="pre">u</span></tt> and
-<tt class="docutils literal"><span class="pre">f</span> <span class="pre">-=</span> <span class="pre">u</span></tt>, with <tt class="docutils literal"><span class="pre">u</span></tt> a constant, a variable or an affine function,
-are allowed if they do not change the length of <tt class="docutils literal"><span class="pre">f</span></tt>, i.e., if <tt class="docutils literal"><span class="pre">u</span></tt>
-has length <tt class="docutils literal"><span class="pre">len(f)</span></tt> or length 1.  In-place multiplication
-<tt class="docutils literal"><span class="pre">f</span> <span class="pre">*=</span> <span class="pre">u</span></tt> and division <tt class="docutils literal"><span class="pre">f</span> <span class="pre">/=</span> <span class="pre">u</span></tt> are allowed if <tt class="docutils literal"><span class="pre">u</span></tt> is an
+<dd>For an affine function <code class="docutils literal"><span class="pre">f</span></code> the operations <code class="docutils literal"><span class="pre">f</span> <span class="pre">+=</span> <span class="pre">u</span></code> and
+<code class="docutils literal"><span class="pre">f</span> <span class="pre">-=</span> <span class="pre">u</span></code>, with <code class="docutils literal"><span class="pre">u</span></code> a constant, a variable or an affine function,
+are allowed if they do not change the length of <code class="docutils literal"><span class="pre">f</span></code>, i.e., if <code class="docutils literal"><span class="pre">u</span></code>
+has length <code class="docutils literal"><span class="pre">len(f)</span></code> or length 1.  In-place multiplication
+<code class="docutils literal"><span class="pre">f</span> <span class="pre">*=</span> <span class="pre">u</span></code> and division <code class="docutils literal"><span class="pre">f</span> <span class="pre">/=</span> <span class="pre">u</span></code> are allowed if <code class="docutils literal"><span class="pre">u</span></code> is an
 integer, float, or 1 by 1 matrix.</dd>
 <dt><strong>Indexing and slicing</strong></dt>
 <dd>Variables and affine functions admit single-argument indexing of the
-four types described in the section <a class="reference internal" href="matrices.html#s-indexing"><em>Indexing and Slicing</em></a>.  The result of
+four types described in the section <a class="reference internal" href="matrices.html#s-indexing"><span>Indexing and Slicing</span></a>.  The result of
 an indexing or slicing operation is an affine function.</dd>
 </dl>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
@@ -416,62 +416,62 @@ convex piecewise-linear functions.  The general expression for a
 <div class="math">
 <p><img src="_images/math/c861d27ab46dcf1be207f024a0ce2fbb9d9d4ec1.png" alt="f(x_1,\ldots,x_n) = b + A_1 x_1 + \cdots + A_n x_n +
     \sum_{k=1}^K \min (y_1, y_2, \ldots, y_{m_k})."/></p>
-</div><p>Here the arguments of the <tt class="xref py py-func docutils literal"><span class="pre">min</span></tt>
+</div><p>Here the arguments of the <code class="xref py py-func docutils literal"><span class="pre">min</span></code>
 can be constants, variables, affine
 functions or concave piecewise-linear functions.</p>
 <p>Piecewise-linear functions can be created using the following
 operations.</p>
 <dl class="docutils">
 <dt><strong>Maximum</strong></dt>
-<dd><p class="first">If the arguments in <tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">max(y1,</span> <span class="pre">y2,</span> <span class="pre">...)</span></tt> do not include any
-variables or functions, then the Python built-in <tt class="xref py py-func docutils literal"><span class="pre">max</span></tt> is
+<dd><p class="first">If the arguments in <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">max(y1,</span> <span class="pre">y2,</span> <span class="pre">...)</span></code> do not include any
+variables or functions, then the Python built-in <code class="xref py py-func docutils literal"><span class="pre">max</span></code> is
 evaluated.</p>
 <p>If one or more of the arguments are variables or functions,
-<tt class="xref py py-func docutils literal"><span class="pre">max</span></tt>
+<code class="xref py py-func docutils literal"><span class="pre">max</span></code>
 returns a piecewise-linear function defined as the elementwise maximum
 of its arguments.  In other words,
-<tt class="docutils literal"><span class="pre">f[k]</span> <span class="pre">=</span> <span class="pre">max(y1[k],</span> <span class="pre">y2[k],</span> <span class="pre">...)</span></tt> for <tt class="docutils literal"><span class="pre">k</span></tt> = 0, ...,
-<tt class="docutils literal"><span class="pre">len(f)</span> <span class="pre">-</span> <span class="pre">1</span></tt>.  The length of <tt class="docutils literal"><span class="pre">f</span></tt> is equal to the maximum of the
+<code class="docutils literal"><span class="pre">f[k]</span> <span class="pre">=</span> <span class="pre">max(y1[k],</span> <span class="pre">y2[k],</span> <span class="pre">...)</span></code> for <code class="docutils literal"><span class="pre">k</span></code> = 0, ...,
+<code class="docutils literal"><span class="pre">len(f)</span> <span class="pre">-</span> <span class="pre">1</span></code>.  The length of <code class="docutils literal"><span class="pre">f</span></code> is equal to the maximum of the
 lengths of the arguments.  Each argument must have length equal to
-<tt class="docutils literal"><span class="pre">len(f)</span></tt> or length one.  Arguments with length one are interpreted
-as vectors of length <tt class="docutils literal"><span class="pre">len(f)</span></tt> with identical entries.</p>
+<code class="docutils literal"><span class="pre">len(f)</span></code> or length one.  Arguments with length one are interpreted
+as vectors of length <code class="docutils literal"><span class="pre">len(f)</span></code> with identical entries.</p>
 <p>The arguments can be scalars of type integer or float, dense
-<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrices with one column, variables, affine functions or
+<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrices with one column, variables, affine functions or
 convex piecewise-linear functions.</p>
-<p class="last">With one argument, <tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">max(u)</span></tt> is interpreted as
-<tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">max(u[0],</span> <span class="pre">u[1],</span> <span class="pre">...,</span> <span class="pre">u[len(u)-1])</span></tt>.</p>
+<p class="last">With one argument, <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">max(u)</span></code> is interpreted as
+<code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">max(u[0],</span> <span class="pre">u[1],</span> <span class="pre">...,</span> <span class="pre">u[len(u)-1])</span></code>.</p>
 </dd>
 <dt><strong>Minimum</strong></dt>
-<dd>Similar to <tt class="xref py py-func docutils literal"><span class="pre">max</span></tt> but returns a concave piecewise-linear
+<dd>Similar to <code class="xref py py-func docutils literal"><span class="pre">max</span></code> but returns a concave piecewise-linear
 function.
 The arguments can be scalars of type integer or float, dense
-<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrices with one column, variables, affine functions or
+<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrices with one column, variables, affine functions or
 concave piecewise-linear functions.</dd>
 <dt><strong>Absolute value</strong></dt>
-<dd>If <tt class="docutils literal"><span class="pre">u</span></tt> is a variable or affine function then <tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">abs(u)</span></tt>
-returns the convex piecewise-linear function <tt class="docutils literal"><span class="pre">max(u,</span> <span class="pre">-u)</span></tt>.</dd>
+<dd>If <code class="docutils literal"><span class="pre">u</span></code> is a variable or affine function then <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">abs(u)</span></code>
+returns the convex piecewise-linear function <code class="docutils literal"><span class="pre">max(u,</span> <span class="pre">-u)</span></code>.</dd>
 <dt><strong>Unary plus and minus</strong></dt>
-<dd><tt class="docutils literal"><span class="pre">+f</span></tt> creates a copy of <tt class="docutils literal"><span class="pre">f</span></tt>.  <tt class="docutils literal"><span class="pre">-f</span></tt> is a concave
-piecewise-linear function if <tt class="docutils literal"><span class="pre">f</span></tt> is convex and a convex
-piecewise-linear function if <tt class="docutils literal"><span class="pre">f</span></tt> is concave.</dd>
+<dd><code class="docutils literal"><span class="pre">+f</span></code> creates a copy of <code class="docutils literal"><span class="pre">f</span></code>.  <code class="docutils literal"><span class="pre">-f</span></code> is a concave
+piecewise-linear function if <code class="docutils literal"><span class="pre">f</span></code> is convex and a convex
+piecewise-linear function if <code class="docutils literal"><span class="pre">f</span></code> is concave.</dd>
 <dt><strong>Addition and subtraction</strong></dt>
 <dd>Sums and differences involving piecewise-linear functions are allowed
 if they result in convex or concave functions.  For example, one can add
 two convex or two concave functions, but not a convex and a concave
-function.  The command <tt class="docutils literal"><span class="pre">sum(f)</span></tt> is equivalent to
-<tt class="docutils literal"><span class="pre">f[0]</span> <span class="pre">+</span> <span class="pre">f[1]</span> <span class="pre">+</span> <span class="pre">...</span> <span class="pre">+</span> <span class="pre">f[len(f)</span> <span class="pre">-</span> <span class="pre">1]</span></tt>.</dd>
+function.  The command <code class="docutils literal"><span class="pre">sum(f)</span></code> is equivalent to
+<code class="docutils literal"><span class="pre">f[0]</span> <span class="pre">+</span> <span class="pre">f[1]</span> <span class="pre">+</span> <span class="pre">...</span> <span class="pre">+</span> <span class="pre">f[len(f)</span> <span class="pre">-</span> <span class="pre">1]</span></code>.</dd>
 <dt><strong>Multiplication</strong></dt>
-<dd>Scalar multiplication <tt class="docutils literal"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">f</span></tt> of a piecewise-linear function <tt class="docutils literal"><span class="pre">f</span></tt>
-is defined if <tt class="docutils literal"><span class="pre">a</span></tt> is an integer, float, 1 by 1 <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix.
-Matrix-matrix multiplications <tt class="docutils literal"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">f</span></tt> or <tt class="docutils literal"><span class="pre">f</span> <span class="pre">*</span> <span class="pre">a</span></tt> are only
-defined if <tt class="docutils literal"><span class="pre">a</span></tt> is a dense or sparse 1 by 1 matrix.</dd>
+<dd>Scalar multiplication <code class="docutils literal"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">f</span></code> of a piecewise-linear function <code class="docutils literal"><span class="pre">f</span></code>
+is defined if <code class="docutils literal"><span class="pre">a</span></code> is an integer, float, 1 by 1 <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix.
+Matrix-matrix multiplications <code class="docutils literal"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">f</span></code> or <code class="docutils literal"><span class="pre">f</span> <span class="pre">*</span> <span class="pre">a</span></code> are only
+defined if <code class="docutils literal"><span class="pre">a</span></code> is a dense or sparse 1 by 1 matrix.</dd>
 <dt><strong>Indexing and slicing</strong></dt>
 <dd>Piecewise-linear functions admit single-argument indexing of the four
-types described in the section <a class="reference internal" href="matrices.html#s-indexing"><em>Indexing and Slicing</em></a>.  The result of an
+types described in the section <a class="reference internal" href="matrices.html#s-indexing"><span>Indexing and Slicing</span></a>.  The result of an
 indexing or slicing operation is a new piecewise-linear function.</dd>
 </dl>
-<p>In the following example, <tt class="docutils literal"><span class="pre">f</span></tt> is the 1-norm of a vector variable <tt class="docutils literal"><span class="pre">x</span></tt> of
-length 10, <tt class="docutils literal"><span class="pre">g</span></tt> is its infinity-norm, and <tt class="docutils literal"><span class="pre">h</span></tt> is the function</p>
+<p>In the following example, <code class="docutils literal"><span class="pre">f</span></code> is the 1-norm of a vector variable <code class="docutils literal"><span class="pre">x</span></code> of
+length 10, <code class="docutils literal"><span class="pre">g</span></code> is its infinity-norm, and <code class="docutils literal"><span class="pre">h</span></code> is the function</p>
 <div class="math">
 <p><img src="_images/math/b3263c15725476b4815cfd68a2a0fa73286d58de.png" alt="h(x) = \sum_k \phi(x[k]), \qquad
 \phi(u) = \left\{\begin{array}{ll}
@@ -488,11 +488,11 @@ length 10, <tt class="docutils literal"><span class="pre">g</span></tt> is its i
 </div>
 <dl class="docutils">
 <dt><strong>In-place operations</strong></dt>
-<dd>If <tt class="docutils literal"><span class="pre">f</span></tt> is piecewise-linear then the in-place operations
-<tt class="docutils literal"><span class="pre">f</span> <span class="pre">+=</span> <span class="pre">u</span></tt>, <tt class="docutils literal"><span class="pre">f</span> <span class="pre">-=</span> <span class="pre">u</span></tt>, <tt class="docutils literal"><span class="pre">f</span> <span class="pre">*=</span> <span class="pre">u</span></tt>, <tt class="docutils literal"><span class="pre">f</span> <span class="pre">/=</span> <span class="pre">u</span></tt> are
-defined if the corresponding expanded operations <tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">f</span> <span class="pre">+</span> <span class="pre">u</span></tt>,
-<tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">f</span> <span class="pre">-</span> <span class="pre">u</span></tt>, <tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">f</span> <span class="pre">*</span> <span class="pre">u</span></tt>, and <tt class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">f/u</span></tt> are defined
-and if they do not change the length of <tt class="docutils literal"><span class="pre">f</span></tt>.</dd>
+<dd>If <code class="docutils literal"><span class="pre">f</span></code> is piecewise-linear then the in-place operations
+<code class="docutils literal"><span class="pre">f</span> <span class="pre">+=</span> <span class="pre">u</span></code>, <code class="docutils literal"><span class="pre">f</span> <span class="pre">-=</span> <span class="pre">u</span></code>, <code class="docutils literal"><span class="pre">f</span> <span class="pre">*=</span> <span class="pre">u</span></code>, <code class="docutils literal"><span class="pre">f</span> <span class="pre">/=</span> <span class="pre">u</span></code> are
+defined if the corresponding expanded operations <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">f</span> <span class="pre">+</span> <span class="pre">u</span></code>,
+<code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">f</span> <span class="pre">-</span> <span class="pre">u</span></code>, <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">f</span> <span class="pre">*</span> <span class="pre">u</span></code>, and <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">f/u</span></code> are defined
+and if they do not change the length of <code class="docutils literal"><span class="pre">f</span></code>.</dd>
 </dl>
 </div>
 <div class="section" id="constraints">
@@ -500,23 +500,23 @@ and if they do not change the length of <tt class="docutils literal"><span class
 <p>Linear equality and inequality constraints of the form</p>
 <div class="math">
 <p><img src="_images/math/1843694724c1e6709cb3bdb81bc4f0c40d5e02e5.png" alt="f(x_1,\ldots,x_n) = 0, \qquad f(x_1,\ldots,x_n) \preceq  0,"/></p>
-</div><p>where <img class="math" src="_images/math/0001d02b63ede2fe3219e05a7cd09c82ae6298b6.png" alt="f"/> is a convex function, are represented by <tt class="xref py py-class docutils literal"><span class="pre">constraint</span></tt>
+</div><p>where <img class="math" src="_images/math/0001d02b63ede2fe3219e05a7cd09c82ae6298b6.png" alt="f"/> is a convex function, are represented by <code class="xref py py-class docutils literal"><span class="pre">constraint</span></code>
 objects.  Equality constraints are created by expressions of the form</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">f1</span> <span class="o">==</span> <span class="n">f2</span>
 </pre></div>
 </div>
-<p>Here <tt class="docutils literal"><span class="pre">f1</span></tt> and <tt class="docutils literal"><span class="pre">f2</span></tt> can be any objects for which the difference
-<tt class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span></tt> yields an affine function.  Inequality constraints are
+<p>Here <code class="docutils literal"><span class="pre">f1</span></code> and <code class="docutils literal"><span class="pre">f2</span></code> can be any objects for which the difference
+<code class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span></code> yields an affine function.  Inequality constraints are
 created by expressions of the form</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">f1</span> <span class="o">&lt;=</span> <span class="n">f2</span>
 <span class="n">f2</span> <span class="o">&gt;=</span> <span class="n">f1</span>
 </pre></div>
 </div>
-<p>where <tt class="docutils literal"><span class="pre">f1</span></tt> and <tt class="docutils literal"><span class="pre">f2</span></tt> can be any objects for which the difference
-<tt class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span></tt> yields a convex piecewise-linear function.  The comparison
-operators first convert the expressions to <tt class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span> <span class="pre">==</span> <span class="pre">0</span></tt>, resp.,
-<tt class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span> <span class="pre">&lt;=</span> <span class="pre">0</span></tt>, and then return a new <tt class="xref py py-class docutils literal"><span class="pre">constraint</span></tt> object with
-constraint function <tt class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span></tt>.</p>
+<p>where <code class="docutils literal"><span class="pre">f1</span></code> and <code class="docutils literal"><span class="pre">f2</span></code> can be any objects for which the difference
+<code class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span></code> yields a convex piecewise-linear function.  The comparison
+operators first convert the expressions to <code class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span> <span class="pre">==</span> <span class="pre">0</span></code>, resp.,
+<code class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span> <span class="pre">&lt;=</span> <span class="pre">0</span></code>, and then return a new <code class="xref py py-class docutils literal"><span class="pre">constraint</span></code> object with
+constraint function <code class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span></code>.</p>
 <p>In the following example we create three constraints</p>
 <div class="math">
 <p><img src="_images/math/6769835c6d47790785cdad70118ca039d3b360a1.png" alt="\newcommand{\ones}{{\bf 1}}
@@ -528,39 +528,39 @@ constraint function <tt class="docutils literal"><span class="pre">f1</span> <sp
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c3</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The built-in function <tt class="xref py py-func docutils literal"><span class="pre">len</span></tt> returns the dimension of the
+<p>The built-in function <code class="xref py py-func docutils literal"><span class="pre">len</span></code> returns the dimension of the
 constraint function.</p>
 <p>Constraints have four public attributes.</p>
 <dl class="attribute">
 <dt id="type">
-<tt class="descname">type</tt><a class="headerlink" href="#type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns <tt class="xref py py-const docutils literal"><span class="pre">'='</span></tt> if the constraint is an equality constraint, and
+<code class="descname">type</code><a class="headerlink" href="#type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <code class="xref py py-const docutils literal"><span class="pre">'='</span></code> if the constraint is an equality constraint, and
 <strong>&#8216;&lt;&#8217;</strong> if the constraint is an inequality constraint.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<tt class="descname">value</tt></dt>
+<code class="descname">value</code></dt>
 <dd><p>Returns the value of the constraint function.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="multiplier">
-<tt class="descname">multiplier</tt><a class="headerlink" href="#multiplier" title="Permalink to this definition">¶</a></dt>
-<dd><p>For a constraint <tt class="docutils literal"><span class="pre">c</span></tt>, <tt class="docutils literal"><span class="pre">c.multiplier</span></tt> is a <tt class="xref py py-class docutils literal"><span class="pre">variable</span></tt>
-object of dimension <tt class="docutils literal"><span class="pre">len(c)</span></tt>.  It is used to represent the
+<code class="descname">multiplier</code><a class="headerlink" href="#multiplier" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a constraint <code class="docutils literal"><span class="pre">c</span></code>, <code class="docutils literal"><span class="pre">c.multiplier</span></code> is a <code class="xref py py-class docutils literal"><span class="pre">variable</span></code>
+object of dimension <code class="docutils literal"><span class="pre">len(c)</span></code>.  It is used to represent the
 Lagrange multiplier or dual variable associated with the constraint.
-Its value is initialized as <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>, and can be modified by making
-an assignment to <tt class="docutils literal"><span class="pre">c.multiplier.value</span></tt>.</p>
+Its value is initialized as <code class="xref py py-const docutils literal"><span class="pre">None</span></code>, and can be modified by making
+an assignment to <code class="docutils literal"><span class="pre">c.multiplier.value</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<tt class="descname">name</tt></dt>
+<code class="descname">name</code></dt>
 <dd><p>The name of the constraint.  Changing the name of a constraint also
-changes the name of the multiplier of <tt class="docutils literal"><span class="pre">c</span></tt>.  For example, the command
-<tt class="docutils literal"><span class="pre">c.name</span> <span class="pre">=</span> <span class="pre">'newname'</span></tt> also changes
-<tt class="docutils literal"><span class="pre">c.multiplier.name</span></tt> to <tt class="docutils literal"><span class="pre">'newname_mul'</span></tt>.</p>
+changes the name of the multiplier of <code class="docutils literal"><span class="pre">c</span></code>.  For example, the command
+<code class="docutils literal"><span class="pre">c.name</span> <span class="pre">=</span> <span class="pre">'newname'</span></code> also changes
+<code class="docutils literal"><span class="pre">c.multiplier.name</span></code> to <code class="docutils literal"><span class="pre">'newname_mul'</span></code>.</p>
 </dd></dl>
 
 </div>
@@ -570,13 +570,13 @@ changes the name of the multiplier of <tt class="docutils literal"><span class="
 function.</p>
 <dl class="function">
 <dt id="cvxopt.modeling.op">
-<tt class="descclassname">cvxopt.modeling.</tt><tt class="descname">op</tt><big>(</big><span class="optional">[</span><em>objective</em><span class="optional">[</span>, <em>constraints</em><span class="optional">[</span>, <em>name</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.modeling.op" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cvxopt.modeling.</code><code class="descname">op</code><span class="sig-paren">(</span><span class="optional">[</span><em>objective</em><span class="optional">[</span>, <em>constraints</em><span class="optional">[</span>, <em>name</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.op" title="Permalink to this definition">¶</a></dt>
 <dd><p>The first argument specifies the objective function to be minimized.
 It can be an affine or convex piecewise-linear function with length 1,
-a <tt class="xref py py-class docutils literal"><span class="pre">variable</span></tt> with length 1, or a scalar constant (integer, float,
-or 1 by 1 dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix).  The default value is 0.0.</p>
-<p>The second argument is a single <tt class="xref py py-class docutils literal"><span class="pre">constraint</span></tt>, or a list of
-<tt class="xref py py-class docutils literal"><span class="pre">constraint</span></tt> objects.  The default value is an empty list.</p>
+a <code class="xref py py-class docutils literal"><span class="pre">variable</span></code> with length 1, or a scalar constant (integer, float,
+or 1 by 1 dense <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix).  The default value is 0.0.</p>
+<p>The second argument is a single <code class="xref py py-class docutils literal"><span class="pre">constraint</span></code>, or a list of
+<code class="xref py py-class docutils literal"><span class="pre">constraint</span></code> objects.  The default value is an empty list.</p>
 <p>The third argument is a string with a name for the problem.
 The default value is the empty string.</p>
 </dd></dl>
@@ -585,87 +585,87 @@ The default value is the empty string.</p>
 and modifying optimization problems.</p>
 <dl class="attribute">
 <dt id="objective">
-<tt class="descname">objective</tt><a class="headerlink" href="#objective" title="Permalink to this definition">¶</a></dt>
+<code class="descname">objective</code><a class="headerlink" href="#objective" title="Permalink to this definition">¶</a></dt>
 <dd><p>The objective or cost function.  One can write to this attribute to
 change the objective of an existing problem.</p>
 </dd></dl>
 
 <dl class="method">
 <dt>
-<tt class="descname">variables</tt><big>(</big><big>)</big></dt>
+<code class="descname">variables</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd><p>Returns a list of the variables of the problem.</p>
 </dd></dl>
 
 <dl class="method">
 <dt>
-<tt class="descname">constraints</tt><big>(</big><big>)</big></dt>
+<code class="descname">constraints</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd><p>Returns a list of the constraints.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="inequalities">
-<tt class="descname">inequalities</tt><big>(</big><big>)</big><a class="headerlink" href="#inequalities" title="Permalink to this definition">¶</a></dt>
+<code class="descname">inequalities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inequalities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of the inequality constraints.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="equalities">
-<tt class="descname">equalities</tt><big>(</big><big>)</big><a class="headerlink" href="#equalities" title="Permalink to this definition">¶</a></dt>
+<code class="descname">equalities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#equalities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of the equality constraints.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="delconstraint">
-<tt class="descname">delconstraint</tt><big>(</big><em>c</em><big>)</big><a class="headerlink" href="#delconstraint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Deletes constraint <tt class="docutils literal"><span class="pre">c</span></tt> from the problem.</p>
+<code class="descname">delconstraint</code><span class="sig-paren">(</span><em>c</em><span class="sig-paren">)</span><a class="headerlink" href="#delconstraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes constraint <code class="docutils literal"><span class="pre">c</span></code> from the problem.</p>
 </dd></dl>
 
 <p>An optimization problem with convex piecewise-linear objective and
-constraints can be solved by calling the method <a class="reference internal" href="#solve" title="solve"><tt class="xref py py-func docutils literal"><span class="pre">solve</span></tt></a>.</p>
+constraints can be solved by calling the method <a class="reference internal" href="#solve" title="solve"><code class="xref py py-func docutils literal"><span class="pre">solve</span></code></a>.</p>
 <dl class="method">
 <dt id="solve">
-<tt class="descname">solve</tt><big>(</big><span class="optional">[</span><em>format</em><span class="optional">[</span>, <em>solver</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#solve" title="Permalink to this definition">¶</a></dt>
+<code class="descname">solve</code><span class="sig-paren">(</span><span class="optional">[</span><em>format</em><span class="optional">[</span>, <em>solver</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function converts the optimization problem to a linear program in
 matrix form and then solves it using the solver described in
-the section <a class="reference internal" href="coneprog.html#s-lpsolver"><em>Linear Programming</em></a>.</p>
-<p>The first argument is either <tt class="xref py py-const docutils literal"><span class="pre">'dense'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'sparse'</span></tt>, and
+the section <a class="reference internal" href="coneprog.html#s-lpsolver"><span>Linear Programming</span></a>.</p>
+<p>The first argument is either <code class="xref py py-const docutils literal"><span class="pre">'dense'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'sparse'</span></code>, and
 denotes the matrix types used in the matrix representation of the LP.
-The default value is <tt class="xref py py-const docutils literal"><span class="pre">'dense'</span></tt>.</p>
-<p>The second argument is either <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'glpk'</span></tt>, or
-<tt class="xref py py-const docutils literal"><span class="pre">'mosek'</span></tt>, and selects one of three available LP solvers: the
+The default value is <code class="xref py py-const docutils literal"><span class="pre">'dense'</span></code>.</p>
+<p>The second argument is either <code class="xref py py-const docutils literal"><span class="pre">None</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'glpk'</span></code>, or
+<code class="xref py py-const docutils literal"><span class="pre">'mosek'</span></code>, and selects one of three available LP solvers: the
 default solver written in Python, the GLPK solver (if installed) or the
-MOSEK LP solver (if installed); see the section <a class="reference internal" href="coneprog.html#s-lpsolver"><em>Linear Programming</em></a>.  The
-default value is <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>.</p>
+MOSEK LP solver (if installed); see the section <a class="reference internal" href="coneprog.html#s-lpsolver"><span>Linear Programming</span></a>.  The
+default value is <code class="xref py py-const docutils literal"><span class="pre">None</span></code>.</p>
 <p>The solver reports the outcome of optimization by setting the attribute
-<tt class="xref py py-attr docutils literal"><span class="pre">self.status</span></tt> and by modifying the <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of
+<code class="xref py py-attr docutils literal"><span class="pre">self.status</span></code> and by modifying the <a class="reference internal" href="#value" title="value"><code class="xref py py-attr docutils literal"><span class="pre">value</span></code></a> attributes of
 the variables and the constraint multipliers of the problem.</p>
 <ul class="simple">
-<li>If the problem is solved to optimality, <tt class="xref py py-attr docutils literal"><span class="pre">self.status</span></tt> is set to
-<tt class="xref py py-const docutils literal"><span class="pre">'optimal'</span></tt>.  The <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of the variables in
+<li>If the problem is solved to optimality, <code class="xref py py-attr docutils literal"><span class="pre">self.status</span></code> is set to
+<code class="xref py py-const docutils literal"><span class="pre">'optimal'</span></code>.  The <a class="reference internal" href="#value" title="value"><code class="xref py py-attr docutils literal"><span class="pre">value</span></code></a> attributes of the variables in
 the problem  are set to their computed solutions, and the
-<a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of the multipliers of the constraints of the
+<a class="reference internal" href="#value" title="value"><code class="xref py py-attr docutils literal"><span class="pre">value</span></code></a> attributes of the multipliers of the constraints of the
 problem are set to the computed dual optimal solution.</li>
 <li>If it is determined that the problem is infeasible,
-<tt class="xref py py-attr docutils literal"><span class="pre">self.status</span></tt> is set to <tt class="xref py py-const docutils literal"><span class="pre">'primal</span> <span class="pre">infeasible'</span></tt>.
-The <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of the variables are set to
-<tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>.  The <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of the multipliers of
+<code class="xref py py-attr docutils literal"><span class="pre">self.status</span></code> is set to <code class="xref py py-const docutils literal"><span class="pre">'primal</span> <span class="pre">infeasible'</span></code>.
+The <a class="reference internal" href="#value" title="value"><code class="xref py py-attr docutils literal"><span class="pre">value</span></code></a> attributes of the variables are set to
+<code class="xref py py-const docutils literal"><span class="pre">None</span></code>.  The <a class="reference internal" href="#value" title="value"><code class="xref py py-attr docutils literal"><span class="pre">value</span></code></a> attributes of the multipliers of
 the constraints of the problem are set to a certificate of primal
-infeasibility.  With the <tt class="xref py py-const docutils literal"><span class="pre">'glpk'</span></tt> option, <a class="reference internal" href="#solve" title="solve"><tt class="xref py py-func docutils literal"><span class="pre">solve</span></tt></a> does
+infeasibility.  With the <code class="xref py py-const docutils literal"><span class="pre">'glpk'</span></code> option, <a class="reference internal" href="#solve" title="solve"><code class="xref py py-func docutils literal"><span class="pre">solve</span></code></a> does
 not provide certificates of infeasibility.</li>
 <li>If it is determined that the problem is dual infeasible,
-<tt class="xref py py-attr docutils literal"><span class="pre">self.status</span></tt> is set to <tt class="xref py py-const docutils literal"><span class="pre">'dual</span> <span class="pre">infeasible'</span></tt>.
-The <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of the multipliers of the constraints of
-the problem are set to <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>.  The <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes
+<code class="xref py py-attr docutils literal"><span class="pre">self.status</span></code> is set to <code class="xref py py-const docutils literal"><span class="pre">'dual</span> <span class="pre">infeasible'</span></code>.
+The <a class="reference internal" href="#value" title="value"><code class="xref py py-attr docutils literal"><span class="pre">value</span></code></a> attributes of the multipliers of the constraints of
+the problem are set to <code class="xref py py-const docutils literal"><span class="pre">None</span></code>.  The <a class="reference internal" href="#value" title="value"><code class="xref py py-attr docutils literal"><span class="pre">value</span></code></a> attributes
 of the variables are set to a certificate of dual infeasibility.
-With the <tt class="xref py py-const docutils literal"><span class="pre">'glpk'</span></tt> option, <a class="reference internal" href="#solve" title="solve"><tt class="xref py py-func docutils literal"><span class="pre">solve</span></tt></a> does not provide
+With the <code class="xref py py-const docutils literal"><span class="pre">'glpk'</span></code> option, <a class="reference internal" href="#solve" title="solve"><code class="xref py py-func docutils literal"><span class="pre">solve</span></code></a> does not provide
 certificates of infeasibility.</li>
-<li>If the problem was not solved successfully, <tt class="xref py py-attr docutils literal"><span class="pre">self.status</span></tt> is set
-to <tt class="xref py py-const docutils literal"><span class="pre">'unknown'</span></tt>.  The <a class="reference internal" href="#value" title="value"><tt class="xref py py-attr docutils literal"><span class="pre">value</span></tt></a> attributes of the variables
-and the constraint multipliers are set to <tt class="xref py py-const docutils literal"><span class="pre">None</span></tt>.</li>
+<li>If the problem was not solved successfully, <code class="xref py py-attr docutils literal"><span class="pre">self.status</span></code> is set
+to <code class="xref py py-const docutils literal"><span class="pre">'unknown'</span></code>.  The <a class="reference internal" href="#value" title="value"><code class="xref py py-attr docutils literal"><span class="pre">value</span></code></a> attributes of the variables
+and the constraint multipliers are set to <code class="xref py py-const docutils literal"><span class="pre">None</span></code>.</li>
 </ul>
 </dd></dl>
 
-<p>We refer to the section <a class="reference internal" href="coneprog.html#s-lpsolver"><em>Linear Programming</em></a> for details on the algorithms and
+<p>We refer to the section <a class="reference internal" href="coneprog.html#s-lpsolver"><span>Linear Programming</span></a> for details on the algorithms and
 the different solver options.</p>
 <p>As an example we solve the LP</p>
 <div class="math">
@@ -723,12 +723,12 @@ the different solver options.</p>
 <span class="go">[2.80e-08]</span>
 </pre></div>
 </div>
-<p>The <tt class="xref py py-class docutils literal"><span class="pre">op</span></tt> class also includes two methods for writing and reading
+<p>The <code class="xref py py-class docutils literal"><span class="pre">op</span></code> class also includes two methods for writing and reading
 files in
-<a class="reference external" href="http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/linearprog/mps.html">MPS format</a>.</p>
+<a class="reference external" href="http://lpsolve.sourceforge.net/5.5/mps-format.htm">MPS format</a>.</p>
 <dl class="method">
 <dt>
-<tt class="descname">tofile(filename) :noindex:</tt></dt>
+<code class="descname">tofile(filename) :noindex:</code></dt>
 <dd><p>If the problem is an LP, writes it to the file <cite>filename</cite> using the
 MPS format.  Row and column labels are assigned based on the variable
 and constraint names in the LP.</p>
@@ -736,7 +736,7 @@ and constraint names in the LP.</p>
 
 <dl class="method">
 <dt>
-<tt class="descname">fromfile(filename) :noindex:</tt></dt>
+<code class="descname">fromfile(filename) :noindex:</code></dt>
 <dd><p>Reads the LP from the file <cite>filename</cite>.  The file must be a fixed-format
 MPS file.  Some features of the MPS format are not supported: comments
 beginning with dollar signs, the row types &#8216;DE&#8217;, &#8216;DL&#8217;, &#8216;DG&#8217;, and &#8216;DN&#8217;,
@@ -901,7 +901,7 @@ equivalent LP</p>
   <div role="contentinfo">
     <p>
         &copy; <a href="copyright.html">Copyright</a> .
-      Last updated on Jun 04, 2014.
+      Last updated on Sep 21, 2015.
     </p>
   </div>
 
@@ -921,7 +921,7 @@ equivalent LP</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.7',
+            VERSION:'1.1.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -947,7 +947,7 @@ equivalent LP</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
     </div>
 
 </body>

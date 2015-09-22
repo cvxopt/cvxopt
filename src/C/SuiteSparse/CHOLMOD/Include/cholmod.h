@@ -87,6 +87,7 @@ extern "C" {
 
 #include "cholmod_config.h"
 
+
 /* CHOLMOD always includes the Core module. */
 #include "cholmod_core.h"
 
@@ -116,6 +117,10 @@ extern "C" {
 
 #ifndef NSUPERNODAL
 #include "cholmod_supernodal.h"
+#endif
+
+#ifdef GPU_BLAS
+#include "cholmod_gpu.h"
 #endif
 
 #ifdef __cplusplus

@@ -1,3 +1,16 @@
+Oct 10, 2014: version 5.7.1
+
+    modified MATLAB/umfpack_make.m.  No change to C code except version number.
+
+July 31, 2013: version 5.7.0
+
+    * changed malloc, printf, hypot and divcomplex pointers to use
+        SuiteSparse_config
+
+April 25, 2013: version 5.6.2
+
+    * bug fix in Demo/Makefile for Fortran interface
+
 Jun 20, 2012: verison 5.6.1
 
     * minor update for Windows (removed filesep)
