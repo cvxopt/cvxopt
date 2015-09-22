@@ -176,11 +176,11 @@
 <span id="c-capi"></span><h1>C API<a class="headerlink" href="#c-api" title="Permalink to this headline">¶</a></h1>
 <p>The API can be used to extend CVXOPT with interfaces to external C routines
 and libraries.  A C program that creates or manipulates the dense or sparse
-matrix objects defined in CVXOPT must include the <tt class="xref py py-const docutils literal"><span class="pre">cvxopt.h</span></tt> header
-file in the <tt class="xref py py-const docutils literal"><span class="pre">src</span></tt> directory of the distribution.</p>
+matrix objects defined in CVXOPT must include the <code class="xref py py-const docutils literal"><span class="pre">cvxopt.h</span></code> header
+file in the <code class="xref py py-const docutils literal"><span class="pre">src</span></code> directory of the distribution.</p>
 <p>Before the C API can be used in an extension module it must be initialized
-by calling the macro <tt class="xref c c-macro docutils literal"><span class="pre">import_cvxopt</span></tt>.  As an example we show the
-module initialization from the <tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.blas</span></tt> module, which itself uses
+by calling the macro <code class="xref c c-macro docutils literal"><span class="pre">import_cvxopt</span></code>.  As an example we show the
+module initialization from the <code class="xref py py-mod docutils literal"><span class="pre">cvxopt.blas</span></code> module, which itself uses
 the API:</p>
 <div class="highlight-c"><div class="highlight"><pre><span class="cp">#if PY_MAJOR_VERSION &gt;= 3</span>
 
@@ -215,41 +215,41 @@ the API:</p>
 </div>
 <div class="section" id="dense-matrices">
 <h2>Dense Matrices<a class="headerlink" href="#dense-matrices" title="Permalink to this headline">¶</a></h2>
-<p>As can be seen from the header file <tt class="xref py py-const docutils literal"><span class="pre">cvxopt.h</span></tt>, a <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> is
-essentially a  structure with four fields.  The fields <tt class="xref c c-member docutils literal"><span class="pre">nrows</span></tt> and
-<tt class="xref c c-member docutils literal"><span class="pre">ncols</span></tt> are two integers that specify the dimensions.  The
-<tt class="xref c c-member docutils literal"><span class="pre">id</span></tt> field controls the type of the matrix and can have values
-<tt class="xref py py-const docutils literal"><span class="pre">DOUBLE</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">INT</span></tt>, and <tt class="xref py py-const docutils literal"><span class="pre">COMPLEX</span></tt>.  The <tt class="xref c c-member docutils literal"><span class="pre">buffer</span></tt>
+<p>As can be seen from the header file <code class="xref py py-const docutils literal"><span class="pre">cvxopt.h</span></code>, a <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> is
+essentially a  structure with four fields.  The fields <code class="xref c c-member docutils literal"><span class="pre">nrows</span></code> and
+<code class="xref c c-member docutils literal"><span class="pre">ncols</span></code> are two integers that specify the dimensions.  The
+<code class="xref c c-member docutils literal"><span class="pre">id</span></code> field controls the type of the matrix and can have values
+<code class="xref py py-const docutils literal"><span class="pre">DOUBLE</span></code>, <code class="xref py py-const docutils literal"><span class="pre">INT</span></code>, and <code class="xref py py-const docutils literal"><span class="pre">COMPLEX</span></code>.  The <code class="xref c c-member docutils literal"><span class="pre">buffer</span></code>
 field is an array that contains the matrix elements stored contiguously in
 column-major order.</p>
 <p>The following C functions can be used to create matrices.</p>
 <dl class="function">
 <dt id="c.Matrix_New">
-matrix * <tt class="descname">Matrix_New</tt><big>(</big>int<em>&nbsp;nrows</em>, int<em>&nbsp;ncols</em>, int<em>&nbsp;id</em><big>)</big><a class="headerlink" href="#c.Matrix_New" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> object of type <cite>id</cite> with <cite>nrows</cite> rows and
+matrix * <code class="descname">Matrix_New</code><span class="sig-paren">(</span>int<em>&nbsp;nrows</em>, int<em>&nbsp;ncols</em>, int<em>&nbsp;id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_New" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> object of type <cite>id</cite> with <cite>nrows</cite> rows and
 <cite>ncols</cite> columns.  The elements of the matrix are uninitialized.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="c.Matrix_NewFromMatrix">
-matrix * <tt class="descname">Matrix_NewFromMatrix</tt><big>(</big>matrix<em>&nbsp;*src</em>, int<em>&nbsp;id</em><big>)</big><a class="headerlink" href="#c.Matrix_NewFromMatrix" title="Permalink to this definition">¶</a></dt>
+matrix * <code class="descname">Matrix_NewFromMatrix</code><span class="sig-paren">(</span>matrix<em>&nbsp;*src</em>, int<em>&nbsp;id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_NewFromMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a copy of the matrix <cite>src</cite> converted to type <cite>id</cite>.  The
-following type conversions are allowed:  <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt> to <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>,
-<tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt> to <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>, and <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>  to <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>.</p>
+following type conversions are allowed:  <code class="xref py py-const docutils literal"><span class="pre">'i'</span></code> to <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code>,
+<code class="xref py py-const docutils literal"><span class="pre">'i'</span></code> to <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>, and <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code>  to <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="c.Matrix_NewFromSequence">
-matrix * <tt class="descname">Matrix_NewFromSequence</tt><big>(</big>PyListObject<em>&nbsp;*x</em>, int<em>&nbsp;id</em><big>)</big><a class="headerlink" href="#c.Matrix_NewFromSequence" title="Permalink to this definition">¶</a></dt>
+matrix * <code class="descname">Matrix_NewFromSequence</code><span class="sig-paren">(</span>PyListObject<em>&nbsp;*x</em>, int<em>&nbsp;id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_NewFromSequence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a matrix of type <cite>id</cite> from the Python sequence type <cite>x</cite>. The
-returned matrix has size <tt class="docutils literal"><span class="pre">(len(x),</span> <span class="pre">1)</span></tt>.  The size can be changed
-by modifying the <tt class="xref c c-member docutils literal"><span class="pre">nrows</span></tt> and <tt class="xref c c-member docutils literal"><span class="pre">ncols</span></tt> fields of the
+returned matrix has size <code class="docutils literal"><span class="pre">(len(x),</span> <span class="pre">1)</span></code>.  The size can be changed
+by modifying the <code class="xref c c-member docutils literal"><span class="pre">nrows</span></code> and <code class="xref c c-member docutils literal"><span class="pre">ncols</span></code> fields of the
 returned matrix.</p>
 </dd></dl>
 
 <p>To illustrate the creation and manipulation of dense matrices (as well as
-the Python C API), we show the code for the <a class="reference internal" href="matrices.html#cvxopt.uniform" title="cvxopt.uniform"><tt class="xref py py-func docutils literal"><span class="pre">cvxopt.uniform</span></tt></a> function
-described in the section <a class="reference internal" href="matrices.html#s-random"><em>Randomly Generated Matrices</em></a>.</p>
+the Python C API), we show the code for the <a class="reference internal" href="matrices.html#cvxopt.uniform" title="cvxopt.uniform"><code class="xref py py-func docutils literal"><span class="pre">cvxopt.uniform</span></code></a> function
+described in the section <a class="reference internal" href="matrices.html#s-random"><span>Randomly Generated Matrices</span></a>.</p>
 <div class="highlight-c"><div class="highlight"><pre><span class="n">PyObject</span> <span class="o">*</span> <span class="nf">uniform</span><span class="p">(</span><span class="n">PyObject</span> <span class="o">*</span><span class="n">self</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">kwrds</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="n">matrix</span> <span class="o">*</span><span class="n">obj</span><span class="p">;</span>
@@ -283,19 +283,19 @@ a general <cite>nrows</cite> by <cite>ncols</cite> sparse matrix with <cite>nnz<
 means the following.  The sparsity pattern and the nonzero values are
 stored in three fields:</p>
 <dl class="docutils">
-<dt><tt class="xref c c-member docutils literal"><span class="pre">values</span></tt></dt>
-<dd>A <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> matrix of size <tt class="docutils literal"><span class="pre">(nnz,1)</span></tt>  with the
+<dt><code class="xref c c-member docutils literal"><span class="pre">values</span></code></dt>
+<dd>A <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code> matrix of size <code class="docutils literal"><span class="pre">(nnz,1)</span></code>  with the
 nonzero entries of the matrix stored columnwise.</dd>
-<dt><tt class="xref c c-member docutils literal"><span class="pre">rowind</span></tt></dt>
+<dt><code class="xref c c-member docutils literal"><span class="pre">rowind</span></code></dt>
 <dd>An array of integers of length <cite>nnz</cite> containing the row indices of
-the nonzero entries, stored in the same order as <tt class="xref c c-member docutils literal"><span class="pre">values</span></tt>.</dd>
-<dt><tt class="xref c c-member docutils literal"><span class="pre">colptr</span></tt></dt>
+the nonzero entries, stored in the same order as <code class="xref c c-member docutils literal"><span class="pre">values</span></code>.</dd>
+<dt><code class="xref c c-member docutils literal"><span class="pre">colptr</span></code></dt>
 <dd>An array of integers of length <cite>ncols</cite> + 1 with for each column of the
-matrix the index of the first element in <tt class="xref c c-member docutils literal"><span class="pre">values</span></tt> from that
-column.  More precisely, <tt class="docutils literal"><span class="pre">colptr[0]</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">0</span></tt>, and for
-k = 0, 1, ..., <cite>ncols</cite> - 1, <tt class="docutils literal"><span class="pre">colptr[k+1]</span></tt> is equal to
-<tt class="docutils literal"><span class="pre">colptr[k]</span></tt> plus the number of nonzeros in column <cite>k</cite> of the
-matrix.  Thus, <tt class="docutils literal"><span class="pre">colptr[ncols]</span></tt> is equal to <cite>nnz</cite>, the number of
+matrix the index of the first element in <code class="xref c c-member docutils literal"><span class="pre">values</span></code> from that
+column.  More precisely, <code class="docutils literal"><span class="pre">colptr[0]</span></code> is <code class="xref py py-const docutils literal"><span class="pre">0</span></code>, and for
+k = 0, 1, ..., <cite>ncols</cite> - 1, <code class="docutils literal"><span class="pre">colptr[k+1]</span></code> is equal to
+<code class="docutils literal"><span class="pre">colptr[k]</span></code> plus the number of nonzeros in column <cite>k</cite> of the
+matrix.  Thus, <code class="docutils literal"><span class="pre">colptr[ncols]</span></code> is equal to <cite>nnz</cite>, the number of
 nonzero entries.</dd>
 </dl>
 <p>For example, for the matrix</p>
@@ -306,66 +306,66 @@ nonzero entries.</dd>
     0 &amp; 0 &amp; 0 &amp; 6\\
     3 &amp; 0 &amp; 0 &amp; 0
 \end{array}\right]"/></p>
-</div><p>the elements of <tt class="xref c c-member docutils literal"><span class="pre">values</span></tt>, <tt class="xref c c-member docutils literal"><span class="pre">rowind</span></tt>, and <tt class="xref c c-member docutils literal"><span class="pre">colptr</span></tt>
+</div><p>the elements of <code class="xref c c-member docutils literal"><span class="pre">values</span></code>, <code class="xref c c-member docutils literal"><span class="pre">rowind</span></code>, and <code class="xref c c-member docutils literal"><span class="pre">colptr</span></code>
 are:</p>
 <dl class="docutils">
-<dt><tt class="xref c c-member docutils literal"><span class="pre">values</span></tt>:</dt>
+<dt><code class="xref c c-member docutils literal"><span class="pre">values</span></code>:</dt>
 <dd>1.0, 2.0, 3.0, 4.0, 5.0, 6.0</dd>
-<dt><tt class="xref c c-member docutils literal"><span class="pre">rowind</span></tt>:</dt>
+<dt><code class="xref c c-member docutils literal"><span class="pre">rowind</span></code>:</dt>
 <dd>0, 1,3, 1, 0, 2</dd>
-<dt><tt class="xref c c-member docutils literal"><span class="pre">colptr</span></tt>:</dt>
+<dt><code class="xref c c-member docutils literal"><span class="pre">colptr</span></code>:</dt>
 <dd>0, 3, 3, 4, 6.</dd>
 </dl>
-<p>It is crucial that for each column the row indices in <tt class="xref c c-member docutils literal"><span class="pre">rowind</span></tt> are
+<p>It is crucial that for each column the row indices in <code class="xref c c-member docutils literal"><span class="pre">rowind</span></code> are
 sorted; the equivalent representation</p>
 <dl class="docutils">
-<dt><tt class="xref c c-member docutils literal"><span class="pre">values</span></tt>:</dt>
+<dt><code class="xref c c-member docutils literal"><span class="pre">values</span></code>:</dt>
 <dd>3.0, 2.0, 1.0, 4.0, 5.0, 6.0</dd>
-<dt><tt class="xref c c-member docutils literal"><span class="pre">rowind</span></tt>:</dt>
+<dt><code class="xref c c-member docutils literal"><span class="pre">rowind</span></code>:</dt>
 <dd>3, 1, 0, 1, 0, 2</dd>
-<dt><tt class="xref c c-member docutils literal"><span class="pre">colptr</span></tt>:</dt>
+<dt><code class="xref c c-member docutils literal"><span class="pre">colptr</span></code>:</dt>
 <dd>0, 3, 3, 4, 6</dd>
 </dl>
 <p>is not allowed (and will likely cause the program to crash).</p>
-<p>The <tt class="xref c c-member docutils literal"><span class="pre">nzmax</span></tt> field specifies the number of non-zero elements the
-matrix can store.  It is equal to the length of <tt class="xref c c-member docutils literal"><span class="pre">rowind</span></tt> and
-<tt class="xref c c-member docutils literal"><span class="pre">values</span></tt>; this number can be larger that <tt class="docutils literal"><span class="pre">colptr[nrows]</span></tt>,
+<p>The <code class="xref c c-member docutils literal"><span class="pre">nzmax</span></code> field specifies the number of non-zero elements the
+matrix can store.  It is equal to the length of <code class="xref c c-member docutils literal"><span class="pre">rowind</span></code> and
+<code class="xref c c-member docutils literal"><span class="pre">values</span></code>; this number can be larger that <code class="docutils literal"><span class="pre">colptr[nrows]</span></code>,
 but never less.  This field makes it possible to preallocate a certain
 amount of memory to avoid reallocations if the matrix is constructed
-sequentially by filling in elements.  In general the <tt class="xref c c-member docutils literal"><span class="pre">nzmax</span></tt> field
+sequentially by filling in elements.  In general the <code class="xref c c-member docutils literal"><span class="pre">nzmax</span></code> field
 can safely be ignored, however, since it will always be adjusted
 automatically as the number of non-zero elements grows.</p>
-<p>The <tt class="xref c c-member docutils literal"><span class="pre">id</span></tt> field controls the type of the matrix and can have
-values <tt class="xref py py-const docutils literal"><span class="pre">DOUBLE</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">COMPLEX</span></tt>.</p>
+<p>The <code class="xref c c-member docutils literal"><span class="pre">id</span></code> field controls the type of the matrix and can have
+values <code class="xref py py-const docutils literal"><span class="pre">DOUBLE</span></code> and <code class="xref py py-const docutils literal"><span class="pre">COMPLEX</span></code>.</p>
 <p>Sparse matrices are created using the following functions from the API.</p>
 <dl class="function">
 <dt id="c.SpMatrix_New">
-spmatrix * <tt class="descname">SpMatrix_New</tt><big>(</big>int<em>&nbsp;nrows</em>, int<em>&nbsp;ncols</em>, int<em>&nbsp;nzmax</em>, int<em>&nbsp;id</em><big>)</big><a class="headerlink" href="#c.SpMatrix_New" title="Permalink to this definition">¶</a></dt>
+spmatrix * <code class="descname">SpMatrix_New</code><span class="sig-paren">(</span>int<em>&nbsp;nrows</em>, int<em>&nbsp;ncols</em>, int<em>&nbsp;nzmax</em>, int<em>&nbsp;id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_New" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a sparse zero matrix with <cite>nrows</cite> rows and <cite>ncols</cite> columns.
 <cite>nzmax</cite> is the number of elements that will be allocated (the length of
-the <tt class="xref c c-member docutils literal"><span class="pre">values</span></tt> and <tt class="xref c c-member docutils literal"><span class="pre">rowind</span></tt> fields).</p>
+the <code class="xref c c-member docutils literal"><span class="pre">values</span></code> and <code class="xref c c-member docutils literal"><span class="pre">rowind</span></code> fields).</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="c.SpMatrix_NewFromMatrix">
-spmatrix * <tt class="descname">SpMatrix_NewFromMatrix</tt><big>(</big>spmatrix<em>&nbsp;*src</em>, int<em>&nbsp;id</em><big>)</big><a class="headerlink" href="#c.SpMatrix_NewFromMatrix" title="Permalink to this definition">¶</a></dt>
+spmatrix * <code class="descname">SpMatrix_NewFromMatrix</code><span class="sig-paren">(</span>spmatrix<em>&nbsp;*src</em>, int<em>&nbsp;id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromMatrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a copy the sparse matrix var{src}.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="c.SpMatrix_NewFromIJV">
-spmatrix * <tt class="descname">SpMatrix_NewFromIJV</tt><big>(</big>matrix<em>&nbsp;*I</em>, matrix<em>&nbsp;*J</em>, matrix<em>&nbsp;*V</em>, int<em>&nbsp;nrows</em>, int<em>&nbsp;ncols</em>, int<em>&nbsp;nzmax</em>, int<em>&nbsp;id</em><big>)</big><a class="headerlink" href="#c.SpMatrix_NewFromIJV" title="Permalink to this definition">¶</a></dt>
+spmatrix * <code class="descname">SpMatrix_NewFromIJV</code><span class="sig-paren">(</span>matrix<em>&nbsp;*I</em>, matrix<em>&nbsp;*J</em>, matrix<em>&nbsp;*V</em>, int<em>&nbsp;nrows</em>, int<em>&nbsp;ncols</em>, int<em>&nbsp;nzmax</em>, int<em>&nbsp;id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromIJV" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a sparse matrix with <cite>nrows</cite> rows and <cite>ncols</cite> columns from a
 triplet description.  <cite>I</cite> and <cite>J</cite> must be integer matrices and <cite>V</cite>
-either a double or complex matrix, or <tt class="xref py py-const docutils literal"><span class="pre">NULL</span></tt>. If <cite>V</cite> is
-<tt class="xref py py-const docutils literal"><span class="pre">NULL</span></tt> the values of the entries in the matrix are undefined,
+either a double or complex matrix, or <code class="xref py py-const docutils literal"><span class="pre">NULL</span></code>. If <cite>V</cite> is
+<code class="xref py py-const docutils literal"><span class="pre">NULL</span></code> the values of the entries in the matrix are undefined,
 otherwise they are specified by <cite>V</cite>.  Repeated entries in <cite>V</cite> are
 summed.  The number of allocated elements is given by <cite>nzmax</cite>, which is
 adjusted if it is smaller than the required amount.</p>
 </dd></dl>
 
 <p>We illustrate use of the sparse matrix class by listing the source
-code for the <a class="reference internal" href="matrices.html#real" title="real"><tt class="xref py py-attr docutils literal"><span class="pre">real</span></tt></a> method, which returns the real part of
+code for the <a class="reference internal" href="matrices.html#real" title="real"><code class="xref py py-attr docutils literal"><span class="pre">real</span></code></a> method, which returns the real part of
 a sparse matrix:</p>
 <div class="highlight-c"><div class="highlight"><pre><span class="k">static</span> <span class="n">PyObject</span> <span class="o">*</span> <span class="nf">spmatrix_real</span><span class="p">(</span><span class="n">spmatrix</span> <span class="o">*</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
 
@@ -408,7 +408,7 @@ a sparse matrix:</p>
   <div role="contentinfo">
     <p>
         &copy; <a href="copyright.html">Copyright</a> .
-      Last updated on Jun 04, 2014.
+      Last updated on Sep 22, 2015.
     </p>
   </div>
 
@@ -428,7 +428,7 @@ a sparse matrix:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.7',
+            VERSION:'1.1.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -454,7 +454,7 @@ a sparse matrix:</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
     </div>
 
 </body>

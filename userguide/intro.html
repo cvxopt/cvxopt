@@ -182,47 +182,47 @@ make the development of software for convex optimization applications
 straightforward by building on Python&#8217;s extensive standard library and on
 the strengths of Python as a high-level programming language.</p>
 <p>CVXOPT extends the built-in Python objects with two matrix objects: a
-<a class="reference internal" href="matrices.html#cvxopt.matrix" title="cvxopt.matrix"><tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt></a>  object for dense matrices and an
-<a class="reference internal" href="matrices.html#cvxopt.spmatrix" title="cvxopt.spmatrix"><tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt></a> object for sparse matrices.  These two
-matrix types are introduced in the chapter <a class="reference internal" href="matrices.html#c-matrices"><em>Dense and Sparse Matrices</em></a>, together
+<a class="reference internal" href="matrices.html#cvxopt.matrix" title="cvxopt.matrix"><code class="xref py py-class docutils literal"><span class="pre">matrix</span></code></a>  object for dense matrices and an
+<a class="reference internal" href="matrices.html#cvxopt.spmatrix" title="cvxopt.spmatrix"><code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code></a> object for sparse matrices.  These two
+matrix types are introduced in the chapter <a class="reference internal" href="matrices.html#c-matrices"><span>Dense and Sparse Matrices</span></a>, together
 with the arithmetic operations and functions defined for them.  The
-following chapters (<a class="reference internal" href="blas.html#c-blas"><em>The BLAS Interface</em></a> and <a class="reference internal" href="spsolvers.html#c-spsolvers"><em>Sparse Linear Equations</em></a>) describe
+following chapters (<a class="reference internal" href="blas.html#c-blas"><span>The BLAS Interface</span></a> and <a class="reference internal" href="spsolvers.html#c-spsolvers"><span>Sparse Linear Equations</span></a>) describe
 interfaces to several libraries for dense and sparse matrix computations.
 The CVXOPT optimization routines are described in the chapters
-<a class="reference internal" href="coneprog.html#c-coneprog"><em>Cone Programming</em></a> and <a class="reference internal" href="modeling.html#c-modeling"><em>Modeling</em></a>.
+<a class="reference internal" href="coneprog.html#c-coneprog"><span>Cone Programming</span></a> and <a class="reference internal" href="modeling.html#c-modeling"><span>Modeling</span></a>.
 These include convex optimization solvers written in Python,
 interfaces to a few other optimization libraries, and a modeling tool
 for piecewise-linear convex optimization problems.</p>
 <p>CVXOPT is organized in different modules.</p>
 <dl class="docutils">
-<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.blas</span></tt></dt>
+<dt><code class="xref py py-mod docutils literal"><span class="pre">cvxopt.blas</span></code></dt>
 <dd>Interface to most of the double-precision real and complex BLAS
-(<a class="reference internal" href="blas.html#c-blas"><em>The BLAS Interface</em></a>).</dd>
-<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.lapack</span></tt></dt>
+(<a class="reference internal" href="blas.html#c-blas"><span>The BLAS Interface</span></a>).</dd>
+<dt><code class="xref py py-mod docutils literal"><span class="pre">cvxopt.lapack</span></code></dt>
 <dd>Interface to dense double-precision real and complex linear equation
-solvers and eigenvalue routines from LAPACK (<a class="reference internal" href="lapack.html#c-lapack"><em>The LAPACK Interface</em></a>).</dd>
-<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.fftw</span></tt></dt>
+solvers and eigenvalue routines from LAPACK (<a class="reference internal" href="lapack.html#c-lapack"><span>The LAPACK Interface</span></a>).</dd>
+<dt><code class="xref py py-mod docutils literal"><span class="pre">cvxopt.fftw</span></code></dt>
 <dd>An optional interface to the discrete transform routines from FFTW
-(<a class="reference internal" href="fftw.html#c-fftw"><em>Discrete Transforms</em></a>).</dd>
-<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.amd</span></tt></dt>
+(<a class="reference internal" href="fftw.html#c-fftw"><span>Discrete Transforms</span></a>).</dd>
+<dt><code class="xref py py-mod docutils literal"><span class="pre">cvxopt.amd</span></code></dt>
 <dd>Interface to the approximate minimum degree ordering routine from AMD
-(<a class="reference internal" href="spsolvers.html#s-orderings"><em>Matrix Orderings</em></a>).</dd>
-<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.umfpack</span></tt></dt>
-<dd>Interface to the sparse LU solver from UMFPACK (<a class="reference internal" href="spsolvers.html#s-umfpack"><em>General Linear Equations</em></a>).</dd>
-<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.cholmod</span></tt></dt>
-<dd>Interface to the sparse Cholesky solver from CHOLMOD (<a class="reference internal" href="spsolvers.html#s-cholmod"><em>Positive Definite Linear Equations</em></a>).</dd>
-<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.solvers</span></tt></dt>
+(<a class="reference internal" href="spsolvers.html#s-orderings"><span>Matrix Orderings</span></a>).</dd>
+<dt><code class="xref py py-mod docutils literal"><span class="pre">cvxopt.umfpack</span></code></dt>
+<dd>Interface to the sparse LU solver from UMFPACK (<a class="reference internal" href="spsolvers.html#s-umfpack"><span>General Linear Equations</span></a>).</dd>
+<dt><code class="xref py py-mod docutils literal"><span class="pre">cvxopt.cholmod</span></code></dt>
+<dd>Interface to the sparse Cholesky solver from CHOLMOD (<a class="reference internal" href="spsolvers.html#s-cholmod"><span>Positive Definite Linear Equations</span></a>).</dd>
+<dt><code class="xref py py-mod docutils literal"><span class="pre">cvxopt.solvers</span></code></dt>
 <dd>Convex optimization routines and optional interfaces to solvers from
-GLPK, MOSEK, and DSDP5 (<a class="reference internal" href="coneprog.html#c-coneprog"><em>Cone Programming</em></a> and <a class="reference internal" href="solvers.html#c-solvers"><em>Nonlinear Convex Optimization</em></a>).</dd>
-<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.modeling</span></tt></dt>
+GLPK, MOSEK, and DSDP5 (<a class="reference internal" href="coneprog.html#c-coneprog"><span>Cone Programming</span></a> and <a class="reference internal" href="solvers.html#c-solvers"><span>Nonlinear Convex Optimization</span></a>).</dd>
+<dt><code class="xref py py-mod docutils literal"><span class="pre">cvxopt.modeling</span></code></dt>
 <dd>Routines for specifying and solving linear programs and convex
 optimization problems with piecewise-linear cost and constraint functions
-(<a class="reference internal" href="modeling.html#c-modeling"><em>Modeling</em></a>).</dd>
-<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.info</span></tt></dt>
-<dd>Defines a string <tt class="xref py py-const docutils literal"><span class="pre">version</span></tt> with the version number of the CVXOPT
-installation and a function <tt class="xref py py-func docutils literal"><span class="pre">license</span></tt> that prints the CVXOPT
+(<a class="reference internal" href="modeling.html#c-modeling"><span>Modeling</span></a>).</dd>
+<dt><code class="xref py py-mod docutils literal"><span class="pre">cvxopt.info</span></code></dt>
+<dd>Defines a string <code class="xref py py-const docutils literal"><span class="pre">version</span></code> with the version number of the CVXOPT
+installation and a function <code class="xref py py-func docutils literal"><span class="pre">license</span></code> that prints the CVXOPT
 license.</dd>
-<dt><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.printing</span></tt></dt>
+<dt><code class="xref py py-mod docutils literal"><span class="pre">cvxopt.printing</span></code></dt>
 <dd>Contains functions and parameters that control how matrices are formatted.</dd>
 </dl>
 <p>The modules are described in detail in this manual and in the on-line Python
@@ -249,7 +249,7 @@ the distribution.</p>
   <div role="contentinfo">
     <p>
         &copy; <a href="copyright.html">Copyright</a> .
-      Last updated on Jun 04, 2014.
+      Last updated on Sep 22, 2015.
     </p>
   </div>
 
@@ -269,7 +269,7 @@ the distribution.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.7',
+            VERSION:'1.1.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -295,7 +295,7 @@ the distribution.</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
     </div>
 
 </body>

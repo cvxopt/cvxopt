@@ -139,7 +139,7 @@ distributed with the package is also available on-line.</p>
 <a class="reference external" href="http://www.ee.ucla.edu/~vandenbe/publications/mlbook.pdf">Interior-point methods for large-scale cone programming</a> (pdf), from the book
 <em>Optimization for Machine Learning</em> (edited by S. Sra, S. Nowozin, S. J. Wright, MIT Press, 2011).</li>
 <li>A discussion of the interior-point algorithms used in the
-<tt class="xref py py-func docutils literal"><span class="pre">conelp()</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">coneqp()</span></tt> solvers can be found in the
+<code class="xref py py-func docutils literal"><span class="pre">conelp()</span></code> and <code class="xref py py-func docutils literal"><span class="pre">coneqp()</span></code> solvers can be found in the
 report <a class="reference external" href="http://www.ee.ucla.edu/~vandenbe/publications/coneprog.pdf">The CVXOPT linear and quadratic cone program solvers</a> (pdf).</li>
 </ul>
 </div>
@@ -151,6 +151,8 @@ report <a class="reference external" href="http://www.ee.ucla.edu/~vandenbe/publ
 <div class="section" id="revision-history">
 <h2>Revision history<a class="headerlink" href="#revision-history" title="Permalink to this headline">¶</a></h2>
 <dl class="docutils">
+<dt><strong>Version 1.1.8</strong> (September 22, 2015).</dt>
+<dd>Upgrade to SuiteSparse version 4.4.5. Several bug fixes.</dd>
 <dt><strong>Version 1.1.7</strong> (May 31, 2014).</dt>
 <dd>Upgrades of the GLPK and MOSEK interfaces.</dd>
 <dt><strong>Version 1.1.6</strong> (April 22, 2013).</dt>
@@ -167,21 +169,21 @@ compatibility (&#8220;complex double&#8221; instead of &#8220;complex&#8221;).</
 <dd>Upgrade of the MOSEK interface to MOSEK version 6.  A few bug fixes in
 the matrix class.</dd>
 <dt><strong>Version 1.1.2</strong> (December 15, 2009).</dt>
-<dd>Several bug fixes.  Improved initialization in the <tt class="xref py py-func docutils literal"><span class="pre">coneqp()</span></tt>
+<dd>Several bug fixes.  Improved initialization in the <code class="xref py py-func docutils literal"><span class="pre">coneqp()</span></code>
 solver.</dd>
 <dt><strong>Version 1.1.1</strong> (March 1, 2009).</dt>
 <dd>Translated the user guide to Sphinx.  Additional LAPACK routines for
 LQ factorization and QR factorization with column pivoting.</dd>
 <dt><strong>Version 1.1</strong> (October 15, 2008).</dt>
-<dd><tt class="xref py py-func docutils literal"><span class="pre">matrix()</span></tt>, <tt class="xref py py-func docutils literal"><span class="pre">spmatrix()</span></tt>, and the other functions in
-<tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.base</span></tt> can now be directly imported from cvxopt
-(&#8220;<tt class="samp docutils literal"><span class="pre">from</span> <span class="pre">cvxopt</span> <span class="pre">import</span> <span class="pre">matrix</span></tt>&#8221; replaces
-&#8220;<tt class="samp docutils literal"><span class="pre">from</span> <span class="pre">cvxopt.base</span> <span class="pre">import</span> <span class="pre">matrix</span></tt>&#8221;, although the older code still
+<dd><code class="xref py py-func docutils literal"><span class="pre">matrix()</span></code>, <code class="xref py py-func docutils literal"><span class="pre">spmatrix()</span></code>, and the other functions in
+<code class="xref py py-mod docutils literal"><span class="pre">cvxopt.base</span></code> can now be directly imported from cvxopt
+(&#8220;<code class="samp docutils literal"><span class="pre">from</span> <span class="pre">cvxopt</span> <span class="pre">import</span> <span class="pre">matrix</span></code>&#8221; replaces
+&#8220;<code class="samp docutils literal"><span class="pre">from</span> <span class="pre">cvxopt.base</span> <span class="pre">import</span> <span class="pre">matrix</span></code>&#8221;, although the older code still
 works).  <cite>bool(A)</cite> of a dense or sparse matrix <cite>A</cite> is now defined to be
-<tt class="xref py py-const docutils literal"><span class="pre">True</span></tt> if <cite>A</cite> is a nonzero matrix. (Hence &#8220;<tt class="samp docutils literal"><span class="pre">if</span> <span class="pre">A</span></tt>&#8221; in older
-code should be replaced by &#8220;<tt class="samp docutils literal"><span class="pre">if</span> <span class="pre">len(A)</span></tt>&#8221;.)  The optimization
+<code class="xref py py-const docutils literal"><span class="pre">True</span></code> if <cite>A</cite> is a nonzero matrix. (Hence &#8220;<code class="samp docutils literal"><span class="pre">if</span> <span class="pre">A</span></code>&#8221; in older
+code should be replaced by &#8220;<code class="samp docutils literal"><span class="pre">if</span> <span class="pre">len(A)</span></code>&#8221;.)  The optimization
 routines now return the last iterates when returning with status
-<tt class="xref py py-const docutils literal"><span class="pre">'unknown'</span></tt>, and  provide information about the accuracy of the
+<code class="xref py py-const docutils literal"><span class="pre">'unknown'</span></code>, and  provide information about the accuracy of the
 solution they return.  An element-wise max and min of matrices.  Schur
 factorization routines from LAPACK.</dd>
 <dt><strong>Version 1.0</strong> (April 24, 2008).</dt>
@@ -193,24 +195,24 @@ docstrings).</dd>
 <dd>A new solver for quadratic programming with linear cone constraints.
 Minor changes to the other solvers: the option of requesting several
 steps of iterative refinement when solving Newton equations; the
-fields <tt class="docutils literal"><span class="pre">W['dl']</span></tt> and <tt class="docutils literal"><span class="pre">W['dli']</span></tt> in the scaling dictionary described
-in section 9.4 were renamed <tt class="docutils literal"><span class="pre">W['d']</span></tt> and <tt class="docutils literal"><span class="pre">W['di']</span></tt>.</dd>
+fields <code class="docutils literal"><span class="pre">W['dl']</span></code> and <code class="docutils literal"><span class="pre">W['dli']</span></code> in the scaling dictionary described
+in section 9.4 were renamed <code class="docutils literal"><span class="pre">W['d']</span></code> and <code class="docutils literal"><span class="pre">W['di']</span></code>.</dd>
 <dt><strong>Version 0.9.2</strong> (December 27, 2007).</dt>
 <dd>The GNU Scientific Library is no longer required for installation.
-The <tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.random</span></tt> module has been deleted, and the functions for
-generating random matrices (<tt class="xref py py-func docutils literal"><span class="pre">random.uniform()</span></tt>,
-<tt class="xref py py-func docutils literal"><span class="pre">random.normal()</span></tt>, <tt class="xref py py-func docutils literal"><span class="pre">random.getseed()</span></tt>, <tt class="xref py py-func docutils literal"><span class="pre">random.setseed()</span></tt>)
-have been moved to <tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.base</span></tt>.  The upgrade also includes an
+The <code class="xref py py-mod docutils literal"><span class="pre">cvxopt.random</span></code> module has been deleted, and the functions for
+generating random matrices (<code class="xref py py-func docutils literal"><span class="pre">random.uniform()</span></code>,
+<code class="xref py py-func docutils literal"><span class="pre">random.normal()</span></code>, <code class="xref py py-func docutils literal"><span class="pre">random.getseed()</span></code>, <code class="xref py py-func docutils literal"><span class="pre">random.setseed()</span></code>)
+have been moved to <code class="xref py py-mod docutils literal"><span class="pre">cvxopt.base</span></code>.  The upgrade also includes an
 improved and more easily customized style of matrix formatting.</dd>
 <dt><strong>Version 0.9.1</strong> (November 23, 2007).</dt>
 <dd>A revision of the nonlinear optimization solver, with added support for
 second-order cone and linear matrix inequality constraints.  (A new
-argument was added to the function <tt class="xref py py-func docutils literal"><span class="pre">solvers.cp()</span></tt>, but code that
-uses the previous version should still work if the arguments <tt class="docutils literal"><span class="pre">A</span></tt> and
-<tt class="docutils literal"><span class="pre">b</span></tt> are specified by keywords.)  The functions in
-<tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.random</span></tt> are now based on the random number generators of
+argument was added to the function <code class="xref py py-func docutils literal"><span class="pre">solvers.cp()</span></code>, but code that
+uses the previous version should still work if the arguments <code class="docutils literal"><span class="pre">A</span></code> and
+<code class="docutils literal"><span class="pre">b</span></code> are specified by keywords.)  The functions in
+<code class="xref py py-mod docutils literal"><span class="pre">cvxopt.random</span></code> are now based on the random number generators of
 the GNU Scientific Library.  The MOSEK interface was upgraded to
-version 5.  A new function <tt class="xref py py-func docutils literal"><span class="pre">base.spdiag()</span></tt> for specifying sparse
+version 5.  A new function <code class="xref py py-func docutils literal"><span class="pre">base.spdiag()</span></code> for specifying sparse
 block diagonal matrices.</dd>
 <dt><strong>Version 0.9</strong> (August 10, 2007).</dt>
 <dd>A new cone program solver, with support for second-order cone
@@ -219,13 +221,13 @@ constraints.</dd>
 <dd>Performance improvements in the sparse matrix arithmetic. The LAPACK
 solvers for banded and tridiagonal equations. Several bug fixes.</dd>
 <dt><strong>Version 0.8.1</strong> (October 31, 2006).</dt>
-<dd>Compatibility with Python 2.5.  An extension of <tt class="xref py py-func docutils literal"><span class="pre">base.matrix()</span></tt>
-to construct block matrices.  A new function <tt class="xref py py-func docutils literal"><span class="pre">sparse()</span></tt> to create
+<dd>Compatibility with Python 2.5.  An extension of <code class="xref py py-func docutils literal"><span class="pre">base.matrix()</span></code>
+to construct block matrices.  A new function <code class="xref py py-func docutils literal"><span class="pre">sparse()</span></code> to create
 sparse block matrices.  The default value of
-<tt class="xref py py-const docutils literal"><span class="pre">cholmod.options['supernodal']</span></tt> was changed to 2.</dd>
+<code class="xref py py-const docutils literal"><span class="pre">cholmod.options['supernodal']</span></code> was changed to 2.</dd>
 <dt><strong>Version 0.8</strong> (September 20, 2006).</dt>
 <dd>General sequences are allowed in matrix definitions and assignments.
-The <tt class="xref py py-func docutils literal"><span class="pre">base.div()</span></tt>, <tt class="xref py py-func docutils literal"><span class="pre">base.mul()</span></tt>, and <tt class="xref py py-func docutils literal"><span class="pre">base.syrk()</span></tt>
+The <code class="xref py py-func docutils literal"><span class="pre">base.div()</span></code>, <code class="xref py py-func docutils literal"><span class="pre">base.mul()</span></code>, and <code class="xref py py-func docutils literal"><span class="pre">base.syrk()</span></code>
 functions.  Elementwise exponentiation of dense matrices. The FFTW
 interface.  The optional arguments in BLAS and LAPACK have been
 reordered so that the most important arguments come first. (This
@@ -233,39 +235,39 @@ affects previous code in which optional arguments were passed by
 position instead of by keyword.)  A revised nonlinear convex
 optimization solver with a simpler calling sequence.</dd>
 <dt><strong>Version 0.7.1</strong> (August 1, 2006).</dt>
-<dd><p class="first">Complex sparse matrices.  The sparse BLAS functions <tt class="xref py py-func docutils literal"><span class="pre">base.symv()</span></tt>
-and <tt class="xref py py-func docutils literal"><span class="pre">base.gemm()</span></tt>.  The DSDP5 interface.
-The <tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.colamd</span></tt> and <tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.ccolamd</span></tt> interfaces were
+<dd><p class="first">Complex sparse matrices.  The sparse BLAS functions <code class="xref py py-func docutils literal"><span class="pre">base.symv()</span></code>
+and <code class="xref py py-func docutils literal"><span class="pre">base.gemm()</span></code>.  The DSDP5 interface.
+The <code class="xref py py-mod docutils literal"><span class="pre">cvxopt.colamd</span></code> and <code class="xref py py-mod docutils literal"><span class="pre">cvxopt.ccolamd</span></code> interfaces were
 removed.  There are several important backward incompatible changes in
-the definitions of <tt class="xref py py-func docutils literal"><span class="pre">base.matrix()</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">base.spmatrix()</span></tt>:</p>
+the definitions of <code class="xref py py-func docutils literal"><span class="pre">base.matrix()</span></code> and <code class="xref py py-func docutils literal"><span class="pre">base.spmatrix()</span></code>:</p>
 <ul class="last simple">
-<li>The <tt class="docutils literal"><span class="pre">x</span></tt> argument in <tt class="xref py py-func docutils literal"><span class="pre">base.matrix()</span></tt> is now required; it is no
+<li>The <code class="docutils literal"><span class="pre">x</span></code> argument in <code class="xref py py-func docutils literal"><span class="pre">base.matrix()</span></code> is now required; it is no
 longer possible to create matrices with uninitialized values.</li>
-<li>If the <tt class="docutils literal"><span class="pre">x</span></tt> argument in <tt class="xref py py-func docutils literal"><span class="pre">base.matrix()</span></tt> is of integer type,
-an integer matrix is created.  For example, &#8220;<tt class="samp docutils literal"><span class="pre">matrix(1)</span></tt>&#8221; now
-creates an <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt> matrix;  &#8220;<tt class="samp docutils literal"><span class="pre">matrix(1.0)</span></tt>&#8221; creates a
-<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix.</li>
-<li>Symmetric sparse matrices are no longer defined. The <tt class="docutils literal"><span class="pre">type</span></tt>
-argument in <tt class="xref py py-func docutils literal"><span class="pre">base.spmatrix()</span></tt> has been removed.</li>
-<li>The <tt class="docutils literal"><span class="pre">x</span></tt>, <tt class="docutils literal"><span class="pre">I</span></tt>, <tt class="docutils literal"><span class="pre">J</span></tt> arguments in <tt class="xref py py-func docutils literal"><span class="pre">base.spmatrix()</span></tt> are all
+<li>If the <code class="docutils literal"><span class="pre">x</span></code> argument in <code class="xref py py-func docutils literal"><span class="pre">base.matrix()</span></code> is of integer type,
+an integer matrix is created.  For example, &#8220;<code class="samp docutils literal"><span class="pre">matrix(1)</span></code>&#8221; now
+creates an <code class="xref py py-const docutils literal"><span class="pre">'i'</span></code> matrix;  &#8220;<code class="samp docutils literal"><span class="pre">matrix(1.0)</span></code>&#8221; creates a
+<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix.</li>
+<li>Symmetric sparse matrices are no longer defined. The <code class="docutils literal"><span class="pre">type</span></code>
+argument in <code class="xref py py-func docutils literal"><span class="pre">base.spmatrix()</span></code> has been removed.</li>
+<li>The <code class="docutils literal"><span class="pre">x</span></code>, <code class="docutils literal"><span class="pre">I</span></code>, <code class="docutils literal"><span class="pre">J</span></code> arguments in <code class="xref py py-func docutils literal"><span class="pre">base.spmatrix()</span></code> are all
 required.</li>
 </ul>
 </dd>
 <dt><strong>Version 0.7</strong> (April 21, 2006).</dt>
 <dd>A semidefinite programming solver.  LAPACK routines for QR
-factorization.  The <tt class="xref py py-func docutils literal"><span class="pre">base.gemv()</span></tt> function.  The
-<tt class="xref py py-func docutils literal"><span class="pre">base.smv()</span></tt> function was removed.</dd>
+factorization.  The <code class="xref py py-func docutils literal"><span class="pre">base.gemv()</span></code> function.  The
+<code class="xref py py-func docutils literal"><span class="pre">base.smv()</span></code> function was removed.</dd>
 <dt><strong>Version 0.6.1</strong> (February 27, 2006).</dt>
 <dd>Compatibility with the SciPy array interface.  Portability to 64 bit
 machines.  LAPACK routines for matrix inversion.  Generalized symmetric
 eigenvalue problems and singular value decomposition.  The
-<tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.ldl</span></tt> module has been removed.</dd>
+<code class="xref py py-mod docutils literal"><span class="pre">cvxopt.ldl</span></code> module has been removed.</dd>
 <dt><strong>Version 0.6</strong> (December 27, 2005).</dt>
-<dd>Elementwise <tt class="xref py py-func docutils literal"><span class="pre">exp()</span></tt>, <tt class="xref py py-func docutils literal"><span class="pre">sin()</span></tt>, <tt class="xref py py-func docutils literal"><span class="pre">cos()</span></tt>, and
-<tt class="xref py py-func docutils literal"><span class="pre">log()</span></tt> of dense matrices.  Indexed assignments of sparse to dense
+<dd>Elementwise <code class="xref py py-func docutils literal"><span class="pre">exp()</span></code>, <code class="xref py py-func docutils literal"><span class="pre">sin()</span></code>, <code class="xref py py-func docutils literal"><span class="pre">cos()</span></code>, and
+<code class="xref py py-func docutils literal"><span class="pre">log()</span></code> of dense matrices.  Indexed assignments of sparse to dense
 matrices.  Pickling of dense and sparse matrices. Interfaces to the
 matrix ordering libraries COLAMD and CCOLAMD.  Several new functions in
-<tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.cholmod</span></tt>.  A new LP solver.</dd>
+<code class="xref py py-mod docutils literal"><span class="pre">cvxopt.cholmod</span></code>.  A new LP solver.</dd>
 <dt><strong>Version 0.5</strong> (October 20, 2005).</dt>
 <dd>The CHOLMOD interface.  The nonlinear convex optimization solver in the
 solvers module.  Several bug fixes.</dd>
@@ -302,7 +304,7 @@ programming solver.</dd>
   <div role="contentinfo">
     <p>
         &copy; <a href="../copyright.html">Copyright</a> 2014, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Jun 04, 2014.
+      Last updated on Sep 22, 2015.
     </p>
   </div>
 
@@ -348,7 +350,7 @@ programming solver.</dd>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
     </div>
 
 <script>

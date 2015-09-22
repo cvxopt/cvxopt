@@ -131,7 +131,7 @@
 <p>This software accompanies the paper <a class="reference external" href="http://www.ee.ucla.edu/~vandenbe/publications/svmcmpl.pdf">Support vector machine training
 using matrix completion techniques</a> by
 Martin Andersen and Lieven Vandenberghe. The code can be downloaded as
-a <a class="reference download internal" href="../../_downloads/svmcmpl.zip"><tt class="xref download docutils literal"><span class="pre">zip</span> <span class="pre">file</span></tt></a> and
+a <a class="reference download internal" href="../../_downloads/svmcmpl.zip"><code class="xref download docutils literal"><span class="pre">zip</span> <span class="pre">file</span></code></a> and
 requires the Python extensions <a class="reference external" href="http://abel.ee.ucla.edu/cvxopt">CVXOPT</a> and <a class="reference external" href="http://abel.ee.ucla.edu/chompack">CHOMPACK 2.0.1</a> or later.</p>
 <h4> Feedback and bug reports </h4><p>We welcome feedback, and bug reports are much appreciated. Please
 email bug reports to <span class="raw-html"><kbd>martin.skovgaard.andersen@gmail.com</kbd></span>.</p>
@@ -140,23 +140,23 @@ email bug reports to <span class="raw-html"><kbd>martin.skovgaard.andersen@gmail
 <p>This software provides two routines for soft-margin support vector
 machine training. Both routines use the CVXOPT QP solver which
 implements an interior-point method.</p>
-<p>The routine <a class="reference internal" href="#softmargin" title="softmargin"><tt class="xref py py-func docutils literal"><span class="pre">softmargin()</span></tt></a> solves the standard SVM QP. It computes
+<p>The routine <a class="reference internal" href="#softmargin" title="softmargin"><code class="xref py py-func docutils literal"><span class="pre">softmargin()</span></code></a> solves the standard SVM QP. It computes
 and stores the entire kernel matrix, and hence it is only suited for
 small problems.</p>
-<p>The routine <a class="reference internal" href="#softmargin_appr" title="softmargin_appr"><tt class="xref py py-func docutils literal"><span class="pre">softmargin_appr()</span></tt></a> solves an <em>approximate problem</em> in
+<p>The routine <a class="reference internal" href="#softmargin_appr" title="softmargin_appr"><code class="xref py py-func docutils literal"><span class="pre">softmargin_appr()</span></code></a> solves an <em>approximate problem</em> in
 which the (generally dense) kernel matrix is replaced by a positive
 definite approximation (the maximum determinant positive definite
 completion of a partially specified kernel matrix) whose inverse is
 sparse. This can be exploited in interior-point methods, and the
 technique is implemented as a custom KKT solver for the CVXOPT QP
-solver. As a consequence, <a class="reference internal" href="#softmargin_appr" title="softmargin_appr"><tt class="xref py py-func docutils literal"><span class="pre">softmargin_appr()</span></tt></a> can handle much
-larger problems than <a class="reference internal" href="#softmargin" title="softmargin"><tt class="xref py py-func docutils literal"><span class="pre">softmargin()</span></tt></a>.</p>
+solver. As a consequence, <a class="reference internal" href="#softmargin_appr" title="softmargin_appr"><code class="xref py py-func docutils literal"><span class="pre">softmargin_appr()</span></code></a> can handle much
+larger problems than <a class="reference internal" href="#softmargin" title="softmargin"><code class="xref py py-func docutils literal"><span class="pre">softmargin()</span></code></a>.</p>
 </div>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="softmargin">
-<tt class="descname">softmargin</tt><big>(</big><em>X</em>, <em>d</em>, <em>gamma</em>, <em>kernel = 'linear'</em>, <em>sigma = 1.0</em>, <em>degree = 1</em>, <em>theta = 1.0</em><big>)</big><a class="headerlink" href="#softmargin" title="Permalink to this definition">¶</a></dt>
+<code class="descname">softmargin</code><span class="sig-paren">(</span><em>X</em>, <em>d</em>, <em>gamma</em>, <em>kernel = 'linear'</em>, <em>sigma = 1.0</em>, <em>degree = 1</em>, <em>theta = 1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#softmargin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the &#8216;soft-margin&#8217; SVM problem</p>
 <div class="math">
 <p><img src="../../_images/math/15fd145a99df8486825512d8dbb0129cbec5e0f0.png" alt="\begin{array}{ll}
@@ -181,34 +181,34 @@ replace <img class="math" src="../../_images/math/e91d6bf459708da80b35dd80a97ca2
 a constraint <img class="math" src="../../_images/math/1e783d8c66a01776947a12de57523f662e19df50.png" alt="y \in \mathrm{Range}(Q)"/>.</p>
 <p>Valid kernel functions are:</p>
 <dl class="docutils">
-<dt><tt class="xref py py-const docutils literal"><span class="pre">'linear'</span></tt></dt>
+<dt><code class="xref py py-const docutils literal"><span class="pre">'linear'</span></code></dt>
 <dd>the linear kernel: <img class="math" src="../../_images/math/9ed7fde04b3b2bdc2fa7cc732b99fdea88ceb905.png" alt="h(x_i,x_j) = x_i^Tx_j/\sigma"/></dd>
-<dt><tt class="xref py py-const docutils literal"><span class="pre">'poly'</span></tt></dt>
+<dt><code class="xref py py-const docutils literal"><span class="pre">'poly'</span></code></dt>
 <dd>the polynomial kernel: <img class="math" src="../../_images/math/b24b6987e11c9cf76686f469c46b17af12fb666b.png" alt="h(x_i,x_j) = (x_i^Tx_j/\sigma)^d"/></dd>
-<dt><tt class="xref py py-const docutils literal"><span class="pre">'rbf'</span></tt></dt>
+<dt><code class="xref py py-const docutils literal"><span class="pre">'rbf'</span></code></dt>
 <dd>the radial basis function: <img class="math" src="../../_images/math/adeac025a436f7193bd5ed107200575106e6a372.png" alt="h(x_i,x_j) = \exp\{ -\|x_i-x_j\|^2/(2\sigma)\}"/></dd>
-<dt><tt class="xref py py-const docutils literal"><span class="pre">'tanh'</span></tt></dt>
+<dt><code class="xref py py-const docutils literal"><span class="pre">'tanh'</span></code></dt>
 <dd>the sigmoid kernel: <img class="math" src="../../_images/math/f22bf017ac69b46d0553f3338aadb1f3473f83f6.png" alt="h(x_i,x_j) = \tanh(x_i^Tx_j/\sigma - \theta)"/></dd>
 </dl>
 <p>The kernel parameters <img class="math" src="../../_images/math/2298cf1485084afe72757a9c8483af49a138d81f.png" alt="\sigma"/>, <img class="math" src="../../_images/math/425d86ba2f2979d75b7535c2bcf92c33ed6b285a.png" alt="d"/>, and <img class="math" src="../../_images/math/a9cfbeb8ebee1f365919e147a79e242dcb67ee5d.png" alt="\theta"/>
 are specified using the input arguments <cite>sigma</cite>, <cite>degree</cite>, and <cite>theta</cite>,
 respectively.</p>
-<p><a class="reference internal" href="#softmargin" title="softmargin"><tt class="xref py py-func docutils literal"><span class="pre">softmargin()</span></tt></a> returns a dictionary with the following keys:</p>
+<p><a class="reference internal" href="#softmargin" title="softmargin"><code class="xref py py-func docutils literal"><span class="pre">softmargin()</span></code></a> returns a dictionary with the following keys:</p>
 <dl class="docutils">
-<dt><tt class="xref py py-const docutils literal"><span class="pre">'classifier'</span></tt></dt>
+<dt><code class="xref py py-const docutils literal"><span class="pre">'classifier'</span></code></dt>
 <dd>a Python function object that takes an
 <img class="math" src="../../_images/math/4efd6046ef1817ebb9ca0aebc0dae35b31bc95d1.png" alt="M \times n"/> matrix with test vectors as rows and returns a vector with labels</dd>
-<dt><tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt></dt>
+<dt><code class="xref py py-const docutils literal"><span class="pre">'z'</span></code></dt>
 <dd>a sparse <img class="math" src="../../_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/>-vector</dd>
-<dt><tt class="xref py py-const docutils literal"><span class="pre">'cputime'</span></tt></dt>
+<dt><code class="xref py py-const docutils literal"><span class="pre">'cputime'</span></code></dt>
 <dd>a tuple (<img class="math" src="../../_images/math/4db3926db38318e1fd48103dab953b9c60b9771e.png" alt="T_{\rm tot}"/>, <img class="math" src="../../_images/math/b934d361120be9ebfde969a2fe2442866b4269aa.png" alt="T_{\rm qp}"/>,
 <img class="math" src="../../_images/math/ceb7e2f98524feec27c2187d4ef203d09f307437.png" alt="T_{\rm ker}"/>) where <img class="math" src="../../_images/math/4db3926db38318e1fd48103dab953b9c60b9771e.png" alt="T_{\rm tot}"/> is the
 total CPU time, <img class="math" src="../../_images/math/b934d361120be9ebfde969a2fe2442866b4269aa.png" alt="T_{\rm qp}"/> is the CPU time spent
 solving the QP, and <img class="math" src="../../_images/math/ceb7e2f98524feec27c2187d4ef203d09f307437.png" alt="T_{\rm ker}"/> is the CPU time spent
 computing the kernel matrix</dd>
-<dt><tt class="xref py py-const docutils literal"><span class="pre">'iterations'</span></tt></dt>
+<dt><code class="xref py py-const docutils literal"><span class="pre">'iterations'</span></code></dt>
 <dd>the number of interior point iterations</dd>
-<dt><tt class="xref py py-const docutils literal"><span class="pre">'misclassified'</span></tt></dt>
+<dt><code class="xref py py-const docutils literal"><span class="pre">'misclassified'</span></code></dt>
 <dd>a tuple (<cite>L1</cite>, <cite>L2</cite>) where <cite>L1</cite> is a list
 of indices of misclassified training vectors from class 1, and
 <cite>L2</cite> is a list of indices of misclassified training vectors from
@@ -218,7 +218,7 @@ class 2</dd>
 
 <dl class="function">
 <dt id="softmargin_appr">
-<tt class="descname">softmargin_appr</tt><big>(</big><em>X</em>, <em>d</em>, <em>gamma</em>, <em>width</em>, <em>kernel = 'linear'</em>, <em>sigma = 1.0</em>, <em>degree = 1</em>, <em>theta = 1.0</em><big>)</big><a class="headerlink" href="#softmargin_appr" title="Permalink to this definition">¶</a></dt>
+<code class="descname">softmargin_appr</code><span class="sig-paren">(</span><em>X</em>, <em>d</em>, <em>gamma</em>, <em>width</em>, <em>kernel = 'linear'</em>, <em>sigma = 1.0</em>, <em>degree = 1</em>, <em>theta = 1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#softmargin_appr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the &#8216;soft-margin&#8217; SVM problem</p>
 <div class="math">
 <p><img src="../../_images/math/c539d025288b6762b0879709510f115cee4440bc.png" alt="\begin{array}{ll}
@@ -238,17 +238,17 @@ class 2</dd>
 maximum determinant completion of the projection of Q on a band
 with bandwidth <img class="math" src="../../_images/math/7fe6069aa7e741b99f6b7fe911ad086a274d3ec3.png" alt="2w+1"/>. Here <img class="math" src="../../_images/math/3c9046be0f9dcff3b3624fe74aaf2b1e57d43d2e.png" alt="Q_{ij} = h(x_i, x_j)"/> where
 <img class="math" src="../../_images/math/cbb80ad77aa7a5e227d5a46bc44d235284106cfc.png" alt="h"/> is one of the kernel functions defined under
-<a class="reference internal" href="#softmargin" title="softmargin"><tt class="xref py py-func docutils literal"><span class="pre">softmargin()</span></tt></a> and <img class="math" src="../../_images/math/35d06a2aa8de54e78a4b0902eeb76f8a46587dc2.png" alt="x_i^T"/> is the i&#8217;th row of the
+<a class="reference internal" href="#softmargin" title="softmargin"><code class="xref py py-func docutils literal"><span class="pre">softmargin()</span></code></a> and <img class="math" src="../../_images/math/35d06a2aa8de54e78a4b0902eeb76f8a46587dc2.png" alt="x_i^T"/> is the i&#8217;th row of the
 <img class="math" src="../../_images/math/333494eb009c3c5a93166d4ec2d46e71d98339a0.png" alt="m \times n"/> data matrix <img class="math" src="../../_images/math/f026aecf11ec7f6141ab863f260d395f94b10f51.png" alt="X"/>. The <img class="math" src="../../_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/>-vector
 <img class="math" src="../../_images/math/425d86ba2f2979d75b7535c2bcf92c33ed6b285a.png" alt="d"/> is a vector with labels (<em>i.e.</em> <img class="math" src="../../_images/math/75830cb22d97b70687b5b2a05673e25fb16a889f.png" alt="d_i \in \{
 -1,1\}"/>).  The half-bandwidth parameter <img class="math" src="../../_images/math/8659700e6646cd91bc02c32affaa5ec046ee9935.png" alt="w"/> is set using the
 input argument <cite>width</cite>.</p>
-<p><tt class="xref py py-func docutils literal"><span class="pre">softmaring_appr()</span></tt> returns a dictionary that contains the same
-keys as the dictionary returned by <a class="reference internal" href="#softmargin" title="softmargin"><tt class="xref py py-func docutils literal"><span class="pre">softmargin()</span></tt></a>. In
+<p><code class="xref py py-func docutils literal"><span class="pre">softmaring_appr()</span></code> returns a dictionary that contains the same
+keys as the dictionary returned by <a class="reference internal" href="#softmargin" title="softmargin"><code class="xref py py-func docutils literal"><span class="pre">softmargin()</span></code></a>. In
 addition to these keys, the dictionary returned by
-<a class="reference internal" href="#softmargin_appr" title="softmargin_appr"><tt class="xref py py-func docutils literal"><span class="pre">softmargin_appr()</span></tt></a> contains an second classifier:</p>
+<a class="reference internal" href="#softmargin_appr" title="softmargin_appr"><code class="xref py py-func docutils literal"><span class="pre">softmargin_appr()</span></code></a> contains an second classifier:</p>
 <dl class="docutils">
-<dt><tt class="xref py py-const docutils literal"><span class="pre">'completion</span> <span class="pre">classifier'</span></tt></dt>
+<dt><code class="xref py py-const docutils literal"><span class="pre">'completion</span> <span class="pre">classifier'</span></code></dt>
 <dd>a Python function object that
 takes an <img class="math" src="../../_images/math/4efd6046ef1817ebb9ca0aebc0dae35b31bc95d1.png" alt="M \times n"/> matrix with test vectors as rows
 and returns a vector with labels</dd>
@@ -308,7 +308,7 @@ QPs required 0.3 seconds and 0.7 seconds for <img class="math" src="../../_image
 <h2>Example 2<a class="headerlink" href="#example-2" title="Permalink to this headline">¶</a></h2>
 <p>The following example demonstrates the approximate SVM method on the
 <a class="reference external" href="http://yann.lecun.com/exdb/mnist/">MNIST database</a> of handwritten
-digits. In the example we use the Python module <a class="reference download internal" href="../../_downloads/mnist.py"><tt class="xref download docutils literal"><span class="pre">mnist.py</span></tt></a> to read the database files. The following code trains
+digits. In the example we use the Python module <a class="reference download internal" href="../../_downloads/mnist.py"><code class="xref download docutils literal"><span class="pre">mnist.py</span></code></a> to read the database files. The following code trains
 a binary classifier using as training set 4,000 examples of the digit
 &#8216;0&#8217; as class 1 and 4,000 examples of the digit &#8216;1&#8217; as class 2.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">mnist</span><span class="o">,</span> <span class="nn">svmcmpl</span><span class="o">,</span> <span class="nn">cvxopt</span><span class="o">,</span> <span class="nn">random</span>
@@ -360,7 +360,7 @@ a binary classifier using as training set 4,000 examples of the digit
   <div role="contentinfo">
     <p>
         &copy; <a href="../../copyright.html">Copyright</a> 2014, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Jun 24, 2014.
+      Last updated on Sep 22, 2015.
     </p>
   </div>
 
@@ -406,7 +406,7 @@ a binary classifier using as training set 4,000 examples of the digit
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
     </div>
 
 <script>
