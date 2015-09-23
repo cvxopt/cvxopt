@@ -2,7 +2,7 @@
 # SuiteSparse_config Makefile
 #-------------------------------------------------------------------------------
 
-VERSION = 4.0.2
+VERSION = 4.4.5
 
 default: ccode
 
@@ -41,3 +41,8 @@ uninstall:
 	$(RM) $(INSTALL_LIB)/libsuitesparseconfig*.a
 	$(RM) $(INSTALL_INCLUDE)/SuiteSparse_config.h
 
+dif:
+	- diff SuiteSparse_config.mk SuiteSparse_config_linux.mk
+	- diff SuiteSparse_config_linux.mk SuiteSparse_config_GPU_gcc.mk
+	- diff SuiteSparse_config_GPU_gcc.mk SuiteSparse_config_GPU_icc.mk
+	- diff SuiteSparse_config_GPU_icc.mk SuiteSparse_config_GPU_icc10.mk

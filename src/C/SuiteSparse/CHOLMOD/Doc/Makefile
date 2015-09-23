@@ -36,6 +36,7 @@ M = \
 	../MATLAB/ldlsolve.m \
 	../MATLAB/ldlsplit.m \
 	../MATLAB/ldlupdate.m \
+	../MATLAB/ldlrowmod.m \
 	../MATLAB/metis.m \
 	../MATLAB/nesdis.m \
 	../MATLAB/resymbol.m \
@@ -61,6 +62,7 @@ UserGuide.pdf: UserGuide.tex UserGuide.bib $(I) $(C) $(M) Makefile getproto rule
 	./getmproto ../MATLAB/ldlsolve.m > _ldlsolve_m.tex
 	./getmproto ../MATLAB/ldlsplit.m > _ldlsplit_m.tex
 	./getmproto ../MATLAB/ldlupdate.m > _ldlupdate_m.tex
+	./getmproto ../MATLAB/ldlrowmod.m > _ldlrowmod_m.tex
 	./getmproto ../MATLAB/metis.m > _metis_m.tex
 	./getmproto ../MATLAB/mread.m > _mread_m.tex
 	./getmproto ../MATLAB/spsym.m > _spsym_m.tex
@@ -137,6 +139,7 @@ UserGuide.pdf: UserGuide.tex UserGuide.bib $(I) $(C) $(M) Makefile getproto rule
 	./getproto '/void \*cholmod_free/, /\*\) ;/' ../Include/cholmod_core.h > _free.tex 
 	./getproto '/void \*cholmod_realloc/, /\*\) ;/' ../Include/cholmod_core.h > _realloc.tex 
 	./getproto '/int cholmod_realloc_multiple/, /\*\) ;/' ../Include/cholmod_core.h > _realloc_multiple.tex 
+	./getproto '/int cholmod_version/, /l_version/' ../Include/cholmod_core.h > _version.tex 
 	./getproto '/itype defines the/, /define CHOLMOD_SUPERNODAL/' ../Include/cholmod_core.h > _defn.tex 
 	./getproto '/int cholmod_check_common/, /\*\) ;/' ../Include/cholmod_check.h > _check_common.tex 
 	./getproto '/int cholmod_print_common/, /\*\) ;/' ../Include/cholmod_check.h > _print_common.tex 

@@ -85,6 +85,12 @@ The following variables in the setup script can be modified.
 * DSDP_LIB_DIR: the directory containing libdsdp.
 * DSDP_INC_DIR: the directory containing dsdp5.h.
 
+Each of the variables can be overridden by specifying an environment variable
+with the prefix "CVXOPT_". For example, the following command installs CVXOPT
+locally with BUILD_FFTW=1: 
+
+     CVXOPT_BUILD_FFTW=1 python setup.py install --user
+
 Support for the linear, second-order cone, and quadratic programming 
 solvers in MOSEK is automatically enabled if the MOSEK Python interface
 pymosek.so is found in the user's PYTHONPATH.

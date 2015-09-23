@@ -6,11 +6,11 @@ for quadratic and geometric programming.  Also includes an interface
 to the quadratic programming solver from MOSEK.
 """
 
-# Copyright 2012-2014 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2015 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.7.
+# This file is part of CVXOPT version 1.1.8.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@ to the quadratic programming solver from MOSEK.
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import sys
+if sys.version > '3': long = int
 
 __all__ = []
 options = {}

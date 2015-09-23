@@ -177,17 +177,17 @@
 <p>In this section we describe routines for solving sparse sets of linear
 equations.</p>
 <p>A real symmetric or complex Hermitian sparse matrix is stored as an
-<a class="reference internal" href="matrices.html#cvxopt.spmatrix" title="cvxopt.spmatrix"><tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt></a> object <tt class="docutils literal"><span class="pre">X</span></tt>  of size
+<a class="reference internal" href="matrices.html#cvxopt.spmatrix" title="cvxopt.spmatrix"><code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code></a> object <code class="docutils literal"><span class="pre">X</span></code>  of size
 (<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>) and an
-additional character argument <tt class="docutils literal"><span class="pre">uplo</span></tt> with possible values <tt class="xref py py-const docutils literal"><span class="pre">'L'</span></tt>
-and <tt class="xref py py-const docutils literal"><span class="pre">'U'</span></tt>.  If <tt class="docutils literal"><span class="pre">uplo</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'L'</span></tt>, the lower triangular part
-of <tt class="docutils literal"><span class="pre">X</span></tt> contains the lower triangular part of the symmetric or Hermitian
-matrix, and the upper triangular matrix of <tt class="docutils literal"><span class="pre">X</span></tt> is ignored.  If <tt class="docutils literal"><span class="pre">uplo</span></tt>
-is <tt class="xref py py-const docutils literal"><span class="pre">'U'</span></tt>, the upper triangular part of <tt class="docutils literal"><span class="pre">X</span></tt> contains the upper
-triangular part of the matrix, and the lower triangular matrix of <tt class="docutils literal"><span class="pre">X</span></tt> is
+additional character argument <code class="docutils literal"><span class="pre">uplo</span></code> with possible values <code class="xref py py-const docutils literal"><span class="pre">'L'</span></code>
+and <code class="xref py py-const docutils literal"><span class="pre">'U'</span></code>.  If <code class="docutils literal"><span class="pre">uplo</span></code> is <code class="xref py py-const docutils literal"><span class="pre">'L'</span></code>, the lower triangular part
+of <code class="docutils literal"><span class="pre">X</span></code> contains the lower triangular part of the symmetric or Hermitian
+matrix, and the upper triangular matrix of <code class="docutils literal"><span class="pre">X</span></code> is ignored.  If <code class="docutils literal"><span class="pre">uplo</span></code>
+is <code class="xref py py-const docutils literal"><span class="pre">'U'</span></code>, the upper triangular part of <code class="docutils literal"><span class="pre">X</span></code> contains the upper
+triangular part of the matrix, and the lower triangular matrix of <code class="docutils literal"><span class="pre">X</span></code> is
 ignored.</p>
 <p>A general sparse square matrix of order <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> is represented by an
-<tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt> object of size (<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>).</p>
+<code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code> object of size (<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>).</p>
 <p>Dense matrices, which appear as right-hand sides of equations, are
 stored using the same conventions as in the BLAS and LAPACK modules.</p>
 <div class="section" id="matrix-orderings">
@@ -197,7 +197,6 @@ minimum degree orderings of sparse matrices.</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <ul class="last simple">
-<li><a class="reference external" href="http://www.cise.ufl.edu/research/sparse/amd">AMD code, documentation, copyright, and license</a></li>
 <li>P. R. Amestoy, T. A. Davis, I. S. Duff,  Algorithm 837: AMD, An
 Approximate Minimum Degree Ordering Algorithm, ACM Transactions on
 Mathematical Software, 30(3), 381-388, 2004.</li>
@@ -205,13 +204,13 @@ Mathematical Software, 30(3), 381-388, 2004.</li>
 </div>
 <dl class="function">
 <dt id="cvxopt.amd.order">
-<tt class="descclassname">cvxopt.amd.</tt><tt class="descname">order</tt><big>(</big><em>A</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.amd.order" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cvxopt.amd.</code><code class="descname">order</code><span class="sig-paren">(</span><em>A</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.amd.order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the approximate mimimum degree ordering of a symmetric  sparse
 matrix <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/>.  The ordering is returned as an integer dense matrix
 with length equal to the order of <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/>.  Its entries specify a
 permutation that reduces fill-in during the Cholesky factorization.
-More precisely, if <tt class="docutils literal"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">order(A)</span></tt> , then <tt class="docutils literal"><span class="pre">A[p,</span> <span class="pre">p]</span></tt> has
-sparser Cholesky factors than <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+More precisely, if <code class="docutils literal"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">order(A)</span></code> , then <code class="docutils literal"><span class="pre">A[p,</span> <span class="pre">p]</span></code> has
+sparser Cholesky factors than <code class="docutils literal"><span class="pre">A</span></code>.</p>
 </dd></dl>
 
 <p>As an example we consider the matrix</p>
@@ -235,14 +234,13 @@ sparser Cholesky factors than <tt class="docutils literal"><span class="pre">A</
 </div>
 <div class="section" id="general-linear-equations">
 <span id="s-umfpack"></span><h2>General Linear Equations<a class="headerlink" href="#general-linear-equations" title="Permalink to this headline">¶</a></h2>
-<p>The module <tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.umfpack</span></tt> includes four functions for solving
+<p>The module <code class="xref py py-mod docutils literal"><span class="pre">cvxopt.umfpack</span></code> includes four functions for solving
 sparse non-symmetric sets of linear equations.  They call routines from
 the UMFPACK library, with all control options set to the default values
 described in the UMFPACK user guide.</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <ul class="last simple">
-<li><a class="reference external" href="http://www.cise.ufl.edu/research/sparse/umfpack">UMFPACK code, documentation, copyright, and license</a></li>
 <li>T. A. Davis, Algorithm 832: UMFPACK &#8211; an unsymmetric-pattern
 multifrontal method with a column pre-ordering strategy, ACM
 Transactions on Mathematical Software, 30(2), 196-199, 2004.</li>
@@ -250,16 +248,16 @@ Transactions on Mathematical Software, 30(2), 196-199, 2004.</li>
 </div>
 <dl class="function">
 <dt id="cvxopt.umfpack.linsolve">
-<tt class="descclassname">cvxopt.umfpack.</tt><tt class="descname">linsolve</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>trans = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.umfpack.linsolve" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cvxopt.umfpack.</code><code class="descname">linsolve</code><span class="sig-paren">(</span><em>A</em>, <em>B</em><span class="optional">[</span>, <em>trans = 'N'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.linsolve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a sparse set of linear equations</p>
 <div class="math">
 <p><img src="_images/math/321775dc9a96e932341dc2b5efc498827c162856.png" alt="AX &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
 A^TX &amp; = B \quad (\mathrm{trans} = \mathrm{'T'}), \\
 A^HX &amp; = B \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
 </div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a sparse matrix and <img class="math" src="_images/math/83956e92fcc80dee17fce864543216939a3c9da7.png" alt="B"/> is a dense matrix.
-The arguments <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> must have the same type
-(<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>) as <tt class="docutils literal"><span class="pre">A</span></tt>.  On exit <tt class="docutils literal"><span class="pre">B</span></tt> contains
-the solution.  Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the coefficient
+The arguments <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">B</span></code> must have the same type
+(<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>) as <code class="docutils literal"><span class="pre">A</span></code>.  On exit <code class="docutils literal"><span class="pre">B</span></code> contains
+the solution.  Raises an <code class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></code> if the coefficient
 matrix is singular.</p>
 </dd></dl>
 
@@ -287,44 +285,44 @@ matrix is singular.</p>
 <span class="go">[-7.89e-01]</span>
 </pre></div>
 </div>
-<p>The function <a class="reference internal" href="#cvxopt.umfpack.linsolve" title="cvxopt.umfpack.linsolve"><tt class="xref py py-func docutils literal"><span class="pre">linsolve</span></tt></a>  is
+<p>The function <a class="reference internal" href="#cvxopt.umfpack.linsolve" title="cvxopt.umfpack.linsolve"><code class="xref py py-func docutils literal"><span class="pre">linsolve</span></code></a>  is
 equivalent to the following three functions called in sequence.</p>
 <dl class="function">
 <dt id="cvxopt.umfpack.symbolic">
-<tt class="descclassname">cvxopt.umfpack.</tt><tt class="descname">symbolic</tt><big>(</big><em>A</em><big>)</big><a class="headerlink" href="#cvxopt.umfpack.symbolic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reorders the columns of <tt class="docutils literal"><span class="pre">A</span></tt> to reduce fill-in and performs a symbolic
-LU factorization.  <tt class="docutils literal"><span class="pre">A</span></tt> is a sparse, possibly rectangular, matrix.
+<code class="descclassname">cvxopt.umfpack.</code><code class="descname">symbolic</code><span class="sig-paren">(</span><em>A</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.symbolic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reorders the columns of <code class="docutils literal"><span class="pre">A</span></code> to reduce fill-in and performs a symbolic
+LU factorization.  <code class="docutils literal"><span class="pre">A</span></code> is a sparse, possibly rectangular, matrix.
 Returns the symbolic factorization as an opaque C object that can be
-passed on to <a class="reference internal" href="#cvxopt.umfpack.numeric" title="cvxopt.umfpack.numeric"><tt class="xref py py-func docutils literal"><span class="pre">numeric</span></tt></a>.</p>
+passed on to <a class="reference internal" href="#cvxopt.umfpack.numeric" title="cvxopt.umfpack.numeric"><code class="xref py py-func docutils literal"><span class="pre">numeric</span></code></a>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="cvxopt.umfpack.numeric">
-<tt class="descclassname">cvxopt.umfpack.</tt><tt class="descname">numeric</tt><big>(</big><em>A</em>, <em>F</em><big>)</big><a class="headerlink" href="#cvxopt.umfpack.numeric" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cvxopt.umfpack.</code><code class="descname">numeric</code><span class="sig-paren">(</span><em>A</em>, <em>F</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.numeric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a numeric LU factorization of a sparse, possibly rectangular,
-matrix <tt class="docutils literal"><span class="pre">A</span></tt>.   The argument <tt class="docutils literal"><span class="pre">F</span></tt> is the symbolic factorization
-computed by <a class="reference internal" href="#cvxopt.umfpack.symbolic" title="cvxopt.umfpack.symbolic"><tt class="xref py py-func docutils literal"><span class="pre">symbolic</span></tt></a>
-applied to the matrix <tt class="docutils literal"><span class="pre">A</span></tt>,
+matrix <code class="docutils literal"><span class="pre">A</span></code>.   The argument <code class="docutils literal"><span class="pre">F</span></code> is the symbolic factorization
+computed by <a class="reference internal" href="#cvxopt.umfpack.symbolic" title="cvxopt.umfpack.symbolic"><code class="xref py py-func docutils literal"><span class="pre">symbolic</span></code></a>
+applied to the matrix <code class="docutils literal"><span class="pre">A</span></code>,
 or another sparse matrix with the same sparsity pattern, dimensions,
 and type.  The numeric factorization is returned as an opaque C object
 that that can be passed on to
-<a class="reference internal" href="#cvxopt.umfpack.solve" title="cvxopt.umfpack.solve"><tt class="xref py py-func docutils literal"><span class="pre">solve</span></tt></a>.  Raises an
-<tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the matrix is singular.</p>
+<a class="reference internal" href="#cvxopt.umfpack.solve" title="cvxopt.umfpack.solve"><code class="xref py py-func docutils literal"><span class="pre">solve</span></code></a>.  Raises an
+<code class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></code> if the matrix is singular.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="cvxopt.umfpack.solve">
-<tt class="descclassname">cvxopt.umfpack.</tt><tt class="descname">solve</tt><big>(</big><em>A</em>, <em>F</em>, <em>B</em><span class="optional">[</span>, <em>trans = 'N'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.umfpack.solve" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cvxopt.umfpack.</code><code class="descname">solve</code><span class="sig-paren">(</span><em>A</em>, <em>F</em>, <em>B</em><span class="optional">[</span>, <em>trans = 'N'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a set of linear equations</p>
 <div class="math">
 <p><img src="_images/math/321775dc9a96e932341dc2b5efc498827c162856.png" alt="AX &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
 A^TX &amp; = B \quad (\mathrm{trans} = \mathrm{'T'}), \\
 A^HX &amp; = B \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
 </div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a sparse matrix and <img class="math" src="_images/math/83956e92fcc80dee17fce864543216939a3c9da7.png" alt="B"/> is a dense matrix.
-The arguments <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> must have the same type.  The argument
-<tt class="docutils literal"><span class="pre">F</span></tt> is a numeric factorization computed
-by <a class="reference internal" href="#cvxopt.umfpack.numeric" title="cvxopt.umfpack.numeric"><tt class="xref py py-func docutils literal"><span class="pre">numeric</span></tt></a>.
-On exit <tt class="docutils literal"><span class="pre">B</span></tt> is overwritten by the
+The arguments <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">B</span></code> must have the same type.  The argument
+<code class="docutils literal"><span class="pre">F</span></code> is a numeric factorization computed
+by <a class="reference internal" href="#cvxopt.umfpack.numeric" title="cvxopt.umfpack.numeric"><code class="xref py py-func docutils literal"><span class="pre">numeric</span></code></a>.
+On exit <code class="docutils literal"><span class="pre">B</span></code> is overwritten by the
 solution.</p>
 </dd></dl>
 
@@ -374,7 +372,7 @@ x = A^{-T}B^{-1}A^{-1}\ones."/></p>
 </div>
 <div class="section" id="positive-definite-linear-equations">
 <span id="s-cholmod"></span><h2>Positive Definite Linear Equations<a class="headerlink" href="#positive-definite-linear-equations" title="Permalink to this headline">¶</a></h2>
-<p><tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.cholmod</span></tt> is an interface to the Cholesky factorization routines
+<p><code class="xref py py-mod docutils literal"><span class="pre">cvxopt.cholmod</span></code> is an interface to the Cholesky factorization routines
 of the CHOLMOD package.  It includes functions for Cholesky factorization
 of sparse positive definite matrices, and for solving sparse sets of linear
 equations with positive definite matrices.
@@ -387,21 +385,28 @@ of symmetric indefinite matrices (with <img class="math" src="_images/math/0a571
 <img class="math" src="_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> diagonal and nonsingular) if such a factorization exists.</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference external" href="http://www.cise.ufl.edu/research/sparse/cholmod">CHOLMOD code, documentation, copyright, and license</a></p>
+<ul class="last simple">
+<li>Y. Chen, T. A. Davis, W. W. Hager, S. Rajamanickam,
+Algorithm 887: CHOLMOD, Supernodal Sparse Cholesky Factorization
+and Update/Downdate, ACM Transactions on Mathematical Software,
+35(3), 22:1-22:14, 2008.</li>
+</ul>
 </div>
 <dl class="function">
 <dt id="cvxopt.cholmod.linsolve">
-<tt class="descclassname">cvxopt.cholmod.</tt><tt class="descname">linsolve</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>p = None</em>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.cholmod.linsolve" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cvxopt.cholmod.</code><code class="descname">linsolve</code><span class="sig-paren">(</span><em>A</em>, <em>B</em><span class="optional">[</span>, <em>p = None</em>, <em>uplo = 'L'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.linsolve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves</p>
 <div class="math">
 <p><img src="_images/math/1beb2d429fd60d4494135aa7af1b4fe324dc8d3d.png" alt="AX = B"/></p>
 </div><p>with <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> sparse and real symmetric or complex Hermitian.</p>
-<p><tt class="docutils literal"><span class="pre">B</span></tt> is a dense matrix of the same type as <tt class="docutils literal"><span class="pre">A</span></tt>.  On exit it
-is overwritten with the solution.  The argument <tt class="docutils literal"><span class="pre">p</span></tt> is an integer
+<p><code class="docutils literal"><span class="pre">B</span></code> is a dense matrix of the same type as <code class="docutils literal"><span class="pre">A</span></code>.  On exit it
+is overwritten with the solution.  The argument <code class="docutils literal"><span class="pre">p</span></code> is an integer
 matrix with length equal to the order of <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/>, and specifies an
-optional reordering.  If <tt class="docutils literal"><span class="pre">p</span></tt> is not specified, CHOLMOD uses a
-reordering from the AMD library.</p>
-<p>Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the factorization does not exist.</p>
+optional reordering.
+See the comment on
+<code class="xref py py-attr docutils literal"><span class="pre">options['nmethods']</span></code> for details on which ordering is used
+by CHOLMOD.</p>
+<p>Raises an <code class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></code> if the factorization does not exist.</p>
 </dd></dl>
 
 <p>As an  example, we solve</p>
@@ -428,11 +433,14 @@ reordering from the AMD library.</p>
 </div>
 <dl class="function">
 <dt id="cvxopt.cholmod.splinsolve">
-<tt class="descclassname">cvxopt.cholmod.</tt><tt class="descname">splinsolve</tt><big>(</big><em>A</em>, <em>B</em><span class="optional">[</span>, <em>p = None</em>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.cholmod.splinsolve" title="Permalink to this definition">¶</a></dt>
-<dd><p>Similar to <a class="reference internal" href="#cvxopt.cholmod.linsolve" title="cvxopt.cholmod.linsolve"><tt class="xref py py-func docutils literal"><span class="pre">linsolve</span></tt></a> except that
-<tt class="docutils literal"><span class="pre">B</span></tt> is an <a class="reference internal" href="matrices.html#cvxopt.spmatrix" title="cvxopt.spmatrix"><tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt></a> and
+<code class="descclassname">cvxopt.cholmod.</code><code class="descname">splinsolve</code><span class="sig-paren">(</span><em>A</em>, <em>B</em><span class="optional">[</span>, <em>p = None</em>, <em>uplo = 'L'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.splinsolve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar to <a class="reference internal" href="#cvxopt.cholmod.linsolve" title="cvxopt.cholmod.linsolve"><code class="xref py py-func docutils literal"><span class="pre">linsolve</span></code></a> except that
+<code class="docutils literal"><span class="pre">B</span></code> is an <a class="reference internal" href="matrices.html#cvxopt.spmatrix" title="cvxopt.spmatrix"><code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code></a> and
 that the solution is returned as an output argument (as a new
-<tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt>).  <tt class="docutils literal"><span class="pre">B</span></tt> is not modified.</p>
+<code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code>).  <code class="docutils literal"><span class="pre">B</span></code> is not modified.
+See the comment on
+<code class="xref py py-attr docutils literal"><span class="pre">options['nmethods']</span></code> for details on which ordering is used
+by CHOLMOD.</p>
 </dd></dl>
 
 <p>The following code computes the inverse of the coefficient matrix
@@ -445,15 +453,15 @@ in <a href="#equation-e-A-pd">(2)</a> as a sparse matrix.</p>
 <span class="go">[    0      3.33e-01     0      8.33e-01]</span>
 </pre></div>
 </div>
-<p>The functions <a class="reference internal" href="#cvxopt.cholmod.linsolve" title="cvxopt.cholmod.linsolve"><tt class="xref py py-func docutils literal"><span class="pre">linsolve</span></tt></a> and
-<a class="reference internal" href="#cvxopt.cholmod.splinsolve" title="cvxopt.cholmod.splinsolve"><tt class="xref py py-func docutils literal"><span class="pre">splinsolve</span></tt></a> are equivalent to
-<a class="reference internal" href="#cvxopt.cholmod.symbolic" title="cvxopt.cholmod.symbolic"><tt class="xref py py-func docutils literal"><span class="pre">symbolic</span></tt></a> and
-<a class="reference internal" href="#cvxopt.cholmod.numeric" title="cvxopt.cholmod.numeric"><tt class="xref py py-func docutils literal"><span class="pre">numeric</span></tt></a> called in sequence, followed by
-<a class="reference internal" href="#cvxopt.cholmod.solve" title="cvxopt.cholmod.solve"><tt class="xref py py-func docutils literal"><span class="pre">solve</span></tt></a>, respectively,
-<a class="reference internal" href="#cvxopt.cholmod.spsolve" title="cvxopt.cholmod.spsolve"><tt class="xref py py-func docutils literal"><span class="pre">spsolve</span></tt></a>.</p>
+<p>The functions <a class="reference internal" href="#cvxopt.cholmod.linsolve" title="cvxopt.cholmod.linsolve"><code class="xref py py-func docutils literal"><span class="pre">linsolve</span></code></a> and
+<a class="reference internal" href="#cvxopt.cholmod.splinsolve" title="cvxopt.cholmod.splinsolve"><code class="xref py py-func docutils literal"><span class="pre">splinsolve</span></code></a> are equivalent to
+<a class="reference internal" href="#cvxopt.cholmod.symbolic" title="cvxopt.cholmod.symbolic"><code class="xref py py-func docutils literal"><span class="pre">symbolic</span></code></a> and
+<a class="reference internal" href="#cvxopt.cholmod.numeric" title="cvxopt.cholmod.numeric"><code class="xref py py-func docutils literal"><span class="pre">numeric</span></code></a> called in sequence, followed by
+<a class="reference internal" href="#cvxopt.cholmod.solve" title="cvxopt.cholmod.solve"><code class="xref py py-func docutils literal"><span class="pre">solve</span></code></a>, respectively,
+<a class="reference internal" href="#cvxopt.cholmod.spsolve" title="cvxopt.cholmod.spsolve"><code class="xref py py-func docutils literal"><span class="pre">spsolve</span></code></a>.</p>
 <dl class="function">
 <dt id="cvxopt.cholmod.symbolic">
-<tt class="descclassname">cvxopt.cholmod.</tt><tt class="descname">symbolic</tt><big>(</big><em>A</em><span class="optional">[</span>, <em>p = None</em>, <em>uplo = 'L'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.cholmod.symbolic" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cvxopt.cholmod.</code><code class="descname">symbolic</code><span class="sig-paren">(</span><em>A</em><span class="optional">[</span>, <em>p = None</em>, <em>uplo = 'L'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.symbolic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a symbolic analysis of a sparse real symmetric or
 complex Hermitian matrix <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> for one of the two factorizations:</p>
 <div class="math" id="equation-e-chol-ll">
@@ -464,53 +472,55 @@ complex Hermitian matrix <img class="math" src="_images/math/0acafa529182e79b4f5
 </div><p>where <img class="math" src="_images/math/f48b617185733d8dd6712643f1ab17c736661a06.png" alt="P"/> is a permutation matrix, <img class="math" src="_images/math/0a5711c7a37994043b2bc3bb374adca232491762.png" alt="L"/> is lower triangular
 (unit lower triangular in the second factorization), and <img class="math" src="_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> is
 nonsingular diagonal.  The type of factorization depends on the value
-of <tt class="xref py py-attr docutils literal"><span class="pre">options['supernodal']</span></tt> (see below).</p>
-<p>If <tt class="docutils literal"><span class="pre">uplo</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'L'</span></tt>, only the lower triangular part of <tt class="docutils literal"><span class="pre">A</span></tt>
+of <code class="xref py py-attr docutils literal"><span class="pre">options['supernodal']</span></code> (see below).</p>
+<p>If <code class="docutils literal"><span class="pre">uplo</span></code> is <code class="xref py py-const docutils literal"><span class="pre">'L'</span></code>, only the lower triangular part of <code class="docutils literal"><span class="pre">A</span></code>
 is accessed and the upper triangular part is ignored.
-If <tt class="docutils literal"><span class="pre">uplo</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'U'</span></tt>, only the upper triangular part of <tt class="docutils literal"><span class="pre">A</span></tt>
+If <code class="docutils literal"><span class="pre">uplo</span></code> is <code class="xref py py-const docutils literal"><span class="pre">'U'</span></code>, only the upper triangular part of <code class="docutils literal"><span class="pre">A</span></code>
 is accessed and the lower triangular part is ignored.</p>
-<p>If <tt class="docutils literal"><span class="pre">p</span></tt> is not provided, a reordering from the AMD library is used.</p>
 <p>The symbolic factorization is returned as an opaque C object that
-can be passed to <a class="reference internal" href="#cvxopt.cholmod.numeric" title="cvxopt.cholmod.numeric"><tt class="xref py py-func docutils literal"><span class="pre">numeric</span></tt></a>.</p>
+can be passed to <a class="reference internal" href="#cvxopt.cholmod.numeric" title="cvxopt.cholmod.numeric"><code class="xref py py-func docutils literal"><span class="pre">numeric</span></code></a>.</p>
+<p>See the comment on
+<code class="xref py py-attr docutils literal"><span class="pre">options['nmethods']</span></code> for details on which ordering is used
+by CHOLMOD.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="cvxopt.cholmod.numeric">
-<tt class="descclassname">cvxopt.cholmod.</tt><tt class="descname">numeric</tt><big>(</big><em>A</em>, <em>F</em><big>)</big><a class="headerlink" href="#cvxopt.cholmod.numeric" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cvxopt.cholmod.</code><code class="descname">numeric</code><span class="sig-paren">(</span><em>A</em>, <em>F</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.numeric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a numeric factorization of a sparse symmetric matrix
-as <a href="#equation-e-chol-ll">(3)</a> or <a href="#equation-e-chol-ldl">(4)</a>.  The argument <tt class="docutils literal"><span class="pre">F</span></tt> is the
+as <a href="#equation-e-chol-ll">(3)</a> or <a href="#equation-e-chol-ldl">(4)</a>.  The argument <code class="docutils literal"><span class="pre">F</span></code> is the
 symbolic factorization computed by
-<a class="reference internal" href="#cvxopt.cholmod.symbolic" title="cvxopt.cholmod.symbolic"><tt class="xref py py-func docutils literal"><span class="pre">symbolic</span></tt></a> applied to
-the matrix <tt class="docutils literal"><span class="pre">A</span></tt>, or to another sparse  matrix with the same sparsity
+<a class="reference internal" href="#cvxopt.cholmod.symbolic" title="cvxopt.cholmod.symbolic"><code class="xref py py-func docutils literal"><span class="pre">symbolic</span></code></a> applied to
+the matrix <code class="docutils literal"><span class="pre">A</span></code>, or to another sparse  matrix with the same sparsity
 pattern and typecode, or by
-<a class="reference internal" href="#cvxopt.cholmod.numeric" title="cvxopt.cholmod.numeric"><tt class="xref py py-func docutils literal"><span class="pre">numeric</span></tt></a> applied to a matrix
-with the same sparsity pattern and typecode as <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
-<p>If <tt class="docutils literal"><span class="pre">F</span></tt> was created by a
-<a class="reference internal" href="#cvxopt.cholmod.symbolic" title="cvxopt.cholmod.symbolic"><tt class="xref py py-func docutils literal"><span class="pre">symbolic</span></tt></a> with <tt class="docutils literal"><span class="pre">uplo</span></tt>
+<a class="reference internal" href="#cvxopt.cholmod.numeric" title="cvxopt.cholmod.numeric"><code class="xref py py-func docutils literal"><span class="pre">numeric</span></code></a> applied to a matrix
+with the same sparsity pattern and typecode as <code class="docutils literal"><span class="pre">A</span></code>.</p>
+<p>If <code class="docutils literal"><span class="pre">F</span></code> was created by a
+<a class="reference internal" href="#cvxopt.cholmod.symbolic" title="cvxopt.cholmod.symbolic"><code class="xref py py-func docutils literal"><span class="pre">symbolic</span></code></a> with <code class="docutils literal"><span class="pre">uplo</span></code>
 equal
-to <tt class="xref py py-const docutils literal"><span class="pre">'L'</span></tt>, then only the lower triangular part of <tt class="docutils literal"><span class="pre">A</span></tt> is
+to <code class="xref py py-const docutils literal"><span class="pre">'L'</span></code>, then only the lower triangular part of <code class="docutils literal"><span class="pre">A</span></code> is
 accessed and the upper triangular part is ignored.  If it was created
-with <tt class="docutils literal"><span class="pre">uplo</span></tt> equal to <tt class="xref py py-const docutils literal"><span class="pre">'U'</span></tt>, then only the upper triangular
-part of <tt class="docutils literal"><span class="pre">A</span></tt> is accessed and the lower triangular part is ignored.</p>
-<p>On successful exit, the factorization is stored in <tt class="docutils literal"><span class="pre">F</span></tt>.
-Raises an <tt class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></tt> if the factorization does not exist.</p>
+with <code class="docutils literal"><span class="pre">uplo</span></code> equal to <code class="xref py py-const docutils literal"><span class="pre">'U'</span></code>, then only the upper triangular
+part of <code class="docutils literal"><span class="pre">A</span></code> is accessed and the lower triangular part is ignored.</p>
+<p>On successful exit, the factorization is stored in <code class="docutils literal"><span class="pre">F</span></code>.
+Raises an <code class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></code> if the factorization does not exist.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="cvxopt.cholmod.solve">
-<tt class="descclassname">cvxopt.cholmod.</tt><tt class="descname">solve</tt><big>(</big><em>F</em>, <em>B</em><span class="optional">[</span>, <em>sys = 0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.cholmod.solve" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solves one of the following linear equations where <tt class="docutils literal"><span class="pre">B</span></tt> is a dense
-matrix and <tt class="docutils literal"><span class="pre">F</span></tt> is the numeric factorization <a href="#equation-e-chol-ll">(3)</a>
+<code class="descclassname">cvxopt.cholmod.</code><code class="descname">solve</code><span class="sig-paren">(</span><em>F</em>, <em>B</em><span class="optional">[</span>, <em>sys = 0</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves one of the following linear equations where <code class="docutils literal"><span class="pre">B</span></code> is a dense
+matrix and <code class="docutils literal"><span class="pre">F</span></code> is the numeric factorization <a href="#equation-e-chol-ll">(3)</a>
 or <a href="#equation-e-chol-ldl">(4)</a> computed by
-<a class="reference internal" href="#cvxopt.cholmod.numeric" title="cvxopt.cholmod.numeric"><tt class="xref py py-func docutils literal"><span class="pre">numeric</span></tt></a>.
-<tt class="docutils literal"><span class="pre">sys</span></tt> is an integer with values between 0 and 8.</p>
+<a class="reference internal" href="#cvxopt.cholmod.numeric" title="cvxopt.cholmod.numeric"><code class="xref py py-func docutils literal"><span class="pre">numeric</span></code></a>.
+<code class="docutils literal"><span class="pre">sys</span></code> is an integer with values between 0 and 8.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="31%" />
 <col width="69%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">sys</span></tt></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">sys</span></code></td>
 <td>equation</td>
 </tr>
 <tr class="row-even"><td>0</td>
@@ -542,19 +552,19 @@ or <a href="#equation-e-chol-ldl">(4)</a> computed by
 </tr>
 </tbody>
 </table>
-<p>(If <tt class="docutils literal"><span class="pre">F</span></tt> is a Cholesky factorization of the form <a href="#equation-e-chol-ll">(3)</a>,
-<img class="math" src="_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> is an identity matrix in this table.  If <tt class="docutils literal"><span class="pre">A</span></tt> is complex,
+<p>(If <code class="docutils literal"><span class="pre">F</span></code> is a Cholesky factorization of the form <a href="#equation-e-chol-ll">(3)</a>,
+<img class="math" src="_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> is an identity matrix in this table.  If <code class="docutils literal"><span class="pre">A</span></code> is complex,
 <img class="math" src="_images/math/21e56698fba40d0ef90a50ff5eac3239f56c6dc6.png" alt="L^T"/> should be replaced by <img class="math" src="_images/math/3fe72eac326113d25ef1eb961213c508f763c92a.png" alt="L^H"/>.)</p>
-<p>The matrix <tt class="docutils literal"><span class="pre">B</span></tt> is a dense <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> matrix, with
-the same type as <tt class="docutils literal"><span class="pre">A</span></tt>.  On exit it is overwritten by the solution.</p>
+<p>The matrix <code class="docutils literal"><span class="pre">B</span></code> is a dense <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code> matrix, with
+the same type as <code class="docutils literal"><span class="pre">A</span></code>.  On exit it is overwritten by the solution.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="cvxopt.cholmod.spsolve">
-<tt class="descclassname">cvxopt.cholmod.</tt><tt class="descname">spsolve</tt><big>(</big><em>F</em>, <em>B</em><span class="optional">[</span>, <em>sys = 0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.cholmod.spsolve" title="Permalink to this definition">¶</a></dt>
-<dd><p>Similar to <a class="reference internal" href="#cvxopt.cholmod.solve" title="cvxopt.cholmod.solve"><tt class="xref py py-func docutils literal"><span class="pre">solve</span></tt></a>, except that <tt class="docutils literal"><span class="pre">B</span></tt> is
+<code class="descclassname">cvxopt.cholmod.</code><code class="descname">spsolve</code><span class="sig-paren">(</span><em>F</em>, <em>B</em><span class="optional">[</span>, <em>sys = 0</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.spsolve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar to <a class="reference internal" href="#cvxopt.cholmod.solve" title="cvxopt.cholmod.solve"><code class="xref py py-func docutils literal"><span class="pre">solve</span></code></a>, except that <code class="docutils literal"><span class="pre">B</span></code> is
 a class:<cite>spmatrix</cite>, and the solution is returned as an output argument
-(as an <tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt>).  <tt class="docutils literal"><span class="pre">B</span></tt> must have the same typecode as <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+(as an <code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code>).  <code class="docutils literal"><span class="pre">B</span></code> must have the same typecode as <code class="docutils literal"><span class="pre">A</span></code>.</p>
 </dd></dl>
 
 <p>For the same example as above:</p>
@@ -571,35 +581,49 @@ a class:<cite>spmatrix</cite>, and the solution is returned as an output argumen
 </div>
 <dl class="function">
 <dt id="cvxopt.cholmod.diag">
-<tt class="descclassname">cvxopt.cholmod.</tt><tt class="descname">diag</tt><big>(</big><em>F</em><big>)</big><a class="headerlink" href="#cvxopt.cholmod.diag" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cvxopt.cholmod.</code><code class="descname">diag</code><span class="sig-paren">(</span><em>F</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.diag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the diagonal elements of the Cholesky factor <img class="math" src="_images/math/0a5711c7a37994043b2bc3bb374adca232491762.png" alt="L"/>
-in <a href="#equation-e-chol-ll">(3)</a>, as a dense matrix of the same type as <tt class="docutils literal"><span class="pre">A</span></tt>.
+in <a href="#equation-e-chol-ll">(3)</a>, as a dense matrix of the same type as <code class="docutils literal"><span class="pre">A</span></code>.
 Note that this only applies to Cholesky factorizations.  The matrix
 <img class="math" src="_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> in an <span class="raw-html">LDL<sup><small>T</small></sup></span>
-factorization can be retrieved via <a class="reference internal" href="#cvxopt.cholmod.solve" title="cvxopt.cholmod.solve"><tt class="xref py py-func docutils literal"><span class="pre">solve</span></tt></a>
-with <tt class="docutils literal"><span class="pre">sys</span></tt> equal to 6.</p>
+factorization can be retrieved via <a class="reference internal" href="#cvxopt.cholmod.solve" title="cvxopt.cholmod.solve"><code class="xref py py-func docutils literal"><span class="pre">solve</span></code></a>
+with <code class="docutils literal"><span class="pre">sys</span></code> equal to 6.</p>
 </dd></dl>
 
 <p>In the functions listed above, the default values of the control
 parameters described in the CHOLMOD user guide are used, except for
-<tt class="xref c c-data docutils literal"><span class="pre">Common-&gt;print</span></tt> which is set to 0 instead of 3 and
-<tt class="xref c c-data docutils literal"><span class="pre">Common-&gt;supernodal</span></tt> which is set to 2 instead of 1.
+<code class="xref c c-data docutils literal"><span class="pre">Common-&gt;print</span></code> which is set to 0 instead of 3 and
+<code class="xref c c-data docutils literal"><span class="pre">Common-&gt;supernodal</span></code> which is set to 2 instead of 1.
 These parameters (and a few others) can be modified by making an
-entry in the dictionary <tt class="xref py py-attr docutils literal"><span class="pre">cholmod.options</span></tt>.
-The meaning of these parameters is as follows.</p>
+entry in the dictionary <code class="xref py py-attr docutils literal"><span class="pre">cholmod.options</span></code>.
+The meaning of the options <code class="xref py py-attr docutils literal"><span class="pre">options['supernodal']</span></code>  and
+<code class="xref py py-attr docutils literal"><span class="pre">options['nmethods']</span></code> is summarized as follows (and described
+in detail in the CHOLMOD user guide).</p>
 <dl class="docutils">
-<dt><tt class="xref py py-attr docutils literal"><span class="pre">options['supernodal']</span></tt></dt>
+<dt><code class="xref py py-attr docutils literal"><span class="pre">options['supernodal']</span></code></dt>
 <dd>If equal to 0, a factorization <a href="#equation-e-chol-ldl">(4)</a> is computed using a
 simplicial algorithm.  If equal to 2, a factorization <a href="#equation-e-chol-ll">(3)</a>
 is computed using a supernodal algorithm.  If equal to 1, the most
 efficient of the two factorizations is selected, based on the sparsity
 pattern.  Default: 2.</dd>
-<dt><tt class="xref py py-attr docutils literal"><span class="pre">options['print']</span></tt></dt>
-<dd>A nonnegative integer that controls the amount of output printed to
-the screen.  Default: 0 (no output).</dd>
+<dt><code class="xref py py-attr docutils literal"><span class="pre">options['nmethods']</span></code></dt>
+<dd>The default ordering used by the CHOLMOD is the ordering in the  AMD
+library, but depending on the value of <code class="xref py py-attr docutils literal"><span class="pre">options['nmethods']</span></code>.
+other orderings are also considered.
+If <code class="docutils literal"><span class="pre">nmethods</span></code> is equal to 2, the ordering specified
+by the user and the AMD ordering are compared, and the best of the two
+orderings is used.  If the user does not specify an ordering, the AMD
+ordering is used.
+If equal to 1, the user must specify an ordering, and the ordering
+provided by the user is used.
+If equal to 0, all available orderings are compared and the best
+ordering is used.  The available orderings include the AMD ordering,
+the ordering specified by the user (if any), and possibly other
+orderings if they are installed during the CHOLMOD installation.
+Default: 0.</dd>
 </dl>
-<p>As an example that illustrates <a class="reference internal" href="#cvxopt.cholmod.diag" title="cvxopt.cholmod.diag"><tt class="xref py py-func docutils literal"><span class="pre">diag</span></tt></a> and the
-use of <tt class="xref py py-attr docutils literal"><span class="pre">cholmod.options</span></tt>, we compute the logarithm of the determinant
+<p>As an example that illustrates <a class="reference internal" href="#cvxopt.cholmod.diag" title="cvxopt.cholmod.diag"><code class="xref py py-func docutils literal"><span class="pre">diag</span></code></a> and the
+use of <code class="xref py py-attr docutils literal"><span class="pre">cholmod.options</span></code>, we compute the logarithm of the determinant
 of the coefficient matrix in <a href="#equation-e-A-pd">(2)</a> by two methods.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.cholmod</span> <span class="kn">import</span> <span class="n">options</span>
@@ -770,7 +794,7 @@ The gradient and Hessian of the objective function are given by</p>
   <div role="contentinfo">
     <p>
         &copy; <a href="copyright.html">Copyright</a> .
-      Last updated on Jun 04, 2014.
+      Last updated on Sep 21, 2015.
     </p>
   </div>
 
@@ -790,7 +814,7 @@ The gradient and Hessian of the objective function are given by</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.7',
+            VERSION:'1.1.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -816,7 +840,7 @@ The gradient and Hessian of the objective function are given by</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
     </div>
 
 </body>

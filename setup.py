@@ -230,7 +230,7 @@ else:
 
 if SUITESPARSE_EXT_LIB:
     amd = Extension('amd',
-        libraries = ['amd'],
+        libraries = ['amd','suitesparseconfig'],
         include_dirs = [SUITESPARSE_INC_DIR],
         library_dirs = [SUITESPARSE_LIB_DIR],
         sources = ['src/C/amd.c'])
@@ -239,7 +239,8 @@ else:
         include_dirs = [ 'src/C/SuiteSparse/AMD/Include', 
             'src/C/SuiteSparse/SuiteSparse_config' ],
         define_macros = MACROS,
-        sources = [ 'src/C/amd.c' ] + glob('src/C/SuiteSparse/AMD/Source/*.c') )
+        sources = [ 'src/C/amd.c', 'src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
+        glob('src/C/SuiteSparse/AMD/Source/*.c') )
 
 misc_solvers = Extension('misc_solvers',
     libraries = LAPACK_LIB + BLAS_LIB,
@@ -252,7 +253,7 @@ extmods += [base, blas, lapack, umfpack, klu, cholmod, amd, misc_solvers]
 
 setup (name = 'cvxopt', 
     description = 'Convex optimization package',
-    version = '1.1.7', 
+    version = '1.1.8', 
     long_description = '''
 CVXOPT is a free software package for convex optimization based on the 
 Python programming language. It can be used with the interactive Python 

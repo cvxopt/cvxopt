@@ -174,10 +174,10 @@
   <div class="section" id="matrix-formatting">
 <span id="c-printing"></span><h1>Matrix Formatting<a class="headerlink" href="#matrix-formatting" title="Permalink to this headline">¶</a></h1>
 <p>This appendix describes ways to customize the formatting of CVXOPT matrices.</p>
-<p>As with other Python objects, the functions <tt class="xref py py-func docutils literal"><span class="pre">repr</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">str</span></tt>
+<p>As with other Python objects, the functions <code class="xref py py-func docutils literal"><span class="pre">repr</span></code> and <code class="xref py py-func docutils literal"><span class="pre">str</span></code>
 return strings with printable representations of matrices.  The command
-&#8216;<tt class="docutils literal"><span class="pre">print</span> <span class="pre">A</span></tt>&#8216; executes &#8216;<tt class="docutils literal"><span class="pre">str(A)</span></tt>&#8216;, whereas the command &#8216;<tt class="docutils literal"><span class="pre">A</span></tt>&#8216;
-calls &#8216;<tt class="docutils literal"><span class="pre">repr(A)</span></tt>&#8216;.  The following example illustrates the default
+&#8216;<code class="docutils literal"><span class="pre">print</span> <span class="pre">A</span></code>&#8216; executes &#8216;<code class="docutils literal"><span class="pre">str(A)</span></code>&#8216;, whereas the command &#8216;<code class="docutils literal"><span class="pre">A</span></code>&#8216;
+calls &#8216;<code class="docutils literal"><span class="pre">repr(A)</span></code>&#8216;.  The following example illustrates the default
 formatting of dense matrices.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="s">&#39;d&#39;</span><span class="p">)</span>
@@ -191,18 +191,18 @@ formatting of dense matrices.</p>
 <span class="go">[ 4.00e+00  9.00e+00  1.40e+01  1.90e+01  2.40e+01  2.90e+01  3.40e+01 ... ]</span>
 </pre></div>
 </div>
-<p>The format is parameterized by the dictionary <tt class="xref py py-data docutils literal"><span class="pre">options</span></tt> in the
-module <tt class="xref py py-mod docutils literal"><span class="pre">cvxopt.printing</span></tt>.  The parameters <tt class="xref py py-attr docutils literal"><span class="pre">options['iformat']</span></tt>
-and <tt class="xref py py-attr docutils literal"><span class="pre">options['dformat']</span></tt> determine, respectively, how integer and
+<p>The format is parameterized by the dictionary <code class="xref py py-data docutils literal"><span class="pre">options</span></code> in the
+module <code class="xref py py-mod docutils literal"><span class="pre">cvxopt.printing</span></code>.  The parameters <code class="xref py py-attr docutils literal"><span class="pre">options['iformat']</span></code>
+and <code class="xref py py-attr docutils literal"><span class="pre">options['dformat']</span></code> determine, respectively, how integer and
 double/complex numbers are printed.  The entries are Python format strings
-with default values <tt class="xref py py-const docutils literal"><span class="pre">'%</span> <span class="pre">.2e'</span></tt> for <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>
-matrices and <tt class="xref py py-const docutils literal"><span class="pre">%</span> <span class="pre">i'</span></tt> for <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt> matrices.  The parameters
-<tt class="xref py py-attr docutils literal"><span class="pre">options['width']</span></tt> and <tt class="xref py py-attr docutils literal"><span class="pre">options['height']</span></tt> specify the maximum
-number of columns and rows that are shown.  If <tt class="xref py py-attr docutils literal"><span class="pre">options['width']</span></tt> is
+with default values <code class="xref py py-const docutils literal"><span class="pre">'%</span> <span class="pre">.2e'</span></code> for <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> and <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>
+matrices and <code class="xref py py-const docutils literal"><span class="pre">%</span> <span class="pre">i'</span></code> for <code class="xref py py-const docutils literal"><span class="pre">'i'</span></code> matrices.  The parameters
+<code class="xref py py-attr docutils literal"><span class="pre">options['width']</span></code> and <code class="xref py py-attr docutils literal"><span class="pre">options['height']</span></code> specify the maximum
+number of columns and rows that are shown.  If <code class="xref py py-attr docutils literal"><span class="pre">options['width']</span></code> is
 set to a negative value, all columns are displayed.  If
-<tt class="xref py py-attr docutils literal"><span class="pre">options['height']</span></tt> is set to a negative value, all rows are
-displayed.  The default values of <tt class="xref py py-attr docutils literal"><span class="pre">options['width']</span></tt> and
-<tt class="xref py py-attr docutils literal"><span class="pre">options['height']</span></tt> are 7 and -1, respectively.</p>
+<code class="xref py py-attr docutils literal"><span class="pre">options['height']</span></code> is set to a negative value, all rows are
+displayed.  The default values of <code class="xref py py-attr docutils literal"><span class="pre">options['width']</span></code> and
+<code class="xref py py-attr docutils literal"><span class="pre">options['height']</span></code> are 7 and -1, respectively.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">printing</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">printing</span><span class="o">.</span><span class="n">options</span>
 <span class="go">{&#39;width&#39;: 7, &#39;dformat&#39;: &#39;% .2e&#39;, &#39;iformat&#39;: &#39;% i&#39;, &#39;height&#39;: -1}</span>
@@ -216,17 +216,17 @@ displayed.  The default values of <tt class="xref py py-attr docutils literal"><
 <span class="go">[ 4.0  9.0 14.0 19.0 24.0 29.0 34.0 39.0 44.0 49.0]</span>
 </pre></div>
 </div>
-<p>In order to make the built-in Python functions <tt class="xref py py-func docutils literal"><span class="pre">repr</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">str</span></tt>
+<p>In order to make the built-in Python functions <code class="xref py py-func docutils literal"><span class="pre">repr</span></code> and <code class="xref py py-func docutils literal"><span class="pre">str</span></code>
 accessible for further customization, two functions are provided in
-CVXOPT.  The function <tt class="xref py py-func docutils literal"><span class="pre">cvxopt.matrix_repr</span></tt> is used when
-<tt class="xref py py-func docutils literal"><span class="pre">repr</span></tt> is called with a matrix argument; and
-<tt class="xref py py-func docutils literal"><span class="pre">cvxopt.matrix_str</span></tt> is used when <tt class="xref py py-func docutils literal"><span class="pre">str</span></tt> is called with a matrix
+CVXOPT.  The function <code class="xref py py-func docutils literal"><span class="pre">cvxopt.matrix_repr</span></code> is used when
+<code class="xref py py-func docutils literal"><span class="pre">repr</span></code> is called with a matrix argument; and
+<code class="xref py py-func docutils literal"><span class="pre">cvxopt.matrix_str</span></code> is used when <code class="xref py py-func docutils literal"><span class="pre">str</span></code> is called with a matrix
 argument.  By default, the functions are set to
-<tt class="xref py py-func docutils literal"><span class="pre">printing.matrix_repr_default</span></tt> and
-<tt class="xref py py-func docutils literal"><span class="pre">printing.matrix_str_default</span></tt>, respectively, but they can be
+<code class="xref py py-func docutils literal"><span class="pre">printing.matrix_repr_default</span></code> and
+<code class="xref py py-func docutils literal"><span class="pre">printing.matrix_str_default</span></code>, respectively, but they can be
 redefined to any other Python functions.  For example, if we prefer
-<tt class="docutils literal"><span class="pre">A</span></tt> to return the same output as <tt class="docutils literal"><span class="pre">print</span> <span class="pre">A</span></tt>, we can simply
-redefine <tt class="xref py py-func docutils literal"><span class="pre">cvxopt.matrix_repr</span></tt> as shown below.</p>
+<code class="docutils literal"><span class="pre">A</span></code> to return the same output as <code class="docutils literal"><span class="pre">print</span> <span class="pre">A</span></code>, we can simply
+redefine <code class="xref py py-func docutils literal"><span class="pre">cvxopt.matrix_repr</span></code> as shown below.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cvxopt</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">printing</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="s">&#39;d&#39;</span><span class="p">)</span>
@@ -238,11 +238,11 @@ redefine <tt class="xref py py-func docutils literal"><span class="pre">cvxopt.m
 <span class="go">[ 1.00e+00  3.00e+00]</span>
 </pre></div>
 </div>
-<p>The formatting for sparse matrices is similar.  The functions <tt class="xref py py-func docutils literal"><span class="pre">repr</span></tt>
-and <tt class="xref py py-func docutils literal"><span class="pre">str</span></tt> for sparse matrices are <tt class="xref py py-func docutils literal"><span class="pre">cvxopt.spmatrix_repr</span></tt>
-and <tt class="xref py py-func docutils literal"><span class="pre">cvxopt.spmatrix_str</span></tt>, respectively.  By default, they are set to
-<tt class="xref py py-func docutils literal"><span class="pre">printing.spmatrix_repr_default</span></tt> and
-<tt class="xref py py-func docutils literal"><span class="pre">printing.spmatrix_repr_str</span></tt>.</p>
+<p>The formatting for sparse matrices is similar.  The functions <code class="xref py py-func docutils literal"><span class="pre">repr</span></code>
+and <code class="xref py py-func docutils literal"><span class="pre">str</span></code> for sparse matrices are <code class="xref py py-func docutils literal"><span class="pre">cvxopt.spmatrix_repr</span></code>
+and <code class="xref py py-func docutils literal"><span class="pre">cvxopt.spmatrix_str</span></code>, respectively.  By default, they are set to
+<code class="xref py py-func docutils literal"><span class="pre">printing.spmatrix_repr_default</span></code> and
+<code class="xref py py-func docutils literal"><span class="pre">printing.spmatrix_repr_str</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cvxopt</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">printing</span><span class="p">,</span> <span class="n">spmatrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
@@ -267,7 +267,7 @@ and <tt class="xref py py-func docutils literal"><span class="pre">cvxopt.spmatr
 </div>
 <p>As can be seen from the example, the default behaviour is to print the
 entire matrix including structural zeros. An alternative triplet printing
-style is defined in <tt class="xref py py-func docutils literal"><span class="pre">printing.spmatrix_str_triplet</span></tt>.</p>
+style is defined in <code class="xref py py-func docutils literal"><span class="pre">printing.spmatrix_str_triplet</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cvxopt</span><span class="o">.</span><span class="n">spmatrix_str</span> <span class="o">=</span> <span class="n">printing</span><span class="o">.</span><span class="n">spmatrix_str_triplet</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">(0,0)  0.00e+00</span>
@@ -296,7 +296,7 @@ style is defined in <tt class="xref py py-func docutils literal"><span class="pr
   <div role="contentinfo">
     <p>
         &copy; <a href="copyright.html">Copyright</a> .
-      Last updated on Jun 04, 2014.
+      Last updated on Sep 21, 2015.
     </p>
   </div>
 
@@ -316,7 +316,7 @@ style is defined in <tt class="xref py py-func docutils literal"><span class="pr
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.7',
+            VERSION:'1.1.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -342,7 +342,7 @@ style is defined in <tt class="xref py py-func docutils literal"><span class="pr
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
     </div>
 
 </body>

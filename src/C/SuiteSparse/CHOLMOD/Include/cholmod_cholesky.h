@@ -42,6 +42,7 @@
  * cholmod_colamd		order using COLAMD
  * cholmod_rowfac		incremental simplicial factorization
  * cholmod_rowfac_mask		rowfac, specific to LPDASA
+ * cholmod_rowfac_mask2         rowfac, specific to LPDASA
  * cholmod_row_subtree		find the nonzero pattern of a row of L
  * cholmod_resymbol		recompute the symbolic pattern of L
  * cholmod_resymbol_noperm	recompute the symbolic pattern of L, no L->Perm
@@ -113,7 +114,9 @@ cholmod_factor *cholmod_l_analyze_p (cholmod_sparse *, SuiteSparse_long *,
 cholmod_factor *cholmod_analyze_p2
 (
     /* ---- input ---- */
-    int for_cholesky,   /* if TRUE, then analyze for Cholesky; else for QR */
+    int for_whom,       /* FOR_SPQR     (0): for SPQR but not GPU-accelerated
+                           FOR_CHOLESKY (1): for Cholesky (GPU or not)
+                           FOR_SPQRGPU  (2): for SPQR with GPU acceleration */
     cholmod_sparse *A,	/* matrix to order and analyze */
     int *UserPerm,	/* user-provided permutation, size A->nrow */
     int *fset,		/* subset of 0:(A->ncol)-1 */
@@ -413,6 +416,27 @@ int cholmod_rowfac_mask
 int cholmod_l_rowfac_mask (cholmod_sparse *, cholmod_sparse *, double *, size_t,
     size_t, SuiteSparse_long *, SuiteSparse_long *, cholmod_factor *,
     cholmod_common *) ;
+
+int cholmod_rowfac_mask2
+(
+    /* ---- input ---- */
+    cholmod_sparse *A,	/* matrix to factorize */
+    cholmod_sparse *F,	/* used for A*A' case only. F=A' or A(:,fset)' */
+    double beta [2],	/* factorize beta*I+A or beta*I+A'*A */
+    size_t kstart,	/* first row to factorize */
+    size_t kend,	/* last row to factorize is kend-1 */
+    int *mask,		/* if mask[i] >= maskmark, then set row i to zero */
+    int maskmark,
+    int *RLinkUp,	/* link list of rows to compute */
+    /* ---- in/out --- */
+    cholmod_factor *L,
+    /* --------------- */
+    cholmod_common *Common
+) ;
+
+int cholmod_l_rowfac_mask2 (cholmod_sparse *, cholmod_sparse *, double *,
+    size_t, size_t, SuiteSparse_long *, SuiteSparse_long, SuiteSparse_long *,
+    cholmod_factor *, cholmod_common *) ;
 
 /* -------------------------------------------------------------------------- */
 /* cholmod_row_subtree:  find the nonzero pattern of a row of L */

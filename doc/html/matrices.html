@@ -175,34 +175,34 @@
   <div class="section" id="dense-and-sparse-matrices">
 <span id="c-matrices"></span><h1>Dense and Sparse Matrices<a class="headerlink" href="#dense-and-sparse-matrices" title="Permalink to this headline">¶</a></h1>
 <p>This chapter describes the two CVXOPT matrix types:
-<a class="reference internal" href="#cvxopt.matrix" title="cvxopt.matrix"><tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt></a> objects, used for dense matrix
-computations, and <a class="reference internal" href="#cvxopt.spmatrix" title="cvxopt.spmatrix"><tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt></a> objects, used for
+<a class="reference internal" href="#cvxopt.matrix" title="cvxopt.matrix"><code class="xref py py-class docutils literal"><span class="pre">matrix</span></code></a> objects, used for dense matrix
+computations, and <a class="reference internal" href="#cvxopt.spmatrix" title="cvxopt.spmatrix"><code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code></a> objects, used for
 sparse matrix computations.</p>
 <div class="section" id="dense-matrices">
 <span id="s-dense-matrices"></span><h2>Dense Matrices<a class="headerlink" href="#dense-matrices" title="Permalink to this headline">¶</a></h2>
-<p>A dense matrix is created by calling the function <tt class="xref py py-func docutils literal"><span class="pre">matrix</span></tt>.  The
+<p>A dense matrix is created by calling the function <code class="xref py py-func docutils literal"><span class="pre">matrix</span></code>.  The
 arguments specify the values of the coefficients, the dimensions, and the
 type (integer, double, or complex) of the matrix.</p>
 <dl class="function">
 <dt id="cvxopt.matrix">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">matrix</tt><big>(</big><em>x</em><span class="optional">[</span>, <em>size</em><span class="optional">[</span>, <em>tc</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p><tt class="docutils literal"><span class="pre">size</span></tt>  is a tuple of length two with the matrix dimensions.
+<code class="descclassname">cvxopt.</code><code class="descname">matrix</code><span class="sig-paren">(</span><em>x</em><span class="optional">[</span>, <em>size</em><span class="optional">[</span>, <em>tc</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">size</span></code>  is a tuple of length two with the matrix dimensions.
 The number of rows and/or the number of columns can be zero.</p>
-<p><tt class="docutils literal"><span class="pre">tc</span></tt>  stands for type code. The possible values are <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt>,
-<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>, and <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>, for integer, real (double), and complex
+<p><code class="docutils literal"><span class="pre">tc</span></code>  stands for type code. The possible values are <code class="xref py py-const docutils literal"><span class="pre">'i'</span></code>,
+<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code>, and <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>, for integer, real (double), and complex
 matrices, respectively.</p>
-<p><tt class="docutils literal"><span class="pre">x</span></tt>  can be a number, a sequence of numbers, a dense or sparse
+<p><code class="docutils literal"><span class="pre">x</span></code>  can be a number, a sequence of numbers, a dense or sparse
 matrix, a one- or two-dimensional NumPy array, or a list of lists of
 matrices and numbers.</p>
 <ul>
-<li><p class="first">If <tt class="docutils literal"><span class="pre">x</span></tt> is a number (Python integer, float, or complex number),
-a matrix is created with the dimensions specified by <tt class="docutils literal"><span class="pre">size</span></tt> and
-with all the coefficients equal to <tt class="docutils literal"><span class="pre">x</span></tt>.
-The default value of <tt class="docutils literal"><span class="pre">size</span></tt>  is <tt class="docutils literal"><span class="pre">(1,1)</span></tt>, and the default value
-of <tt class="docutils literal"><span class="pre">tc</span></tt> is the type of <tt class="docutils literal"><span class="pre">x</span></tt>.
-If necessary, the type of <tt class="docutils literal"><span class="pre">x</span></tt> is converted (from integer to double
-when used to create a matrix of type <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>, and from integer or
-double to complex when used to create a matrix of type <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>).</p>
+<li><p class="first">If <code class="docutils literal"><span class="pre">x</span></code> is a number (Python integer, float, or complex number),
+a matrix is created with the dimensions specified by <code class="docutils literal"><span class="pre">size</span></code> and
+with all the coefficients equal to <code class="docutils literal"><span class="pre">x</span></code>.
+The default value of <code class="docutils literal"><span class="pre">size</span></code>  is <code class="docutils literal"><span class="pre">(1,1)</span></code>, and the default value
+of <code class="docutils literal"><span class="pre">tc</span></code> is the type of <code class="docutils literal"><span class="pre">x</span></code>.
+If necessary, the type of <code class="docutils literal"><span class="pre">x</span></code> is converted (from integer to double
+when used to create a matrix of type <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code>, and from integer or
+double to complex when used to create a matrix of type <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
@@ -216,16 +216,16 @@ double to complex when used to create a matrix of type <tt class="xref py py-con
 </pre></div>
 </div>
 </li>
-<li><p class="first">If <tt class="docutils literal"><span class="pre">x</span></tt> is a sequence of numbers (list, tuple, array,
-<tt class="xref py py-mod docutils literal"><span class="pre">array</span></tt> array, ...), then the numbers are interpreted as the
+<li><p class="first">If <code class="docutils literal"><span class="pre">x</span></code> is a sequence of numbers (list, tuple, array,
+<code class="xref py py-mod docutils literal"><span class="pre">array</span></code> array, ...), then the numbers are interpreted as the
 coefficients of a matrix in column-major order.
-The length of <tt class="docutils literal"><span class="pre">x</span></tt>  must be equal to the product of
-<tt class="docutils literal"><span class="pre">size[0]</span></tt> and <tt class="docutils literal"><span class="pre">size[1]</span></tt>.
-If <tt class="docutils literal"><span class="pre">size</span></tt>  is not specified, a matrix with one column is created.
-If <tt class="docutils literal"><span class="pre">tc</span></tt>  is not specified, it is determined from the elements of
-<tt class="docutils literal"><span class="pre">x</span></tt>  (and if that is impossible, for example because <tt class="docutils literal"><span class="pre">x</span></tt>  is
-an empty list, a value <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt> is used).
-Type conversion takes place as for scalar <tt class="docutils literal"><span class="pre">x</span></tt>.</p>
+The length of <code class="docutils literal"><span class="pre">x</span></code>  must be equal to the product of
+<code class="docutils literal"><span class="pre">size[0]</span></code> and <code class="docutils literal"><span class="pre">size[1]</span></code>.
+If <code class="docutils literal"><span class="pre">size</span></code>  is not specified, a matrix with one column is created.
+If <code class="docutils literal"><span class="pre">tc</span></code>  is not specified, it is determined from the elements of
+<code class="docutils literal"><span class="pre">x</span></code>  (and if that is impossible, for example because <code class="docutils literal"><span class="pre">x</span></code>  is
+an empty list, a value <code class="xref py py-const docutils literal"><span class="pre">'i'</span></code> is used).
+Type conversion takes place as for scalar <code class="docutils literal"><span class="pre">x</span></code>.</p>
 <p>The following example shows several ways to define the same integer
 matrix.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
@@ -243,16 +243,16 @@ matrix.</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">If <tt class="docutils literal"><span class="pre">x</span></tt>  is a dense or sparse matrix, then the coefficients of
-<tt class="docutils literal"><span class="pre">x</span></tt>  are copied, in column-major order, to a new matrix of the
+<li><p class="first">If <code class="docutils literal"><span class="pre">x</span></code>  is a dense or sparse matrix, then the coefficients of
+<code class="docutils literal"><span class="pre">x</span></code>  are copied, in column-major order, to a new matrix of the
 given size.
 The total number of elements in the new matrix (the product of
-<tt class="docutils literal"><span class="pre">size[0]</span></tt> and <tt class="docutils literal"><span class="pre">size[1]</span></tt>) must be the same as the product
-of  the dimensions of <tt class="docutils literal"><span class="pre">x</span></tt>.  If <tt class="docutils literal"><span class="pre">size</span></tt>  is not specified, the
-dimensions of <tt class="docutils literal"><span class="pre">x</span></tt>  are used.
-The default value of <tt class="docutils literal"><span class="pre">tc</span></tt>  is the type of <tt class="docutils literal"><span class="pre">x</span></tt>.
-Type conversion takes place when the type of <tt class="docutils literal"><span class="pre">x</span></tt> differs from
-<tt class="docutils literal"><span class="pre">tc</span></tt>, in a similar way as for scalar <tt class="docutils literal"><span class="pre">x</span></tt>.</p>
+<code class="docutils literal"><span class="pre">size[0]</span></code> and <code class="docutils literal"><span class="pre">size[1]</span></code>) must be the same as the product
+of  the dimensions of <code class="docutils literal"><span class="pre">x</span></code>.  If <code class="docutils literal"><span class="pre">size</span></code>  is not specified, the
+dimensions of <code class="docutils literal"><span class="pre">x</span></code>  are used.
+The default value of <code class="docutils literal"><span class="pre">tc</span></code>  is the type of <code class="docutils literal"><span class="pre">x</span></code>.
+Type conversion takes place when the type of <code class="docutils literal"><span class="pre">x</span></code> differs from
+<code class="docutils literal"><span class="pre">tc</span></code>, in a similar way as for scalar <code class="docutils literal"><span class="pre">x</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">[ 1.00e+00  3.00e+00  5.00e+00]</span>
@@ -281,19 +281,19 @@ Type conversion takes place when the type of <tt class="docutils literal"><span 
 </pre></div>
 </div>
 </li>
-<li><p class="first">If <tt class="docutils literal"><span class="pre">x</span></tt> is a list of lists of dense or sparse matrices
+<li><p class="first">If <code class="docutils literal"><span class="pre">x</span></code> is a list of lists of dense or sparse matrices
 and numbers (Python integer, float, or complex),
-then each element of <tt class="docutils literal"><span class="pre">x</span></tt> is interpreted as a
+then each element of <code class="docutils literal"><span class="pre">x</span></code> is interpreted as a
 block-column stored in column-major order.
-If <tt class="docutils literal"><span class="pre">size</span></tt> is not specified, the block-columns are juxtaposed
-to obtain a matrix with <tt class="docutils literal"><span class="pre">len(x)</span></tt>  block-columns.
-If <tt class="docutils literal"><span class="pre">size</span></tt> is specified, then the matrix with <tt class="docutils literal"><span class="pre">len(x)</span></tt>
+If <code class="docutils literal"><span class="pre">size</span></code> is not specified, the block-columns are juxtaposed
+to obtain a matrix with <code class="docutils literal"><span class="pre">len(x)</span></code>  block-columns.
+If <code class="docutils literal"><span class="pre">size</span></code> is specified, then the matrix with <code class="docutils literal"><span class="pre">len(x)</span></code>
 block-columns is resized by copying its elements in column-major
-order into a matrix of the dimensions given by <tt class="docutils literal"><span class="pre">size</span></tt>.
-If <tt class="docutils literal"><span class="pre">tc</span></tt> is not specified, it is determined from the elements of
-<tt class="docutils literal"><span class="pre">x</span></tt> (and if that is impossible, for example because <tt class="docutils literal"><span class="pre">x</span></tt> is
-a list of empty lists, a value <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt> is used).
-The same rules for type conversion apply as for scalar <tt class="docutils literal"><span class="pre">x</span></tt>.</p>
+order into a matrix of the dimensions given by <code class="docutils literal"><span class="pre">size</span></code>.
+If <code class="docutils literal"><span class="pre">tc</span></code> is not specified, it is determined from the elements of
+<code class="docutils literal"><span class="pre">x</span></code> (and if that is impossible, for example because <code class="docutils literal"><span class="pre">x</span></code> is
+a list of empty lists, a value <code class="xref py py-const docutils literal"><span class="pre">'i'</span></code> is used).
+The same rules for type conversion apply as for scalar <code class="docutils literal"><span class="pre">x</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">matrix</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">],</span> <span class="p">[</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]]))</span>
 <span class="go">[ 1.00e+00  3.00e+00  5.00e+00]</span>
 <span class="go">[ 2.00e+00  4.00e+00  6.00e+00]</span>
@@ -311,8 +311,8 @@ The same rules for type conversion apply as for scalar <tt class="docutils liter
 </pre></div>
 </div>
 <p>A matrix with a single block-column can be represented by a single
-list (i.e., if <tt class="docutils literal"><span class="pre">x</span></tt> is a list of lists, and has length one,
-then the argument <tt class="docutils literal"><span class="pre">x</span></tt> can be replaced by <tt class="docutils literal"><span class="pre">x[0]</span></tt>).</p>
+list (i.e., if <code class="docutils literal"><span class="pre">x</span></code> is a list of lists, and has length one,
+then the argument <code class="docutils literal"><span class="pre">x</span></code> can be replaced by <code class="docutils literal"><span class="pre">x[0]</span></code>).</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">D</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="n">B1</span><span class="p">,</span> <span class="n">B2</span><span class="p">,</span> <span class="n">B3</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
 <span class="go">[  6   8  10]</span>
@@ -329,7 +329,7 @@ then the argument <tt class="docutils literal"><span class="pre">x</span></tt> c
 </div>
 <div class="section" id="sparse-matrices">
 <span id="s-sparse-matrices"></span><h2>Sparse Matrices<a class="headerlink" href="#sparse-matrices" title="Permalink to this headline">¶</a></h2>
-<p>A general <a class="reference internal" href="#cvxopt.spmatrix" title="cvxopt.spmatrix"><tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt></a> object can be thought of as
+<p>A general <a class="reference internal" href="#cvxopt.spmatrix" title="cvxopt.spmatrix"><code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code></a> object can be thought of as
 a <em>triplet description</em> of a sparse matrix, i.e., a list of entries of the
 matrix, with for each entry the value, row index, and column index.
 Entries that are not included in the list are assumed to be zero.
@@ -350,43 +350,43 @@ are not necessarily unique.  The list</p>
 <p><img src="_images/math/bbeb45fdc8ef73286444f7323c922bf638e059c1.png" alt="(2,1,0), \qquad (-1,2,0), \qquad (0,3,0), \qquad (2,0,1), \qquad
 (-2,2,1), \qquad (1,3,2), \qquad (4,2,3), \qquad (3,0,4)"/></p>
 </div><p>is another triplet description of the same matrix.</p>
-<p>An <tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt> object corresponds to a particular
+<p>An <code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code> object corresponds to a particular
 triplet description of a sparse matrix.  We will refer to the entries in
 the triplet description as the <em>nonzero entries</em> of the object,
 even though they may have a numerical value zero.</p>
 <p>Three functions are provided to create sparse matrices.
-The first, <tt class="xref py py-func docutils literal"><span class="pre">spmatrix</span></tt>,
+The first, <code class="xref py py-func docutils literal"><span class="pre">spmatrix</span></code>,
 constructs a sparse matrix from a triplet description.</p>
 <dl class="function">
 <dt id="cvxopt.spmatrix">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">spmatrix</tt><big>(</big><em>x</em>, <em>I</em>, <em>J</em><span class="optional">[</span>, <em>size</em><span class="optional">[</span>, <em>tc</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.spmatrix" title="Permalink to this definition">¶</a></dt>
-<dd><p><tt class="docutils literal"><span class="pre">I</span></tt> and <tt class="docutils literal"><span class="pre">J</span></tt> are sequences of integers (lists, tuples,
-<tt class="xref py py-mod docutils literal"><span class="pre">array</span></tt> arrays, ...) or integer matrices
-(<a class="reference internal" href="#cvxopt.matrix" title="cvxopt.matrix"><tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt></a> objects with typecode <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt>),
+<code class="descclassname">cvxopt.</code><code class="descname">spmatrix</code><span class="sig-paren">(</span><em>x</em>, <em>I</em>, <em>J</em><span class="optional">[</span>, <em>size</em><span class="optional">[</span>, <em>tc</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.spmatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">I</span></code> and <code class="docutils literal"><span class="pre">J</span></code> are sequences of integers (lists, tuples,
+<code class="xref py py-mod docutils literal"><span class="pre">array</span></code> arrays, ...) or integer matrices
+(<a class="reference internal" href="#cvxopt.matrix" title="cvxopt.matrix"><code class="xref py py-class docutils literal"><span class="pre">matrix</span></code></a> objects with typecode <code class="xref py py-const docutils literal"><span class="pre">'i'</span></code>),
 containing the row and column indices of the nonzero entries.
-The lengths of <tt class="docutils literal"><span class="pre">I</span></tt> and <tt class="docutils literal"><span class="pre">J</span></tt> must be  equal.  If they are matrices,
+The lengths of <code class="docutils literal"><span class="pre">I</span></code> and <code class="docutils literal"><span class="pre">J</span></code> must be  equal.  If they are matrices,
 they are treated as lists of indices stored in column-major order,
-i.e., as lists <tt class="docutils literal"><span class="pre">list(I)</span></tt>, respectively, <tt class="docutils literal"><span class="pre">list(J)</span></tt>.</p>
-<p><tt class="docutils literal"><span class="pre">size</span></tt> is a tuple of nonnegative integers with the row and column
+i.e., as lists <code class="docutils literal"><span class="pre">list(I)</span></code>, respectively, <code class="docutils literal"><span class="pre">list(J)</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">size</span></code> is a tuple of nonnegative integers with the row and column
 dimensions of the matrix.
-The <tt class="docutils literal"><span class="pre">size</span></tt> argument is only needed when creating a matrix with
-a zero last row or last column.  If <tt class="docutils literal"><span class="pre">size</span></tt> is not specified, it
-is determined from <tt class="docutils literal"><span class="pre">I</span></tt> and <tt class="docutils literal"><span class="pre">J</span></tt>:
-the default value for <tt class="docutils literal"><span class="pre">size[0]</span></tt> is <tt class="docutils literal"><span class="pre">max(I)+1</span></tt> if <tt class="docutils literal"><span class="pre">I</span></tt> is
+The <code class="docutils literal"><span class="pre">size</span></code> argument is only needed when creating a matrix with
+a zero last row or last column.  If <code class="docutils literal"><span class="pre">size</span></code> is not specified, it
+is determined from <code class="docutils literal"><span class="pre">I</span></code> and <code class="docutils literal"><span class="pre">J</span></code>:
+the default value for <code class="docutils literal"><span class="pre">size[0]</span></code> is <code class="docutils literal"><span class="pre">max(I)+1</span></code> if <code class="docutils literal"><span class="pre">I</span></code> is
 nonempty and zero otherwise.
-The default value for <tt class="docutils literal"><span class="pre">size[1]</span></tt> is <tt class="docutils literal"><span class="pre">max(J)+1</span></tt> if <tt class="docutils literal"><span class="pre">J</span></tt> is
+The default value for <code class="docutils literal"><span class="pre">size[1]</span></code> is <code class="docutils literal"><span class="pre">max(J)+1</span></code> if <code class="docutils literal"><span class="pre">J</span></code> is
 nonempty and zero otherwise.</p>
-<p><tt class="docutils literal"><span class="pre">tc</span></tt> is the typecode, <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>, for double and
+<p><code class="docutils literal"><span class="pre">tc</span></code> is the typecode, <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>, for double and
 complex matrices, respectively.   Integer sparse matrices are
 not implemented.</p>
-<p><tt class="docutils literal"><span class="pre">x</span></tt> can be a number, a sequence of numbers, or a dense matrix.
+<p><code class="docutils literal"><span class="pre">x</span></code> can be a number, a sequence of numbers, or a dense matrix.
 This argument specifies the numerical values of the nonzero entries.</p>
 <ul>
-<li><p class="first">If <tt class="docutils literal"><span class="pre">x</span></tt> is a number (Python integer, float, or complex),
-a matrix is created with the sparsity pattern defined by <tt class="docutils literal"><span class="pre">I</span></tt> and
-<tt class="docutils literal"><span class="pre">J</span></tt>, and nonzero entries initialized to the value of <tt class="docutils literal"><span class="pre">x</span></tt>.
-The default value of <tt class="docutils literal"><span class="pre">tc</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> if <tt class="docutils literal"><span class="pre">x</span></tt> is integer or
-float, and <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> if <tt class="docutils literal"><span class="pre">x</span></tt>  is complex.</p>
+<li><p class="first">If <code class="docutils literal"><span class="pre">x</span></code> is a number (Python integer, float, or complex),
+a matrix is created with the sparsity pattern defined by <code class="docutils literal"><span class="pre">I</span></code> and
+<code class="docutils literal"><span class="pre">J</span></code>, and nonzero entries initialized to the value of <code class="docutils literal"><span class="pre">x</span></code>.
+The default value of <code class="docutils literal"><span class="pre">tc</span></code> is <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> if <code class="docutils literal"><span class="pre">x</span></code> is integer or
+float, and <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code> if <code class="docutils literal"><span class="pre">x</span></code>  is complex.</p>
 <p>The following code creates a 4 by 4 sparse identity matrix.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
@@ -398,13 +398,13 @@ float, and <tt class="xref py py-const docutils literal"><span class="pre">'z'</
 </pre></div>
 </div>
 </li>
-<li><p class="first">If <tt class="docutils literal"><span class="pre">x</span></tt> is a sequence of numbers, a sparse matrix is created
-with the entries of <tt class="docutils literal"><span class="pre">x</span></tt> copied to the entries indexed by <tt class="docutils literal"><span class="pre">I</span></tt>
-and <tt class="docutils literal"><span class="pre">J</span></tt>.  The list <tt class="docutils literal"><span class="pre">x</span></tt> must have the same length as <tt class="docutils literal"><span class="pre">I</span></tt> and
-<tt class="docutils literal"><span class="pre">J</span></tt>.
-The default value of <tt class="docutils literal"><span class="pre">tc</span></tt> is determined from the elements of <tt class="docutils literal"><span class="pre">x</span></tt>:
-<tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> if <tt class="docutils literal"><span class="pre">x</span></tt> contains integers and floating-point numbers or
-if <tt class="docutils literal"><span class="pre">x</span></tt> is an empty list, and <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> if <tt class="docutils literal"><span class="pre">x</span></tt> contains at
+<li><p class="first">If <code class="docutils literal"><span class="pre">x</span></code> is a sequence of numbers, a sparse matrix is created
+with the entries of <code class="docutils literal"><span class="pre">x</span></code> copied to the entries indexed by <code class="docutils literal"><span class="pre">I</span></code>
+and <code class="docutils literal"><span class="pre">J</span></code>.  The list <code class="docutils literal"><span class="pre">x</span></code> must have the same length as <code class="docutils literal"><span class="pre">I</span></code> and
+<code class="docutils literal"><span class="pre">J</span></code>.
+The default value of <code class="docutils literal"><span class="pre">tc</span></code> is determined from the elements of <code class="docutils literal"><span class="pre">x</span></code>:
+<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> if <code class="docutils literal"><span class="pre">x</span></code> contains integers and floating-point numbers or
+if <code class="docutils literal"><span class="pre">x</span></code> is an empty list, and <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code> if <code class="docutils literal"><span class="pre">x</span></code> contains at
 least one complex number.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
@@ -415,39 +415,39 @@ least one complex number.</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">If <tt class="docutils literal"><span class="pre">x</span></tt> is a dense matrix, a sparse matrix is created with
-all the entries of <tt class="docutils literal"><span class="pre">x</span></tt> copied, in column-major order, to the
-entries indexed by <tt class="docutils literal"><span class="pre">I</span></tt> and <tt class="docutils literal"><span class="pre">J</span></tt>.
-The matrix <tt class="docutils literal"><span class="pre">x</span></tt> must have the same length as <tt class="docutils literal"><span class="pre">I</span></tt> and <tt class="docutils literal"><span class="pre">J</span></tt>.
-The default value of <tt class="docutils literal"><span class="pre">tc</span></tt> is <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> if <tt class="docutils literal"><span class="pre">x</span></tt> is an
-<tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix, and <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> otherwise.
-If <tt class="docutils literal"><span class="pre">I</span></tt> and <tt class="docutils literal"><span class="pre">J</span></tt> contain repeated entries, the corresponding
+<li><p class="first">If <code class="docutils literal"><span class="pre">x</span></code> is a dense matrix, a sparse matrix is created with
+all the entries of <code class="docutils literal"><span class="pre">x</span></code> copied, in column-major order, to the
+entries indexed by <code class="docutils literal"><span class="pre">I</span></code> and <code class="docutils literal"><span class="pre">J</span></code>.
+The matrix <code class="docutils literal"><span class="pre">x</span></code> must have the same length as <code class="docutils literal"><span class="pre">I</span></code> and <code class="docutils literal"><span class="pre">J</span></code>.
+The default value of <code class="docutils literal"><span class="pre">tc</span></code> is <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> if <code class="docutils literal"><span class="pre">x</span></code> is an
+<code class="xref py py-const docutils literal"><span class="pre">'i'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix, and <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code> otherwise.
+If <code class="docutils literal"><span class="pre">I</span></code> and <code class="docutils literal"><span class="pre">J</span></code> contain repeated entries, the corresponding
 values of the coefficients are added.</p>
 </li>
 </ul>
 </dd></dl>
 
-<p>The function <tt class="xref py py-func docutils literal"><span class="pre">sparse</span></tt> constructs a sparse matrix
+<p>The function <code class="xref py py-func docutils literal"><span class="pre">sparse</span></code> constructs a sparse matrix
 from a block-matrix description.</p>
 <dl class="function">
 <dt id="cvxopt.sparse">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">sparse</tt><big>(</big><em>x</em><span class="optional">[</span>, <em>tc</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.sparse" title="Permalink to this definition">¶</a></dt>
-<dd><p><tt class="docutils literal"><span class="pre">tc</span></tt> is the typecode, <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>, for double and
+<code class="descclassname">cvxopt.</code><code class="descname">sparse</code><span class="sig-paren">(</span><em>x</em><span class="optional">[</span>, <em>tc</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.sparse" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">tc</span></code> is the typecode, <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>, for double and
 complex matrices, respectively.</p>
-<p><tt class="docutils literal"><span class="pre">x</span></tt> can be a <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt>, or a list of lists
-of matrices (<tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> or <tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt> objects) and
+<p><code class="docutils literal"><span class="pre">x</span></code> can be a <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code>, <code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code>, or a list of lists
+of matrices (<code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> or <code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code> objects) and
 numbers (Python integer, float, or complex).</p>
 <ul class="simple">
-<li>If <tt class="docutils literal"><span class="pre">x</span></tt> is a <tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> or <tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt> object, then a
+<li>If <code class="docutils literal"><span class="pre">x</span></code> is a <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> or <code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code> object, then a
 sparse matrix of the same size and the same numerical value is
-created.  Numerical zeros in <tt class="docutils literal"><span class="pre">x</span></tt> are treated as structural zeros
+created.  Numerical zeros in <code class="docutils literal"><span class="pre">x</span></code> are treated as structural zeros
 and removed from the triplet description of the new sparse matrix.</li>
-<li>If <tt class="docutils literal"><span class="pre">x</span></tt> is a list of lists of matrices (<tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> or
-<tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt> objects) and numbers (Python integer, float, or
-complex) then each element of <tt class="docutils literal"><span class="pre">x</span></tt> is interpreted as a
+<li>If <code class="docutils literal"><span class="pre">x</span></code> is a list of lists of matrices (<code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> or
+<code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code> objects) and numbers (Python integer, float, or
+complex) then each element of <code class="docutils literal"><span class="pre">x</span></code> is interpreted as a
 (block-)column matrix stored in colum-major order, and a
-block-matrix is constructed by juxtaposing the <tt class="docutils literal"><span class="pre">len(x)</span></tt>
-block-columns (as in <a class="reference internal" href="#cvxopt.matrix" title="cvxopt.matrix"><tt class="xref py py-func docutils literal"><span class="pre">matrix</span></tt></a>).
+block-matrix is constructed by juxtaposing the <code class="docutils literal"><span class="pre">len(x)</span></code>
+block-columns (as in <a class="reference internal" href="#cvxopt.matrix" title="cvxopt.matrix"><code class="xref py py-func docutils literal"><span class="pre">matrix</span></code></a>).
 Numerical zeros are removed from the triplet description of the new
 matrix.</li>
 </ul>
@@ -491,16 +491,16 @@ list.</p>
 </div>
 </dd></dl>
 
-<p>The function <tt class="xref py py-func docutils literal"><span class="pre">spdiag</span></tt> constructs a block-diagonal
+<p>The function <code class="xref py py-func docutils literal"><span class="pre">spdiag</span></code> constructs a block-diagonal
 sparse matrix from a list of matrices.</p>
 <dl class="function">
 <dt id="cvxopt.spdiag">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">spdiag</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#cvxopt.spdiag" title="Permalink to this definition">¶</a></dt>
-<dd><p><tt class="docutils literal"><span class="pre">x</span></tt> is a dense or sparse matrix with a single row or column, or a
+<code class="descclassname">cvxopt.</code><code class="descname">spdiag</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.spdiag" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">x</span></code> is a dense or sparse matrix with a single row or column, or a
 list of square dense or sparse matrices or scalars.
-If <tt class="docutils literal"><span class="pre">x</span></tt> is a matrix, a sparse diagonal matrix is returned with
-the entries of <tt class="docutils literal"><span class="pre">x</span></tt> on its diagonal.
-If <tt class="docutils literal"><span class="pre">x</span></tt> is list, a sparse block-diagonal matrix is returned with
+If <code class="docutils literal"><span class="pre">x</span></code> is a matrix, a sparse diagonal matrix is returned with
+the entries of <code class="docutils literal"><span class="pre">x</span></code> on its diagonal.
+If <code class="docutils literal"><span class="pre">x</span></code> is list, a sparse block-diagonal matrix is returned with
 the elements in the list as its diagonal blocks.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">spdiag</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="mf">3.0</span>
@@ -522,9 +522,9 @@ the elements in the list as its diagonal blocks.</p>
 <div class="section" id="arithmetic-operations">
 <span id="s-arithmetic"></span><h2>Arithmetic Operations<a class="headerlink" href="#arithmetic-operations" title="Permalink to this headline">¶</a></h2>
 <p>The following table lists the arithmetic operations defined for dense and
-sparse matrices.  In the table <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> are dense or sparse
-matrices of compatible dimensions, <tt class="docutils literal"><span class="pre">c</span></tt>  is a scalar (a Python number or
-a dense 1 by 1 matrix), <tt class="docutils literal"><span class="pre">D</span></tt> is a dense matrix, and <tt class="docutils literal"><span class="pre">e</span></tt> is a Python
+sparse matrices.  In the table <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">B</span></code> are dense or sparse
+matrices of compatible dimensions, <code class="docutils literal"><span class="pre">c</span></code>  is a scalar (a Python number or
+a dense 1 by 1 matrix), <code class="docutils literal"><span class="pre">D</span></code> is a dense matrix, and <code class="docutils literal"><span class="pre">e</span></code> is a Python
 number.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -533,61 +533,61 @@ number.</p>
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>Unary plus/minus</td>
-<td><tt class="docutils literal"><span class="pre">+A,</span> <span class="pre">-A</span></tt></td>
+<td><code class="docutils literal"><span class="pre">+A,</span> <span class="pre">-A</span></code></td>
 </tr>
 <tr class="row-even"><td>Addition</td>
-<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">+</span> <span class="pre">B,</span> <span class="pre">A</span> <span class="pre">+</span> <span class="pre">c,</span> <span class="pre">c</span> <span class="pre">+</span> <span class="pre">A</span></tt></td>
+<td><code class="docutils literal"><span class="pre">A</span> <span class="pre">+</span> <span class="pre">B,</span> <span class="pre">A</span> <span class="pre">+</span> <span class="pre">c,</span> <span class="pre">c</span> <span class="pre">+</span> <span class="pre">A</span></code></td>
 </tr>
 <tr class="row-odd"><td>Subtraction</td>
-<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">-</span> <span class="pre">B,</span> <span class="pre">A</span> <span class="pre">-</span> <span class="pre">c,</span> <span class="pre">c</span> <span class="pre">-</span> <span class="pre">A</span></tt></td>
+<td><code class="docutils literal"><span class="pre">A</span> <span class="pre">-</span> <span class="pre">B,</span> <span class="pre">A</span> <span class="pre">-</span> <span class="pre">c,</span> <span class="pre">c</span> <span class="pre">-</span> <span class="pre">A</span></code></td>
 </tr>
 <tr class="row-even"><td>Matrix multiplication</td>
-<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">*</span> <span class="pre">B</span></tt></td>
+<td><code class="docutils literal"><span class="pre">A</span> <span class="pre">*</span> <span class="pre">B</span></code></td>
 </tr>
 <tr class="row-odd"><td>Scalar multiplication and division</td>
-<td><tt class="docutils literal"><span class="pre">c</span> <span class="pre">*</span> <span class="pre">A,</span> <span class="pre">A</span> <span class="pre">*</span> <span class="pre">c,</span> <span class="pre">A</span> <span class="pre">/</span> <span class="pre">c</span></tt></td>
+<td><code class="docutils literal"><span class="pre">c</span> <span class="pre">*</span> <span class="pre">A,</span> <span class="pre">A</span> <span class="pre">*</span> <span class="pre">c,</span> <span class="pre">A</span> <span class="pre">/</span> <span class="pre">c</span></code></td>
 </tr>
 <tr class="row-even"><td>Remainder after division</td>
-<td><tt class="docutils literal"><span class="pre">D</span> <span class="pre">%</span> <span class="pre">c</span></tt></td>
+<td><code class="docutils literal"><span class="pre">D</span> <span class="pre">%</span> <span class="pre">c</span></code></td>
 </tr>
 <tr class="row-odd"><td>Elementwise exponentiation</td>
-<td><tt class="docutils literal"><span class="pre">D**e</span></tt></td>
+<td><code class="docutils literal"><span class="pre">D**e</span></code></td>
 </tr>
 </tbody>
 </table>
 <p>The type of the result of these operations generally follows the Python
 conventions.
-For example, if <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">c</span></tt> are integer, then in Python 2 the division
-<tt class="docutils literal"><span class="pre">A/c</span></tt> is interpreted as integer division and results in a
-type <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt> matrix, while in Python 3 it is interpreted as standard
-divison and results in a type <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> matrix.
+For example, if <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">c</span></code> are integer, then in Python 2 the division
+<code class="docutils literal"><span class="pre">A/c</span></code> is interpreted as integer division and results in a
+type <code class="xref py py-const docutils literal"><span class="pre">'i'</span></code> matrix, while in Python 3 it is interpreted as standard
+divison and results in a type <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix.
 An exception to the Python conventions is elementwise exponentiation:
-if <tt class="docutils literal"><span class="pre">D</span></tt> is an integer matrix and <tt class="docutils literal"><span class="pre">e</span></tt> is an integer number
-than <tt class="docutils literal"><span class="pre">D**e</span></tt> is a matrix of type <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>.</p>
+if <code class="docutils literal"><span class="pre">D</span></code> is an integer matrix and <code class="docutils literal"><span class="pre">e</span></code> is an integer number
+than <code class="docutils literal"><span class="pre">D**e</span></code> is a matrix of type <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code>.</p>
 <p>Addition, subtraction, and matrix multiplication with two matrix operands
 result in a sparse matrix if both matrices are sparse, and in a dense
 matrix otherwise.  The result of a scalar multiplication or division is
-dense if <tt class="docutils literal"><span class="pre">A</span></tt> is dense, and sparse if <tt class="docutils literal"><span class="pre">A</span></tt> is sparse.  Postmultiplying
-a matrix with a number <tt class="docutils literal"><span class="pre">c</span></tt> means the same as premultiplying, i.e.,
-scalar multiplication.  Dividing a matrix by <tt class="docutils literal"><span class="pre">c</span></tt> means dividing all its
-entries by <tt class="docutils literal"><span class="pre">c</span></tt>.</p>
-<p>If <tt class="docutils literal"><span class="pre">c</span></tt> in the expressions <tt class="docutils literal"><span class="pre">A+c</span></tt>, <tt class="docutils literal"><span class="pre">c+A</span></tt>, <tt class="docutils literal"><span class="pre">A-c</span></tt>, <tt class="docutils literal"><span class="pre">c-A</span></tt> is a number,
+dense if <code class="docutils literal"><span class="pre">A</span></code> is dense, and sparse if <code class="docutils literal"><span class="pre">A</span></code> is sparse.  Postmultiplying
+a matrix with a number <code class="docutils literal"><span class="pre">c</span></code> means the same as premultiplying, i.e.,
+scalar multiplication.  Dividing a matrix by <code class="docutils literal"><span class="pre">c</span></code> means dividing all its
+entries by <code class="docutils literal"><span class="pre">c</span></code>.</p>
+<p>If <code class="docutils literal"><span class="pre">c</span></code> in the expressions <code class="docutils literal"><span class="pre">A+c</span></code>, <code class="docutils literal"><span class="pre">c+A</span></code>, <code class="docutils literal"><span class="pre">A-c</span></code>, <code class="docutils literal"><span class="pre">c-A</span></code> is a number,
 then it is interpreted as a dense matrix with
-the same dimensions as <tt class="docutils literal"><span class="pre">A</span></tt>, type given by the type of <tt class="docutils literal"><span class="pre">c</span></tt>, and all
-its entries equal to <tt class="docutils literal"><span class="pre">c</span></tt>.  If <tt class="docutils literal"><span class="pre">c</span></tt>  is a 1 by 1 dense matrix and <tt class="docutils literal"><span class="pre">A</span></tt>
-is not 1 by 1, then <tt class="docutils literal"><span class="pre">c</span></tt> is interpreted as a dense matrix with the same
-size of <tt class="docutils literal"><span class="pre">A</span></tt> and all entries equal to <tt class="docutils literal"><span class="pre">c[0]</span></tt>.</p>
-<p>If <tt class="docutils literal"><span class="pre">c</span></tt> is a 1 by 1 dense matrix, then, if possible, the products
-<tt class="docutils literal"><span class="pre">c*A</span></tt> and <tt class="docutils literal"><span class="pre">A*c</span></tt> are interpreted as matrix-matrix products.
+the same dimensions as <code class="docutils literal"><span class="pre">A</span></code>, type given by the type of <code class="docutils literal"><span class="pre">c</span></code>, and all
+its entries equal to <code class="docutils literal"><span class="pre">c</span></code>.  If <code class="docutils literal"><span class="pre">c</span></code>  is a 1 by 1 dense matrix and <code class="docutils literal"><span class="pre">A</span></code>
+is not 1 by 1, then <code class="docutils literal"><span class="pre">c</span></code> is interpreted as a dense matrix with the same
+size of <code class="docutils literal"><span class="pre">A</span></code> and all entries equal to <code class="docutils literal"><span class="pre">c[0]</span></code>.</p>
+<p>If <code class="docutils literal"><span class="pre">c</span></code> is a 1 by 1 dense matrix, then, if possible, the products
+<code class="docutils literal"><span class="pre">c*A</span></code> and <code class="docutils literal"><span class="pre">A*c</span></code> are interpreted as matrix-matrix products.
 If the product cannot be interpreted as a matrix-matrix product
-because the dimensions of <tt class="docutils literal"><span class="pre">A</span></tt> are incompatible, then the product is
-interpreted as the scalar multiplication with <tt class="docutils literal"><span class="pre">c[0]</span></tt>.
-The division <tt class="docutils literal"><span class="pre">A/c</span></tt> and remainder <tt class="docutils literal"><span class="pre">A%c</span></tt> with <tt class="docutils literal"><span class="pre">c</span></tt> a
-1 by 1 matrix are always interpreted as <tt class="docutils literal"><span class="pre">A/c[0]</span></tt>, resp., <tt class="docutils literal"><span class="pre">A%c[0]</span></tt>.</p>
+because the dimensions of <code class="docutils literal"><span class="pre">A</span></code> are incompatible, then the product is
+interpreted as the scalar multiplication with <code class="docutils literal"><span class="pre">c[0]</span></code>.
+The division <code class="docutils literal"><span class="pre">A/c</span></code> and remainder <code class="docutils literal"><span class="pre">A%c</span></code> with <code class="docutils literal"><span class="pre">c</span></code> a
+1 by 1 matrix are always interpreted as <code class="docutils literal"><span class="pre">A/c[0]</span></code>, resp., <code class="docutils literal"><span class="pre">A%c[0]</span></code>.</p>
 <p>The following in-place operations are also defined, but only if they do
 not change the type (sparse or dense, integer, real, or complex) of the
-matrix <tt class="docutils literal"><span class="pre">A</span></tt>.  These in-place operations do not return a new matrix but
-modify the existing object <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+matrix <code class="docutils literal"><span class="pre">A</span></code>.  These in-place operations do not return a new matrix but
+modify the existing object <code class="docutils literal"><span class="pre">A</span></code>.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="69%" />
@@ -595,37 +595,37 @@ modify the existing object <tt class="docutils literal"><span class="pre">A</spa
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>In-place addition</td>
-<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">+=</span> <span class="pre">B,</span> <span class="pre">A</span> <span class="pre">+=</span> <span class="pre">c</span></tt></td>
+<td><code class="docutils literal"><span class="pre">A</span> <span class="pre">+=</span> <span class="pre">B,</span> <span class="pre">A</span> <span class="pre">+=</span> <span class="pre">c</span></code></td>
 </tr>
 <tr class="row-even"><td>In-place subtraction</td>
-<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">-=</span> <span class="pre">B,</span> <span class="pre">A</span> <span class="pre">-=</span> <span class="pre">c</span></tt></td>
+<td><code class="docutils literal"><span class="pre">A</span> <span class="pre">-=</span> <span class="pre">B,</span> <span class="pre">A</span> <span class="pre">-=</span> <span class="pre">c</span></code></td>
 </tr>
 <tr class="row-odd"><td>In-place scalar multiplication and division</td>
-<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">*=</span> <span class="pre">c,</span> <span class="pre">A</span> <span class="pre">/=</span> <span class="pre">c</span></tt></td>
+<td><code class="docutils literal"><span class="pre">A</span> <span class="pre">*=</span> <span class="pre">c,</span> <span class="pre">A</span> <span class="pre">/=</span> <span class="pre">c</span></code></td>
 </tr>
 <tr class="row-even"><td>In-place remainder</td>
-<td><tt class="docutils literal"><span class="pre">A</span> <span class="pre">%=</span> <span class="pre">c</span></tt></td>
+<td><code class="docutils literal"><span class="pre">A</span> <span class="pre">%=</span> <span class="pre">c</span></code></td>
 </tr>
 </tbody>
 </table>
-<p>For example, if <tt class="docutils literal"><span class="pre">A</span></tt> has typecode <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt>, then <tt class="docutils literal"><span class="pre">A</span> <span class="pre">+=</span> <span class="pre">B</span></tt> is
-allowed if <tt class="docutils literal"><span class="pre">B</span></tt> has typecode <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt>.  It is not allowed if <tt class="docutils literal"><span class="pre">B</span></tt>
-has typecode <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> because the addition
-<tt class="docutils literal"><span class="pre">A+B</span></tt> results in a <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt> matrix and
-therefore cannot be assigned to <tt class="docutils literal"><span class="pre">A</span></tt> without changing its type.
-As another example, if <tt class="docutils literal"><span class="pre">A</span></tt> is a sparse matrix, then <tt class="docutils literal"><span class="pre">A</span> <span class="pre">+=</span> <span class="pre">1.0</span></tt> is
-not allowed because the operation <tt class="docutils literal"><span class="pre">A</span> <span class="pre">=</span> <span class="pre">A</span> <span class="pre">+</span> <span class="pre">1.0</span></tt> results in a dense
-matrix, so it cannot be assigned to <tt class="docutils literal"><span class="pre">A</span></tt> without changing its type.</p>
-<p>In-place matrix-matrix products are not allowed.  (Except when <tt class="docutils literal"><span class="pre">c</span></tt> is
-a 1 by 1 dense matrix, in which case <tt class="docutils literal"><span class="pre">A</span> <span class="pre">*=</span> <span class="pre">c</span></tt> is interpreted as the
-scalar product <tt class="docutils literal"><span class="pre">A</span> <span class="pre">*=</span> <span class="pre">c[0]</span></tt>.)</p>
-<p>In-place remainder is only defined for dense <tt class="docutils literal"><span class="pre">A</span></tt>.</p>
+<p>For example, if <code class="docutils literal"><span class="pre">A</span></code> has typecode <code class="xref py py-const docutils literal"><span class="pre">'i'</span></code>, then <code class="docutils literal"><span class="pre">A</span> <span class="pre">+=</span> <span class="pre">B</span></code> is
+allowed if <code class="docutils literal"><span class="pre">B</span></code> has typecode <code class="xref py py-const docutils literal"><span class="pre">'i'</span></code>.  It is not allowed if <code class="docutils literal"><span class="pre">B</span></code>
+has typecode <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code> because the addition
+<code class="docutils literal"><span class="pre">A+B</span></code> results in a <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code> matrix and
+therefore cannot be assigned to <code class="docutils literal"><span class="pre">A</span></code> without changing its type.
+As another example, if <code class="docutils literal"><span class="pre">A</span></code> is a sparse matrix, then <code class="docutils literal"><span class="pre">A</span> <span class="pre">+=</span> <span class="pre">1.0</span></code> is
+not allowed because the operation <code class="docutils literal"><span class="pre">A</span> <span class="pre">=</span> <span class="pre">A</span> <span class="pre">+</span> <span class="pre">1.0</span></code> results in a dense
+matrix, so it cannot be assigned to <code class="docutils literal"><span class="pre">A</span></code> without changing its type.</p>
+<p>In-place matrix-matrix products are not allowed.  (Except when <code class="docutils literal"><span class="pre">c</span></code> is
+a 1 by 1 dense matrix, in which case <code class="docutils literal"><span class="pre">A</span> <span class="pre">*=</span> <span class="pre">c</span></code> is interpreted as the
+scalar product <code class="docutils literal"><span class="pre">A</span> <span class="pre">*=</span> <span class="pre">c[0]</span></code>.)</p>
+<p>In-place remainder is only defined for dense <code class="docutils literal"><span class="pre">A</span></code>.</p>
 <p>It is important to know when a matrix operation creates a new object.
 The following rules apply.</p>
 <ul>
-<li><p class="first">A simple assignment (<tt class="docutils literal"><span class="pre">A</span> <span class="pre">=</span> <span class="pre">B</span></tt>) is given the standard Python
-interpretation, i.e., it assigns to the variable <tt class="docutils literal"><span class="pre">A</span></tt> a reference (or
-pointer) to the object referenced by <tt class="docutils literal"><span class="pre">B</span></tt>.</p>
+<li><p class="first">A simple assignment (<code class="docutils literal"><span class="pre">A</span> <span class="pre">=</span> <span class="pre">B</span></code>) is given the standard Python
+interpretation, i.e., it assigns to the variable <code class="docutils literal"><span class="pre">A</span></code> a reference (or
+pointer) to the object referenced by <code class="docutils literal"><span class="pre">B</span></code>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.</span><span class="p">,</span><span class="mf">4.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
 <span class="go">[ 1.00e+00  3.00e+00]</span>
@@ -669,27 +669,27 @@ existing matrix object and do not create a new object.</p>
 <div class="section" id="indexing-and-slicing">
 <span id="s-indexing"></span><h2>Indexing and Slicing<a class="headerlink" href="#indexing-and-slicing" title="Permalink to this headline">¶</a></h2>
 <p>Matrices can be indexed using one or two arguments.  In single-argument
-indexing of a matrix <tt class="docutils literal"><span class="pre">A</span></tt>, the index runs from <tt class="docutils literal"><span class="pre">-len(A)</span></tt> to
-<tt class="docutils literal"><span class="pre">len(A)-1</span></tt>, and is interpreted as an index in the one-dimensional
-array of coefficients of <tt class="docutils literal"><span class="pre">A</span></tt> in column-major order.   Negative indices
-have the standard Python interpretation: for negative <tt class="docutils literal"><span class="pre">k</span></tt>,
-<tt class="docutils literal"><span class="pre">A[k]</span></tt> is the same element as <tt class="docutils literal"><span class="pre">A[len(A)</span> <span class="pre">+</span> <span class="pre">k]</span></tt>.</p>
+indexing of a matrix <code class="docutils literal"><span class="pre">A</span></code>, the index runs from <code class="docutils literal"><span class="pre">-len(A)</span></code> to
+<code class="docutils literal"><span class="pre">len(A)-1</span></code>, and is interpreted as an index in the one-dimensional
+array of coefficients of <code class="docutils literal"><span class="pre">A</span></code> in column-major order.   Negative indices
+have the standard Python interpretation: for negative <code class="docutils literal"><span class="pre">k</span></code>,
+<code class="docutils literal"><span class="pre">A[k]</span></code> is the same element as <code class="docutils literal"><span class="pre">A[len(A)</span> <span class="pre">+</span> <span class="pre">k]</span></code>.</p>
 <p>Four different types of one-argument indexing are implemented.</p>
 <ol class="arabic simple">
 <li>The index can be a single integer.
-This returns a number, e.g., <tt class="docutils literal"><span class="pre">A[0]</span></tt> is the first element of <tt class="docutils literal"><span class="pre">A</span></tt>.</li>
+This returns a number, e.g., <code class="docutils literal"><span class="pre">A[0]</span></code> is the first element of <code class="docutils literal"><span class="pre">A</span></code>.</li>
 <li>The index can be an integer matrix.  This returns a column matrix: the
-command <tt class="docutils literal"><span class="pre">A[matrix([0,1,2,3])]</span></tt> returns the 4 by 1 matrix
-consisting of the first four elements of <tt class="docutils literal"><span class="pre">A</span></tt>.  The size of the index
-matrix is ignored: <tt class="docutils literal"><span class="pre">A[matrix([0,1,2,3],</span> <span class="pre">(2,2))]</span></tt> returns the same
+command <code class="docutils literal"><span class="pre">A[matrix([0,1,2,3])]</span></code> returns the 4 by 1 matrix
+consisting of the first four elements of <code class="docutils literal"><span class="pre">A</span></code>.  The size of the index
+matrix is ignored: <code class="docutils literal"><span class="pre">A[matrix([0,1,2,3],</span> <span class="pre">(2,2))]</span></code> returns the same
 4 by 1 matrix.</li>
 <li>The index can be a list of integers.  This returns a column matrix,
-e.g., <tt class="docutils literal"><span class="pre">A[[0,1,2,3]]</span></tt> is the 4 by 1 matrix consisting of elements
-0, 1, 2, 3 of <tt class="docutils literal"><span class="pre">A</span></tt>.</li>
+e.g., <code class="docutils literal"><span class="pre">A[[0,1,2,3]]</span></code> is the 4 by 1 matrix consisting of elements
+0, 1, 2, 3 of <code class="docutils literal"><span class="pre">A</span></code>.</li>
 <li>The index can be a Python slice.  This returns a matrix with one column
-(possibly 0 by 1, or 1 by 1).  For example, <tt class="docutils literal"><span class="pre">A[::2]</span></tt> is the column
-matrix defined by taking every other element of <tt class="docutils literal"><span class="pre">A</span></tt>, stored in
-column-major order.  <tt class="docutils literal"><span class="pre">A[0:0]</span></tt> is a matrix with size (0,1).</li>
+(possibly 0 by 1, or 1 by 1).  For example, <code class="docutils literal"><span class="pre">A[::2]</span></code> is the column
+matrix defined by taking every other element of <code class="docutils literal"><span class="pre">A</span></code>, stored in
+column-major order.  <code class="docutils literal"><span class="pre">A[0:0]</span></code> is a matrix with size (0,1).</li>
 </ol>
 <p>Thus, single-argument indexing returns a scalar (if the index is an
 integer), or a matrix with one column.  This is consistent with the
@@ -697,8 +697,8 @@ interpretation that single-argument indexing accesses the matrix in
 column-major order.</p>
 <p>Note that an index list or an index matrix are equivalent, but they are
 both useful, especially when we perform operations on index sets.  For
-example, if <tt class="docutils literal"><span class="pre">I</span></tt> and <tt class="docutils literal"><span class="pre">J</span></tt> are lists then <tt class="docutils literal"><span class="pre">I+J</span></tt> is the
-concatenated list, and <tt class="docutils literal"><span class="pre">2*I</span></tt> is <tt class="docutils literal"><span class="pre">I</span></tt> repeated twice.  If they
+example, if <code class="docutils literal"><span class="pre">I</span></code> and <code class="docutils literal"><span class="pre">J</span></code> are lists then <code class="docutils literal"><span class="pre">I+J</span></code> is the
+concatenated list, and <code class="docutils literal"><span class="pre">2*I</span></code> is <code class="docutils literal"><span class="pre">I</span></code> repeated twice.  If they
 are matrices, these operations are interpreted as arithmetic operations.
 For large index sets, indexing with integer matrices is also faster
 than indexing with lists.</p>
@@ -764,25 +764,25 @@ a matrix is returned.  We continue the example.</p>
 <span class="go">[ 0.00e+00+j2.00e+00 -2.00e+00-j0.00e+00]</span>
 </pre></div>
 </div>
-<p>Expressions of the form <tt class="docutils literal"><span class="pre">A[I]</span></tt> or <tt class="docutils literal"><span class="pre">A[I,J]</span></tt> can also appear on
+<p>Expressions of the form <code class="docutils literal"><span class="pre">A[I]</span></code> or <code class="docutils literal"><span class="pre">A[I,J]</span></code> can also appear on
 the left-hand side of an assignment.   The right-hand side must be a
 scalar
 (i.e., a number or a 1 by 1 dense matrix), a sequence of numbers, or a
 dense or sparse matrix.  If the right-hand side is a scalar, it is
 interpreted as a dense matrix with identical entries and the dimensions of
 the left-hand side.  If the right-hand side is a sequence of numbers
-(list, tuple, <tt class="xref py py-mod docutils literal"><span class="pre">array</span></tt> array, range object, ...) its values are
+(list, tuple, <code class="xref py py-mod docutils literal"><span class="pre">array</span></code> array, range object, ...) its values are
 interpreted
 as the coefficients of a dense matrix in column-major order.  If the
-right-hand side is a matrix (<tt class="xref py py-class docutils literal"><span class="pre">matrix</span></tt> or
-<tt class="xref py py-class docutils literal"><span class="pre">spmatrix</span></tt>), it must
+right-hand side is a matrix (<code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> or
+<code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code>), it must
 have the same size as the left-hand side.  Sparse matrices are
 converted to dense in the assignment to a dense matrix.</p>
 <p>Indexed assignments are only allowed if they do not change the type of
-the matrix.  For example, if <tt class="docutils literal"><span class="pre">A</span></tt> is a matrix with type <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>,
-then <tt class="docutils literal"><span class="pre">A[I]</span> <span class="pre">=</span> <span class="pre">B</span></tt> is only permitted if <tt class="docutils literal"><span class="pre">B</span></tt> is an integer, a float,
-or a matrix of type <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt> or <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>.  If <tt class="docutils literal"><span class="pre">A</span></tt> is an integer
-matrix, then <tt class="docutils literal"><span class="pre">A[I]</span> <span class="pre">=</span> <span class="pre">B</span></tt> is only permitted if <tt class="docutils literal"><span class="pre">B</span></tt> is an integer or
+the matrix.  For example, if <code class="docutils literal"><span class="pre">A</span></code> is a matrix with type <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code>,
+then <code class="docutils literal"><span class="pre">A[I]</span> <span class="pre">=</span> <span class="pre">B</span></code> is only permitted if <code class="docutils literal"><span class="pre">B</span></code> is an integer, a float,
+or a matrix of type <code class="xref py py-const docutils literal"><span class="pre">'i'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code>.  If <code class="docutils literal"><span class="pre">A</span></code> is an integer
+matrix, then <code class="docutils literal"><span class="pre">A[I]</span> <span class="pre">=</span> <span class="pre">B</span></code> is only permitted if <code class="docutils literal"><span class="pre">B</span></code> is an integer or
 an integer matrix.</p>
 <p>The following examples illustrate indexed assignment.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
@@ -849,7 +849,7 @@ an integer matrix.</p>
 <p>Dense and sparse matrices have the following attributes.</p>
 <dl class="attribute">
 <dt id="size">
-<tt class="descname">size</tt><a class="headerlink" href="#size" title="Permalink to this definition">¶</a></dt>
+<code class="descname">size</code><a class="headerlink" href="#size" title="Permalink to this definition">¶</a></dt>
 <dd><p>A tuple with the dimensions of the matrix. The size of the matrix can
 be changed by altering this attribute, as long as the number of
 elements in the matrix remains unchanged.</p>
@@ -857,36 +857,36 @@ elements in the matrix remains unchanged.</p>
 
 <dl class="attribute">
 <dt id="typecode">
-<tt class="descname">typecode</tt><a class="headerlink" href="#typecode" title="Permalink to this definition">¶</a></dt>
-<dd><p>A character, either <tt class="xref py py-const docutils literal"><span class="pre">'i'</span></tt>, <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt>, or <tt class="xref py py-const docutils literal"><span class="pre">'z'</span></tt>, for
+<code class="descname">typecode</code><a class="headerlink" href="#typecode" title="Permalink to this definition">¶</a></dt>
+<dd><p>A character, either <code class="xref py py-const docutils literal"><span class="pre">'i'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code>, or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>, for
 integer, real, and complex matrices, respectively.  A read-only
 attribute.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="trans">
-<tt class="descname">trans</tt><big>(</big><big>)</big><a class="headerlink" href="#trans" title="Permalink to this definition">¶</a></dt>
+<code class="descname">trans</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trans" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the transpose of the matrix as a new matrix.  One can also use
-<tt class="docutils literal"><span class="pre">A.T</span></tt> instead of <tt class="docutils literal"><span class="pre">A.trans()</span></tt>.</p>
+<code class="docutils literal"><span class="pre">A.T</span></code> instead of <code class="docutils literal"><span class="pre">A.trans()</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="ctrans">
-<tt class="descname">ctrans</tt><big>(</big><big>)</big><a class="headerlink" href="#ctrans" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ctrans</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ctrans" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the conjugate transpose of the matrix as a new matrix.  One
-can also use <tt class="docutils literal"><span class="pre">A.H</span></tt> instead of <tt class="docutils literal"><span class="pre">A.ctrans()</span></tt>.</p>
+can also use <code class="docutils literal"><span class="pre">A.H</span></code> instead of <code class="docutils literal"><span class="pre">A.ctrans()</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="real">
-<tt class="descname">real</tt><big>(</big><big>)</big><a class="headerlink" href="#real" title="Permalink to this definition">¶</a></dt>
+<code class="descname">real</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#real" title="Permalink to this definition">¶</a></dt>
 <dd><p>For complex matrices, returns the real part as a real matrix.  For
 integer and real matrices, returns a copy of the matrix.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="imag">
-<tt class="descname">imag</tt><big>(</big><big>)</big><a class="headerlink" href="#imag" title="Permalink to this definition">¶</a></dt>
+<code class="descname">imag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imag" title="Permalink to this definition">¶</a></dt>
 <dd><p>For complex matrices, returns the imaginary part as a real matrix.
 For integer and real matrices, returns an integer or real zero matrix.</p>
 </dd></dl>
@@ -894,43 +894,43 @@ For integer and real matrices, returns an integer or real zero matrix.</p>
 <p>In addition, sparse matrices have the following attributes.</p>
 <dl class="attribute">
 <dt id="V">
-<tt class="descname">V</tt><a class="headerlink" href="#V" title="Permalink to this definition">¶</a></dt>
+<code class="descname">V</code><a class="headerlink" href="#V" title="Permalink to this definition">¶</a></dt>
 <dd><p>A single-column dense matrix containing the numerical values of the
 nonzero entries in column-major order.  Making an assignment to the
 attribute is an efficient way of changing the values of the sparse
 matrix, without changing the sparsity pattern.</p>
-<p>When the attribute <a class="reference internal" href="#V" title="V"><tt class="xref py py-attr docutils literal"><span class="pre">V</span></tt></a> is read, a <em>copy</em> of <a class="reference internal" href="#V" title="V"><tt class="xref py py-attr docutils literal"><span class="pre">V</span></tt></a> is
+<p>When the attribute <a class="reference internal" href="#V" title="V"><code class="xref py py-attr docutils literal"><span class="pre">V</span></code></a> is read, a <em>copy</em> of <a class="reference internal" href="#V" title="V"><code class="xref py py-attr docutils literal"><span class="pre">V</span></code></a> is
 returned, as a new dense matrix.  This implies, for example, that an
-indexed assignment <tt class="docutils literal"><span class="pre">A.V[I]</span> <span class="pre">=</span> <span class="pre">B</span></tt> does not work, or at least
-cannot be used to modify <tt class="docutils literal"><span class="pre">A</span></tt>.  Instead the attribute <a class="reference internal" href="#V" title="V"><tt class="xref py py-attr docutils literal"><span class="pre">V</span></tt></a>
+indexed assignment <code class="docutils literal"><span class="pre">A.V[I]</span> <span class="pre">=</span> <span class="pre">B</span></code> does not work, or at least
+cannot be used to modify <code class="docutils literal"><span class="pre">A</span></code>.  Instead the attribute <a class="reference internal" href="#V" title="V"><code class="xref py py-attr docutils literal"><span class="pre">V</span></code></a>
 will be read and returned as a new matrix; then the elements of this
 new matrix are modified.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="I">
-<tt class="descname">I</tt><a class="headerlink" href="#I" title="Permalink to this definition">¶</a></dt>
+<code class="descname">I</code><a class="headerlink" href="#I" title="Permalink to this definition">¶</a></dt>
 <dd><p>A single-column integer dense matrix with the row indices of the
-entries in <a class="reference internal" href="#V" title="V"><tt class="xref py py-attr docutils literal"><span class="pre">V</span></tt></a>.  A read-only attribute.</p>
+entries in <a class="reference internal" href="#V" title="V"><code class="xref py py-attr docutils literal"><span class="pre">V</span></code></a>.  A read-only attribute.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="J">
-<tt class="descname">J</tt><a class="headerlink" href="#J" title="Permalink to this definition">¶</a></dt>
+<code class="descname">J</code><a class="headerlink" href="#J" title="Permalink to this definition">¶</a></dt>
 <dd><p>A single-column integer dense matrix with the column indices of the
-entries in <a class="reference internal" href="#V" title="V"><tt class="xref py py-attr docutils literal"><span class="pre">V</span></tt></a>.  A read-only attribute.</p>
+entries in <a class="reference internal" href="#V" title="V"><code class="xref py py-attr docutils literal"><span class="pre">V</span></code></a>.  A read-only attribute.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="CCS">
-<tt class="descname">CCS</tt><a class="headerlink" href="#CCS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CCS</code><a class="headerlink" href="#CCS" title="Permalink to this definition">¶</a></dt>
 <dd><p>A triplet (column pointers, row indices, values) with the
 compressed-column-storage representation of the matrix.  A read-only
 attribute.  This attribute can be used to export sparse matrices to
 other packages such as MOSEK.</p>
 </dd></dl>
 
-<p>The next example below illustrates assignments to <a class="reference internal" href="#V" title="V"><tt class="xref py py-attr docutils literal"><span class="pre">V</span></tt></a>.</p>
+<p>The next example below illustrates assignments to <a class="reference internal" href="#V" title="V"><code class="xref py py-attr docutils literal"><span class="pre">V</span></code></a>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">matrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
@@ -954,15 +954,15 @@ other packages such as MOSEK.</p>
 <p>The following attributes and methods are defined for dense matrices.</p>
 <dl class="method">
 <dt id="tofile">
-<tt class="descname">tofile</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#tofile" title="Permalink to this definition">¶</a></dt>
+<code class="descname">tofile</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#tofile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes the elements of the matrix in column-major order to a binary
-file <tt class="docutils literal"><span class="pre">f</span></tt>.</p>
+file <code class="docutils literal"><span class="pre">f</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="fromfile">
-<tt class="descname">fromfile</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#fromfile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reads the contents of a binary file <tt class="docutils literal"><span class="pre">f</span></tt> into the matrix object.</p>
+<code class="descname">fromfile</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#fromfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the contents of a binary file <code class="docutils literal"><span class="pre">f</span></code> into the matrix object.</p>
 </dd></dl>
 
 <p>The last two methods are illustrated in the following examples.</p>
@@ -999,7 +999,7 @@ file <tt class="docutils literal"><span class="pre">f</span></tt>.</p>
 <span class="go">[    0      3.00e+00  4.00e+00]</span>
 </pre></div>
 </div>
-<p>Note that the <tt class="xref py py-func docutils literal"><span class="pre">dump</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">load</span></tt> functions in the <tt class="xref py py-mod docutils literal"><span class="pre">pickle</span></tt>
+<p>Note that the <code class="xref py py-func docutils literal"><span class="pre">dump</span></code> and <code class="xref py py-func docutils literal"><span class="pre">load</span></code> functions in the <code class="xref py py-mod docutils literal"><span class="pre">pickle</span></code>
 module offer a convenient alternative for writing matrices to files and
 reading matrices from files.</p>
 </div>
@@ -1009,56 +1009,56 @@ reading matrices from files.</p>
 arguments.  We list some useful examples.</p>
 <dl class="function">
 <dt id="len">
-<tt class="descname">len</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#len" title="Permalink to this definition">¶</a></dt>
-<dd><p>If <tt class="docutils literal"><span class="pre">x</span></tt> is a dense matrix, returns the product of the number of rows
-and the number of columns.  If <tt class="docutils literal"><span class="pre">x</span></tt> is a sparse matrix, returns the
+<code class="descname">len</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#len" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <code class="docutils literal"><span class="pre">x</span></code> is a dense matrix, returns the product of the number of rows
+and the number of columns.  If <code class="docutils literal"><span class="pre">x</span></code> is a sparse matrix, returns the
 number of nonzero entries.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="bool">
-<tt class="descname">bool</tt><big>(</big><span class="optional">[</span><em>x</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#bool" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns <tt class="xref py py-const docutils literal"><span class="pre">False</span></tt> if <tt class="docutils literal"><span class="pre">x</span></tt> is a zero matrix and <tt class="xref py py-const docutils literal"><span class="pre">True</span></tt>
+<code class="descname">bool</code><span class="sig-paren">(</span><span class="optional">[</span><em>x</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#bool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <code class="xref py py-const docutils literal"><span class="pre">False</span></code> if <code class="docutils literal"><span class="pre">x</span></code> is a zero matrix and <code class="xref py py-const docutils literal"><span class="pre">True</span></code>
 otherwise.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="max">
-<tt class="descname">max</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#max" title="Permalink to this definition">¶</a></dt>
-<dd><p>If <tt class="docutils literal"><span class="pre">x</span></tt> is a dense matrix, returns the maximum element of <tt class="docutils literal"><span class="pre">x</span></tt>.
-If <tt class="docutils literal"><span class="pre">x</span></tt> is a sparse, returns the maximum nonzero element of <tt class="docutils literal"><span class="pre">x</span></tt>.</p>
+<code class="descname">max</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#max" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <code class="docutils literal"><span class="pre">x</span></code> is a dense matrix, returns the maximum element of <code class="docutils literal"><span class="pre">x</span></code>.
+If <code class="docutils literal"><span class="pre">x</span></code> is a sparse, returns the maximum nonzero element of <code class="docutils literal"><span class="pre">x</span></code>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="min">
-<tt class="descname">min</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#min" title="Permalink to this definition">¶</a></dt>
-<dd><p>If <tt class="docutils literal"><span class="pre">x</span></tt> is a dense matrix, returns the minimum element of <tt class="docutils literal"><span class="pre">x</span></tt>.
-If <tt class="docutils literal"><span class="pre">x</span></tt> is a sparse matrix, returns the minimum nonzero element of
-<tt class="docutils literal"><span class="pre">x</span></tt>.</p>
+<code class="descname">min</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#min" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <code class="docutils literal"><span class="pre">x</span></code> is a dense matrix, returns the minimum element of <code class="docutils literal"><span class="pre">x</span></code>.
+If <code class="docutils literal"><span class="pre">x</span></code> is a sparse matrix, returns the minimum nonzero element of
+<code class="docutils literal"><span class="pre">x</span></code>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="abs">
-<tt class="descname">abs</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#abs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a matrix with the absolute values of the elements of <tt class="docutils literal"><span class="pre">x</span></tt>.</p>
+<code class="descname">abs</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#abs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a matrix with the absolute values of the elements of <code class="docutils literal"><span class="pre">x</span></code>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="sum">
-<tt class="descname">sum</tt><big>(</big><em>x</em><span class="optional">[</span>, <em>start = 0.0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#sum" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the sum of <tt class="docutils literal"><span class="pre">start</span></tt> and the elements of <tt class="docutils literal"><span class="pre">x</span></tt>.</p>
+<code class="descname">sum</code><span class="sig-paren">(</span><em>x</em><span class="optional">[</span>, <em>start = 0.0</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the sum of <code class="docutils literal"><span class="pre">start</span></code> and the elements of <code class="docutils literal"><span class="pre">x</span></code>.</p>
 </dd></dl>
 
-<p>Dense and sparse matrices can be used as  arguments to the <tt class="xref py py-func docutils literal"><span class="pre">list</span></tt>,
-<tt class="xref py py-func docutils literal"><span class="pre">tuple</span></tt>, <tt class="xref py py-func docutils literal"><span class="pre">zip</span></tt>, <tt class="xref py py-func docutils literal"><span class="pre">map</span></tt>, and <tt class="xref py py-func docutils literal"><span class="pre">filter</span></tt> functions
+<p>Dense and sparse matrices can be used as  arguments to the <code class="xref py py-func docutils literal"><span class="pre">list</span></code>,
+<code class="xref py py-func docutils literal"><span class="pre">tuple</span></code>, <code class="xref py py-func docutils literal"><span class="pre">zip</span></code>, <code class="xref py py-func docutils literal"><span class="pre">map</span></code>, and <code class="xref py py-func docutils literal"><span class="pre">filter</span></code> functions
 described in the Python Library Reference.
 However, one should note that when used with sparse matrix arguments,
 these functions only consider the nonzero entries.
-For example, <tt class="docutils literal"><span class="pre">list(A)</span></tt> and <tt class="docutils literal"><span class="pre">tuple(A)</span></tt> construct a list,
-respectively a tuple, from the elements of <tt class="docutils literal"><span class="pre">A</span></tt> if <tt class="docutils literal"><span class="pre">A</span></tt> is dense, and
-of the nonzero elements of <tt class="docutils literal"><span class="pre">A</span></tt> if <tt class="docutils literal"><span class="pre">A</span></tt> is sparse.</p>
-<p><tt class="docutils literal"><span class="pre">list(zip(A,</span> <span class="pre">B,</span> <span class="pre">...))</span></tt> returns a list of tuples, with the i-th tuple
-containing the i-th elements (or nonzero elements) of <tt class="docutils literal"><span class="pre">A</span></tt>, <tt class="docutils literal"><span class="pre">B</span></tt>, ....</p>
+For example, <code class="docutils literal"><span class="pre">list(A)</span></code> and <code class="docutils literal"><span class="pre">tuple(A)</span></code> construct a list,
+respectively a tuple, from the elements of <code class="docutils literal"><span class="pre">A</span></code> if <code class="docutils literal"><span class="pre">A</span></code> is dense, and
+of the nonzero elements of <code class="docutils literal"><span class="pre">A</span></code> if <code class="docutils literal"><span class="pre">A</span></code> is sparse.</p>
+<p><code class="docutils literal"><span class="pre">list(zip(A,</span> <span class="pre">B,</span> <span class="pre">...))</span></code> returns a list of tuples, with the i-th tuple
+containing the i-th elements (or nonzero elements) of <code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">B</span></code>, ....</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="o">-</span><span class="mf">11.</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="o">-</span><span class="mf">20.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">6.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">7.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
@@ -1070,12 +1070,12 @@ containing the i-th elements (or nonzero elements) of <tt class="docutils litera
 <span class="go">[(-11.0, 0), (-5.0, 1), (-20.0, 2), (-6.0, 3), (0.0, 4), (7.0, 5)]</span>
 </pre></div>
 </div>
-<p><tt class="docutils literal"><span class="pre">list(map(f,</span> <span class="pre">A))</span></tt>, where <tt class="docutils literal"><span class="pre">f</span></tt> is a function and <tt class="docutils literal"><span class="pre">A</span></tt> is a
-dense matrix, returns a list constructed by applying <tt class="docutils literal"><span class="pre">f</span></tt> to each
-element of <tt class="docutils literal"><span class="pre">A</span></tt>.  If
-<tt class="docutils literal"><span class="pre">A</span></tt> is sparse, the function <tt class="docutils literal"><span class="pre">f</span></tt> is applied to each nonzero element of
-<tt class="docutils literal"><span class="pre">A</span></tt>.  Multiple arguments can be provided, for example, as in
-<tt class="docutils literal"><span class="pre">map(f,</span> <span class="pre">A,</span> <span class="pre">B)</span></tt>, if <tt class="docutils literal"><span class="pre">f</span></tt> is a function with two arguments.
+<p><code class="docutils literal"><span class="pre">list(map(f,</span> <span class="pre">A))</span></code>, where <code class="docutils literal"><span class="pre">f</span></code> is a function and <code class="docutils literal"><span class="pre">A</span></code> is a
+dense matrix, returns a list constructed by applying <code class="docutils literal"><span class="pre">f</span></code> to each
+element of <code class="docutils literal"><span class="pre">A</span></code>.  If
+<code class="docutils literal"><span class="pre">A</span></code> is sparse, the function <code class="docutils literal"><span class="pre">f</span></code> is applied to each nonzero element of
+<code class="docutils literal"><span class="pre">A</span></code>.  Multiple arguments can be provided, for example, as in
+<code class="docutils literal"><span class="pre">map(f,</span> <span class="pre">A,</span> <span class="pre">B)</span></code>, if <code class="docutils literal"><span class="pre">f</span></code> is a function with two arguments.
 In the following example, we return an integer 0-1 matrix with the
 result of an elementwise comparison.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]])</span>
@@ -1089,9 +1089,9 @@ result of an elementwise comparison.</p>
 <span class="go">[ 0  0  1]</span>
 </pre></div>
 </div>
-<p><tt class="docutils literal"><span class="pre">list(filter(f,</span> <span class="pre">A))</span></tt>, where <tt class="docutils literal"><span class="pre">f</span></tt> is a function and <tt class="docutils literal"><span class="pre">A</span></tt> is a matrix,
-returns a list containing the elements of <tt class="docutils literal"><span class="pre">A</span></tt> (or nonzero elements of
-<tt class="docutils literal"><span class="pre">A</span></tt> is <tt class="docutils literal"><span class="pre">A</span></tt> is sparse) for which <tt class="docutils literal"><span class="pre">f</span></tt> is true.</p>
+<p><code class="docutils literal"><span class="pre">list(filter(f,</span> <span class="pre">A))</span></code>, where <code class="docutils literal"><span class="pre">f</span></code> is a function and <code class="docutils literal"><span class="pre">A</span></code> is a matrix,
+returns a list containing the elements of <code class="docutils literal"><span class="pre">A</span></code> (or nonzero elements of
+<code class="docutils literal"><span class="pre">A</span></code> is <code class="docutils literal"><span class="pre">A</span></code> is sparse) for which <code class="docutils literal"><span class="pre">f</span></code> is true.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>  <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">7</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">[  5  -1   6  -1]</span>
@@ -1117,20 +1117,20 @@ the following example.</p>
 <span class="go">[5, 0, 9, 11]</span>
 </pre></div>
 </div>
-<p>The expression <tt class="docutils literal"><span class="pre">x</span> <span class="pre">in</span> <span class="pre">A</span></tt> returns <tt class="xref py py-const docutils literal"><span class="pre">True</span></tt> if an element
-of <tt class="docutils literal"><span class="pre">A</span></tt> (or a nonzero element of <tt class="docutils literal"><span class="pre">A</span></tt> if <tt class="docutils literal"><span class="pre">A</span></tt> is sparse)
-is equal to <tt class="docutils literal"><span class="pre">x</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">False</span></tt> otherwise.</p>
+<p>The expression <code class="docutils literal"><span class="pre">x</span> <span class="pre">in</span> <span class="pre">A</span></code> returns <code class="xref py py-const docutils literal"><span class="pre">True</span></code> if an element
+of <code class="docutils literal"><span class="pre">A</span></code> (or a nonzero element of <code class="docutils literal"><span class="pre">A</span></code> if <code class="docutils literal"><span class="pre">A</span></code> is sparse)
+is equal to <code class="docutils literal"><span class="pre">x</span></code> and <code class="xref py py-const docutils literal"><span class="pre">False</span></code> otherwise.</p>
 </div>
 <div class="section" id="other-matrix-functions">
 <h2>Other Matrix Functions<a class="headerlink" href="#other-matrix-functions" title="Permalink to this headline">¶</a></h2>
 <p>The following functions can be imported from CVXOPT.</p>
 <dl class="function">
 <dt id="cvxopt.sqrt">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">sqrt</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#cvxopt.sqrt" title="Permalink to this definition">¶</a></dt>
-<dd><p>The elementwise square root of a dense matrix <tt class="docutils literal"><span class="pre">x</span></tt>.  The result is
-returned as a real matrix if <tt class="docutils literal"><span class="pre">x</span></tt> is an integer or real matrix and
-as a complex matrix if <tt class="docutils literal"><span class="pre">x</span></tt> is a complex matrix.  Raises an exception
-when <tt class="docutils literal"><span class="pre">x</span></tt> is an integer or real matrix with negative elements.</p>
+<code class="descclassname">cvxopt.</code><code class="descname">sqrt</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.sqrt" title="Permalink to this definition">¶</a></dt>
+<dd><p>The elementwise square root of a dense matrix <code class="docutils literal"><span class="pre">x</span></code>.  The result is
+returned as a real matrix if <code class="docutils literal"><span class="pre">x</span></code> is an integer or real matrix and
+as a complex matrix if <code class="docutils literal"><span class="pre">x</span></code> is a complex matrix.  Raises an exception
+when <code class="docutils literal"><span class="pre">x</span></code> is an integer or real matrix with negative elements.</p>
 <p>As an example we take the elementwise square root of the sparse matrix</p>
 <div class="math">
 <p><img src="_images/math/11eff273e1963ba445d6d5ec611f02eb7fc4a694.png" alt="A = \left[ \begin{array}{rrrrr}
@@ -1152,41 +1152,41 @@ when <tt class="docutils literal"><span class="pre">x</span></tt> is an integer 
 
 <dl class="function">
 <dt id="cvxopt.sin">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">sin</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#cvxopt.sin" title="Permalink to this definition">¶</a></dt>
-<dd><p>The sine function applied elementwise to a dense matrix <tt class="docutils literal"><span class="pre">x</span></tt>.
-The result is returned as a real matrix if <tt class="docutils literal"><span class="pre">x</span></tt> is an integer
+<code class="descclassname">cvxopt.</code><code class="descname">sin</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.sin" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sine function applied elementwise to a dense matrix <code class="docutils literal"><span class="pre">x</span></code>.
+The result is returned as a real matrix if <code class="docutils literal"><span class="pre">x</span></code> is an integer
 or real matrix and as a complex matrix otherwise.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="cvxopt.cos">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">cos</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#cvxopt.cos" title="Permalink to this definition">¶</a></dt>
-<dd><p>The cosine function applied elementwise to a dense matrix <tt class="docutils literal"><span class="pre">x</span></tt>.
-The result is returned as a real matrix if <tt class="docutils literal"><span class="pre">x</span></tt> is an integer
+<code class="descclassname">cvxopt.</code><code class="descname">cos</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cos" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cosine function applied elementwise to a dense matrix <code class="docutils literal"><span class="pre">x</span></code>.
+The result is returned as a real matrix if <code class="docutils literal"><span class="pre">x</span></code> is an integer
 or real matrix and as a complex matrix otherwise.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="cvxopt.exp">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">exp</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#cvxopt.exp" title="Permalink to this definition">¶</a></dt>
-<dd><p>The exponential function applied elementwise to a dense matrix <tt class="docutils literal"><span class="pre">x</span></tt>.
-The result is returned as a real matrix if <tt class="docutils literal"><span class="pre">x</span></tt> is an integer
+<code class="descclassname">cvxopt.</code><code class="descname">exp</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The exponential function applied elementwise to a dense matrix <code class="docutils literal"><span class="pre">x</span></code>.
+The result is returned as a real matrix if <code class="docutils literal"><span class="pre">x</span></code> is an integer
 or real matrix and as a complex matrix otherwise.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="cvxopt.log">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">log</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#cvxopt.log" title="Permalink to this definition">¶</a></dt>
-<dd><p>The natural logarithm applied elementwise to a dense matrix <tt class="docutils literal"><span class="pre">x</span></tt>.
-The result is returned as a real matrix if <tt class="docutils literal"><span class="pre">x</span></tt> is an integer
+<code class="descclassname">cvxopt.</code><code class="descname">log</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>The natural logarithm applied elementwise to a dense matrix <code class="docutils literal"><span class="pre">x</span></code>.
+The result is returned as a real matrix if <code class="docutils literal"><span class="pre">x</span></code> is an integer
 or real matrix and as a complex matrix otherwise.
-Raises an exception when <tt class="docutils literal"><span class="pre">x</span></tt> is an integer or real matrix with
+Raises an exception when <code class="docutils literal"><span class="pre">x</span></code> is an integer or real matrix with
 nonpositive elements, or a complex matrix with zero elements.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="cvxopt.mul">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">mul</tt><big>(</big><em>x0</em><span class="optional">[</span>, <em>x1</em><span class="optional">[</span>, <em>x2 ...</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.mul" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cvxopt.</code><code class="descname">mul</code><span class="sig-paren">(</span><em>x0</em><span class="optional">[</span>, <em>x1</em><span class="optional">[</span>, <em>x2 ...</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.mul" title="Permalink to this definition">¶</a></dt>
 <dd><p>If the arguments are dense or sparse matrices of the same size, returns
 the elementwise product of its arguments.  The result is a sparse
 matrix if one or more of its arguments is sparse, and a dense matrix
@@ -1194,7 +1194,7 @@ otherwise.</p>
 <p>If the arguments include scalars, a scalar product with the scalar is
 made.  (A 1 by 1 dense matrix is treated as a scalar if the dimensions
 of the other arguments are not all 1 by 1.)</p>
-<p><tt class="xref py py-func docutils literal"><span class="pre">mul</span></tt> can also be called with an iterable
+<p><code class="xref py py-func docutils literal"><span class="pre">mul</span></code> can also be called with an iterable
 (list, tuple, range object, or generator) as its single argument,
 if the iterable generates a list of dense or sparse matrices or
 scalars.</p>
@@ -1213,15 +1213,15 @@ scalars.</p>
 
 <dl class="function">
 <dt id="cvxopt.div">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">div</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#cvxopt.div" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the elementwise division of <tt class="docutils literal"><span class="pre">x</span></tt> by <tt class="docutils literal"><span class="pre">y</span></tt>.  <tt class="docutils literal"><span class="pre">x</span></tt> is a dense
+<code class="descclassname">cvxopt.</code><code class="descname">div</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.div" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the elementwise division of <code class="docutils literal"><span class="pre">x</span></code> by <code class="docutils literal"><span class="pre">y</span></code>.  <code class="docutils literal"><span class="pre">x</span></code> is a dense
 or sparse matrix, or a scalar (Python number of 1 by 1 dense matrix).
-<tt class="docutils literal"><span class="pre">y</span></tt> is a dense matrix or a scalar.</p>
+<code class="docutils literal"><span class="pre">y</span></code> is a dense matrix or a scalar.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="cvxopt.max">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">max</tt><big>(</big><em>x0</em><span class="optional">[</span>, <em>x1</em><span class="optional">[</span>, <em>x2 ...</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.max" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cvxopt.</code><code class="descname">max</code><span class="sig-paren">(</span><em>x0</em><span class="optional">[</span>, <em>x1</em><span class="optional">[</span>, <em>x2 ...</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.max" title="Permalink to this definition">¶</a></dt>
 <dd><p>When called with a single matrix argument, returns the maximum of the
 elements of the matrix (including the zero entries, if the matrix is
 sparse).</p>
@@ -1234,7 +1234,7 @@ as a dense matrix with all its entries equal to the scalar.</p>
 <p>The result is a sparse matrix if all its arguments are sparse matrices.
 The result is a number if all its arguments are numbers.  The result
 is a dense matrix if at least one of the arguments is a dense matrix.</p>
-<p><a class="reference internal" href="#cvxopt.max" title="cvxopt.max"><tt class="xref py py-func docutils literal"><span class="pre">max</span></tt></a> can also be called with an iterable
+<p><a class="reference internal" href="#cvxopt.max" title="cvxopt.max"><code class="xref py py-func docutils literal"><span class="pre">max</span></code></a> can also be called with an iterable
 (list, tuple, range object, or generator) as its single argument,
 if the iterable generates a list of dense or sparse matrices or
 scalars.</p>
@@ -1246,8 +1246,8 @@ scalars.</p>
 </pre></div>
 </div>
 <p>It is important to note the difference between this
-<a class="reference internal" href="#cvxopt.max" title="cvxopt.max"><tt class="xref py py-func docutils literal"><span class="pre">max</span></tt></a>
-and the built-in <a class="reference internal" href="#max" title="max"><tt class="xref py py-func docutils literal"><span class="pre">max</span></tt></a>, explained in the previous section.</p>
+<a class="reference internal" href="#cvxopt.max" title="cvxopt.max"><code class="xref py py-func docutils literal"><span class="pre">max</span></code></a>
+and the built-in <a class="reference internal" href="#max" title="max"><code class="xref py py-func docutils literal"><span class="pre">max</span></code></a>, explained in the previous section.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">max</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>          <span class="c"># built-in max of a sparse matrix takes maximum over nonzero elements</span>
@@ -1268,7 +1268,7 @@ and the built-in <a class="reference internal" href="#max" title="max"><tt class
 
 <dl class="function">
 <dt id="cvxopt.min">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">min</tt><big>(</big><em>x0</em><span class="optional">[</span>, <em>x1</em><span class="optional">[</span>, <em>x2 ...</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.min" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cvxopt.</code><code class="descname">min</code><span class="sig-paren">(</span><em>x0</em><span class="optional">[</span>, <em>x1</em><span class="optional">[</span>, <em>x2 ...</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.min" title="Permalink to this definition">¶</a></dt>
 <dd><p>When called with a single matrix argument, returns the minimum of the
 elements of the matrix (including the zero entries, if the matrix is
 sparse).</p>
@@ -1278,7 +1278,7 @@ A 1 by 1 dense matrix is treated as a scalar if the other arguments
 are not all 1 by 1.  If one of the arguments is scalar, and the other
 arguments are not all 1 by 1, then the scalar argument is interpreted
 as a dense matrix with all its entries equal to the scalar.</p>
-<p><a class="reference internal" href="#cvxopt.min" title="cvxopt.min"><tt class="xref py py-func docutils literal"><span class="pre">min</span></tt></a> can also be called with an iterable
+<p><a class="reference internal" href="#cvxopt.min" title="cvxopt.min"><code class="xref py py-func docutils literal"><span class="pre">min</span></code></a> can also be called with an iterable
 (list, tuple, range object, or generator) as its single argument,
 if the iterable generates a list of dense or sparse matrices or
 scalars.</p>
@@ -1288,49 +1288,49 @@ scalars.</p>
 <div class="section" id="randomly-generated-matrices">
 <span id="s-random"></span><h2>Randomly Generated Matrices<a class="headerlink" href="#randomly-generated-matrices" title="Permalink to this headline">¶</a></h2>
 <p>The CVXOPT package provides two functions
-<a class="reference internal" href="#cvxopt.normal" title="cvxopt.normal"><tt class="xref py py-func docutils literal"><span class="pre">normal</span></tt></a> and
-<a class="reference internal" href="#cvxopt.uniform" title="cvxopt.uniform"><tt class="xref py py-func docutils literal"><span class="pre">uniform</span></tt></a> for generating randomly distributed
+<a class="reference internal" href="#cvxopt.normal" title="cvxopt.normal"><code class="xref py py-func docutils literal"><span class="pre">normal</span></code></a> and
+<a class="reference internal" href="#cvxopt.uniform" title="cvxopt.uniform"><code class="xref py py-func docutils literal"><span class="pre">uniform</span></code></a> for generating randomly distributed
 matrices.
 The default installation relies on the pseudo-random number generators in
-the Python standard library <tt class="xref py py-mod docutils literal"><span class="pre">random</span></tt>.  Alternatively, the random
+the Python standard library <code class="xref py py-mod docutils literal"><span class="pre">random</span></code>.  Alternatively, the random
 number generators in the
 <a class="reference external" href="http://www.gnu.org/software/gsl">GNU Scientific Library (GSL)</a>
 can be used, if this option is selected during the installation of CVXOPT.
 The random matrix functions based on GSL are faster than the default
-functions based on the <tt class="xref py py-mod docutils literal"><span class="pre">random</span></tt> module.</p>
+functions based on the <code class="xref py py-mod docutils literal"><span class="pre">random</span></code> module.</p>
 <dl class="function">
 <dt id="cvxopt.normal">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">normal</tt><big>(</big><em>nrows</em><span class="optional">[</span>, <em>ncols = 1</em><span class="optional">[</span>, <em>mean = 0.0</em><span class="optional">[</span>, <em>std = 1.0</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.normal" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a type <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> dense matrix of size <tt class="docutils literal"><span class="pre">nrows</span></tt>  by
-<tt class="docutils literal"><span class="pre">ncols</span></tt> with elements chosen from a normal distribution
-with mean <tt class="docutils literal"><span class="pre">mean</span></tt> and standard deviation <tt class="docutils literal"><span class="pre">std</span></tt>.</p>
+<code class="descclassname">cvxopt.</code><code class="descname">normal</code><span class="sig-paren">(</span><em>nrows</em><span class="optional">[</span>, <em>ncols = 1</em><span class="optional">[</span>, <em>mean = 0.0</em><span class="optional">[</span>, <em>std = 1.0</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.normal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a type <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> dense matrix of size <code class="docutils literal"><span class="pre">nrows</span></code>  by
+<code class="docutils literal"><span class="pre">ncols</span></code> with elements chosen from a normal distribution
+with mean <code class="docutils literal"><span class="pre">mean</span></code> and standard deviation <code class="docutils literal"><span class="pre">std</span></code>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="cvxopt.uniform">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">uniform</tt><big>(</big><em>nrows</em><span class="optional">[</span>, <em>ncols = 1</em><span class="optional">[</span>, <em>a = 0.0</em><span class="optional">[</span>, <em>b = 1.0</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.uniform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a type <tt class="xref py py-const docutils literal"><span class="pre">'d'</span></tt> dense matrix of size <tt class="docutils literal"><span class="pre">nrows</span></tt> by
-<tt class="docutils literal"><span class="pre">ncols</span></tt> matrix with elements uniformly distributed between <tt class="docutils literal"><span class="pre">a</span></tt> and
-<tt class="docutils literal"><span class="pre">b</span></tt>.</p>
+<code class="descclassname">cvxopt.</code><code class="descname">uniform</code><span class="sig-paren">(</span><em>nrows</em><span class="optional">[</span>, <em>ncols = 1</em><span class="optional">[</span>, <em>a = 0.0</em><span class="optional">[</span>, <em>b = 1.0</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.uniform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a type <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> dense matrix of size <code class="docutils literal"><span class="pre">nrows</span></code> by
+<code class="docutils literal"><span class="pre">ncols</span></code> matrix with elements uniformly distributed between <code class="docutils literal"><span class="pre">a</span></code> and
+<code class="docutils literal"><span class="pre">b</span></code>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="cvxopt.setseed">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">setseed</tt><big>(</big><span class="optional">[</span><em>value</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cvxopt.setseed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the state of the random number generator.  <tt class="docutils literal"><span class="pre">value</span></tt> must be an
-integer.  If <tt class="docutils literal"><span class="pre">value</span></tt> is absent or equal to zero, the value is taken
+<code class="descclassname">cvxopt.</code><code class="descname">setseed</code><span class="sig-paren">(</span><span class="optional">[</span><em>value</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.setseed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the state of the random number generator.  <code class="docutils literal"><span class="pre">value</span></code> must be an
+integer.  If <code class="docutils literal"><span class="pre">value</span></code> is absent or equal to zero, the value is taken
 from the system clock.  If the Python random number generators are
-used, this is equivalent to <tt class="samp docutils literal"><span class="pre">random.seed(value)</span></tt>.</p>
+used, this is equivalent to <code class="samp docutils literal"><span class="pre">random.seed(value)</span></code>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="cvxopt.getseed">
-<tt class="descclassname">cvxopt.</tt><tt class="descname">getseed</tt><big>(</big><big>)</big><a class="headerlink" href="#cvxopt.getseed" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cvxopt.</code><code class="descname">getseed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.getseed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the current state of the random number generator.  This
 function is only available if the GSL random number generators are
 installed.   (The state of the random number generators in the Python
-<tt class="xref py py-mod docutils literal"><span class="pre">random</span></tt> module can be managed via the functions
-<tt class="xref py py-func docutils literal"><span class="pre">random.getstate</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">random.setstate</span></tt>.)</p>
+<code class="xref py py-mod docutils literal"><span class="pre">random</span></code> module can be managed via the functions
+<code class="xref py py-func docutils literal"><span class="pre">random.getstate</span></code> and <code class="xref py py-func docutils literal"><span class="pre">random.setstate</span></code>.)</p>
 </dd></dl>
 
 </div>
@@ -1355,7 +1355,7 @@ installed.   (The state of the random number generators in the Python
   <div role="contentinfo">
     <p>
         &copy; <a href="copyright.html">Copyright</a> .
-      Last updated on Jun 04, 2014.
+      Last updated on Sep 21, 2015.
     </p>
   </div>
 
@@ -1375,7 +1375,7 @@ installed.   (The state of the random number generators in the Python
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.7',
+            VERSION:'1.1.8',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -1401,7 +1401,7 @@ installed.   (The state of the random number generators in the Python
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
     </div>
 
 </body>

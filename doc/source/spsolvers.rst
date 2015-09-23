@@ -39,9 +39,6 @@ minimum degree orderings of sparse matrices.
 
 .. seealso::
 
-    * `AMD code, documentation, copyright, and license
-      <http://www.cise.ufl.edu/research/sparse/amd>`_
-
     * P. R. Amestoy, T. A. Davis, I. S. Duff,  Algorithm 837: AMD, An 
       Approximate Minimum Degree Ordering Algorithm, ACM Transactions on 
       Mathematical Software, 30(3), 381-388, 2004.
@@ -70,7 +67,7 @@ As an example we consider the matrix
 
 
 >>> from cvxopt import spmatrix, amd 
->>> A = spmatrix([10,3,5,-2,5,2], [0,2,1,3,2,3], [0,0,1,1,2,3])
+>>> A = spmatrix([10,3,5,-2,5,2], [0,2,1,2,2,3], [0,0,1,1,2,3])
 >>> P = amd.order(A)
 >>> print(P)
 [ 1]
@@ -90,9 +87,6 @@ the UMFPACK library, with all control options set to the default values
 described in the UMFPACK user guide.  
 
 .. seealso::
-
-    * `UMFPACK code, documentation, copyright, and license
-      <http://www.cise.ufl.edu/research/sparse/umfpack>`_
 
     * T. A. Davis, Algorithm 832: UMFPACK -- an unsymmetric-pattern 
       multifrontal method with a column pre-ordering strategy, ACM 
@@ -424,9 +418,11 @@ of symmetric indefinite matrices (with :math:`L` unit lower-triangular and
 :math:`D` diagonal and nonsingular) if such a factorization exists.  
 
 .. seealso::
-   
-     `CHOLMOD code, documentation, copyright, and license
-     <http://www.cise.ufl.edu/research/sparse/cholmod>`_
+
+    * Y. Chen, T. A. Davis, W. W. Hager, S. Rajamanickam, 
+      Algorithm 887: CHOLMOD, Supernodal Sparse Cholesky Factorization 
+      and Update/Downdate, ACM Transactions on Mathematical Software, 
+      35(3), 22:1-22:14, 2008.
 
 .. function:: cvxopt.cholmod.linsolve(A, B[, p = None, uplo = 'L'])
 
@@ -441,8 +437,10 @@ of symmetric indefinite matrices (with :math:`L` unit lower-triangular and
     ``B`` is a dense matrix of the same type as ``A``.  On exit it 
     is overwritten with the solution.  The argument ``p`` is an integer 
     matrix with length equal to the order of :math:`A`, and specifies an 
-    optional reordering.  If ``p`` is not specified, CHOLMOD uses a 
-    reordering from the AMD library.
+    optional reordering.   
+    See the comment on 
+    :attr:`options['nmethods']` for details on which ordering is used
+    by CHOLMOD.
 
     Raises an :exc:`ArithmeticError` if the factorization does not exist.
 
@@ -480,6 +478,9 @@ As an  example, we solve
     ``B`` is an :class:`spmatrix <cvxopt.spmatrix>` and 
     that the solution is returned as an output argument (as a new 
     :class:`spmatrix`).  ``B`` is not modified.
+    See the comment on 
+    :attr:`options['nmethods']` for details on which ordering is used
+    by CHOLMOD.
 
 
 The following code computes the inverse of the coefficient matrix 
@@ -527,10 +528,12 @@ The functions :func:`linsolve <cvxopt.cholmod.linsolve>` and
     If ``uplo`` is :const:`'U'`, only the upper triangular part of ``A`` 
     is accessed and the lower triangular part is ignored.
 
-    If ``p`` is not provided, a reordering from the AMD library is used.
-
     The symbolic factorization is returned as an opaque C object that 
     can be passed to :func:`numeric <cvxopt.cholmod.numeric>`.
+
+    See the comment on 
+    :attr:`options['nmethods']` for details on which ordering is used
+    by CHOLMOD.
 
 
 .. function:: cvxopt.cholmod.numeric(A, F)
@@ -630,7 +633,9 @@ parameters described in the CHOLMOD user guide are used, except for
 :c:data:`Common->supernodal` which is set to 2 instead of 1.
 These parameters (and a few others) can be modified by making an 
 entry in the dictionary :attr:`cholmod.options`. 
-The meaning of these parameters is as follows.
+The meaning of the options :attr:`options['supernodal']`  and
+:attr:`options['nmethods']` is summarized as follows (and described
+in detail in the CHOLMOD user guide). 
 
 :attr:`options['supernodal']` 
     If equal to 0, a factorization :eq:`e-chol-ldl` is computed using a 
@@ -639,10 +644,21 @@ The meaning of these parameters is as follows.
     efficient of the two factorizations is selected, based on the sparsity 
     pattern.  Default: 2.
 
-:attr:`options['print']` 
-    A nonnegative integer that controls the amount of output printed to 
-    the screen.  Default: 0 (no output).
-
+:attr:`options['nmethods']` 
+    The default ordering used by the CHOLMOD is the ordering in the  AMD
+    library, but depending on the value of :attr:`options['nmethods']`.
+    other orderings are also considered. 
+    If ``nmethods`` is equal to 2, the ordering specified 
+    by the user and the AMD ordering are compared, and the best of the two
+    orderings is used.  If the user does not specify an ordering, the AMD 
+    ordering is used.
+    If equal to 1, the user must specify an ordering, and the ordering 
+    provided by the user is used.
+    If equal to 0, all available orderings are compared and the best
+    ordering is used.  The available orderings include the AMD ordering,
+    the ordering specified by the user (if any), and possibly other 
+    orderings if they are installed during the CHOLMOD installation.
+    Default: 0.
 
 As an example that illustrates :func:`diag  <cvxopt.cholmod.diag>` and the 
 use of :attr:`cholmod.options`, we compute the logarithm of the determinant 

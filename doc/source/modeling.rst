@@ -617,7 +617,7 @@ We can solve the same LP in  matrix form as follows.
 
 The :class:`op` class also includes two methods for writing and reading
 files in 
-`MPS format <http://www-fp.mcs.anl.gov/otc/Guide/OptWeb/continuous/constrained/linearprog/mps.html>`_.
+`MPS format <http://lpsolve.sourceforge.net/5.5/mps-format.htm>`_.
 
 .. method:: tofile(filename) :noindex:
 

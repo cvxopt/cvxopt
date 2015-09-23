@@ -45,7 +45,7 @@
  * diagonal entry is set to zero (this includes columns to the left of L->minor
  * in the same supernode), as are all subsequent supernodes.
  *
- * workspace: Flag (nrow), Head (nrow+1), Iwork (2*nrow + 4*nsuper).
+ * workspace: Flag (nrow), Head (nrow+1), Iwork (2*nrow + 5*nsuper).
  *	Allocates temporary space of size L->maxcsize * sizeof(double)
  *	(twice that for the complex/zomplex case).
  *
@@ -56,22 +56,29 @@
  * must match.
  */
 
+#ifndef NGPL
 #ifndef NSUPERNODAL
 
 #include "cholmod_internal.h"
 #include "cholmod_supernodal.h"
 
+#ifdef GPU_BLAS
+#include "cholmod_gpu.h"
+#endif
+
 /* ========================================================================== */
 /* === TEMPLATE codes for GPU and regular numeric factorization ============= */
 /* ========================================================================== */
 
+#ifdef DLONG
 #ifdef GPU_BLAS
 #define REAL
-#include "t_cholmod_gpu.c"
+#include "../GPU/t_cholmod_gpu.c"
 #define COMPLEX
-#include "t_cholmod_gpu.c"
+#include "../GPU/t_cholmod_gpu.c"
 #define ZOMPLEX
-#include "t_cholmod_gpu.c"
+/* no #include of "../GPU/t_cholmod_gpu.c".  Zomplex case relies on complex */
+#endif
 #endif
 
 #define REAL
@@ -182,9 +189,9 @@ int CHOLMOD(super_numeric)
     PRINT1 (("nsuper "ID" maxcsize %g\n", nsuper, (double) maxcsize)) ;
     ASSERT (nsuper >= 0 && maxcsize > 0) ;
 
-    /* w = 2*n + 4*nsuper */
+    /* w = 2*n + 5*nsuper */
     w = CHOLMOD(mult_size_t) (n, 2, &ok) ;
-    t = CHOLMOD(mult_size_t) (nsuper, 4, &ok) ;
+    t = CHOLMOD(mult_size_t) (nsuper, 5, &ok) ;
     w = CHOLMOD(add_size_t) (w, t, &ok) ;
     if (!ok)
     {
@@ -302,4 +309,5 @@ int CHOLMOD(super_numeric)
     CHOLMOD(free_dense) (&C, Common) ;
     return (ok) ;
 }
+#endif
 #endif
