@@ -95,7 +95,7 @@ static int convert_mtx(matrix *src, void *dest, int id)
     return convert_num[id](dest, src, 1, 0);
 
   if (MAT_ID(src) == id) {
-    memcpy(dest, src->buffer, E_SIZE[src->id]*MAT_LGT(src) );
+    memcpy(dest, src->buffer, (size_t)E_SIZE[src->id]*MAT_LGT(src) );
     return 0;
   }
 

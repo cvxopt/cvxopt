@@ -213,7 +213,7 @@ else:
     amd = Extension('amd',
         include_dirs = [ 'src/C/SuiteSparse/AMD/Include',
             'src/C/SuiteSparse/SuiteSparse_config' ],
-        define_macros = MACROS,
+        define_macros = MACROS + [('NTIMER', '1')],
         sources = [ 'src/C/amd.c', 'src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
         glob('src/C/SuiteSparse/AMD/Source/*.c') )
 
