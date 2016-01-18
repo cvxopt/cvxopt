@@ -2106,10 +2106,11 @@ The function :func:`qp <cvxopt.solvers.qp>` calls
 :func:`coneqp` and hence uses the same 
 stopping criteria.
 
-The control parameters listed in the GLPK documentation are set to their 
-default values and can be customized by making an entry in 
-:attr:`solvers.options['glpk']`.  The entry must be a dictionary in
- which the key/value pairs are GLPK parameter names and values.  For example, the command
+The control parameters listed in the GLPK documentation are set 
+to their default values and can be customized by making an entry
+in :attr:`solvers.options['glpk']`.  The entry must be a 
+dictionary in which the key/value pairs are GLPK parameter names 
+and values.  For example, the command 
 
 >>> from cvxopt import solvers 
 >>> solvers.options['glpk'] = {'msg_lev' : 'GLP_MSG_OFF'}
