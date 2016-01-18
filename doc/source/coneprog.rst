@@ -1971,7 +1971,8 @@ Algorithm Parameters
 In this section we list some algorithm control parameters that can be 
 modified without editing the source code.  These control parameters are 
 accessible via the dictionary :attr:`solvers.options`.  By default the 
-dictionary is empty and the default values of the parameters are used.
+dictionary is empty and the default values of the parameters are
+used. 
 
 One can change the parameters in the default solvers by 
 adding entries with the following key values.  
@@ -2107,14 +2108,14 @@ stopping criteria.
 
 The control parameters listed in the GLPK documentation are set to their 
 default values and can be customized by making an entry in 
-:attr:`solvers.options`.  The keys in the dictionary are strings with the 
-name of the GLPK parameter.  For example, the command
+:attr:`solvers.options['glpk']`.  The entry must be a dictionary in
+ which the key/value pairs are GLPK parameter names and values.  For example, the command
 
 >>> from cvxopt import solvers 
->>> solvers.options['msg_lev'] = 'GLP_MSG_OFF' 
+>>> solvers.options['glpk'] = {'msg_lev' : 'GLP_MSG_OFF'}
 
-turns off the screen output subsequent calls 
-:func:`lp <cvxopt.solvers.lp>` with the :const:`'glpk'` option.
+turns off the screen output in subsequent 
+:func:`lp <cvxopt.solvers.lp>` calls with the :const:`'glpk'` option.
 
 The MOSEK interior-point algorithm parameters are set to their default 
 values.  They can be modified by adding an entry 
@@ -2122,7 +2123,7 @@ values.  They can be modified by adding an entry
 MOSEK parameter/value pairs, with the parameter names imported from
 :mod:`mosek`.  For details see Section 15 of the MOSEK Python API Manual.
 
-For example the commands
+For example, the commands
 
 >>> from cvxopt import solvers 
 >>> import mosek
@@ -2132,7 +2133,7 @@ turn off the screen output during calls of
 :func:`lp` or :func:`socp` with
 the :const:`'mosek'` option.
 
-The following control parameters in :attr:`solvers.options` affect the 
+The following control parameters in :attr:`solvers.options['dsdp']` affect the 
 execution of the DSDP algorithm:
 
 :const:`'DSDP_Monitor'` 
@@ -2144,3 +2145,16 @@ execution of the DSDP algorithm:
 
 :const:`'DSDP_GapTolerance'` 
     relative accuracy (default: :const:`1e-5`).
+
+It is also possible to override the options specified in the
+dictionary :attr:`solvers.options` by passing a dictionary with
+options as a keyword argument. For example, the commands
+
+>>> from cvxopt import solvers
+>>> opts = {'maxiters' : 50}
+>>> solvers.conelp(c, G, h, options = opts)
+
+override the options specified in the dictionary
+:attr:`solvers.options` and use the options in the dictionary
+:attr:`opts` instead. This is useful e.g. when several problem
+instances should be solved in parallel, but using different options.
