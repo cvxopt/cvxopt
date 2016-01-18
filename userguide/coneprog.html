@@ -1878,7 +1878,8 @@ need to be installed separately.</p>
 <p>In this section we list some algorithm control parameters that can be
 modified without editing the source code.  These control parameters are
 accessible via the dictionary <code class="xref py py-attr docutils literal"><span class="pre">solvers.options</span></code>.  By default the
-dictionary is empty and the default values of the parameters are used.</p>
+dictionary is empty and the default values of the parameters are
+used.</p>
 <p>One can change the parameters in the default solvers by
 adding entries with the following key values.</p>
 <dl class="docutils">
@@ -1972,22 +1973,23 @@ status <code class="xref py py-const docutils literal"><span class="pre">'optima
 </div><p>The function <a class="reference internal" href="#cvxopt.solvers.qp" title="cvxopt.solvers.qp"><code class="xref py py-func docutils literal"><span class="pre">qp</span></code></a> calls
 <code class="xref py py-func docutils literal"><span class="pre">coneqp</span></code> and hence uses the same
 stopping criteria.</p>
-<p>The control parameters listed in the GLPK documentation are set to their
-default values and can be customized by making an entry in
-<code class="xref py py-attr docutils literal"><span class="pre">solvers.options</span></code>.  The keys in the dictionary are strings with the
-name of the GLPK parameter.  For example, the command</p>
+<p>The control parameters listed in the GLPK documentation are set
+to their default values and can be customized by making an entry
+in <code class="xref py py-attr docutils literal"><span class="pre">solvers.options['glpk']</span></code>.  The entry must be a
+dictionary in which the key/value pairs are GLPK parameter names
+and values.  For example, the command</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;msg_lev&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;GLP_MSG_OFF&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;glpk&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;msg_lev&#39;</span> <span class="p">:</span> <span class="s">&#39;GLP_MSG_OFF&#39;</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>turns off the screen output subsequent calls
-<a class="reference internal" href="#cvxopt.solvers.lp" title="cvxopt.solvers.lp"><code class="xref py py-func docutils literal"><span class="pre">lp</span></code></a> with the <code class="xref py py-const docutils literal"><span class="pre">'glpk'</span></code> option.</p>
+<p>turns off the screen output in subsequent
+<a class="reference internal" href="#cvxopt.solvers.lp" title="cvxopt.solvers.lp"><code class="xref py py-func docutils literal"><span class="pre">lp</span></code></a> calls with the <code class="xref py py-const docutils literal"><span class="pre">'glpk'</span></code> option.</p>
 <p>The MOSEK interior-point algorithm parameters are set to their default
 values.  They can be modified by adding an entry
 <code class="xref py py-attr docutils literal"><span class="pre">solvers.options['MOSEK']</span></code>.  This entry is a dictionary with
 MOSEK parameter/value pairs, with the parameter names imported from
 <code class="xref py py-mod docutils literal"><span class="pre">mosek</span></code>.  For details see Section 15 of the MOSEK Python API Manual.</p>
-<p>For example the commands</p>
+<p>For example, the commands</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mosek</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;MOSEK&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">mosek</span><span class="o">.</span><span class="n">iparam</span><span class="o">.</span><span class="n">log</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
@@ -1996,7 +1998,7 @@ MOSEK parameter/value pairs, with the parameter names imported from
 <p>turn off the screen output during calls of
 <code class="xref py py-func docutils literal"><span class="pre">lp</span></code> or <code class="xref py py-func docutils literal"><span class="pre">socp</span></code> with
 the <code class="xref py py-const docutils literal"><span class="pre">'mosek'</span></code> option.</p>
-<p>The following control parameters in <code class="xref py py-attr docutils literal"><span class="pre">solvers.options</span></code> affect the
+<p>The following control parameters in <code class="xref py py-attr docutils literal"><span class="pre">solvers.options['dsdp']</span></code> affect the
 execution of the DSDP algorithm:</p>
 <dl class="docutils">
 <dt><code class="xref py py-const docutils literal"><span class="pre">'DSDP_Monitor'</span></code></dt>
@@ -2007,6 +2009,18 @@ the screen (default: <code class="xref py py-const docutils literal"><span class
 <dt><code class="xref py py-const docutils literal"><span class="pre">'DSDP_GapTolerance'</span></code></dt>
 <dd>relative accuracy (default: <code class="xref py py-const docutils literal"><span class="pre">1e-5</span></code>).</dd>
 </dl>
+<p>It is also possible to override the options specified in the
+dictionary <code class="xref py py-attr docutils literal"><span class="pre">solvers.options</span></code> by passing a dictionary with
+options as a keyword argument. For example, the commands</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">opts</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;maxiters&#39;</span> <span class="p">:</span> <span class="mi">50</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">solvers</span><span class="o">.</span><span class="n">conelp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">opts</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>override the options specified in the dictionary
+<code class="xref py py-attr docutils literal"><span class="pre">solvers.options</span></code> and use the options in the dictionary
+<code class="xref py py-attr docutils literal"><span class="pre">opts</span></code> instead. This is useful e.g. when several problem
+instances should be solved in parallel, but using different options.</p>
 </div>
 </div>
 
@@ -2029,7 +2043,7 @@ the screen (default: <code class="xref py py-const docutils literal"><span class
   <div role="contentinfo">
     <p>
         &copy; <a href="copyright.html">Copyright</a> .
-      Last updated on Sep 22, 2015.
+      Last updated on Jan 18, 2016.
     </p>
   </div>
 
