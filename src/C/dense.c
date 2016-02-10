@@ -101,7 +101,7 @@ static int convert_mtx(matrix *src, void *dest, int id)
 
   int_t i;
   for (i=0; i<MAT_LGT(src); i++)
-    if (convert_num[id](dest + i*E_SIZE[id], src, 0,i)) return -1;
+    if (convert_num[id]((char*)dest + i*E_SIZE[id], src, 0,i)) return -1;
 
   return 0;
 }
@@ -115,7 +115,7 @@ void * convert_mtx_alloc(matrix *src, int id)
 
   int_t i;
   for (i=0; i<MAT_LGT(src); i++)
-    if (convert_num[id](ptr + i*E_SIZE[id], src, 0,i))
+    if (convert_num[id]((char*)ptr + i*E_SIZE[id], src, 0,i))
       { free(ptr); return NULL; }
 
   return ptr;
@@ -231,21 +231,21 @@ matrix *Matrix_NewFromPyBuffer(PyObject *obj, int id, int *ndim)
      case INT :
        if (int_to_int_t)
 	 MAT_BUFI(a)[cnt] =
-	   *(int *)(view->buf+i*view->strides[0]+j*view->strides[1]);
+	   *(int *)((char*)view->buf+i*view->strides[0]+j*view->strides[1]);
        else
 	 MAT_BUFI(a)[cnt] =
-	   *(int_t *)(view->buf+i*view->strides[0]+j*view->strides[1]);
+	   *(int_t *)((char*)view->buf+i*view->strides[0]+j*view->strides[1]);
        break;
      case DOUBLE:
        switch (src_id) {
        case INT:
 	 if (int_to_int_t)
-	   n.d = *(int *)(view->buf + i*view->strides[0]+j*view->strides[1]);
+	   n.d = *(int *)((char*)view->buf + i*view->strides[0]+j*view->strides[1]);
 	 else
-	   n.d = *(int_t *)(view->buf + i*view->strides[0]+j*view->strides[1]);
+	   n.d = *(int_t *)((char*)view->buf + i*view->strides[0]+j*view->strides[1]);
 	 break;
        case DOUBLE:
-	 n.d = *(double *)(view->buf + i*view->strides[0]+j*view->strides[1]);
+	 n.d = *(double *)((char*)view->buf + i*view->strides[0]+j*view->strides[1]);
 	 break;
        }
        MAT_BUFD(a)[cnt] = n.d;
@@ -254,15 +254,15 @@ matrix *Matrix_NewFromPyBuffer(PyObject *obj, int id, int *ndim)
        switch (src_id) {
        case INT:
 	 if (int_to_int_t)
-	   n.z = *(int *)(view->buf + i*view->strides[0]+j*view->strides[1]);
+	   n.z = *(int *)((char*)view->buf + i*view->strides[0]+j*view->strides[1]);
 	 else
-	   n.z = *(int_t *)(view->buf + i*view->strides[0]+j*view->strides[1]);
+	   n.z = *(int_t *)((char*)view->buf + i*view->strides[0]+j*view->strides[1]);
     	 break;
        case DOUBLE:
-	 n.z = *(double *)(view->buf+i*view->strides[0]+j*view->strides[1]);
+	 n.z = *(double *)((char*)view->buf+i*view->strides[0]+j*view->strides[1]);
 	 break;
        case COMPLEX:
-	 n.z = *(double complex *)(view->buf+i*view->strides[0]+j*view->strides[1]);
+	 n.z = *(double complex *)((char*)view->buf+i*view->strides[0]+j*view->strides[1]);
 	 break;
        }
        MAT_BUFZ(a)[cnt] = n.z;
@@ -436,18 +436,18 @@ matrix * dense_concat(PyObject *L, int id_arg)
 
         if (Matrix_Check(Lij)) {
           for (ik=0; ik<blk_nrows; ik++)
-            convert_num[id](MAT_BUF(A) + (mk+ik+(nk+jk)*m)*E_SIZE[id],
+            convert_num[id]((char*)MAT_BUF(A) + (mk+ik+(nk+jk)*m)*E_SIZE[id],
                 Lij, 0, ik + jk*blk_nrows);
 
         } else if (SpMatrix_Check(Lij)) {
           for (ik=SP_COL(Lij)[jk]; ik<SP_COL(Lij)[jk+1]; ik++)
-            convert_array(MAT_BUF(A) + ((nk+jk)*m+mk+SP_ROW(Lij)[ik])*
-                E_SIZE[id], SP_VAL(Lij) + ik*E_SIZE[SP_ID(Lij)],
+            convert_array((char*)MAT_BUF(A) + ((nk+jk)*m+mk+SP_ROW(Lij)[ik])*
+                E_SIZE[id], (char*)SP_VAL(Lij) + ik*E_SIZE[SP_ID(Lij)],
                 id, SP_ID(Lij), 1);
 
         } else {
 
-          convert_num[id](MAT_BUF(A) + (mk+(nk+jk)*m)*E_SIZE[id],
+          convert_num[id]((char*)MAT_BUF(A) + (mk+(nk+jk)*m)*E_SIZE[id],
               Lij, 1, 0);
         }
       }
