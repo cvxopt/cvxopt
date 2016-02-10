@@ -225,7 +225,7 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
                 (double *)(MAT_BUFZ(B) + k*ldB + oB), NULL, numeric,
                 NULL, info);
         if (info[UMFPACK_STATUS] == UMFPACK_OK)
-            memcpy(B->buffer + (k*ldB + oB)*E_SIZE[SP_ID(A)], x,
+            memcpy((char*)B->buffer + (k*ldB + oB)*E_SIZE[SP_ID(A)], x,
                 n*E_SIZE[SP_ID(A)]);
         else
 	    break;
@@ -548,7 +548,7 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
                 (void *) PyCObject_AsVoidPtr(F), NULL, info);
 #endif
         if (info[UMFPACK_STATUS] == UMFPACK_OK)
-            memcpy(B->buffer + (k*ldB + oB)*E_SIZE[SP_ID(A)], x,
+            memcpy((char*)B->buffer + (k*ldB + oB)*E_SIZE[SP_ID(A)], x,
                 n*E_SIZE[SP_ID(A)]);
         else
 	    break;
