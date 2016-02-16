@@ -240,7 +240,7 @@ spmatrix *SpMatrix_NewFromMatrix(matrix *src, int id)
   for (j=0; j<MAT_NCOLS(src); j++) {
     for (i=0; i<MAT_NROWS(src); i++) {
 
-      number *a = MAT_BUF(src) + (i+j*MAT_NROWS(src))*E_SIZE[MAT_ID(src)];
+      number *a = (number*)(((char*)MAT_BUF(src)) + (i+j*MAT_NROWS(src))*E_SIZE[MAT_ID(src)]);
       if (((MAT_ID(src) == INT) && (a->i != Zero[INT].i)) ||
           ((MAT_ID(src) == DOUBLE) && (a->d != Zero[DOUBLE].d)) ||
           ((MAT_ID(src) == COMPLEX) && (a->z != Zero[COMPLEX].z)))
@@ -309,8 +309,8 @@ spmatrix * sparse_concat(PyObject *L, int id_arg)
         for (jk=0; jk<MAT_NCOLS(Lij); jk++) {
           for (ik=0; ik<MAT_NROWS(Lij); ik++) {
 
-            number *a = MAT_BUF(Lij) +
-                (ik+jk*MAT_NROWS(Lij))*E_SIZE[MAT_ID(Lij)];
+            number *a = (number*)(((char*)MAT_BUF(Lij)) +
+				  (ik+jk*MAT_NROWS(Lij))*E_SIZE[MAT_ID(Lij)]);
 
             if (((MAT_ID(Lij) == INT) && (a->i != Zero[INT].i)) ||
                 ((MAT_ID(Lij) == DOUBLE) && (a->d != Zero[DOUBLE].d)) ||
@@ -3236,7 +3236,7 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
               if (itype == 'n')
                 write_num[id](val_merge, tot_cnt++, &val, 0);
               else
-                convert_num[id](val_merge + E_SIZE[id]*tot_cnt++,
+                convert_num[id]((char*)val_merge + E_SIZE[id]*tot_cnt++,
                     value, 0, ilist[rhs_cnt].value);
 
               col_merge[j+1]++;
@@ -3253,7 +3253,7 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
               if (itype == 'n')
                 write_num[id](val_merge, tot_cnt++, &val, 0);
               else
-                convert_num[id](val_merge + E_SIZE[id]*tot_cnt++,
+                convert_num[id]((char*)val_merge + E_SIZE[id]*tot_cnt++,
                     value, 0, ilist[rhs_cnt].value);
               col_merge[j+1]++;
             }
@@ -3275,7 +3275,7 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
             if (itype == 'n')
               write_num[id](val_merge, tot_cnt++, &val, 0);
             else
-              convert_num[id](val_merge + E_SIZE[id]*tot_cnt++,
+              convert_num[id]((char*)val_merge + E_SIZE[id]*tot_cnt++,
                   value, 0, ilist[rhs_cnt].value);
             col_merge[j+1]++;
           }
@@ -3332,8 +3332,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
                 (rhs_cnt==0 || (rhs_cnt>0 && ilist[rhs_cnt].key !=
                     ilist[rhs_cnt-1].key))) {
               row_merge[tot_cnt] = rhs_i;
-              convert_array(val_merge + E_SIZE[id]*tot_cnt++,
-                  SP_VAL(value) + E_SIZE[val_id]*ilist[rhs_cnt].value,
+              convert_array((char *)val_merge + E_SIZE[id]*tot_cnt++,
+			    ((char*)SP_VAL(value)) + E_SIZE[val_id]*ilist[rhs_cnt].value,
                   id, val_id, 1);
               col_merge[j+1]++;
             }
@@ -3348,8 +3348,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
                 (rhs_cnt>0 && ilist[rhs_cnt].key !=
                     ilist[rhs_cnt-1].key))) {
               row_merge[tot_cnt] = rhs_i;
-              convert_array(val_merge + E_SIZE[id]*tot_cnt++,
-                  SP_VAL(value) + E_SIZE[val_id]*ilist[rhs_cnt].value,
+              convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
+			    ((char*)SP_VAL(value)) + E_SIZE[val_id]*ilist[rhs_cnt].value,
                   id, val_id, 1);
               col_merge[j+1]++;
             }
@@ -3360,8 +3360,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
           }
           else {
             row_merge[tot_cnt] = SP_ROW(self)[i];
-            convert_array(val_merge + E_SIZE[id]*tot_cnt++,
-                SP_VAL(self) + E_SIZE[id]*i, id, id, 1);
+            convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
+			  ((char*)SP_VAL(self)) + E_SIZE[id]*i, id, id, 1);
             col_merge[j+1]++;
           }
         }
@@ -3369,8 +3369,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
           if (ilist[rhs_cnt].value >= 0 && (rhs_cnt==0 || (rhs_cnt>0 &&
               ilist[rhs_cnt].key != ilist[rhs_cnt-1].key))) {
             row_merge[tot_cnt] = rhs_i;
-            convert_array(val_merge + E_SIZE[id]*tot_cnt++,
-                SP_VAL(value) + E_SIZE[val_id]*ilist[rhs_cnt].value,
+            convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
+			  ((char*)SP_VAL(value)) + E_SIZE[val_id]*ilist[rhs_cnt].value,
                 id, val_id, 1);
             col_merge[j+1]++;
           }
@@ -3508,7 +3508,7 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
             if (itype == 'n')
               write_num[id](val_merge, tot_cnt++, &val, 0);
             else
-              convert_num[id](val_merge + E_SIZE[id]*tot_cnt++,
+              convert_num[id]((char*)val_merge + E_SIZE[id]*tot_cnt++,
                   value, 0, Is[rhs_cnti].value + lgtI*Js[rhs_cntj].value);
             col_merge[j+1]++;
           }
@@ -3524,7 +3524,7 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
             if (itype == 'n')
               write_num[id](val_merge, tot_cnt++, &val, 0);
             else
-              convert_num[id](val_merge + E_SIZE[id]*tot_cnt++,
+              convert_num[id]((char*)val_merge + E_SIZE[id]*tot_cnt++,
                   value, 0, Is[rhs_cnti].value + lgtI*Js[rhs_cntj].value);
 
             col_merge[j+1]++;
@@ -3534,8 +3534,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
         }
         else {
           row_merge[tot_cnt] = SP_ROW(self)[i];
-          convert_array(val_merge + E_SIZE[id]*tot_cnt++,
-              SP_VAL(self) + E_SIZE[id]*i, id, id, 1);
+          convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
+			((char*)SP_VAL(self)) + E_SIZE[id]*i, id, id, 1);
           col_merge[j+1]++;
         }
       }
@@ -3548,7 +3548,7 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
           if (itype == 'n')
             write_num[id](val_merge, tot_cnt++, &val, 0);
           else
-            convert_num[id](val_merge + E_SIZE[id]*tot_cnt++,
+            convert_num[id]((char*)val_merge + E_SIZE[id]*tot_cnt++,
                 value, 0, Is[rhs_cnti].value + lgtI*Js[rhs_cntj].value);
 
           col_merge[j+1]++;
@@ -3621,8 +3621,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
               (rhs_cnti>0 && Is[rhs_cnti].key != Is[rhs_cnti-1].key))) {
             row_merge[tot_cnt] = rhs_i;
 
-            convert_array(val_merge + E_SIZE[id]*tot_cnt++,
-                SP_VAL(value) + E_SIZE[val_id]*
+            convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
+			  ((char*)SP_VAL(value)) + E_SIZE[val_id]*
                 (Is[rhs_cnti].value+rhs_offs_rptr), id, val_id, 1);
 
             col_merge[j+1]++;
@@ -3635,8 +3635,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
               (rhs_cnti>0 && Is[rhs_cnti].key != Is[rhs_cnti-1].key))) {
             row_merge[tot_cnt] = rhs_i;
 
-            convert_array(val_merge + E_SIZE[id]*tot_cnt++,
-                SP_VAL(value) + E_SIZE[val_id]*
+            convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
+			  ((char*)SP_VAL(value)) + E_SIZE[val_id]*
                 (Is[rhs_cnti].value+rhs_offs_rptr), id, val_id, 1);
 
             col_merge[j+1]++;
@@ -3646,8 +3646,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
         }
         else {
           row_merge[tot_cnt] = SP_ROW(self)[i];
-          convert_array(val_merge + E_SIZE[id]*tot_cnt++,
-              SP_VAL(self) + E_SIZE[id]*i, id, id, 1);
+          convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
+			((char*)SP_VAL(self)) + E_SIZE[id]*i, id, id, 1);
           col_merge[j+1]++;
         }
       }
@@ -3657,8 +3657,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
 
           row_merge[tot_cnt] = rhs_i;
 
-          convert_array(val_merge + E_SIZE[id]*tot_cnt++,
-              SP_VAL(value) + E_SIZE[val_id]*
+          convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
+			((char*)SP_VAL(value)) + E_SIZE[val_id]*
               (Is[rhs_cnti].value+rhs_offs_rptr), id, val_id, 1);
 
           col_merge[j+1]++;

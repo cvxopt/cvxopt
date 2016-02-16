@@ -528,7 +528,7 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
 
     void *b_old = b->x;
     for (i=0; i<nrhs; i++){
-        b->x = MAT_BUF(B) + (i*ldB + oB)*E_SIZE[MAT_ID(B)];
+      b->x = ((char*)MAT_BUF(B)) + (i*ldB + oB)*E_SIZE[MAT_ID(B)];
         x = CHOL(solve) (sysvalues[sys], L, b, &Common);
         if (Common.status != CHOLMOD_OK){
             PyErr_SetString(PyExc_ValueError, "solve step failed");
@@ -785,7 +785,7 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
     }
     b_old = b->x;
     for (i=0; i<nrhs; i++) {
-        b->x = MAT_BUF(B) + (i*ldB + oB)*E_SIZE[MAT_ID(B)];
+      b->x = ((char*)MAT_BUF(B)) + (i*ldB + oB)*E_SIZE[MAT_ID(B)];
         x = CHOL(solve) (CHOLMOD_A, L, b, &Common);
         if (Common.status != CHOLMOD_OK){
             PyErr_SetString(PyExc_ValueError, "solve step failed");
