@@ -4,6 +4,7 @@ except ImportError:
     from distutils.core import setup, Extension
 from glob import glob
 import os
+import sys
 
 # Modifiy this if BLAS and LAPACK libraries are not in /usr/lib.
 BLAS_LIB_DIR = '/usr/lib'
@@ -89,6 +90,8 @@ SUITESPARSE_EXT_LIB = os.environ.get("CVXOPT_SUITESPARSE_EXT_LIB",SUITESPARSE_EX
 SUITESPARSE_LIB_DIR = os.environ.get("CVXOPT_SUITESPARSE_LIB_DIR",SUITESPARSE_LIB_DIR)
 SUITESPARSE_INC_DIR = os.environ.get("CVXOPT_SUITESPARSE_INC_DIR",SUITESPARSE_INC_DIR)
 
+RT_LIB = ["rt"] if sys.platform.startswith("linux") else []
+
 extmods = []
 
 # Macros
@@ -150,7 +153,7 @@ lapack = Extension('lapack', libraries = LAPACK_LIB + BLAS_LIB,
 
 if SUITESPARSE_EXT_LIB:
     umfpack = Extension('umfpack',
-        libraries = ['amd','colamd','suitesparseconfig','cholmod','umfpack'],
+        libraries = ['umfpack','cholmod','amd','colamd','suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
         include_dirs = [SUITESPARSE_INC_DIR],
         library_dirs = [SUITESPARSE_LIB_DIR],
         sources = ['src/C/umfpack.c'])
@@ -172,12 +175,11 @@ else:
             glob('src/C/SuiteSparse_cvxopt_extra/umfpack/*'))
 
 # Build for int or long?
-import sys
 if sys.maxsize > 2**31: MACROS += [('DLONG',None)]
 
 if SUITESPARSE_EXT_LIB:
     cholmod = Extension('cholmod',
-        libraries = ['amd','colamd','suitesparseconfig','cholmod'],
+        libraries = ['cholmod','colamd','amd','suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
         include_dirs = [SUITESPARSE_INC_DIR],
         library_dirs = [SUITESPARSE_LIB_DIR],
         sources = [ 'src/C/cholmod.c' ])
@@ -205,7 +207,7 @@ else:
 
 if SUITESPARSE_EXT_LIB:
     amd = Extension('amd',
-        libraries = ['amd','suitesparseconfig'],
+        libraries = ['amd','suitesparseconfig'] + RT_LIB,
         include_dirs = [SUITESPARSE_INC_DIR],
         library_dirs = [SUITESPARSE_LIB_DIR],
         sources = ['src/C/amd.c'])
