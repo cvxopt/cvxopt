@@ -1,8 +1,23 @@
-default: all
+#-------------------------------------------------------------------------------
+# KLU Lib/Makefile
+#-------------------------------------------------------------------------------
+
+LIBRARY = libklu
+VERSION = 1.3.8
+SO_VERSION = 1
+
+default: library
 
 ccode: all
 
 include ../../SuiteSparse_config/SuiteSparse_config.mk
+
+# KLU depends on BTF, AMD, COLAMD,  and SuiteSparse_config
+LDLIBS += -lamd -lcolamd -lbtf -lsuitesparseconfig
+
+# compile and install in SuiteSparse/lib
+library:
+	$(MAKE) install INSTALL=$(SUITESPARSE)
 
 # for testing only:
 # TEST = -DTESTING
@@ -10,14 +25,12 @@ include ../../SuiteSparse_config/SuiteSparse_config.mk
 C = $(CC) $(CF)
 
 INC = ../Include/klu.h ../Include/klu_internal.h ../Include/klu_version.h \
-    ../../SuiteSparse_config/SuiteSparse_config.h Makefile
+    ../../SuiteSparse_config/SuiteSparse_config.h
 
 I = -I../../AMD/Include -I../../COLAMD/Include -I../../BTF/Include \
     -I../Include -I../../SuiteSparse_config
 
 all: library
-
-library: libklu.a
 
 KLU_D = klu_d.o klu_d_kernel.o klu_d_dump.o \
     klu_d_factor.o klu_d_free_numeric.o klu_d_solve.o \
@@ -47,9 +60,11 @@ COMMON = \
 
 OBJ = $(COMMON) $(KLU_D) $(KLU_Z) $(KLU_L) $(KLU_ZL)
 
-libklu.a: $(OBJ)
-	$(ARCHIVE)  libklu.a $(OBJ)
-	- $(RANLIB) libklu.a
+static: $(AR_TARGET)
+
+$(AR_TARGET): $(OBJ)
+	$(ARCHIVE) $@ $^
+	- $(RANLIB) $@
 
 $(OBJ): $(INC)
 
@@ -149,10 +164,10 @@ klu_memory.o: ../Source/klu_memory.c
 purge: distclean
 
 distclean: clean
-	- $(RM) libklu.a 
+	- $(RM) -r $(PURGE)
 
 clean:
-	- $(RM) $(CLEAN)
+	- $(RM) -r $(CLEAN)
 
 #-------------------------------------------------------------------------------
 
@@ -246,3 +261,31 @@ klu_l_memory.o: ../Source/klu_memory.c
 	$(C) -c -DDLONG $(I) $< -o $@
 
 #-------------------------------------------------------------------------------
+
+# install KLU
+install: $(AR_TARGET) $(INSTALL_LIB)/$(SO_TARGET)
+
+$(INSTALL_LIB)/$(SO_TARGET): $(OBJ)
+	@mkdir -p $(INSTALL_LIB)
+	@mkdir -p $(INSTALL_INCLUDE)
+	@mkdir -p $(INSTALL_DOC)
+	$(CC) $(SO_OPTS) $^ -o $@ $(LDLIBS)
+	( cd $(INSTALL_LIB) ; ln -sf $(SO_TARGET) $(SO_PLAIN) )
+	( cd $(INSTALL_LIB) ; ln -sf $(SO_TARGET) $(SO_MAIN) )
+	$(CP) ../Include/klu.h $(INSTALL_INCLUDE)
+	$(CP) ../Doc/KLU_UserGuide.pdf $(INSTALL_DOC)
+	$(CP) ../README.txt $(INSTALL_DOC)/KLU_README.txt
+	chmod 755 $(INSTALL_LIB)/$(SO_TARGET)
+	chmod 644 $(INSTALL_INCLUDE)/klu.h
+	chmod 644 $(INSTALL_DOC)/KLU_UserGuide.pdf
+	chmod 644 $(INSTALL_DOC)/KLU_README.txt
+
+# uninstall KLU
+uninstall:
+	$(RM) $(INSTALL_LIB)/$(SO_TARGET)
+	$(RM) $(INSTALL_LIB)/$(SO_PLAIN)
+	$(RM) $(INSTALL_LIB)/$(SO_MAIN)
+	$(RM) $(INSTALL_INCLUDE)/klu.h
+	$(RM) $(INSTALL_DOC)/KLU_UserGuide.pdf
+	$(RM) $(INSTALL_DOC)/KLU_README.txt
+

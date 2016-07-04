@@ -2,9 +2,8 @@
 # UMFPACK Makefile
 #-------------------------------------------------------------------------------
 
-VERSION = 5.7.1
-
-# UMFPACK requires the AMD package to be in ../AMD
+SUITESPARSE ?= $(realpath $(CURDIR)/..)
+export SUITESPARSE
 
 default: all
 
@@ -18,6 +17,10 @@ all:
 # compile just the C-callable UMFPACK library
 library:
 	( cd Lib    ; $(MAKE) )
+
+# compile the static libraries only
+static:
+	( cd Lib    ; $(MAKE) static )
 
 # compile the FORTRAN interface and demo program
 fortran:
@@ -36,6 +39,7 @@ clean:
 	( cd Lib    ; $(MAKE) clean )
 	( cd Demo   ; $(MAKE) clean )
 	( cd Doc    ; $(MAKE) clean )
+	( cd MATLAB ; $(MAKE) clean )
 	( cd MATLAB ; $(RM) $(CLEAN) rename.h )
 
 # clean, and then remove compiled programs and library archives
@@ -44,7 +48,7 @@ purge:
 	( cd Demo   ; $(MAKE) purge )
 	( cd Doc    ; $(MAKE) purge )
 	( cd Tcov   ; $(MAKE) purge )
-	( cd MATLAB ; $(RM) $(CLEAN) rename.h *.mex* )
+	( cd MATLAB ; $(MAKE) purge )
 
 # create PDF documents for the original distribution
 docs:
@@ -63,18 +67,13 @@ lib: library
 
 # statement coverage (requires Linux; takes a lot of time and disk space)
 cov: purge
-	( cd Tcov ; ./DO.all )
+	( cd Tcov ; $(MAKE) )
 
 # install UMFPACK
 install:
-	$(CP) Lib/libumfpack.a $(INSTALL_LIB)/libumfpack.$(VERSION).a
-	( cd $(INSTALL_LIB) ; ln -sf libumfpack.$(VERSION).a libumfpack.a )
-	$(CP) Include/*.h $(INSTALL_INCLUDE)
-	chmod 644 $(INSTALL_LIB)/libumfpack*.a
-	chmod 644 $(INSTALL_INCLUDE)/umfpack*.h
+	( cd Lib ; $(MAKE) install )
 
 # uninstall UMFPACK
 uninstall:
-	$(RM) $(INSTALL_LIB)/libumfpack*.a
-	$(RM) $(INSTALL_INCLUDE)/umfpack*.h
+	( cd Lib ; $(MAKE) uninstall )
 

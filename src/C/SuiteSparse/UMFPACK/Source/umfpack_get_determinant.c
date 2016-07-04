@@ -4,7 +4,7 @@
 
 /* -------------------------------------------------------------------------- */
 /* Copyright (c) 2005-2012 by Timothy A. Davis, http://www.suitesparse.com.   */
-/* All Rights Reserved.  See ../Doc/License for License.                      */
+/* All Rights Reserved.  See ../Doc/License.txt for License.                  */
 /* -------------------------------------------------------------------------- */
 
 /* UMFPACK_get_determinant contributed by David Bateman, Motorola, Paris. */
@@ -44,29 +44,29 @@ PRIVATE Int rescale_determinant
 
     if (SCALAR_IS_ZERO (d_abs))
     {
-        /* the determinant is zero */
-        *d_exponent = 0 ;
-        return (FALSE) ;
+	/* the determinant is zero */
+	*d_exponent = 0 ;
+	return (FALSE) ;
     }
 
     if (SCALAR_IS_NAN (d_abs))
     {
-        /* the determinant is NaN */
-        return (FALSE) ;
+	/* the determinant is NaN */
+	return (FALSE) ;
     }
 
     while (d_abs < 1.)
     {
-        SCALE (*d_mantissa, 10.0) ;
-        *d_exponent = *d_exponent - 1.0 ;
-        ABS (d_abs, *d_mantissa) ;
+	SCALE (*d_mantissa, 10.0) ;
+	*d_exponent = *d_exponent - 1.0 ;
+	ABS (d_abs, *d_mantissa) ;
     }
 
     while (d_abs >= 10.)
     {
-        SCALE (*d_mantissa, 0.1) ;
-        *d_exponent = *d_exponent + 1.0 ;
-        ABS (d_abs, *d_mantissa) ;
+	SCALE (*d_mantissa, 0.1) ;
+	*d_exponent = *d_exponent + 1.0 ;
+	ABS (d_abs, *d_mantissa) ;
     }
 
     return (TRUE) ;
@@ -108,17 +108,17 @@ GLOBAL Int UMFPACK_get_determinant
 
     if (User_Info != (double *) NULL)
     {
-        /* return Info in user's array */
-        Info = User_Info ;
+	/* return Info in user's array */
+	Info = User_Info ;
     }
     else
     {
-        /* no Info array passed - use local one instead */
-        Info = Info2 ;
-        for (i = 0 ; i < UMFPACK_INFO ; i++)
-        {
-            Info [i] = EMPTY ;
-        }
+	/* no Info array passed - use local one instead */
+	Info = Info2 ;
+	for (i = 0 ; i < UMFPACK_INFO ; i++)
+	{
+	    Info [i] = EMPTY ;
+	}
     }
 
     Info [UMFPACK_STATUS] = UMFPACK_OK ;
@@ -126,21 +126,21 @@ GLOBAL Int UMFPACK_get_determinant
     Numeric = (NumericType *) NumericHandle ;
     if (!UMF_valid_numeric (Numeric))
     {
-        Info [UMFPACK_STATUS] = UMFPACK_ERROR_invalid_Numeric_object ;
-        return (UMFPACK_ERROR_invalid_Numeric_object) ;
+	Info [UMFPACK_STATUS] = UMFPACK_ERROR_invalid_Numeric_object ;
+	return (UMFPACK_ERROR_invalid_Numeric_object) ;
     }
 
     if (Numeric->n_row != Numeric->n_col)
     {
-        /* only square systems can be handled */
-        Info [UMFPACK_STATUS] = UMFPACK_ERROR_invalid_system ;
-        return (UMFPACK_ERROR_invalid_system) ;
+	/* only square systems can be handled */
+	Info [UMFPACK_STATUS] = UMFPACK_ERROR_invalid_system ;
+	return (UMFPACK_ERROR_invalid_system) ;
     }
 
     if (Mx == (double *) NULL)
     {
-        Info [UMFPACK_STATUS] = UMFPACK_ERROR_argument_missing ;
-        return (UMFPACK_ERROR_argument_missing) ;
+	Info [UMFPACK_STATUS] = UMFPACK_ERROR_argument_missing ;
+	return (UMFPACK_ERROR_argument_missing) ;
     }
 
     n = Numeric->n_row ;
@@ -153,16 +153,16 @@ GLOBAL Int UMFPACK_get_determinant
 
     if (!Wi)
     {
-        DEBUGm4 (("out of memory: get determinant\n")) ;
-        Info [UMFPACK_STATUS] = UMFPACK_ERROR_out_of_memory ;
-        return (UMFPACK_ERROR_out_of_memory) ;
+	DEBUGm4 (("out of memory: get determinant\n")) ;
+	Info [UMFPACK_STATUS] = UMFPACK_ERROR_out_of_memory ;
+	return (UMFPACK_ERROR_out_of_memory) ;
     }
 
     /* ---------------------------------------------------------------------- */
     /* compute the determinant */
     /* ---------------------------------------------------------------------- */
 
-    Rs = Numeric->Rs ;      /* row scale factors */
+    Rs = Numeric->Rs ;		/* row scale factors */
     do_scale = (Rs != (double *) NULL) ;
 
 #ifndef NRECIPROCAL
@@ -176,45 +176,45 @@ GLOBAL Int UMFPACK_get_determinant
     /* compute product of diagonal entries of U */
     for (i = 0 ; i < n ; i++)
     {
-        MULT (d_tmp, d_mantissa, D [i]) ;
-        d_mantissa = d_tmp ;
+	MULT (d_tmp, d_mantissa, D [i]) ;
+	d_mantissa = d_tmp ;
 
-        if (!rescale_determinant (&d_mantissa, &d_exponent))
-        {
-            /* the determinant is zero or NaN */
-            Info [UMFPACK_STATUS] = UMFPACK_WARNING_singular_matrix ;
-            /* no need to compute the determinant of R */
-            do_scale = FALSE ;
-            break ;
-        }
+	if (!rescale_determinant (&d_mantissa, &d_exponent))
+	{
+	    /* the determinant is zero or NaN */
+	    Info [UMFPACK_STATUS] = UMFPACK_WARNING_singular_matrix ;
+	    /* no need to compute the determinant of R */
+	    do_scale = FALSE ;
+	    break ;
+	}
     }
 
     /* compute product of diagonal entries of R (or its inverse) */
     if (do_scale)
     {
-        for (i = 0 ; i < n ; i++)
-        {
+	for (i = 0 ; i < n ; i++)
+	{
 #ifndef NRECIPROCAL
-            if (do_recip)
-            {
-                /* compute determinant of R inverse */
-                SCALE_DIV (d_mantissa, Rs [i]) ;
-            }
-            else
+	    if (do_recip)
+	    {
+		/* compute determinant of R inverse */
+		SCALE_DIV (d_mantissa, Rs [i]) ;
+	    }
+	    else
 #endif
-            {
-                /* compute determinant of R */
-                SCALE (d_mantissa, Rs [i]) ;
-            }
-            if (!rescale_determinant (&d_mantissa, &d_exponent))
-            {
-                /* the determinant is zero or NaN.  This is very unlikey to
-                 * occur here, since the scale factors for a tiny or zero row
-                 * are set to 1. */
-                Info [UMFPACK_STATUS] = UMFPACK_WARNING_singular_matrix ;
-                break ;
-            }
-        }
+	    {
+		/* compute determinant of R */
+		SCALE (d_mantissa, Rs [i]) ;
+	    }
+	    if (!rescale_determinant (&d_mantissa, &d_exponent))
+	    {
+		/* the determinant is zero or NaN.  This is very unlikey to
+		 * occur here, since the scale factors for a tiny or zero row
+		 * are set to 1. */
+		Info [UMFPACK_STATUS] = UMFPACK_WARNING_singular_matrix ;
+		break ;
+	    }
+	}
     }
 
     /* ---------------------------------------------------------------------- */
@@ -226,36 +226,36 @@ GLOBAL Int UMFPACK_get_determinant
 
     for (i = 0 ; i < n ; i++)
     {
-        Wi [i] = Rperm [i] ;
+	Wi [i] = Rperm [i] ;
     }
 
     for (i = 0 ; i < n ; i++)
     {
-        while (Wi [i] != i)
-        {
-            itmp = Wi [Wi [i]] ;
-            Wi [Wi [i]] = Wi [i] ;
-            Wi [i] = itmp ;
-            npiv++ ;
-        }
+	while (Wi [i] != i)
+	{
+	    itmp = Wi [Wi [i]] ;
+	    Wi [Wi [i]] = Wi [i] ;
+	    Wi [i] = itmp ;
+	    npiv++ ;
+	}
     }
 
     Cperm = Numeric->Cperm ;
 
     for (i = 0 ; i < n ; i++)
     {
-        Wi [i] = Cperm [i] ;
+	Wi [i] = Cperm [i] ;
     }
 
     for (i = 0 ; i < n ; i++)
     {
-        while (Wi [i] != i)
-        {
-            itmp = Wi [Wi [i]] ;
-            Wi [Wi [i]] = Wi [i] ;
-            Wi [i] = itmp ;
-            npiv++ ;
-        }
+	while (Wi [i] != i)
+	{
+	    itmp = Wi [Wi [i]] ;
+	    Wi [Wi [i]] = Wi [i] ;
+	    Wi [i] = itmp ;
+	    npiv++ ;
+	}
     }
 
     /* if npiv is odd, the sign is -1.  if it is even, the sign is +1 */
@@ -273,12 +273,12 @@ GLOBAL Int UMFPACK_get_determinant
 
     if (Ex == (double *) NULL)
     {
-        /* Ex is not provided, so return the entire determinant in d_mantissa */
-        SCALE (d_mantissa, pow (10.0, d_exponent)) ;
+	/* Ex is not provided, so return the entire determinant in d_mantissa */
+	SCALE (d_mantissa, pow (10.0, d_exponent)) ;
     }
     else
     {
-        Ex [0] = d_exponent ;
+	Ex [0] = d_exponent ;
     }
 
     Mx [0] = d_sign * REAL_COMPONENT (d_mantissa) ;
@@ -286,22 +286,22 @@ GLOBAL Int UMFPACK_get_determinant
 #ifdef COMPLEX
     if (SPLIT (Mz))
     {
-        Mz [0] = d_sign * IMAG_COMPONENT (d_mantissa) ;
+	Mz [0] = d_sign * IMAG_COMPONENT (d_mantissa) ;
     }
     else
     {
-        Mx [1] = d_sign * IMAG_COMPONENT (d_mantissa) ;
+	Mx [1] = d_sign * IMAG_COMPONENT (d_mantissa) ;
     }
 #endif
 
     /* determine if the determinant has (or will) overflow or underflow */
     if (d_exponent + 1.0 > log10 (DBL_MAX))
     {
-        Info [UMFPACK_STATUS] = UMFPACK_WARNING_determinant_overflow ;
+	Info [UMFPACK_STATUS] = UMFPACK_WARNING_determinant_overflow ;
     }
     else if (d_exponent - 1.0 < log10 (DBL_MIN))
     {
-        Info [UMFPACK_STATUS] = UMFPACK_WARNING_determinant_underflow ;
+	Info [UMFPACK_STATUS] = UMFPACK_WARNING_determinant_underflow ;
     }
 
     return (UMFPACK_OK) ;

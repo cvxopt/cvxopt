@@ -19,6 +19,7 @@ Quick start (Unix, or Windows with Cygwin):
     unused *.o files (keeps the compiled libraries and demo programs).  See the
     User Guide (Doc/AMD_UserGuide.pdf), or
     ../SuiteSparse_config/SuiteSparse_config.mk for more details.
+    To install do "make install"
 
 Quick start (for MATLAB users);
 
@@ -27,35 +28,7 @@ Quick start (for MATLAB users);
 
 -------------------------------------------------------------------------------
 
-AMD License:
-
-    Your use or distribution of AMD or any modified version of
-    AMD implies that you agree to this License.
-
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-    USA
-
-    Permission is hereby granted to use or copy this program under the
-    terms of the GNU LGPL, provided that the Copyright, this License,
-    and the Availability of the original version is retained on all copies.
-    User documentation of any code that uses this code or any modified
-    version of this code must cite the Copyright, this License, the
-    Availability note, and "Used by permission." Permission to modify
-    the code and to distribute modified code is granted, provided the
-    Copyright, this License, and the Availability note are retained,
-    and a notice that the code was modified is included.
+AMD License:  refer to the AMD/Doc/License.txt file for the license.
 
 Availability:
 
@@ -110,7 +83,7 @@ Files and directories in the AMD distribution:
     Files in the AMD directory:
     ---------------------------------------------------------------------------
 
-    Makefile	top-level Makefile for GNU make or original make.
+    Makefile	top-level Makefile
 		Windows users would require Cygwin to use "make"
 
     README.txt	this file
@@ -120,12 +93,11 @@ Files and directories in the AMD distribution:
     ---------------------------------------------------------------------------
 
     ChangeLog			change log
-    License			the AMD License
+    License.txt			the AMD License
     Makefile			for creating the documentation
     AMD_UserGuide.bib		AMD User Guide (references)
     AMD_UserGuide.tex		AMD User Guide (LaTeX)
     AMD_UserGuide.pdf		AMD User Guide (PDF)
-    lesser.txt			the GNU LGPL license
 
     ---------------------------------------------------------------------------
     Source directory:
@@ -161,8 +133,7 @@ Files and directories in the AMD distribution:
     Demo directory:
     ---------------------------------------------------------------------------
 
-    Makefile			for GNU make or original make
-
+    Makefile                    to compile the demos
     amd_demo.c			C demo program for AMD
     amd_demo.out		output of amd_demo.c
 
@@ -189,9 +160,6 @@ Files and directories in the AMD distribution:
     MATLAB directory:
     ---------------------------------------------------------------------------
 
-    GNUmakefile			a nice Makefile, for GNU make
-    Makefile			an ugly Unix Makefile (for older make's)
-
     Contents.m			for "help amd2" listing of toolbox contents
 
     amd2.m			MATLAB help file for AMD
@@ -205,9 +173,8 @@ Files and directories in the AMD distribution:
     can_24.mat			input file for AMD demo
 
     ---------------------------------------------------------------------------
-    Lib directory:  libamd.a and libamdf77.a libraries placed here
+    Lib directory:  libamd.a and libamd.so library placed here
     ---------------------------------------------------------------------------
 
-    GNUmakefile			a nice Makefile, for GNU make
-    Makefile			an ugly Unix Makefile (for older make's)
-    libamd.def			AMD definitions for Windows
+    Makefile			Makefile for both shared and static libraries
+

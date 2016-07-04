@@ -2,7 +2,8 @@
 # COLAMD Makefile
 #------------------------------------------------------------------------------
 
-VERSION = 2.9.1
+SUITESPARSE ?= $(realpath $(CURDIR)/..)
+export SUITESPARSE
 
 default: all
 
@@ -18,6 +19,10 @@ all:
 # compile just the C-callable libraries (not Demos)
 library:
 	( cd Lib    ; $(MAKE) )
+
+# compile the static libraries only
+static:
+	( cd Lib    ; $(MAKE) static )
 
 # remove object files, but keep the compiled programs and library archives
 clean:
@@ -43,14 +48,8 @@ lib: library
 
 # install COLAMD
 install:
-	$(CP) Lib/libcolamd.a $(INSTALL_LIB)/libcolamd.$(VERSION).a
-	( cd $(INSTALL_LIB) ; ln -sf libcolamd.$(VERSION).a libcolamd.a )
-	$(CP) Include/colamd.h $(INSTALL_INCLUDE)
-	chmod 644 $(INSTALL_LIB)/libcolamd*.a
-	chmod 644 $(INSTALL_INCLUDE)/colamd.h
+	( cd Lib    ; $(MAKE) install )
 
 # uninstall COLAMD
 uninstall:
-	$(RM) $(INSTALL_LIB)/libcolamd*.a
-	$(RM) $(INSTALL_INCLUDE)/colamd.h
-
+	( cd Lib    ; $(MAKE) uninstall )

@@ -1,4 +1,4 @@
-COLAMD, Copyright 1998-2013, Timothy A. Davis.  http://www.suitesparse.com
+COLAMD, Copyright 1998-2016, Timothy A. Davis.  http://www.suitesparse.com
 -------------------------------------------------------------------------------
 
 The COLAMD column approximate minimum degree ordering algorithm computes
@@ -33,15 +33,26 @@ mexFunction.  v2.5 adds additional checks for integer overflow, so that
 the "int" version can be safely used with 64-bit pointers.  Refer to the
 ChangeLog for more details.
 
+Other "make" targets:
+
+    make library	compiles a C-callable library containing colamd
+    make clean		removes all files not in the distribution,
+                            but keeps the compiled libraries.
+    make distclean	removes all files not in the distribution
+    make install        installs the library in /usr/local/lib and
+                            /usr/local/include
+    make uninstall      uninstalls the library from /usr/local/lib and
+                            /usr/local/include
+
 To use colamd and symamd within an application written in C, all you need are
-colamd.c, colamd_global.c, and colamd.h, which are the C-callable
+colamd.c, and colamd.h, which are the C-callable
 colamd/symamd codes.  See colamd.c for more information on how to call
 colamd from a C program.
 
 Requires SuiteSparse_config, in the ../SuiteSparse_config directory relative to
 this directory.
 
-See the colamd.c file or http://www.suitesparse.com for the license to COLAMD.
+See COLAMD/Doc/License.txt for the License.
 
 Related papers:
 
@@ -90,7 +101,7 @@ COLAMD files:
 
     ./Doc:
     ChangeLog	    change log
-    lesser.txt	    license
+    License.txt     license
 
     ./Include:
     colamd.h	    include file
@@ -115,4 +126,3 @@ COLAMD files:
 
     ./Source:
     colamd.c		primary source code
-    colamd_global.c	globally defined function pointers (malloc, free, ...)

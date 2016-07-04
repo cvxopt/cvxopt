@@ -1,8 +1,23 @@
-default: all
+#-------------------------------------------------------------------------------
+# BTF Lib/Makefile
+#-------------------------------------------------------------------------------
+
+LIBRARY = libbtf
+VERSION = 1.2.6
+SO_VERSION = 1
+
+default: library
+
+include ../../SuiteSparse_config/SuiteSparse_config.mk
+
+# BTF depends on SuiteSparse_config
+LDLIBS += -lsuitesparseconfig
 
 ccode: all
 
-include ../../SuiteSparse_config/SuiteSparse_config.mk
+# compile and install in SuiteSparse/lib
+library:
+	$(MAKE) install INSTALL=$(SUITESPARSE)
 
 # for testing only:
 # TEST = -DTESTING
@@ -15,14 +30,14 @@ I = -I../Include -I../../SuiteSparse_config
 
 all: library
 
-library: libbtf.a
-
 OBJ = btf_order.o btf_maxtrans.o btf_strongcomp.o \
     btf_l_order.o btf_l_maxtrans.o btf_l_strongcomp.o
 
-libbtf.a: $(OBJ)
-	$(ARCHIVE)  libbtf.a $(OBJ)
-	- $(RANLIB) libbtf.a
+static: $(AR_TARGET)
+
+$(AR_TARGET): $(OBJ)
+	$(ARCHIVE) $@ $^
+	- $(RANLIB) $@
 
 $(OBJ): $(INC)
 
@@ -50,10 +65,35 @@ btf_l_strongcomp.o: ../Source/btf_strongcomp.c
 
 #-------------------------------------------------------------------------------
 
+# install BTF
+install: $(AR_TARGET) $(INSTALL_LIB)/$(SO_TARGET)
+
+$(INSTALL_LIB)/$(SO_TARGET): $(OBJ)
+	@mkdir -p $(INSTALL_LIB)
+	@mkdir -p $(INSTALL_INCLUDE)
+	@mkdir -p $(INSTALL_DOC)
+	$(CC) $(SO_OPTS) $^ -o $@ $(LDLIBS)
+	( cd $(INSTALL_LIB) ; ln -sf $(SO_TARGET) $(SO_PLAIN) )
+	( cd $(INSTALL_LIB) ; ln -sf $(SO_TARGET) $(SO_MAIN) )
+	$(CP) ../Include/btf.h $(INSTALL_INCLUDE)
+	$(CP) ../README.txt $(INSTALL_DOC)/BTF_README.txt
+	chmod 755 $(INSTALL_LIB)/$(SO_TARGET)
+	chmod 644 $(INSTALL_INCLUDE)/btf.h
+	chmod 644 $(INSTALL_DOC)/BTF_README.txt
+
+uninstall:
+	$(RM) $(INSTALL_LIB)/$(SO_TARGET)
+	$(RM) $(INSTALL_LIB)/$(SO_PLAIN)
+	$(RM) $(INSTALL_LIB)/$(SO_MAIN)
+	$(RM) $(INSTALL_INCLUDE)/btf.h
+	$(RM) $(INSTALL_DOC)/BTF_README.txt
+
+#-------------------------------------------------------------------------------
+
 purge: distclean
 
 distclean: clean
-	- $(RM) libbtf.a 
+	- $(RM) -r $(PURGE)
 
 clean:
-	- $(RM) $(CLEAN)
+	- $(RM) -r $(CLEAN)

@@ -1,6 +1,8 @@
-BTF, by Timothy A. Davis, Copyright (C) 2004-2012, University of Florida
+BTF, by Timothy A. Davis, Copyright (C) 2004-2016, University of Florida
 BTF is also available under other licenses; contact the author for details.
 http://www.suitesparse.com
+
+See BTF/Doc/License.txt for the license.
 
 BTF is a software package for permuting a matrix into block upper triangular
 form.  It includes a maximum transversal algorithm, which finds a permutation
@@ -14,8 +16,10 @@ Requires SuiteSparse_config, in the ../SuiteSparse_config directory relative to
 this directory.  KLU relies on the BTF package to permute the matrix prior to
 factorization.
 
-To compile the libbtf.a library, type "make".  The compiled library is located
-in BTF/Lib/libbtf.a.  Compile code that uses BTF with -IBTF/Include.
+To compile the libbtf.a and libbtf.so library (*.dylib on the Mac), type
+"make".  The compiled library is located in BTF/Lib.  Compile code that uses
+BTF with -IBTF/Include.  Type "make install" to install the library in
+/usr/local/lib and /usr/local/include, and "make uninstall" to remove it.
 
 Type "make clean" to remove all but the compiled library, and "make distclean"
 to remove all files not in the original distribution.
@@ -33,26 +37,6 @@ relative to this directory.
 
 --------------------------------------------------------------------------------
 
-BTF is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
-
-This Module is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public
-License along with this Module; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
---------------------------------------------------------------------------------
-
-A full text of the license is in Doc/lesser.txt.  
-
---------------------------------------------------------------------------------
-
 Files and directories in the BTF package:
 
     Doc             documentation and license
@@ -66,7 +50,6 @@ Files and directories in the BTF package:
 ./Doc:
 
     ChangeLog       changes in BTF
-    lesser.txt      license
 
 ./Include:
 

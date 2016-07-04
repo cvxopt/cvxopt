@@ -20,7 +20,7 @@
 \author{Timothy A. Davis \\
 DrTimothyAldenDavis@gmail.com, http://www.suitesparse.com}
 \title{UMFPACK User Guide}
-\date{VERSION 5.7.1, Oct 10, 2014}
+\date{VERSION 5.7.6, May 4, 2016}
 \maketitle
 
 %-------------------------------------------------------------------------------
@@ -41,34 +41,7 @@ Copyright\copyright 1995-2013 by Timothy A. Davis.
 All Rights Reserved.
 UMFPACK is available under alternate licences; contact T. Davis for details.
 
-{\bf UMFPACK License:}
-    Your use or distribution of UMFPACK or any modified version of
-    UMFPACK implies that you agree to this License.
-
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    General Public License for more details.
-
-    You should have received a copy of the GNU General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-    USA
-
-    Permission is hereby granted to use or copy this program under the
-    terms of the GNU GPL, provided that the Copyright, this License,
-    and the Availability of the original version is retained on all copies.
-    User documentation of any code that uses this code or any modified
-    version of this code must cite the Copyright, this License, the
-    Availability note, and "Used by permission." Permission to modify
-    the code and to distribute modified code is granted, provided the
-    Copyright, this License, and the Availability note are retained,
-    and a notice that the code was modified is included.
+{\bf UMFPACK License:} See UMFPACK/Doc/License.txt for the license.
 
 {\bf Availability:}
     http://www.suitesparse.com
@@ -267,6 +240,14 @@ an old version of AMD with a newer version of UMFPACK can fail.}
 A detailed list of changes is in the {\tt ChangeLog} file.
 
 %-------------------------------------------------------------------------------
+\subsection{Version 5.7.3}
+%-------------------------------------------------------------------------------
+
+Renamed the MATLAB interface back to {\tt umfpack} from {\tt umpfack2}, since
+it no longer conflicts with any built-in MATLAB function of the same name. 
+See the comments for Version 5.0.3 below.
+
+%-------------------------------------------------------------------------------
 \subsection{Version 5.7.0}
 %-------------------------------------------------------------------------------
 
@@ -312,7 +293,9 @@ gcc versions 4.2.(3 and 4).
 \subsection{Version 5.2.0}
 %-------------------------------------------------------------------------------
 
-Change of license from GNU Lesser GPL to the GNU GPL.
+Change of default license.
+Note that your license may be entirely different;
+refer to UMFPACK/Doc/License.txt for your actual license.
 
 %-------------------------------------------------------------------------------
 \subsection{Version 5.1.0}
@@ -2122,7 +2105,7 @@ is required by UMFPACK.  UMFPACK can be compiled without the
 BLAS \cite{DaydeDuff99,ACM679a,ATLAS,GotoVandeGeijn02},
 but your performance will be much less than what it should be.
 
-UMFPACK also requires CHOLMOD, CCAMD, CCOLAMD, COLAMD, and metis-4.0
+UMFPACK also requires CHOLMOD, CCAMD, CCOLAMD, COLAMD, and metis-5.1.0
 by default.  You can remove this dependency by compiling with
 {\tt -DNCHOLMOD}.  Add this to the {\tt UMFPACK\_CONFIG} definition
 in {\tt SuiteSparse\_config/SuiteSparse\_config.mk}.
@@ -2132,10 +2115,14 @@ file.  The default
 settings will work on most systems, except that UMFPACK will be compiled so
 that it does not use the BLAS.  Sample configurations are provided
 for Linux, Mac, Sun Solaris, SGI IRIX, IBM AIX, and the DEC/Compaq Alpha.
+The Makefile file will automatically detect what system you have
+and will set the compile parameters accordingly. 
 
-To compile and install both packages,
+To compile both packages,
 go to the {\tt UMFPACK} directory and type {\tt make}.  This will compile the
-libraries ({\tt AMD/Lib/libamd.a} and {\tt UMFPACK/Lib/libumfpack.a}).
+static
+libraries ({\tt AMD/Lib/libamd.a} and {\tt UMFPACK/Lib/libumfpack.a}),
+and the shared libraries ({\tt *.so} on Linux/Unix or {\tt *.dylib} on the Mac).
 A demo of the AMD ordering routine will be compiled and tested in
 the {\tt AMD/Demo} directory, and five demo programs will then be
 compiled and tested in the {\tt UMFPACK/Demo} directory.
@@ -2144,30 +2131,22 @@ files in the distribution.  Expect to see a few differences, such as
 residual norms, compile-time control settings, and perhaps memory usage
 differences.
 
-If you have trouble with {\tt make} for UMFPACK,
-try using the plain {\tt Makefile} instead of {\tt GNUmakefile}.
-Go to the UMFPACK/Lib directory and type {\tt make -f Makefile}.
+To install into /usr/local/lib and /usr/local/include,
+do {\tt make install}.
+To uninstall from there,
+do {\tt make uninstall}.
+For more options, see the {\tt SuiteSparse/README.txt} file.
 
 Use the MATLAB command {\tt umfpack\_make} in the MATLAB directory
 to compile UMFPACK and AMD for use in MATLAB.
-
-If you have the GNU version of {\tt make}, the {\tt Lib/GNUmakefile} and
-{\tt MATLAB/GNUmakefile} files are used.  These are much more concise than
-what the ``old'' version of {\tt make} can handle.  If you do not have
-GNU {\tt make}, the {\tt Lib/Makefile} and {\tt MATLAB/Makefile} files
-are used instead.  Each UMFPACK source file is compiled into four
-versions ({\tt double} / complex, and {\tt int} / {\tt SuiteSparse\_long}).  A proper
-old-style {\tt Makefile} is cumbersome in this case, so these two
-{\tt Makefile}'s have been constructed by brute force.  They ignore
-dependencies, and simply compile everything.  I highly recommend using GNU
-{\tt make} if you wish to modify UMFPACK.
 
 If you compile UMFPACK and AMD and then later change the
 {\tt SuiteSparse\_config/SuiteSparse\_config.mk} file
 then you should type {\tt make purge} and then {\tt make} to recompile.
 
-Here are the various parameters that you can control in your
-{\tt SuiteSparse\_config/SuiteSparse\_config.mk} file:
+Here are a few of the various parameters that you can control in your
+{\tt SuiteSparse\_config/SuiteSparse\_config.mk} file.
+To list them all, do {\tt make config}.
 
 \begin{itemize}
 \item {\tt CC = } your C compiler, such as {\tt cc}.
@@ -2208,7 +2187,7 @@ most deal with how the BLAS are called:
     scaled.  If {\tt -DNRECIPROCAL} is defined (or if any scale factor is
     less than $10^{-12}$), entries in the rows of $\m{A}$ are divided
     by the scale factors.  Otherwise, they are multiplied by the reciprocal.
-    When compiling the complex routines with the GNU {\tt gcc} compiler, the
+    When compiling the complex routines with the {\tt gcc} compiler, the
     pivot column is always divided by the pivot entry, because of a
     numerical accuracy issue encountered with {\tt gcc} version 3.2 with a
     few complex matrices on a Pentium 4M (running Linux).  You can still
@@ -2230,29 +2209,13 @@ and their corresponding complex versions are used.
 Header files are not provided for the Fortran
 BLAS.  You may safely ignore all of these warnings.
 
-I highly recommend the recent BLAS by Goto and van de Geijn
-\cite{GotoVandeGeijn02}.  Using this BLAS increased the performance
-of UMFPACK by up to 50\% on a Dell Latitude C840 laptop (2GHz Pentium 4M,
-512K L2 cache, 1GB main memory).  The peak performance of
-{\tt umfpack\_di\_numeric} with Goto and van de Geijn's BLAS is 1.6 Gflops
-on this computer.  In MATLAB, the peak performance of UMFPACK on
-a dense matrix (stored in sparse format) is 900 Mflops, as compared to
-1 Gflop for {\tt x = A}$\backslash${\tt b}
-when {\tt A} is stored as a regular full matrix.
-
 When you compile your program that uses the C-callable UMFPACK library,
-you need to link your program with all libraries
-({\tt UMFPACK/Lib/libumfpack.a} and {\tt AMD/Lib/libamd.a},
-and unless you compile with \verb'-DNCHOLMOD' you also must link with
-{\tt CHOLMOD/Lib/libcholmod.a}, \newline
-{\tt COLAMD/Lib/libcolamd.a},
-{\tt CCOLAMD/Lib/libccolamd.a},
-{\tt CAMD/Lib/libcamd.a},
-and \newline
-{\tt metis-4.0/libmetis.a}).
-You need to tell your compiler to look in the
-directories {\tt UMFPACK/Include} and {\tt AMD/Include} for include
-files.  See {\tt UMFPACK/Demo/Makefile} for an example.
+you need to link your program with all libraries:
+-lumfpack -lamd -lcholmod -lcolamd -lccolamd -lcamd -lmetis.
+If you don't compile UMFPACK to use METIS, then you can  
+All libraries are placed in {\tt SuiteSparse/lib} and all include
+files are placed in {\tt SuiteSparse/include}.
+
 You do not need to directly include any AMD include files in your
 program, unless you directly call AMD routines.  You only need the
 \begin{verbatim}
@@ -2260,17 +2223,11 @@ program, unless you directly call AMD routines.  You only need the
 \end{verbatim}
 statement, as described in Section~\ref{Synopsis}.
 
-If you would like to compile both 32-bit and 64-bit versions of the libraries,
-you will need to do it in two steps.  Modify your {\tt SuiteSparse\_config/SuiteSparse\_config.mk}
-file, and select the 32-bit option.  Type {\tt make} in the {\tt UMFPACK}
-directory, which creates the {\tt UMFPACK/Lib/libumfpack.a} and
-{\tt AMD/Lib/libamd.a} libraries.  Rename those two files.  Edit your
-{\tt SuiteSparse\_config/SuiteSparse\_config.mk} file and select the 64-bit option.
-Type {\tt make purge},
-and then {\tt make}, and you will create the 64-bit libraries.
-You can use the same {\tt umfpack.h} include file for both 32-bit and
-64-bit versions.  Simply link your program with the appropriate 32-bit
-or 64-bit compiled version of the UMFPACK and AMD libraries.
+If you do {\tt make install}, then the compiler will know where to
+find all of the SuiteSparse libraries.  Otherwise, add
+{\tt -L/home/myself/SuiteSparse/lib} and
+{\tt -I/home/myself/SuiteSparse/include} to your compiler flags,
+if your copy of SuiteSparse is located in {\tt /home/myself/SuiteSparse}.
 
 Type {\tt make hb} in the {\tt UMFPACK/Demo/HB} directory
 to compile and run a C program that reads in and factorizes

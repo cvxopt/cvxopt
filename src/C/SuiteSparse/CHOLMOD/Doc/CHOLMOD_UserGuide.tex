@@ -21,7 +21,7 @@ DrTimothyAldenDavis@gmail.com, http://www.suitesparse.com }
 \title{User Guide for CHOLMOD: a sparse Cholesky factorization and
 modification package}
 
-\date{VERSION 3.0.6, July 14, 2015}
+\date{VERSION 3.0.11, May 4, 2016}
 \maketitle
 
 %-------------------------------------------------------------------------------
@@ -50,9 +50,9 @@ modification package}
 CHOLMOD Copyright\copyright 2005-2015 by Timothy A. Davis.  Portions are also
 copyrighted by William W. Hager (the {\tt Modify} Module),
 and the University of Florida (the {\tt Partition} and {\tt Core} Modules).
-All Rights Reserved.  Some of CHOLMOD's Modules are distributed under the GNU
-General Public License, and others under the GNU Lesser General Public License.
-Refer to each Module for details.
+All Rights Reserved.
+
+See CHOLMOD/Doc/License.txt for the license.
 CHOLMOD is also available under other licenses that permit its use in
 proprietary applications; contact the authors for details.
 See http://www.suitesparse.com for the code and all documentation,
@@ -261,7 +261,7 @@ along with CHOLMOD, but three of which are not.  Those included with CHOLMOD are
 
 Three other packages are required for optimal performance:
 \begin{itemize}
-\item {\tt METIS 4.0.1}: a graph partitioning package by George Karypis,
+\item {\tt METIS 5.1.0}: a graph partitioning package by George Karypis,
     Univ. of Minnesota.  Not needed if {\tt -DNPARTITION} is used.
     See http://www-users.cs.umn.edu/$\sim$karypis/metis.
 \item BLAS: the Basic Linear Algebra Subprograms.
@@ -282,17 +282,24 @@ Three other packages are required for optimal performance:
     for large supernodes.  This feature is new to CHOLMOD v2.0.0.
 \end{itemize}
 
-You must first obtain and install METIS, LAPACK, and the BLAS.
-Next edit the system-dependent configurations in the
+You must first obtain and install LAPACK, and the BLAS.
+METIS 5.1.0 is optional; a copy of it is in {\tt SuiteSparse}.
+System-dependent configurations in the
 {\tt SuiteSparse\_config/SuiteSparse\_config.mk} file.
-Sample configurations are provided
-for Linux, Macintosh, Sun Solaris, SGI IRIX, IBM AIX, and the DEC/Compaq Alpha.
-The most important configuration is the location of the BLAS, LAPACK, and METIS
-packages, since in its default configuration CHOLMOD cannot be compiled without them.
+This file has been changed in CHOLMOD version 3.0.7;
+it now automatically detects your system, your BLAS, and whether or not
+you have CUDA installed, and whether or not you have METIS 5.1.0.
+You still may need to edit it to refine the
+compilation parameters for your particular system, but it is likely it
+will work unmodified.
 
 \noindent
-Here are the various parameters that you can control in your
-{\tt SuiteSparse\_config/SuiteSparse\_config.mk} file:
+Here are some of the various parameters that you can control in your
+{\tt SuiteSparse\_config/SuiteSparse\_config.mk} file.
+You can set them without editing that file, simply by including
+them on your {\tt make} command.  For example, to {\tt -lmyblas},
+use {\tt make BLAS=-lmyblas}.  For a complete list, including
+their default values, do {\tt make config}.
 \begin{itemize}
 \item {\tt CC = } your C compiler, such as {\tt cc}.
 \item {\tt CF = } optimization flags, such as {\tt -O}.
@@ -303,48 +310,43 @@ Here are the various parameters that you can control in your
 \item {\tt F77 =} the command to compile a Fortran program (optional).
 \item {\tt F77FLAGS =} the Fortran compiler flags (optional).
 \item {\tt F77LIB =} the Fortran libraries (optional).
-\item {\tt LIB = } basic libraries, such as {\tt -lm}.
+\item {\tt LDLIBS = } basic libraries, such as {\tt -lm}.
 \item {\tt BLAS =} your BLAS library.
 \item {\tt LAPACK =} your LAPACK library.
-\item {\tt XERBLA =} a library containing the BLAS {\tt xerbla} routine, if required.
-\item {\tt METIS\_PATH =} the path to your copy of the METIS 4.0.1 source code.
+\item {\tt METIS\_PATH =} the path to your copy of the METIS 5.1.0 source code.
 \item {\tt METIS =} your METIS library.
 \item {\tt GPU\_CONFIG = } configuration settings specific to the CUDA BLAS.
-    To enable the CUDA BLAS, use {\tt GPU\_CONFIG = -DGPU\_BLAS
-    -I\$(GPU\_BLAS\_PACK)/include}, and set
-    {\tt GPU\_BLAS\_PATH =} to your CUDA library installation path.
-    Then include {\tt \$(GPU\_CONFIG)} as one of the settings for
-    {\tt CHOLMOD\_CONFIG}.  See the {\tt SuiteSparse\_config.mk}
-    file for details.
 \item {\tt CHOLMOD\_CONFIG = } configuration settings specific to CHOLMOD.
 \end{itemize}
 
 \noindent
 CHOLMOD's specific settings are given by the {\tt CHOLMOD\_CONFIG} string:
 \begin{itemize}
-\item {\tt -DNCHECK}:	    do not include the Check module.	   License: GNU LGPL.
-\item {\tt -DNCHOLESKY}:    do not include the Cholesky module.	   License: GNU LGPL.
+\item {\tt -DNCHECK}:	    do not include the Check module.
+\item {\tt -DNCHOLESKY}:    do not include the Cholesky module.
 \item {\tt -DNPARTITION}:   do not include the interface to METIS in
-the Partition module.   License: GNU LGPL.
-\item {\tt -DCAMD}:   do not include the interfaces to CAMD, CCOLAMD,
-and CSYMAMD in the Partition module.   License: GNU LGPL.
-\item {\tt -DNGPL}:	    do not include any GNU GPL Modules in the CHOLMOD library.
-Note that the Demo requires the MatrixOps module.
-\item {\tt -DNMATRIXOPS}:   do not include the MatrixOps module.   License: GNU GPL.
-Note that the Demo requires the MatrixOps module.
-\item {\tt -DNMODIFY}:	    do not include the Modify module.      License: GNU GPL.
-\item {\tt -DNSUPERNODAL}:  do not include the Supernodal module.  License: GNU GPL.
+                            the Partition module.
+\item {\tt -DCAMD}:         do not include the interfaces to CAMD, CCOLAMD,
+                            and CSYMAMD in the Partition module.
+\item {\tt -DNMATRIXOPS}:   do not include the MatrixOps module.
+                            Note that the Demo requires the MatrixOps module.
+\item {\tt -DNMODIFY}:	    do not include the Modify module.
+\item {\tt -DNSUPERNODAL}:  do not include the Supernodal module.
 \item {\tt -DNPRINT}:	    do not print anything.
 \item {\tt -D'LONGBLAS=long'} or {\tt -DLONGBLAS='long long'}
-			    defines the integers used by LAPACK and the BLAS (defaults to {\tt int}).
-\item {\tt -DNSUNPERF}:	    for Solaris only.  If defined, do not use the Sun Performance Library.
+			    defines the integers used by LAPACK
+                            and the BLAS (defaults to {\tt int}).
+\item {\tt -DNSUNPERF}:	    for Solaris only.  If defined, do not use the
+                            Sun Performance Library.
 \item {\tt -DNLARGEFILE}:   CHOLMOD now assumes support for large files (2GB or
-larger).  If this causes problems, you can compile CHOLMOD with -DNLARGEFILE.
-To use large files, you should {\tt \#include "cholmod.h"} (or at least
-{\tt \#include "cholmod\_io64.h"}) before any other {\tt \#include} statements,
-in your application that uses CHOLMOD.  You may need to use {\tt fopen64}
-to create a file pointer to pass to CHOLMOD, if you are using a non-gcc
-compiler.
+                            larger).  If this causes problems, you can compile
+                            CHOLMOD with -DNLARGEFILE.  To use large files, you
+                            should {\tt \#include "cholmod.h"} (or at least
+                            {\tt \#include "cholmod\_io64.h"}) before any other
+                            {\tt \#include} statements, in your application
+                            that uses CHOLMOD.  You may need to use {\tt
+                            fopen64} to create a file pointer to pass to
+                            CHOLMOD, if you are using a non-gcc compiler.
 \end{itemize}
 
 Type {\tt make} in the {\tt CHOLMOD} directory.  The AMD,
@@ -356,24 +358,34 @@ Compare your output with the {\tt CHOLMOD/Demo/make.out} file.
 
 CHOLMOD is now ready for use in your own applications.  You must link
 your programs with the
-{\tt CHOLMOD/Lib/libcholmod.a},
-{\tt AMD/Lib/libamd.a},
-{\tt COLAMD/libcolamd.a},
+{\tt libcholmod.*},
+{\tt libamd.*},
+{\tt libcolamd.*},
 LAPACK,
 and
 BLAS libraries,
 as well as the {\tt xerbla} library if you need it
-({\tt SuiteSparse\_config/xerlib/libcerbla.a} for the C version or
+({\tt SuiteSparse\_config/xerbla/libcerbla.*} for the C version or
 \newline
- {\tt SuiteSparse\_config/xerlib/libxerbla.a} for the Fortran version).
-Unless you use {\tt -DNPARTITION}, you must also link with
-{\tt metis-4.0/libmetis.a}.
+ {\tt SuiteSparse\_config/xerbla/libxerbla.*} for the Fortran version).
+Unless you use {\tt -DNPARTITION}, you must also link with the METIS 5.1.0
+library.
 Unless {\tt -DNCAMD} is present at compile time,
-you must link with {\tt CAMD/libcamd.a}, and {\tt CCOLAMD/libccolamd.a}.
-Your compiler needs to know the location of the CHOLMOD {\tt Include} directory,
-so that it can find the {\tt cholmod.h} include file, by
-adding the {\tt -ICHOLMOD/Include} to your C compiler options
-(modified appropriately to reflect the location of your copy of CHOLMOD).
+you must link with {\tt CAMD/libcamd.*}, and {\tt CCOLAMD/libccolamd.*}.
+
+The {\tt make} command now copies all of these libraries and include files
+into a single place: {\tt SuiteSparse/lib} and {\tt SuiteSparse/include}.
+To tell your your compiler where to find them, use
+{\tt -LSuiteSparse/lib} and {\tt -ISuiteSparse/include}.
+
+To install CHOLMOD in /usr/local/lib and /usr/local/include, do
+{\tt make install}.
+If you do this, youdo not need the {\tt -L} and {\tt -I} option when compiling
+your program.
+Documentation is also installed in /usr/local/doc.
+The installation location can be changed at the {\tt make} command line; see the
+{\tt SuiteSparse/README.txt} file for details.
+To remove CHOLMOD, do {\tt make uninstall}.
 
 %-------------------------------------------------------------------------------
 \newpage \section{Using CHOLMOD in MATLAB}
@@ -459,18 +471,6 @@ Each function is described in the next sections.
 \newpage \section{Installation for use in MATLAB}
 %-------------------------------------------------------------------------------
 
-If you wish to use METIS within CHOLMOD, you should first obtain a copy of METIS 4.0.1.
-See http://www-users.cs.umn.edu/$\sim$karypis/metis.  Place your copy
-of the {\tt metis-4.0} directory (folder, for Windows users) in the same directory
-that contains your copy of the {\tt CHOLMOD} directory. If you do not have
-METIS, however, you can still use CHOLMOD.  Some of the CHOLMOD functions will not
-be available ({\tt metis}, {\tt bisect}, and {\tt nesdis}),
-and you may experience higher fill-in for large matrices
-(particularly those arising in 3D finite-element problems) when using
-{\tt analyze}, {\tt chol2}, {\tt cholmod2}, {\tt lchol}, and {\tt ldlchol}.
-There are two methods for compiling CHOLMOD for use in MATLAB; both
-are described below.
-
 %-------------------------------------------------------------------------------
 \subsection{{\tt cholmod\_make}: compiling CHOLMOD in MATLAB}
 %-------------------------------------------------------------------------------
@@ -484,19 +484,6 @@ command (unless you obtain a copy of {\tt Cygwin}).
 Start MATLAB, {\tt cd} to the {\tt CHOLMOD/MATLAB} directory, and
 type {\tt cholmod\_make} in the MATLAB command window.  This will compile
 the MATLAB interfaces for AMD, COLAMD, CAMD, CCOLAMD, METIS, and CHOLMOD.
-If you do not have METIS, type {\tt cholmod\_make('')}.
-If your copy of METIS is in another location, type
-{\tt cholmod\_make ('path')} where {\tt path} is the pathname
-of your copy of the {\tt metis-4.0} directory.
-
-When METIS is compiled {\tt malloc}, {\tt free}, {\tt calloc}, and {\tt realloc}
-are redefined to the MATLAB-equivalents ({\tt mxMalloc}, ...).
-These memory-management functions safely terminate a mexFunction if they
-fail, and will free all memory allocated by the mexFunction.
-Thus, METIS will safely abort without terminating MATLAB, if it runs out
-of memory.
-The {\tt cholmod\_make} handles this redefinition without making any
-changes to your METIS source code.
 
 %-------------------------------------------------------------------------------
 \newpage \section{Using CHOLMOD with GPU acceleration}
@@ -526,8 +513,11 @@ In order to support GPU processing, CHOLMOD must be compiled with the
 preprocessor macro {\tt GPU\_BLAS} defined.  All GPU code is conditional upon
 this macro.  As well, the environment variable {\tt CUDA\_ROOT} must be defined
 and point to the installation of the CUDA toolkit to be used for compilation of
-CHOLMOD.  Typically this would be {\tt /usr/local/cuda}.  See {\tt
-SuiteSparse\_config\_GPU.mk} for an example of how this is done.
+CHOLMOD.  Typically this would be {\tt /usr/local/cuda}.
+
+The {\tt SuiteSparse\_config.mk} should automatically detect if you have
+CUDA installed on your system.  If so, then it will do everything for you
+without the need to edit the {\tt SuiteSparse\_config.mk} file.
 
 %-------------------------------------------------------------------------------
 \subsection{Enabling GPU acceleration in CHOLMOD}
@@ -789,15 +779,6 @@ sub-directory (a folder for Windows users) within the CHOLMOD directory
     \item {\tt Tcov}: an exhaustive test coverage (requires Linux or Solaris)
     \item {\tt Valgrind}: runs the {\tt Tcov} test under {\tt valgrind} (requires Linux)
     \end{enumerate}
-
-The following Modules are licensed under the GNU Lesser General Public
-License: {\tt Check}, {\tt Cholesky}, {\tt Core}, and {\tt Partition}.
-The following Modules are licensed under the GNU General Public
-License: {\tt Demo}, {\tt Modify}, {\tt MatrixOps}, {\tt Supernodal},
-the {\tt MATLAB} Module (not MATLAB itself!), {\tt Tcov}, and {\tt Valgrind}.
-The files in the {\tt Include} Module are licensed according to
-their respective Modules.  The {\tt Lib} and {\tt Doc} Modules need
-no license; the compiled binaries are licensed the same as their source code.
 
 %-------------------------------------------------------------------------------
 \newpage \subsection{{\tt Core} Module: basic data structures and definitions}
@@ -1194,7 +1175,7 @@ graph partitioning and graph-partition-based orderings.  It includes an
 interface to CAMD, CCOLAMD, and CSYMAMD, constrained minimum degree ordering
 methods which order a matrix following constraints determined via nested
 dissection.
-Requires the {\tt Core} and {\tt Cholesky} Modules, and two packages: {\tt METIS 4.0.1}, CAMD, and CCOLAMD.
+Requires the {\tt Core} and {\tt Cholesky} Modules, and two packages: {\tt METIS 5.1.0}, CAMD, and CCOLAMD.
 Optionally used by the {\tt Cholesky} Module.  All are secondary routines since
 these are more easily used by the {\tt Cholesky} Module.
 
@@ -2176,9 +2157,9 @@ of course, but {\tt cholmod\_version} can be called without it, if necessary.
 
 No CHOLMOD routines print anything, except for the {\tt cholmod\_print\_*}
 routines in the {\tt Check} Module, and the {\tt cholmod\_error} routine.  The
-{\tt Common->print\_function} is a pointer to {\tt printf} by default;
+{\tt SuiteSparse\_config.printf\_function} is a pointer to {\tt printf} by default;
 you can redirect the output of CHOLMOD by redefining this pointer.
-If {\tt Common->print\_function} is {\tt NULL}, CHOLMOD does not print anything.
+If the function pointer is {\tt NULL}, CHOLMOD does not print anything.
 
 The {\tt Common->print} parameter determines how much detail is printed.
 Each value of {\tt Common->print} listed below also prints the items listed
@@ -3627,7 +3608,8 @@ All nodes in set 0 are ordered first, followed by all nodes in set 1, and so on.
 \input{_bisect.tex}
 Finds a node bisector of {\tt A}, {\tt A*A'}, {\tt A(:,f)*A(:,f)'}:
 a set of nodes that partitions the graph into two parts.
-Compresses the graph first, and then calls METIS.
+Compresses the graph first, ensures the graph is symmetric with
+no diagonal entries, and then calls METIS.
 
 %---------------------------------------
 \subsection{{\tt cholmod\_metis\_bisector}: interface to METIS node bisector}
@@ -3639,7 +3621,7 @@ Finds a set of nodes that bisects the graph of {\tt A} or {\tt A*A'} (a direct i
 
 The input matrix {\tt A} must be square, symmetric (with both upper and lower
 parts present) and with no diagonal entries.  These conditions are not
-checked.
+checked.  Use cholmod\_bisect to check these conditions.
 
 %---------------------------------------
 \newpage

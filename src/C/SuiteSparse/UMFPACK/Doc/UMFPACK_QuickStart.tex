@@ -18,7 +18,7 @@
 \author{Timothy A. Davis \\
 DrTimothyAldenDavis@gmail.com, http://www.suitesparse.com}
 \title{UMFPACK Quick Start Guide}
-\date{VERSION 5.7.1, Oct 10, 2014}
+\date{VERSION 5.7.6, May 4, 2016}
 \maketitle
 
 %-------------------------------------------------------------------------------
@@ -239,20 +239,23 @@ is required by UMFPACK.  UMFPACK can be compiled without the
 BLAS
 but your performance will be much less than what it should be.
 
-UMFPACK also requires CHOLMOD, CCAMD, CCOLAMD, COLAMD, and metis-4.0
+UMFPACK also requires CHOLMOD, CCAMD, CCOLAMD, COLAMD, and metis-5.1.0
 by default.  You can remove this dependency by compiling with
 {\tt -DNCHOLMOD}.  Add this to the {\tt UMFPACK\_CONFIG} definition
 in {\tt SuiteSparse\_config/SuiteSparse\_config.mk}.
 
 System-dependent configurations are in the {\tt SuiteSparse\_config/SuiteSparse\_config.mk}
 file.  The default
-settings will work on most systems, except for the BLAS definition.
+settings will work on most systems, except perhaps for the BLAS definition.
 Sample configurations are provided
-for Linux, Mac, Sun Solaris, SGI IRIX, IBM AIX, and the DEC/Compaq Alpha.
+for Linux, Mac, Sun Solaris, and IBM AIX.
+The Makefile file will automatically detect what system you have
+and will set the compile parameters accordingly. 
 
-To compile and install both packages,
+To compile both packages,
 go to the {\tt UMFPACK} directory and type {\tt make}.  This will compile the
-libraries ({\tt AMD/Lib/libamd.a} and {\tt UMFPACK/Lib/libumfpack.a}).
+static
+libraries ({\tt AMD/Lib/libamd.*} and {\tt UMFPACK/Lib/libumfpack.*}).
 A demo of the AMD ordering routine will be compiled and tested in
 the {\tt AMD/Demo} directory, and five demo programs will then be
 compiled and tested in the {\tt UMFPACK/Demo} directory.
@@ -261,9 +264,11 @@ files in the distribution.  Expect to see a few differences, such as
 residual norms, compile-time control settings, and perhaps memory usage
 differences.
 
-If you have trouble with {\tt make} for UMFPACK,
-try using the plain {\tt Makefile} instead of {\tt GNUmakefile}.
-Go to the UMFPACK/Lib directory and type {\tt make -f Makefile}.
+To install into /usr/local/lib and /usr/local/include,
+do {\tt make install}.
+To uninstall from there,
+do {\tt make uninstall}.
+For more options, see the {\tt SuiteSparse/README.txt} file.
 
 Use the MATLAB command {\tt umfpack\_make} in the MATLAB directory
 to compile UMFPACK and AMD for use in MATLAB.
@@ -272,8 +277,9 @@ If you compile UMFPACK and AMD and then later change the
 {\tt SuiteSparse\_config/SuiteSparse\_config.mk} file
 then you should type {\tt make purge} and then {\tt make} to recompile.
 
-Here are the various parameters that you can control in your
-{\tt SuiteSparse\_config/SuiteSparse\_config.mk} file:
+Here are a few of the various parameters that you can control in your
+{\tt SuiteSparse\_config/SuiteSparse\_config.mk} file.
+To list them all, do {\tt make config}.
 
 \begin{itemize}
 \item {\tt CC = } your C compiler, such as {\tt cc}.
@@ -281,7 +287,7 @@ Here are the various parameters that you can control in your
 \item {\tt CFLAGS = } optimization flags, such as {\tt -O}.
 \item {\tt UMFPACK\_CONFIG = } configuration settings for the BLAS,
     memory allocation routines, and timing routines.
-\item {\tt LIB = } your libraries, such as {\tt -lm} or {\tt -lblas}.
+\item {\tt LDLIBS = } your libraries, such as {\tt -lm} or {\tt -lblas}.
 \item {\tt RM =} the command to delete a file.
 \item {\tt MV =} the command to rename a file.
 \item {\tt F77 =} the command to compile a Fortran program (optional).
@@ -310,24 +316,24 @@ most deal with how the BLAS are called:
 \end{itemize}
 
 When you compile your program that uses the C-callable UMFPACK library,
-you need to link your program with all libraries
-({\tt UMFPACK/Lib/libumfpack.a} and {\tt AMD/Lib/libamd.a},
-and unless you compile with \verb'-DNCHOLMOD' you also must link with
-{\tt CHOLMOD/Lib/libcholmod.a}, \newline
-{\tt COLAMD/Lib/libcolamd.a},
-{\tt CCOLAMD/Lib/libccolamd.a},
-{\tt CAMD/Lib/libcamd.a},
-and \newline
-{\tt metis-4.0/libmetis.a}).
-You need to tell your compiler to look in the
-directories {\tt UMFPACK/Include} and {\tt AMD/Include} for include
-files.  See {\tt UMFPACK/Demo/Makefile} for an example.
+you need to link your program with all libraries:
+-lumfpack -lamd -lcholmod -lcolamd -lccolamd -lcamd -lmetis.
+If you don't compile UMFPACK to use METIS, then you can  
+All libraries are placed in {\tt SuiteSparse/lib} and all include
+files are placed in {\tt SuiteSparse/include}.
+
 You do not need to directly include any AMD include files in your
 program, unless you directly call AMD routines.  You only need the
 \begin{verbatim}
 #include "umfpack.h"
 \end{verbatim}
 statement, as described in Section~\ref{Synopsis}.
+
+If you do {\tt make install}, then the compiler will know where to
+find all of the SuiteSparse libraries.  Otherwise, add
+{\tt -L/home/myself/SuiteSparse/lib} and
+{\tt -I/home/myself/SuiteSparse/include} to your compiler flags,
+if your copy of SuiteSparse is located in {\tt /home/myself/SuiteSparse}.
 
 %-------------------------------------------------------------------------------
 \newpage

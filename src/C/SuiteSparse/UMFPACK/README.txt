@@ -1,4 +1,4 @@
-UMFPACK, Copyright (c) 1995-2013 by Timothy A. Davis,
+UMFPACK, Copyright (c) 1995-2016 by Timothy A. Davis,
 http://www.suitesparse.com
 
 UMFPACK :  a set of routines solving sparse linear systems via LU
@@ -11,66 +11,42 @@ UMFPACK :  a set of routines solving sparse linear systems via LU
     2.0 or later.
 
     Unless you compile with -DNCHOLMOD, addtional packages are required:
-    CHOLMOD, CAMD, CCOLAMD, COLAMD, and metis-4.0.
+    CHOLMOD, CAMD, CCOLAMD, COLAMD, and metis-5.1.0.
 
 The AMD, SuiteSparse_config, and UMFPACK directories must all reside in the
 same parent directory.  If the -DNCHOLMOD is not used, the CHOLMOD, CAMD,
-CCOLAMD, COLAMD, and metis-4.0 also also exist in the same parent.
+CCOLAMD, COLAMD, and metis-5.1.0 also also exist in the same parent.
 
 Quick start (Unix, or Windows with Cygwin):
 
     To compile, test, and install both UMFPACK and AMD, the UMFPACK and AMD
-    directories must be in the same parent directory.  To configure, edit the
-    SuiteSparse_config/SuiteSparse_config.mk file (otherwise, you may get
-    warnings that the BLAS (dgemm, etc) are not found).  You may use
-    UMFPACK_CONFIG = -DNBLAS in the SuiteSparse_config/SuiteSparse_config.mk
-    file, to avoid using the BLAS, but UMFPACK will be slow.  Next, cd to this
-    directory (UMFPACK) and type "make".  To compile and run a FORTRAN demo
-    program for Harwell/Boeing matrices, type "make hb".  To compile a FORTRAN
-    main program that calls the 32-bit C-callable UMFPACK library, type "make
-    fortran".  When done, type "make clean" to remove unused *.o files (keeps
-    the compiled libraries and demo programs).  See the User Guide
-    (Doc/UserGuide.pdf), or ../SuiteSparse_config/SuiteSparse_config.mk for
-    more details (including options for compiling in 64-bit mode).
+    directories must be in the same parent directory.  To configure, you may
+    need to edit the SuiteSparse_config/SuiteSparse_config.mk file, but the
+    defaults should work on most systems.   Next, type 'make' in this
+    directory.
+
+    To compile and run a FORTRAN demo program for Harwell/Boeing matrices, type
+    "make hb".  To compile a FORTRAN main program that calls the 32-bit
+    C-callable UMFPACK library, type "make fortran".  When done, type "make
+    clean" to remove unused *.o files (keeps the compiled libraries and demo
+    programs).  See the User Guide (Doc/UserGuide.pdf), or
+    ../SuiteSparse_config/SuiteSparse_config.mk for more details.
+
+    To install into /usr/local/lib and /usr/local/include, use
+    "make install".  To remove, do "make uninstall"
+    For installing in other locations, see SuiteSparse/README.txt.
 
 Quick start (for MATLAB users):
 
     To compile, test, and install the UMFPACK mexFunction, cd to the
-    UMFPACK/MATLAB directory and type umfpack_make at the MATLAB prompt.
+    UMFPACK/MATLAB directory and type umfpack_install at the MATLAB prompt.
+    Then save your path for future sessions.
 
 --------------------------------------------------------------------------------
 
 UMFPACK is available under alternate licences; contact T. Davis for details.
 
-UMFPACK License:
-
-    Your use or distribution of UMFPACK or any modified version of
-    UMFPACK implies that you agree to this License.
-
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    General Public License for more details.
-
-    You should have received a copy of the GNU General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
-    USA
-
-    Permission is hereby granted to use or copy this program under the
-    terms of the GNU GPL, provided that the Copyright, this License,
-    and the Availability of the original version is retained on all copies.
-    User documentation of any code that uses this code or any modified
-    version of this code must cite the Copyright, this License, the
-    Availability note, and "Used by permission." Permission to modify
-    the code and to distribute modified code is granted, provided the
-    Copyright, this License, and the Availability note are retained,
-    and a notice that the code was modified is included.
+UMFPACK License:  See UMFPACK/Doc/License.txt for the license.
 
 Availability:
 
@@ -89,7 +65,7 @@ Availability:
 
 --------------------------------------------------------------------------------
 
-Refer to ../AMD/README for the License for AMD, which is a separate
+Refer to ../AMD/Doc/License.txt for the License for AMD, which is a separate
 package for ordering sparse matrices that is required by UMFPACK.
 UMFPACK v4.5 cannot use AMD v1.1 or earlier.  UMFPACK 5.x
 requires AMD v2.0 or later.
@@ -171,7 +147,7 @@ Files and directories in the UMFPACK distribution:
     Files in the UMFPACK directory:
     ----------------------------------------------------------------------------
 
-    Makefile	top-level Makefile for GNU make or original make.
+    Makefile	top-level Makefile
 		Windows users would require Cygwin to use "make"
 
     README.txt	this file
@@ -329,7 +305,7 @@ Files and directories in the UMFPACK distribution:
     Demo directory:
     ----------------------------------------------------------------------------
 
-    Makefile			for GNU make or original make
+    Makefile			to compile the demos
 
     umfpack_simple.c		a simple demo
     umpack_xx_demo.c		template to create the demo codes below
@@ -378,8 +354,6 @@ Files and directories in the UMFPACK distribution:
     ----------------------------------------------------------------------------
 
     Contents.m			for "help umfpack" listing of toolbox contents
-    GNUmakefile			a nice Makefile, for GNU make
-    Makefile			an ugly Unix Makefile (for older make's)
 
     lu_normest.m		1-norm estimate of A-L*U (by Hager & Davis).
     luflop.m			for "help luflop"
@@ -399,13 +373,8 @@ Files and directories in the UMFPACK distribution:
     umfpack_demo.m.out		output of umfpack_demo.m
     umfpack_simple.m.out	output of umfpack_simple
 
-    lcc_lib/lapacksyms.def	LAPACK definitions for lcc compiler (Windows)
-    lcc_lib/libmwlapack.lib	LAPACK definitions for lcc compiler (Windows)
-
     ----------------------------------------------------------------------------
-    Lib directory:  libumfpack.a library placed here
+    Lib directory:
     ----------------------------------------------------------------------------
 
-    GNUmakefile			a nice Makefile, for GNU make
-    Makefile			an ugly Unix Makefile (for older make's)
-    libumfpack.def		UMPFACK definitions for Windows
+    Makefile			to compile the library

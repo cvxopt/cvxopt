@@ -2,451 +2,599 @@
 # SuiteSparse_config.mk:  common configuration file for the SuiteSparse
 #===============================================================================
 
-# This file contains all configuration settings for all packages authored or
-# co-authored by Tim Davis:
+# This file contains all configuration settings for all packages in SuiteSparse,
+# except for CSparse (which is stand-alone) and the packages in MATLAB_Tools.
+
+SUITESPARSE_VERSION = 4.5.3
+
+#===============================================================================
+# Options you can change without editing this file:
+#===============================================================================
+
+    # To list the options you can modify at the 'make' command line, type
+    # 'make config', which also lists their default values.  You can then
+    # change them with 'make OPTION=value'.  For example, to use an INSTALL
+    # path of /my/path, and to use your own BLAS and LAPACK libraries, do:
+    #
+    #   make install INSTALL=/my/path BLAS=-lmyblas LAPACK=-lmylapackgoeshere
+    #
+    # which will install the package into /my/path/lib and /my/path/include,
+    # and use -lmyblas -lmylapackgoes here when building the demo program.
+
+#===============================================================================
+# Defaults for any system
+#===============================================================================
+
+    #---------------------------------------------------------------------------
+    # SuiteSparse root directory
+    #---------------------------------------------------------------------------
+
+    # Most Makefiles are in SuiteSparse/Pkg/Lib or SuiteSparse/Pkg/Demo, so
+    # the top-level of SuiteSparse is in ../.. unless otherwise specified.
+    # This is true for all but the SuiteSparse_config package.
+    SUITESPARSE ?= $(realpath $(CURDIR)/../..)
+
+    #---------------------------------------------------------------------------
+    # installation location
+    #---------------------------------------------------------------------------
+
+    # For "make install" and "make uninstall", the default location is
+    # SuiteSparse/lib, SuiteSparse/include, and
+    # SuiteSparse/share/doc/suitesparse-x.y.z
+    # If you do this:
+    #    make install INSTALL=/usr/local
+    # then the libraries are installed in /usr/local/lib, include files in
+    # /usr/local/include, and documentation in
+    # /usr/local/share/doc/suitesparse-x.y.z.
+    # You can instead specify the install location of each of these 3 components
+    # separately, via (for example):
+    #    make install INSTALL_LIB=/yada/mylibs INSTALL_INCLUDE=/yoda/myinc  \
+    #                 INSTALL_DOC=/solo/mydox
+    # which puts the libraries in /yada/mylibs, include files in /yoda/myinc,
+    # and documentation in /solo/mydox.
+    INSTALL ?= $(SUITESPARSE)
+    INSTALL_LIB ?= $(INSTALL)/lib
+    INSTALL_INCLUDE ?= $(INSTALL)/include
+    INSTALL_DOC ?= $(INSTALL)/share/doc/suitesparse-$(SUITESPARSE_VERSION)
+
+    #---------------------------------------------------------------------------
+    # optimization level
+    #---------------------------------------------------------------------------
+
+    OPTIMIZATION ?= -O3
+
+    #---------------------------------------------------------------------------
+    # statement coverage for */Tcov
+    #---------------------------------------------------------------------------
+
+    ifeq ($(TCOV),yes)
+        # Each package has a */Tcov directory for extensive testing, including
+        # statement coverage.  The Tcov tests require Linux and gcc, and use
+        # the vanilla BLAS.  For those tests, the packages use 'make TCOV=yes',
+        # which overrides the following settings:
+        MKLROOT =
+        AUTOCC = no
+        CC = gcc
+        CXX = g++
+        BLAS = -lrefblas -lgfortran -lstdc++
+        LAPACK = -llapack
+	CFLAGS += --coverage
+	OPTIMIZATION = -g
+	LDFLAGS += --coverage
+    endif
+
+    #---------------------------------------------------------------------------
+    # CFLAGS for the C/C++ compiler
+    #---------------------------------------------------------------------------
+
+    # The CF macro is used by SuiteSparse Makefiles as a combination of
+    # CFLAGS, CPPFLAGS, TARGET_ARCH, and system-dependent settings.
+    CF ?= $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) $(OPTIMIZATION) -fexceptions -fPIC
+
+    #---------------------------------------------------------------------------
+    # OpenMP is used in CHOLMOD
+    #---------------------------------------------------------------------------
+
+    # with gcc, enable OpenMP directives via -fopenmp
+    # This is not supported on Darwin, so this string is cleared, below.
+    CFOPENMP ?= -fopenmp
+
+    #---------------------------------------------------------------------------
+    # compiler
+    #---------------------------------------------------------------------------
+
+    # By default, look for the Intel compilers.  If present, they are used
+    # instead of $(CC), $(CXX), and $(F77).  To disable this feature and
+    # use the $(CC), $(CXX), and $(F77) compilers, use 'make AUTOCC=no'
+
+    AUTOCC ?= yes
+
+    ifneq ($(AUTOCC),no)
+        ifneq ($(shell which icc 2>/dev/null),)
+            # use the Intel icc compiler for C codes, and -qopenmp for OpenMP
+            CC = icc -D_GNU_SOURCE
+            CXX = $(CC)
+            CFOPENMP = -qopenmp -I$(MKLROOT)/include
+        endif
+        ifneq ($(shell which ifort 2>/dev/null),)
+            # use the Intel ifort compiler for Fortran codes
+            F77 = ifort
+        endif
+    endif
+
+    #---------------------------------------------------------------------------
+    # code formatting (for Tcov only)
+    #---------------------------------------------------------------------------
+
+    PRETTY ?= grep -v "^\#" | indent -bl -nce -bli0 -i4 -sob -l120
+
+    #---------------------------------------------------------------------------
+    # required libraries
+    #---------------------------------------------------------------------------
+
+    # SuiteSparse requires the BLAS, LAPACK, and -lm (Math) libraries.
+    # It places its shared *.so libraries in SuiteSparse/lib.
+    # Linux also requires the -lrt library (see below)
+    LDLIBS ?= -lm
+    LDFLAGS += -L$(INSTALL_LIB)
+
+    # See http://www.openblas.net for a recent and freely available optimzed
+    # BLAS.  LAPACK is at http://www.netlib.org/lapack/ .  You can use the
+    # standard Fortran LAPACK along with OpenBLAS to obtain very good
+    # performance.  This script can also detect if the Intel MKL BLAS is
+    # installed.
+
+    LAPACK ?= -llapack
+
+    ifndef BLAS
+        ifdef MKLROOT
+            # use the Intel MKL for BLAS and LAPACK
+            # using static linking:
+            # BLAS = -Wl,--start-group \
+            #   $(MKLROOT)/lib/intel64/libmkl_intel_lp64.a \
+            #   $(MKLROOT)/lib/intel64/libmkl_core.a \
+            #   $(MKLROOT)/lib/intel64/libmkl_intel_thread.a \
+            #   -Wl,--end-group -lpthread -lm
+            # using dynamic linking:
+            BLAS = -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread -lpthread -lm
+            LAPACK =
+        else
+            # use the OpenBLAS at http://www.openblas.net
+            BLAS = -lopenblas
+        endif
+    endif
+
+    # For ACML, use this instead:
+    #   make BLAS='-lacml -lgfortran'
+
+    #---------------------------------------------------------------------------
+    # shell commands
+    #---------------------------------------------------------------------------
+
+    # ranlib, and ar, for generating libraries.  If you don't need ranlib,
+    # just change it to RANLAB = echo
+    RANLIB ?= ranlib
+    ARCHIVE ?= $(AR) $(ARFLAGS)
+    CP ?= cp -f
+    MV ?= mv -f
+
+    #---------------------------------------------------------------------------
+    # Fortran compiler (not required for 'make' or 'make library')
+    #---------------------------------------------------------------------------
+
+    # A Fortran compiler is optional.  Only required for the optional Fortran
+    # interfaces to AMD and UMFPACK.  Not needed by 'make' or 'make install'
+    F77 ?= gfortran
+    F77FLAGS ?= $(FFLAGS) $(OPTIMIZATION)
+
+    #---------------------------------------------------------------------------
+    # NVIDIA CUDA configuration for CHOLMOD and SPQR
+    #---------------------------------------------------------------------------
+
+    # CUDA is detected automatically, and used if found.  To disable CUDA,
+    # use CUDA=no
+
+    ifneq ($(CUDA),no)
+        CUDA_PATH = $(shell which nvcc 2>/dev/null | sed "s/\/bin\/nvcc//")
+    endif
+
+    ifeq ($(wildcard $(CUDA_PATH)),)
+        # CUDA is not present
+        CUDA_PATH     =
+        GPU_BLAS_PATH =
+        GPU_CONFIG    =
+        CUDART_LIB    =
+        CUBLAS_LIB    =
+        CUDA_INC_PATH =
+        CUDA_INC      =
+        NVCC          = echo
+        NVCCFLAGS     =
+    else
+        # with CUDA for CHOLMOD and SPQR
+        GPU_BLAS_PATH = $(CUDA_PATH)
+        # GPU_CONFIG must include -DGPU_BLAS to compile SuiteSparse for the
+        # GPU.  You can add additional GPU-related flags to it as well.
+        # with 4 cores (default):
+        GPU_CONFIG    = -DGPU_BLAS
+        # For example, to compile CHOLMOD for 10 CPU cores when using the GPU:
+        # GPU_CONFIG  = -DGPU_BLAS -DCHOLMOD_OMP_NUM_THREADS=10
+        CUDART_LIB    = $(CUDA_PATH)/lib64/libcudart.so
+        CUBLAS_LIB    = $(CUDA_PATH)/lib64/libcublas.so
+        CUDA_INC_PATH = $(CUDA_PATH)/include/
+        CUDA_INC      = -I$(CUDA_INC_PATH)
+        NVCC          = $(CUDA_PATH)/bin/nvcc
+        NVCCFLAGS     = -Xcompiler -fPIC -O3 \
+                            -gencode=arch=compute_20,code=sm_20 \
+                            -gencode=arch=compute_30,code=sm_30 \
+                            -gencode=arch=compute_35,code=sm_35 \
+                            -gencode=arch=compute_50,code=sm_50 \
+                            -gencode=arch=compute_50,code=compute_50
+    endif
+
+    #---------------------------------------------------------------------------
+    # UMFPACK configuration:
+    #---------------------------------------------------------------------------
+
+    # Configuration for UMFPACK.  See UMFPACK/Source/umf_config.h for details.
+    #
+    # -DNBLAS       do not use the BLAS.  UMFPACK will be very slow.
+    # -D'LONGBLAS=long' or -DLONGBLAS='long long' defines the integers used by
+    #               LAPACK and the BLAS (defaults to 'int')
+    # -DNSUNPERF    do not use the Sun Perf. Library on Solaris
+    # -DNRECIPROCAL do not multiply by the reciprocal
+    # -DNO_DIVIDE_BY_ZERO   do not divide by zero
+    # -DNCHOLMOD    do not use CHOLMOD as a ordering method.  If -DNCHOLMOD is
+    #               included in UMFPACK_CONFIG, then UMFPACK does not rely on
+    #               CHOLMOD, CAMD, CCOLAMD, COLAMD, and METIS.
+
+    UMFPACK_CONFIG ?=
+
+    # For example, uncomment this line to compile UMFPACK without CHOLMOD:
+    # UMFPACK_CONFIG = -DNCHOLMOD
+    # or use 'make UMFPACK_CONFIG=-DNCHOLMOD'
+
+    #---------------------------------------------------------------------------
+    # CHOLMOD configuration
+    #---------------------------------------------------------------------------
+
+    # CHOLMOD Library Modules, which appear in -lcholmod
+    # Core       requires: none
+    # Check      requires: Core
+    # Cholesky   requires: Core, AMD, COLAMD. optional: Partition, Supernodal
+    # MatrixOps  requires: Core
+    # Modify     requires: Core
+    # Partition  requires: Core, CCOLAMD, METIS.  optional: Cholesky
+    # Supernodal requires: Core, BLAS, LAPACK
+    #
+    # CHOLMOD test/demo Modules (these do not appear in -lcholmod):
+    # Tcov       requires: Core, Check, Cholesky, MatrixOps, Modify, Supernodal
+    #            optional: Partition
+    # Valgrind   same as Tcov
+    # Demo       requires: Core, Check, Cholesky, MatrixOps, Supernodal
+    #            optional: Partition
+    #
+    # Configuration flags:
+    # -DNCHECK      do not include the Check module.
+    # -DNCHOLESKY   do not include the Cholesky module.
+    # -DNPARTITION  do not include the Partition module.
+    #               also do not include METIS.
+    # -DNCAMD       do not use CAMD & CCOLAMD in Parition Module.
+    # -DNMATRIXOPS  do not include the MatrixOps module.
+    # -DNMODIFY     do not include the Modify module.
+    # -DNSUPERNODAL do not include the Supernodal module.
+    #
+    # -DNPRINT      do not print anything.
+    # -D'LONGBLAS=long' or -DLONGBLAS='long long' defines the integers used by
+    #               LAPACK and the BLAS (defaults to 'int')
+    # -DNSUNPERF    for Solaris only.  If defined, do not use the Sun
+    #               Performance Library
+    # -DGPU_BLAS    enable the use of the CUDA BLAS
+
+    CHOLMOD_CONFIG ?= $(GPU_CONFIG)
+
+    #---------------------------------------------------------------------------
+    # SuiteSparseQR configuration:
+    #---------------------------------------------------------------------------
+
+    # The SuiteSparseQR library can be compiled with the following options:
+    #
+    # -DNPARTITION      do not include the CHOLMOD partition module
+    # -DNEXPERT         do not include the functions in SuiteSparseQR_expert.cpp
+    # -DHAVE_TBB        enable the use of Intel's Threading Building Blocks
+    # -DGPU_BLAS        enable the use of the CUDA BLAS
+
+    SPQR_CONFIG ?= $(GPU_CONFIG)
+
+    # to compile with Intel's TBB, use TBB=-ltbb SPQR_CONFIG=-DHAVE_TBB
+    TBB ?=
+
+    # TODO: this *mk file should auto-detect the presence of Intel's TBB,
+    # and set the compiler flags accordingly.
+
+#===============================================================================
+# System-dependent configurations
+#===============================================================================
+
+    #---------------------------------------------------------------------------
+    # determine what system we are on
+    #---------------------------------------------------------------------------
+
+    # To disable these auto configurations, use 'make UNAME=custom'
+
+    ifndef UNAME
+        ifeq ($(OS),Windows_NT)
+            # Cygwin Make on Windows has an $(OS) variable, but not uname.
+            # Note that this option is untested.
+            UNAME = Windows
+        else
+            # Linux and Darwin (Mac OSX) have been tested.
+            UNAME := $(shell uname)
+        endif
+    endif
+
+    #---------------------------------------------------------------------------
+    # Linux
+    #---------------------------------------------------------------------------
+
+    ifeq ($(UNAME),Linux)
+        # add the realtime library, librt, and SuiteSparse/lib
+        LDLIBS += -lrt -Wl,-rpath=$(INSTALL_LIB)
+    endif
+
+    #---------------------------------------------------------------------------
+    # Mac
+    #---------------------------------------------------------------------------
+
+    ifeq ($(UNAME), Darwin)
+        # To compile on the Mac, you must install Xcode.  Then do this at the
+        # command line in the Terminal, before doing 'make':
+        # xcode-select --install
+        CF += -fno-common
+        BLAS = -framework Accelerate
+        LAPACK = -framework Accelerate
+        # OpenMP is not yet supported by default in clang
+        CFOPENMP =
+    endif
+
+    #---------------------------------------------------------------------------
+    # Solaris
+    #---------------------------------------------------------------------------
+
+    ifeq ($(UNAME), SunOS)
+        # Using the Sun compiler and the Sun Performance Library
+        # This hasn't been tested recently.
+        # I leave it here in case you need it.  It likely needs updating.
+        CF += -fast -KPIC -xc99=%none -xlibmieee -xlibmil -m64 -Xc
+        F77FLAGS = -O -fast -KPIC -dalign -xlibmil -m64
+        BLAS = -xlic_lib=sunperf
+        LAPACK =
+        # Using the GCC compiler and the reference BLAS
+        ## CC = gcc
+        ## CXX = g++
+        ## MAKE = gmake
+        ## BLAS = -lrefblas -lgfortran
+        ## LAPACK = -llapack
+    endif
+
+    #---------------------------------------------------------------------------
+    # IBM AIX
+    #---------------------------------------------------------------------------
+
+    ifeq ($(UNAME), AIX)
+        # hasn't been tested for a very long time...
+        # I leave it here in case you need it.  It likely needs updating.
+        CF += -O4 -qipa -qmaxmem=16384 -q64 -qproto -DBLAS_NO_UNDERSCORE
+        F77FLAGS =  -O4 -qipa -qmaxmem=16384 -q64
+        BLAS = -lessl
+        LAPACK =
+    endif
+
+#===============================================================================
+# finalize the CF compiler flags
+#===============================================================================
+
+    CF += $(CFOPENMP)
+
+#===============================================================================
+# internal configuration
+#===============================================================================
+
+    # The user should not have to change these definitions, and they are
+    # not displayed by 'make config'
+
+    #---------------------------------------------------------------------------
+    # for removing files not in the distribution
+    #---------------------------------------------------------------------------
+
+    # remove object files, but keep compiled libraries via 'make clean'
+    CLEAN = *.o *.obj *.ln *.bb *.bbg *.da *.tcov *.gcov gmon.out *.bak *.d \
+        *.gcda *.gcno *.aux *.bbl *.blg *.log *.toc *.dvi *.lof *.lot
+
+    # also remove compiled libraries, via 'make distclean'
+    PURGE = *.so* *.a *.dll *.dylib *.dSYM
+
+    # location of TCOV test output
+    TCOV_TMP ?= /tmp
+
+#===============================================================================
+# Building the shared and static libraries
+#===============================================================================
+
+# How to build/install shared and static libraries for Mac and Linux/Unix.
+# This assumes that LIBRARY and VERSION have already been defined by the
+# Makefile that includes this file.
+
+SO_OPTS = $(LDFLAGS)
+
+ifeq ($(UNAME),Windows)
+    # Cygwin Make on Windows (untested)
+    AR_TARGET = $(LIBRARY).lib
+    SO_PLAIN  = $(LIBRARY).dll
+    SO_MAIN   = $(LIBRARY).$(SO_VERSION).dll
+    SO_TARGET = $(LIBRARY).$(VERSION).dll
+    SO_INSTALL_NAME = echo
+else
+    # Mac or Linux/Unix
+    AR_TARGET = $(LIBRARY).a
+    ifeq ($(UNAME),Darwin)
+        # Mac
+        SO_PLAIN  = $(LIBRARY).dylib
+        SO_MAIN   = $(LIBRARY).$(SO_VERSION).dylib
+        SO_TARGET = $(LIBRARY).$(VERSION).dylib
+        SO_OPTS  += -dynamiclib -compatibility_version $(SO_VERSION) \
+                    -current_version $(VERSION) \
+                    -shared -undefined dynamic_lookup
+        # When a Mac *.dylib file is moved, this command is required
+        # to change its internal name to match its location in the filesystem:
+        SO_INSTALL_NAME = install_name_tool -id
+    else
+        # Linux and other variants of Unix
+        SO_PLAIN  = $(LIBRARY).so
+        SO_MAIN   = $(LIBRARY).so.$(SO_VERSION)
+        SO_TARGET = $(LIBRARY).so.$(VERSION)
+        SO_OPTS  += -shared -Wl,-soname -Wl,$(SO_MAIN) -Wl,--no-undefined
+        # Linux/Unix *.so files can be moved without modification:
+        SO_INSTALL_NAME = echo
+    endif
+endif
+
+#===============================================================================
+# Configure CHOLMOD/Partition module with METIS, CAMD, and CCOLAMD
+#===============================================================================
+
+# By default, SuiteSparse uses METIS 5.1.0 in the SuiteSparse/metis-5.1.0
+# directory.  SuiteSparse's interface to METIS is only through the
+# SuiteSparse/CHOLMOD/Partition module, which also requires SuiteSparse/CAMD
+# and SuiteSparse/CCOLAMD.
 #
-# Package Version       Description
-# ------- -------       -----------
-# AMD     1.2 or later  approximate minimum degree ordering
-# COLAMD  2.4 or later  column approximate minimum degree ordering
-# CCOLAMD 1.0 or later  constrained column approximate minimum degree ordering
-# CAMD    any           constrained approximate minimum degree ordering
-# UMFPACK 4.5 or later  sparse LU factorization, with the BLAS
-# CHOLMOD any           sparse Cholesky factorization, update/downdate
-# KLU     0.8 or later  sparse LU factorization, BLAS-free
-# BTF     0.8 or later  permutation to block triangular form
-# LDL     1.2 or later  concise sparse LDL'
-# CXSparse any          extended version of CSparse (int/long, real/complex)
-# SuiteSparseQR any     sparse QR factorization
-# RBio    2.0 or later  read/write sparse matrices in Rutherford-Boeing format
-#
-# By design, this file is NOT included in the CSparse makefile.
-# That package is fully stand-alone.  CSparse is primarily for teaching;
-# production code should use CXSparse.
-#
-# The SuiteSparse_config directory and the above packages should all appear in
-# a single directory, in order for the Makefile's within each package to find
-# this file.
-#
-# To enable an option of the form "# OPTION = ...", edit this file and
-# delete the "#" in the first column of the option you wish to use.
-#
-# The use of METIS 4.0.1 is optional.  To exclude METIS, you must compile with
-# CHOLMOD_CONFIG set to -DNPARTITION.  See below for details.  However, if you
-# do not have a metis-4.0 directory inside the SuiteSparse directory, the
-# */Makefile's that optionally rely on METIS will automatically detect this
-# and compile without METIS.
+# If you wish to use your own pre-installed copy of METIS, use the MY_METIS_LIB
+# and MY_METIS_INC options passed to 'make'.  For example:
+#       make MY_METIS_LIB=-lmetis
+#       make MY_METIS_LIB=/home/myself/mylibraries/libmetis.so
+#       make MY_METIS_LIB='-L/home/myself/mylibraries -lmetis'
+# If you need to tell the compiler where to find the metis.h include file,
+# then add MY_METIS_INC=/home/myself/metis-5.1.0/include as well, which points
+# to the directory containing metis.h.  If metis.h is already installed in
+# a location known to the compiler (/usr/local/include/metis.h for example)
+# then you do not need to add MY_METIS_INC.
+
+I_WITH_PARTITION =
+LIB_WITH_PARTITION =
+CONFIG_PARTITION = -DNPARTITION -DNCAMD
+# check if CAMD/CCOLAMD and METIS are requested and available
+ifeq (,$(findstring -DNCAMD, $(CHOLMOD_CONFIG)))
+    # CAMD and CCOLAMD are requested.  See if they are available in
+    # SuiteSparse/CAMD and SuiteSparse/CCOLAMD
+    ifneq (, $(wildcard $(SUITESPARSE)/CAMD))
+        ifneq (, $(wildcard $(SUITESPARSE)/CCOLAMD))
+            # CAMD and CCOLAMD are requested and available
+            LIB_WITH_PARTITION = -lccolamd -lcamd
+            I_WITH_PARTITION = -I$(SUITESPARSE)/CCOLAMD/Include -I$(SUITESPARSE)/CAMD/Include
+            CONFIG_PARTITION = -DNPARTITION
+            # check if METIS is requested and available
+            ifeq (,$(findstring -DNPARTITION, $(CHOLMOD_CONFIG)))
+                # METIS is requested.  See if it is available.
+                ifneq (,$(MY_METIS_LIB))
+                    # METIS 5.1.0 is provided elsewhere, and we are not using
+                    # SuiteSparse/metis-5.1.0. To do so, we link with
+                    # $(MY_METIS_LIB) and add the -I$(MY_METIS_INC) option for
+                    # the compiler.  The latter can be empty if you have METIS
+                    # installed in a place where the compiler can find the
+                    # metis.h include file by itself without any -I option
+                    # (/usr/local/include/metis.h for example). 
+                    LIB_WITH_PARTITION += $(MY_METIS_LIB)
+                    ifneq (,$(MY_METIS_INC))
+                        I_WITH_PARTITION += -I$(MY_METIS_INC)
+                    endif
+                    CONFIG_PARTITION =
+                else
+                    # see if METIS is in SuiteSparse/metis-5.1.0
+                    ifneq (, $(wildcard $(SUITESPARSE)/metis-5.1.0))
+                        # SuiteSparse/metis5.1.0 is available
+                        ifeq ($(UNAME), Darwin)
+                            LIB_WITH_PARTITION += $(SUITESPARSE)/lib/libmetis.dylib
+                        else
+                            LIB_WITH_PARTITION += -lmetis
+                        endif
+                        I_WITH_PARTITION += -I$(SUITESPARSE)/metis-5.1.0/include
+                        CONFIG_PARTITION =
+                    endif
+                endif
+            endif
+        endif
+    endif
+endif
+
+#===============================================================================
+# display configuration
+#===============================================================================
+
+ifeq ($(LIBRARY),)
+    # placeholders, for 'make config' in the top-level SuiteSparse
+    LIBRARY=PackageNameWillGoHere
+    VERSION=x.y.z
+    SO_VERSION=x
+endif
+
+# 'make config' lists the primary installation options
+config:
+	@echo ' '
+	@echo '----------------------------------------------------------------'
+	@echo 'SuiteSparse package compilation options:'
+	@echo '----------------------------------------------------------------'
+	@echo ' '
+	@echo 'SuiteSparse Version:     ' '$(SUITESPARSE_VERSION)'
+	@echo 'SuiteSparse top folder:  ' '$(SUITESPARSE)'
+	@echo 'Package:                  LIBRARY=        ' '$(LIBRARY)'
+	@echo 'Version:                  VERSION=        ' '$(VERSION)'
+	@echo 'SO version:               SO_VERSION=     ' '$(SO_VERSION)'
+	@echo 'System:                   UNAME=          ' '$(UNAME)'
+	@echo 'Install directory:        INSTALL=        ' '$(INSTALL)'
+	@echo 'Install libraries in:     INSTALL_LIB=    ' '$(INSTALL_LIB)'
+	@echo 'Install include files in: INSTALL_INCLUDE=' '$(INSTALL_INCLUDE)'
+	@echo 'Install documentation in: INSTALL_DOC=    ' '$(INSTALL_DOC)'
+	@echo 'Optimization level:       OPTIMIZATION=   ' '$(OPTIMIZATION)'
+	@echo 'BLAS library:             BLAS=           ' '$(BLAS)'
+	@echo 'LAPACK library:           LAPACK=         ' '$(LAPACK)'
+	@echo 'Intel TBB library:        TBB=            ' '$(TBB)'
+	@echo 'Other libraries:          LDLIBS=         ' '$(LDLIBS)'
+	@echo 'static library:           AR_TARGET=      ' '$(AR_TARGET)'
+	@echo 'shared library (full):    SO_TARGET=      ' '$(SO_TARGET)'
+	@echo 'shared library (main):    SO_MAIN=        ' '$(SO_MAIN)'
+	@echo 'shared library (short):   SO_PLAIN=       ' '$(SO_PLAIN)'
+	@echo 'shared library options:   SO_OPTS=        ' '$(SO_OPTS)'
+	@echo 'shared library name tool: SO_INSTALL_NAME=' '$(SO_INSTALL_NAME)'
+	@echo 'ranlib, for static libs:  RANLIB=         ' '$(RANLIB)'
+	@echo 'static library command:   ARCHIVE=        ' '$(ARCHIVE)'
+	@echo 'copy file:                CP=             ' '$(CP)'
+	@echo 'move file:                MV=             ' '$(MV)'
+	@echo 'remove file:              RM=             ' '$(RM)'
+	@echo 'pretty (for Tcov tests):  PRETTY=         ' '$(PRETTY)'
+	@echo 'C compiler:               CC=             ' '$(CC)'
+	@echo 'C++ compiler:             CXX=            ' '$(CXX)'
+	@echo 'CUDA compiler:            NVCC=           ' '$(NVCC)'
+	@echo 'CUDA root directory:      CUDA_PATH=      ' '$(CUDA_PATH)'
+	@echo 'OpenMP flags:             CFOPENMP=       ' '$(CFOPENMP)'
+	@echo 'C/C++ compiler flags:     CF=             ' '$(CF)'
+	@echo 'LD flags:                 LDFLAGS=        ' '$(LDFLAGS)'
+	@echo 'Fortran compiler:         F77=            ' '$(F77)'
+	@echo 'Fortran flags:            F77FLAGS=       ' '$(F77FLAGS)'
+	@echo 'Intel MKL root:           MKLROOT=        ' '$(MKLROOT)'
+	@echo 'Auto detect Intel icc:    AUTOCC=         ' '$(AUTOCC)'
+	@echo 'UMFPACK config:           UMFPACK_CONFIG= ' '$(UMFPACK_CONFIG)'
+	@echo 'CHOLMOD config:           CHOLMOD_CONFIG= ' '$(CHOLMOD_CONFIG)'
+	@echo 'SuiteSparseQR config:     SPQR_CONFIG=    ' '$(SPQR_CONFIG)'
+	@echo 'CUDA library:             CUDART_LIB=     ' '$(CUDART_LIB)'
+	@echo 'CUBLAS library:           CUBLAS_LIB=     ' '$(CUBLAS_LIB)'
+	@echo 'METIS and CHOLMOD/Partition configuration:'
+	@echo 'Your METIS library:       MY_METIS_LIB=   ' '$(MY_METIS_LIB)'
+	@echo 'Your metis.h is in:       MY_METIS_INC=   ' '$(MY_METIS_INC)'
+	@echo 'METIS is used via the CHOLMOD/Partition module, configured as follows.'
+	@echo 'If the next line has -DNPARTITION then METIS will not be used:'
+	@echo 'CHOLMOD Partition config: ' '$(CONFIG_PARTITION)'
+	@echo 'CHOLMOD Partition libs:   ' '$(LIB_WITH_PARTITION)'
+	@echo 'CHOLMOD Partition include:' '$(I_WITH_PARTITION)'
+ifeq ($(TCOV),yes)
+	@echo 'TCOV=yes, for extensive testing only (gcc, g++, vanilla BLAS)'
+endif
 
-#------------------------------------------------------------------------------
-# Generic configuration
-#------------------------------------------------------------------------------
-
-# Using standard definitions from the make environment, typically:
-#
-#   CC              cc      C compiler
-#   CXX             g++     C++ compiler
-#   CFLAGS          [ ]     flags for C and C++ compiler
-#   CPPFLAGS        [ ]     flags for C and C++ compiler
-#   TARGET_ARCH     [ ]     target architecture
-#   FFLAGS          [ ]     flags for Fortran compiler
-#   RM              rm -f   delete a file
-#   AR              ar      create a static *.a library archive
-#   ARFLAGS         rv      flags for ar
-#   MAKE            make    make itself (sometimes called gmake)
-#
-# You can redefine them here, but by default they are used from the
-# default make environment.
-
-# To use OpenMP add -openmp to the CFLAGS
-# If OpenMP is used, it is recommended to define CHOLMOD_OMP_NUM_THREADS
-# as the number of cores per socket on the machine being used to maximize
-# memory performance
-  CFLAGS = 
-# CFLAGS = -g
-# for the icc compiler and OpenMP:
-# CFLAGS = -openmp
-
-# C and C++ compiler flags.  The first three are standard for *.c and *.cpp
-# Add -DNTIMER if you do use any timing routines (otherwise -lrt is required).
-# CF = $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -O3 -fexceptions -fPIC -DNTIMER
-  CF = $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -O3 -fexceptions -fPIC
-# for the MKL BLAS:
-# CF = $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -O3 -fexceptions -fPIC -I$(MKLROOT)/include -D_GNU_SOURCE
-# with no optimization:
-# CF = $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH)     -fexceptions -fPIC
-
-# ranlib, and ar, for generating libraries.  If you don't need ranlib,
-# just change it to RANLAB = echo
-RANLIB = ranlib
-ARCHIVE = $(AR) $(ARFLAGS)
-
-# copy and delete a file
-CP = cp -f
-MV = mv -f
-
-# Fortran compiler (not required for 'make' or 'make library')
-F77 = gfortran
-F77FLAGS = $(FFLAGS) -O
-F77LIB =
-
-# C and Fortran libraries.  Remove -lrt if you don't have it.
-  LIB = -lm -lrt
-# Using the following requires CF = ... -DNTIMER on POSIX C systems.
-# LIB = -lm
-
-# For "make install"
-INSTALL_LIB = /usr/local/lib
-INSTALL_INCLUDE = /usr/local/include
-
-# Which version of MAKE you are using (default is "make")
-# MAKE = make
-# MAKE = gmake
-
-#------------------------------------------------------------------------------
-# BLAS and LAPACK configuration:
-#------------------------------------------------------------------------------
-
-# UMFPACK and CHOLMOD both require the BLAS.  CHOLMOD also requires LAPACK.
-# See Kazushige Goto's BLAS at http://www.cs.utexas.edu/users/flame/goto/ or
-# http://www.tacc.utexas.edu/~kgoto/ for the best BLAS to use with CHOLMOD.
-# LAPACK is at http://www.netlib.org/lapack/ .  You can use the standard
-# Fortran LAPACK along with Goto's BLAS to obtain very good performance.
-# CHOLMOD gets a peak numeric factorization rate of 3.6 Gflops on a 3.2 GHz
-# Pentium 4 (512K cache, 4GB main memory) with the Goto BLAS, and 6 Gflops
-# on a 2.5Ghz dual-core AMD Opteron.
-
-# These settings will probably not work, since there is no fixed convention for
-# naming the BLAS and LAPACK library (*.a or *.so) files.
-
-# This is probably slow ... it might connect to the Standard Reference BLAS:
-# BLAS = -lblas -lgfortran
-  LAPACK = -llapack
-
-# MKL 
-# BLAS = -Wl,--start-group $(MKLROOT)/lib/intel64/libmkl_intel_lp64.a $(MKLROOT)/lib/intel64/libmkl_core.a $(MKLROOT)/lib/intel64/libmkl_intel_thread.a -Wl,--end-group -lpthread -lm
-# LAPACK = 
-
-# ACML
-# BLAS = -lacml -lgfortran
-# LAPACK =
-
-# OpenBLAS
-  BLAS = -lopenblas
-# LAPACK = 
-
-# NOTE: this next option for the "Goto BLAS" has nothing to do with a "goto"
-# statement.  Rather, the Goto BLAS is written by Dr. Kazushige Goto.
-# Using the Goto BLAS:
-# BLAS = -lgoto -lgfortran -lgfortranbegin
-# BLAS = -lgoto2 -lgfortran -lgfortranbegin -lpthread
-
-# Using non-optimized versions:
-# BLAS = -lblas_plain -lgfortran -lgfortranbegin
-# LAPACK = -llapack_plain
-
-# BLAS = -lblas_plain -lgfortran -lgfortranbegin
-# LAPACK = -llapack
-
-# The BLAS might not contain xerbla, an error-handling routine for LAPACK and
-# the BLAS.  Also, the standard xerbla requires the Fortran I/O library, and
-# stops the application program if an error occurs.  A C version of xerbla
-# distributed with this software (SuiteSparse_config/xerbla/libcerbla.a)
-# includes a Fortran-callable xerbla routine that prints nothing and does not
-# stop the application program.  This is optional.
-
-# XERBLA = ../../SuiteSparse_config/xerbla/libcerbla.a 
-
-# If you wish to use the XERBLA in LAPACK and/or the BLAS instead,
-# use this option:
-XERBLA = 
-
-# If you wish to use the Fortran SuiteSparse_config/xerbla/xerbla.f instead,
-# use this:
-
-# XERBLA = ../../SuiteSparse_config/xerbla/libxerbla.a 
-
-#------------------------------------------------------------------------------
-# GPU configuration for CHOLMOD and SPQR
-#------------------------------------------------------------------------------
-
-# no cuda
-  CUDA_ROOT     =
-  GPU_BLAS_PATH =
-  GPU_CONFIG    =
-  CUDA_PATH     =
-  CUDART_LIB    =
-  CUBLAS_LIB    =
-  CUDA_INC_PATH =
-  NV20          =
-  NV30          =
-  NV35          =
-  NVCC          = echo
-  NVCCFLAGS     =
-
-# with cuda for CHOLMOD
-# CUDA_ROOT     = /usr/local/cuda
-# GPU_BLAS_PATH = $(CUDA_ROOT)
-# with 4 cores (default):
-# GPU_CONFIG    = -I$(CUDA_ROOT)/include -DGPU_BLAS
-# with 10 cores:
-# GPU_CONFIG    = -I$(CUDA_ROOT)/include -DGPU_BLAS -DCHOLMOD_OMP_NUM_THREADS=10
-# CUDA_PATH     = $(CUDA_ROOT)
-# CUDART_LIB    = $(CUDA_ROOT)/lib64/libcudart.so
-# CUBLAS_LIB    = $(CUDA_ROOT)/lib64/libcublas.so
-# CUDA_INC_PATH = $(CUDA_ROOT)/include/
-# NV20          = -arch=sm_20 -Xcompiler -fPIC
-# NV30          = -arch=sm_30 -Xcompiler -fPIC
-# NV35          = -arch=sm_35 -Xcompiler -fPIC
-# NVCC          = $(CUDA_ROOT)/bin/nvcc
-# NVCCFLAGS     = $(NV20) -O3 -gencode=arch=compute_20,code=sm_20 -gencode=arch=compute_30,code=sm_30 -gencode=arch=compute_35,code=sm_35
-
-# was NVCC      = $(CUDA_ROOT)/bin/nvcc $(NV35) $(NV30) $(NV20)
-
-#------------------------------------------------------------------------------
-# METIS, optionally used by CHOLMOD
-#------------------------------------------------------------------------------
-
-# If you do not have METIS, or do not wish to use it in CHOLMOD, you must
-# compile CHOLMOD with the -DNPARTITION flag.
-
-# The path is relative to where it is used, in CHOLMOD/Lib, CHOLMOD/MATLAB, etc.
-# You may wish to use an absolute path.  METIS is optional.  Compile
-# CHOLMOD with -DNPARTITION if you do not wish to use METIS.
-METIS_PATH = ../../metis-4.0
-METIS = ../../metis-4.0/libmetis.a
-
-#------------------------------------------------------------------------------
-# UMFPACK configuration:
-#------------------------------------------------------------------------------
-
-# Configuration flags for UMFPACK.  See UMFPACK/Source/umf_config.h for details.
-#
-# -DNBLAS       do not use the BLAS.  UMFPACK will be very slow.
-# -D'LONGBLAS=long' or -DLONGBLAS='long long' defines the integers used by
-#               LAPACK and the BLAS (defaults to 'int')
-# -DNSUNPERF    do not use the Sun Perf. Library (default is use it on Solaris)
-# -DNRECIPROCAL do not multiply by the reciprocal
-# -DNO_DIVIDE_BY_ZERO   do not divide by zero
-# -DNCHOLMOD    do not use CHOLMOD as a ordering method.  If -DNCHOLMOD is
-#               included in UMFPACK_CONFIG, then UMFPACK  does not rely on
-#               CHOLMOD, CAMD, CCOLAMD, COLAMD, and METIS.
-
-UMFPACK_CONFIG =
-
-# uncomment this line to compile UMFPACK without CHOLMOD:
-# UMFPACK_CONFIG = -DNCHOLMOD
-
-#------------------------------------------------------------------------------
-# CHOLMOD configuration
-#------------------------------------------------------------------------------
-
-# CHOLMOD Library Modules, which appear in libcholmod.a:
-# Core          requires: none
-# Check         requires: Core
-# Cholesky      requires: Core, AMD, COLAMD.  optional: Partition, Supernodal
-# MatrixOps     requires: Core
-# Modify        requires: Core
-# Partition     requires: Core, CCOLAMD, METIS.  optional: Cholesky
-# Supernodal    requires: Core, BLAS, LAPACK
-#
-# CHOLMOD test/demo Modules (all are GNU GPL, do not appear in libcholmod.a):
-# Tcov          requires: Core, Check, Cholesky, MatrixOps, Modify, Supernodal
-#               optional: Partition
-# Valgrind      same as Tcov
-# Demo          requires: Core, Check, Cholesky, MatrixOps, Supernodal
-#               optional: Partition
-#
-# Configuration flags:
-# -DNCHECK          do not include the Check module.       License GNU LGPL
-# -DNCHOLESKY       do not include the Cholesky module.    License GNU LGPL
-# -DNPARTITION      do not include the Partition module.   License GNU LGPL
-#                   also do not include METIS.
-# -DNCAMD           do not use CAMD, etc from Partition module.    GNU LGPL
-# -DNGPL            do not include any GNU GPL Modules in the CHOLMOD library:
-# -DNMATRIXOPS      do not include the MatrixOps module.   License GNU GPL
-# -DNMODIFY         do not include the Modify module.      License GNU GPL
-# -DNSUPERNODAL     do not include the Supernodal module.  License GNU GPL
-#
-# -DNPRINT          do not print anything.
-# -D'LONGBLAS=long' or -DLONGBLAS='long long' defines the integers used by
-#                   LAPACK and the BLAS (defaults to 'int')
-# -DNSUNPERF        for Solaris only.  If defined, do not use the Sun
-#                   Performance Library
-
-CHOLMOD_CONFIG = $(GPU_CONFIG)
-
-# uncomment this line to compile CHOLMOD without METIS:
-# CHOLMOD_CONFIG = -DNPARTITION
-
-#------------------------------------------------------------------------------
-# SuiteSparseQR configuration:
-#------------------------------------------------------------------------------
-
-# The SuiteSparseQR library can be compiled with the following options:
-#
-# -DNPARTITION      do not include the CHOLMOD partition module
-# -DNEXPERT         do not include the functions in SuiteSparseQR_expert.cpp
-# -DHAVE_TBB        enable the use of Intel's Threading Building Blocks (TBB)
-
-# default, without timing, without TBB:
-SPQR_CONFIG = $(GPU_CONFIG)
-# with TBB:
-# SPQR_CONFIG = -DHAVE_TBB
-
-# This is needed for IBM AIX: (but not for and C codes, just C++)
-# SPQR_CONFIG = -DBLAS_NO_UNDERSCORE
-
-# with TBB, you must select this:
-# TBB = -ltbb
-# without TBB:
-TBB =
-
-#------------------------------------------------------------------------------
-# code formatting
-#------------------------------------------------------------------------------
-
-# Use "grep" only, if you do not have "indent"  
-# PRETTY = grep -v "^\#"
-# PRETTY = grep -v "^\#" | indent -bl -nce -ss -bli0 -i4 -sob -l120
-  PRETTY = grep -v "^\#" | indent -bl -nce -bli0 -i4 -sob -l120
-
-#------------------------------------------------------------------------------
-# Linux
-#------------------------------------------------------------------------------
-
-# Using default compilers:
-# CC = gcc
-# CF = $(CFLAGS) -O3 -fexceptions
-
-# alternatives:
-# CF = $(CFLAGS) -g -fexceptions \
-#       -Wall -W -Wshadow -Wmissing-prototypes -Wstrict-prototypes \
-#       -Wredundant-decls -Wnested-externs -Wdisabled-optimization -ansi \
-#       -funit-at-a-time
-# CF = $(CFLAGS) -O3 -fexceptions \
-#       -Wall -W -Werror -Wshadow -Wmissing-prototypes -Wstrict-prototypes \
-#       -Wredundant-decls -Wnested-externs -Wdisabled-optimization -ansi
-# CF = $(CFLAGS) -O3 -fexceptions -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE
-# CF = $(CFLAGS) -O3
-# CF = $(CFLAGS) -O3 -g -fexceptions
-# CF = $(CFLAGS) -g -fexceptions \
-#       -Wall -W -Wshadow \
-#       -Wredundant-decls -Wdisabled-optimization -ansi
-
-# consider:
-# -fforce-addr -fmove-all-movables -freduce-all-givs -ftsp-ordering
-# -frename-registers -ffast-math -funroll-loops
-
-# Using the Goto BLAS:
-# BLAS = -lgoto -lfrtbegin -lg2c $(XERBLA) -lpthread
-
-# Using Intel's icc and ifort compilers:
-#   (does not work for mexFunctions unless you add a mexopts.sh file)
-# F77 = ifort
-# CC = icc
-# CF = $(CFLAGS) -O3 -xN -vec_report=0
-# CF = $(CFLAGS) -g
-
-# 64bit:
-# F77FLAGS = -O -m64
-# CF = $(CFLAGS) -O3 -fexceptions -m64
-# BLAS = -lgoto64 -lfrtbegin -lg2c -lpthread $(XERBLA)
-# LAPACK = -llapack64
-
-# SUSE Linux 10.1, AMD Opteron, with GOTO Blas
-# F77 = gfortran
-# BLAS = -lgoto_opteron64 -lgfortran
-
-# SUSE Linux 10.1, Intel Pentium, with GOTO Blas
-# F77 = gfortran
-# BLAS = -lgoto -lgfortran
-
-#------------------------------------------------------------------------------
-# Mac
-#------------------------------------------------------------------------------
-
-# As recommended by macports, http://suitesparse.darwinports.com/
-# I've tested them myself on Mac OSX 10.6.1 and 10.6.8 (Snow Leopard),
-# on my MacBook Air, and they work fine.
-
-# F77 = gfortran
-# CF = $(CFLAGS) -O3 -fno-common -fexceptions -DNTIMER
-# BLAS = -framework Accelerate
-# LAPACK = -framework Accelerate
-# LIB = -lm
-
-#------------------------------------------------------------------------------
-# Solaris
-#------------------------------------------------------------------------------
-
-# 32-bit
-# CF = $(CFLAGS) -KPIC -dalign -xc99=%none -Xc -xlibmieee -xO5 -xlibmil -m32
-
-# 64-bit
-# CF = $(CFLAGS) -fast -KPIC -xc99=%none -xlibmieee -xlibmil -m64 -Xc
-
-# FFLAGS = -fast -KPIC -dalign -xlibmil -m64
-
-# The Sun Performance Library includes both LAPACK and the BLAS:
-# BLAS = -xlic_lib=sunperf
-# LAPACK =
-
-
-#------------------------------------------------------------------------------
-# Compaq Alpha
-#------------------------------------------------------------------------------
-
-# 64-bit mode only
-# CF = $(CFLAGS) -O2 -std1
-# BLAS = -ldxml
-# LAPACK =
-
-#------------------------------------------------------------------------------
-# IBM RS 6000
-#------------------------------------------------------------------------------
-
-# BLAS = -lessl
-# LAPACK =
-
-# 32-bit mode:
-# CF = $(CFLAGS) -O4 -qipa -qmaxmem=16384 -qproto
-# F77FLAGS = -O4 -qipa -qmaxmem=16384
-
-# 64-bit mode:
-# CF = $(CFLAGS) -O4 -qipa -qmaxmem=16384 -q64 -qproto
-# F77FLAGS = -O4 -qipa -qmaxmem=16384 -q64
-
-#------------------------------------------------------------------------------
-# SGI IRIX
-#------------------------------------------------------------------------------
-
-# BLAS = -lscsl
-# LAPACK =
-
-# 32-bit mode
-# CF = $(CFLAGS) -O
-
-# 64-bit mode (32 bit int's and 64-bit long's):
-# CF = $(CFLAGS) -64
-# F77FLAGS = -64
-
-# SGI doesn't have ranlib
-# RANLIB = echo
-
-#------------------------------------------------------------------------------
-# AMD Opteron (64 bit)
-#------------------------------------------------------------------------------
-
-# BLAS = -lgoto_opteron64 -lg2c
-# LAPACK = -llapack_opteron64
-
-# SUSE Linux 10.1, AMD Opteron
-# F77 = gfortran
-# BLAS = -lgoto_opteron64 -lgfortran
-# LAPACK = -llapack_opteron64
-
-#------------------------------------------------------------------------------
-# remove object files and profile output
-#------------------------------------------------------------------------------
-
-CLEAN = *.o *.obj *.ln *.bb *.bbg *.da *.tcov *.gcov gmon.out *.bak *.d *.gcda *.gcno

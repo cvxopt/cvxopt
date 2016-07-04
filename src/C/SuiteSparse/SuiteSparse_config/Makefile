@@ -2,47 +2,71 @@
 # SuiteSparse_config Makefile
 #-------------------------------------------------------------------------------
 
-VERSION = 4.4.5
+SUITESPARSE ?= $(realpath $(CURDIR)/..)
+export SUITESPARSE
 
-default: ccode
+# version of SuiteSparse_config is also version of SuiteSparse meta-package
+LIBRARY = libsuitesparseconfig
+VERSION = 4.5.3
+SO_VERSION = 4
+
+default: library
 
 include SuiteSparse_config.mk
 
-ccode: libsuitesparseconfig.a
+ccode: all
 
-all: libsuitesparseconfig.a
+all: library
 
-library: libsuitesparseconfig.a
+# compile and install in SuiteSparse/lib
+library: $(AR_TARGET)
+	$(MAKE) install INSTALL=$(SUITESPARSE)
 
-libsuitesparseconfig.a: SuiteSparse_config.c SuiteSparse_config.h
+OBJ = SuiteSparse_config.o
+
+SuiteSparse_config.o: SuiteSparse_config.c SuiteSparse_config.h
 	$(CC) $(CF) -c SuiteSparse_config.c
-	$(ARCHIVE) libsuitesparseconfig.a SuiteSparse_config.o
-	$(RANLIB) libsuitesparseconfig.a
-	- $(RM) SuiteSparse_config.o
+
+static: $(AR_TARGET)
+
+$(AR_TARGET): $(OBJ)
+	$(ARCHIVE) $(AR_TARGET) SuiteSparse_config.o
+	$(RANLIB) $(AR_TARGET)
 
 distclean: purge
 
 purge: clean
-	- $(RM) *.o *.a
+	( cd xerbla ; $(MAKE) purge )
+	- $(RM) -r $(PURGE)
 
 clean:
+	( cd xerbla ; $(MAKE) clean )
 	- $(RM) -r $(CLEAN)
 
 # install SuiteSparse_config
-install:
-	$(CP) libsuitesparseconfig.a $(INSTALL_LIB)/libsuitesparseconfig.$(VERSION).a
-	( cd $(INSTALL_LIB) ; ln -sf libsuitesparseconfig.$(VERSION).a libsuitesparseconfig.a )
+install: $(AR_TARGET) $(INSTALL_LIB)/$(SO_TARGET)
+
+$(INSTALL_LIB)/$(SO_TARGET): $(OBJ)
+	@mkdir -p $(INSTALL_LIB)
+	@mkdir -p $(INSTALL_INCLUDE)
+	@mkdir -p $(INSTALL_DOC)
+	$(CC) $(SO_OPTS) $^ -o $@ $(LDLIBS)
+	( cd $(INSTALL_LIB) ; ln -sf $(SO_TARGET) $(SO_PLAIN) )
+	( cd $(INSTALL_LIB) ; ln -sf $(SO_TARGET) $(SO_MAIN) )
 	$(CP) SuiteSparse_config.h $(INSTALL_INCLUDE)
-	chmod 644 $(INSTALL_LIB)/libsuitesparseconfig*.a
+	$(CP) README.txt $(INSTALL_DOC)/SUITESPARSECONFIG_README.txt
+	chmod 755 $(INSTALL_LIB)/$(SO_TARGET)
+	chmod 755 $(INSTALL_LIB)/$(SO_PLAIN)
 	chmod 644 $(INSTALL_INCLUDE)/SuiteSparse_config.h
+	chmod 644 $(INSTALL_DOC)/SUITESPARSECONFIG_README.txt
 
 # uninstall SuiteSparse_config
 uninstall:
-	$(RM) $(INSTALL_LIB)/libsuitesparseconfig*.a
+	$(RM) $(INSTALL_LIB)/$(SO_TARGET)
+	$(RM) $(INSTALL_LIB)/$(SO_PLAIN)
+	$(RM) $(INSTALL_LIB)/$(SO_MAIN)
 	$(RM) $(INSTALL_INCLUDE)/SuiteSparse_config.h
+	$(RM) $(INSTALL_DOC)/SUITESPARSECONFIG_README.txt
+	( cd xerbla ; $(MAKE) uninstall )
 
-dif:
-	- diff SuiteSparse_config.mk SuiteSparse_config_linux.mk
-	- diff SuiteSparse_config_linux.mk SuiteSparse_config_GPU_gcc.mk
-	- diff SuiteSparse_config_GPU_gcc.mk SuiteSparse_config_GPU_icc.mk
-	- diff SuiteSparse_config_GPU_icc.mk SuiteSparse_config_GPU_icc10.mk
+

@@ -1,66 +1,54 @@
 #===============================================================================
-# CHOLOMD/Lib/Makefile: for compiling the CHOLMOD library
+# CHOLMOD/Lib/Makefile: for compiling the CHOLMOD library
 #===============================================================================
 
-default: all
+LIBRARY = libcholmod
+VERSION = 3.0.11
+SO_VERSION = 3
+
+default: library
 
 ccode: all
 
 include ../../SuiteSparse_config/SuiteSparse_config.mk
 
+# CHOLMOD depends on AMD, SuiteSparse_config, LAPACK, BLAS,
+# and optionally METIS, CAMD, and CCOLAMD if the Partition Module is in use
+LDLIBS += -lamd -lcolamd -lsuitesparseconfig \
+	$(LIB_WITH_PARTITION) $(LAPACK) $(BLAS)
+
+SO_OPTS += $(CFOPENMP)
+
 #-------------------------------------------------------------------------------
-# the optional Partition module requires METIS, CAMD, and CCOLAMD.
-# CAMD and CCOLAMD can be installed without METIS, but are optional.
-I_WITH_PARTITION = 
-LIB_WITH_PARTITION =
-CONFIG = -DNPARTITION -DNCAMD
-# check if CAMD/CCOLAMD and METIS are requested and available
-ifeq (,$(findstring -DNCAMD, $(CHOLMOD_CONFIG)))
-    # CAMD and CCOLAMD are requested.  See if they are available
-    ifeq (../../CAMD, $(wildcard ../../CAMD))
-        ifeq (../../CCOLAMD, $(wildcard ../../CCOLAMD))
-            # CAMD and CCOLAMD are requested and available
-            LIB_WITH_PARTITION = \
-                        ../../CCOLAMD/Lib/libccolamd.a ../../CAMD/Lib/libcamd.a
-            I_WITH_PARTITION = \
-                        -I../../CCOLAMD/Include -I../../CAMD/Include
-            CONFIG = -DNPARTITION
-            # check if METIS is requested and available
-            ifeq (,$(findstring -DNPARTITION, $(CHOLMOD_CONFIG)))
-                # METIS is requested.  See if it is available
-                ifeq ($(METIS_PATH), $(wildcard $(METIS_PATH)))
-                    # METIS is available
-                    LIB_WITH_PARTITION = $(METIS) \
-                        ../../CCOLAMD/Lib/libccolamd.a ../../CAMD/Lib/libcamd.a
-                    I_WITH_PARTITION = -I$(METIS_PATH)/Lib \
-                        -I../../CCOLAMD/Include -I../../CAMD/Include
-                    CONFIG =
-                endif
-            endif
-        endif
-    endif
+# With the CUDA BLAS:
+ifneq ($(GPU_CONFIG),)
+LDLIBS += $(CUDART_LIB) $(CUBLAS_LIB)
 endif
+#-------------------------------------------------------------------------------
+
+# compile and install in SuiteSparse/lib
+library:
+	$(MAKE) install INSTALL=$(SUITESPARSE)
 
 #-------------------------------------------------------------------------------
 
 I = -I../../AMD/Include -I../../AMD/Source -I../../COLAMD/Include \
-	$(I_WITH_PARTITION) -I../Include -I../../SuiteSparse_config
+	$(I_WITH_PARTITION) -I../Include -I../../SuiteSparse_config \
+	$(CUDA_INC)
 
 #-------------------------------------------------------------------------------
 
-C = $(CC) $(CF) $(CHOLMOD_CONFIG) $(CONFIG)
+C = $(CC) $(CF) $(CHOLMOD_CONFIG) $(CONFIG_PARTITION)
 
-all: libcholmod.a
-
-library: libcholmod.a
+all: library
 
 purge: distclean
 
 distclean: clean
-	- $(RM) libcholmod.a
+	- $(RM) -r $(PURGE)
 
 clean:
-	- $(RM) $(CLEAN)
+	- $(RM) -r $(CLEAN)
 
 #-------------------------------------------------------------------------------
 # ../Include/ directory contains all include files:
@@ -164,9 +152,11 @@ DL = $(LCORE) $(LCHECK) $(LCHOLESKY) $(LMATRIXOPS) $(LMODIFY) $(LSUPERNODAL) \
 # to compile just the double/int version, use OBJ = $(DI)
 OBJ = $(DI) $(DL)
 
-libcholmod.a: $(OBJ)
-	$(ARCHIVE)  libcholmod.a $(OBJ)
-	- $(RANLIB) libcholmod.a
+static: $(AR_TARGET)
+
+$(AR_TARGET): $(OBJ)
+	$(ARCHIVE) $@ $^
+	- $(RANLIB) $@
 
 $(OBJ): $(INC)
 
@@ -534,11 +524,41 @@ cholmod_l_super_solve.o: ../Supernodal/cholmod_super_solve.c \
 #-------------------------------------------------------------------------------
 
 cholmod_gpu_kernels.o: ../GPU/cholmod_gpu_kernels.cu
-	$(NVCC) -I../../SuiteSparse_config -Xcompiler -fPIC -O3  -gencode=arch=compute_20,code=sm_20 -gencode=arch=compute_30,code=sm_30 -gencode=arch=compute_35,code=sm_35 -c ../GPU/cholmod_gpu_kernels.cu
+	$(NVCC) $(I) $(NVCCFLAGS) -c ../GPU/cholmod_gpu_kernels.cu
 
 cholmod_gpu.o: ../GPU/cholmod_gpu.c 
 	$(C) -c $(I) $<
 
 cholmod_l_gpu.o: ../GPU/cholmod_gpu.c 
 	$(C) -DDLONG -c $(I) $< -o $@
+
+#-------------------------------------------------------------------------------
+
+# install CHOLMOD
+install: $(AR_TARGET) $(INSTALL_LIB)/$(SO_TARGET)
+
+$(INSTALL_LIB)/$(SO_TARGET): $(OBJ)
+	@mkdir -p $(INSTALL_LIB)
+	@mkdir -p $(INSTALL_INCLUDE)
+	@mkdir -p $(INSTALL_DOC)
+	$(CC) $(SO_OPTS) $^ -o $@ $(LDLIBS)
+	( cd $(INSTALL_LIB) ; ln -sf $(SO_TARGET) $(SO_PLAIN) )
+	( cd $(INSTALL_LIB) ; ln -sf $(SO_TARGET) $(SO_MAIN) )
+	$(CP) ../Include/cholmod*.h $(INSTALL_INCLUDE)
+	$(RM) $(INSTALL_INCLUDE)/cholmod_internal.h
+	$(CP) ../Doc/CHOLMOD_UserGuide.pdf $(INSTALL_DOC)
+	$(CP) ../README.txt $(INSTALL_DOC)/CHOLMOD_README.txt
+	chmod 755 $(INSTALL_LIB)/$(SO_TARGET)
+	chmod 644 $(INSTALL_INCLUDE)/cholmod*.h
+	chmod 644 $(INSTALL_DOC)/CHOLMOD_UserGuide.pdf
+	chmod 644 $(INSTALL_DOC)/CHOLMOD_README.txt
+
+# uninstall CHOLMOD
+uninstall:
+	$(RM) $(INSTALL_LIB)/$(SO_TARGET)
+	$(RM) $(INSTALL_LIB)/$(SO_PLAIN)
+	$(RM) $(INSTALL_LIB)/$(SO_MAIN)
+	$(RM) $(INSTALL_INCLUDE)/cholmod*.h
+	$(RM) $(INSTALL_DOC)/CHOLMOD_UserGuide.pdf
+	$(RM) $(INSTALL_DOC)/CHOLMOD_README.txt
 

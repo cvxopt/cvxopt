@@ -1,3 +1,28 @@
+May 4, 2016: version 1.2.6
+
+    * minor changes to Makefile
+
+Apr 1, 2016: version 1.2.5
+
+    * licensing simplified (no other change); refer to BTF/Doc/License.txt
+
+Feb 1, 2016: version 1.2.4
+
+    * update to Makefiles
+
+Jan 30, 2016: version 1.2.3
+
+    * modifications to Makefiles
+
+Jan 1, 2016: version 1.2.2
+
+    * modified Makefile to create shared libraries
+        No change to C code except version number
+
+Oct 10, 2014: version 1.2.1
+
+    modified MATLAB/btf_make.m.  No change to C code except version number.
+
 Jun 1, 2012: version 1.2.0
 
     * changed from UFconfig to SuiteSparse_config

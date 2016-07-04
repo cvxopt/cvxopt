@@ -6,10 +6,10 @@ from glob import glob
 import os
 
 # Modifiy this if BLAS and LAPACK libraries are not in /usr/lib.
-BLAS_LIB_DIR = '/usr/lib'
+BLAS_LIB_DIR = '.'
 
 # Default names of BLAS and LAPACK libraries
-BLAS_LIB = ['blas']
+BLAS_LIB = ['blas', 'gfortran']
 LAPACK_LIB = ['lapack']
 BLAS_EXTRA_LINK_ARGS = []
 

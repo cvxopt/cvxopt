@@ -4,9 +4,6 @@
 
 /* -----------------------------------------------------------------------------
  * CHOLMOD/Check Module.  Copyright (C) 2005-2013, Timothy A. Davis
- * The CHOLMOD/Check Module is licensed under Version 2.1 of the GNU
- * Lesser General Public License.  See lesser.txt for a text of the license.
- * CHOLMOD is also available under other licenses; contact authors for details.
  * -------------------------------------------------------------------------- */
 
 /* Routines to check and print the contents of the 5 CHOLMOD objects:
@@ -2577,7 +2574,7 @@ int CHOLMOD(dump_partition)
     SuiteSparse_long n,
     Int *Cp,
     Int *Ci,
-    Int *Cnw,
+    Int *Cnw,       /* can be NULL */
     Int *Part,
     SuiteSparse_long sepsize,
     cholmod_common *Common
@@ -2591,7 +2588,8 @@ int CHOLMOD(dump_partition)
     chek [2] = 0 ;
     for (j = 0 ; j < n ; j++)
     {
-	PRINT2 (("--------j "ID" in part "ID" nw "ID"\n", j, Part [j], Cnw[j]));
+	PRINT2 (("--------j "ID" in part "ID" nw "ID"\n", j, Part [j],
+            Cnw ? (Cnw[j]):1));
 	which = Part [j] ;
 	for (p = Cp [j] ; p < Cp [j+1] ; p++)
 	{
@@ -2619,7 +2617,7 @@ int CHOLMOD(dump_partition)
 	    PRINT0 (("Part out of range\n")) ;
 	    ok = FALSE ;
 	}
-	chek [which] += Cnw [j] ;
+	chek [which] += (Cnw ? (Cnw [j]) : 1) ;
     }
     PRINT1 (("sepsize %ld check "ID" "ID" "ID"\n",
 		sepsize, chek[0], chek[1],chek[2]));

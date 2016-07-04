@@ -5,9 +5,6 @@
 /* -----------------------------------------------------------------------------
  * CHOLMOD/Include/cholmod_core.h.
  * Copyright (C) 2005-2013, Univ. of Florida.  Author: Timothy A. Davis
- * CHOLMOD/Include/cholmod_core.h is licensed under Version 2.1 of the GNU
- * Lesser General Public License.  See lesser.txt for a text of the license.
- * CHOLMOD is also available under other licenses; contact authors for details.
  * -------------------------------------------------------------------------- */
 
 /* CHOLMOD Core module: basic CHOLMOD objects and routines.
@@ -246,11 +243,11 @@
 
 #define CHOLMOD_HAS_VERSION_FUNCTION
 
-#define CHOLMOD_DATE "July 14, 2015"
+#define CHOLMOD_DATE "May 4, 2016"
 #define CHOLMOD_VER_CODE(main,sub) ((main) * 1000 + (sub))
 #define CHOLMOD_MAIN_VERSION 3
 #define CHOLMOD_SUB_VERSION 0
-#define CHOLMOD_SUBSUB_VERSION 6
+#define CHOLMOD_SUBSUB_VERSION 11
 #define CHOLMOD_VERSION \
     CHOLMOD_VER_CODE(CHOLMOD_MAIN_VERSION,CHOLMOD_SUB_VERSION)
 
@@ -775,6 +772,9 @@ typedef struct cholmod_common_struct
     /* METIS workarounds */
     /* ---------------------------------------------------------------------- */
 
+    /* These workarounds were put into place for METIS 4.0.1.  They are safe
+       to use with METIS 5.1.0, but they might not longer be necessary. */
+
     double metis_memory ;   /* This is a parameter for CHOLMOD's interface to
 			     * METIS, not a parameter to METIS itself.  METIS
 	* uses an amount of memory that is difficult to estimate precisely
@@ -817,7 +817,7 @@ typedef struct cholmod_common_struct
      * greater than Common->metis_nswitch (default 3000) or more and with
      * density of Common->metis_dswitch (default 0.66) or more.
      * cholmod_nested_dissection has no problems with the same matrix, even
-     * though it uses METIS_NodeComputeSeparator on this matrix.  If this
+     * though it uses METIS_ComputeVertexSeparator on this matrix.  If this
      * seg fault does not affect you, set metis_nswitch to zero or less,
      * and CHOLMOD will not switch to AMD based just on the density of the
      * matrix (it will still switch to AMD if the metis_memory parameter

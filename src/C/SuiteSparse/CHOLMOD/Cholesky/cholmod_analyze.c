@@ -4,9 +4,6 @@
 
 /* -----------------------------------------------------------------------------
  * CHOLMOD/Cholesky Module.  Copyright (C) 2005-2013, Timothy A. Davis
- * The CHOLMOD/Cholesky Module is licensed under Version 2.1 of the GNU
- * Lesser General Public License.  See lesser.txt for a text of the license.
- * CHOLMOD is also available under other licenses; contact authors for details.
  * -------------------------------------------------------------------------- */
 
 /* Order and analyze a matrix (either simplicial or supernodal), in prepartion
@@ -33,7 +30,7 @@
  *	AMD:	    approximate minumum degree (AMD for the symmetric case,
  *		    COLAMD for the AA' case).
  *	METIS:	    nested dissection with METIS_NodeND
- *	NESDIS:	    nested dissection using METIS_NodeComputeSeparator,
+ *	NESDIS:	    nested dissection using METIS_ComputeVertexSeparator,
  *		    typically followed by a constrained minimum degree
  *		    (CAMD for the symmetric case, CCOLAMD for the AA' case).
  *
@@ -697,7 +694,7 @@ cholmod_factor *CHOLMOD(analyze_p2)
 	    /* -------------------------------------------------------------- */
 
 	    /* this method is based on METIS' node bissection routine
-	     * (METIS_NodeComputeSeparator).  In contrast to METIS_NodeND,
+	     * (METIS_ComputeVertexSeparator).  In contrast to METIS_NodeND,
 	     * it calls CAMD or CCOLAMD on the whole graph, instead of MMD
 	     * on just the leaves. */
 #ifndef NPARTITION

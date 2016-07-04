@@ -5,9 +5,6 @@
 /* -----------------------------------------------------------------------------
  * CHOLMOD/Core Module.  Copyright (C) 2005-2006,
  * Univ. of Florida.  Author: Timothy A. Davis
- * The CHOLMOD/Core Module is licensed under Version 2.1 of the GNU
- * Lesser General Public License.  See lesser.txt for a text of the license.
- * CHOLMOD is also available under other licenses; contact authors for details.
  * -------------------------------------------------------------------------- */
 
 /* CHOLMOD error-handling routine.  */
@@ -55,15 +52,33 @@ int CHOLMOD(error)
 	{
 	    if (status > 0 && Common->print > 1)
 	    {
-		SuiteSparse_config.printf_func ("CHOLMOD warning: %s\n",
-                    message) ;
+                SuiteSparse_config.printf_func ("CHOLMOD warning:") ;
+                if (message != NULL)
+                {
+                    SuiteSparse_config.printf_func (" %s.", message) ;
+                }
+                if (file != NULL)
+                {
+                    SuiteSparse_config.printf_func (" file: %s", file) ;
+                    SuiteSparse_config.printf_func (" line: %d", line) ;
+                }
+                SuiteSparse_config.printf_func ("\n") ;
 		fflush (stdout) ;
 		fflush (stderr) ;
 	    }
 	    else if (Common->print > 0)
 	    {
-		SuiteSparse_config.printf_func ("CHOLMOD error: %s\n",
-                    message) ;
+                SuiteSparse_config.printf_func ("CHOLMOD error:") ;
+                if (message != NULL)
+                {
+                    SuiteSparse_config.printf_func (" %s.", message) ;
+                }
+                if (file != NULL)
+                {
+                    SuiteSparse_config.printf_func (" file: %s", file) ;
+                    SuiteSparse_config.printf_func (" line: %d", line) ;
+                }
+                SuiteSparse_config.printf_func ("\n") ;
 		fflush (stdout) ;
 		fflush (stderr) ;
 	    }

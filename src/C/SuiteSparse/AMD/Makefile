@@ -1,8 +1,9 @@
 #------------------------------------------------------------------------------
-# AMD Makefile (for GNU Make or original make)
+# AMD Makefile
 #------------------------------------------------------------------------------
 
-VERSION = 2.4.1
+SUITESPARSE ?= $(realpath $(CURDIR)/..)
+export SUITESPARSE
 
 default: all
 
@@ -18,6 +19,10 @@ all:
 # compile just the C-callable libraries (not Demos)
 library:
 	( cd Lib    ; $(MAKE) )
+
+# compile the static libraries only
+static:
+	( cd Lib    ; $(MAKE) static )
 
 # compile the FORTRAN libraries and demo programs (not compiled by "make all")
 fortran:
@@ -60,14 +65,9 @@ lib: library
 
 # install AMD
 install:
-	$(CP) Lib/libamd.a $(INSTALL_LIB)/libamd.$(VERSION).a
-	( cd $(INSTALL_LIB) ; ln -sf libamd.$(VERSION).a libamd.a )
-	$(CP) Include/amd.h $(INSTALL_INCLUDE)
-	chmod 644 $(INSTALL_LIB)/libamd*
-	chmod 644 $(INSTALL_INCLUDE)/amd.h
+	( cd Lib  ; $(MAKE) install )
 
 # uninstall AMD
 uninstall:
-	$(RM) $(INSTALL_LIB)/libamd*.a
-	$(RM) $(INSTALL_INCLUDE)/amd.h
+	( cd Lib  ; $(MAKE) uninstall )
 
