@@ -58,10 +58,10 @@ DSDP_INC_DIR = '/usr/include/dsdp'
 SUITESPARSE_EXT_LIB = 1
 
 # Directory containing external SuiteSparse library
-SUITESPARSE_LIB_DIR = '/usr/local/Cellar/suite-sparse/4.4.4_2/lib'
+SUITESPARSE_LIB_DIR = '/usr/lib'
 
 # Directory containing SuiteSparse header files
-SUITESPARSE_INC_DIR = '/usr/local/Cellar/suite-sparse/4.4.4_2/include'
+SUITESPARSE_INC_DIR = '/usr/include/suitesparse'
 
 # No modifications should be needed below this line.
 
@@ -238,7 +238,7 @@ else:
     amd = Extension('amd', 
         include_dirs = [ 'src/C/SuiteSparse/AMD/Include', 
             'src/C/SuiteSparse/SuiteSparse_config' ],
-        define_macros = MACROS,
+        define_macros = MACROS + [('NTIMER', '1')],
         sources = [ 'src/C/amd.c', 'src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
         glob('src/C/SuiteSparse/AMD/Source/*.c') )
 
