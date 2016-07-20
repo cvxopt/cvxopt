@@ -647,31 +647,31 @@ static PyObject* base_gemv(PyObject *self, PyObject *args, PyObject *kwrds)
   if (Matrix_Check(A)) {
     int ldA = MAX(1,X_NROWS(A));
     if (trans == 'N' && n == 0)
-      scal[id](&m, (bo ? &b : &Zero[id]), MAT_BUF(y)+oy*E_SIZE[id], &iy);
+      scal[id](&m, (bo ? &b : &Zero[id]), ((char*)MAT_BUF(y))+oy*E_SIZE[id], &iy);
     else if ((trans == 'T' || trans == 'C') && m == 0)
-      scal[id](&n, (bo ? &b : &Zero[id]), MAT_BUF(y)+oy*E_SIZE[id], &iy);
+      scal[id](&n, (bo ? &b : &Zero[id]), ((char*)MAT_BUF(y))+oy*E_SIZE[id], &iy);
     else
 #if PY_MAJOR_VERSION >= 3
       gemv[id](&trans_, &m, &n, (ao ? &a : &One[id]),
-          MAT_BUF(A) + oA*E_SIZE[id], &ldA,
-          MAT_BUF(x) + ox*E_SIZE[id], &ix, (bo ? &b : &Zero[id]),
-          MAT_BUF(y) + oy*E_SIZE[id], &iy);
+	       ((char*)MAT_BUF(A)) + oA*E_SIZE[id], &ldA,
+	       ((char*)MAT_BUF(x)) + ox*E_SIZE[id], &ix, (bo ? &b : &Zero[id]),
+	       ((char*)MAT_BUF(y)) + oy*E_SIZE[id], &iy);
 #else
       gemv[id](&trans, &m, &n, (ao ? &a : &One[id]),
-          MAT_BUF(A) + oA*E_SIZE[id], &ldA,
-          MAT_BUF(x) + ox*E_SIZE[id], &ix, (bo ? &b : &Zero[id]),
-          MAT_BUF(y) + oy*E_SIZE[id], &iy);
+	       ((char*)MAT_BUF(A)) + oA*E_SIZE[id], &ldA,
+	       ((char*)MAT_BUF(x)) + ox*E_SIZE[id], &ix, (bo ? &b : &Zero[id]),
+	       ((char*)MAT_BUF(y)) + oy*E_SIZE[id], &iy);
 #endif
   } else {
 #if PY_MAJOR_VERSION >= 3
     if (sp_gemv[id](trans_, m, n, (ao ? a : One[id]), ((spmatrix *)A)->obj,
-        oA, MAT_BUF(x) + ox*E_SIZE[id], ix, (bo ? b : Zero[id]),
-        MAT_BUF(y) + oy*E_SIZE[id], iy))
+		    oA, ((char*)MAT_BUF(x)) + ox*E_SIZE[id], ix, (bo ? b : Zero[id]),
+		    ((char*)MAT_BUF(y)) + oy*E_SIZE[id], iy))
       return PyErr_NoMemory();
 #else
     if (sp_gemv[id](trans, m, n, (ao ? a : One[id]), ((spmatrix *)A)->obj,
-        oA, MAT_BUF(x) + ox*E_SIZE[id], ix, (bo ? b : Zero[id]),
-        MAT_BUF(y) + oy*E_SIZE[id], iy))
+		    oA, ((char*)MAT_BUF(x)) + ox*E_SIZE[id], ix, (bo ? b : Zero[id]),
+		    ((char*)MAT_BUF(y)) + oy*E_SIZE[id], iy))
       return PyErr_NoMemory();
 #endif
   }
@@ -890,24 +890,24 @@ static PyObject* base_symv(PyObject *self, PyObject *args, PyObject *kwrds)
 
 #if PY_MAJOR_VERSION >= 3
     symv[id](&uplo_, &n, (ao ? &a : &One[id]),
-        MAT_BUF(A) + oA*E_SIZE[id], &ldA, MAT_BUF(x) + ox*E_SIZE[id],
-        &ix, (bo ? &b : &Zero[id]), MAT_BUF(y) + oy*E_SIZE[id], &iy);
+	     ((char*)MAT_BUF(A)) + oA*E_SIZE[id], &ldA, ((char*)MAT_BUF(x)) + ox*E_SIZE[id],
+	     &ix, (bo ? &b : &Zero[id]), ((char*)MAT_BUF(y)) + oy*E_SIZE[id], &iy);
 #else
     symv[id](&uplo, &n, (ao ? &a : &One[id]),
-        MAT_BUF(A) + oA*E_SIZE[id], &ldA, MAT_BUF(x) + ox*E_SIZE[id],
-        &ix, (bo ? &b : &Zero[id]), MAT_BUF(y) + oy*E_SIZE[id], &iy);
+	     ((char*)MAT_BUF(A)) + oA*E_SIZE[id], &ldA, ((char*)MAT_BUF(x)) + ox*E_SIZE[id],
+	     &ix, (bo ? &b : &Zero[id]), ((char*)MAT_BUF(y)) + oy*E_SIZE[id], &iy);
 #endif
   }
   else {
 
 #if PY_MAJOR_VERSION >= 3
     if (sp_symv[id](uplo_, n, (ao ? a : One[id]), ((spmatrix *)A)->obj,
-        oA, MAT_BUF(x) + ox*E_SIZE[id], ix,
-        (bo ? b : Zero[id]), MAT_BUF(y) + oy*E_SIZE[id], iy))
+		    oA, ((char*)MAT_BUF(x)) + ox*E_SIZE[id], ix,
+		    (bo ? b : Zero[id]), ((char*)MAT_BUF(y)) + oy*E_SIZE[id], iy))
 #else
     if (sp_symv[id](uplo, n, (ao ? a : One[id]), ((spmatrix *)A)->obj,
-        oA, MAT_BUF(x) + ox*E_SIZE[id], ix,
-        (bo ? b : Zero[id]), MAT_BUF(y) + oy*E_SIZE[id], iy))
+		    oA, ((char*)MAT_BUF(x)) + ox*E_SIZE[id], ix,
+		    (bo ? b : Zero[id]), ((char*)MAT_BUF(y)) + oy*E_SIZE[id], iy))
 #endif
       return PyErr_NoMemory();
   }

@@ -12,7 +12,7 @@
 
 
 // KLU functions
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_LONG) || defined(MS_WIN64)
 #define KLUD(name) klu_l_ ## name
 #define KLUZ(name) klu_zl_ ## name
 #else
@@ -22,7 +22,7 @@
 
 
 // KLU types/structures
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_LONG) || defined(MS_WIN64)
 #define KLUS(name) klu_l_ ## name
 #else
 #define KLUS(name) klu_ ## name

@@ -287,19 +287,19 @@ extern void zgesdd_(char *jobz, int *m, int *n, double complex *A,
     int *ldVt, double complex *work, int *lwork, double *rwork, 
     int *iwork, int *info);
 
-extern void dgees_(char *jobvs, char *sort, void *select, int *n,
+extern void dgees_(char *jobvs, char *sort, int (*select)(double *, double *), int *n,
     double *A, int *ldA, int *sdim, double *wr, double *wi, double *vs,
     int *ldvs, double *work, int *lwork, int *bwork, int *info);
-extern void zgees_(char *jobvs, char *sort, void *select, int *n,
+extern void zgees_(char *jobvs, char *sort, int (*select)(double complex *), int *n,
     double complex *A, int *ldA, int *sdim, double complex *w, 
     double complex *vs, int *ldvs, double complex *work, int *lwork, 
     double complex *rwork, int *bwork, int *info);
-extern void dgges_(char *jobvsl, char *jobvsr, char *sort, void *delctg,
+extern void dgges_(char *jobvsl, char *jobvsr, char *sort, int (*delctg)(double *, double *, double *),
     int *n, double *A, int *ldA, double *B, int *ldB, int *sdim,
     double *alphar, double *alphai, double *beta, double *vsl, int *ldvsl,
     double *vsr, int *ldvsr, double *work, int *lwork, int *bwork,
     int *info);
-extern void zgges_(char *jobvsl, char *jobvsr, char *sort, void *delctg,
+extern void zgges_(char *jobvsl, char *jobvsr, char *sort, int (*delctg)(double complex *, double *),
     int *n, double complex *A, int *ldA, double complex *B, int *ldB, 
     int *sdim, double complex *alpha, double complex *beta, 
     double complex *vsl, int *ldvsl, double complex *vsr, int *ldvsr, 

@@ -21,13 +21,16 @@ CVXOPT interface for MOSEK 7.0
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
+import sys
 import mosek
 from cvxopt import matrix, spmatrix, sparse
 from mosek.array import array, zeros
 env = mosek.Env()
 
-def streamprinter(text): print(text)
+def streamprinter(text): 
+    sys.stdout.write(text) 
+    sys.stdout.flush()
+        
 env.set_Stream (mosek.streamtype.log, streamprinter)
 
 inf = 0.0

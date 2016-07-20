@@ -28,12 +28,14 @@
 
 const int E_SIZE[] = { sizeof(int_t), sizeof(double), sizeof(double complex) };
 
+
 /* defined in pyconfig.h */
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_LONG) || defined(MS_WIN64)
 #define CHOL(name) cholmod_l_ ## name
 #else
 #define CHOL(name) cholmod_ ## name
 #endif
+
 
 PyDoc_STRVAR(cholmod__doc__, "Interface to the CHOLMOD library.\n\n"
 "Routines for sparse Cholesky factorization.\n\n"
@@ -528,7 +530,7 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
 
     void *b_old = b->x;
     for (i=0; i<nrhs; i++){
-        b->x = MAT_BUF(B) + (i*ldB + oB)*E_SIZE[MAT_ID(B)];
+      b->x = ((char*)MAT_BUF(B)) + (i*ldB + oB)*E_SIZE[MAT_ID(B)];
         x = CHOL(solve) (sysvalues[sys], L, b, &Common);
         if (Common.status != CHOLMOD_OK){
             PyErr_SetString(PyExc_ValueError, "solve step failed");
@@ -785,7 +787,7 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
     }
     b_old = b->x;
     for (i=0; i<nrhs; i++) {
-        b->x = MAT_BUF(B) + (i*ldB + oB)*E_SIZE[MAT_ID(B)];
+      b->x = ((char*)MAT_BUF(B)) + (i*ldB + oB)*E_SIZE[MAT_ID(B)];
         x = CHOL(solve) (CHOLMOD_A, L, b, &Common);
         if (Common.status != CHOLMOD_OK){
             PyErr_SetString(PyExc_ValueError, "solve step failed");
