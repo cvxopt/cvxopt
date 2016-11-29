@@ -2578,7 +2578,7 @@ class op(object):
         return (op(cost, constraints), vmap, mmap)
 
 
-    def solve(self, format='dense', solver = 'default'):
+    def solve(self, format='dense', solver = 'default', **kwargs):
 
         """
         Solves LP using dense or sparse solver.
@@ -2626,7 +2626,7 @@ class op(object):
             A = spmatrix(0.0, [], [],  (0,len(x)))
             b = matrix(0.0, (0,1))
 
-        sol = solvers.lp(c[:], G, h, A, b, solver=solver)
+        sol = solvers.lp(c[:], G, h, A, b, solver=solver, **kwargs)
 
         x.value = sol['x']
         inequalities[0].multiplier.value = sol['z']

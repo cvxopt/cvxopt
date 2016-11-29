@@ -2547,7 +2547,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
         gap = blas.dot(lmbda, lmbda) 
 
 
-def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
+def lp(c, G, h, A = None, b = None, kktsolver = None, solver = None, primalstart = None,
     dualstart = None, **kwargs):
     """
 
@@ -2999,11 +2999,11 @@ def lp(c, G, h, A = None, b = None, solver = None, primalstart = None,
             'primal slack': pslack, 'dual slack': dslack} 
 
     return conelp(c, G, h, {'l': m, 'q': [], 's': []}, A,  b, primalstart,
-        dualstart, options = options)
+        dualstart, kktsolver = kktsolver, options = options)
 
 
 def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
-    solver = None, primalstart = None, dualstart = None, **kwargs):
+    kktsolver = None, solver = None, primalstart = None, dualstart = None, **kwargs):
 
     """
     Solves a pair of primal and dual SOCPs
@@ -3526,7 +3526,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
     else: 
         ds = None
 
-    sol = conelp(c, G, h, dims, A = A, b = b, primalstart = ps, dualstart = ds, options = options)
+    sol = conelp(c, G, h, dims, A = A, b = b, primalstart = ps, dualstart = ds, kktsolver = kktsolver, options = options)
     if sol['s'] is None:  
         sol['sl'] = None
         sol['sq'] = None
@@ -3555,7 +3555,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
 
     
 def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None, 
-    solver = None, primalstart = None, dualstart = None, options = options, **kwargs):
+    kktsolver = None, solver = None, primalstart = None, dualstart = None, options = options, **kwargs):
     """
 
     Solves a pair of primal and dual SDPs
@@ -4111,7 +4111,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
     else: 
         ds = None
 
-    sol = conelp(c, G, h, dims, A = A, b = b, primalstart = ps, dualstart = ds, options = options)
+    sol = conelp(c, G, h, dims, A = A, b = b, primalstart = ps, dualstart = ds, kktsolver = kktsolver, options = options)
     if sol['s'] is None:
         sol['sl'] = None
         sol['ss'] = None
@@ -4142,7 +4142,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
 
 
 def qp(P, q, G = None, h = None, A = None, b = None, solver = None, 
-    initvals = None, **kwargs):
+    kktsolver = None, initvals = None, **kwargs):
 
     """
     Solves a quadratic program
@@ -4467,4 +4467,4 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
             'residual as primal infeasibility certificate': pinfres, 
             'residual as dual infeasibility certificate': dinfres} 
 
-    return coneqp(P, q, G, h, None, A,  b, initvals, options = options)
+    return coneqp(P, q, G, h, None, A,  b, initvals, kktsolver = kktsolver, options = options)
