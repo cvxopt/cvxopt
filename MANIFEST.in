@@ -1,0 +1,9 @@
+include README.md
+include LICENSE
+include INSTALL
+include versioneer.py
+include src/python/_version.py
+recursive-include doc *
+recursive-include examples *
+recursive-include src *
+recursive-include tests *.py

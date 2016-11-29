@@ -1,0 +1,61 @@
+version: 1.1.9.{build}-{branch}
+configuration: Release
+platform: x64
+clone_folder: C:\projects\cvxopt
+init:
+- cmd: >-
+    choco install wget
+
+    if not exist C:\projects\cache mkdir C:\projects\cache
+
+    cd C:\projects\cache
+
+    if not exist SuiteSparse wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-4.5.3.tar.gz && "C:\Program Files\7-Zip\7z" x SuiteSparse-4.5.3.tar.gz && "C:\Program Files\7-Zip\7z" x SuiteSparse-4.5.3.tar
+
+    if not exist OpenBLAS-0.2.17_amd64.7z wget https://bitbucket.org/carlkl/mingw-w64-for-python/downloads/OpenBLAS-0.2.17_amd64.7z
+
+    if not exist openblas mkdir openblas && "C:\Program Files\7-Zip\7z" x OpenBLAS-0.2.17_amd64.7z -aoa -oopenblas
+clone_script:
+- cmd: >-
+    git clone https://github.com/cvxopt/cvxopt.git C:\projects\cvxopt
+
+    cd C:\projects\cvxopt
+environment:
+  CVXOPT_BLAS_LIB: openblaspy
+  CVXOPT_LAPACK_LIB: openblaspy
+  CVXOPT_DATA_FILES: C:\projects\cache\openblas\amd64\bin\libopenblaspy.dll
+  CVXOPT_BLAS_LIB_DIR: C:\projects\cache\openblas\amd64\bin
+  CVXOPT_SUITESPARSE_SRC_DIR: C:\projects\cache\SuiteSparse
+  matrix:
+  - PYTHON: C:\Python27-x64
+    PYTHON_VERSION: 27
+  - PYTHON: C:\Python34-x64
+    PYTHON_VERSION: 34
+install:
+- cmd: >-
+    set PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
+
+    python --version
+
+    python -c "import struct; print(struct.calcsize('P') * 8)"
+
+    pip install --disable-pip-version-check --user --upgrade pip
+
+    pip install -i https://pypi.anaconda.org/carlkl/simple mingwpy
+
+    pip install wheel nose
+cache: C:\projects\cache
+build_script:
+- cmd: >-
+    python setup.py build --compiler=mingw32
+
+    python setup.py install
+
+    python setup.py bdist_wheel
+test_script:
+- cmd: >-
+    python -c "from cvxopt import blas,lapack,cholmod,umfpack"
+
+    nosetests
+artifacts:
+- path: dist/*.whl

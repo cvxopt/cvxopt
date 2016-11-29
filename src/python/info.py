@@ -1,4 +1,4 @@
-version = '1.1.8'
+from cvxopt import __version__ as version
 
 def license(): print(
 """
