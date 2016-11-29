@@ -23,7 +23,7 @@ import sys, os
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.pngmath']
+extensions = ['sphinx.ext.imgmath']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['.templates']
@@ -36,15 +36,15 @@ master_doc = 'index'
 
 # General substitutions.
 project = "CVXOPT User's Guide"
-#copyright = '2004-2009, Joachim Dahl, Lieven Vandenberghe'
+copyright = '2004-2016, M.S. Andersen, J. Dahl, L. Vandenberghe'
 
 # The default replacements for |version| and |release|, also used in various
 # other places throughout the built documents.
 #
 # The short X.Y version.
-version = '1.1.8'
+version = '1.1.9'
 # The full version, including alpha/beta/rc tags.
-release = '1.1.8'
+release = '1.1.9'
 
 
 # There are two options for replacing |today|: either, you set today to some

@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="search.html"/>
         <link rel="copyright" title="Copyright" href="copyright.html"/>
     <link rel="top" title="CVXOPT User&#39;s Guide" href="index.html"/>
         <link rel="prev" title="C API" href="c-api.html"/> 
@@ -137,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="c-api.html#sparse-matrices">Sparse Matrices</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Matrix Formatting</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Matrix Formatting</a></li>
 <li class="toctree-l1"><a class="reference external" href="http://cvxopt.org">cvxopt.org</a></li>
 </ul>
 
@@ -179,11 +180,11 @@ return strings with printable representations of matrices.  The command
 &#8216;<code class="docutils literal"><span class="pre">print</span> <span class="pre">A</span></code>&#8216; executes &#8216;<code class="docutils literal"><span class="pre">str(A)</span></code>&#8216;, whereas the command &#8216;<code class="docutils literal"><span class="pre">A</span></code>&#8216;
 calls &#8216;<code class="docutils literal"><span class="pre">repr(A)</span></code>&#8216;.  The following example illustrates the default
 formatting of dense matrices.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="s">&#39;d&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="s1">&#39;d&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span>
 <span class="go">&lt;5x10 matrix, tc=&#39;d&#39;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">[ 0.00e+00  5.00e+00  1.00e+01  1.50e+01  2.00e+01  2.50e+01  3.00e+01 ... ]</span>
 <span class="go">[ 1.00e+00  6.00e+00  1.10e+01  1.60e+01  2.10e+01  2.60e+01  3.10e+01 ... ]</span>
 <span class="go">[ 2.00e+00  7.00e+00  1.20e+01  1.70e+01  2.20e+01  2.70e+01  3.20e+01 ... ]</span>
@@ -203,12 +204,12 @@ set to a negative value, all columns are displayed.  If
 <code class="xref py py-attr docutils literal"><span class="pre">options['height']</span></code> is set to a negative value, all rows are
 displayed.  The default values of <code class="xref py py-attr docutils literal"><span class="pre">options['width']</span></code> and
 <code class="xref py py-attr docutils literal"><span class="pre">options['height']</span></code> are 7 and -1, respectively.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">printing</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">printing</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">printing</span><span class="o">.</span><span class="n">options</span>
 <span class="go">{&#39;width&#39;: 7, &#39;dformat&#39;: &#39;% .2e&#39;, &#39;iformat&#39;: &#39;% i&#39;, &#39;height&#39;: -1}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">printing</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;dformat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%.1f</span><span class="s">&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">printing</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">printing</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;dformat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%.1f</span><span class="s1">&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">printing</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">[ 0.0  5.0 10.0 15.0 20.0 25.0 30.0 35.0 40.0 45.0]</span>
 <span class="go">[ 1.0  6.0 11.0 16.0 21.0 26.0 31.0 36.0 41.0 46.0]</span>
 <span class="go">[ 2.0  7.0 12.0 17.0 22.0 27.0 32.0 37.0 42.0 47.0]</span>
@@ -227,9 +228,9 @@ argument.  By default, the functions are set to
 redefined to any other Python functions.  For example, if we prefer
 <code class="docutils literal"><span class="pre">A</span></code> to return the same output as <code class="docutils literal"><span class="pre">print</span> <span class="pre">A</span></code>, we can simply
 redefine <code class="xref py py-func docutils literal"><span class="pre">cvxopt.matrix_repr</span></code> as shown below.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cvxopt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">printing</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="s">&#39;d&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cvxopt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">printing</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;d&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span>
 <span class="go">&lt;2x2 matrix, tc=&#39;d&#39;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cvxopt</span><span class="o">.</span><span class="n">matrix_repr</span> <span class="o">=</span> <span class="n">printing</span><span class="o">.</span><span class="n">matrix_str_default</span>
@@ -243,12 +244,12 @@ and <code class="xref py py-func docutils literal"><span class="pre">str</span><
 and <code class="xref py py-func docutils literal"><span class="pre">cvxopt.spmatrix_str</span></code>, respectively.  By default, they are set to
 <code class="xref py py-func docutils literal"><span class="pre">printing.spmatrix_repr_default</span></code> and
 <code class="xref py py-func docutils literal"><span class="pre">printing.spmatrix_repr_str</span></code>.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cvxopt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">printing</span><span class="p">,</span> <span class="n">spmatrix</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cvxopt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">printing</span><span class="p">,</span> <span class="n">spmatrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span>
 <span class="go">&lt;5x10 sparse matrix, tc=&#39;d&#39;, nnz=5&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">[ 0.00e+00     0         0         0         0         0         0     ... ]</span>
 <span class="go">[    0      1.00e+00     0         0         0         0         0     ... ]</span>
 <span class="go">[    0         0      2.00e+00     0         0         0         0     ... ]</span>
@@ -256,7 +257,7 @@ and <code class="xref py py-func docutils literal"><span class="pre">cvxopt.spma
 <span class="go">[    0         0         0         0      4.00e+00     0         0     ... ]</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cvxopt</span><span class="o">.</span><span class="n">spmatrix_repr</span> <span class="o">=</span> <span class="n">printing</span><span class="o">.</span><span class="n">spmatrix_str_default</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cvxopt</span><span class="o">.</span><span class="n">spmatrix_repr</span> <span class="o">=</span> <span class="n">printing</span><span class="o">.</span><span class="n">spmatrix_str_default</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span>
 <span class="go">[ 0.00e+00     0         0         0         0         0         0     ... ]</span>
 <span class="go">[    0      1.00e+00     0         0         0         0         0     ... ]</span>
@@ -268,8 +269,8 @@ and <code class="xref py py-func docutils literal"><span class="pre">cvxopt.spma
 <p>As can be seen from the example, the default behaviour is to print the
 entire matrix including structural zeros. An alternative triplet printing
 style is defined in <code class="xref py py-func docutils literal"><span class="pre">printing.spmatrix_str_triplet</span></code>.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cvxopt</span><span class="o">.</span><span class="n">spmatrix_str</span> <span class="o">=</span> <span class="n">printing</span><span class="o">.</span><span class="n">spmatrix_str_triplet</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cvxopt</span><span class="o">.</span><span class="n">spmatrix_str</span> <span class="o">=</span> <span class="n">printing</span><span class="o">.</span><span class="n">spmatrix_str_triplet</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">(0,0)  0.00e+00</span>
 <span class="go">(1,1)  1.00e+00</span>
 <span class="go">(2,2)  2.00e+00</span>
@@ -295,8 +296,8 @@ style is defined in <code class="xref py py-func docutils literal"><span class="
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="copyright.html">Copyright</a> .
-      Last updated on Sep 21, 2015.
+        &copy; <a href="copyright.html">Copyright</a> 2004-2016, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      Last updated on Nov 29, 2016.
     </p>
   </div>
 
@@ -316,7 +317,7 @@ style is defined in <code class="xref py py-func docutils literal"><span class="
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -342,7 +343,7 @@ style is defined in <code class="xref py py-func docutils literal"><span class="
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 </body>
