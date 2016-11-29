@@ -1,3 +1,3 @@
 #define DLONG
 
-#include "../../SuiteSparse/UMFPACK/Source/umf_symbolic_usage.c"
+#include "umf_symbolic_usage.c"

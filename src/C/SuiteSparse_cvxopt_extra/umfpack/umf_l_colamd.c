@@ -1,3 +1,3 @@
 #define DLONG
 
-#include "../../SuiteSparse/UMFPACK/Source/umf_colamd.c"
+#include "umf_colamd.c"

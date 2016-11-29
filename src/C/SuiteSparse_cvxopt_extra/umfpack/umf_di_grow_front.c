@@ -1,2 +1,2 @@
 #define DINT
-#include "../../SuiteSparse/UMFPACK/Source/umf_grow_front.c"
+#include "umf_grow_front.c"

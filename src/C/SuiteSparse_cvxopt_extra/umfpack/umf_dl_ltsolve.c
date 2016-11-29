@@ -1,3 +1,3 @@
 #define DLONG
 
-#include "../../SuiteSparse/UMFPACK/Source/umf_ltsolve.c"
+#include "umf_ltsolve.c"

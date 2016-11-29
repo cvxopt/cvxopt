@@ -1,3 +1,3 @@
 #define DLONG
 
-#include "../../SuiteSparse/UMFPACK/Source/umf_cholmod.c"
+#include "umf_cholmod.c"
