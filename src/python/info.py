@@ -2,8 +2,8 @@ from cvxopt import __version__ as version
 
 def license(): print(
 """
-CVXOPT version 1.1.8. 
-Copyright (c) 2012-2015 M. Andersen and L. Vandenberghe.
+CVXOPT. 
+Copyright (c) 2012-2016 M. Andersen and L. Vandenberghe.
 Copyright (c) 2010-2011 L. Vandenberghe.
 Copyright (c) 2004-2009 J. Dahl and L. Vandenberghe.
 
