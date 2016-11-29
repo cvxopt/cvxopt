@@ -2265,7 +2265,8 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
                     ind += m**2
                 ts = misc.max_step(s, dims)
                 tz = misc.max_step(z, dims)
-                print("Terminated (singular KKT matrix).")
+                if show_progress:
+                    print("Terminated (singular KKT matrix).")
                 return { 'x': x,  'y': y,  's': s,  'z': z,  
                     'status': 'unknown', 'gap': gap,  
                     'relative gap': relgap, 'primal objective': pcost,  
@@ -2409,7 +2410,8 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
                         ind += m**2
                     ts = misc.max_step(s, dims)
                     tz = misc.max_step(z, dims)
-                    print("Terminated (singular KKT matrix).")
+                    if show_progress:
+                        print("Terminated (singular KKT matrix).")
                     return { 'x': x,  'y': y,  's': s,  'z': z,  
                         'status': 'unknown', 'gap': gap,  
                         'relative gap': relgap, 'primal objective': pcost, 
