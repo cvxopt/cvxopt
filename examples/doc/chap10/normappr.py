@@ -24,9 +24,9 @@ try: import pylab
 except ImportError: pass
 else:
     pylab.subplot(311)
-    pylab.hist(A*x1.value + b, m/5)
+    pylab.hist(A*x1.value + b, m//5)
     pylab.subplot(312)
-    pylab.hist(A*x2.value + b, m/5)
+    pylab.hist(A*x2.value + b, m//5)
     pylab.subplot(313)
-    pylab.hist(A*x3.value + b, m/5)
+    pylab.hist(A*x3.value + b, m//5)
     pylab.show()

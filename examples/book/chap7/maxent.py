@@ -1,5 +1,6 @@
 # Figures 7.2 and 7.3, pages 363 and 364.
 # Maximum entropy distribution.
+import functools
 
 from cvxopt import solvers, blas, matrix, spmatrix, spdiag, log, div
 #solvers.options['show_progress'] = False
@@ -71,8 +72,8 @@ l = [-blas.dot(cc, solvers.lp(cc, GG, hh[:,k])['x']) for k in range(n)]
 u = [blas.dot(cc, solvers.lp(cc, GG, -hh[:,k])['x']) for k in range(n)]
 
 def f(x,y): return x+2*[y]
-def stepl(x): return reduce(f, x[1:], [x[0]])
-def stepr(x): return reduce(f, x[:-1], []) + [x[-1]]
+def stepl(x): return functools.reduce(f, x[1:], [x[0]])
+def stepr(x): return functools.reduce(f, x[:-1], []) + [x[-1]]
 
 try: import pylab
 except ImportError: pass

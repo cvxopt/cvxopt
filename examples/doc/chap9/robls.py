@@ -38,7 +38,7 @@ else:
     xls = +b
     lapack.gels(+A,xls)
     rls =  A*xls[:n] - b
-    pylab.hist(rls, m/5)
+    pylab.hist(rls, m//5)
     pylab.title('Least-squares solution')
     pylab.xlabel('Residual')
     mr = ceil(max(rls))
@@ -47,7 +47,7 @@ else:
     # Robust least-squares solution with rho = 0.01.
     pylab.subplot(212)
     rh =  A*xh - b
-    pylab.hist(rh, m/5)
+    pylab.hist(rh, m//5)
     mr = ceil(max(rh))
     pylab.title('Robust least-squares solution')
     pylab.xlabel('Residual')

@@ -4,7 +4,7 @@
 # subject to x >= 0
 #            ||x||_2 <= 1
 
-from cvxopt import matrix, base, solvers
+from cvxopt import matrix, solvers
 A = matrix([ [ .3, -.4,  -.2,  -.4,  1.3 ], 
              [ .6, 1.2, -1.7,   .3,  -.3 ],
              [-.3,  .0,   .6, -1.2, -2.0 ] ])
