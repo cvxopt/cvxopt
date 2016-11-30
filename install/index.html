@@ -372,19 +372,21 @@ wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-4.5.3.tar.gz
 wget https://bitbucket.org/carlkl/mingw-w64-for-python/downloads/OpenBLAS-0.2.17_amd64.7z
 <span class="k">mkdir</span> openblas
 7z x OpenBLAS-0.2.17_amd64.7z -aoa -oopenblas
-<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB</span><span class="p">=</span>openblaspy
-<span class="k">set</span> <span class="nv">CVXOPT_LAPACK_LIB</span><span class="p">=</span>openblaspy
-<span class="k">set</span> <span class="nv">CVXOPT_DATA_FILES</span><span class="p">=</span><span class="nv">%CD%</span>\openblas\amd64\bin\libopenblaspy.dll
-<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB_DIR</span><span class="p">=</span><span class="nv">%CD%</span>\openblas\amd64\bin
 
 <span class="c1">rem Install mingwpy Python extension using pip</span>
 pip install -i https://pypi.anaconda.org/carlkl/simple mingwpy
 
-<span class="c1">rem Clone CVXOPT repository, compile, and install</span>
+<span class="c1">rem Clone CVXOPT repository, configure, compile, and install</span>
 git clone https://github.com/cvxopt/cvxopt.git
+<span class="k">copy</span> openblas\amd64\lib\libopenblaspy.a cvxopt\
 <span class="k">cd</span> cvxopt
+<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB</span><span class="p">=</span>openblaspy
+<span class="k">set</span> <span class="nv">CVXOPT_LAPACK_LIB</span><span class="p">=</span>openblaspy
+<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB_DIR</span><span class="p">=</span><span class="nv">%CD%</span>
+<span class="k">set</span> <span class="nv">CVXOPT_BLAS_EXTRA_LINK_ARGS</span><span class="p">=</span>-lgfortran;-lquadmath
 python setup.py build --compiler=mingw32
 python setup.py install
+python -m unittest discover -s tests
 </pre></div>
 </div>
 </div>
