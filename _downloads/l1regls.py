@@ -21,8 +21,6 @@ if __MOSEK:
 
         """
 
-        from mosek.array import zeros
-
         m, n = A.size
 
         env  = mosek.Env()
@@ -44,7 +42,7 @@ if __MOSEK:
         for i in range(n):
             J.extend((n-i)*[i])
 
-        task.putqobj(I, J, Q[matrix(I) + matrix(J)*n])
+        task.putqobj(I, J, list(Q[matrix(I) + matrix(J)*n]))
         task.putclist(range(2*n), list(-2*A.T*b) + n*[1.0])  # setup linear objective
 
         # input constraint matrix row by row
@@ -66,7 +64,7 @@ if __MOSEK:
         task.putobjsense(mosek.objsense.minimize)
         task.optimize()
         task.solutionsummary(mosek.streamtype.log)
-        x = zeros(n, float)
+        x = n*[0.0]
         task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, 0, n, x)
 
         return matrix(x)
@@ -83,9 +81,6 @@ if __MOSEK:
                          A*x - w = b
 
         """
-
-    #    import sys, mosek 
-        from mosek.array import zeros
 
         m, n = A.size
 
@@ -125,7 +120,7 @@ if __MOSEK:
         task.putobjsense(mosek.objsense.minimize)
         task.optimize()
         task.solutionsummary(mosek.streamtype.log)
-        x = zeros(n, float)
+        x = n*[0.0]
         task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, 0, n, x)
 
         return matrix(x)

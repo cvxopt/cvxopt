@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="search.html"/>
         <link rel="copyright" title="Copyright" href="copyright.html"/>
     <link rel="top" title="CVXOPT User&#39;s Guide" href="index.html"/>
         <link rel="next" title="C API" href="c-api.html"/>
@@ -125,7 +126,7 @@
 <li class="toctree-l2"><a class="reference internal" href="solvers.html#algorithm-parameters">Algorithm Parameters</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Modeling</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Modeling</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#variables">Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#constraints">Constraints</a></li>
@@ -178,13 +179,13 @@
 optimization problems  with convex piecewise-linear objective and
 constraint functions.  Using this modeling tool, one can specify an
 optimization problem by first defining the optimization variables (see the
-section <a class="reference internal" href="#s-variables"><span>Variables</span></a>), and then specifying the objective and
+section <a class="reference internal" href="#s-variables"><span class="std std-ref">Variables</span></a>), and then specifying the objective and
 constraint functions using linear operations (vector addition and
 subtraction, matrix-vector multiplication, indexing and slicing)
 and nested evaluations of <code class="xref py py-func docutils literal"><span class="pre">max</span></code>,
 <code class="xref py py-func docutils literal"><span class="pre">min</span></code>,
 <code class="xref py py-func docutils literal"><span class="pre">abs</span></code> and
-<a class="reference internal" href="#cvxopt.modeling.sum" title="cvxopt.modeling.sum"><code class="xref py py-func docutils literal"><span class="pre">sum</span></code></a> (see the section <a class="reference internal" href="#s-functions"><span>Functions</span></a>).</p>
+<a class="reference internal" href="#cvxopt.modeling.sum" title="cvxopt.modeling.sum"><code class="xref py py-func docutils literal"><span class="pre">sum</span></code></a> (see the section <a class="reference internal" href="#s-functions"><span class="std std-ref">Functions</span></a>).</p>
 <p>A more general Python convex modeling package is
 <a class="reference external" href="http://cvxpy.org">CVXPY</a>.</p>
 <div class="section" id="variables">
@@ -225,22 +226,22 @@ size <code class="docutils literal"><span class="pre">(len(x),</span> <span clas
 elements of <code class="docutils literal"><span class="pre">x.value</span></code> are set to the value of <code class="docutils literal"><span class="pre">y</span></code>.</p>
 </dd></dl>
 
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="s">&#39;a&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="k">import</span> <span class="n">variable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="go">3</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 <span class="go">a</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">None</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">3.</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">[ 1.00e+00]</span>
 <span class="go">[ 2.00e+00]</span>
 <span class="go">[ 3.00e+00]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">[ 1.00e+00]</span>
 <span class="go">[ 1.00e+00]</span>
 <span class="go">[ 1.00e+00]</span>
@@ -273,7 +274,7 @@ variables of <code class="docutils literal"><span class="pre">f</span></code>.</
 and concave piecewise-linear.</p>
 <p><strong>Affine functions</strong> represent vector valued functions of the form</p>
 <div class="math">
-<p><img src="_images/math/779452dac0b743460f8ed93ee0b34d1d42657bbb.png" alt="f(x_1,\ldots,x_n) = A_1 x_1 + \cdots + A_n x_n + b."/></p>
+<p><img src="_images/math/1c5572b254a974c8814f8c15d23530c6e9325229.png" alt="f(x_1,\ldots,x_n) = A_1 x_1 + \cdots + A_n x_n + b."/></p>
 </div><p>The coefficients can be scalars or dense or sparse matrices. The
 constant term is a scalar or a column vector.</p>
 <p>Affine functions result from the following operations.</p>
@@ -292,7 +293,7 @@ in new affine functions.  The constant terms in the sum can be of type
 integer or float, or dense or sparse <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrices with one
 column.</p>
 <p class="last">The rules for addition and subtraction follow the conventions for
-matrix addition and subtraction in the section <a class="reference internal" href="matrices.html#s-arithmetic"><span>Arithmetic Operations</span></a>,
+matrix addition and subtraction in the section <a class="reference internal" href="matrices.html#s-arithmetic"><span class="std std-ref">Arithmetic Operations</span></a>,
 with variables and affine functions interpreted as dense <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code>
 matrices with one column.  In particular, a scalar term (integer, float,
 1 by 1 dense <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix, variable of length 1, or affine
@@ -304,7 +305,7 @@ length greater than 1.</p>
 integer, float, sparse or dense <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix.  The products
 <code class="docutils literal"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">v</span></code> and  <code class="docutils literal"><span class="pre">v</span> <span class="pre">*</span> <span class="pre">a</span></code> are valid affine functions whenever
 the product is allowed under the rules for matrix and scalar
-multiplication of the section <a class="reference internal" href="matrices.html#s-arithmetic"><span>Arithmetic Operations</span></a>, with <code class="docutils literal"><span class="pre">v</span></code>
+multiplication of the section <a class="reference internal" href="matrices.html#s-arithmetic"><span class="std std-ref">Arithmetic Operations</span></a>, with <code class="docutils literal"><span class="pre">v</span></code>
 interpreted
 as a <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> matrix with one column.  In particular, the product
 <code class="docutils literal"><span class="pre">a</span> <span class="pre">*</span> <span class="pre">v</span></code> is defined if <code class="docutils literal"><span class="pre">a</span></code> is a scalar (integer, float, or
@@ -341,7 +342,7 @@ i.e., it returns the inner product of the two matrices.</p>
 <p>In the following example, the variable <code class="docutils literal"><span class="pre">x</span></code> has length 1 and <code class="docutils literal"><span class="pre">y</span></code> has
 length 2.  The functions <code class="docutils literal"><span class="pre">f</span></code> and <code class="docutils literal"><span class="pre">g</span></code> are given by</p>
 <div class="math">
-<p><img src="_images/math/198ab32e382c82002570f58df80b131d525f6bfd.png" alt="f(x,y) &amp;= \left[ \begin{array}{c} 2 \\ 2 \end{array}\right] x
+<p><img src="_images/math/e208fe54e755f7c3578d57a0833517fe90ff126c.png" alt="f(x,y) &amp;= \left[ \begin{array}{c} 2 \\ 2 \end{array}\right] x
     + y + \left[ \begin{array}{c} 3 \\ 3 \end{array}\right], \\
 g(x,y) &amp;=
     \left[ \begin{array}{cc} 1 &amp; 3 \\ 2 &amp; 4 \end{array}\right] f(x,y) +
@@ -350,14 +351,14 @@ g(x,y) &amp;=
        &amp;= \left[ \begin{array}{c} 8 \\ 12 \end{array}\right] x +
    \left[ \begin{array}{cc} 2 &amp; 4 \\ 3 &amp; 5 \end{array}\right] y +
    \left[ \begin{array}{c} 13 \\ 17\end{array}\right]."/></p>
-</div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s">&#39;y&#39;</span><span class="p">)</span>
+</div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="k">import</span> <span class="n">variable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">3</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.</span><span class="p">,</span><span class="mf">4.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">f</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
 <span class="go">affine function of length 2</span>
 <span class="go">constant term:</span>
 <span class="go">[ 1.30e+01]</span>
@@ -381,20 +382,20 @@ has length <code class="docutils literal"><span class="pre">len(f)</span></code>
 integer, float, or 1 by 1 matrix.</dd>
 <dt><strong>Indexing and slicing</strong></dt>
 <dd>Variables and affine functions admit single-argument indexing of the
-four types described in the section <a class="reference internal" href="matrices.html#s-indexing"><span>Indexing and Slicing</span></a>.  The result of
+four types described in the section <a class="reference internal" href="matrices.html#s-indexing"><span class="std std-ref">Indexing and Slicing</span></a>.  The result of
 an indexing or slicing operation is an affine function.</dd>
 </dl>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 <span class="go">linear function of length 2</span>
 <span class="go">linear term: linear function of length 2</span>
 <span class="go">coefficient of variable(4,&#39;x&#39;):</span>
 <span class="go">[ 1.00e+00     0         0         0    ]</span>
 <span class="go">[    0         0      1.00e+00     0    ]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s">&#39;d&#39;</span><span class="p">)</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">g</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">12</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="s1">&#39;d&#39;</span><span class="p">)</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">g</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 <span class="go">affine function of length 1</span>
 <span class="go">constant term:</span>
 <span class="go">[ 2.00e+00]</span>
@@ -407,14 +408,14 @@ an indexing or slicing operation is an affine function.</dd>
 </div>
 <p>The general expression of a <strong>convex piecewise-linear</strong> function is</p>
 <div class="math">
-<p><img src="_images/math/a185258fa2bb48f87e585228395f07c3864a5ee7.png" alt="f(x_1,\ldots,x_n) = b + A_1 x_1 + \cdots + A_n x_n +
+<p><img src="_images/math/caf796ca360a9e7a6db5f69e7fa3851357f97604.png" alt="f(x_1,\ldots,x_n) = b + A_1 x_1 + \cdots + A_n x_n +
     \sum_{k=1}^K \max (y_1, y_2, \ldots, y_{m_k})."/></p>
 </div><p>The maximum in this expression is a componentwise maximum of its vector
 arguments, which can be constant vectors, variables, affine functions or
 convex piecewise-linear functions.  The general expression for a
 <strong>concave piecewise-linear</strong> function is</p>
 <div class="math">
-<p><img src="_images/math/c861d27ab46dcf1be207f024a0ce2fbb9d9d4ec1.png" alt="f(x_1,\ldots,x_n) = b + A_1 x_1 + \cdots + A_n x_n +
+<p><img src="_images/math/649f04b7ce7a74cd2b1ecd56d645df5752d7f4a4.png" alt="f(x_1,\ldots,x_n) = b + A_1 x_1 + \cdots + A_n x_n +
     \sum_{k=1}^K \min (y_1, y_2, \ldots, y_{m_k})."/></p>
 </div><p>Here the arguments of the <code class="xref py py-func docutils literal"><span class="pre">min</span></code>
 can be constants, variables, affine
@@ -467,20 +468,20 @@ Matrix-matrix multiplications <code class="docutils literal"><span class="pre">a
 defined if <code class="docutils literal"><span class="pre">a</span></code> is a dense or sparse 1 by 1 matrix.</dd>
 <dt><strong>Indexing and slicing</strong></dt>
 <dd>Piecewise-linear functions admit single-argument indexing of the four
-types described in the section <a class="reference internal" href="matrices.html#s-indexing"><span>Indexing and Slicing</span></a>.  The result of an
+types described in the section <a class="reference internal" href="matrices.html#s-indexing"><span class="std std-ref">Indexing and Slicing</span></a>.  The result of an
 indexing or slicing operation is a new piecewise-linear function.</dd>
 </dl>
 <p>In the following example, <code class="docutils literal"><span class="pre">f</span></code> is the 1-norm of a vector variable <code class="docutils literal"><span class="pre">x</span></code> of
 length 10, <code class="docutils literal"><span class="pre">g</span></code> is its infinity-norm, and <code class="docutils literal"><span class="pre">h</span></code> is the function</p>
 <div class="math">
-<p><img src="_images/math/b3263c15725476b4815cfd68a2a0fa73286d58de.png" alt="h(x) = \sum_k \phi(x[k]), \qquad
+<p><img src="_images/math/1af0a03fc12801db2bb8b54d47b61ba531de4354.png" alt="h(x) = \sum_k \phi(x[k]), \qquad
 \phi(u) = \left\{\begin{array}{ll}
     0       &amp; |u| \leq 1 \\
     |u|-1   &amp; 1 \leq |u| \leq 2 \\
     2|u|-3  &amp; |u| \geq 2.
 \end{array}\right."/></p>
-</div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span><span class="p">,</span> <span class="nb">max</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&#39;x&#39;</span><span class="p">)</span>
+</div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="k">import</span> <span class="n">variable</span><span class="p">,</span> <span class="nb">max</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">-</span><span class="mi">3</span><span class="p">))</span>
@@ -499,16 +500,16 @@ and if they do not change the length of <code class="docutils literal"><span cla
 <span id="s-constraints"></span><h2>Constraints<a class="headerlink" href="#constraints" title="Permalink to this headline">¶</a></h2>
 <p>Linear equality and inequality constraints of the form</p>
 <div class="math">
-<p><img src="_images/math/1843694724c1e6709cb3bdb81bc4f0c40d5e02e5.png" alt="f(x_1,\ldots,x_n) = 0, \qquad f(x_1,\ldots,x_n) \preceq  0,"/></p>
-</div><p>where <img class="math" src="_images/math/0001d02b63ede2fe3219e05a7cd09c82ae6298b6.png" alt="f"/> is a convex function, are represented by <code class="xref py py-class docutils literal"><span class="pre">constraint</span></code>
+<p><img src="_images/math/e9abf247956e315f0b613668771d3027bc08ad60.png" alt="f(x_1,\ldots,x_n) = 0, \qquad f(x_1,\ldots,x_n) \preceq  0,"/></p>
+</div><p>where <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/> is a convex function, are represented by <code class="xref py py-class docutils literal"><span class="pre">constraint</span></code>
 objects.  Equality constraints are created by expressions of the form</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">f1</span> <span class="o">==</span> <span class="n">f2</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">f1</span> <span class="o">==</span> <span class="n">f2</span>
 </pre></div>
 </div>
 <p>Here <code class="docutils literal"><span class="pre">f1</span></code> and <code class="docutils literal"><span class="pre">f2</span></code> can be any objects for which the difference
 <code class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span></code> yields an affine function.  Inequality constraints are
 created by expressions of the form</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">f1</span> <span class="o">&lt;=</span> <span class="n">f2</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">f1</span> <span class="o">&lt;=</span> <span class="n">f2</span>
 <span class="n">f2</span> <span class="o">&gt;=</span> <span class="n">f1</span>
 </pre></div>
 </div>
@@ -519,10 +520,10 @@ operators first convert the expressions to <code class="docutils literal"><span 
 constraint function <code class="docutils literal"><span class="pre">f1</span> <span class="pre">-</span> <span class="pre">f2</span></code>.</p>
 <p>In the following example we create three constraints</p>
 <div class="math">
-<p><img src="_images/math/6769835c6d47790785cdad70118ca039d3b360a1.png" alt="\newcommand{\ones}{{\bf 1}}
+<p><img src="_images/math/6b51c1f1ee62c5a6214b3a3456072ce7e32fb1f2.png" alt="\newcommand{\ones}{{\bf 1}}
 0 \preceq x \preceq \ones, \qquad \ones^T x = 2,"/></p>
 </div><p>for a variable of length 5.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c1</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c2</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c3</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
@@ -627,14 +628,14 @@ constraints can be solved by calling the method <a class="reference internal" hr
 <code class="descname">solve</code><span class="sig-paren">(</span><span class="optional">[</span><em>format</em><span class="optional">[</span>, <em>solver</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function converts the optimization problem to a linear program in
 matrix form and then solves it using the solver described in
-the section <a class="reference internal" href="coneprog.html#s-lpsolver"><span>Linear Programming</span></a>.</p>
+the section <a class="reference internal" href="coneprog.html#s-lpsolver"><span class="std std-ref">Linear Programming</span></a>.</p>
 <p>The first argument is either <code class="xref py py-const docutils literal"><span class="pre">'dense'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'sparse'</span></code>, and
 denotes the matrix types used in the matrix representation of the LP.
 The default value is <code class="xref py py-const docutils literal"><span class="pre">'dense'</span></code>.</p>
 <p>The second argument is either <code class="xref py py-const docutils literal"><span class="pre">None</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'glpk'</span></code>, or
 <code class="xref py py-const docutils literal"><span class="pre">'mosek'</span></code>, and selects one of three available LP solvers: the
 default solver written in Python, the GLPK solver (if installed) or the
-MOSEK LP solver (if installed); see the section <a class="reference internal" href="coneprog.html#s-lpsolver"><span>Linear Programming</span></a>.  The
+MOSEK LP solver (if installed); see the section <a class="reference internal" href="coneprog.html#s-lpsolver"><span class="std std-ref">Linear Programming</span></a>.  The
 default value is <code class="xref py py-const docutils literal"><span class="pre">None</span></code>.</p>
 <p>The solver reports the outcome of optimization by setting the attribute
 <code class="xref py py-attr docutils literal"><span class="pre">self.status</span></code> and by modifying the <a class="reference internal" href="#value" title="value"><code class="xref py py-attr docutils literal"><span class="pre">value</span></code></a> attributes of
@@ -665,17 +666,17 @@ and the constraint multipliers are set to <code class="xref py py-const docutils
 </ul>
 </dd></dl>
 
-<p>We refer to the section <a class="reference internal" href="coneprog.html#s-lpsolver"><span>Linear Programming</span></a> for details on the algorithms and
+<p>We refer to the section <a class="reference internal" href="coneprog.html#s-lpsolver"><span class="std std-ref">Linear Programming</span></a> for details on the algorithms and
 the different solver options.</p>
 <p>As an example we solve the LP</p>
 <div class="math">
-<p><img src="_images/math/4cde26b9ef3ee30a688192516abb5c07ab89cbaa.png" alt="\begin{array}{ll}
+<p><img src="_images/math/d9aa27d371a1b22cd8e0bc0993e43cdc71e510a1.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; -4x - 5y \\
 \mbox{subject to} &amp;  2x +y \leq 3 \\
                   &amp;  x +2y \leq 3 \\
                   &amp; x \geq 0, \quad y \geq 0.
 \end{array}"/></p>
-</div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">op</span>
+</div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="k">import</span> <span class="n">op</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">variable</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c1</span> <span class="o">=</span> <span class="p">(</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="mi">3</span> <span class="p">)</span>
@@ -686,24 +687,24 @@ the different solver options.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lp1</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lp1</span><span class="o">.</span><span class="n">status</span>
 <span class="go">&#39;optimal&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">lp1</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">lp1</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
 <span class="go">[-9.00e+00]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">[ 1.00e+00]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">[ 1.00e+00]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">c1</span><span class="o">.</span><span class="n">multiplier</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c1</span><span class="o">.</span><span class="n">multiplier</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">[ 1.00e+00]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">c2</span><span class="o">.</span><span class="n">multiplier</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c2</span><span class="o">.</span><span class="n">multiplier</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">[ 2.00e+00]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">c3</span><span class="o">.</span><span class="n">multiplier</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c3</span><span class="o">.</span><span class="n">multiplier</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">[ 2.87e-08]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">c4</span><span class="o">.</span><span class="n">multiplier</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c4</span><span class="o">.</span><span class="n">multiplier</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">[ 2.80e-08]</span>
 </pre></div>
 </div>
 <p>We can solve the same LP in  matrix form as follows.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">op</span><span class="p">,</span> <span class="n">dot</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="k">import</span> <span class="n">op</span><span class="p">,</span> <span class="n">dot</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">2.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">3.</span><span class="p">,</span><span class="mf">3.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">])</span>
@@ -711,12 +712,12 @@ the different solver options.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ineq</span> <span class="o">=</span> <span class="p">(</span> <span class="n">A</span><span class="o">*</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">b</span> <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lp2</span> <span class="o">=</span> <span class="n">op</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">x</span><span class="p">),</span> <span class="n">ineq</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lp2</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">lp2</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">lp2</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
 <span class="go">[-9.00e+00]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">[ 1.00e+00]</span>
 <span class="go">[ 1.00e+00]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">ineq</span><span class="o">.</span><span class="n">multiplier</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">ineq</span><span class="o">.</span><span class="n">multiplier</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 <span class="go">[1.00e+00]</span>
 <span class="go">[2.00e+00]</span>
 <span class="go">[2.87e-08]</span>
@@ -751,7 +752,7 @@ vectors.</p>
 <blockquote>
 <div><p>In the first example we solve the norm approximation problems</p>
 <div class="math">
-<p><img src="_images/math/80027ab1c7a3a805fc9f6de9c84d42a3e5fa0073.png" alt="\begin{array}{ll}
+<p><img src="_images/math/e6d43a50d8b9ba7e446152a55cbfd0af8e7b991e.png" alt="\begin{array}{ll}
 \mbox{minimize} &amp; \|Ax - b\|_\infty,
 \end{array}
 \qquad
@@ -760,7 +761,7 @@ vectors.</p>
 \end{array},"/></p>
 </div><p>and the penalty approximation problem</p>
 <div class="math">
-<p><img src="_images/math/1b8a3c06cc528168dac3a025fa7dc1c70e528a1e.png" alt="\begin{array}{ll}
+<p><img src="_images/math/b0c7655ecfdd9fc7953691c9b078b56bfaec29a8.png" alt="\begin{array}{ll}
 \mbox{minimize} &amp; \sum_k \phi((Ax-b)_k),
 \end{array} \qquad
 \phi(u) = \left\{\begin{array}{ll}
@@ -772,8 +773,8 @@ vectors.</p>
 <p>The code uses the <a class="reference external" href="http://matplotlib.sourceforge.net">Matplotlib</a>
 package for plotting the histograms of the residual vectors for the
 two solutions.  It generates the figure shown below.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">normal</span>
-<span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="nb">sum</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">normal</span>
+<span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="k">import</span> <span class="n">variable</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="nb">sum</span>
 <span class="kn">import</span> <span class="nn">pylab</span>
 
 <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">100</span>
@@ -800,7 +801,7 @@ two solutions.  It generates the figure shown below.</p>
 </div>
 <a class="reference internal image-reference" href="_images/normappr.png"><img alt="_images/normappr.png" src="_images/normappr.png" style="width: 600px;" /></a>
 <p>Equivalently, we can formulate and solve the problems as LPs.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">variable</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">variable</span><span class="p">()</span>
 <span class="n">x1</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 <span class="n">op</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="n">t</span> <span class="o">&lt;=</span> <span class="n">A</span><span class="o">*</span><span class="n">x1</span><span class="o">-</span><span class="n">b</span><span class="p">,</span> <span class="n">A</span><span class="o">*</span><span class="n">x1</span><span class="o">-</span><span class="n">b</span><span class="o">&lt;=</span><span class="n">t</span><span class="p">])</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
 
@@ -818,21 +819,21 @@ two solutions.  It generates the figure shown below.</p>
 <blockquote>
 <div><p>The robust LP</p>
 <div class="math">
-<p><img src="_images/math/db2ffb8640c25ef093a0a63051e7bacec0b05d97.png" alt="\begin{array}{ll}
+<p><img src="_images/math/ed2974493c9110783900472ac72d970dfe4f828a.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; c^T x \\
 \mbox{subject to} &amp; \sup_{\|v\|_\infty \leq 1}
                     (a_i+v)^T x \leq b_i, \qquad i=1,\ldots,m
 \end{array}"/></p>
 </div><p>is equivalent to the problem</p>
 <div class="math">
-<p><img src="_images/math/685ed7a61bc090b05dc270e1096aaf697907640d.png" alt="\begin{array}{ll}
+<p><img src="_images/math/750c9ec359905d839ed4d24d213f41ac0b27c141.png" alt="\begin{array}{ll}
 \mbox{minimize} &amp; c^Tx \\
 \mbox{subject to} &amp; a_i^Tx + \|x\|_1 \leq b_i, \qquad i=1,\ldots,m.
 \end{array}"/></p>
 </div><p>The following code computes the solution and the solution of the
 equivalent LP</p>
 <div class="math">
-<p><img src="_images/math/0f0d15b45680abd34a23c216c53b71d07d672589.png" alt="\newcommand{\ones}{{\bf 1}}
+<p><img src="_images/math/bb7c46a115bec3a95b4591a05de459b273dea0f4.png" alt="\newcommand{\ones}{{\bf 1}}
 \begin{array}{ll}
 \mbox{minimize}   &amp; c^Tx \\
 \mbox{subject to} &amp; a_i^Tx + \ones^Ty \leq b_i,
@@ -840,8 +841,8 @@ equivalent LP</p>
                   &amp; -y \preceq x \preceq y
 \end{array}"/></p>
 </div><p>for randomly generated data.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">normal</span><span class="p">,</span> <span class="n">uniform</span>
-<span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span><span class="p">,</span> <span class="n">dot</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="nb">sum</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">normal</span><span class="p">,</span> <span class="n">uniform</span>
+<span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="k">import</span> <span class="n">variable</span><span class="p">,</span> <span class="n">dot</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="nb">sum</span>
 
 <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">100</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
@@ -861,20 +862,20 @@ equivalent LP</p>
 <blockquote>
 <div><p>The following problem arises in classification:</p>
 <div class="math">
-<p><img src="_images/math/50cf04b9d1b2e43389af7efacd08a059a35a8766.png" alt="\newcommand{\ones}{{\bf 1}}
+<p><img src="_images/math/3afd94e2316f26f51bad3ec3597161c733e93fe6.png" alt="\newcommand{\ones}{{\bf 1}}
 \begin{array}{ll}
 \mbox{minimize}   &amp; \|x\|_1 + \ones^Tu \\
 \mbox{subject to} &amp; Ax \succeq \ones -u \\
                   &amp; u \succeq 0.
 \end{array}"/></p>
 </div><p>It can be solved as follows.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">u</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s">&#39;u&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s1">&#39;u&#39;</span><span class="p">)</span>
 <span class="n">op</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="p">[</span><span class="n">A</span><span class="o">*</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="o">-</span><span class="n">u</span><span class="p">,</span> <span class="n">u</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>An equivalent unconstrained formulation is</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="n">op</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">A</span><span class="o">*</span><span class="n">x</span><span class="p">)))</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -900,8 +901,8 @@ equivalent LP</p>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="copyright.html">Copyright</a> .
-      Last updated on Sep 22, 2015.
+        &copy; <a href="copyright.html">Copyright</a> 2004-2016, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      Last updated on Nov 29, 2016.
     </p>
   </div>
 
@@ -921,7 +922,7 @@ equivalent LP</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -947,7 +948,7 @@ equivalent LP</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 </body>

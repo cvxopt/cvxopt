@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="../../search.html"/>
         <link rel="copyright" title="Copyright" href="../../copyright.html"/>
     <link rel="top" title="CVXOPT" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
@@ -68,8 +69,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-with-atlas">Building CVXOPT with ATLAS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-for-windows">Building CVXOPT for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#windows">Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
@@ -132,18 +135,18 @@
 <img alt="../../_images/fig-7-9.png" src="../../_images/fig-7-9.png" />
 <img alt="../../_images/fig-7-10.png" src="../../_images/fig-7-10.png" />
 <img alt="../../_images/fig-7-11.png" src="../../_images/fig-7-11.png" />
-<p><a class="reference download internal" href="../../_downloads/expdesign.py"><code class="xref download docutils literal"><span class="pre">source</span> <span class="pre">code</span></code></a></p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># Figures 7.9-12, pages 389-390.</span>
-<span class="c"># Experiment design.</span>
+<p><a class="reference download internal" href="../../_downloads/expdesign.py" download=""><code class="xref download docutils literal"><span class="pre">source</span> <span class="pre">code</span></code></a></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Figures 7.9-12, pages 389-390.</span>
+<span class="c1"># Experiment design.</span>
 
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">sqrt</span>
-<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span>
-<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
-<span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span>
+<span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
 <span class="k">try</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">pylab</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">False</span>
-<span class="k">else</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">else</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="kc">True</span>
 
 <span class="n">V</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="o">-</span><span class="mf">2.1213</span><span class="p">,</span>    <span class="mf">2.1213</span><span class="p">,</span>
             <span class="o">-</span><span class="mf">2.2981</span><span class="p">,</span>    <span class="mf">1.9284</span><span class="p">,</span>
@@ -173,42 +176,42 @@
 <span class="n">b</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
 
 
-<span class="c"># D-design</span>
-<span class="c">#</span>
-<span class="c"># minimize    f(x) = -log det V*diag(x)*V&#39;</span>
-<span class="c"># subject to  x &gt;= 0</span>
-<span class="c">#             sum(x) = 1</span>
-<span class="c">#</span>
-<span class="c"># The gradient and Hessian of f are</span>
-<span class="c">#</span>
-<span class="c">#     gradf = -diag(V&#39; * X^-1 * V)</span>
-<span class="c">#         H = (V&#39; * X^-1 * V)**2.</span>
-<span class="c">#</span>
-<span class="c"># where X = V * diag(x) * V&#39;.</span>
+<span class="c1"># D-design</span>
+<span class="c1">#</span>
+<span class="c1"># minimize    f(x) = -log det V*diag(x)*V&#39;</span>
+<span class="c1"># subject to  x &gt;= 0</span>
+<span class="c1">#             sum(x) = 1</span>
+<span class="c1">#</span>
+<span class="c1"># The gradient and Hessian of f are</span>
+<span class="c1">#</span>
+<span class="c1">#     gradf = -diag(V&#39; * X^-1 * V)</span>
+<span class="c1">#         H = (V&#39; * X^-1 * V)**2.</span>
+<span class="c1">#</span>
+<span class="c1"># where X = V * diag(x) * V&#39;.</span>
 
-<span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">V</span> <span class="o">*</span> <span class="n">spdiag</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">V</span><span class="o">.</span><span class="n">T</span>
     <span class="n">L</span> <span class="o">=</span> <span class="o">+</span><span class="n">X</span>
     <span class="k">try</span><span class="p">:</span> <span class="n">lapack</span><span class="o">.</span><span class="n">potrf</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">ArithmeticError</span><span class="p">:</span> <span class="k">return</span> <span class="bp">None</span>
+    <span class="k">except</span> <span class="ne">ArithmeticError</span><span class="p">:</span> <span class="k">return</span> <span class="kc">None</span>
     <span class="n">f</span> <span class="o">=</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>  <span class="o">+</span> <span class="n">log</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]))</span>
     <span class="n">W</span> <span class="o">=</span> <span class="o">+</span><span class="n">V</span>
     <span class="n">blas</span><span class="o">.</span><span class="n">trsm</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span>
     <span class="n">gradf</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="n">W</span><span class="o">**</span><span class="mi">2</span>
-    <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">gradf</span>
+    <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">gradf</span>
     <span class="n">H</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
-    <span class="n">blas</span><span class="o">.</span><span class="n">syrk</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s">&#39;T&#39;</span><span class="p">)</span>
+    <span class="n">blas</span><span class="o">.</span><span class="n">syrk</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">gradf</span><span class="p">,</span> <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">H</span><span class="o">**</span><span class="mi">2</span>
-<span class="n">xd</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">)[</span><span class="s">&#39;x&#39;</span><span class="p">]</span>
+<span class="n">xd</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">A</span> <span class="o">=</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">)[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
 
 <span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span><span class="s">&#39;ow&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&#39;k+&#39;</span><span class="p">)</span>
-    <span class="n">I</span> <span class="o">=</span> <span class="p">[</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">xd</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1e-5</span> <span class="p">]</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">I</span><span class="p">],</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">I</span><span class="p">],</span><span class="s">&#39;or&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span><span class="s1">&#39;ow&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;k+&#39;</span><span class="p">)</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="p">[</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">xd</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">5</span> <span class="p">]</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">I</span><span class="p">],</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">I</span><span class="p">],</span><span class="s1">&#39;or&#39;</span><span class="p">)</span>
 
-<span class="c"># Enclosing ellipse is  {x | x&#39; * (V*diag(xe)*V&#39;)^-1 * x = sqrt(2)}</span>
+<span class="c1"># Enclosing ellipse is  {x | x&#39; * (V*diag(xe)*V&#39;)^-1 * x = sqrt(2)}</span>
 <span class="n">nopts</span> <span class="o">=</span> <span class="mi">1000</span>
 <span class="n">angles</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span> <span class="p">[</span> <span class="n">a</span><span class="o">*</span><span class="mf">2.0</span><span class="o">*</span><span class="n">pi</span><span class="o">/</span><span class="n">nopts</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nopts</span><span class="p">)</span> <span class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nopts</span><span class="p">)</span> <span class="p">)</span>
 <span class="n">circle</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">nopts</span><span class="p">))</span>
@@ -219,18 +222,18 @@
 <span class="n">ellipse</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">circle</span>
 <span class="n">blas</span><span class="o">.</span><span class="n">trmm</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ellipse</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s">&#39;k--&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ellipse</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;D-optimal design (fig. 7.9)&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;D-optimal design (fig. 7.9)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
 
 
-<span class="c"># E-design.</span>
-<span class="c">#</span>
-<span class="c"># maximize    w</span>
-<span class="c"># subject to  w*I &lt;= V*diag(x)*V&#39;</span>
-<span class="c">#             x &gt;= 0</span>
-<span class="c">#             sum(x) = 1</span>
+<span class="c1"># E-design.</span>
+<span class="c1">#</span>
+<span class="c1"># maximize    w</span>
+<span class="c1"># subject to  w*I &lt;= V*diag(x)*V&#39;</span>
+<span class="c1">#             x &gt;= 0</span>
+<span class="c1">#             sum(x) = 1</span>
 
 <span class="n">novars</span> <span class="o">=</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">novars</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
@@ -243,43 +246,43 @@
 <span class="n">Ge</span><span class="p">[:,:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span>
 <span class="n">Ae</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">novars</span><span class="p">))</span>
 <span class="n">sol</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">sdp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">Ge</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">Gs</span><span class="p">,</span> <span class="n">hs</span><span class="p">,</span> <span class="n">Ae</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-<span class="n">xe</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][:</span><span class="n">n</span><span class="p">]</span>
-<span class="n">Z</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;zs&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">mu</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;y&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">xe</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][:</span><span class="n">n</span><span class="p">]</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span><span class="s">&#39;ow&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&#39;k+&#39;</span><span class="p">)</span>
-    <span class="n">I</span> <span class="o">=</span> <span class="p">[</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">xe</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1e-5</span> <span class="p">]</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">I</span><span class="p">],</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">I</span><span class="p">],</span><span class="s">&#39;or&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span><span class="s1">&#39;ow&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;k+&#39;</span><span class="p">)</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="p">[</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">xe</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">5</span> <span class="p">]</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">I</span><span class="p">],</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">I</span><span class="p">],</span><span class="s1">&#39;or&#39;</span><span class="p">)</span>
 
-<span class="c"># Enclosing ellipse follows from the solution of the dual problem:</span>
-<span class="c">#</span>
-<span class="c"># minimize    mu</span>
-<span class="c"># subject to  diag(V&#39;*Z*V) &lt;= mu*1</span>
-<span class="c">#             Z &gt;= 0</span>
+<span class="c1"># Enclosing ellipse follows from the solution of the dual problem:</span>
+<span class="c1">#</span>
+<span class="c1"># minimize    mu</span>
+<span class="c1"># subject to  diag(V&#39;*Z*V) &lt;= mu*1</span>
+<span class="c1">#             Z &gt;= 0</span>
 
 <span class="n">lapack</span><span class="o">.</span><span class="n">potrf</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
 <span class="n">ellipse</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span> <span class="o">*</span> <span class="n">circle</span>
-<span class="n">blas</span><span class="o">.</span><span class="n">trsm</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">,</span> <span class="n">transA</span><span class="o">=</span><span class="s">&#39;T&#39;</span><span class="p">)</span>
+<span class="n">blas</span><span class="o">.</span><span class="n">trsm</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">,</span> <span class="n">transA</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ellipse</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s">&#39;k--&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ellipse</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;E-optimal design (fig. 7.10)&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;E-optimal design (fig. 7.10)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
 
 
-<span class="c"># A-design.</span>
-<span class="c">#</span>
-<span class="c"># minimize    tr (V*diag(x)*V&#39;)^{-1}</span>
-<span class="c"># subject to  x &gt;= 0</span>
-<span class="c">#             sum(x) = 1</span>
-<span class="c">#</span>
-<span class="c"># minimize    tr Y</span>
-<span class="c"># subject to  [ V*diag(x)*V&#39;, I ]</span>
-<span class="c">#             [ I,            Y ] &gt;= 0</span>
-<span class="c">#             x &gt;= 0</span>
-<span class="c">#             sum(x) = 1</span>
+<span class="c1"># A-design.</span>
+<span class="c1">#</span>
+<span class="c1"># minimize    tr (V*diag(x)*V&#39;)^{-1}</span>
+<span class="c1"># subject to  x &gt;= 0</span>
+<span class="c1">#             sum(x) = 1</span>
+<span class="c1">#</span>
+<span class="c1"># minimize    tr Y</span>
+<span class="c1"># subject to  [ V*diag(x)*V&#39;, I ]</span>
+<span class="c1">#             [ I,            Y ] &gt;= 0</span>
+<span class="c1">#             x &gt;= 0</span>
+<span class="c1">#             sum(x) = 1</span>
 
 <span class="n">novars</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">n</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">novars</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
@@ -299,31 +302,31 @@
 <span class="n">Ga</span><span class="p">[:,:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">G</span>
 <span class="n">Aa</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">novars</span><span class="p">))</span>
 <span class="n">sol</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">sdp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">Ga</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">Gs</span><span class="p">,</span> <span class="n">hs</span><span class="p">,</span> <span class="n">Aa</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-<span class="n">xa</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][:</span><span class="n">n</span><span class="p">]</span>
-<span class="n">Z</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;zs&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][:</span><span class="mi">2</span><span class="p">,:</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">mu</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;y&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">xa</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][:</span><span class="n">n</span><span class="p">]</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][:</span><span class="mi">2</span><span class="p">,:</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span><span class="s">&#39;ow&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&#39;k+&#39;</span><span class="p">)</span>
-    <span class="n">I</span> <span class="o">=</span> <span class="p">[</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">xa</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1e-5</span> <span class="p">]</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">I</span><span class="p">],</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">I</span><span class="p">],</span><span class="s">&#39;or&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span><span class="s1">&#39;ow&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;k+&#39;</span><span class="p">)</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="p">[</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">xa</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">5</span> <span class="p">]</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">I</span><span class="p">],</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">I</span><span class="p">],</span><span class="s1">&#39;or&#39;</span><span class="p">)</span>
 
-<span class="c"># Enclosing ellipse follows from the solution of the dual problem:</span>
-<span class="c">#</span>
-<span class="c"># maximize    -mu - 2 * tr Z12</span>
-<span class="c"># subject to  diag(V&#39;*Z11*V) &lt;= mu*1</span>
-<span class="c">#             [ Z11, Z12 ]</span>
-<span class="c">#             [ Z21, I   ] &gt;= 0</span>
+<span class="c1"># Enclosing ellipse follows from the solution of the dual problem:</span>
+<span class="c1">#</span>
+<span class="c1"># maximize    -mu - 2 * tr Z12</span>
+<span class="c1"># subject to  diag(V&#39;*Z11*V) &lt;= mu*1</span>
+<span class="c1">#             [ Z11, Z12 ]</span>
+<span class="c1">#             [ Z21, I   ] &gt;= 0</span>
 
 <span class="n">lapack</span><span class="o">.</span><span class="n">potrf</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
 <span class="n">ellipse</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span> <span class="o">*</span> <span class="n">circle</span>
-<span class="n">blas</span><span class="o">.</span><span class="n">trsm</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">,</span> <span class="n">transA</span><span class="o">=</span><span class="s">&#39;T&#39;</span><span class="p">)</span>
+<span class="n">blas</span><span class="o">.</span><span class="n">trsm</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">,</span> <span class="n">transA</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ellipse</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s">&#39;k--&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ellipse</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;A-optimal design (fig. 7.11)&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;A-optimal design (fig. 7.11)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -347,8 +350,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2015, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Sep 22, 2015.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Nov 30, 2016.
     </p>
   </div>
 
@@ -368,7 +371,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -394,7 +397,7 @@
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 <script>

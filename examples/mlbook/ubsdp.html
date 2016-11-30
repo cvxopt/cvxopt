@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="../../search.html"/>
         <link rel="copyright" title="Copyright" href="../../copyright.html"/>
     <link rel="top" title="CVXOPT" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
@@ -68,8 +69,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-with-atlas">Building CVXOPT with ATLAS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-for-windows">Building CVXOPT for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#windows">Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
@@ -131,15 +134,15 @@
 <h1>SDPs with upper bounds<a class="headerlink" href="#sdps-with-upper-bounds" title="Permalink to this headline">¶</a></h1>
 <p>Consider a standard form SDP with an added upper bound</p>
 <div class="math" id="equation-ubsdp">
-<p><span class="eqno">(1)</span><img src="../../_images/math/6e37c251ec95d8fbdcd494280d77369a6640340a.png" alt="\begin{array}{ll}
+<p><span class="eqno">(1)</span><img src="../../_images/math/b281afd0f53cf4914d3d8c55a03331a82fedd4cc.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; \mathbf{Tr}(BX) \\
 \mbox{subject to} &amp; \mathbf{Tr}(A_iX) + c_i = 0, \quad i =
                      1,\ldots, n \\
                   &amp; 0 \preceq X \preceq I
 \end{array}"/></p>
-</div><p>with variable <img class="math" src="../../_images/math/b35dcebef0ff4fd2210234252f2153e4238044d2.png" alt="X \in \mathbf{S}^m"/>. The problem <a href="#equation-ubsdp">(1)</a> can be reformulated by introducing a slack variable <img class="math" src="../../_images/math/11a85f3c69ae6702cb1d99d3de451913b8f84c04.png" alt="S"/></p>
+</div><p>with variable <img class="math" src="../../_images/math/acda08287ca4167227e776e95338f4b2381ee3d9.png" alt="X \in \mathbf{S}^m"/>. The problem <a href="#equation-ubsdp">(1)</a> can be reformulated by introducing a slack variable <img class="math" src="../../_images/math/1dbc400fcc213305415872f9f625cd2828f97a00.png" alt="S"/></p>
 <div class="math" id="equation-ubsdp_2">
-<p><span class="eqno">(2)</span><img src="../../_images/math/09ff0d2652f2d4dbf284fe3e313ebdc29b9e013d.png" alt="\begin{array}{ll}
+<p><span class="eqno">(2)</span><img src="../../_images/math/71ea7a97be349b41730aa955051aab75c05f3d5f.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; \mathbf{Tr}(BX) \\
 \mbox{subject to} &amp; \mathbf{Tr}(A_iX) + c_i = 0, \quad i =
                      1,\ldots, n \\
@@ -147,42 +150,42 @@
                   &amp; X \succeq 0, \ S \succeq 0.
 \end{array}"/></p>
 </div><h3> Documentation </h3><p>A custom solver for SDPs with upper bounds is available as a Python
-module <a class="reference download internal" href="../../_downloads/ubsdp.py"><code class="xref download docutils literal"><span class="pre">ubsdp.py</span></code></a>. The  module implements the following function:</p>
+module <a class="reference download internal" href="../../_downloads/ubsdp.py" download=""><code class="xref download docutils literal"><span class="pre">ubsdp.py</span></code></a>. The  module implements the following function:</p>
 <blockquote>
 <div><dl class="function">
 <dt id="ubsdp">
 <code class="descname">ubsdp</code><span class="sig-paren">(</span><em>c</em>, <em>A</em>, <em>B</em>, <em>pstart = None</em>, <em>dstart = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ubsdp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a href="#equation-ubsdp_2">(2)</a> using a custom KKT solver.</p>
-<p>The input arguments are <img class="math" src="../../_images/math/8f6db979b5febba46afc5299b78d48b04d43e82e.png" alt="c \in \mathbf{R}^n"/>, a matrix
-<img class="math" src="../../_images/math/54880be388aba93c2538bebb450ea7bbd3ce66e3.png" alt="A \in \mathbf{R}^{m^2 \times n}"/>, and a matrix <img class="math" src="../../_images/math/077f695125dd034e7a82ff189337cf818a07c5e8.png" alt="B
-\in \mathbf{S}^m"/>. The columns of <img class="math" src="../../_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> are
-<img class="math" src="../../_images/math/05de33f2e50ed38ce2b4feea96151d1e2f6e6d18.png" alt="\mathbf{vec}(A_i)"/> where <img class="math" src="../../_images/math/536b2293b48b40d315a582c3936bb3285240284a.png" alt="A_i \in \mathbf{S}^m"/> is
+<p>The input arguments are <img class="math" src="../../_images/math/8b430f74880c3bfa6bf1304fc0dee5835035d169.png" alt="c \in \mathbf{R}^n"/>, a matrix
+<img class="math" src="../../_images/math/05eb084a6f2f59fefe1ec95b39fb8107481c1ceb.png" alt="A \in \mathbf{R}^{m^2 \times n}"/>, and a matrix <img class="math" src="../../_images/math/531f8ea684e6b7c19720c62d7b02165bea73c6a4.png" alt="B
+\in \mathbf{S}^m"/>. The columns of <img class="math" src="../../_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> are
+<img class="math" src="../../_images/math/ecc3026df152907bbf739beaa120dba565752ecb.png" alt="\mathbf{vec}(A_i)"/> where <img class="math" src="../../_images/math/22199c4b27e42a54186d56b43b536eb4c11e1a8b.png" alt="A_i \in \mathbf{S}^m"/> is
 the i&#8217;th data matrix.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/f026aecf11ec7f6141ab863f260d395f94b10f51.png" alt="X"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/>.</p>
 </dd></dl>
 
 </div></blockquote>
-<h3> Example </h3><div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">misc</span><span class="p">,</span> <span class="n">lapack</span>
-<span class="kn">from</span> <span class="nn">ubsdp</span> <span class="kn">import</span> <span class="n">ubsdp</span>
+<h3> Example </h3><div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">misc</span><span class="p">,</span> <span class="n">lapack</span>
+<span class="kn">from</span> <span class="nn">ubsdp</span> <span class="k">import</span> <span class="n">ubsdp</span>
 
 <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
 
-<span class="c"># Z0 random positive definite with maximum e.v. less than 1.0.</span>
+<span class="c1"># Z0 random positive definite with maximum e.v. less than 1.0.</span>
 <span class="n">Z0</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">)</span>
 <span class="n">Z0</span> <span class="o">=</span> <span class="n">Z0</span> <span class="o">*</span> <span class="n">Z0</span><span class="o">.</span><span class="n">T</span>
 <span class="n">w</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">a</span> <span class="o">=</span> <span class="o">+</span><span class="n">Z0</span>
-<span class="n">lapack</span><span class="o">.</span><span class="n">syev</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">jobz</span> <span class="o">=</span> <span class="s">&#39;V&#39;</span><span class="p">)</span>
+<span class="n">lapack</span><span class="o">.</span><span class="n">syev</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">jobz</span> <span class="o">=</span> <span class="s1">&#39;V&#39;</span><span class="p">)</span>
 <span class="n">wmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">wmax</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">:</span>  <span class="n">w</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.9</span><span class="o">/</span><span class="n">wmax</span><span class="p">)</span> <span class="o">*</span> <span class="n">w</span>
 <span class="n">Z0</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">spdiag</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">T</span>
 
-<span class="c"># c = -A&#39;(Z0)</span>
+<span class="c1"># c = -A&#39;(Z0)</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">misc</span><span class="o">.</span><span class="n">sgemv</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">Z0</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;l&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;q&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s">&#39;s&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">m</span><span class="p">]},</span> <span class="n">trans</span> <span class="o">=</span> <span class="s">&#39;T&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">misc</span><span class="o">.</span><span class="n">sgemv</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">Z0</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">dims</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">m</span><span class="p">]},</span> <span class="n">trans</span> <span class="o">=</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
 
-<span class="c"># Z1 = I - Z0</span>
+<span class="c1"># Z1 = I - Z0</span>
 <span class="n">Z1</span> <span class="o">=</span> <span class="o">-</span><span class="n">Z0</span>
 <span class="n">Z1</span><span class="p">[::</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">1.0</span>
 
@@ -191,7 +194,7 @@ the i&#8217;th data matrix.</p>
 <span class="n">X0</span> <span class="o">=</span> <span class="n">X0</span><span class="o">*</span><span class="n">X0</span><span class="o">.</span><span class="n">T</span>
 <span class="n">S0</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">)</span>
 <span class="n">S0</span> <span class="o">=</span> <span class="n">S0</span><span class="o">*</span><span class="n">S0</span><span class="o">.</span><span class="n">T</span>
-<span class="c"># B = A(x0) - X0 + S0</span>
+<span class="c1"># B = A(x0) - X0 + S0</span>
 <span class="n">B</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x0</span> <span class="o">-</span> <span class="n">X0</span><span class="p">[:]</span> <span class="o">+</span> <span class="n">S0</span><span class="p">[:],</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">))</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">ubsdp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
@@ -217,8 +220,8 @@ the i&#8217;th data matrix.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2015, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Sep 22, 2015.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Nov 30, 2016.
     </p>
   </div>
 
@@ -238,7 +241,7 @@ the i&#8217;th data matrix.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -264,7 +267,7 @@ the i&#8217;th data matrix.</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 <script>

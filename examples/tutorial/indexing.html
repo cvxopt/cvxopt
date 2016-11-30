@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="../../search.html"/>
         <link rel="copyright" title="Copyright" href="../../copyright.html"/>
     <link rel="top" title="CVXOPT" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
@@ -68,8 +69,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-with-atlas">Building CVXOPT with ATLAS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-for-windows">Building CVXOPT for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#windows">Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
@@ -133,14 +136,14 @@
 single-argument indexing and double-argument indexing.
 In double-argument indexing a matrix is indexed using two index-sets
 <cite>I</cite> and <cite>J</cite>.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">),(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">[  0   4   8  12]</span>
 <span class="go">[  1   5   9  13]</span>
 <span class="go">[  2   6  10  14]</span>
 <span class="go">[  3   7  11  15]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]])</span>
 <span class="go">[  0   8]</span>
 <span class="go">[  1   9]</span>
 <span class="go">[  2  10]</span>
@@ -148,9 +151,9 @@ In double-argument indexing a matrix is indexed using two index-sets
 </pre></div>
 </div>
 <p>The index-sets can be integers, lists, integer matrices, or slices.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,:])</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,:])</span>
 <span class="go">[  1   5   9  13]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">,::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">,::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 <span class="go">[ 15  11   7   3]</span>
 <span class="go">[ 14  10   6   2]</span>
 <span class="go">[ 13   9   5   1]</span>
@@ -160,8 +163,8 @@ In double-argument indexing a matrix is indexed using two index-sets
 <p>In single-argument indexing a matrix is indexed in vector-form by
 considering the matrix in column-major order (i.e., by stacking the
 columns from left to right).</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">[::</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">[::</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">[ -1   4   8  12]</span>
 <span class="go">[  1  -1   9  13]</span>
 <span class="go">[  2   6  -1  14]</span>
@@ -190,8 +193,8 @@ e.g., the diagonal part of a matrix.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2015, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Sep 22, 2015.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Nov 30, 2016.
     </p>
   </div>
 
@@ -211,7 +214,7 @@ e.g., the diagonal part of a matrix.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -237,7 +240,7 @@ e.g., the diagonal part of a matrix.</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 <script>

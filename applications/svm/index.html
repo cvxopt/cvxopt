@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="../../search.html"/>
         <link rel="copyright" title="Copyright" href="../../copyright.html"/>
     <link rel="top" title="CVXOPT" href="../../index.html"/>
         <link rel="up" title="Applications and extensions" href="../index.html"/>
@@ -67,8 +68,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-with-atlas">Building CVXOPT with ATLAS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-for-windows">Building CVXOPT for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#windows">Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
@@ -89,7 +92,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Applications and extensions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../openoffice/index.html">OpenOffice plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../nucnrm/index.html">Nuclear norm approximation</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Support Vector Machines</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Support Vector Machines</a></li>
 </ul>
 </li>
 </ul>
@@ -131,7 +134,7 @@
 <p>This software accompanies the paper <a class="reference external" href="http://www.ee.ucla.edu/~vandenbe/publications/svmcmpl.pdf">Support vector machine training
 using matrix completion techniques</a> by
 Martin Andersen and Lieven Vandenberghe. The code can be downloaded as
-a <a class="reference download internal" href="../../_downloads/svmcmpl.zip"><code class="xref download docutils literal"><span class="pre">zip</span> <span class="pre">file</span></code></a> and
+a <a class="reference download internal" href="../../_downloads/svmcmpl.zip" download=""><code class="xref download docutils literal"><span class="pre">zip</span> <span class="pre">file</span></code></a> and
 requires the Python extensions <a class="reference external" href="http://abel.ee.ucla.edu/cvxopt">CVXOPT</a> and <a class="reference external" href="http://abel.ee.ucla.edu/chompack">CHOMPACK 2.0.1</a> or later.</p>
 <h4> Feedback and bug reports </h4><p>We welcome feedback, and bug reports are much appreciated. Please
 email bug reports to <span class="raw-html"><kbd>martin.skovgaard.andersen@gmail.com</kbd></span>.</p>
@@ -159,52 +162,52 @@ larger problems than <a class="reference internal" href="#softmargin" title="sof
 <code class="descname">softmargin</code><span class="sig-paren">(</span><em>X</em>, <em>d</em>, <em>gamma</em>, <em>kernel = 'linear'</em>, <em>sigma = 1.0</em>, <em>degree = 1</em>, <em>theta = 1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#softmargin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the &#8216;soft-margin&#8217; SVM problem</p>
 <div class="math">
-<p><img src="../../_images/math/15fd145a99df8486825512d8dbb0129cbec5e0f0.png" alt="\begin{array}{ll}
+<p><img src="../../_images/math/4d9ac021979b0e633355d820c6dd7dfaa86f8074.png" alt="\begin{array}{ll}
 \mbox{maximize}   &amp; -(1/2) z^T Q z + d^Tz \\
 \mbox{subject to} &amp; 0 \preceq \mathrm{diag}(d) z \preceq \gamma \mathbf{1} \\
 &amp; \mathbf{1}^T z =0
 \end{array}"/></p>
-</div><p>(with variables <img class="math" src="../../_images/math/84d7271dd9e78c1e05d6c3c6ecb60309ef7dfc73.png" alt="z"/>), and its dual problem</p>
+</div><p>(with variables <img class="math" src="../../_images/math/683f2dd9129a91d21aaf1c04afa6f78b39d4cb0a.png" alt="z"/>), and its dual problem</p>
 <div class="math">
-<p><img src="../../_images/math/65ccba47973120e5bb0c8a17c5c696cde72baf2b.png" alt="\begin{array}{ll}
+<p><img src="../../_images/math/ab8fb5f589e759bc624e7ff319520b8fd5956119.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; (1/2) y^T Q^{-1} y + \gamma \mathbf{1}^Tv \\
 \mbox{subject to} &amp;  \mathrm{diag}(d) (y + b \mathbf{1}) \succeq \mathbf{1} - v \\
 &amp; v \succeq 0
 \end{array}"/></p>
-</div><p>(with variables <img class="math" src="../../_images/math/b124ff74afb0914bb434e8fb849eb56d734412f8.png" alt="y"/>, <img class="math" src="../../_images/math/0e22076955898e6c9bb38aa079135195c24dc81e.png" alt="v"/>, <img class="math" src="../../_images/math/5e87bf41a96deddf6cb485ff530f153f2590e9cc.png" alt="b"/>).</p>
-<p>The <img class="math" src="../../_images/math/745f3493312cd221d17617b05e1ff74af67b9c1f.png" alt="m \times m"/> kernel matrix <img class="math" src="../../_images/math/7b1816c51f7d31275cd3ad400208fb7b3ce136a0.png" alt="Q"/> is given by
-<img class="math" src="../../_images/math/3c9046be0f9dcff3b3624fe74aaf2b1e57d43d2e.png" alt="Q_{ij} = h(x_i, x_j)"/> where <img class="math" src="../../_images/math/cbb80ad77aa7a5e227d5a46bc44d235284106cfc.png" alt="h"/> is a kernel function
-and <img class="math" src="../../_images/math/35d06a2aa8de54e78a4b0902eeb76f8a46587dc2.png" alt="x_i^T"/> is the i&#8217;th row of the <img class="math" src="../../_images/math/333494eb009c3c5a93166d4ec2d46e71d98339a0.png" alt="m \times n"/> data
-matrix <img class="math" src="../../_images/math/f026aecf11ec7f6141ab863f260d395f94b10f51.png" alt="X"/>, and <img class="math" src="../../_images/math/425d86ba2f2979d75b7535c2bcf92c33ed6b285a.png" alt="d"/> is an <img class="math" src="../../_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/>-vector with labels
-(<em>i.e.</em> <img class="math" src="../../_images/math/337dadbb9a41349ca41eeba2ca7b40f9be6bce8d.png" alt="d_i \in \{ -1,1\}"/>).  If <img class="math" src="../../_images/math/7b1816c51f7d31275cd3ad400208fb7b3ce136a0.png" alt="Q"/> is singular, we
-replace <img class="math" src="../../_images/math/e91d6bf459708da80b35dd80a97ca21f4b4ba757.png" alt="Q^{-1}"/> in the dual with its pseudo-inverse and add
-a constraint <img class="math" src="../../_images/math/1e783d8c66a01776947a12de57523f662e19df50.png" alt="y \in \mathrm{Range}(Q)"/>.</p>
+</div><p>(with variables <img class="math" src="../../_images/math/276f7e256cbddeb81eee42e1efc348f3cb4ab5f8.png" alt="y"/>, <img class="math" src="../../_images/math/8d230554a01423c4c6560104b2918b65607c9406.png" alt="v"/>, <img class="math" src="../../_images/math/57c9d14bb082716df9000146882ce365335d08f1.png" alt="b"/>).</p>
+<p>The <img class="math" src="../../_images/math/47247cf3f95d608fc3be316d2d6b812058942c09.png" alt="m \times m"/> kernel matrix <img class="math" src="../../_images/math/331157c6afbd113256867fd408d80277d1a24756.png" alt="Q"/> is given by
+<img class="math" src="../../_images/math/362bf8ce47b1744f70bd7d47fd74c4fb55f9e733.png" alt="Q_{ij} = h(x_i, x_j)"/> where <img class="math" src="../../_images/math/293fb39e1b93282c804a86186e721b32f829f1b2.png" alt="h"/> is a kernel function
+and <img class="math" src="../../_images/math/cfc2ae31c0b62416b21a41638a288a510a8d0612.png" alt="x_i^T"/> is the i&#8217;th row of the <img class="math" src="../../_images/math/55036d06602a3daaf6de91da943df71f45a345cf.png" alt="m \times n"/> data
+matrix <img class="math" src="../../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/>, and <img class="math" src="../../_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/> is an <img class="math" src="../../_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>-vector with labels
+(<em>i.e.</em> <img class="math" src="../../_images/math/54d76023e9406f87f98ac006d93752d3637eb9e0.png" alt="d_i \in \{ -1,1\}"/>).  If <img class="math" src="../../_images/math/331157c6afbd113256867fd408d80277d1a24756.png" alt="Q"/> is singular, we
+replace <img class="math" src="../../_images/math/23c3c1c61ebd7985c93b18f8716f02d104c31eea.png" alt="Q^{-1}"/> in the dual with its pseudo-inverse and add
+a constraint <img class="math" src="../../_images/math/27bf1f321b29e523445f416a5a5a72b6c3483c8e.png" alt="y \in \mathrm{Range}(Q)"/>.</p>
 <p>Valid kernel functions are:</p>
 <dl class="docutils">
 <dt><code class="xref py py-const docutils literal"><span class="pre">'linear'</span></code></dt>
-<dd>the linear kernel: <img class="math" src="../../_images/math/9ed7fde04b3b2bdc2fa7cc732b99fdea88ceb905.png" alt="h(x_i,x_j) = x_i^Tx_j/\sigma"/></dd>
+<dd>the linear kernel: <img class="math" src="../../_images/math/22945e83451eed5a1e3bbecec9a8badb0d1f1f3e.png" alt="h(x_i,x_j) = x_i^Tx_j/\sigma"/></dd>
 <dt><code class="xref py py-const docutils literal"><span class="pre">'poly'</span></code></dt>
-<dd>the polynomial kernel: <img class="math" src="../../_images/math/b24b6987e11c9cf76686f469c46b17af12fb666b.png" alt="h(x_i,x_j) = (x_i^Tx_j/\sigma)^d"/></dd>
+<dd>the polynomial kernel: <img class="math" src="../../_images/math/9d2c832057042742259340a8ea844bb01a162185.png" alt="h(x_i,x_j) = (x_i^Tx_j/\sigma)^d"/></dd>
 <dt><code class="xref py py-const docutils literal"><span class="pre">'rbf'</span></code></dt>
-<dd>the radial basis function: <img class="math" src="../../_images/math/adeac025a436f7193bd5ed107200575106e6a372.png" alt="h(x_i,x_j) = \exp\{ -\|x_i-x_j\|^2/(2\sigma)\}"/></dd>
+<dd>the radial basis function: <img class="math" src="../../_images/math/fa33f3064760d2454baa2408ec9b935d7ced21f6.png" alt="h(x_i,x_j) = \exp\{ -\|x_i-x_j\|^2/(2\sigma)\}"/></dd>
 <dt><code class="xref py py-const docutils literal"><span class="pre">'tanh'</span></code></dt>
-<dd>the sigmoid kernel: <img class="math" src="../../_images/math/f22bf017ac69b46d0553f3338aadb1f3473f83f6.png" alt="h(x_i,x_j) = \tanh(x_i^Tx_j/\sigma - \theta)"/></dd>
+<dd>the sigmoid kernel: <img class="math" src="../../_images/math/79a89005febb1d6b636bafd4f0b844598b0540dd.png" alt="h(x_i,x_j) = \tanh(x_i^Tx_j/\sigma - \theta)"/></dd>
 </dl>
-<p>The kernel parameters <img class="math" src="../../_images/math/2298cf1485084afe72757a9c8483af49a138d81f.png" alt="\sigma"/>, <img class="math" src="../../_images/math/425d86ba2f2979d75b7535c2bcf92c33ed6b285a.png" alt="d"/>, and <img class="math" src="../../_images/math/a9cfbeb8ebee1f365919e147a79e242dcb67ee5d.png" alt="\theta"/>
+<p>The kernel parameters <img class="math" src="../../_images/math/011e5790a6c33043ceadca81d9657dde6c61d769.png" alt="\sigma"/>, <img class="math" src="../../_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/>, and <img class="math" src="../../_images/math/3be04d4207434584251f6921820c24ac9fa8c6f1.png" alt="\theta"/>
 are specified using the input arguments <cite>sigma</cite>, <cite>degree</cite>, and <cite>theta</cite>,
 respectively.</p>
 <p><a class="reference internal" href="#softmargin" title="softmargin"><code class="xref py py-func docutils literal"><span class="pre">softmargin()</span></code></a> returns a dictionary with the following keys:</p>
 <dl class="docutils">
 <dt><code class="xref py py-const docutils literal"><span class="pre">'classifier'</span></code></dt>
 <dd>a Python function object that takes an
-<img class="math" src="../../_images/math/4efd6046ef1817ebb9ca0aebc0dae35b31bc95d1.png" alt="M \times n"/> matrix with test vectors as rows and returns a vector with labels</dd>
+<img class="math" src="../../_images/math/09a3aa954ab4a98bdc63ba44b9b97e047ad7bdd8.png" alt="M \times n"/> matrix with test vectors as rows and returns a vector with labels</dd>
 <dt><code class="xref py py-const docutils literal"><span class="pre">'z'</span></code></dt>
-<dd>a sparse <img class="math" src="../../_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/>-vector</dd>
+<dd>a sparse <img class="math" src="../../_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>-vector</dd>
 <dt><code class="xref py py-const docutils literal"><span class="pre">'cputime'</span></code></dt>
-<dd>a tuple (<img class="math" src="../../_images/math/4db3926db38318e1fd48103dab953b9c60b9771e.png" alt="T_{\rm tot}"/>, <img class="math" src="../../_images/math/b934d361120be9ebfde969a2fe2442866b4269aa.png" alt="T_{\rm qp}"/>,
-<img class="math" src="../../_images/math/ceb7e2f98524feec27c2187d4ef203d09f307437.png" alt="T_{\rm ker}"/>) where <img class="math" src="../../_images/math/4db3926db38318e1fd48103dab953b9c60b9771e.png" alt="T_{\rm tot}"/> is the
-total CPU time, <img class="math" src="../../_images/math/b934d361120be9ebfde969a2fe2442866b4269aa.png" alt="T_{\rm qp}"/> is the CPU time spent
-solving the QP, and <img class="math" src="../../_images/math/ceb7e2f98524feec27c2187d4ef203d09f307437.png" alt="T_{\rm ker}"/> is the CPU time spent
+<dd>a tuple (<img class="math" src="../../_images/math/ec15492602b75b11adbf4eb2d5730359ed866a4b.png" alt="T_{\rm tot}"/>, <img class="math" src="../../_images/math/ea7d6b013f8f439cdbc5bbeffae0098cc1e7987a.png" alt="T_{\rm qp}"/>,
+<img class="math" src="../../_images/math/72e53597d532569a3c64accd64a7bd004246c19b.png" alt="T_{\rm ker}"/>) where <img class="math" src="../../_images/math/ec15492602b75b11adbf4eb2d5730359ed866a4b.png" alt="T_{\rm tot}"/> is the
+total CPU time, <img class="math" src="../../_images/math/ea7d6b013f8f439cdbc5bbeffae0098cc1e7987a.png" alt="T_{\rm qp}"/> is the CPU time spent
+solving the QP, and <img class="math" src="../../_images/math/72e53597d532569a3c64accd64a7bd004246c19b.png" alt="T_{\rm ker}"/> is the CPU time spent
 computing the kernel matrix</dd>
 <dt><code class="xref py py-const docutils literal"><span class="pre">'iterations'</span></code></dt>
 <dd>the number of interior point iterations</dd>
@@ -221,27 +224,27 @@ class 2</dd>
 <code class="descname">softmargin_appr</code><span class="sig-paren">(</span><em>X</em>, <em>d</em>, <em>gamma</em>, <em>width</em>, <em>kernel = 'linear'</em>, <em>sigma = 1.0</em>, <em>degree = 1</em>, <em>theta = 1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#softmargin_appr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the &#8216;soft-margin&#8217; SVM problem</p>
 <div class="math">
-<p><img src="../../_images/math/c539d025288b6762b0879709510f115cee4440bc.png" alt="\begin{array}{ll}
+<p><img src="../../_images/math/4ef4771290c45547f35223c19ea91cd7b38b27bb.png" alt="\begin{array}{ll}
 \mbox{maximize}   &amp; -(1/2) z^T \tilde{Q} z + d^Tz \\
 \mbox{subject to} &amp; 0 \preceq \mathrm{diag}(d) z \preceq \gamma \mathbf{1} \\
 &amp; \mathbf{1}^T z =0
 \end{array}"/></p>
-</div><p>(with variables <img class="math" src="../../_images/math/84d7271dd9e78c1e05d6c3c6ecb60309ef7dfc73.png" alt="z"/>), and its dual problem</p>
+</div><p>(with variables <img class="math" src="../../_images/math/683f2dd9129a91d21aaf1c04afa6f78b39d4cb0a.png" alt="z"/>), and its dual problem</p>
 <div class="math">
-<p><img src="../../_images/math/3fbab8775761c64d637bc29966ce33277b232f11.png" alt="\begin{array}{ll}
+<p><img src="../../_images/math/076c051a8f7f7ed89c0ac0ea65f023f31dba4107.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; (1/2) y^T \tilde{Q}^{-1} y + \gamma \mathbf{1}^Tv \\
 \mbox{subject to} &amp;  \mathrm{diag}(d) (y + b \mathbf{1}) \succeq \mathbf{1} - v \\
 &amp; v \succeq 0
 \end{array}"/></p>
-</div><p>(with variables <img class="math" src="../../_images/math/b124ff74afb0914bb434e8fb849eb56d734412f8.png" alt="y"/>, <img class="math" src="../../_images/math/0e22076955898e6c9bb38aa079135195c24dc81e.png" alt="v"/>, <img class="math" src="../../_images/math/5e87bf41a96deddf6cb485ff530f153f2590e9cc.png" alt="b"/>).</p>
-<p>The <img class="math" src="../../_images/math/745f3493312cd221d17617b05e1ff74af67b9c1f.png" alt="m \times m"/> kernel matrix <img class="math" src="../../_images/math/5c38da98661a77c63b2183cc6f824084d8093315.png" alt="\tilde{Q}"/> is the
+</div><p>(with variables <img class="math" src="../../_images/math/276f7e256cbddeb81eee42e1efc348f3cb4ab5f8.png" alt="y"/>, <img class="math" src="../../_images/math/8d230554a01423c4c6560104b2918b65607c9406.png" alt="v"/>, <img class="math" src="../../_images/math/57c9d14bb082716df9000146882ce365335d08f1.png" alt="b"/>).</p>
+<p>The <img class="math" src="../../_images/math/47247cf3f95d608fc3be316d2d6b812058942c09.png" alt="m \times m"/> kernel matrix <img class="math" src="../../_images/math/13246e9d07cf36f70d2bb5159f8384d81cb7eabc.png" alt="\tilde{Q}"/> is the
 maximum determinant completion of the projection of Q on a band
-with bandwidth <img class="math" src="../../_images/math/7fe6069aa7e741b99f6b7fe911ad086a274d3ec3.png" alt="2w+1"/>. Here <img class="math" src="../../_images/math/3c9046be0f9dcff3b3624fe74aaf2b1e57d43d2e.png" alt="Q_{ij} = h(x_i, x_j)"/> where
-<img class="math" src="../../_images/math/cbb80ad77aa7a5e227d5a46bc44d235284106cfc.png" alt="h"/> is one of the kernel functions defined under
-<a class="reference internal" href="#softmargin" title="softmargin"><code class="xref py py-func docutils literal"><span class="pre">softmargin()</span></code></a> and <img class="math" src="../../_images/math/35d06a2aa8de54e78a4b0902eeb76f8a46587dc2.png" alt="x_i^T"/> is the i&#8217;th row of the
-<img class="math" src="../../_images/math/333494eb009c3c5a93166d4ec2d46e71d98339a0.png" alt="m \times n"/> data matrix <img class="math" src="../../_images/math/f026aecf11ec7f6141ab863f260d395f94b10f51.png" alt="X"/>. The <img class="math" src="../../_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/>-vector
-<img class="math" src="../../_images/math/425d86ba2f2979d75b7535c2bcf92c33ed6b285a.png" alt="d"/> is a vector with labels (<em>i.e.</em> <img class="math" src="../../_images/math/75830cb22d97b70687b5b2a05673e25fb16a889f.png" alt="d_i \in \{
--1,1\}"/>).  The half-bandwidth parameter <img class="math" src="../../_images/math/8659700e6646cd91bc02c32affaa5ec046ee9935.png" alt="w"/> is set using the
+with bandwidth <img class="math" src="../../_images/math/17fd9cdf7c49625f1412be066977465727cf3d9d.png" alt="2w+1"/>. Here <img class="math" src="../../_images/math/362bf8ce47b1744f70bd7d47fd74c4fb55f9e733.png" alt="Q_{ij} = h(x_i, x_j)"/> where
+<img class="math" src="../../_images/math/293fb39e1b93282c804a86186e721b32f829f1b2.png" alt="h"/> is one of the kernel functions defined under
+<a class="reference internal" href="#softmargin" title="softmargin"><code class="xref py py-func docutils literal"><span class="pre">softmargin()</span></code></a> and <img class="math" src="../../_images/math/cfc2ae31c0b62416b21a41638a288a510a8d0612.png" alt="x_i^T"/> is the i&#8217;th row of the
+<img class="math" src="../../_images/math/55036d06602a3daaf6de91da943df71f45a345cf.png" alt="m \times n"/> data matrix <img class="math" src="../../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/>. The <img class="math" src="../../_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>-vector
+<img class="math" src="../../_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/> is a vector with labels (<em>i.e.</em> <img class="math" src="../../_images/math/97cf3a8ceb2a1183c856dfa86e3b92fc0869638c.png" alt="d_i \in \{
+-1,1\}"/>).  The half-bandwidth parameter <img class="math" src="../../_images/math/ecd1ee2a1cd226b40c37e079aca62398d4b774f5.png" alt="w"/> is set using the
 input argument <cite>width</cite>.</p>
 <p><code class="xref py py-func docutils literal"><span class="pre">softmaring_appr()</span></code> returns a dictionary that contains the same
 keys as the dictionary returned by <a class="reference internal" href="#softmargin" title="softmargin"><code class="xref py py-func docutils literal"><span class="pre">softmargin()</span></code></a>. In
@@ -250,7 +253,7 @@ addition to these keys, the dictionary returned by
 <dl class="docutils">
 <dt><code class="xref py py-const docutils literal"><span class="pre">'completion</span> <span class="pre">classifier'</span></code></dt>
 <dd>a Python function object that
-takes an <img class="math" src="../../_images/math/4efd6046ef1817ebb9ca0aebc0dae35b31bc95d1.png" alt="M \times n"/> matrix with test vectors as rows
+takes an <img class="math" src="../../_images/math/09a3aa954ab4a98bdc63ba44b9b97e047ad7bdd8.png" alt="M \times n"/> matrix with test vectors as rows
 and returns a vector with labels</dd>
 </dl>
 </dd></dl>
@@ -259,11 +262,11 @@ and returns a vector with labels</dd>
 <div class="section" id="example-1">
 <h2>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline">¶</a></h2>
 <p>As a toy example, consider the following classification problem with
-two (nonlinearly) separable classes.  We use as training set <img class="math" src="../../_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/>
-points in <img class="math" src="../../_images/math/7cbc892effb19c4e88c7fd8ce97a06bcaf00ca7e.png" alt="\mathbf{R}^2"/> generated according to a uniform
-distribution over the box <img class="math" src="../../_images/math/37f23c000bd3a50dd09d03b0c0aac47e20f673d5.png" alt="\mathcal{B} = \{ x\,|\,\|x\|_\infty
+two (nonlinearly) separable classes.  We use as training set <img class="math" src="../../_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>
+points in <img class="math" src="../../_images/math/6afeb32f6edb59d95361712dfce31fe3227ad2c9.png" alt="\mathbf{R}^2"/> generated according to a uniform
+distribution over the box <img class="math" src="../../_images/math/5399c965be01e8a6d6c3bd47b47dc24267f2841a.png" alt="\mathcal{B} = \{ x\,|\,\|x\|_\infty
 \leq 1 \}"/>. We assign labels using the function
-<img class="math" src="../../_images/math/9a1aaaaa43274b501c4fb65795ccb0420a69a2e7.png" alt="\mathrm{sign}(f(x)) = \mathrm{sign}(x_1 x_2)"/>, <em>i.e.</em>, points
+<img class="math" src="../../_images/math/8f842edf57f7464fd2293eacb158a3448de5cdf1.png" alt="\mathrm{sign}(f(x)) = \mathrm{sign}(x_1 x_2)"/>, <em>i.e.</em>, points
 in the first and third quadrants belong to class 1 and points in the
 second and fourth quadrants belong to class 2. We remark that in this
 simple example, the degree 2 polynomial kernel can separate the two
@@ -271,13 +274,13 @@ classes.</p>
 <p>The following Python code illustrates how to solve this classification
 problem using each of the two routines provided in SVMCMPL.  In this
 example we solve a problem instance with 2,000 training
-points, and we use <img class="math" src="../../_images/math/c9c2b0e84210a1498c2c237e7e57b55be42b673c.png" alt="\gamma = 2.0"/> and the RBF kernel with
-<img class="math" src="../../_images/math/2bb8d774dc2d8245b1c680b89fb834f05bc402da.png" alt="\sigma = 1.0"/>.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">cvxopt</span><span class="o">,</span> <span class="nn">svmcmpl</span>
+points, and we use <img class="math" src="../../_images/math/8b4cf89f7a2a406986c1d88eb55a4fb742831c35.png" alt="\gamma = 2.0"/> and the RBF kernel with
+<img class="math" src="../../_images/math/c3e0c67b8bdf7917efc9d0719fc4c41645c61d2a.png" alt="\sigma = 1.0"/>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cvxopt</span><span class="o">,</span> <span class="nn">svmcmpl</span>
 <span class="n">m</span> <span class="o">=</span> <span class="mi">2000</span>
 <span class="n">X</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">cvxopt</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mf">1.0</span>
 <span class="n">d</span> <span class="o">=</span> <span class="n">cvxopt</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="mi">2</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cvxopt</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])],(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">gamma</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">;</span> <span class="n">kernel</span> <span class="o">=</span> <span class="s">&#39;rbf&#39;</span><span class="p">;</span> <span class="n">sigma</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">;</span> <span class="n">kernel</span> <span class="o">=</span> <span class="s1">&#39;rbf&#39;</span><span class="p">;</span> <span class="n">sigma</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="n">sol1</span> <span class="o">=</span> <span class="n">svmcmpl</span><span class="o">.</span><span class="n">softmargin</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
 <span class="n">sol2</span> <span class="o">=</span> <span class="n">svmcmpl</span><span class="o">.</span><span class="n">softmargin_appr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
 </pre></div>
@@ -286,44 +289,44 @@ points, and we use <img class="math" src="../../_images/math/c9c2b0e84210a1498c2
 vectors, marked with white dots in the plot below:</p>
 <a class="reference internal image-reference" href="../../_images/xor_N2000_rbf.png"><img alt="../../_images/xor_N2000_rbf.png" src="../../_images/xor_N2000_rbf.png" style="width: 450px;" /></a>
 <p>The solid curve marks the decision boundry whereas the dashed curves
-are the -1 and +1 contours of <img class="math" src="../../_images/math/3af1f844d2ef477235eb582f56085d4b53bf7568.png" alt="g(x)"/> where
-<img class="math" src="../../_images/math/db525ae34803c452f4fda6290e2a8bf983e15a6f.png" alt="\mathrm{sign}(g(x))"/> is the decision function.</p>
-<p>Solving the approximation problem with half-bandwidth <img class="math" src="../../_images/math/2807354865472bf17fb3de469f3b71ce82d55e57.png" alt="w = 10"/>
+are the -1 and +1 contours of <img class="math" src="../../_images/math/f7d450172ff247e375a81d22940fc8b488d13343.png" alt="g(x)"/> where
+<img class="math" src="../../_images/math/ac72532bac6efde023bfae72c808b8712c552fe1.png" alt="\mathrm{sign}(g(x))"/> is the decision function.</p>
+<p>Solving the approximation problem with half-bandwidth <img class="math" src="../../_images/math/a2235acc454e73f9fb33f45b6a814ab0a628d337.png" alt="w = 10"/>
 produced 1,054 support vectors.</p>
 <a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_skc_w10.png"><img alt="../../_images/xor_N2000_rbf_skc_w10.png" src="../../_images/xor_N2000_rbf_skc_w10.png" style="width: 450px;" /></a>
 <a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_ckc_w10.png"><img alt="../../_images/xor_N2000_rbf_ckc_w10.png" src="../../_images/xor_N2000_rbf_ckc_w10.png" style="width: 450px;" /></a>
 <p>In this example, the standard kernel classifier is clearly better than
 the completion kernel classifier at this bandwidth. Increasing the
-half-bandwidth to <img class="math" src="../../_images/math/9a766ad8bb0d93519e3cc05c53c6928f4be940ea.png" alt="w = 20"/> produced 467 support vectors.</p>
+half-bandwidth to <img class="math" src="../../_images/math/0174384d82518cbcb64605a7ad5aa32631b2512f.png" alt="w = 20"/> produced 467 support vectors.</p>
 <a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_skc_w20.png"><img alt="../../_images/xor_N2000_rbf_skc_w20.png" src="../../_images/xor_N2000_rbf_skc_w20.png" style="width: 450px;" /></a>
 <a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_ckc_w20.png"><img alt="../../_images/xor_N2000_rbf_ckc_w20.png" src="../../_images/xor_N2000_rbf_ckc_w20.png" style="width: 450px;" /></a>
 <p>Notice that both the standard kernel and completion kernel classifiers
 are now nearly identical to classifier obtained by solving the
 standard SVM QP.</p>
 <p>Solving the dense SVM QP required 7.0 seconds whereas the approximation
-QPs required 0.3 seconds and 0.7 seconds for <img class="math" src="../../_images/math/2807354865472bf17fb3de469f3b71ce82d55e57.png" alt="w = 10"/> and <img class="math" src="../../_images/math/25b2f60afca5d2379297afcfbfd460a2f254ca51.png" alt="w =
+QPs required 0.3 seconds and 0.7 seconds for <img class="math" src="../../_images/math/a2235acc454e73f9fb33f45b6a814ab0a628d337.png" alt="w = 10"/> and <img class="math" src="../../_images/math/0022a6f3267a3d9ca36754c517c22888d26127c0.png" alt="w =
 20"/>, respectively.</p>
 </div>
 <div class="section" id="example-2">
 <h2>Example 2<a class="headerlink" href="#example-2" title="Permalink to this headline">¶</a></h2>
 <p>The following example demonstrates the approximate SVM method on the
 <a class="reference external" href="http://yann.lecun.com/exdb/mnist/">MNIST database</a> of handwritten
-digits. In the example we use the Python module <a class="reference download internal" href="../../_downloads/mnist.py"><code class="xref download docutils literal"><span class="pre">mnist.py</span></code></a> to read the database files. The following code trains
+digits. In the example we use the Python module <a class="reference download internal" href="../../_downloads/mnist.py" download=""><code class="xref download docutils literal"><span class="pre">mnist.py</span></code></a> to read the database files. The following code trains
 a binary classifier using as training set 4,000 examples of the digit
 &#8216;0&#8217; as class 1 and 4,000 examples of the digit &#8216;1&#8217; as class 2.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">mnist</span><span class="o">,</span> <span class="nn">svmcmpl</span><span class="o">,</span> <span class="nn">cvxopt</span><span class="o">,</span> <span class="nn">random</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mnist</span><span class="o">,</span> <span class="nn">svmcmpl</span><span class="o">,</span> <span class="nn">cvxopt</span><span class="o">,</span> <span class="nn">random</span>
 
 <span class="n">digits1</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">0</span> <span class="p">]</span>
 <span class="n">digits2</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">1</span> <span class="p">]</span>
 
 <span class="n">m1</span> <span class="o">=</span> <span class="mi">4000</span><span class="p">;</span> <span class="n">m2</span> <span class="o">=</span> <span class="mi">4000</span>
 
-<span class="c"># read training data</span>
-<span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">digits1</span> <span class="o">+</span> <span class="n">digits2</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s">&quot;training&quot;</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="s">&quot;data/mnist&quot;</span><span class="p">)</span>
+<span class="c1"># read training data</span>
+<span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">digits1</span> <span class="o">+</span> <span class="n">digits2</span><span class="p">,</span> <span class="n">dataset</span> <span class="o">=</span> <span class="s2">&quot;training&quot;</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;data/mnist&quot;</span><span class="p">)</span>
 <span class="n">images</span> <span class="o">=</span> <span class="n">images</span> <span class="o">/</span> <span class="mf">256.</span>
 
-<span class="n">C1</span> <span class="o">=</span> <span class="p">[</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span> <span class="k">if</span> <span class="n">labels</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">in</span> <span class="n">digits1</span> <span class="p">]</span>
-<span class="n">C2</span> <span class="o">=</span> <span class="p">[</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span> <span class="k">if</span> <span class="n">labels</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">in</span> <span class="n">digits2</span> <span class="p">]</span>
+<span class="n">C1</span> <span class="o">=</span> <span class="p">[</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span> <span class="k">if</span> <span class="n">labels</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">in</span> <span class="n">digits1</span> <span class="p">]</span>
+<span class="n">C2</span> <span class="o">=</span> <span class="p">[</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span> <span class="k">if</span> <span class="n">labels</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">in</span> <span class="n">digits2</span> <span class="p">]</span>
 
 <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">()</span>
 <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">C1</span><span class="p">)</span>
@@ -335,7 +338,7 @@ a binary classifier using as training set 4,000 examples of the digit
 <span class="n">d</span> <span class="o">=</span> <span class="n">cvxopt</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">k</span> <span class="ow">in</span> <span class="n">digits1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">[</span><span class="n">train</span><span class="p">]</span> <span class="p">])</span>
 
 <span class="n">gamma</span> <span class="o">=</span> <span class="mf">4.0</span>
-<span class="n">sol</span> <span class="o">=</span> <span class="n">svmcmpl</span><span class="o">.</span><span class="n">softmargin_appr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">kernel</span> <span class="o">=</span> <span class="s">&#39;rbf&#39;</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">sol</span> <span class="o">=</span> <span class="n">svmcmpl</span><span class="o">.</span><span class="n">softmargin_appr</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">kernel</span> <span class="o">=</span> <span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>In this example, both the standard kernel classifier and the completion kernel classifier misclassified 8 out of 2,115 test examples (digits &#8216;0&#8217; and &#8216;1&#8217; from the MNIST test set):</p>
@@ -359,8 +362,8 @@ a binary classifier using as training set 4,000 examples of the digit
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2015, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Sep 22, 2015.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Nov 30, 2016.
     </p>
   </div>
 
@@ -380,7 +383,7 @@ a binary classifier using as training set 4,000 examples of the digit
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -406,7 +409,7 @@ a binary classifier using as training set 4,000 examples of the digit
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 <script>

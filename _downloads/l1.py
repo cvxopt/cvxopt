@@ -18,8 +18,6 @@ if __MOSEK:
                    -P*u - v <= -q
         """
 
-        from mosek.array import zeros
-
         m, n = P.size
 
         env = mosek.Env()
@@ -49,7 +47,7 @@ if __MOSEK:
         task.putintparam(mosek.iparam.intpnt_basis, mosek.basindtype.never)
         task.optimize()
         task.solutionsummary(mosek.streamtype.log)
-        x = zeros(n, float)
+        x = n*[0.0]
         task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, 0, n, x)
         return matrix(x)
 
@@ -60,8 +58,6 @@ if __MOSEK:
         subject to  P*u - q = s - t
                     s, t >= 0
         """
-
-        from mosek.array import zeros
 
         m, n = P.size
 
@@ -94,7 +90,7 @@ if __MOSEK:
         task.putintparam(mosek.iparam.intpnt_basis, mosek.basindtype.never)
         task.optimize()
         task.solutionsummary(mosek.streamtype.log)
-        x = zeros(n, float)
+        x = n*[0.0]
         task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, 0, n, x)
         return matrix(x)
 

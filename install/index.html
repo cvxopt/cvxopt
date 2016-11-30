@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="../search.html"/>
         <link rel="copyright" title="Copyright" href="../copyright.html"/>
     <link rel="top" title="CVXOPT" href="../index.html"/>
         <link rel="next" title="Documentation" href="../documentation/index.html"/>
@@ -65,10 +66,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../download/index.html#older-versions">Older versions</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Installation instructions</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation instructions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#standard-installation">Standard installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#building-cvxopt-with-atlas">Building CVXOPT with ATLAS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#building-cvxopt-for-windows">Building CVXOPT for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customizing-the-setup-script">Customizing the setup script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ubuntu-debian">Ubuntu/Debian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#macos">macOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#windows">Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../documentation/index.html">Documentation</a><ul>
@@ -132,242 +135,258 @@
 <p>The package requires version 2.7 or 3.x of Python, and is built from
 source, so the header files and libraries for Python must be installed,
 as well as the core binaries.</p>
-<p>The installation requires either ATLAS or BLAS + LAPACK.  Using
-architecture optimized ATLAS libraries is recommended and gives a large
-performance improvement over standard BLAS &amp; LAPACK libraries.  Both
-header files and libraries must be installed.</p>
+<p>The installation requires BLAS and LAPACK. Using an architecture
+optimized implementation such as
+<a class="reference external" href="https://sourceforge.net/projects/math-atlas/">ATLAS</a>,
+<a class="reference external" href="http://www.openblas.net">OpenBLAS</a>, or
+<a class="reference external" href="https://software.intel.com/en-us/intel-mkl">MKL</a> is recommended
+and gives a large performance improvement over reference implementations
+of the <a class="reference external" href="http://www.netlib.org/blas/">BLAS</a> and
+<a class="reference external" href="http://www.netlib.org/lapack/">LAPACK</a> libraries.</p>
+<p>The installation also requires SuiteSparse. We recommend linking against
+a shared SuiteSparse library. It is also possible to build the required
+components of SuiteSparse when building CVXOPT, but this requires the
+SuiteSparse source which is no longer included with CVXOPT and must be
+downloaded separately.</p>
 <p>The following software libraries are optional.</p>
 <ul class="simple">
-<li><a class="reference external" href="http://www.gnu.org/software/gsl">The GNU Scientific Library GSL</a>.</li>
-<li><a class="reference external" href="http://www.fftw.org">FFTW</a> is a C library for discrete Fourier transforms.</li>
-<li><a class="reference external" href="http://www.gnu.org/software/glpk/glpk.html">GLPK</a> is a linear programming package.</li>
-<li><a class="reference external" href="http://www.mosek.com">MOSEK version 7</a> is a commercial library of convex optimization solvers.</li>
-<li><a class="reference external" href="http://www-unix.mcs.anl.gov/DSDP">DSDP5.8</a> is a semidefinite programming solver.</li>
+<li><a class="reference external" href="www.gnu.org/software/gsl">The GNU Scientific Library GSL</a>.</li>
+<li><a class="reference external" href="www.fftw.org">FFTW</a> is a C library for discrete Fourier transforms.</li>
+<li><a class="reference external" href="www.gnu.org/software/glpk/glpk.html">GLPK</a> is a linear programming
+package.</li>
+<li><a class="reference external" href="www.mosek.com">MOSEK version 8</a> is a commercial library of convex
+optimization solvers.</li>
+<li><a class="reference external" href="www-unix.mcs.anl.gov/DSDP">DSDP5.8</a> is a semidefinite programming solver.</li>
 </ul>
 <p class="rubric">Installation</p>
-<p>CVXOPT can be installed globally (for all users on a UNIX system) by
-writing:</p>
-<div class="highlight-python"><div class="highlight"><pre>python setup.py install
+<p>CVXOPT can be installed globally (for all users on a UNIX/Linux system)
+using the command:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
 </pre></div>
 </div>
-<p>It can also be installed locally (for a single user) by typing:</p>
-<div class="highlight-python"><div class="highlight"><pre>python setup.py install --user
+<p>It can also be installed locally (for a single user) using the command:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span>
 </pre></div>
 </div>
-<p>To test that the installation was successful, go to the examples directory
-and try one of the examples, for example,</p>
-<div class="highlight-python"><div class="highlight"><pre>cd examples/doc/chap8
-python lp.py
+<p>It is also possible to install CVXOPT using <a class="reference external" href="http://pip.readthedocs.org/">pip</a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cvxopt</span>
 </pre></div>
 </div>
-<p>If Python does not issue an error message, installation was successful.</p>
+<p>To test that the installation was successful, run the included tests using:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">unittest</span> <span class="n">discover</span> <span class="o">-</span><span class="n">s</span> <span class="n">tests</span>
+</pre></div>
+</div>
+<p>or alternatively, if <cite>nose</cite> is installed:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">nosetests</span>
+</pre></div>
+</div>
+<p>If Python does not issue an error message, the installation was successful.</p>
 <p>Additional information can be found in the
 <a class="reference external" href="http://docs.python.org/install/index.html">Python documentation</a>.</p>
-<p>CVXOPT can also be installed using <a class="reference external" href="http://pip.readthedocs.org/">pip</a>:</p>
-<div class="highlight-python"><div class="highlight"><pre>pip install cvxopt --user
-</pre></div>
 </div>
-<p class="rubric">Customized setup script</p>
-<p>If needed, the default compilation can be customized by edting
-setup.py or by setting environment variables. The following variables
-in the setup script can be modified:</p>
+<div class="section" id="customizing-the-setup-script">
+<h2>Customizing the setup script<a class="headerlink" href="#customizing-the-setup-script" title="Permalink to this headline">¶</a></h2>
+<p>If needed, the default compilation can be customized by editing <cite>setup.py</cite> or
+by means of environment variables. The following variables in the setup
+script can be modified:</p>
 <ul class="simple">
-<li>BLAS_LIB_DIR: the directory containing the LAPACK and BLAS libraries.</li>
-<li>BUILD_GSL: set this variable to 1 if you would like to use the GSL
+<li><code class="docutils literal"><span class="pre">BLAS_LIB_DIR</span></code>: the directory containing the LAPACK and BLAS libraries.</li>
+<li><code class="docutils literal"><span class="pre">BUILD_GSL</span></code>: set this variable to 1 if you would like to use the GSL
 random number generators for constructing random matrices in CVXOPT.
-If BULD_GSL is 0, the Python random number generators will be used
+If <code class="docutils literal"><span class="pre">BULD_GSL</span></code> is 0, the Python random number generators will be used
 instead.</li>
-<li>GSL_LIB_DIR: the directory containing libgsl.</li>
-<li>GSL_INC_DIR: the directory containing the GSL header files.</li>
-<li>BUILD_FFTW: set this variable to 1 to install the cvxopt.fftw module,
+<li><code class="docutils literal"><span class="pre">GSL_LIB_DIR</span></code>: the directory containing <code class="docutils literal"><span class="pre">libgsl</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">GSL_INC_DIR</span></code>: the directory containing the GSL header files.</li>
+<li><code class="docutils literal"><span class="pre">BUILD_FFTW</span></code>: set this variable to 1 to install the <code class="docutils literal"><span class="pre">cvxopt.fftw</span></code> module,
 which is an interface to FFTW.</li>
-<li>FFTW_LIB_DIR: the directory containing libfftw3.</li>
-<li>FFTW_INC_DIR: the directory containing fftw.h.</li>
-<li>BUILD_GLPK: set this variable to 1 to enable support for the linear
+<li><code class="docutils literal"><span class="pre">FFTW_LIB_DIR</span></code>: the directory containing <code class="docutils literal"><span class="pre">libfftw3</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">FFTW_INC_DIR</span></code>: the directory containing <code class="docutils literal"><span class="pre">fftw.h</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">BUILD_GLPK</span></code>: set this variable to 1 to enable support for the linear
 programming solver GLPK.</li>
-<li>GLPK_LIB_DIR: the directory containing libglpk.</li>
-<li>GLPK_INC_DIR: the directory containing glpk.h.</li>
-<li>BUILD_DSDP: set this variable to 1 to enable support for the semidefinite
+<li><code class="docutils literal"><span class="pre">GLPK_LIB_DIR</span></code>: the directory containing <code class="docutils literal"><span class="pre">libglpk</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">GLPK_INC_DIR</span></code>: the directory containing <code class="docutils literal"><span class="pre">glpk.h</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">BUILD_DSDP</span></code>: set this variable to 1 to enable support for the semidefinite
 programming solver DSDP.</li>
-<li>DSDP_LIB_DIR: the directory containing libdsdp.</li>
-<li>DSDP_INC_DIR: the directory containing dsdp5.h.</li>
+<li><code class="docutils literal"><span class="pre">DSDP_LIB_DIR</span></code>: the directory containing <code class="docutils literal"><span class="pre">libdsdp</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">DSDP_INC_DIR</span></code>: the directory containing <code class="docutils literal"><span class="pre">dsdp5.h</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">SUITESPARSE_LIB_DIR</span></code>: the directory containing SuiteSparse libraries.</li>
+<li><code class="docutils literal"><span class="pre">SUITESPARSE_INC_DIR</span></code>: the directory containing SuiteSparse header files.</li>
+<li><code class="docutils literal"><span class="pre">SUITESPARSE_SRC_DIR</span></code>: the directory containing SuiteSparse source. The
+variables <code class="docutils literal"><span class="pre">SUITESPARSE_LIB_DIR</span></code> and <code class="docutils literal"><span class="pre">SUITESPARSE_INC_DIR</span></code> are ignored and
+relevant parts of SuiteSparse are build from source when
+<code class="docutils literal"><span class="pre">SUITESPARSE_SRC_DIR</span></code> is specified.</li>
 </ul>
-<p>Each of the variables can be overridden by specifying an environment
-variable with the prefix <em>CVXOPT_</em>. For example, the following command
-installs CVXOPT locally with BUILD_FFTW=1:</p>
-<div class="highlight-python"><div class="highlight"><pre>CVXOPT_BUILD_FFTW=1 python setup.py install --user
+<p>Each of the variables can be overridden by specifying an environment variable
+with the prefix <code class="docutils literal"><span class="pre">CVXOPT_</span></code>. For example, the following command installs CVXOPT
+locally with <code class="docutils literal"><span class="pre">BUILD_FFTW=1</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">CVXOPT_BUILD_FFTW</span><span class="o">=</span><span class="mi">1</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span>
 </pre></div>
 </div>
-<p>This technique also works with pip:</p>
-<div class="highlight-python"><div class="highlight"><pre>CVXOPT_BUILD_GLPK=1 CVXOPT_BUILD_FFTW=1 pip install cvxopt --user
+<p>This approach also works with pip:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">CVXOPT_BUILD_GLPK</span><span class="o">=</span><span class="mi">1</span> <span class="n">CVXOPT_BUILD_FFTW</span><span class="o">=</span><span class="mi">1</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">cvxopt</span>
 </pre></div>
 </div>
 <p>Support for the linear, second-order cone, and quadratic programming
-solvers in MOSEK is automatically enabled if the MOSEK Python interface
-pymosek.so is found in the user&#8217;s PYTHONPATH.</p>
+solvers in MOSEK is automatically enabled if both MOSEK and its
+Python interface are installed.</p>
 </div>
-<div class="section" id="building-cvxopt-with-atlas">
-<h2>Building CVXOPT with ATLAS<a class="headerlink" href="#building-cvxopt-with-atlas" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="debian-ubuntu">
-<h3>Debian/Ubuntu<a class="headerlink" href="#debian-ubuntu" title="Permalink to this headline">¶</a></h3>
-<p>In Debian/Ubuntu, simply install the libatlas package and follow the standard
-installation instructions. If multiple BLAS and LAPACK libraries have
-been installed, you can verify the current configuration using the following
-commands:</p>
-<div class="highlight-python"><div class="highlight"><pre>update-alternatives --config libblas.so.3
-update-alternatives --config liblapack.so.3
+<div class="section" id="ubuntu-debian">
+<h2>Ubuntu/Debian<a class="headerlink" href="#ubuntu-debian" title="Permalink to this headline">¶</a></h2>
+<p>Building CVXOPT from source in Debian/Ubuntu requires the packages
+<code class="docutils literal"><span class="pre">build-essential</span></code> and <code class="docutils literal"><span class="pre">python-dev</span></code> as well as BLAS and LAPACK library packages
+such as</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">libopenblas-dev</span></code></li>
+<li><code class="docutils literal"><span class="pre">libatlas-dev</span></code></li>
+<li><code class="docutils literal"><span class="pre">libblas-dev</span></code> and <code class="docutils literal"><span class="pre">liblapack-dev</span></code></li>
+</ul>
+<p>If multiple BLAS and LAPACK libraries have been installed, you can verify
+the current configuration using the following commands:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">update</span><span class="o">-</span><span class="n">alternatives</span> <span class="o">--</span><span class="n">config</span> <span class="n">libblas</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">3</span>
+<span class="n">update</span><span class="o">-</span><span class="n">alternatives</span> <span class="o">--</span><span class="n">config</span> <span class="n">liblapack</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">3</span>
 </pre></div>
 </div>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last">Debian Science: <a class="reference external" href="https://wiki.debian.org/DebianScience/LinearAlgebraLibraries">Handle different versions of BLAS and LAPACK</a>.</p>
 </div>
-</div>
-<div class="section" id="mac-os-x">
-<h3>Mac OS X<a class="headerlink" href="#mac-os-x" title="Permalink to this headline">¶</a></h3>
-<p>If you are using Mac OS X, install the <a class="reference external" href="https://developer.apple.com/technologies/tools/">Developer tools</a> (Xcode and the
-Command Line Tools for Xcode, which can be installed via the Xcode
-&#8220;Downloads&#8221; preference pane) and follow the
-instructions for standard installation to build CVXOPT with the system
-supplied ATLAS BLAS and LAPACK libraries (Framework Accelerate).</p>
-</div>
-<div class="section" id="general-instructions-linux">
-<h3>General instructions (Linux)<a class="headerlink" href="#general-instructions-linux" title="Permalink to this headline">¶</a></h3>
-<p>To build CVXOPT with a custom ATLAS library, edit setup.py:</p>
-<ul>
-<li><p class="first">set the variable BLAS_LIB_DIR to the directory containing the ATLAS libraries, for example,</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">BLAS_LIB_DIR</span> <span class="o">=</span> <span class="s">&#39;/usr/local/atlas/lib&#39;</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">set the variable BLAS_LIB, for example,</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">BLAS_LIB</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;f77blas&#39;</span><span class="p">,</span><span class="s">&#39;cblas&#39;</span><span class="p">,</span><span class="s">&#39;atlas&#39;</span><span class="p">,</span><span class="s">&#39;gfortran&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>or with multithreaded BLAS,</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">BLAS_LIB</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;ptf77blas&#39;</span><span class="p">,</span><span class="s">&#39;ptcblas&#39;</span><span class="p">,</span><span class="s">&#39;atlas&#39;</span><span class="p">,</span><span class="s">&#39;gfortran&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>Note that libcblas is required if liblapack was created by merging
-ATLAS and Netlib LAPACK.
-See <a class="reference external" href="http://math-atlas.sourceforge.net/errata.html#LINK">ATLAS documentation</a>.</p>
-</li>
-<li><p class="first">set the variable LAPACK_LIB, for example</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">LAPACK_LIB</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;lapack&#39;</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>Note that CVXOPT requires a complete LAPACK library.
-See <a class="reference external" href="http://math-atlas.sourceforge.net/atlas_install">ATLAS documentation</a>.</p>
-</li>
+<p>As of Ubuntu 16.04, SuiteSparse can be installed as a dynamic library by
+installing the <code class="docutils literal"><span class="pre">libsuitesparse-dev</span></code> package. Alternatively, if SuiteSparse is
+not available as a dynamic library, the
+<a class="reference external" href="https://www.suitesparse.com">SuiteSparse source</a> must be available.</p>
+<p>To build the optional CVXOPT extensions (DSDP, FFTW, GLPK, and GSL), the
+following packages should be installed as well:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">libdsdp-dev</span></code></li>
+<li><code class="docutils literal"><span class="pre">libfftw3-dev</span></code></li>
+<li><code class="docutils literal"><span class="pre">libglpk-dev</span></code></li>
+<li><code class="docutils literal"><span class="pre">libgsl-dev</span></code></li>
 </ul>
-</div>
-</div>
-<div class="section" id="building-cvxopt-for-windows">
-<h2>Building CVXOPT for Windows<a class="headerlink" href="#building-cvxopt-for-windows" title="Permalink to this headline">¶</a></h2>
-<p>In this section, we outline how to build and install CVXOPT on Windows
-7 (32 bit) with reference BLAS and LAPACK.</p>
-<ul>
-<li><p class="first">Download and install Python from www.python.org. In the following, we use Python 2.7.2 (32 bit).</p>
-</li>
-<li><p class="first">Download and install the MinGW Compiler Suite (www.mingw.org).</p>
-<blockquote>
-<div><ul class="simple">
-<li>Download and run the <a class="reference external" href="http://mingw.org/wiki/Getting_Started">MinGW installer</a></li>
-<li>Install the C compiler, the Fortran compiler, and the MSYS Basic System</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">Open the Command Prompt and set the path variable with the following command:</p>
-<div class="highlight-python"><div class="highlight"><pre>set path=%path%;c:\Python27;c:\MinGW\bin;c:\MinGW\msys\1.0\bin
+<p>When all the necessary Ubuntu packages have been installed,
+CVXOPT can be built with all extensions in Ubuntu 16.04 (or later) as follows:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>git clone https://github.com/cvxopt/cvxopt.git
+<span class="nb">cd</span> cvxopt
+<span class="nb">export</span> <span class="nv">CVXOPT_BUILD_DSDP</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
+<span class="nb">export</span> <span class="nv">CVXOPT_BUILD_FFTW</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
+<span class="nb">export</span> <span class="nv">CVXOPT_BUILD_GLPK</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
+<span class="nb">export</span> <span class="nv">CVXOPT_BUILD_GSL</span><span class="o">=</span><span class="m">1</span>     <span class="c1"># optional</span>
+python setup.py install --user
 </pre></div>
 </div>
-</li>
-<li><p class="first">Download and compile BLAS source:</p>
-<blockquote>
-<div><ul>
-<li><p class="first">Download the reference <a class="reference external" href="http://www.netlib.org/blas/blas.tgz">BLAS source distribution</a></p>
-</li>
-<li><p class="first">In the Command Prompt, change to the directory containing blas.tgz</p>
-</li>
-<li><p class="first">Run the following commands to unpack and compile reference BLAS:</p>
-<div class="highlight-python"><div class="highlight"><pre>tar -xvf blas.tgz
-cd BLAS
-sed &#39;s/_LINUX/_WIN/&#39; make.inc -i
-make &amp;&amp; cp blas_WIN.a ../libblas.a
-cd ..
+<p>In older versions of Ubuntu where SuiteSparse is not available as a dynamic
+library, the necessary SuiteSparse components can be built with CVXOPT
+by downloading the SuiteSparse source and setting <code class="docutils literal"><span class="pre">CVXOPT_SUITESPARSE_SRC_DIR</span></code>
+to the SuiteSparse source directory:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-4.5.3.tar.gz
+tar -xf SuiteSparse-4.5.3.tar.gz
+<span class="nb">export</span> <span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/SuiteSparse
+git clone https://github.com/cvxopt/cvxopt.git
+<span class="nb">cd</span> cvxopt
+<span class="nb">export</span> <span class="nv">CVXOPT_BUILD_DSDP</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
+<span class="nb">export</span> <span class="nv">CVXOPT_BUILD_FFTW</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
+<span class="nb">export</span> <span class="nv">CVXOPT_BUILD_GLPK</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
+<span class="nb">export</span> <span class="nv">CVXOPT_BUILD_GSL</span><span class="o">=</span><span class="m">1</span>     <span class="c1"># optional</span>
+python setup.py install --user
 </pre></div>
 </div>
-</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">Download and compile LAPACK source:</p>
-<blockquote>
-<div><ul>
-<li><p class="first">Download the <a class="reference external" href="http://www.netlib.org/lapack/lapack-3.5.0.tgz">LAPACK source distribution</a></p>
-</li>
-<li><p class="first">In the Command Prompt, change to directory containing lapack-3.5.0.tgz</p>
-</li>
-<li><p class="first">Run the following commands to unpack and compile LAPACK:</p>
-<div class="highlight-python"><div class="highlight"><pre>tar -xvf lapack-3.5.0.tgz
-cd lapack-3.5.0
-cp make.inc.example make.inc
-make lapacklib &amp;&amp; cp liblapack.a ..
+</div>
+<div class="section" id="macos">
+<h2>macOS<a class="headerlink" href="#macos" title="Permalink to this headline">¶</a></h2>
+<p>Building CVXOPT from source in macOS requires the Command-line tools which
+can be installed using the command:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>xcode-select -p
 </pre></div>
 </div>
-</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">Download and compile CVXOPT source:</p>
-<blockquote>
-<div><ul>
-<li><p class="first">Download the <a class="reference external" href="http://cvxopt.org/download">CVXOPT source distribution</a></p>
-</li>
-<li><p class="first">In the Command Prompt, change to the directory containing the CVXOPT source distribution.</p>
-</li>
-<li><p class="first">Unpack the source distribution and change the directory to cvxopt-1.1.8/src:</p>
-<div class="highlight-python"><div class="highlight"><pre>tar -xvf cvxopt-1.1.8.tar.gz
-cd cvxopt-1.1.8/src
+<p class="rubric">With Homebrew</p>
+<p><a class="reference external" href="https://brew.sh">Homebrew</a> users can build CVXOPT with all extensions
+as follows:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>brew install dsdp gsl fftw homebrew/science/suite-sparse homebrew/science/glpk
+git clone https://github.com/cvxopt/cvxopt.git
+<span class="nb">cd</span> cvxopt
+<span class="nb">export</span> <span class="nv">CVXOPT_BUILD_DSDP</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
+<span class="nb">export</span> <span class="nv">CVXOPT_BUILD_FFTW</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
+<span class="nb">export</span> <span class="nv">CVXOPT_BUILD_GLPK</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
+<span class="nb">export</span> <span class="nv">CVXOPT_BUILD_GSL</span><span class="o">=</span><span class="m">1</span>     <span class="c1"># optional</span>
+python setup.py install --user
 </pre></div>
 </div>
-</li>
-<li><p class="first">Copy libblas.a and liblapack.a to the src directory</p>
-</li>
-<li><p class="first">Edit setup.py:</p>
-<blockquote>
-<div><ul class="simple">
-<li>set the variable BLAS_LIB in setup.py to BLAS_LIB = [&#8216;blas&#8217;,&#8217;gfortran&#8217;]</li>
-<li>set the variable BLAS_LIB_DIR in setup.py to BLAS_LIB_DIR = &#8216;.&#8217;</li>
-</ul>
-</div></blockquote>
-</li>
-<li><p class="first">Remove all instances of &#8216;-mno-cygwin&#8217; from c:\Python27\Lib\distutils\cygwinccompiler.py using the command:</p>
-<div class="highlight-python"><div class="highlight"><pre>sed &#39;s/-mno-cygwin//g&#39; -i&#39;.bak&#39; c:\Python27\Lib\distutils\cygwinccompiler.py
+<p>To use OpenBLAS instead of the built-in BLAS/LAPACK
+libraries, include the following commands before running
+<code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></code>:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>brew install homebrew/science/openblas
+<span class="nb">export</span> <span class="nv">CVXOPT_BLAS_LIB_DIR</span><span class="o">=</span>/usr/local/opt/openblas/lib
+<span class="nb">export</span> <span class="nv">CVXOPT_BLAS_LIB</span><span class="o">=</span>openblas
+<span class="nb">export</span> <span class="nv">CVXOPT_LAPACK_LIB</span><span class="o">=</span>openblas
 </pre></div>
 </div>
-<p><strong>Remark</strong>: This command changes the Python installation. We will undo these changes
-in the last step of the installation.</p>
-</li>
-<li><p class="first">Run the following commands to build and install CVXOPT:</p>
-<div class="highlight-python"><div class="highlight"><pre>python setup.py build --compiler=mingw32
+<p>Alternatively, to use the Intel MKL library include the following commands
+before running <code class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></code>:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">CVXOPT_BLAS_EXTRA_LINK_ARGS</span><span class="o">=</span><span class="s2">&quot;-L/opt/intel/lib;-Wl,-rpath,/opt/intel/mkl/lib,-rpath,/opt/intel/lib;-lmkl_core;-lmkl_intel_thread;-liomp5;-lpthread;-lm;-ldl&quot;</span>
+<span class="nb">export</span> <span class="nv">CVXOPT_BLAS_LIB_DIR</span><span class="o">=</span>/opt/intel/mkl/lib
+<span class="nb">export</span> <span class="nv">CVXOPT_BLAS_LIB</span><span class="o">=</span>mkl_intel_lp64
+<span class="nb">export</span> <span class="nv">CVXOPT_LAPACK_LIB</span><span class="o">=</span>mkl_intel_lp64
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://software.intel.com/en-us/articles/intel-mkl-link-line-advisor">Intel MKL Link Line Advisor</a></p>
+</div>
+<p class="rubric">Without Homebrew</p>
+<p>If SuiteSparse is not available as a dynamic library, the necessary SuiteSparse
+components can be built with CVXOPT by downloading the SuiteSparse source and
+setting <code class="docutils literal"><span class="pre">CVXOPT_SUITESPARSE_SRC_DIR</span></code> to the SuiteSparse source directory:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-4.5.3.tar.gz
+tar -xf SuiteSparse-4.5.3.tar.gz
+<span class="nb">export</span> <span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/SuiteSparse
+git clone https://github.com/cvxopt/cvxopt.git
+<span class="nb">cd</span> cvxopt
+python setup.py install --user
+</pre></div>
+</div>
+</div>
+<div class="section" id="windows">
+<h2>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
+<p>CVXOPT can be built and installed on Windows
+(64 bit) with the <a class="reference external" href="https://mingwpy.github.io">Mingwpy</a> toolchain and
+<a class="reference external" href="http://www.openblas.net">OpenBLAS</a>. Note that Mingwpy currently
+only supports Python version 2.7 through 3.4.</p>
+<p>We will assume that Python 2.7 (64 bit), git, wget, and 7-zip
+are installed and in the search path. These can be installed with the
+<a class="reference external" href="https://chocolatey.org">Chocolatey</a> package manager:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">choco</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">wget</span> <span class="n">git</span> <span class="n">python2</span> <span class="mi">7</span><span class="nb">zip</span><span class="o">.</span><span class="n">commandline</span>
+</pre></div>
+</div>
+<p>We will also assume that <a class="reference external" href="https://pip.pypa.io">pip</a> is available;
+if it is not, it can now be installed with <code class="docutils literal"><span class="pre">easy_install</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">Python27</span>\<span class="n">Scripts</span>\<span class="n">easy_install</span> <span class="n">pip</span>
+</pre></div>
+</div>
+<p>Open the Command Prompt and execute the following commands:</p>
+<div class="highlight-batch"><div class="highlight"><pre><span></span><span class="c1">rem Download SuiteSparse source</span>
+wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-4.5.3.tar.gz
+7z x SuiteSparse-4.5.3.tar.gz
+7z x SuiteSparse-4.5.3.tar
+<span class="k">set</span> <span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="p">=</span><span class="nv">%CD%</span>\SuiteSparse
+
+<span class="c1">rem Download compatible OpenBLAS library</span>
+wget https://bitbucket.org/carlkl/mingw-w64-for-python/downloads/OpenBLAS-0.2.17_amd64.7z
+<span class="k">mkdir</span> openblas
+7z x OpenBLAS-0.2.17_amd64.7z -aoa -oopenblas
+<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB</span><span class="p">=</span>openblaspy
+<span class="k">set</span> <span class="nv">CVXOPT_LAPACK_LIB</span><span class="p">=</span>openblaspy
+<span class="k">set</span> <span class="nv">CVXOPT_DATA_FILES</span><span class="p">=</span><span class="nv">%CD%</span>\openblas\amd64\bin\libopenblaspy.dll
+<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB_DIR</span><span class="p">=</span><span class="nv">%CD%</span>\openblas\amd64\bin
+
+<span class="c1">rem Install mingwpy Python extension using pip</span>
+pip install -i https://pypi.anaconda.org/carlkl/simple mingwpy
+
+<span class="c1">rem Clone CVXOPT repository, compile, and install</span>
+git clone https://github.com/cvxopt/cvxopt.git
+<span class="k">cd</span> cvxopt
+python setup.py build --compiler=mingw32
 python setup.py install
 </pre></div>
 </div>
-<p><strong>Remark</strong>: It is also possible to build a binary Windows installer with the command:</p>
-<div class="highlight-python"><div class="highlight"><pre>python setup.py build --compiler=mingw32 bdist --format=wininst
-</pre></div>
-</div>
-</li>
-<li><p class="first">Restore c:\Python27\Lib\distutils\cygwinccompiler.py with the following command:</p>
-<div class="highlight-python"><div class="highlight"><pre>mv c:\Python27\Lib\distutils\cygwinccompiler.py.bak c:\Python27\Lib\distutils\cygwinccompiler.py
-</pre></div>
-</div>
-</li>
-</ul>
-</div></blockquote>
-</li>
-</ul>
 </div>
 </div>
 
@@ -389,8 +408,8 @@ python setup.py install
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../copyright.html">Copyright</a> 2004-2015, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Sep 22, 2015.
+        &copy; <a href="../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Nov 30, 2016.
     </p>
   </div>
 
@@ -410,7 +429,7 @@ python setup.py install
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -436,7 +455,7 @@ python setup.py install
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 <script>

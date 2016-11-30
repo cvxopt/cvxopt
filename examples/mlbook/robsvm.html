@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="../../search.html"/>
         <link rel="copyright" title="Copyright" href="../../copyright.html"/>
     <link rel="top" title="CVXOPT" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
@@ -68,8 +69,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-with-atlas">Building CVXOPT with ATLAS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-for-windows">Building CVXOPT for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#windows">Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
@@ -131,75 +134,75 @@
 <h1>Robust SVM<a class="headerlink" href="#robust-svm" title="Permalink to this headline">¶</a></h1>
 <p>The robust SVM training problem can be expressed as a cone QP with second-order cone constraints:</p>
 <div class="math">
-<p><img src="../../_images/math/420ea571e00e958a7d3790bbacce72aeacea5c93.png" alt="\begin{array}{ll}
+<p><img src="../../_images/math/d820b3c901ed7288325e4719bcb67d67bc1630e3.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; (1/2) w^Tw + \gamma \mathbf{1}^Tv \\
 \mbox{subject to} &amp; \mathbf{diag}(d)(Xw + b \mathbf{1} )
                     \succeq 1 - v + Eu \\
                   &amp; v \succeq 0 \\
                   &amp; \| S_j w\|_2 \leq u_j, \quad j =1,\ldots,t.
 \end{array}"/></p>
-</div><p>The variables are <img class="math" src="../../_images/math/28b9901eff802af9bb983cc99c905f05c898031d.png" alt="w \in \mathbf{R}^n"/>, <img class="math" src="../../_images/math/f84fa70c690eee4e40b1302e44f786215cc926a5.png" alt="b \in
-\mathbf{R}"/>, <img class="math" src="../../_images/math/53294a91e1a241a22a5edf6eb56950c7ab5510b5.png" alt="v \in \mathbf{R}^N"/>, and <img class="math" src="../../_images/math/8352608056fc76a77266efd12c6a9a50b75dbeea.png" alt="u \in
-\mathbf{R}^t"/>. The matrix <img class="math" src="../../_images/math/042f98dc357c41d8b7a87fac495100cca8a79eb1.png" alt="X \in \mathbf{R}^{N×n}"/> has as its
-rows the training examples <img class="math" src="../../_images/math/35d06a2aa8de54e78a4b0902eeb76f8a46587dc2.png" alt="x_i^T"/> and the vector <img class="math" src="../../_images/math/1af733eeafecab12893a36951edc59dfde97c855.png" alt="d \in
-\{−1, 1\}^N"/> contains the training labels. The matrices <img class="math" src="../../_images/math/306f12625fa48f994e8c636e5f6d8832626ed914.png" alt="S_j"/> define the shape and the size of the uncertainty ellipsoids, and the matrix <img class="math" src="../../_images/math/cfd13a0f26eb7ef0093319a7669da7dd3771dbac.png" alt="E"/> is a selector matrix with zeros and one &#8216;1&#8217; per
-row.  <img class="math" src="../../_images/math/bfab354701cc769dd5542c9f9cd0318003706162.png" alt="E_{ij} = 1"/> means that the i&#8217;th training vector is
-associated with the j&#8217;th uncertainty ellipsoid. For <img class="math" src="../../_images/math/552919b55a5e193df19e2642d7327c645682b361.png" alt="t = 0"/>, the
-term <img class="math" src="../../_images/math/f12b53b340f010850106ef04ecf929c49a073849.png" alt="Eu"/> and the norm constraints are absent, and the problem
+</div><p>The variables are <img class="math" src="../../_images/math/0eaced15d324a630138dc10aee3198ec5f6ed7c3.png" alt="w \in \mathbf{R}^n"/>, <img class="math" src="../../_images/math/7a961073d2b980c7a609902c8df30b576d19651a.png" alt="b \in
+\mathbf{R}"/>, <img class="math" src="../../_images/math/64c3187732a1a07fe835349b844adc7d037e5b63.png" alt="v \in \mathbf{R}^N"/>, and <img class="math" src="../../_images/math/cb5ce7070be7cfe1cbc22278bb4d2a5135e31679.png" alt="u \in
+\mathbf{R}^t"/>. The matrix <img class="math" src="../../_images/math/024e873de6ab1126a0b188777327b19e33138902.png" alt="X \in \mathbf{R}^{N×n}"/> has as its
+rows the training examples <img class="math" src="../../_images/math/cfc2ae31c0b62416b21a41638a288a510a8d0612.png" alt="x_i^T"/> and the vector <img class="math" src="../../_images/math/59f199227e3b9a48178f3f448873ddc763ee4df2.png" alt="d \in
+\{−1, 1\}^N"/> contains the training labels. The matrices <img class="math" src="../../_images/math/93942edb8a2b3e2fb91299f42e8ab0d83bb20e17.png" alt="S_j"/> define the shape and the size of the uncertainty ellipsoids, and the matrix <img class="math" src="../../_images/math/4b6222b865b812d2a59368cd1629eed6b54454d5.png" alt="E"/> is a selector matrix with zeros and one &#8216;1&#8217; per
+row.  <img class="math" src="../../_images/math/da18cb43129ad7e5fdb8b2ff54d74a894cb5a9a2.png" alt="E_{ij} = 1"/> means that the i&#8217;th training vector is
+associated with the j&#8217;th uncertainty ellipsoid. For <img class="math" src="../../_images/math/7d18e301247447e4600046af051b2bfe857faaa0.png" alt="t = 0"/>, the
+term <img class="math" src="../../_images/math/1491c814eb06e81a60c824c6b98da33827bd44dd.png" alt="Eu"/> and the norm constraints are absent, and the problem
 reduces to the standard linear SVM</p>
 <div class="math">
-<p><img src="../../_images/math/4b0f84aeebeb6b826c8899a5004bbb10f74ea5a7.png" alt="\begin{array}{ll}
+<p><img src="../../_images/math/c77800e09aad8eb2519b39737a77d03968ae37aa.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; (1/2) w^Tw + \gamma \mathbf{1}^Tv \\
 \mbox{subject to} &amp; \mathbf{diag}(d)(Xw + b \mathbf{1} )
                     \succeq 1 - v  \\
                   &amp; v \succeq 0.
 \end{array}"/></p>
 </div><h3> Documentation </h3><p>A custom solver for the robust SVM problem is available as a Python
-module <a class="reference download internal" href="../../_downloads/robsvm.py"><code class="xref download docutils literal"><span class="pre">robsvm.py</span></code></a>. The  module implements the following function:</p>
+module <a class="reference download internal" href="../../_downloads/robsvm.py" download=""><code class="xref download docutils literal"><span class="pre">robsvm.py</span></code></a>. The  module implements the following function:</p>
 <blockquote>
 <div><dl class="function">
 <dt id="robsvm">
 <code class="descname">robsvm</code><span class="sig-paren">(</span><em>X</em>, <em>labels</em>, <em>gamma</em>, <em>P</em>, <em>e</em><span class="sig-paren">)</span><a class="headerlink" href="#robsvm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the &#8216;soft-margin&#8217; robust SVM problem.</p>
-<p>The first three input arguments are the data matrix <img class="math" src="../../_images/math/f026aecf11ec7f6141ab863f260d395f94b10f51.png" alt="X"/>
-(with the <img class="math" src="../../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> training examples <img class="math" src="../../_images/math/35d06a2aa8de54e78a4b0902eeb76f8a46587dc2.png" alt="x_i^T"/> as rows),
-the label vector <img class="math" src="../../_images/math/425d86ba2f2979d75b7535c2bcf92c33ed6b285a.png" alt="d"/>, and the positive parameter
-<img class="math" src="../../_images/math/0ebb67342b546ca42a1c634b1ef03c893c4cdedb.png" alt="\gamma"/>. The fourth input argument <cite>P</cite> must be a Python
-list of <img class="math" src="../../_images/math/ef9270877405055756d345facd044e4ab297f858.png" alt="t"/> matrices <img class="math" src="../../_images/math/bd42876874100c2265907bb6594cf23f11974a5a.png" alt="S_1,\ldots,S_t"/>. The last
-argument <cite>e</cite> is an <img class="math" src="../../_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/>-vector where the i&#8217;th element
-<img class="math" src="../../_images/math/48c186721234cdb239ed987478b540f557ba900b.png" alt="e_i \in \{0,..,t-1\}"/> is the index of the uncertainty
+<p>The first three input arguments are the data matrix <img class="math" src="../../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/>
+(with the <img class="math" src="../../_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/> training examples <img class="math" src="../../_images/math/cfc2ae31c0b62416b21a41638a288a510a8d0612.png" alt="x_i^T"/> as rows),
+the label vector <img class="math" src="../../_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/>, and the positive parameter
+<img class="math" src="../../_images/math/3666981dc77862de77b6ecfcb64aad59b425cbaf.png" alt="\gamma"/>. The fourth input argument <cite>P</cite> must be a Python
+list of <img class="math" src="../../_images/math/5ec053cf70dc1c98cc297322250569eda193e7a4.png" alt="t"/> matrices <img class="math" src="../../_images/math/277d4d6fcd5425494233f1d7bb70dc506769a95d.png" alt="S_1,\ldots,S_t"/>. The last
+argument <cite>e</cite> is an <img class="math" src="../../_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/>-vector where the i&#8217;th element
+<img class="math" src="../../_images/math/98fd14343cce41d999f819809be54423d320eaa6.png" alt="e_i \in \{0,..,t-1\}"/> is the index of the uncertainty
 ellipsoid associated with the i&#8217;th training vector.</p>
-<p>The function returns <img class="math" src="../../_images/math/8659700e6646cd91bc02c32affaa5ec046ee9935.png" alt="w"/>, <img class="math" src="../../_images/math/5e87bf41a96deddf6cb485ff530f153f2590e9cc.png" alt="b"/>, <img class="math" src="../../_images/math/e5fc41b391867da81606413e3389c7efc73abaf0.png" alt="u"/>, <img class="math" src="../../_images/math/0e22076955898e6c9bb38aa079135195c24dc81e.png" alt="v"/>,
+<p>The function returns <img class="math" src="../../_images/math/ecd1ee2a1cd226b40c37e079aca62398d4b774f5.png" alt="w"/>, <img class="math" src="../../_images/math/57c9d14bb082716df9000146882ce365335d08f1.png" alt="b"/>, <img class="math" src="../../_images/math/92e3f44c99a016c5238a790c96f12fd46aa93c4a.png" alt="u"/>, <img class="math" src="../../_images/math/8d230554a01423c4c6560104b2918b65607c9406.png" alt="v"/>,
 and the number of iterations (an integer).</p>
 </dd></dl>
 
 </div></blockquote>
-<h3> Example </h3><div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">robsvm</span> <span class="kn">import</span> <span class="n">robsvm</span>
-<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">uniform</span>
+<h3> Example </h3><div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robsvm</span> <span class="k">import</span> <span class="n">robsvm</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">uniform</span>
 
-<span class="c"># parameters</span>
+<span class="c1"># parameters</span>
 <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">2</span>
 <span class="n">gamma</span> <span class="o">=</span> <span class="mf">10.0</span>
 
-<span class="c"># generate random problem data</span>
+<span class="c1"># generate random problem data</span>
 <span class="n">X</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">uniform</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">)</span><span class="o">-</span><span class="mf">1.0</span>
 <span class="n">d</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mi">1</span><span class="p">,(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 
-<span class="c"># generate noisy labels</span>
+<span class="c1"># generate noisy labels</span>
 <span class="n">w0</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">])</span><span class="o">+</span><span class="n">normal</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span> <span class="n">b0</span> <span class="o">=</span> <span class="mf">0.4</span>
 <span class="n">z</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">*</span><span class="n">w0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">b0</span> <span class="o">&lt;</span> <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 
-<span class="c"># generate uncertainty ellipsoids</span>
+<span class="c1"># generate uncertainty ellipsoids</span>
 <span class="n">k</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">P</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="o">*</span><span class="n">normal</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
 <span class="n">P</span> <span class="o">=</span> <span class="p">[</span> <span class="n">p</span><span class="o">.</span><span class="n">T</span><span class="o">*</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">P</span><span class="p">]</span>
 <span class="n">e</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mi">0</span><span class="p">,(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xrange</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="c"># solve SVM training problem</span>
+<span class="c1"># solve SVM training problem</span>
 <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">iterations</span> <span class="o">=</span> <span class="n">robsvm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -224,8 +227,8 @@ and the number of iterations (an integer).</p>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2015, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Sep 22, 2015.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Nov 30, 2016.
     </p>
   </div>
 
@@ -245,7 +248,7 @@ and the number of iterations (an integer).</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -271,7 +274,7 @@ and the number of iterations (an integer).</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 <script>

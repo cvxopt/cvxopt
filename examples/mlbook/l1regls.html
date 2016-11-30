@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="../../search.html"/>
         <link rel="copyright" title="Copyright" href="../../copyright.html"/>
     <link rel="top" title="CVXOPT" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
@@ -68,8 +69,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-with-atlas">Building CVXOPT with ATLAS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-for-windows">Building CVXOPT for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#windows">Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
@@ -129,30 +132,30 @@
             
   <div class="section" id="l1-norm-regularized-least-squares">
 <h1>L1-norm regularized least-squares<a class="headerlink" href="#l1-norm-regularized-least-squares" title="Permalink to this headline">¶</a></h1>
-<p>We consider a least-squares problem with <img class="math" src="../../_images/math/ed1224e5faf752a5cd66f7e2468ecc4f14208cf9.png" alt="\ell_1"/>-norm
+<p>We consider a least-squares problem with <img class="math" src="../../_images/math/a301afaec3a8e4e639ad1d14140c7c5470a8eef2.png" alt="\ell_1"/>-norm
 regularization</p>
 <div class="math" id="equation-regls">
-<p><span class="eqno">(1)</span><img src="../../_images/math/eb5ed41a29eacbafb1e38c0ed39d12be8f6cadc4.png" alt="\begin{array}{ll}
+<p><span class="eqno">(1)</span><img src="../../_images/math/e74cd75a0413f0ddd22ad3e26b39314c7745e159.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp;  \| Ax - b \|_2^2  + \| x \|_1
 \end{array}"/></p>
-</div><p>with variable <img class="math" src="../../_images/math/896492040fde43f6f2f24406593e9fedbf52a2be.png" alt="x \in \mathbf{R}^n"/> and problem data <img class="math" src="../../_images/math/99fdb1b8210428a1b5757b885dfd5678cda31fe8.png" alt="A \in \mathbf{R}^{m \times n}"/> and <img class="math" src="../../_images/math/65f9647f44d4ddf5609e52cd69ac1a0bd1770908.png" alt="b \in
+</div><p>with variable <img class="math" src="../../_images/math/44d07c846295627aabe4ea050beac4e3f2d215b8.png" alt="x \in \mathbf{R}^n"/> and problem data <img class="math" src="../../_images/math/6420ecf43abdffa29510fd39ecee621412af6a6c.png" alt="A \in \mathbf{R}^{m \times n}"/> and <img class="math" src="../../_images/math/e742ebb51605f57e449436d723a77a55e8a331b9.png" alt="b \in
 \mathbf{R}^m"/>. The problem is equivalent to a QP</p>
 <div class="math" id="equation-regls_qp">
-<p><span class="eqno">(2)</span><img src="../../_images/math/7c0ca6bdc5c1bb7d547e764a50330794b6d10aac.png" alt="\begin{array}{ll}
+<p><span class="eqno">(2)</span><img src="../../_images/math/9e5600bd5cde8ed6fa28e455c7bcd8e777c157fe.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; \| Ax - b \|_2^2  +  \mathbf{1}^Tv\\
 \mbox{subject to} &amp; -v \preceq x \preceq v
 \end{array}"/></p>
-</div><p>with <img class="math" src="../../_images/math/d21790ee4259a72b655b00bfa761aaa3727ff1f6.png" alt="2n"/> variables and <img class="math" src="../../_images/math/d21790ee4259a72b655b00bfa761aaa3727ff1f6.png" alt="2n"/> constraints. The problem can
+</div><p>with <img class="math" src="../../_images/math/8a1ab61a49bf0439e8492a826f93c358646ff302.png" alt="2n"/> variables and <img class="math" src="../../_images/math/8a1ab61a49bf0439e8492a826f93c358646ff302.png" alt="2n"/> constraints. The problem can
 also be written as a separable QP</p>
 <div class="math" id="equation-regls_qp2">
-<p><span class="eqno">(3)</span><img src="../../_images/math/ac62b548f339a34427cd697d99fd1be4d999603f.png" alt="\begin{array}{ll}
+<p><span class="eqno">(3)</span><img src="../../_images/math/7c97d492aa9d5da0c965095f89a8f5b35b8ae2fb.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; w^Tw + e^Tu\\
 \mbox{subject to} &amp; -u \preceq x \preceq u \\
                   &amp; Ax - w = b.
 \end{array}"/></p>
-</div><h3> Documentation </h3><p>Solvers for the <img class="math" src="../../_images/math/ed1224e5faf752a5cd66f7e2468ecc4f14208cf9.png" alt="\ell_1"/>-norm regularized least-squares problem are
-available as a Python module <a class="reference download internal" href="../../_downloads/l1regls.py"><code class="xref download docutils literal"><span class="pre">l1regls.py</span></code></a>
-(or <a class="reference download internal" href="../../_downloads/l1regls_mosek6.py"><code class="xref download docutils literal"><span class="pre">l1regls_mosek6.py</span></code></a> for earlier
+</div><h3> Documentation </h3><p>Solvers for the <img class="math" src="../../_images/math/a301afaec3a8e4e639ad1d14140c7c5470a8eef2.png" alt="\ell_1"/>-norm regularized least-squares problem are
+available as a Python module <a class="reference download internal" href="../../_downloads/l1regls.py" download=""><code class="xref download docutils literal"><span class="pre">l1regls.py</span></code></a>
+(or <a class="reference download internal" href="../../_downloads/l1regls_mosek6.py" download=""><code class="xref download docutils literal"><span class="pre">l1regls_mosek6.py</span></code></a> for earlier
 versions of CVXOPT that use MOSEK 6). The module implements
 the following three functions:</p>
 <blockquote>
@@ -160,7 +163,7 @@ the following three functions:</p>
 <dt id="l1regls">
 <code class="descname">l1regls</code><span class="sig-paren">(</span><em>A</em>, <em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#l1regls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a href="#equation-regls_qp">(2)</a> using a custom KKT solver.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/>.</p>
 </dd></dl>
 
 <dl class="function">
@@ -168,7 +171,7 @@ the following three functions:</p>
 <code class="descname">l1regls_mosek</code><span class="sig-paren">(</span><em>A</em>, <em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#l1regls_mosek" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a href="#equation-regls_qp">(2)</a> using MOSEK. This function is
 only available if MOSEK is installed.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/>.</p>
 </dd></dl>
 
 <dl class="function">
@@ -176,12 +179,12 @@ only available if MOSEK is installed.</p>
 <code class="descname">l1regls_mosek2</code><span class="sig-paren">(</span><em>A</em>, <em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#l1regls_mosek2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a href="#equation-regls_qp2">(3)</a> using MOSEK. This function is
 only available if MOSEK is installed.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/>.</p>
 </dd></dl>
 
 </div></blockquote>
-<h3> Example </h3><div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">l1regls</span> <span class="kn">import</span> <span class="n">l1regls</span>
-<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">normal</span>
+<h3> Example </h3><div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">l1regls</span> <span class="k">import</span> <span class="n">l1regls</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">normal</span>
 
 <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">200</span>
 <span class="n">A</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
@@ -208,8 +211,8 @@ only available if MOSEK is installed.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2015, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Sep 22, 2015.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Nov 30, 2016.
     </p>
   </div>
 
@@ -229,7 +232,7 @@ only available if MOSEK is installed.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -255,7 +258,7 @@ only available if MOSEK is installed.</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 <script>

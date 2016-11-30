@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="../../search.html"/>
         <link rel="copyright" title="Copyright" href="../../copyright.html"/>
     <link rel="top" title="CVXOPT" href="../../index.html"/> 
 
@@ -65,8 +66,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-with-atlas">Building CVXOPT with ATLAS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-for-windows">Building CVXOPT for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#windows">Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
@@ -126,7 +129,7 @@
 <h1>Generating random sparse matrices<a class="headerlink" href="#generating-random-sparse-matrices" title="Permalink to this headline">¶</a></h1>
 <p>
 <a href="src/sprandmtrx.py">source code</a>
-</p><div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">normal</span>
+</p><div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">normal</span>
 <span class="kn">import</span> <span class="nn">random</span>
 
 <span class="k">def</span> <span class="nf">sp_rand</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">a</span><span class="p">):</span>
@@ -137,7 +140,7 @@
 
      <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="n">spmatrix</span><span class="p">([],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
      <span class="n">nnz</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">n</span><span class="p">))),</span> <span class="n">m</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
-     <span class="n">nz</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">xrange</span><span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="n">n</span><span class="p">),</span> <span class="n">nnz</span><span class="p">),</span> <span class="n">tc</span><span class="o">=</span><span class="s">&#39;i&#39;</span><span class="p">)</span>
+     <span class="n">nz</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">xrange</span><span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="n">n</span><span class="p">),</span> <span class="n">nnz</span><span class="p">),</span> <span class="n">tc</span><span class="o">=</span><span class="s1">&#39;i&#39;</span><span class="p">)</span>
      <span class="k">return</span> <span class="n">spmatrix</span><span class="p">(</span><span class="n">normal</span><span class="p">(</span><span class="n">nnz</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">nz</span><span class="o">%</span><span class="n">m</span><span class="p">,</span> <span class="n">nz</span><span class="o">/</span><span class="n">m</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -152,8 +155,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2015, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Sep 22, 2015.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Nov 30, 2016.
     </p>
   </div>
 
@@ -173,7 +176,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -199,7 +202,7 @@
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 <script>

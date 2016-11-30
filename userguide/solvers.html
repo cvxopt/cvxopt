@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="search.html"/>
         <link rel="copyright" title="Copyright" href="copyright.html"/>
     <link rel="top" title="CVXOPT User&#39;s Guide" href="index.html"/>
         <link rel="next" title="Modeling" href="modeling.html"/>
@@ -117,7 +118,7 @@
 <li class="toctree-l2"><a class="reference internal" href="coneprog.html#algorithm-parameters">Algorithm Parameters</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Nonlinear Convex Optimization</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Nonlinear Convex Optimization</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#problems-with-nonlinear-objectives">Problems with Nonlinear Objectives</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#problems-with-linear-objectives">Problems with Linear Objectives</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#geometric-programming">Geometric Programming</a></li>
@@ -177,21 +178,21 @@
 <p>In this chapter we consider nonlinear convex optimization problems of the
 form</p>
 <div class="math">
-<p><img src="_images/math/d76965f1a033d354c739074571c898e2d6d90094.png" alt="\begin{array}{ll}
+<p><img src="_images/math/891b88f17924c3c466921b46bd28a9bd938f6ed2.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; f_0(x) \\
 \mbox{subject to} &amp; f_k(x) \leq 0, \quad k=1,\ldots,m \\
                   &amp; G x \preceq h  \\
                   &amp; A x = b.
 \end{array}"/></p>
-</div><p>The functions <img class="math" src="_images/math/0e154998003cfc278f08dc96371848b75ea42fd9.png" alt="f_k"/> are convex and twice differentiable and the
+</div><p>The functions <img class="math" src="_images/math/a16a7dbef0ea0c165402420027a0a88e26de4536.png" alt="f_k"/> are convex and twice differentiable and the
 linear inequalities are generalized inequalities with respect to a proper
 convex cone, defined as a product of a nonnegative orthant, second-order
 cones, and positive semidefinite cones.</p>
 <p>The basic functions are <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal"><span class="pre">cp</span></code></a> and
 <a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code></a>, described in the sections
-<a class="reference internal" href="#s-cp"><span>Problems with Nonlinear Objectives</span></a> and <a class="reference internal" href="#s-cpl"><span>Problems with Linear Objectives</span></a>.   A simpler interface for geometric
-programming problems is discussed in the section <a class="reference internal" href="#s-gp"><span>Geometric Programming</span></a>.
-In the section <a class="reference internal" href="#s-nlcp"><span>Exploiting Structure</span></a> we explain how custom solvers can be
+<a class="reference internal" href="#s-cp"><span class="std std-ref">Problems with Nonlinear Objectives</span></a> and <a class="reference internal" href="#s-cpl"><span class="std std-ref">Problems with Linear Objectives</span></a>.   A simpler interface for geometric
+programming problems is discussed in the section <a class="reference internal" href="#s-gp"><span class="std std-ref">Geometric Programming</span></a>.
+In the section <a class="reference internal" href="#s-nlcp"><span class="std std-ref">Exploiting Structure</span></a> we explain how custom solvers can be
 implemented that exploit structure in specific classes of problems.
 The last section
 describes the algorithm parameters that control the solvers.</p>
@@ -202,7 +203,7 @@ describes the algorithm parameters that control the solvers.</p>
 <code class="descclassname">cvxopt.solvers.</code><code class="descname">cp</code><span class="sig-paren">(</span><em>F</em><span class="optional">[</span>, <em>G</em>, <em>h</em><span class="optional">[</span>, <em>dims</em><span class="optional">[</span>, <em>A</em>, <em>b</em><span class="optional">[</span>, <em>kktsolver</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a convex optimization problem</p>
 <div class="math" id="equation-e-nlcp">
-<p><span class="eqno">(1)</span><img src="_images/math/e9f7483f134d4b791c23663683f97a82ba62b056.png" alt="\begin{array}{ll}
+<p><span class="eqno">(1)</span><img src="_images/math/1dd7d279d208e0c3ddbbac62828e346ee154581a.png" alt="\begin{array}{ll}
     \mbox{minimize}   &amp; f_0(x) \\
     \mbox{subject to} &amp; f_k(x) \leq 0, \quad k=1,\ldots,m \\
                       &amp; G x \preceq h  \\
@@ -212,43 +213,43 @@ describes the algorithm parameters that control the solvers.</p>
 nonlinear constraint functions.  It must handle the following calling
 sequences.</p>
 <ul>
-<li><p class="first"><code class="docutils literal"><span class="pre">F()</span></code> returns a tuple (<code class="docutils literal"><span class="pre">m</span></code>, <code class="docutils literal"><span class="pre">x0</span></code>), where <img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/> is
-the number of nonlinear constraints and <img class="math" src="_images/math/c3c08496f07567285212e468b173bea9ca153fab.png" alt="x_0"/> is a point in
-the domain of <img class="math" src="_images/math/0001d02b63ede2fe3219e05a7cd09c82ae6298b6.png" alt="f"/>.  <code class="docutils literal"><span class="pre">x0</span></code> is a dense real matrix of size
-(<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, 1).</p>
+<li><p class="first"><code class="docutils literal"><span class="pre">F()</span></code> returns a tuple (<code class="docutils literal"><span class="pre">m</span></code>, <code class="docutils literal"><span class="pre">x0</span></code>), where <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> is
+the number of nonlinear constraints and <img class="math" src="_images/math/307e583980f527b3f26e1e159435e0a8d262736b.png" alt="x_0"/> is a point in
+the domain of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>.  <code class="docutils literal"><span class="pre">x0</span></code> is a dense real matrix of size
+(<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1).</p>
 </li>
-<li><p class="first"><code class="docutils literal"><span class="pre">F(x)</span></code>, with <code class="docutils literal"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, 1),
+<li><p class="first"><code class="docutils literal"><span class="pre">F(x)</span></code>, with <code class="docutils literal"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1),
 returns a tuple (<code class="docutils literal"><span class="pre">f</span></code>, <code class="docutils literal"><span class="pre">Df</span></code>).  <code class="docutils literal"><span class="pre">f</span></code> is a dense real matrix of
-size (<img class="math" src="_images/math/17e7c9a88fff44f20b2b7d58caa082246c177d64.png" alt="m+1"/>, 1), with <code class="docutils literal"><span class="pre">f[k]</span></code> equal to <img class="math" src="_images/math/fb5edeffaf21bca5d920ea2fb9ed088cb574281f.png" alt="f_k(x)"/>.
-(If <img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/> is zero, <code class="docutils literal"><span class="pre">f</span></code> can also be returned as a number.)
-<code class="docutils literal"><span class="pre">Df</span></code> is a dense or sparse real matrix of size (<img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/> + 1,
-<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>) with <code class="docutils literal"><span class="pre">Df[k,:]</span></code> equal to the transpose of the
-gradient <img class="math" src="_images/math/562b5099bcca7182c340b5c730982e24aca78314.png" alt="\nabla f_k(x)"/>.  If <img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/> is not in the domain
-of <img class="math" src="_images/math/0001d02b63ede2fe3219e05a7cd09c82ae6298b6.png" alt="f"/>, <code class="docutils literal"><span class="pre">F(x)</span></code> returns <code class="xref py py-const docutils literal"><span class="pre">None</span></code> or a tuple
+size (<img class="math" src="_images/math/edec40cd12b3d08dac5b9da86d7f4f0170e2da1e.png" alt="m+1"/>, 1), with <code class="docutils literal"><span class="pre">f[k]</span></code> equal to <img class="math" src="_images/math/3c0b0ce8e71182c7b2607dfa04b31f7a62d1bf08.png" alt="f_k(x)"/>.
+(If <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> is zero, <code class="docutils literal"><span class="pre">f</span></code> can also be returned as a number.)
+<code class="docutils literal"><span class="pre">Df</span></code> is a dense or sparse real matrix of size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> + 1,
+<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) with <code class="docutils literal"><span class="pre">Df[k,:]</span></code> equal to the transpose of the
+gradient <img class="math" src="_images/math/0e2ea72e52b611ad8a9f16109340d69b717036d5.png" alt="\nabla f_k(x)"/>.  If <img class="math" src="_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/> is not in the domain
+of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>, <code class="docutils literal"><span class="pre">F(x)</span></code> returns <code class="xref py py-const docutils literal"><span class="pre">None</span></code> or a tuple
 (<code class="xref py py-const docutils literal"><span class="pre">None</span></code>, <code class="xref py py-const docutils literal"><span class="pre">None</span></code>).</p>
 </li>
-<li><p class="first"><code class="docutils literal"><span class="pre">F(x,z)</span></code>, with <code class="docutils literal"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, 1)
-and <code class="docutils literal"><span class="pre">z</span></code> a positive dense real matrix of size (<img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/> + 1, 1)
+<li><p class="first"><code class="docutils literal"><span class="pre">F(x,z)</span></code>, with <code class="docutils literal"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1)
+and <code class="docutils literal"><span class="pre">z</span></code> a positive dense real matrix of size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> + 1, 1)
 returns a tuple (<code class="docutils literal"><span class="pre">f</span></code>, <code class="docutils literal"><span class="pre">Df</span></code>, <code class="docutils literal"><span class="pre">H</span></code>).  <code class="docutils literal"><span class="pre">f</span></code> and <code class="docutils literal"><span class="pre">Df</span></code> are
 defined as above.  <code class="docutils literal"><span class="pre">H</span></code> is a square dense or sparse real matrix of
-size (<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>), whose lower triangular part contains
+size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>), whose lower triangular part contains
 the lower triangular part of</p>
 <div class="math">
-<p><img src="_images/math/59bb1e408af7fa4b18883af769320f0f79abd8b0.png" alt="z_0 \nabla^2f_0(x) + z_1 \nabla^2f_1(x) + \cdots +
+<p><img src="_images/math/5ffc98c086faf80af48ced3587e76f4c79a413db.png" alt="z_0 \nabla^2f_0(x) + z_1 \nabla^2f_1(x) + \cdots +
     z_m \nabla^2f_m(x)."/></p>
 </div><p>If <code class="docutils literal"><span class="pre">F</span></code> is called with two arguments, it can be assumed that
-<img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/> is in the domain of <img class="math" src="_images/math/0001d02b63ede2fe3219e05a7cd09c82ae6298b6.png" alt="f"/>.</p>
+<img class="math" src="_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/> is in the domain of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>.</p>
 </li>
 </ul>
-<p>The linear inequalities are with respect to a cone <img class="math" src="_images/math/2bcc65482aa8e15cd4c9e9f2542451fb4e971a91.png" alt="C"/> defined
+<p>The linear inequalities are with respect to a cone <img class="math" src="_images/math/afce44aa7c55836ca9345404c22fc7b599d2ed84.png" alt="C"/> defined
 as a Cartesian product of a nonnegative orthant, a number of
 second-order cones, and a number of positive semidefinite cones:</p>
 <div class="math">
-<p><img src="_images/math/ec0606574b5c69317afdafe1c02bce1ce201f7a7.png" alt="C = C_0 \times C_1 \times \cdots \times C_M \times C_{M+1} \times
+<p><img src="_images/math/d9edbe174963021f4447cfe2aca6baeb0df0e278.png" alt="C = C_0 \times C_1 \times \cdots \times C_M \times C_{M+1} \times
     \cdots \times C_{M+N}"/></p>
 </div><p>with</p>
 <div class="math">
-<p><img src="_images/math/fcd1cfebe325cf88db061ad2327f0db3a8aba939.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
+<p><img src="_images/math/aca583f1ee40e3eb9c29c6e1f8c705232ee8dc77.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
 \newcommand{\svec}{\mathop{\mathbf{vec}}}
 \newcommand{\symm}{{\mbox{\bf S}}}
 \begin{split}
@@ -259,7 +260,7 @@ second-order cones, and a number of positive semidefinite cones:</p>
     C_{k+M+1} &amp; = \left\{ \svec(u) \; | \; u \in \symm^{t_k}_+
         \right\}, \quad k=0,\ldots,N-1.
 \end{split}"/></p>
-</div><p>Here <img class="math" src="_images/math/4b78615a721358c983b51554b59f51f691a9494e.png" alt="\mathbf{vec}(u)"/> denotes a symmetric matrix <img class="math" src="_images/math/e5fc41b391867da81606413e3389c7efc73abaf0.png" alt="u"/>
+</div><p>Here <img class="math" src="_images/math/3f388864dffc1723d778509bebc50ffa11beb27d.png" alt="\mathbf{vec}(u)"/> denotes a symmetric matrix <img class="math" src="_images/math/92e3f44c99a016c5238a790c96f12fd46aa93c4a.png" alt="u"/>
 stored as a vector in column major order.</p>
 <p>The arguments <code class="docutils literal"><span class="pre">h</span></code> and <code class="docutils literal"><span class="pre">b</span></code> are real single-column dense matrices.
 <code class="docutils literal"><span class="pre">G</span></code> and <code class="docutils literal"><span class="pre">A</span></code> are real dense or sparse matrices.  The default values
@@ -267,14 +268,14 @@ for <code class="docutils literal"><span class="pre">A</span></code> and <code c
 there are no equality constraints.  The number of rows of <code class="docutils literal"><span class="pre">G</span></code> and
 <code class="docutils literal"><span class="pre">h</span></code> is equal to</p>
 <div class="math">
-<p><img src="_images/math/1a6d47f6a30b97355a4f98e1d0a9b292e6d6caf8.png" alt="K = l + \sum_{k=0}^{M-1} r_k + \sum_{k=0}^{N-1} t_k^2."/></p>
+<p><img src="_images/math/caa71a9b77cfd382474d0f3a9d79df47ece035d8.png" alt="K = l + \sum_{k=0}^{M-1} r_k + \sum_{k=0}^{N-1} t_k^2."/></p>
 </div><p>The columns of <code class="docutils literal"><span class="pre">G</span></code> and <code class="docutils literal"><span class="pre">h</span></code> are vectors in</p>
 <div class="math">
-<p><img src="_images/math/1326e652fceec639bac58f329d8b397f2fe251d2.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
+<p><img src="_images/math/ba4c0fd6d9ed059a067b57b0d283ab58b0edb3af.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
 \reals^l \times \reals^{r_0} \times \cdots \times
 \reals^{r_{M-1}} \times \reals^{t_0^2}  \times \cdots \times
 \reals^{t_{N-1}^2},"/></p>
-</div><p>where the last <img class="math" src="_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> components represent symmetric matrices stored
+</div><p>where the last <img class="math" src="_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/> components represent symmetric matrices stored
 in column major order.  The strictly upper triangular entries of these
 matrices are not accessed (i.e., the symmetric matrices are stored
 in the <code class="xref py py-const docutils literal"><span class="pre">'L'</span></code>-type column major order used in the <code class="xref py py-mod docutils literal"><span class="pre">blas</span></code>
@@ -283,13 +284,13 @@ and <code class="xref py py-mod docutils literal"><span class="pre">lapack</span
 It has three fields.</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">dims['l']</span></code>:</dt>
-<dd><img class="math" src="_images/math/d99efde75c84ef402a92cd4497530d2366fb112f.png" alt="l"/>, the dimension of the nonnegative orthant (a nonnegative
+<dd><img class="math" src="_images/math/b359488b993294ebbc2c7b30ab8f749dcbc6826d.png" alt="l"/>, the dimension of the nonnegative orthant (a nonnegative
 integer).</dd>
 <dt><code class="docutils literal"><span class="pre">dims['q']</span></code>:</dt>
-<dd><img class="math" src="_images/math/4a5a1bbcc3881a422d50385a7b28ba2f8b138058.png" alt="[r_0, \ldots, r_{M-1}]"/>, a list with the dimensions of the
+<dd><img class="math" src="_images/math/36ea2edb987d61b7a416f46b04c5ff585102d601.png" alt="[r_0, \ldots, r_{M-1}]"/>, a list with the dimensions of the
 second-order cones (positive integers).</dd>
 <dt><code class="docutils literal"><span class="pre">dims['s']</span></code>:</dt>
-<dd><img class="math" src="_images/math/7949c78c45dd5977a07f55aab72d3f7d7b991f19.png" alt="[t_0, \ldots, t_{N-1}]"/>, a list with the dimensions of the
+<dd><img class="math" src="_images/math/432ccc192ef023379324f33ea54f2c59fbf07df4.png" alt="[t_0, \ldots, t_{N-1}]"/>, a list with the dimensions of the
 positive semidefinite cones (nonnegative integers).</dd>
 </dl>
 <p>The default value of <code class="docutils literal"><span class="pre">dims</span></code> is
@@ -297,7 +298,7 @@ positive semidefinite cones (nonnegative integers).</dd>
 assumption is that the linear inequalities are componentwise
 inequalities.</p>
 <p>The role of the optional argument <code class="docutils literal"><span class="pre">kktsolver</span></code> is explained in the
-section <a class="reference internal" href="#s-nlcp"><span>Exploiting Structure</span></a>.</p>
+section <a class="reference internal" href="#s-nlcp"><span class="std std-ref">Exploiting Structure</span></a>.</p>
 <p><code class="xref py py-func docutils literal"><span class="pre">cp</span></code> returns a dictionary that contains the result and
 information about the accuracy of the solution.  The most important
 fields have keys <code class="xref py py-const docutils literal"><span class="pre">'status'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'x'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'snl'</span></code>,
@@ -314,7 +315,7 @@ with the nonlinear inequalities, the linear inequalities, and the
 linear equality constraints.  These vectors approximately satisfy
 the Karush-Kuhn-Tucker (KKT) conditions</p>
 <div class="math">
-<p><img src="_images/math/2b2364029e2c1a65dfb62512e8f0c3ab11beb083.png" alt="\nabla f_0(x) +  D\tilde f(x)^T z_\mathrm{nl} +
+<p><img src="_images/math/4c2d99527394ca9a69e6ec3af4749e444826dae5.png" alt="\nabla f_0(x) +  D\tilde f(x)^T z_\mathrm{nl} +
 G^T z_\mathrm{l} + A^T y = 0,
 
 \tilde f(x) + s_\mathrm{nl} = 0, \quad k=1,\ldots,m, \qquad
@@ -325,7 +326,7 @@ z_\mathrm{nl} \succeq 0, \qquad z_\mathrm{l} \succeq 0,
 
 s_\mathrm{nl}^T z_\mathrm{nl} +
 s_\mathrm{l}^T z_\mathrm{l} = 0"/></p>
-</div><p class="last">where <img class="math" src="_images/math/8005301c57dbcd3f8754173aaa142f457c62467a.png" alt="\tilde f = (f_1,\ldots, f_m)"/>.</p>
+</div><p class="last">where <img class="math" src="_images/math/5263638cee7138e0a51bc5c226dc6975f2f9c0d1.png" alt="\tilde f = (f_1,\ldots, f_m)"/>.</p>
 </dd>
 <dt><code class="xref py py-const docutils literal"><span class="pre">'unknown'</span></code></dt>
 <dd>This indicates that the algorithm terminated before a solution was
@@ -338,7 +339,7 @@ entries contain the iterates when the algorithm terminated.</dd>
 <a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code></a> to the epigraph
 form problem</p>
 <div class="math">
-<p><img src="_images/math/03eca013c1b38e9a3853974caeab3eea439da0d9.png" alt="\begin{array}{ll}
+<p><img src="_images/math/68a75e578d73fa99a03d8abcedb98203f378cafb.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; t \\
 \mbox{subject to} &amp; f_0(x) \leq t  \\
                   &amp; f_k(x) \leq 0, \quad k =1, \ldots, m \\
@@ -352,38 +353,38 @@ problem.</p>
 <p><code class="xref py py-func docutils literal"><span class="pre">cp</span></code> requires that the problem is strictly primal and dual
 feasible and that</p>
 <div class="math">
-<p><img src="_images/math/87202d921ebebf9a42f0d17a9823a59ee3f5c83c.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
+<p><img src="_images/math/0946b57c221471c3607b52bc6e4b8edcb9162b07.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
 \Rank(A) = p, \qquad
 \Rank \left( \left[ \begin{array}{cccccc}
      \sum_{k=0}^m z_k \nabla^2 f_k(x) &amp; A^T &amp;
       \nabla f_1(x) &amp; \cdots \nabla f_m(x) &amp; G^T
       \end{array} \right] \right) = n,"/></p>
-</div><p>for all <img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/> and all positive <img class="math" src="_images/math/84d7271dd9e78c1e05d6c3c6ecb60309ef7dfc73.png" alt="z"/>.</p>
+</div><p>for all <img class="math" src="_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/> and all positive <img class="math" src="_images/math/683f2dd9129a91d21aaf1c04afa6f78b39d4cb0a.png" alt="z"/>.</p>
 </dd></dl>
 
 <dl class="docutils">
 <dt><strong>Example: equality constrained analytic centering</strong></dt>
 <dd><p class="first">The equality constrained analytic centering problem is defined as</p>
 <div class="math">
-<p><img src="_images/math/f760f3b11939823c9b02bad5db429093145730a6.png" alt="\begin{array}{ll}
+<p><img src="_images/math/bb70bc52953a21bea92fe320822c089d36477948.png" alt="\begin{array}{ll}
 \mbox{minimize} &amp; -\sum\limits_{i=1}^m \log x_i \\
 \mbox{subject to} &amp; Ax = b.
 \end{array}"/></p>
 </div><p>The function <code class="xref py py-func docutils literal"><span class="pre">acent</span></code> defined  below solves the problem, assuming
 it is solvable.</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">log</span>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">log</span>
 
 <span class="k">def</span> <span class="nf">acent</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span>
-    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span> <span class="k">return</span> <span class="bp">None</span>
+    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span> <span class="k">return</span> <span class="kc">None</span>
         <span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="nb">sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
         <span class="n">Df</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="o">**-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-        <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">Df</span>
+        <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">Df</span>
         <span class="n">H</span> <span class="o">=</span> <span class="n">spdiag</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="o">**-</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">Df</span><span class="p">,</span> <span class="n">H</span>
-    <span class="k">return</span> <span class="n">solvers</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">)[</span><span class="s">&#39;x&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">solvers</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">)[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </dd>
@@ -391,25 +392,25 @@ it is solvable.</p>
 <dd><p class="first">The function <code class="xref py py-func docutils literal"><span class="pre">robls</span></code> defined below solves the unconstrained
 problem</p>
 <div class="math">
-<p><img src="_images/math/2c1eb4bcd966e568a1e947d8e1b29f2c87770b90.png" alt="\begin{array}{ll}
+<p><img src="_images/math/6fbadea27ea012c041c6ad34f038a2bb1a9a6eec.png" alt="\begin{array}{ll}
 \mbox{minimize} &amp;  \sum\limits_{k=1}^m \phi((Ax-b)_k),
 \end{array}
 \qquad \phi(u) = \sqrt{\rho + u^2},"/></p>
-</div><p>where <img class="math" src="_images/math/e558b0b209fc138468737f6695fef0795f8c8336.png" alt="A \in\mathbf{R}^{m\times n}"/>.</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">div</span>
+</div><p>where <img class="math" src="_images/math/726977cc88937e2a8bac10441f555f9306f97a48.png" alt="A \in\mathbf{R}^{m\times n}"/>.</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">div</span>
 
 <span class="k">def</span> <span class="nf">robls</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">rho</span><span class="p">):</span>
     <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span>
-    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">x</span><span class="o">-</span><span class="n">b</span>
         <span class="n">w</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">rho</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">f</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
         <span class="n">Df</span> <span class="o">=</span> <span class="n">div</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">A</span>
-        <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">Df</span>
+        <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">Df</span>
         <span class="n">H</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">spdiag</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">rho</span><span class="o">*</span><span class="p">(</span><span class="n">w</span><span class="o">**-</span><span class="mi">3</span><span class="p">))</span> <span class="o">*</span> <span class="n">A</span>
         <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">Df</span><span class="p">,</span> <span class="n">H</span>
-    <span class="k">return</span> <span class="n">solvers</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span><span class="n">F</span><span class="p">)[</span><span class="s">&#39;x&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">solvers</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span><span class="n">F</span><span class="p">)[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </dd>
@@ -417,7 +418,7 @@ problem</p>
 <p><strong>Example: analytic centering with cone constraints</strong></p>
 <blockquote>
 <div><div class="math">
-<p><img src="_images/math/8dd73eec3308cda7fab4013f76bc74e4ead2be0d.png" alt="\begin{array}{ll}
+<p><img src="_images/math/aa24856007d9d847f939fd246de33826a6b9e6f9.png" alt="\begin{array}{ll}
 \mbox{minimize}
     &amp; -\log(1-x_1^2) -\log(1-x_2^2) -\log(1-x_3^2) \\
 \mbox{subject to}
@@ -435,15 +436,15 @@ problem</p>
           20 &amp; 10 &amp; 40 \\ 10 &amp; 80 &amp; 10 \\ 40 &amp; 10 &amp; 15
           \end{array}\right].
 \end{array}"/></p>
-</div><div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">solvers</span>
+</div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">solvers</span>
 
-<span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
-     <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>  <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-     <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>  <span class="k">return</span> <span class="bp">None</span>
+<span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+     <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+     <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>  <span class="k">return</span> <span class="kc">None</span>
      <span class="n">u</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
      <span class="n">val</span> <span class="o">=</span> <span class="o">-</span><span class="nb">sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">u</span><span class="p">))</span>
      <span class="n">Df</span> <span class="o">=</span> <span class="n">div</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-     <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>  <span class="k">return</span> <span class="n">val</span><span class="p">,</span> <span class="n">Df</span>
+     <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="k">return</span> <span class="n">val</span><span class="p">,</span> <span class="n">Df</span>
      <span class="n">H</span> <span class="o">=</span> <span class="n">spdiag</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">div</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
      <span class="k">return</span> <span class="n">val</span><span class="p">,</span> <span class="n">Df</span><span class="p">,</span> <span class="n">H</span>
 
@@ -451,9 +452,9 @@ problem</p>
              <span class="p">[</span><span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>   <span class="mf">0.</span><span class="p">,</span>  <span class="mf">10.</span><span class="p">,</span>  <span class="mf">16.</span><span class="p">,</span>  <span class="mf">10.</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.</span><span class="p">,</span>  <span class="mf">16.</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>
              <span class="p">[</span><span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span>  <span class="o">-</span><span class="mf">5.</span><span class="p">,</span>   <span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mf">17.</span><span class="p">,</span>   <span class="mf">2.</span><span class="p">,</span>  <span class="o">-</span><span class="mf">6.</span><span class="p">,</span>   <span class="mf">8.</span><span class="p">,</span> <span class="o">-</span><span class="mf">17.</span><span class="p">,</span>  <span class="o">-</span><span class="mf">7.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]</span> <span class="p">])</span>
 <span class="n">h</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">20.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">40.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">80.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">40.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">,</span> <span class="mf">15.</span><span class="p">])</span>
-<span class="n">dims</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;l&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;q&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="s">&#39;s&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="mi">3</span><span class="p">]}</span>
+<span class="n">dims</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span>  <span class="p">[</span><span class="mi">3</span><span class="p">]}</span>
 <span class="n">sol</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">dims</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">])</span>
 <span class="p">[</span> <span class="mf">4.11e-01</span><span class="p">]</span>
 <span class="p">[</span> <span class="mf">5.59e-01</span><span class="p">]</span>
 <span class="p">[</span><span class="o">-</span><span class="mf">7.20e-01</span><span class="p">]</span>
@@ -468,7 +469,7 @@ problem</p>
 <code class="descclassname">cvxopt.solvers.</code><code class="descname">cpl</code><span class="sig-paren">(</span><em>c</em>, <em>F</em><span class="optional">[</span>, <em>G</em>, <em>h</em><span class="optional">[</span>, <em>dims</em><span class="optional">[</span>, <em>A</em>, <em>b</em><span class="optional">[</span>, <em>kktsolver</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cpl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a convex optimization problem with a linear objective</p>
 <div class="math">
-<p><img src="_images/math/fa72eb1a540cebc3dd7afb49700e6c0f08745b5c.png" alt="\begin{array}{ll}
+<p><img src="_images/math/9d98a76f7fc01cd7d39d5cfeb2285eed5d135d0e.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; c^T x \\
 \mbox{subject to} &amp; f_k(x) \leq 0, \quad k=0,\ldots,m-1 \\
                   &amp; G x \preceq h  \\
@@ -480,39 +481,39 @@ It must handle the following calling sequences.</p>
 <ul>
 <li><p class="first"><code class="docutils literal"><span class="pre">F()</span></code> returns a tuple (<code class="docutils literal"><span class="pre">m</span></code>, <code class="docutils literal"><span class="pre">x0</span></code>), where <code class="docutils literal"><span class="pre">m</span></code> is the
 number of nonlinear constraints and <code class="docutils literal"><span class="pre">x0</span></code> is a point in the domain
-of <img class="math" src="_images/math/0001d02b63ede2fe3219e05a7cd09c82ae6298b6.png" alt="f"/>.  <code class="docutils literal"><span class="pre">x0</span></code> is a dense real matrix of size (<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, 1).</p>
+of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>.  <code class="docutils literal"><span class="pre">x0</span></code> is a dense real matrix of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1).</p>
 </li>
-<li><p class="first"><code class="docutils literal"><span class="pre">F(x)</span></code>, with <code class="docutils literal"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, 1),
+<li><p class="first"><code class="docutils literal"><span class="pre">F(x)</span></code>, with <code class="docutils literal"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1),
 returns a tuple (<code class="docutils literal"><span class="pre">f</span></code>, <code class="docutils literal"><span class="pre">Df</span></code>).  <code class="docutils literal"><span class="pre">f</span></code> is a dense real matrix of
-size (<img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/>, 1), with <code class="docutils literal"><span class="pre">f[k]</span></code> equal to <img class="math" src="_images/math/fb5edeffaf21bca5d920ea2fb9ed088cb574281f.png" alt="f_k(x)"/>.
-<code class="docutils literal"><span class="pre">Df</span></code> is a dense or sparse real matrix of size (<img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/>,
-<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>) with <code class="docutils literal"><span class="pre">Df[k,:]</span></code> equal to the transpose of the
-gradient <img class="math" src="_images/math/562b5099bcca7182c340b5c730982e24aca78314.png" alt="\nabla f_k(x)"/>.  If <img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/> is not in the domain
-of <img class="math" src="_images/math/0001d02b63ede2fe3219e05a7cd09c82ae6298b6.png" alt="f"/>, <code class="docutils literal"><span class="pre">F(x)</span></code> returns <code class="xref py py-const docutils literal"><span class="pre">None</span></code> or a tuple
+size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>, 1), with <code class="docutils literal"><span class="pre">f[k]</span></code> equal to <img class="math" src="_images/math/3c0b0ce8e71182c7b2607dfa04b31f7a62d1bf08.png" alt="f_k(x)"/>.
+<code class="docutils literal"><span class="pre">Df</span></code> is a dense or sparse real matrix of size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>,
+<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) with <code class="docutils literal"><span class="pre">Df[k,:]</span></code> equal to the transpose of the
+gradient <img class="math" src="_images/math/0e2ea72e52b611ad8a9f16109340d69b717036d5.png" alt="\nabla f_k(x)"/>.  If <img class="math" src="_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/> is not in the domain
+of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>, <code class="docutils literal"><span class="pre">F(x)</span></code> returns <code class="xref py py-const docutils literal"><span class="pre">None</span></code> or a tuple
 (<code class="xref py py-const docutils literal"><span class="pre">None</span></code>, <code class="xref py py-const docutils literal"><span class="pre">None</span></code>).</p>
 </li>
-<li><p class="first"><code class="docutils literal"><span class="pre">F(x,z)</span></code>, with <code class="docutils literal"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, 1)
-and <code class="docutils literal"><span class="pre">z</span></code> a positive dense real matrix of size (<img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/>, 1)
+<li><p class="first"><code class="docutils literal"><span class="pre">F(x,z)</span></code>, with <code class="docutils literal"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1)
+and <code class="docutils literal"><span class="pre">z</span></code> a positive dense real matrix of size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>, 1)
 returns a tuple (<code class="docutils literal"><span class="pre">f</span></code>, <code class="docutils literal"><span class="pre">Df</span></code>, <code class="docutils literal"><span class="pre">H</span></code>).  <code class="docutils literal"><span class="pre">f</span></code> and <code class="docutils literal"><span class="pre">Df</span></code> are defined
 as above.  <code class="docutils literal"><span class="pre">H</span></code> is a square dense or sparse real matrix of size
-(<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>), whose lower triangular part contains the
+(<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>), whose lower triangular part contains the
 lower triangular part of</p>
 <div class="math">
-<p><img src="_images/math/30d55b93201cf02f91a4da14845291a7bc5f2fae.png" alt="z_0 \nabla^2f_0(x) + z_1 \nabla^2f_1(x) + \cdots +
+<p><img src="_images/math/ffe103c3355b97f4e158f8d9b8719f88a457bbe8.png" alt="z_0 \nabla^2f_0(x) + z_1 \nabla^2f_1(x) + \cdots +
 z_{m-1} \nabla^2f_{m-1}(x)."/></p>
 </div><p>If <code class="docutils literal"><span class="pre">F</span></code> is called with two arguments, it can be assumed that
-<img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/> is in the domain of <img class="math" src="_images/math/0001d02b63ede2fe3219e05a7cd09c82ae6298b6.png" alt="f"/>.</p>
+<img class="math" src="_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/> is in the domain of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>.</p>
 </li>
 </ul>
-<p>The linear inequalities are with respect to a cone <img class="math" src="_images/math/2bcc65482aa8e15cd4c9e9f2542451fb4e971a91.png" alt="C"/> defined as
+<p>The linear inequalities are with respect to a cone <img class="math" src="_images/math/afce44aa7c55836ca9345404c22fc7b599d2ed84.png" alt="C"/> defined as
 a Cartesian product of a nonnegative orthant, a number of second-order
 cones, and a number of positive semidefinite cones:</p>
 <div class="math">
-<p><img src="_images/math/c02c277280c0b3f1615a4f191b963a70fb36ecd8.png" alt="C = C_0 \times C_1 \times \cdots \times C_M \times C_{M+1} \times
+<p><img src="_images/math/d21b1fcbd82be036da4d5ff986f20a75f26a41fd.png" alt="C = C_0 \times C_1 \times \cdots \times C_M \times C_{M+1} \times
 \cdots \times C_{M+N}"/></p>
 </div><p>with</p>
 <div class="math">
-<p><img src="_images/math/3edfaee3e2a41aade18b71a49c852209260e87c2.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
+<p><img src="_images/math/75ecb7769f52103b2f7e2fae2364c55935c303b7.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
 \newcommand{\svec}{\mathop{\mathbf{vec}}}
 \newcommand{\symm}{{\mbox{\bf S}}}
 \begin{split}
@@ -522,7 +523,7 @@ C_{k+1} &amp;= \{ (u_0, u_1) \in \reals \times \reals^{r_{k}-1} \; | \;
 C_{k+M+1} &amp;= \left\{ \svec(u) \; | \;
     u \in \symm^{t_k}_+ \right\}, \quad k=0,\ldots,N-1.
 \end{split}"/></p>
-</div><p>Here <img class="math" src="_images/math/4b78615a721358c983b51554b59f51f691a9494e.png" alt="\mathbf{vec}(u)"/> denotes a symmetric matrix <img class="math" src="_images/math/e5fc41b391867da81606413e3389c7efc73abaf0.png" alt="u"/>
+</div><p>Here <img class="math" src="_images/math/3f388864dffc1723d778509bebc50ffa11beb27d.png" alt="\mathbf{vec}(u)"/> denotes a symmetric matrix <img class="math" src="_images/math/92e3f44c99a016c5238a790c96f12fd46aa93c4a.png" alt="u"/>
 stored as a vector in column major order.</p>
 <p>The arguments <code class="docutils literal"><span class="pre">h</span></code> and <code class="docutils literal"><span class="pre">b</span></code> are real single-column dense matrices.
 <code class="docutils literal"><span class="pre">G</span></code> and <code class="docutils literal"><span class="pre">A</span></code> are real dense or sparse matrices.  The default values
@@ -530,14 +531,14 @@ for <code class="docutils literal"><span class="pre">A</span></code> and <code c
 there are no equality constraints.  The number of rows of <code class="docutils literal"><span class="pre">G</span></code> and
 <code class="docutils literal"><span class="pre">h</span></code> is equal to</p>
 <div class="math">
-<p><img src="_images/math/1a6d47f6a30b97355a4f98e1d0a9b292e6d6caf8.png" alt="K = l + \sum_{k=0}^{M-1} r_k + \sum_{k=0}^{N-1} t_k^2."/></p>
+<p><img src="_images/math/caa71a9b77cfd382474d0f3a9d79df47ece035d8.png" alt="K = l + \sum_{k=0}^{M-1} r_k + \sum_{k=0}^{N-1} t_k^2."/></p>
 </div><p>The columns of <code class="docutils literal"><span class="pre">G</span></code> and <code class="docutils literal"><span class="pre">h</span></code> are vectors in</p>
 <div class="math">
-<p><img src="_images/math/1326e652fceec639bac58f329d8b397f2fe251d2.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
+<p><img src="_images/math/ba4c0fd6d9ed059a067b57b0d283ab58b0edb3af.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
 \reals^l \times \reals^{r_0} \times \cdots \times
 \reals^{r_{M-1}} \times \reals^{t_0^2}  \times \cdots \times
 \reals^{t_{N-1}^2},"/></p>
-</div><p>where the last <img class="math" src="_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> components represent symmetric matrices stored
+</div><p>where the last <img class="math" src="_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/> components represent symmetric matrices stored
 in column major order.  The strictly upper triangular entries of these
 matrices are not accessed (i.e., the symmetric matrices are stored
 in the <code class="xref py py-const docutils literal"><span class="pre">'L'</span></code>-type column major order used in the <code class="xref py py-mod docutils literal"><span class="pre">blas</span></code> and
@@ -546,13 +547,13 @@ in the <code class="xref py py-const docutils literal"><span class="pre">'L'</sp
 It has three fields.</p>
 <dl class="docutils">
 <dt><code class="docutils literal"><span class="pre">dims['l']</span></code>:</dt>
-<dd><img class="math" src="_images/math/d99efde75c84ef402a92cd4497530d2366fb112f.png" alt="l"/>, the dimension of the nonnegative orthant (a nonnegative
+<dd><img class="math" src="_images/math/b359488b993294ebbc2c7b30ab8f749dcbc6826d.png" alt="l"/>, the dimension of the nonnegative orthant (a nonnegative
 integer).</dd>
 <dt><code class="docutils literal"><span class="pre">dims['q']</span></code>:</dt>
-<dd><img class="math" src="_images/math/4a5a1bbcc3881a422d50385a7b28ba2f8b138058.png" alt="[r_0, \ldots, r_{M-1}]"/>, a list with the dimensions of the
+<dd><img class="math" src="_images/math/36ea2edb987d61b7a416f46b04c5ff585102d601.png" alt="[r_0, \ldots, r_{M-1}]"/>, a list with the dimensions of the
 second-order cones (positive integers).</dd>
 <dt><code class="docutils literal"><span class="pre">dims['s']</span></code>:</dt>
-<dd><img class="math" src="_images/math/7949c78c45dd5977a07f55aab72d3f7d7b991f19.png" alt="[t_0, \ldots, t_{N-1}]"/>, a list with the dimensions of the
+<dd><img class="math" src="_images/math/432ccc192ef023379324f33ea54f2c59fbf07df4.png" alt="[t_0, \ldots, t_{N-1}]"/>, a list with the dimensions of the
 positive semidefinite cones (nonnegative integers).</dd>
 </dl>
 <p>The default value of <code class="docutils literal"><span class="pre">dims</span></code> is
@@ -560,7 +561,7 @@ positive semidefinite cones (nonnegative integers).</dd>
 assumption is that the linear inequalities are componentwise
 inequalities.</p>
 <p>The role of the optional argument <code class="docutils literal"><span class="pre">kktsolver</span></code> is explained in the
-section <a class="reference internal" href="#s-nlcp"><span>Exploiting Structure</span></a>.</p>
+section <a class="reference internal" href="#s-nlcp"><span class="std std-ref">Exploiting Structure</span></a>.</p>
 <p><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code> returns a dictionary that contains the result and
 information about the accuracy of the solution.  The most important
 fields have keys <code class="xref py py-const docutils literal"><span class="pre">'status'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'x'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'snl'</span></code>,
@@ -577,7 +578,7 @@ associated with the nonlinear inequalities, the linear
 inequalities, and the linear equality constraints.  These vectors
 approximately satisfy the Karush-Kuhn-Tucker (KKT) conditions</p>
 <div class="last math">
-<p><img src="_images/math/da6c2abaedd5a781e19aa98607eca6a3d15288f5.png" alt="c +  Df(x)^T z_\mathrm{nl} + G^T z_\mathrm{l} + A^T y = 0,
+<p><img src="_images/math/7728f3298fe279280300191b17dd529624ff33b0.png" alt="c +  Df(x)^T z_\mathrm{nl} + G^T z_\mathrm{l} + A^T y = 0,
 
 f(x) + s_\mathrm{nl} = 0, \quad k=1,\ldots,m, \qquad
     Gx + s_\mathrm{l} = h, \qquad Ax = b,
@@ -598,16 +599,16 @@ entries contain the iterates when the algorithm terminated.</dd>
 </dl>
 <p>The other entries in the output dictionary describe the accuracy
 of the solution.  The entries <code class="xref py py-const docutils literal"><span class="pre">'primal</span> <span class="pre">objective'</span></code>,
-<code class="xref py py-const docutils literal"><span class="pre">'dual</span> <span class="pre">objective'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'gap'</span></code>, and <code class="xref py py-const docutils literal"><span class="pre">'relative</span> <span class="pre">gap'</span></code>     give the primal objective <img class="math" src="_images/math/567d706970f5fafe73762cfb27d1c51c65bd49e2.png" alt="c^Tx"/>, the dual objective, calculated
+<code class="xref py py-const docutils literal"><span class="pre">'dual</span> <span class="pre">objective'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'gap'</span></code>, and <code class="xref py py-const docutils literal"><span class="pre">'relative</span> <span class="pre">gap'</span></code>     give the primal objective <img class="math" src="_images/math/0940add1e3a60af86e727e639fe59c08263e4c11.png" alt="c^Tx"/>, the dual objective, calculated
 as</p>
 <div class="math">
-<p><img src="_images/math/d555fc582c6ae0fbb92f32567d87578eafa2be7a.png" alt="c^Tx + z_\mathrm{nl}^T f(x) + z_\mathrm{l}^T (Gx - h) + y^T(Ax-b),"/></p>
+<p><img src="_images/math/5673dfadcf895d10d82a27b5337a04e01fec5a28.png" alt="c^Tx + z_\mathrm{nl}^T f(x) + z_\mathrm{l}^T (Gx - h) + y^T(Ax-b),"/></p>
 </div><p>the duality gap</p>
 <div class="math">
-<p><img src="_images/math/50793b5b6c2d777f66cf1b8e1671fba966b2fb3c.png" alt="s_\mathrm{nl}^T z_\mathrm{nl} +  s_\mathrm{l}^T z_\mathrm{l},"/></p>
+<p><img src="_images/math/e53420de2fb2095efc6bdf535ba2437f45dbd56e.png" alt="s_\mathrm{nl}^T z_\mathrm{nl} +  s_\mathrm{l}^T z_\mathrm{l},"/></p>
 </div><p>and the relative gap.  The relative gap is defined as</p>
 <div class="math">
-<p><img src="_images/math/7dc222c37caf762ab8bae6587603cc12a151bb17.png" alt="\frac{\mbox{gap}}{-\mbox{primal objective}}
+<p><img src="_images/math/5a6709a3d241e3c7d45243a5fba2ed812cdaaf99.png" alt="\frac{\mbox{gap}}{-\mbox{primal objective}}
     \quad \mbox{if\ } \mbox{primal objective} &lt; 0, \qquad
 \frac{\mbox{gap}}{\mbox{dual objective}}
     \quad \mbox{if\ } \mbox{dual objective} &gt; 0,"/></p>
@@ -615,27 +616,27 @@ as</p>
 <code class="xref py py-const docutils literal"><span class="pre">'primal</span> <span class="pre">infeasibility'</span></code> gives the residual in the primal
 constraints,</p>
 <div class="math">
-<p><img src="_images/math/9f7ae16df27305a288220a25c67fec281582a178.png" alt="\newcommand{\ones}{{\bf 1}}
+<p><img src="_images/math/95c396807a80852bb5eb906d12bd1c5d23a3ac6c.png" alt="\newcommand{\ones}{{\bf 1}}
 \frac{\| ( f(x) + s_{\mathrm{nl}},  Gx + s_\mathrm{l} - h,
     Ax-b ) \|_2} {\max\{1, \| ( f(x_0) + \ones,
 Gx_0 + \ones-h, Ax_0-b) \|_2 \}}"/></p>
-</div><p>where <img class="math" src="_images/math/c3c08496f07567285212e468b173bea9ca153fab.png" alt="x_0"/> is the point returned by <code class="docutils literal"><span class="pre">F()</span></code>.  The entry
+</div><p>where <img class="math" src="_images/math/307e583980f527b3f26e1e159435e0a8d262736b.png" alt="x_0"/> is the point returned by <code class="docutils literal"><span class="pre">F()</span></code>.  The entry
 with key <code class="xref py py-const docutils literal"><span class="pre">'dual</span> <span class="pre">infeasibility'</span></code> gives the residual</p>
 <div class="math">
-<p><img src="_images/math/148494def4743e19b6ace5db936a26f5bf2a66ad.png" alt="\newcommand{\ones}{{\bf 1}}
+<p><img src="_images/math/45b394f7aeb822d8e41dfa855fa4c48f49912376.png" alt="\newcommand{\ones}{{\bf 1}}
 \frac
     { \| c +  Df(x)^Tz_\mathrm{nl} + G^Tz_\mathrm{l} + A^T y \|_2}
     { \max\{ 1, \| c + Df(x_0)^T\ones + G^T\ones \|_2 \} }."/></p>
 </div><p><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code> requires that the problem is strictly primal and dual
 feasible and that</p>
 <div class="math">
-<p><img src="_images/math/f2cfc079aca0e287101d38af0c5399937658a911.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
+<p><img src="_images/math/81184371d9f14b55f2c95d326e7f1fba2711d2ea.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
 \Rank(A) = p, \qquad
 \Rank\left(\left[\begin{array}{cccccc}
     \sum_{k=0}^{m-1} z_k \nabla^2 f_k(x) &amp; A^T &amp;
     \nabla f_0(x) &amp; \cdots \nabla f_{m-1}(x) &amp; G^T
     \end{array}\right]\right) = n,"/></p>
-</div><p>for all <img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/> and all positive <img class="math" src="_images/math/84d7271dd9e78c1e05d6c3c6ecb60309ef7dfc73.png" alt="z"/>.</p>
+</div><p>for all <img class="math" src="_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/> and all positive <img class="math" src="_images/math/683f2dd9129a91d21aaf1c04afa6f78b39d4cb0a.png" alt="z"/>.</p>
 </dd></dl>
 
 <dl class="docutils">
@@ -643,7 +644,7 @@ feasible and that</p>
 <dd><p class="first">This example is the floor planning problem of section 8.8.2 in the book
 <a class="reference external" href="http://www.stanford.edu/~boyd/cvxbook">Convex Optimization</a>:</p>
 <div class="math">
-<p><img src="_images/math/375dade287d6d8a7f17747b4bbf7b248b1df901d.png" alt="\begin{array}{ll}
+<p><img src="_images/math/5e0d51c657c3db03b960fea26b595918a45212a5.png" alt="\begin{array}{ll}
 \mbox{minimize}    &amp; W + H \\
 \mbox{subject to}
     &amp; A_{\mathrm{min}, k}/h_k - w_k \leq 0, \quad k=1,\ldots, 5 \\
@@ -659,101 +660,101 @@ feasible and that</p>
 \end{array}"/></p>
 </div><p>This problem has 22 variables</p>
 <div class="math">
-<p><img src="_images/math/80f4968bb0812d8fd7b7d0d6168a86820b0a7ec7.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
+<p><img src="_images/math/222023fb30fc0a905c0b077488c55c27fd4cbebe.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
 W, \qquad H, \qquad x\in\reals^5, \qquad y\in\reals^5, \qquad
 w\in\reals^5, \qquad h\in\reals^5,"/></p>
 </div><p>5 nonlinear inequality constraints, and 26 linear inequality
 constraints.  The code belows defines a function <code class="xref py py-func docutils literal"><span class="pre">floorplan</span></code>
 that solves the problem by calling <code class="xref py py-func docutils literal"><span class="pre">cp</span></code>, then applies it to
 4 instances, and creates a figure.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pylab</span>
-<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pylab</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span>
 
 <span class="k">def</span> <span class="nf">floorplan</span><span class="p">(</span><span class="n">Amin</span><span class="p">):</span>
 
-    <span class="c">#     minimize    W+H</span>
-    <span class="c">#     subject to  Amink / hk &lt;= wk, k = 1,..., 5</span>
-    <span class="c">#                 x1 &gt;= 0,  x2 &gt;= 0, x4 &gt;= 0</span>
-    <span class="c">#                 x1 + w1 + rho &lt;= x3</span>
-    <span class="c">#                 x2 + w2 + rho &lt;= x3</span>
-    <span class="c">#                 x3 + w3 + rho &lt;= x5</span>
-    <span class="c">#                 x4 + w4 + rho &lt;= x5</span>
-    <span class="c">#                 x5 + w5 &lt;= W</span>
-    <span class="c">#                 y2 &gt;= 0,  y3 &gt;= 0,  y5 &gt;= 0</span>
-    <span class="c">#                 y2 + h2 + rho &lt;= y1</span>
-    <span class="c">#                 y1 + h1 + rho &lt;= y4</span>
-    <span class="c">#                 y3 + h3 + rho &lt;= y4</span>
-    <span class="c">#                 y4 + h4 &lt;= H</span>
-    <span class="c">#                 y5 + h5 &lt;= H</span>
-    <span class="c">#                 hk/gamma &lt;= wk &lt;= gamma*hk,  k = 1, ..., 5</span>
-    <span class="c">#</span>
-    <span class="c"># 22 Variables W, H, x (5), y (5), w (5), h (5).</span>
-    <span class="c">#</span>
-    <span class="c"># W, H:  scalars; bounding box width and height</span>
-    <span class="c"># x, y:  5-vectors; coordinates of bottom left corners of blocks</span>
-    <span class="c"># w, h:  5-vectors; widths and heigths of the 5 blocks</span>
+    <span class="c1">#     minimize    W+H</span>
+    <span class="c1">#     subject to  Amink / hk &lt;= wk, k = 1,..., 5</span>
+    <span class="c1">#                 x1 &gt;= 0,  x2 &gt;= 0, x4 &gt;= 0</span>
+    <span class="c1">#                 x1 + w1 + rho &lt;= x3</span>
+    <span class="c1">#                 x2 + w2 + rho &lt;= x3</span>
+    <span class="c1">#                 x3 + w3 + rho &lt;= x5</span>
+    <span class="c1">#                 x4 + w4 + rho &lt;= x5</span>
+    <span class="c1">#                 x5 + w5 &lt;= W</span>
+    <span class="c1">#                 y2 &gt;= 0,  y3 &gt;= 0,  y5 &gt;= 0</span>
+    <span class="c1">#                 y2 + h2 + rho &lt;= y1</span>
+    <span class="c1">#                 y1 + h1 + rho &lt;= y4</span>
+    <span class="c1">#                 y3 + h3 + rho &lt;= y4</span>
+    <span class="c1">#                 y4 + h4 &lt;= H</span>
+    <span class="c1">#                 y5 + h5 &lt;= H</span>
+    <span class="c1">#                 hk/gamma &lt;= wk &lt;= gamma*hk,  k = 1, ..., 5</span>
+    <span class="c1">#</span>
+    <span class="c1"># 22 Variables W, H, x (5), y (5), w (5), h (5).</span>
+    <span class="c1">#</span>
+    <span class="c1"># W, H:  scalars; bounding box width and height</span>
+    <span class="c1"># x, y:  5-vectors; coordinates of bottom left corners of blocks</span>
+    <span class="c1"># w, h:  5-vectors; widths and heigths of the 5 blocks</span>
 
-    <span class="n">rho</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">5.0</span>   <span class="c"># min spacing, min aspect ratio</span>
+    <span class="n">rho</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">5.0</span>   <span class="c1"># min spacing, min aspect ratio</span>
 
-    <span class="c"># The objective is to minimize W + H.  There are five nonlinear</span>
-    <span class="c"># constraints</span>
-    <span class="c">#</span>
-    <span class="c">#     -wk + Amink / hk &lt;= 0,  k = 1, ..., 5</span>
+    <span class="c1"># The objective is to minimize W + H.  There are five nonlinear</span>
+    <span class="c1"># constraints</span>
+    <span class="c1">#</span>
+    <span class="c1">#     -wk + Amink / hk &lt;= 0,  k = 1, ..., 5</span>
 
     <span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">20</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">])</span>
 
-    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>  <span class="k">return</span> <span class="mi">5</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mi">17</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="p">[</span><span class="mf">1.0</span><span class="p">])</span>
-        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">17</span><span class="p">:])</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>  <span class="k">return</span> <span class="bp">None</span>
+    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="k">return</span> <span class="mi">5</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mi">17</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="p">[</span><span class="mf">1.0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">17</span><span class="p">:])</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>  <span class="k">return</span> <span class="kc">None</span>
         <span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">12</span><span class="p">:</span><span class="mi">17</span><span class="p">]</span> <span class="o">+</span> <span class="n">div</span><span class="p">(</span><span class="n">Amin</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">17</span><span class="p">:])</span>
         <span class="n">Df</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">22</span><span class="p">))</span>
         <span class="n">Df</span><span class="p">[:,</span><span class="mi">12</span><span class="p">:</span><span class="mi">17</span><span class="p">]</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
         <span class="n">Df</span><span class="p">[:,</span><span class="mi">17</span><span class="p">:]</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="o">-</span><span class="n">div</span><span class="p">(</span><span class="n">Amin</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">17</span><span class="p">:]</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">Df</span>
+        <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">Df</span>
         <span class="n">H</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span> <span class="mf">2.0</span><span class="o">*</span> <span class="n">mul</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">div</span><span class="p">(</span><span class="n">Amin</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">17</span><span class="p">::]</span><span class="o">**</span><span class="mi">3</span><span class="p">)),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">22</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">22</span><span class="p">)</span> <span class="p">)</span>
         <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">Df</span><span class="p">,</span> <span class="n">H</span>
 
     <span class="n">G</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">26</span><span class="p">,</span><span class="mi">22</span><span class="p">))</span>
     <span class="n">h</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">26</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>                                       <span class="c"># -x1 &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>                                       <span class="c"># -x2 &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>                                       <span class="c"># -x4 &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>     <span class="c"># x1 - x3 + w1 &lt;= -rho</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">13</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>     <span class="c"># x2 - x3 + w2 &lt;= -rho</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">14</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>     <span class="c"># x3 - x5 + w3 &lt;= -rho</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">15</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>     <span class="c"># x4 - x5 + w4 &lt;= -rho</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">16</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>                   <span class="c"># -W + x5 + w5 &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>                                       <span class="c"># -y2 &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>                                       <span class="c"># -y3 &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>                                     <span class="c"># -y5 &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">18</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>   <span class="c"># -y1 + y2 + h2 &lt;= -rho</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">17</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>  <span class="c">#  y1 - y4 + h1 &lt;= -rho</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">19</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>  <span class="c">#  y3 - y4 + h3 &lt;= -rho</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>                 <span class="c"># -H + y4 + h4 &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">21</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>                 <span class="c"># -H + y5 + h5 &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">17</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c"># -w1 + h1/gamma &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">17</span><span class="p">,</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">17</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>                       <span class="c">#  w1 - gamma * h1 &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">18</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c"># -w2 + h2/gamma &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">19</span><span class="p">,</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">18</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>                       <span class="c">#  w2 - gamma * h2 &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">18</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c"># -w3 + h3/gamma &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">19</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>                       <span class="c">#  w3 - gamma * h3 &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">22</span><span class="p">,</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">19</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c"># -w4  + h4/gamma &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">23</span><span class="p">,</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>                       <span class="c">#  w4 - gamma * h4 &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">21</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c"># -w5 + h5/gamma &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">21</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>                       <span class="c">#  w5 - gamma * h5 &lt;= 0.0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>                                       <span class="c1"># -x1 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>                                       <span class="c1"># -x2 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>                                       <span class="c1"># -x4 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">12</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>     <span class="c1"># x1 - x3 + w1 &lt;= -rho</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">13</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>     <span class="c1"># x2 - x3 + w2 &lt;= -rho</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">14</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>     <span class="c1"># x3 - x5 + w3 &lt;= -rho</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">15</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>     <span class="c1"># x4 - x5 + w4 &lt;= -rho</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">16</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>                   <span class="c1"># -W + x5 + w5 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>                                       <span class="c1"># -y2 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">9</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>                                       <span class="c1"># -y3 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>                                     <span class="c1"># -y5 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">18</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>   <span class="c1"># -y1 + y2 + h2 &lt;= -rho</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">17</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>  <span class="c1">#  y1 - y4 + h1 &lt;= -rho</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">19</span><span class="p">]],</span> <span class="n">h</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="o">-</span><span class="n">rho</span>  <span class="c1">#  y3 - y4 + h3 &lt;= -rho</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>                 <span class="c1"># -H + y4 + h4 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">21</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>                 <span class="c1"># -H + y5 + h5 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">17</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c1"># -w1 + h1/gamma &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">17</span><span class="p">,</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">17</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>                       <span class="c1">#  w1 - gamma * h1 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">18</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c1"># -w2 + h2/gamma &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">19</span><span class="p">,</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">18</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>                       <span class="c1">#  w2 - gamma * h2 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">18</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c1"># -w3 + h3/gamma &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">19</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>                       <span class="c1">#  w3 - gamma * h3 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">22</span><span class="p">,</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">19</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c1"># -w4  + h4/gamma &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">23</span><span class="p">,</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>                       <span class="c1">#  w4 - gamma * h4 &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">21</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c1"># -w5 + h5/gamma &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">21</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>                       <span class="c1">#  w5 - gamma * h5 &lt;= 0.0</span>
 
-    <span class="c"># solve and return W, H, x, y, w, h</span>
+    <span class="c1"># solve and return W, H, x, y, w, h</span>
     <span class="n">sol</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">cpl</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
-    <span class="k">return</span>  <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">:</span><span class="mi">7</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="mi">7</span><span class="p">:</span><span class="mi">12</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="mi">12</span><span class="p">:</span><span class="mi">17</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="mi">17</span><span class="p">:]</span>
+    <span class="k">return</span>  <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">:</span><span class="mi">7</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="mi">7</span><span class="p">:</span><span class="mi">12</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="mi">12</span><span class="p">:</span><span class="mi">17</span><span class="p">],</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="mi">17</span><span class="p">:]</span>
 
-<span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">221</span><span class="p">)</span>
 <span class="n">Amin</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">100.</span><span class="p">,</span> <span class="mf">100.</span><span class="p">,</span> <span class="mf">100.</span><span class="p">,</span> <span class="mf">100.</span><span class="p">,</span> <span class="mf">100.</span><span class="p">])</span>
 <span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span>  <span class="n">floorplan</span><span class="p">(</span><span class="n">Amin</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
-               <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s">&#39;#D0D0D0&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+               <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s1">&#39;#D0D0D0&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
@@ -763,8 +764,8 @@ that solves the problem by calling <code class="xref py py-func docutils literal
 <span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span>  <span class="n">floorplan</span><span class="p">(</span><span class="n">Amin</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
-               <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span> <span class="s">&#39;facecolor = #D0D0D0&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+               <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span> <span class="s1">&#39;facecolor = #D0D0D0&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
@@ -774,8 +775,8 @@ that solves the problem by calling <code class="xref py py-func docutils literal
 <span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span>  <span class="n">floorplan</span><span class="p">(</span><span class="n">Amin</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
-               <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span> <span class="s">&#39;facecolor = #D0D0D0&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+               <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span> <span class="s1">&#39;facecolor = #D0D0D0&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
@@ -785,8 +786,8 @@ that solves the problem by calling <code class="xref py py-func docutils literal
 <span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span>  <span class="n">floorplan</span><span class="p">(</span><span class="n">Amin</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
-               <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span> <span class="s">&#39;facecolor = #D0D0D0&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+               <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span> <span class="s1">&#39;facecolor = #D0D0D0&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
@@ -805,7 +806,7 @@ that solves the problem by calling <code class="xref py py-func docutils literal
 <code class="descclassname">cvxopt.solvers.</code><code class="descname">gp</code><span class="sig-paren">(</span><em>K</em>, <em>F</em>, <em>g</em><span class="optional">[</span>, <em>G</em>, <em>h</em><span class="optional">[</span>, <em>A</em>, <em>b</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.gp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a geometric program in convex form</p>
 <div class="math">
-<p><img src="_images/math/57e1fde7720d12084876914987a2765e33c23e13.png" alt="\newcommand{\lse}{\mathop{\mathbf{lse}}}
+<p><img src="_images/math/035171d13a641b05a0519af1068b7ef7940543a6.png" alt="\newcommand{\lse}{\mathop{\mathbf{lse}}}
 \begin{array}{ll}
 \mbox{minimize}   &amp; f_0(x) = \lse(F_0x+g_0) \\
 \mbox{subject to} &amp; f_i(x) = \lse(F_ix+g_i) \leq 0,
@@ -815,7 +816,7 @@ that solves the problem by calling <code class="xref py py-func docutils literal
 \end{array}"/></p>
 </div><p>where</p>
 <div class="math">
-<p><img src="_images/math/7aa3098b904c11d68c01bd6694f9d3e363d53b88.png" alt="\newcommand{\lse}{\mathop{\mathbf{lse}}}
+<p><img src="_images/math/fd8fd586638128c1509a1c5acab41658f6469a58.png" alt="\newcommand{\lse}{\mathop{\mathbf{lse}}}
 \lse(u) = \log \sum_k \exp(u_k), \qquad
 F = \left[ \begin{array}{cccc}
      F_0^T &amp; F_1^T &amp; \cdots &amp; F_m^T
@@ -824,8 +825,8 @@ g = \left[ \begin{array}{cccc}
      g_0^T &amp; g_1^T &amp; \cdots &amp; g_m^T
     \end{array}\right]^T,"/></p>
 </div><p>and the vector inequality denotes componentwise inequality.
-<code class="docutils literal"><span class="pre">K</span></code> is a list of <img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/> + 1 positive integers with <code class="docutils literal"><span class="pre">K[i]</span></code>
-equal to the number of rows in <img class="math" src="_images/math/d07b4c16d04b6739df29c10f32dfc4b946061922.png" alt="F_i"/>.  <code class="docutils literal"><span class="pre">F</span></code> is a dense or
+<code class="docutils literal"><span class="pre">K</span></code> is a list of <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> + 1 positive integers with <code class="docutils literal"><span class="pre">K[i]</span></code>
+equal to the number of rows in <img class="math" src="_images/math/42b6c756573328a1e9009cecd029bac50b7e9e4b.png" alt="F_i"/>.  <code class="docutils literal"><span class="pre">F</span></code> is a dense or
 sparse real matrix of size <code class="docutils literal"><span class="pre">(sum(K),</span> <span class="pre">n)</span></code>.
 <code class="docutils literal"><span class="pre">g</span></code> is a dense real matrix with one column and the same number of
 rows as <code class="docutils literal"><span class="pre">F</span></code>.
@@ -847,7 +848,7 @@ optimal values of the dual variables associated with the nonlinear
 and linear inequality constraints and the linear equality
 constraints.  These values approximately satisfy</p>
 <div class="last math">
-<p><img src="_images/math/f50d3a495c7268eacf7f28116e0737ea5744d856.png" alt="\nabla f_0(x) + \sum_{k=1}^m z_{\mathrm{nl},k}
+<p><img src="_images/math/0e08562f77a80815902fdfa6dae91c30911b8b08.png" alt="\nabla f_0(x) + \sum_{k=1}^m z_{\mathrm{nl},k}
     \nabla f_k(x) + G^T z_\mathrm{l} + A^T y = 0,
 
 f_k(x) + s_{\mathrm{nl},k} = 0, \quad k = 1,\ldots,m
@@ -874,7 +875,7 @@ of the solution, and are taken from the output of
 <a class="reference external" href="http://www.stanford.edu/~boyd/gp_tutorial.html">A Tutorial on Geometric Programming</a>.
 The  posynomial form of the problem is</p>
 <div class="math">
-<p><img src="_images/math/4e08ab76044c33b5ec9ded78921ddc90d3385668.png" alt="\begin{array}{ll}
+<p><img src="_images/math/ceb6c99f5fb29e1150d96cc08af083f10ade1555.png" alt="\begin{array}{ll}
 \mbox{minimize}
     &amp; w^{-1} h^{-1} d^{-1} \\
 \mbox{subject to}
@@ -885,8 +886,8 @@ The  posynomial form of the problem is</p>
     &amp;  \gamma wd^{-1} \leq 1 \\
     &amp;   (1/\delta)dw^{-1} \leq 1
  \end{array}"/></p>
-</div><p>with variables <img class="math" src="_images/math/cbb80ad77aa7a5e227d5a46bc44d235284106cfc.png" alt="h"/>, <img class="math" src="_images/math/8659700e6646cd91bc02c32affaa5ec046ee9935.png" alt="w"/>, <img class="math" src="_images/math/425d86ba2f2979d75b7535c2bcf92c33ed6b285a.png" alt="d"/>.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">solvers</span>
+</div><p>with variables <img class="math" src="_images/math/293fb39e1b93282c804a86186e721b32f829f1b2.png" alt="h"/>, <img class="math" src="_images/math/ecd1ee2a1cd226b40c37e079aca62398d4b774f5.png" alt="w"/>, <img class="math" src="_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">solvers</span>
 
 <span class="n">Aflr</span>  <span class="o">=</span> <span class="mf">1000.0</span>
 <span class="n">Awall</span> <span class="o">=</span> <span class="mf">100.0</span>
@@ -900,7 +901,7 @@ The  posynomial form of the problem is</p>
              <span class="p">[</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">]])</span>
 <span class="n">g</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span> <span class="n">matrix</span><span class="p">(</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">2</span><span class="o">/</span><span class="n">Awall</span><span class="p">,</span> <span class="mi">2</span><span class="o">/</span><span class="n">Awall</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">Aflr</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">delta</span><span class="p">])</span> <span class="p">)</span>
 <span class="n">K</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span> <span class="n">solvers</span><span class="o">.</span><span class="n">gp</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">g</span><span class="p">)[</span><span class="s">&#39;x&#39;</span><span class="p">]</span> <span class="p">)</span>
+<span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span> <span class="n">solvers</span><span class="o">.</span><span class="n">gp</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">g</span><span class="p">)[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -916,7 +917,7 @@ that take advantage of problem structure.</p>
 <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal"><span class="pre">cp</span></code></a> is the
 solution of a set of linear equations (<em>KKT equations</em>) of the form</p>
 <div class="math" id="equation-e-cp-kkt">
-<p><span class="eqno">(2)</span><img src="_images/math/094605c7610159f1037e4198872755402bd03b31.png" alt="\left[\begin{array}{ccc}
+<p><span class="eqno">(2)</span><img src="_images/math/83d3511f2f96681be2af99f41de56c6a5de63d07.png" alt="\left[\begin{array}{ccc}
     H        &amp; A^T &amp; \tilde G^T \\
     A        &amp; 0   &amp; 0  \\
     \tilde G &amp; 0   &amp; -W^T W
@@ -926,28 +927,28 @@ solution of a set of linear equations (<em>KKT equations</em>) of the form</p>
 \left[\begin{array}{c} b_x \\ b_y \\ b_z \end{array}\right],"/></p>
 </div><p>where</p>
 <div class="math">
-<p><img src="_images/math/f8a049b96970ce863efb8a9f7b40c855f0422d56.png" alt="H = \sum_{k=0}^m z_k \nabla^2f_k(x), \qquad
+<p><img src="_images/math/e7a48f1072d9c2ae69733d297ba12f25fd3b1edd.png" alt="H = \sum_{k=0}^m z_k \nabla^2f_k(x), \qquad
 \tilde G = \left[\begin{array}{cccc}
 \nabla f_1(x) &amp; \cdots &amp; \nabla f_m(x) &amp; G^T \end{array}\right]^T."/></p>
-</div><p>The matrix <img class="math" src="_images/math/fa34489cf430b7630b30f28b2eb050e2489e3523.png" alt="W"/> depends on the current iterates and is defined as
+</div><p>The matrix <img class="math" src="_images/math/953bde2ab2fca30897f66185e5b37b73747b8b46.png" alt="W"/> depends on the current iterates and is defined as
 follows.  Suppose</p>
 <div class="math">
-<p><img src="_images/math/29c80fb76aef86553d6995b91b53d323a778d299.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
+<p><img src="_images/math/c5ca06cf1d74b5eaebb8bd977421104d7a6d6c52.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
 u = \left( u_\mathrm{nl}, \; u_\mathrm{l}, \; u_{\mathrm{q},0}, \;
     \ldots, \; u_{\mathrm{q},M-1}, \; \svec{(u_{\mathrm{s},0})}, \;
     \ldots, \; \svec{(u_{\mathrm{s},N-1})} \right), \qquad"/></p>
 </div><p>where</p>
 <div class="math">
-<p><img src="_images/math/42c237a9ee94ebc91e1cbec07638f3d32626b9c8.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
+<p><img src="_images/math/6ff5812852c16d64a671cd38feff2489e2b10ec4.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
 \newcommand{\symm}{{\mbox{\bf S}}}
 u_\mathrm{nl} \in \reals^m, \qquad
 u_\mathrm{l} \in \reals^l, \qquad
 u_{\mathrm{q},k} \in \reals^{r_k}, \quad k = 0, \ldots, M-1,
 \qquad
 u_{\mathrm{s},k} \in \symm^{t_k},  \quad k = 0, \ldots, N-1."/></p>
-</div><p>Then <img class="math" src="_images/math/fa34489cf430b7630b30f28b2eb050e2489e3523.png" alt="W"/> is a block-diagonal matrix,</p>
+</div><p>Then <img class="math" src="_images/math/953bde2ab2fca30897f66185e5b37b73747b8b46.png" alt="W"/> is a block-diagonal matrix,</p>
 <div class="math">
-<p><img src="_images/math/31f8cf9a37fad96d43492022e560df7d32ef2026.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
+<p><img src="_images/math/fca256c7adb4f695ebb5e03073756cd214ee26e6.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
 Wu = \left( W_\mathrm{nl} u_\mathrm{nl}, \;
      W_\mathrm{l} u_\mathrm{l}, \;
      W_{\mathrm{q},0} u_{\mathrm{q},0}, \; \ldots, \;
@@ -957,43 +958,43 @@ Wu = \left( W_\mathrm{nl} u_\mathrm{nl}, \;
 </div><p>with the following diagonal blocks.</p>
 <ul>
 <li><p class="first">The first block is a <em>positive diagonal scaling</em> with a vector
-<img class="math" src="_images/math/6dc95523d22428403e9ec3e7f37e26ea270bf4dc.png" alt="d_{\mathrm{nl}}"/>:</p>
+<img class="math" src="_images/math/cc4811d53d734bdd6ee791c63de7dc3522cae9f5.png" alt="d_{\mathrm{nl}}"/>:</p>
 <div class="math">
-<p><img src="_images/math/a5d6a9ffacc01b68b780618818cbd90474466cc9.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
+<p><img src="_images/math/4adae9a78297b333ab10ed2e153a3bc208ea7a00.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
 W_\mathrm{nl} = \diag(d_\mathrm{nl}), \qquad
 W_\mathrm{nl}^{-1} = \diag(d_\mathrm{nl})^{-1}."/></p>
 </div><p>This transformation is symmetric:</p>
 <div class="math">
-<p><img src="_images/math/b9237e06a8e6e906a69ec6acdc633603ba50084b.png" alt="W_\mathrm{nl}^T = W_\mathrm{nl}."/></p>
+<p><img src="_images/math/b8d100a34e106449fa22ba165a2323589ef50051.png" alt="W_\mathrm{nl}^T = W_\mathrm{nl}."/></p>
 </div></li>
 <li><p class="first">The second block is a <em>positive diagonal scaling</em> with a vector
-<img class="math" src="_images/math/06b423cebfb90c3d0a63b7f3df78c09d995cfeaa.png" alt="d_{\mathrm{l}}"/>:</p>
+<img class="math" src="_images/math/ebe8da8eb37a0d4f8e56ccf0a27190ab3f69788d.png" alt="d_{\mathrm{l}}"/>:</p>
 <div class="math">
-<p><img src="_images/math/f4136218c7316891923eb92e8e53da9c884ba7da.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
+<p><img src="_images/math/bd6227159fb768d95cd7d484812650cc09af14b5.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
 W_\mathrm{l} = \diag(d_\mathrm{l}), \qquad
 W_\mathrm{l}^{-1} = \diag(d_\mathrm{l})^{-1}."/></p>
 </div><p>This transformation is symmetric:</p>
 <div class="math">
-<p><img src="_images/math/a54708fe7e95067497dd42cdf40c2b0c8023b956.png" alt="W_\mathrm{l}^T = W_\mathrm{l}."/></p>
+<p><img src="_images/math/5a92ac96b6c7de9a1991b55afbb9c8009f287482.png" alt="W_\mathrm{l}^T = W_\mathrm{l}."/></p>
 </div></li>
-<li><p class="first">The next <img class="math" src="_images/math/2de38926392ba23abeac75effc66c37a5f5be5fd.png" alt="M"/> blocks are positive multiples of <em>hyperbolic
+<li><p class="first">The next <img class="math" src="_images/math/450a8e2c2320d77181e0d4fc68c947e9a5de8ecb.png" alt="M"/> blocks are positive multiples of <em>hyperbolic
 Householder transformations</em>:</p>
 <div class="math">
-<p><img src="_images/math/b94be0ad0fc90fa2e4e61c0c2c094ebc202d7729.png" alt="W_{\mathrm{q},k} = \beta_k ( 2 v_k v_k^T - J), \qquad
+<p><img src="_images/math/19079f19dc151ec02e84ce46fee19082c79e4af1.png" alt="W_{\mathrm{q},k} = \beta_k ( 2 v_k v_k^T - J), \qquad
 W_{\mathrm{q},k}^{-1} = \frac{1}{\beta_k} ( 2 Jv_k v_k^T J - J),
 \qquad k = 0,\ldots,M-1,"/></p>
 </div><p>where</p>
 <div class="math">
-<p><img src="_images/math/0246a989dbd0daa3dc3c6fecbf683b226a79b7f1.png" alt="\beta_k &gt; 0, \qquad v_{k0} &gt; 0, \qquad v_k^T Jv_k = 1, \qquad
+<p><img src="_images/math/fec431abc824cf7b2176f58d531f39b5f0903221.png" alt="\beta_k &gt; 0, \qquad v_{k0} &gt; 0, \qquad v_k^T Jv_k = 1, \qquad
 J = \left[\begin{array}{cc} 1 &amp; 0 \\ 0 &amp; -I \end{array}\right]."/></p>
 </div><p>These transformations are also symmetric:</p>
 <div class="math">
-<p><img src="_images/math/52031bf68ee42296146e8a3e4f5033b6173dcf51.png" alt="W_{\mathrm{q},k}^T = W_{\mathrm{q},k}."/></p>
+<p><img src="_images/math/4e9b722e0ffeb7ea98a57cbf82c14ab3cec697a7.png" alt="W_{\mathrm{q},k}^T = W_{\mathrm{q},k}."/></p>
 </div></li>
-<li><p class="first">The last <img class="math" src="_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> blocks are <em>congruence transformations</em> with
+<li><p class="first">The last <img class="math" src="_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/> blocks are <em>congruence transformations</em> with
 nonsingular matrices:</p>
 <div class="math">
-<p><img src="_images/math/10d982174e5e28e1a59619b7cfa9c3e0c25b4a6b.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
+<p><img src="_images/math/1eb97ed049ada31ae495500c1c82fb91eec22250.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
 W_{\mathrm{s},k} \svec{(u_{\mathrm{s},k})} =
     \svec{(r_k^T u_{\mathrm{s},k} r_k)}, \qquad
 W_{\mathrm{s},k}^{-1} \svec{(u_{\mathrm{s},k})} =
@@ -1001,7 +1002,7 @@ W_{\mathrm{s},k}^{-1} \svec{(u_{\mathrm{s},k})} =
 k = 0,\ldots,N-1."/></p>
 </div><p>In  general, this operation is not symmetric, and</p>
 <div class="math">
-<p><img src="_images/math/0260007688027eacd5a07f14d9365f85f5c8ee95.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
+<p><img src="_images/math/ea79b8dcd4087be4837087510811674387b38705.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
 W_{\mathrm{s},k}^T \svec{(u_{\mathrm{s},k})} =
     \svec{(r_k u_{\mathrm{s},k} r_k^T)}, \qquad
 \qquad
@@ -1017,8 +1018,8 @@ supply a Python function
 for solving the KKT equations.  This function will be called as
 <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">kktsolver(x,</span> <span class="pre">z,</span> <span class="pre">W)</span></code>.  The argument <code class="docutils literal"><span class="pre">x</span></code> is the point at
 which the derivatives in the KKT matrix are evaluated.  <code class="docutils literal"><span class="pre">z</span></code> is a
-positive vector of length it <img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/> + 1, containing the coefficients
-in the 1,1 block <img class="math" src="_images/math/48f75e0b463f2fdb7fca9566cffdc439cae6967f.png" alt="H"/>.  <code class="docutils literal"><span class="pre">W</span></code> is a dictionary that contains the
+positive vector of length it <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> + 1, containing the coefficients
+in the 1,1 block <img class="math" src="_images/math/44d4c3f22452acebfb3ac644e23508b67500be90.png" alt="H"/>.  <code class="docutils literal"><span class="pre">W</span></code> is a dictionary that contains the
 parameters of the scaling:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">W['dnl']</span></code> is the positive vector that defines the diagonal
@@ -1027,12 +1028,12 @@ componentwise inverse.</li>
 <li><code class="docutils literal"><span class="pre">W['d']</span></code> is the positive vector that defines the diagonal
 scaling for the componentwise linear inequalities.  <code class="docutils literal"><span class="pre">W['di']</span></code>
 is its componentwise inverse.</li>
-<li><code class="docutils literal"><span class="pre">W['beta']</span></code> and <code class="docutils literal"><span class="pre">W['v']</span></code> are lists of length <img class="math" src="_images/math/2de38926392ba23abeac75effc66c37a5f5be5fd.png" alt="M"/>
+<li><code class="docutils literal"><span class="pre">W['beta']</span></code> and <code class="docutils literal"><span class="pre">W['v']</span></code> are lists of length <img class="math" src="_images/math/450a8e2c2320d77181e0d4fc68c947e9a5de8ecb.png" alt="M"/>
 with the coefficients and vectors that define the hyperbolic
 Householder transformations.</li>
-<li><code class="docutils literal"><span class="pre">W['r']</span></code> is a list of length <img class="math" src="_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> with the matrices that
+<li><code class="docutils literal"><span class="pre">W['r']</span></code> is a list of length <img class="math" src="_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/> with the matrices that
 define the the congruence transformations.  <code class="docutils literal"><span class="pre">W['rti']</span></code> is a
-list of length <img class="math" src="_images/math/75e27f04188974063be3230dca208cd495b77ce1.png" alt="N"/> with the transposes of the inverses of the
+list of length <img class="math" src="_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/> with the transposes of the inverses of the
 matrices in <code class="docutils literal"><span class="pre">W['r']</span></code>.</li>
 </ul>
 <p>The function call <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">kktsolver(x,</span> <span class="pre">z,</span> <span class="pre">W)</span></code> should return a
@@ -1042,12 +1043,12 @@ On entry, <code class="docutils literal"><span class="pre">bx</span></code>, <co
 they should contain the solution of the KKT system, with the last
 component scaled, i.e., on exit,</p>
 <div class="math">
-<p><img src="_images/math/c7c0674ced05ddaa94bd705d1a836882a49c5b85.png" alt="b_x := u_x, \qquad b_y := u_y, \qquad b_z := W u_z."/></p>
+<p><img src="_images/math/5330603c234899d17a5c01ab6c1dafe59dcbb6d3.png" alt="b_x := u_x, \qquad b_y := u_y, \qquad b_z := W u_z."/></p>
 </div><p>The role of the argument <code class="docutils literal"><span class="pre">kktsolver</span></code> in the function
 <a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code></a> is similar, except that in
 <a href="#equation-e-cp-kkt">(2)</a>,</p>
 <div class="last math">
-<p><img src="_images/math/e685fdf1ecd460e241aacbbd6d1accbc12cc5829.png" alt="H = \sum_{k=0}^{m-1} z_k \nabla^2f_k(x), \qquad
+<p><img src="_images/math/758988bd12116a0f9bab75039b66af16957dc20b.png" alt="H = \sum_{k=0}^{m-1} z_k \nabla^2f_k(x), \qquad
 \tilde G = \left[\begin{array}{cccc}
 \nabla f_0(x) &amp; \cdots &amp; \nabla f_{m-1}(x) &amp; G^T \end{array}\right]^T."/></p>
 </div></dd>
@@ -1063,7 +1064,7 @@ evaluate the corresponding matrix-vector products and their adjoints.</p>
 evaluates the matrix-vector products</p>
 <blockquote>
 <div><div class="math">
-<p><img src="_images/math/a561f265b36883ab4d6de8f9669351888a2373ed.png" alt="v := \alpha Gu + \beta v \quad
+<p><img src="_images/math/eaaffe9180c5c78f723b6cf58e7c320083be6623.png" alt="v := \alpha Gu + \beta v \quad
     (\mathrm{trans} = \mathrm{'N'}), \qquad
 v := \alpha G^T u + \beta v \quad
    (\mathrm{trans} = \mathrm{'T'})."/></p>
@@ -1074,7 +1075,7 @@ v := \alpha G^T u + \beta v \quad
 evaluate the matrix-vector products</p>
 <blockquote>
 <div><div class="math">
-<p><img src="_images/math/b828151fe9afd4446b89b49af5391342a5012fa7.png" alt="v \alpha Au + \beta v \quad
+<p><img src="_images/math/d0a383b10ecdbc1ceae19e5d0a9ce23c7cda6c5f.png" alt="v \alpha Au + \beta v \quad
     (\mathrm{trans} = \mathrm{'N'}), \qquad
 v := \alpha A^T u + \beta v \quad
     (\mathrm{trans} = \mathrm{'T'})."/></p>
@@ -1088,7 +1089,7 @@ then <code class="docutils literal"><span class="pre">Df(u,</span> <span class="
 evaluate the matrix-vector products</p>
 <blockquote>
 <div><div class="math">
-<p><img src="_images/math/77aec2862da28625ff641e3f560e157fbd895a2b.png" alt="v := \alpha Df(x) u + \beta v \quad
+<p><img src="_images/math/0cc24054427ceaa56fa47360891e35a8f1630afe.png" alt="v := \alpha Df(x) u + \beta v \quad
     (\mathrm{trans} = \mathrm{'N'}), \qquad
 v := \alpha Df(x)^T u + \beta v \quad
     (\mathrm{trans} = \mathrm{'T'})."/></p>
@@ -1097,7 +1098,7 @@ v := \alpha Df(x)^T u + \beta v \quad
 evaluate the matrix-vector product</p>
 <blockquote>
 <div><div class="math">
-<p><img src="_images/math/c3bb2dbfdf9313d0d369ef7ac0c4c2b58f310d92.png" alt="v := \alpha H u + \beta v."/></p>
+<p><img src="_images/math/af9e054ee45fda5e0515f51bff89b8a853110fc6.png" alt="v := \alpha H u + \beta v."/></p>
 </div></div></blockquote>
 </li>
 </ul>
@@ -1107,27 +1108,27 @@ argument <code class="docutils literal"><span class="pre">kktsolver</span></code
 </dl>
 <p>As an example, we consider the unconstrained problem</p>
 <div class="math">
-<p><img src="_images/math/224ac4b02649eeb43b4743cc553d4d9f6651a86d.png" alt="\begin{array}{ll}
+<p><img src="_images/math/e83786a700ac58234857d2259b93b8d68047708c.png" alt="\begin{array}{ll}
 \mbox{minimize} &amp; (1/2)\|Ax-b\|_2^2 - \sum_{i=1}^n \log(1-x_i^2)
 \end{array}"/></p>
-</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is an <img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/> by <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> matrix with <img class="math" src="_images/math/c4bb40dd65eae6c11b325989b14e0b8d35e4e3ef.png" alt="m"/> less
-than <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>.  The Hessian of the objective is diagonal plus a low-rank
+</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is an <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> by <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> matrix with <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> less
+than <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>.  The Hessian of the objective is diagonal plus a low-rank
 term:</p>
 <div class="math">
-<p><img src="_images/math/edcbd6cd73ef9909f576e6dc918b5defd822ea7d.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
+<p><img src="_images/math/034de8d75847e3a6830b359bee22164074e99e55.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
 H = A^TA + \diag(d), \qquad d_i = \frac{2(1+x_i^2)}{(1-x_i^2)^2}."/></p>
 </div><p>We can exploit this property when solving <a href="#equation-e-cp-kkt">(2)</a> by applying
 the matrix inversion lemma. We first solve</p>
 <div class="math">
-<p><img src="_images/math/cfb14204c91bf302a59f79887bd459ca0ca3565a.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
+<p><img src="_images/math/9519e689e8fadf1e5ba7c19b9720796c9e3301ec.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
 (A \diag(d)^{-1}A^T + I) v = (1/z_0) A \diag(d)^{-1}b_x, \qquad"/></p>
 </div><p>and then obtain</p>
 <div class="math">
-<p><img src="_images/math/114653593889a8ebfb445e7026fce81d450033de.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
+<p><img src="_images/math/d5ba21ea3e8215e711551df9bfb24d7d064e4e1c.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
 u_x = \diag(d)^{-1}(b_x/z_0 - A^T v)."/></p>
 </div><p>The following code follows this method.  It also uses BLAS functions
 for matrix-matrix and matrix-vector products.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">base</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">base</span>
 
 <span class="k">def</span> <span class="nf">l2ac</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1139,46 +1140,46 @@ for matrix-matrix and matrix-vector products.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span>
-    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
         <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">None</span>
-        <span class="c"># r = A*x - b</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="c1"># r = A*x - b</span>
         <span class="n">r</span> <span class="o">=</span> <span class="o">-</span><span class="n">b</span>
         <span class="n">blas</span><span class="o">.</span><span class="n">gemv</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
         <span class="n">w</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
         <span class="n">f</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">blas</span><span class="o">.</span><span class="n">nrm2</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>  <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">w</span><span class="p">))</span>
-        <span class="c"># gradf = A&#39;*r + 2.0 * x ./ (1-w)</span>
+        <span class="c1"># gradf = A&#39;*r + 2.0 * x ./ (1-w)</span>
         <span class="n">gradf</span> <span class="o">=</span> <span class="n">div</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span>
-        <span class="n">blas</span><span class="o">.</span><span class="n">gemv</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">gradf</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s">&#39;T&#39;</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">blas</span><span class="o">.</span><span class="n">gemv</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">gradf</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">gradf</span><span class="o">.</span><span class="n">T</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">def</span> <span class="nf">Hf</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">):</span>
-               <span class="c"># v := alpha * (A&#39;*A*u + 2*((1+w)./(1-w)).*u + beta *v</span>
+               <span class="c1"># v := alpha * (A&#39;*A*u + 2*((1+w)./(1-w)).*u + beta *v</span>
                <span class="n">v</span> <span class="o">*=</span> <span class="n">beta</span>
                <span class="n">v</span> <span class="o">+=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">mul</span><span class="p">(</span><span class="n">div</span><span class="p">(</span><span class="mf">1.0</span><span class="o">+</span><span class="n">w</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">w</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="n">u</span><span class="p">)</span>
                <span class="n">blas</span><span class="o">.</span><span class="n">gemv</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
-               <span class="n">blas</span><span class="o">.</span><span class="n">gemv</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s">&#39;T&#39;</span><span class="p">)</span>
+               <span class="n">blas</span><span class="o">.</span><span class="n">gemv</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s1">&#39;T&#39;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">gradf</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">Hf</span>
 
 
-    <span class="c"># Custom solver for the Newton system</span>
-    <span class="c">#</span>
-    <span class="c">#     z[0]*(A&#39;*A + D)*x = bx</span>
-    <span class="c">#</span>
-    <span class="c"># where D = 2 * (1+x.^2) ./ (1-x.^2).^2.  We apply the matrix inversion</span>
-    <span class="c"># lemma and solve this as</span>
-    <span class="c">#</span>
-    <span class="c">#     (A * D^-1 *A&#39; + I) * v = A * D^-1 * bx / z[0]</span>
-    <span class="c">#     D * x = bx / z[0] - A&#39;*v.</span>
+    <span class="c1"># Custom solver for the Newton system</span>
+    <span class="c1">#</span>
+    <span class="c1">#     z[0]*(A&#39;*A + D)*x = bx</span>
+    <span class="c1">#</span>
+    <span class="c1"># where D = 2 * (1+x.^2) ./ (1-x.^2).^2.  We apply the matrix inversion</span>
+    <span class="c1"># lemma and solve this as</span>
+    <span class="c1">#</span>
+    <span class="c1">#     (A * D^-1 *A&#39; + I) * v = A * D^-1 * bx / z[0]</span>
+    <span class="c1">#     D * x = bx / z[0] - A&#39;*v.</span>
 
     <span class="n">S</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">))</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">Fkkt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">div</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">**-</span><span class="mf">0.5</span>
-        <span class="n">Asc</span> <span class="o">=</span> <span class="n">spdiag</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span> <span class="o">*</span> <span class="n">A</span>
+        <span class="n">Asc</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">spdiag</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
         <span class="n">blas</span><span class="o">.</span><span class="n">syrk</span><span class="p">(</span><span class="n">Asc</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
         <span class="n">S</span><span class="p">[::</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">1.0</span>
         <span class="n">lapack</span><span class="o">.</span><span class="n">potrf</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
@@ -1187,11 +1188,11 @@ for matrix-matrix and matrix-vector products.</p>
             <span class="n">x</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ds</span><span class="p">)</span> <span class="o">/</span> <span class="n">a</span>
             <span class="n">blas</span><span class="o">.</span><span class="n">gemv</span><span class="p">(</span><span class="n">Asc</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
             <span class="n">lapack</span><span class="o">.</span><span class="n">potrs</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-            <span class="n">blas</span><span class="o">.</span><span class="n">gemv</span><span class="p">(</span><span class="n">Asc</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s">&#39;T&#39;</span><span class="p">)</span>
+            <span class="n">blas</span><span class="o">.</span><span class="n">gemv</span><span class="p">(</span><span class="n">Asc</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s1">&#39;T&#39;</span><span class="p">)</span>
             <span class="n">x</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ds</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">g</span>
 
-    <span class="k">return</span> <span class="n">solvers</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">kktsolver</span> <span class="o">=</span> <span class="n">Fkkt</span><span class="p">)[</span><span class="s">&#39;x&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">solvers</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">kktsolver</span> <span class="o">=</span> <span class="n">Fkkt</span><span class="p">)[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1219,8 +1220,8 @@ off (default: <code class="xref py py-const docutils literal"><span class="pre">
 (default: <code class="xref py py-const docutils literal"><span class="pre">1</span></code>).</dd>
 </dl>
 <p>For example the command</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">solvers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 </pre></div>
 </div>
 <p>turns off the screen output during calls to the solvers.  The tolerances
@@ -1228,7 +1229,7 @@ off (default: <code class="xref py py-const docutils literal"><span class="pre">
 following meaning in <a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code></a>.</p>
 <p><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code> returns with status <code class="xref py py-const docutils literal"><span class="pre">'optimal'</span></code> if</p>
 <div class="math">
-<p><img src="_images/math/4183ccded09d4e9db5fc8ffc56d52408488b005d.png" alt="\newcommand{\ones}{{\bf 1}}
+<p><img src="_images/math/189260cbfb3f9287a2b57d052f6d4fbc5e79ede0.png" alt="\newcommand{\ones}{{\bf 1}}
 \frac{\| c +  Df(x)^Tz_\mathrm{nl} + G^Tz_\mathrm{l} + A^T y \|_2 }
 {\max\{ 1, \| c + Df(x_0)^T\ones + G^T\ones \|_2 \}}
 \leq \epsilon_\mathrm{feas}, \qquad
@@ -1236,9 +1237,9 @@ following meaning in <a class="reference internal" href="#cvxopt.solvers.cpl" ti
  Ax-b ) \|_2}
 {\max\{1, \| ( f(x_0) + \ones,
 Gx_0 + \ones-h, Ax_0-b) \|_2 \}} \leq \epsilon_\mathrm{feas}"/></p>
-</div><p>where <img class="math" src="_images/math/c3c08496f07567285212e468b173bea9ca153fab.png" alt="x_0"/> is the point returned by <code class="docutils literal"><span class="pre">F()</span></code>, and</p>
+</div><p>where <img class="math" src="_images/math/307e583980f527b3f26e1e159435e0a8d262736b.png" alt="x_0"/> is the point returned by <code class="docutils literal"><span class="pre">F()</span></code>, and</p>
 <div class="math">
-<p><img src="_images/math/8ced9967cf5ac8a7dfe5907f92559a67567f9fd1.png" alt="\mathrm{gap} \leq \epsilon_\mathrm{abs}
+<p><img src="_images/math/f3eb52613474589c136d20acff516c3126eb4591.png" alt="\mathrm{gap} \leq \epsilon_\mathrm{abs}
 \qquad \mbox{or} \qquad \left( c^Tx &lt; 0, \quad
 \frac{\mathrm{gap}} {-c^Tx} \leq \epsilon_\mathrm{rel} \right)
 \qquad \mbox{or} \qquad
@@ -1246,7 +1247,7 @@ Gx_0 + \ones-h, Ax_0-b) \|_2 \}} \leq \epsilon_\mathrm{feas}"/></p>
 {L(x,y,z)} \leq \epsilon_\mathrm{rel} \right)"/></p>
 </div><p>where</p>
 <div class="math">
-<p><img src="_images/math/e9424ef951bc888bb64400220e3db2751194bf8e.png" alt="\mathrm{gap} =
+<p><img src="_images/math/341178f53f9ca56a99a1f39a5f02f122fab535d4.png" alt="\mathrm{gap} =
 \left[\begin{array}{c} s_\mathrm{nl} \\ s_\mathrm{l}
 \end{array}\right]^T
 \left[\begin{array}{c} z_\mathrm{nl} \\ z_\mathrm{l}
@@ -1256,7 +1257,7 @@ L(x,y,z) = c^Tx + z_\mathrm{nl}^T f(x) +
     z_\mathrm{l}^T (Gx-h) + y^T(Ax-b)."/></p>
 </div><p>The functions <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal"><span class="pre">cp</span></code></a> and
 <a class="reference internal" href="#cvxopt.solvers.gp" title="cvxopt.solvers.gp"><code class="xref py py-func docutils literal"><span class="pre">gp</span></code></a> call <code class="xref py py-func docutils literal"><span class="pre">cpl</span></code> and hence use the
-same stopping criteria (with <img class="math" src="_images/math/047937fc5e1e2e82914d671ed65b71adb4401eb7.png" alt="x_0 = 0"/> for <code class="xref py py-func docutils literal"><span class="pre">gp</span></code>).</p>
+same stopping criteria (with <img class="math" src="_images/math/c41c7e348eddc72b86c210246eeedc53ce3911ca.png" alt="x_0 = 0"/> for <code class="xref py py-func docutils literal"><span class="pre">gp</span></code>).</p>
 </div>
 </div>
 
@@ -1278,8 +1279,8 @@ same stopping criteria (with <img class="math" src="_images/math/047937fc5e1e2e8
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="copyright.html">Copyright</a> .
-      Last updated on Sep 22, 2015.
+        &copy; <a href="copyright.html">Copyright</a> 2004-2016, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      Last updated on Nov 29, 2016.
     </p>
   </div>
 
@@ -1299,7 +1300,7 @@ same stopping criteria (with <img class="math" src="_images/math/047937fc5e1e2e8
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -1325,7 +1326,7 @@ same stopping criteria (with <img class="math" src="_images/math/047937fc5e1e2e8
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 </body>

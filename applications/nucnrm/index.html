@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="../../search.html"/>
         <link rel="copyright" title="Copyright" href="../../copyright.html"/>
     <link rel="top" title="CVXOPT" href="../../index.html"/>
         <link rel="up" title="Applications and extensions" href="../index.html"/>
@@ -68,8 +69,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-with-atlas">Building CVXOPT with ATLAS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-for-windows">Building CVXOPT for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#windows">Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
@@ -89,7 +92,7 @@
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Applications and extensions</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../openoffice/index.html">OpenOffice plugin</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Nuclear norm approximation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Nuclear norm approximation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../svm/index.html">Support Vector Machines</a></li>
 </ul>
 </li>
@@ -140,13 +143,13 @@ and requires CVXOPT version 1.1.1 or higher and Python 2.7.</p>
 in the nuclear norm, possibly with quadratic regularization.
 The general optimization problem  is</p>
 <div class="math">
-<p><img src="../../_images/math/a1f138159d9a3f41738a8a352e2cdfe6238e90e9.png" alt="\begin{array}[t]{ll}
+<p><img src="../../_images/math/19e77e9d1f58fdb7f3ec558dac47d6715eda2bed.png" alt="\begin{array}[t]{ll}
 \mbox{minimize} &amp; \|A(x) - B\|_* + (1/2) x^T C x + d^T x \\
 \mbox{subject to} &amp;  Gx \preceq  h
 \end{array}"/></p>
 </div><p>where</p>
 <div class="math">
-<p><img src="../../_images/math/9748ab655ffdd24b436379c59f2242175b95ae90.png" alt="A(x) = x_1 A_1 + x_2 A_2 + \cdots + x_n A_n"/></p>
+<p><img src="../../_images/math/1f64b8c3daaa43bc965445d64440ec5dbe22a77f.png" alt="A(x) = x_1 A_1 + x_2 A_2 + \cdots + x_n A_n"/></p>
 </div><p>is a linear matrix valued function.  The norm in the first term of the
 objective is the <em>nuclear norm</em> (sum of singular values).  The second term
 is a general convex quadratic function.  The constraints are componentwise
@@ -154,7 +157,7 @@ linear inequalities.</p>
 <p>This problem is of interest as a convex heuristic for a regularized
 rank minimization problem</p>
 <div class="math">
-<p><img src="../../_images/math/96ab9c663cc6a24e452b1cb8c1faeeca17fde415.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
+<p><img src="../../_images/math/29e5fc93a1fc71cef9135ebef1faa602da2a1e53.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
 \begin{array}[t]{ll}
 \mbox{minimize} &amp; \Rank(A(x) - B) + (1/2) x^T C x + d^T x \\
 \mbox{subject to} &amp;  Gx \preceq  h
@@ -165,25 +168,25 @@ problem.  In this example, we fit a linear state space model to measured
 inputs and outputs of a dynamical system.  The model is constructed from
 the solution of a regularized nuclear norm minimization problem</p>
 <div class="math">
-<p><img src="../../_images/math/78159da5f333e7841bcb1eb69426e25544d1246f.png" alt="\begin{array}{ll}
+<p><img src="../../_images/math/86c1ed6b189075312cbe247d698d7640898f638b.png" alt="\begin{array}{ll}
 \mbox{minimize} &amp; \displaystyle \| Y U^\perp \|_* +
      \gamma \sum_{t=1}^N \|y(t) - y_\mathrm{meas}(t)\|_2^2.
 \end{array}"/></p>
-</div><p>The optimization variables <img class="math" src="../../_images/math/6ef4611104bb98b4035f37ce6bbafb0ec7a38a60.png" alt="y(t)"/> in the problem are the model
-outputs.  The vectors <img class="math" src="../../_images/math/775c25d47cf3c5318cb19d11122a309ab5602d60.png" alt="y_\mathrm{meas}(t)"/> are given, measured,
-outputs.  The matrix <img class="math" src="../../_images/math/b018f9153661cd702305aecc28713fd9705e7cb3.png" alt="Y"/> is a block Hankel matrix constructed from
-the variables <img class="math" src="../../_images/math/6ef4611104bb98b4035f37ce6bbafb0ec7a38a60.png" alt="y(t)"/>.   The matrix <img class="math" src="../../_images/math/0091f49da7dbb2dbbd19b5f3b7186c5744ceb2e1.png" alt="U^\perp"/> is a matrix whose
-columns span the nullspace of a block Hankel matrix <img class="math" src="../../_images/math/73f5e249c88b2b3068263480f576b051cb5c4f6e.png" alt="U"/> constructed
-from measured inputs <img class="math" src="../../_images/math/f5a92f31881a0c96e8a26ddf0596c64ed62ad49f.png" alt="u_\mathrm{meas}(t)"/>.
-At the optimum the matrix <img class="math" src="../../_images/math/f49c13cc4b496a852b73801dd0ad300f847625fd.png" alt="Y U^\perp"/> is low rank, and its rank is
+</div><p>The optimization variables <img class="math" src="../../_images/math/7aad026aa8fa3c35cc51797c88bd35ae4980701b.png" alt="y(t)"/> in the problem are the model
+outputs.  The vectors <img class="math" src="../../_images/math/7de57bd5f6ece83c58598fc16ae5359966882ea2.png" alt="y_\mathrm{meas}(t)"/> are given, measured,
+outputs.  The matrix <img class="math" src="../../_images/math/0062c26909b3e07ee8f5a6285b2563d69bc979ff.png" alt="Y"/> is a block Hankel matrix constructed from
+the variables <img class="math" src="../../_images/math/7aad026aa8fa3c35cc51797c88bd35ae4980701b.png" alt="y(t)"/>.   The matrix <img class="math" src="../../_images/math/9c360bde3eae65f50b251d5094dfb5e84c308adf.png" alt="U^\perp"/> is a matrix whose
+columns span the nullspace of a block Hankel matrix <img class="math" src="../../_images/math/169c982b5e649cd1bd6445df5583affe427ea269.png" alt="U"/> constructed
+from measured inputs <img class="math" src="../../_images/math/b983bf2eef87c25fcc340487403e81d0175275d0.png" alt="u_\mathrm{meas}(t)"/>.
+At the optimum the matrix <img class="math" src="../../_images/math/8d41d401fa4885e87b423826410b1ba920680990.png" alt="Y U^\perp"/> is low rank, and its rank is
 equal to the order of a linear model that maps the measured inputs to
 the corrected outputs.</p>
 <p>The figures illustrate the results for the compact disc arm data
 of the <a class="reference external" href="http://homes.esat.kuleuven.be/~smc/daisy">Daisy</a>
 collection.
 The first figure shows the singular values of the matrix
-<img class="math" src="../../_images/math/c487a9233c984864981a6fdbcd25a1878439558a.png" alt="YU^\perp"/> constructed from the optimized outputs, and the matrix
-<img class="math" src="../../_images/math/52babfb7139bcbebf7f7c7b8e88e4ecb71af2928.png" alt="Y_\mathrm{meas}U^\perp"/> constructed from the measured outputs.
+<img class="math" src="../../_images/math/e5f6f1b7ef1c58973e4f852d5bc7d01f8d455f1c.png" alt="YU^\perp"/> constructed from the optimized outputs, and the matrix
+<img class="math" src="../../_images/math/e844b36577b582ee0a8be8e2ece3a468a57e15bd.png" alt="Y_\mathrm{meas}U^\perp"/> constructed from the measured outputs.
 The plot suggests a model of order three.
 The second figure compares the actual outputs with the outputs of the
 identified model.</p>
@@ -192,7 +195,7 @@ identified model.</p>
 <h2> Trade-off curve envelope </h2><p>In this example we compute bounds on the trade-off curve of the
 bicriterion problem</p>
 <div class="math">
-<p><img src="../../_images/math/1a12a0c3d68199259fb840ea6150801d4a58ad72.png" alt="\newcommand{\reals}{\mbox{\bf R}}
+<p><img src="../../_images/math/0a17e0530be2b303be71d3903477c1bd80feec61.png" alt="\newcommand{\reals}{\mbox{\bf R}}
 \begin{array}{ll}
 \mbox{minimize (w.r.t. $\reals_2^+$)} &amp;
   (\|A(x) - B\|_*, \;\;  \| x-x_0\|_2^2)
@@ -200,7 +203,7 @@ bicriterion problem</p>
 </div><p>for a randomly generated problem.  Points on the trade-off curve can be
 computed by solving the scalarized problem</p>
 <div class="math">
-<p><img src="../../_images/math/20130c2f332a65f6b0cdde1a9a543fa76ac8ed76.png" alt="\begin{array}{ll}
+<p><img src="../../_images/math/f7ec724aecc228c1ba957c6e8da9bd41d8b39afe.png" alt="\begin{array}{ll}
 \mbox{minimize} &amp; \|A(x) - B\|_* + \gamma \| x-x_0\|_2^2
 \end{array}"/></p>
 </div><p>for different weights.  Since the trade-off curve is convex, we can also
@@ -231,8 +234,8 @@ the triangular areas enclosed by the solid and dashed lines.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2015, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Sep 22, 2015.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Nov 30, 2016.
     </p>
   </div>
 
@@ -252,7 +255,7 @@ the triangular areas enclosed by the solid and dashed lines.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -278,7 +281,7 @@ the triangular areas enclosed by the solid and dashed lines.</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 <script>

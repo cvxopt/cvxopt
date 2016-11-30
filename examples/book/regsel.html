@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="../../search.html"/>
         <link rel="copyright" title="Copyright" href="../../copyright.html"/>
     <link rel="top" title="CVXOPT" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
@@ -68,8 +69,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-with-atlas">Building CVXOPT with ATLAS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-for-windows">Building CVXOPT for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#windows">Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
@@ -130,31 +133,31 @@
   <div class="section" id="sparse-regressor-selection-fig-6-7">
 <h1>Sparse regressor selection (fig. 6.7)<a class="headerlink" href="#sparse-regressor-selection-fig-6-7" title="Permalink to this headline">¶</a></h1>
 <img alt="../../_images/fig-6-7.png" src="../../_images/fig-6-7.png" />
-<p><a class="reference download internal" href="../../_downloads/regsel.py"><code class="xref download docutils literal"><span class="pre">source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" href="../../_downloads/regsel.bin"><code class="xref download docutils literal"><span class="pre">data</span> <span class="pre">file</span></code></a></p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># Figure 6.7, page 311.</span>
-<span class="c"># Sparse regressor selection.</span>
-<span class="c">#</span>
-<span class="c"># The problem data are different from the book.</span>
+<p><a class="reference download internal" href="../../_downloads/regsel.py" download=""><code class="xref download docutils literal"><span class="pre">source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" href="../../_downloads/regsel.bin" download=""><code class="xref download docutils literal"><span class="pre">data</span> <span class="pre">file</span></code></a></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Figure 6.7, page 311.</span>
+<span class="c1"># Sparse regressor selection.</span>
+<span class="c1">#</span>
+<span class="c1"># The problem data are different from the book.</span>
 
-<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">mul</span>
-<span class="kn">from</span> <span class="nn">pickle</span> <span class="kn">import</span> <span class="n">load</span>
-<span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">mul</span>
+<span class="kn">from</span> <span class="nn">pickle</span> <span class="k">import</span> <span class="n">load</span>
+<span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">try</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">pylab</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">False</span>
-<span class="k">else</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">else</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;regsel.bin&#39;</span><span class="p">,</span><span class="s">&#39;rb&#39;</span><span class="p">))</span>
-<span class="n">A</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;A&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;b&#39;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;regsel.bin&#39;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+<span class="n">A</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
 <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span>
 
-<span class="c"># In the heuristic, set x[k] to zero if abs(x[k]) &lt;= tol * max(abs(x)).</span>
-<span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-1</span>
+<span class="c1"># In the heuristic, set x[k] to zero if abs(x[k]) &lt;= tol * max(abs(x)).</span>
+<span class="n">tol</span> <span class="o">=</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">1</span>
 
-<span class="c"># Data for QP</span>
-<span class="c">#</span>
-<span class="c">#     minimize    (1/2) ||A*x - b|_2^2</span>
-<span class="c">#     subject to  -y &lt;= x &lt;= y</span>
-<span class="c">#                 sum(y) &lt;= alpha</span>
+<span class="c1"># Data for QP</span>
+<span class="c1">#</span>
+<span class="c1">#     minimize    (1/2) ||A*x - b|_2^2</span>
+<span class="c1">#     subject to  -y &lt;= x &lt;= y</span>
+<span class="c1">#                 sum(y) &lt;= alpha</span>
 
 <span class="n">P</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">))</span>
 <span class="n">P</span><span class="p">[:</span><span class="n">n</span><span class="p">,:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="o">*</span><span class="n">A</span>
@@ -165,7 +168,7 @@
 <span class="n">G</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="n">I</span><span class="p">,</span> <span class="o">-</span><span class="n">I</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">))],</span> <span class="p">[</span><span class="o">-</span><span class="n">I</span><span class="p">,</span> <span class="o">-</span><span class="n">I</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">))]])</span>
 <span class="n">h</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 
-<span class="c"># Least-norm solution</span>
+<span class="c1"># Least-norm solution</span>
 <span class="n">xln</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">xln</span><span class="p">[:</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span>
 <span class="n">lapack</span><span class="o">.</span><span class="n">gels</span><span class="p">(</span><span class="o">+</span><span class="n">A</span><span class="p">,</span> <span class="n">xln</span><span class="p">)</span>
@@ -173,14 +176,14 @@
 <span class="n">nopts</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">res</span> <span class="o">=</span> <span class="p">[</span> <span class="n">blas</span><span class="o">.</span><span class="n">nrm2</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="p">]</span>
 <span class="n">card</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">0</span> <span class="p">]</span>
-<span class="n">alphas</span> <span class="o">=</span> <span class="n">blas</span><span class="o">.</span><span class="n">asum</span><span class="p">(</span><span class="n">xln</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">nopts</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nopts</span><span class="p">),</span> <span class="n">tc</span><span class="o">=</span><span class="s">&#39;d&#39;</span><span class="p">)</span>
+<span class="n">alphas</span> <span class="o">=</span> <span class="n">blas</span><span class="o">.</span><span class="n">asum</span><span class="p">(</span><span class="n">xln</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">nopts</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nopts</span><span class="p">),</span> <span class="n">tc</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="n">alphas</span><span class="p">:</span>
 
-    <span class="c">#    minimize    ||A*x-b||_2</span>
-    <span class="c">#    subject to  ||x||_1 &lt;= alpha</span>
+    <span class="c1">#    minimize    ||A*x-b||_2</span>
+    <span class="c1">#    subject to  ||x||_1 &lt;= alpha</span>
 
     <span class="n">h</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">qp</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span><span class="p">)[</span><span class="s">&#39;x&#39;</span><span class="p">][:</span><span class="n">n</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">qp</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span><span class="p">)[</span><span class="s1">&#39;x&#39;</span><span class="p">][:</span><span class="n">n</span><span class="p">]</span>
     <span class="n">xmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
     <span class="n">I</span> <span class="o">=</span> <span class="p">[</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="o">*</span><span class="n">xmax</span> <span class="p">]</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">m</span><span class="p">:</span>
@@ -191,7 +194,7 @@
         <span class="n">res</span> <span class="o">+=</span> <span class="p">[</span> <span class="n">blas</span><span class="o">.</span><span class="n">nrm2</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x</span><span class="o">-</span><span class="n">b</span><span class="p">)</span> <span class="p">]</span>
         <span class="n">card</span> <span class="o">+=</span> <span class="p">[</span> <span class="nb">len</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="p">]</span>
 
-<span class="c"># Eliminate duplicate cardinalities and make staircase plot.</span>
+<span class="c1"># Eliminate duplicate cardinalities and make staircase plot.</span>
 <span class="n">res2</span><span class="p">,</span> <span class="n">card2</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">r</span> <span class="o">=</span> <span class="p">[</span> <span class="n">res</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">))</span> <span class="k">if</span> <span class="n">card</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">==</span> <span class="n">c</span> <span class="p">]</span>
@@ -199,18 +202,18 @@
         <span class="n">res2</span> <span class="o">+=</span> <span class="p">[</span> <span class="nb">min</span><span class="p">(</span><span class="n">r</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="p">]</span>
         <span class="n">card2</span> <span class="o">+=</span> <span class="p">[</span> <span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="o">+</span><span class="mi">1</span> <span class="p">]</span>
 
-<span class="c"># if pylab_installed:</span>
-<span class="c">#     pylab.figure(1, facecolor=&#39;w&#39;)</span>
-<span class="c">#     pylab.plot( res2[::2], card2[::2], &#39;o&#39;)</span>
-<span class="c">#     pylab.plot( res2, card2, &#39;-&#39;)</span>
-<span class="c">#     pylab.xlabel(&#39;||A*x-b||_2&#39;)</span>
-<span class="c">#     pylab.ylabel(&#39;card(x)&#39;)</span>
-<span class="c">#     pylab.title(&#39;Sparse regressor selection (fig 6.7)&#39;)</span>
-<span class="c">#     print(&quot;Close figure to start exhaustive search.&quot;)</span>
-<span class="c">#     pylab.show()</span>
+<span class="c1"># if pylab_installed:</span>
+<span class="c1">#     pylab.figure(1, facecolor=&#39;w&#39;)</span>
+<span class="c1">#     pylab.plot( res2[::2], card2[::2], &#39;o&#39;)</span>
+<span class="c1">#     pylab.plot( res2, card2, &#39;-&#39;)</span>
+<span class="c1">#     pylab.xlabel(&#39;||A*x-b||_2&#39;)</span>
+<span class="c1">#     pylab.ylabel(&#39;card(x)&#39;)</span>
+<span class="c1">#     pylab.title(&#39;Sparse regressor selection (fig 6.7)&#39;)</span>
+<span class="c1">#     print(&quot;Close figure to start exhaustive search.&quot;)</span>
+<span class="c1">#     pylab.show()</span>
 
 
-<span class="c"># Exhaustive search.</span>
+<span class="c1"># Exhaustive search.</span>
 
 <span class="k">def</span> <span class="nf">patterns</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -224,15 +227,15 @@
             <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">patterns</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span> <span class="k">yield</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span>
 
 
-<span class="n">bestx</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>   <span class="c"># best solution for each cardinality</span>
-<span class="n">bestres</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">blas</span><span class="o">.</span><span class="n">nrm2</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>   <span class="c"># best residual</span>
+<span class="n">bestx</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>   <span class="c1"># best solution for each cardinality</span>
+<span class="n">bestres</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">blas</span><span class="o">.</span><span class="n">nrm2</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>   <span class="c1"># best residual</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">m</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">patterns</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
         <span class="n">I</span> <span class="o">=</span> <span class="p">[</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">]</span>
-        <span class="n">st</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span> <span class="n">st</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%d</span><span class="s"> nonzeros: &quot;</span> <span class="o">%</span><span class="n">k</span> <span class="o">+</span> <span class="n">st</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> nonzeros: &quot;</span> <span class="o">%</span><span class="n">k</span> <span class="o">+</span> <span class="n">st</span><span class="p">)</span>
         <span class="n">x</span> <span class="o">=</span> <span class="o">+</span><span class="n">b</span>
         <span class="n">lapack</span><span class="o">.</span><span class="n">gels</span><span class="p">(</span><span class="n">A</span><span class="p">[:,</span><span class="n">I</span><span class="p">],</span> <span class="n">x</span><span class="p">)</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">blas</span><span class="o">.</span><span class="n">nrm2</span><span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">A</span><span class="p">[:,</span><span class="n">I</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[:</span><span class="n">k</span><span class="p">])</span>
@@ -242,23 +245,23 @@
 <span class="n">bestres</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
 
 <span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
 
-    <span class="c"># heuristic result</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">res2</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span> <span class="n">card2</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span> <span class="s">&#39;o&#39;</span> <span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">res2</span><span class="p">,</span> <span class="n">card2</span><span class="p">,</span> <span class="s">&#39;-&#39;</span><span class="p">)</span>
+    <span class="c1"># heuristic result</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">res2</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span> <span class="n">card2</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;o&#39;</span> <span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">res2</span><span class="p">,</span> <span class="n">card2</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span>
 
-    <span class="c"># exhaustive result</span>
+    <span class="c1"># exhaustive result</span>
     <span class="n">res2</span><span class="p">,</span> <span class="n">card2</span> <span class="o">=</span> <span class="p">[</span> <span class="n">bestres</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">],</span> <span class="p">[</span> <span class="mi">0</span> <span class="p">]</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
         <span class="n">res2</span> <span class="o">+=</span> <span class="p">[</span><span class="n">bestres</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">bestres</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>
         <span class="n">card2</span> <span class="o">+=</span> <span class="p">[</span> <span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">bestres</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="s">&#39;go&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">res2</span><span class="p">,</span> <span class="n">card2</span><span class="p">,</span> <span class="s">&#39;g-&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">bestres</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;go&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">res2</span><span class="p">,</span> <span class="n">card2</span><span class="p">,</span> <span class="s1">&#39;g-&#39;</span><span class="p">)</span>
 
-    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;||A*x-b||_2&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;card(x)&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Sparse regressor selection (fig 6.7)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;||A*x-b||_2&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;card(x)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sparse regressor selection (fig 6.7)&#39;</span><span class="p">)</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -282,8 +285,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2015, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Sep 22, 2015.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Nov 30, 2016.
     </p>
   </div>
 
@@ -303,7 +306,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -329,7 +332,7 @@
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 <script>

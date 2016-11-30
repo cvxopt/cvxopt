@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="search.html"/>
         <link rel="copyright" title="Copyright" href="copyright.html"/>
     <link rel="top" title="CVXOPT User&#39;s Guide" href="index.html"/>
         <link rel="next" title="Cone Programming" href="coneprog.html"/>
@@ -98,7 +99,7 @@
 <li class="toctree-l2"><a class="reference internal" href="fftw.html#discrete-sine-transform">Discrete Sine Transform</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Sparse Linear Equations</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sparse Linear Equations</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#matrix-orderings">Matrix Orderings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#general-linear-equations">General Linear Equations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#positive-definite-linear-equations">Positive Definite Linear Equations</a></li>
@@ -178,7 +179,7 @@
 equations.</p>
 <p>A real symmetric or complex Hermitian sparse matrix is stored as an
 <a class="reference internal" href="matrices.html#cvxopt.spmatrix" title="cvxopt.spmatrix"><code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code></a> object <code class="docutils literal"><span class="pre">X</span></code>  of size
-(<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>) and an
+(<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) and an
 additional character argument <code class="docutils literal"><span class="pre">uplo</span></code> with possible values <code class="xref py py-const docutils literal"><span class="pre">'L'</span></code>
 and <code class="xref py py-const docutils literal"><span class="pre">'U'</span></code>.  If <code class="docutils literal"><span class="pre">uplo</span></code> is <code class="xref py py-const docutils literal"><span class="pre">'L'</span></code>, the lower triangular part
 of <code class="docutils literal"><span class="pre">X</span></code> contains the lower triangular part of the symmetric or Hermitian
@@ -186,8 +187,8 @@ matrix, and the upper triangular matrix of <code class="docutils literal"><span 
 is <code class="xref py py-const docutils literal"><span class="pre">'U'</span></code>, the upper triangular part of <code class="docutils literal"><span class="pre">X</span></code> contains the upper
 triangular part of the matrix, and the lower triangular matrix of <code class="docutils literal"><span class="pre">X</span></code> is
 ignored.</p>
-<p>A general sparse square matrix of order <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> is represented by an
-<code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code> object of size (<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>, <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>).</p>
+<p>A general sparse square matrix of order <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> is represented by an
+<code class="xref py py-class docutils literal"><span class="pre">spmatrix</span></code> object of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>).</p>
 <p>Dense matrices, which appear as right-hand sides of equations, are
 stored using the same conventions as in the BLAS and LAPACK modules.</p>
 <div class="section" id="matrix-orderings">
@@ -206,8 +207,8 @@ Mathematical Software, 30(3), 381-388, 2004.</li>
 <dt id="cvxopt.amd.order">
 <code class="descclassname">cvxopt.amd.</code><code class="descname">order</code><span class="sig-paren">(</span><em>A</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.amd.order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the approximate mimimum degree ordering of a symmetric  sparse
-matrix <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/>.  The ordering is returned as an integer dense matrix
-with length equal to the order of <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/>.  Its entries specify a
+matrix <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/>.  The ordering is returned as an integer dense matrix
+with length equal to the order of <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/>.  Its entries specify a
 permutation that reduces fill-in during the Cholesky factorization.
 More precisely, if <code class="docutils literal"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">order(A)</span></code> , then <code class="docutils literal"><span class="pre">A[p,</span> <span class="pre">p]</span></code> has
 sparser Cholesky factors than <code class="docutils literal"><span class="pre">A</span></code>.</p>
@@ -215,16 +216,16 @@ sparser Cholesky factors than <code class="docutils literal"><span class="pre">A
 
 <p>As an example we consider the matrix</p>
 <div class="math">
-<p><img src="_images/math/87c716e048b6466c0459d609f9ca1d12c92df084.png" alt="\left[ \begin{array}{rrrr}
+<p><img src="_images/math/e889033c88d6e990944a43933c03add058e92546.png" alt="\left[ \begin{array}{rrrr}
  10 &amp;  0 &amp; 3 &amp;  0 \\
   0 &amp;  5 &amp; 0 &amp; -2 \\
   3 &amp;  0 &amp; 5 &amp;  0 \\
   0 &amp; -2 &amp; 0 &amp;  2
 \end{array}\right]."/></p>
-</div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">amd</span>
+</div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">amd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">P</span> <span class="o">=</span> <span class="n">amd</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
 <span class="go">[ 1]</span>
 <span class="go">[ 0]</span>
 <span class="go">[ 2]</span>
@@ -251,10 +252,10 @@ Transactions on Mathematical Software, 30(2), 196-199, 2004.</li>
 <code class="descclassname">cvxopt.umfpack.</code><code class="descname">linsolve</code><span class="sig-paren">(</span><em>A</em>, <em>B</em><span class="optional">[</span>, <em>trans = 'N'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.linsolve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a sparse set of linear equations</p>
 <div class="math">
-<p><img src="_images/math/321775dc9a96e932341dc2b5efc498827c162856.png" alt="AX &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
+<p><img src="_images/math/aee0706bd00f21b4a276d87252aec9d4af767404.png" alt="AX &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
 A^TX &amp; = B \quad (\mathrm{trans} = \mathrm{'T'}), \\
 A^HX &amp; = B \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
-</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a sparse matrix and <img class="math" src="_images/math/83956e92fcc80dee17fce864543216939a3c9da7.png" alt="B"/> is a dense matrix.
+</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a sparse matrix and <img class="math" src="_images/math/9805f44feec6f81d376d09e88b8236635edbb3c8.png" alt="B"/> is a dense matrix.
 The arguments <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">B</span></code> must have the same type
 (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>) as <code class="docutils literal"><span class="pre">A</span></code>.  On exit <code class="docutils literal"><span class="pre">B</span></code> contains
 the solution.  Raises an <code class="xref py py-exc docutils literal"><span class="pre">ArithmeticError</span></code> if the coefficient
@@ -263,21 +264,21 @@ matrix is singular.</p>
 
 <p>In the following example we solve an equation with coefficient matrix</p>
 <div class="math" id="equation-e-sp-Adef">
-<p><span class="eqno">(1)</span><img src="_images/math/48cec103218010fa067eea0252f644c77d7dcffd.png" alt="A = \left[\begin{array}{rrrrr}
+<p><span class="eqno">(1)</span><img src="_images/math/3efbb02413dbe3ace070038d8b70910f87001efc.png" alt="A = \left[\begin{array}{rrrrr}
     2 &amp; 3 &amp; 0 &amp; 0 &amp; 0 \\
     3 &amp; 0 &amp; 4 &amp; 0 &amp; 6 \\
     0 &amp;-1 &amp;-3 &amp; 2 &amp; 0 \\
     0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
     0 &amp; 4 &amp; 2 &amp; 0 &amp; 1
     \end{array}\right]."/></p>
-</div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">umfpack</span>
+</div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">umfpack</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">V</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">I</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">J</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="n">V</span><span class="p">,</span><span class="n">I</span><span class="p">,</span><span class="n">J</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">umfpack</span><span class="o">.</span><span class="n">linsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
 <span class="go">[ 5.79e-01]</span>
 <span class="go">[-5.26e-02]</span>
 <span class="go">[ 1.00e+00]</span>
@@ -315,10 +316,10 @@ that that can be passed on to
 <code class="descclassname">cvxopt.umfpack.</code><code class="descname">solve</code><span class="sig-paren">(</span><em>A</em>, <em>F</em>, <em>B</em><span class="optional">[</span>, <em>trans = 'N'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a set of linear equations</p>
 <div class="math">
-<p><img src="_images/math/321775dc9a96e932341dc2b5efc498827c162856.png" alt="AX &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
+<p><img src="_images/math/aee0706bd00f21b4a276d87252aec9d4af767404.png" alt="AX &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
 A^TX &amp; = B \quad (\mathrm{trans} = \mathrm{'T'}), \\
 A^HX &amp; = B \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
-</div><p>where <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is a sparse matrix and <img class="math" src="_images/math/83956e92fcc80dee17fce864543216939a3c9da7.png" alt="B"/> is a dense matrix.
+</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a sparse matrix and <img class="math" src="_images/math/9805f44feec6f81d376d09e88b8236635edbb3c8.png" alt="B"/> is a dense matrix.
 The arguments <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">B</span></code> must have the same type.  The argument
 <code class="docutils literal"><span class="pre">F</span></code> is a numeric factorization computed
 by <a class="reference internal" href="#cvxopt.umfpack.numeric" title="cvxopt.umfpack.numeric"><code class="xref py py-func docutils literal"><span class="pre">numeric</span></code></a>.
@@ -333,21 +334,21 @@ The symbolic factorization depends only on the sparsity pattern of
 the matrix, and not on the numerical values of the nonzero coefficients.
 The numerical factorization on the other hand depends on the sparsity
 pattern of the matrix and on its the numerical values.</p>
-<p>As an example, suppose <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is the matrix <a href="#equation-e-sp-Adef">(1)</a> and</p>
+<p>As an example, suppose <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is the matrix <a href="#equation-e-sp-Adef">(1)</a> and</p>
 <div class="math">
-<p><img src="_images/math/93876b6d08a3f850d1f4aba28cd41ca97d66880a.png" alt="B = \left[\begin{array}{rrrrr}
+<p><img src="_images/math/46223c63c5cb3a98d23d5a2c39fc4a92d7bdd0b0.png" alt="B = \left[\begin{array}{rrrrr}
     4 &amp; 3 &amp; 0 &amp; 0 &amp; 0 \\
     3 &amp; 0 &amp; 4 &amp; 0 &amp; 6 \\
     0 &amp;-1 &amp;-3 &amp; 2 &amp; 0 \\
     0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
     0 &amp; 4 &amp; 2 &amp; 0 &amp; 2
     \end{array}\right],"/></p>
-</div><p>which differs from <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> in its first and last entries.  The following
+</div><p>which differs from <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> in its first and last entries.  The following
 code computes</p>
 <div class="math">
-<p><img src="_images/math/1babc743714fba131456bbe2234d595634fb5812.png" alt="\newcommand{\ones}{\mathbf 1}
+<p><img src="_images/math/4555f864257035da7942169592454d5b8d3405f8.png" alt="\newcommand{\ones}{\mathbf 1}
 x = A^{-T}B^{-1}A^{-1}\ones."/></p>
-</div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">umfpack</span>
+</div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">umfpack</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">VA</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">VB</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">I</span> <span class="o">=</span>  <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
@@ -360,8 +361,8 @@ x = A^{-T}B^{-1}A^{-1}\ones."/></p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">FB</span> <span class="o">=</span> <span class="n">umfpack</span><span class="o">.</span><span class="n">numeric</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">Fs</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">umfpack</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">FA</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">umfpack</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">FB</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">umfpack</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">FA</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s">&#39;T&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umfpack</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">FA</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="go">[ 5.81e-01]</span>
 <span class="go">[-2.37e-01]</span>
 <span class="go">[ 1.63e+00]</span>
@@ -381,8 +382,8 @@ The routines can also be used for computing
 (or
 <span class="raw-html">LDL<sup><small>H</small></sup></span>
 factorizations
-of symmetric indefinite matrices (with <img class="math" src="_images/math/0a5711c7a37994043b2bc3bb374adca232491762.png" alt="L"/> unit lower-triangular and
-<img class="math" src="_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> diagonal and nonsingular) if such a factorization exists.</p>
+of symmetric indefinite matrices (with <img class="math" src="_images/math/ae2b750f71e1fc0daaa3de9a85d42794d7cd1326.png" alt="L"/> unit lower-triangular and
+<img class="math" src="_images/math/3cf5aa5abe312e6fd4996975341a43aa566e8d8d.png" alt="D"/> diagonal and nonsingular) if such a factorization exists.</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <ul class="last simple">
@@ -397,11 +398,11 @@ and Update/Downdate, ACM Transactions on Mathematical Software,
 <code class="descclassname">cvxopt.cholmod.</code><code class="descname">linsolve</code><span class="sig-paren">(</span><em>A</em>, <em>B</em><span class="optional">[</span>, <em>p = None</em>, <em>uplo = 'L'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.linsolve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves</p>
 <div class="math">
-<p><img src="_images/math/1beb2d429fd60d4494135aa7af1b4fe324dc8d3d.png" alt="AX = B"/></p>
-</div><p>with <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> sparse and real symmetric or complex Hermitian.</p>
+<p><img src="_images/math/59427484d9e039d9ed1ca3acc9158de7bf228f8c.png" alt="AX = B"/></p>
+</div><p>with <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> sparse and real symmetric or complex Hermitian.</p>
 <p><code class="docutils literal"><span class="pre">B</span></code> is a dense matrix of the same type as <code class="docutils literal"><span class="pre">A</span></code>.  On exit it
 is overwritten with the solution.  The argument <code class="docutils literal"><span class="pre">p</span></code> is an integer
-matrix with length equal to the order of <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/>, and specifies an
+matrix with length equal to the order of <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/>, and specifies an
 optional reordering.
 See the comment on
 <code class="xref py py-attr docutils literal"><span class="pre">options['nmethods']</span></code> for details on which ordering is used
@@ -411,7 +412,7 @@ by CHOLMOD.</p>
 
 <p>As an  example, we solve</p>
 <div class="math" id="equation-e-A-pd">
-<p><span class="eqno">(2)</span><img src="_images/math/26f49cfedfe23893d865d6299ceca29dc390c53b.png" alt="\left[ \begin{array}{rrrr}
+<p><span class="eqno">(2)</span><img src="_images/math/10196df756ffbc52013aef9f1fed403b2c510049.png" alt="\left[ \begin{array}{rrrr}
         10 &amp;  0 &amp; 3 &amp;  0 \\
          0 &amp;  5 &amp; 0 &amp; -2 \\
          3 &amp;  0 &amp; 5 &amp;  0 \\
@@ -420,11 +421,11 @@ by CHOLMOD.</p>
     \left[ \begin{array}{cc}
          0 &amp; 4 \\ 1 &amp; 5 \\ 2 &amp; 6 \\ 3 &amp; 7
     \end{array} \right]."/></p>
-</div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">cholmod</span>
+</div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">cholmod</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="s">&#39;d&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;d&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cholmod</span><span class="o">.</span><span class="n">linsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">X</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="go">[-1.46e-01  4.88e-02]</span>
 <span class="go">[ 1.33e+00  4.00e+00]</span>
 <span class="go">[ 4.88e-01  1.17e+00]</span>
@@ -445,8 +446,8 @@ by CHOLMOD.</p>
 
 <p>The following code computes the inverse of the coefficient matrix
 in <a href="#equation-e-A-pd">(2)</a> as a sparse matrix.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">splinsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">splinsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="go">[ 1.22e-01     0     -7.32e-02     0    ]</span>
 <span class="go">[    0      3.33e-01     0      3.33e-01]</span>
 <span class="go">[-7.32e-02     0      2.44e-01     0    ]</span>
@@ -463,14 +464,14 @@ in <a href="#equation-e-A-pd">(2)</a> as a sparse matrix.</p>
 <dt id="cvxopt.cholmod.symbolic">
 <code class="descclassname">cvxopt.cholmod.</code><code class="descname">symbolic</code><span class="sig-paren">(</span><em>A</em><span class="optional">[</span>, <em>p = None</em>, <em>uplo = 'L'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.symbolic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a symbolic analysis of a sparse real symmetric or
-complex Hermitian matrix <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> for one of the two factorizations:</p>
+complex Hermitian matrix <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> for one of the two factorizations:</p>
 <div class="math" id="equation-e-chol-ll">
-<p><span class="eqno">(3)</span><img src="_images/math/15cc63ee73ef52c69c9de3b3349cd0c5e7b7fd49.png" alt="PAP^T = LL^T, \qquad PAP^T = LL^H,"/></p>
+<p><span class="eqno">(3)</span><img src="_images/math/8028aa7af272108bb6496b539471d80301b0bff7.png" alt="PAP^T = LL^T, \qquad PAP^T = LL^H,"/></p>
 </div><p>and</p>
 <div class="math" id="equation-e-chol-ldl">
-<p><span class="eqno">(4)</span><img src="_images/math/e19bbf7b0589a31564d0f2b5183804851cb8846e.png" alt="PAP^T = LDL^T, \qquad PAP^T = LDL^H,"/></p>
-</div><p>where <img class="math" src="_images/math/f48b617185733d8dd6712643f1ab17c736661a06.png" alt="P"/> is a permutation matrix, <img class="math" src="_images/math/0a5711c7a37994043b2bc3bb374adca232491762.png" alt="L"/> is lower triangular
-(unit lower triangular in the second factorization), and <img class="math" src="_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> is
+<p><span class="eqno">(4)</span><img src="_images/math/48e50af0d2f7e8baffd74eb1f118505cd4927acc.png" alt="PAP^T = LDL^T, \qquad PAP^T = LDL^H,"/></p>
+</div><p>where <img class="math" src="_images/math/9dcbbef8e0f76051d388013b90a95bec3069e484.png" alt="P"/> is a permutation matrix, <img class="math" src="_images/math/ae2b750f71e1fc0daaa3de9a85d42794d7cd1326.png" alt="L"/> is lower triangular
+(unit lower triangular in the second factorization), and <img class="math" src="_images/math/3cf5aa5abe312e6fd4996975341a43aa566e8d8d.png" alt="D"/> is
 nonsingular diagonal.  The type of factorization depends on the value
 of <code class="xref py py-attr docutils literal"><span class="pre">options['supernodal']</span></code> (see below).</p>
 <p>If <code class="docutils literal"><span class="pre">uplo</span></code> is <code class="xref py py-const docutils literal"><span class="pre">'L'</span></code>, only the lower triangular part of <code class="docutils literal"><span class="pre">A</span></code>
@@ -524,37 +525,37 @@ or <a href="#equation-e-chol-ldl">(4)</a> computed by
 <td>equation</td>
 </tr>
 <tr class="row-even"><td>0</td>
-<td><img class="math" src="_images/math/6e98fc286854081ea2b9adf373df551256afff7c.png" alt="AX = B"/></td>
+<td><img class="math" src="_images/math/d77e0813854d00a321e68060f73c1cf73f0a79cb.png" alt="AX = B"/></td>
 </tr>
 <tr class="row-odd"><td>1</td>
-<td><img class="math" src="_images/math/9933c894ca1816b4c192bb1e05f3ca0235b700cc.png" alt="LDL^TX = B"/></td>
+<td><img class="math" src="_images/math/4a92485769efc131c21ef19fa0f39242ce5b8dbc.png" alt="LDL^TX = B"/></td>
 </tr>
 <tr class="row-even"><td>2</td>
-<td><img class="math" src="_images/math/e72a184be24a21b39b31cc95d26e6608c73484b0.png" alt="LDX = B"/></td>
+<td><img class="math" src="_images/math/d69f091a6a4afaeb38f7ba548495ee52ae2f4e7f.png" alt="LDX = B"/></td>
 </tr>
 <tr class="row-odd"><td>3</td>
-<td><img class="math" src="_images/math/fd4a8900a7d32aa765cff143ac4c964935bc071d.png" alt="DL^TX=B"/></td>
+<td><img class="math" src="_images/math/fbfdcbd7ea53f9cfc932ae393b8c423fa5e7a674.png" alt="DL^TX=B"/></td>
 </tr>
 <tr class="row-even"><td>4</td>
-<td><img class="math" src="_images/math/47b3ae0420c52db79daf3c6b84a01b2bcc5de5a3.png" alt="LX=B"/></td>
+<td><img class="math" src="_images/math/313d5a3f8b736d1c4d5b948876005d9932bce253.png" alt="LX=B"/></td>
 </tr>
 <tr class="row-odd"><td>5</td>
-<td><img class="math" src="_images/math/0999de156f97ffbe09679a57d21b84dd9f9b35e4.png" alt="L^TX=B"/></td>
+<td><img class="math" src="_images/math/02fce4c8ae8731b85d0f428b16f945fcee39442d.png" alt="L^TX=B"/></td>
 </tr>
 <tr class="row-even"><td>6</td>
-<td><img class="math" src="_images/math/c13187825263b2dc8bae4e30d0d15cf8670b6956.png" alt="DX=B"/></td>
+<td><img class="math" src="_images/math/6610c3549faee1423975e1af34f53e4449a84152.png" alt="DX=B"/></td>
 </tr>
 <tr class="row-odd"><td>7</td>
-<td><img class="math" src="_images/math/cd01aaaa1674ff77afb5f645d5eacd0f2ec1b573.png" alt="P^TX=B"/></td>
+<td><img class="math" src="_images/math/c50f19b9760bf5950d395d65b58390bdb1e03916.png" alt="P^TX=B"/></td>
 </tr>
 <tr class="row-even"><td>8</td>
-<td><img class="math" src="_images/math/80f8ee73e5a62640aeb2442e3f5c66a1de7a5518.png" alt="PX=B"/></td>
+<td><img class="math" src="_images/math/06d393e05858b891619138cd70ec4c9d29ab3024.png" alt="PX=B"/></td>
 </tr>
 </tbody>
 </table>
 <p>(If <code class="docutils literal"><span class="pre">F</span></code> is a Cholesky factorization of the form <a href="#equation-e-chol-ll">(3)</a>,
-<img class="math" src="_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> is an identity matrix in this table.  If <code class="docutils literal"><span class="pre">A</span></code> is complex,
-<img class="math" src="_images/math/21e56698fba40d0ef90a50ff5eac3239f56c6dc6.png" alt="L^T"/> should be replaced by <img class="math" src="_images/math/3fe72eac326113d25ef1eb961213c508f763c92a.png" alt="L^H"/>.)</p>
+<img class="math" src="_images/math/3cf5aa5abe312e6fd4996975341a43aa566e8d8d.png" alt="D"/> is an identity matrix in this table.  If <code class="docutils literal"><span class="pre">A</span></code> is complex,
+<img class="math" src="_images/math/a8ff71f5be8de0f0b80a4ee5033cb2efcfa86cce.png" alt="L^T"/> should be replaced by <img class="math" src="_images/math/bee11ec6e62981b655c4b0608fcd0aa4ffdaea53.png" alt="L^H"/>.)</p>
 <p>The matrix <code class="docutils literal"><span class="pre">B</span></code> is a dense <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code> matrix, with
 the same type as <code class="docutils literal"><span class="pre">A</span></code>.  On exit it is overwritten by the solution.</p>
 </dd></dl>
@@ -568,11 +569,11 @@ a class:<cite>spmatrix</cite>, and the solution is returned as an output argumen
 </dd></dl>
 
 <p>For the same example as above:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="s">&#39;d&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;d&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">F</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">symbolic</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cholmod</span><span class="o">.</span><span class="n">numeric</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cholmod</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="go">[-1.46e-01  4.88e-02]</span>
 <span class="go">[ 1.33e+00  4.00e+00]</span>
 <span class="go">[ 4.88e-01  1.17e+00]</span>
@@ -582,10 +583,10 @@ a class:<cite>spmatrix</cite>, and the solution is returned as an output argumen
 <dl class="function">
 <dt id="cvxopt.cholmod.diag">
 <code class="descclassname">cvxopt.cholmod.</code><code class="descname">diag</code><span class="sig-paren">(</span><em>F</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.diag" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the diagonal elements of the Cholesky factor <img class="math" src="_images/math/0a5711c7a37994043b2bc3bb374adca232491762.png" alt="L"/>
+<dd><p>Returns the diagonal elements of the Cholesky factor <img class="math" src="_images/math/ae2b750f71e1fc0daaa3de9a85d42794d7cd1326.png" alt="L"/>
 in <a href="#equation-e-chol-ll">(3)</a>, as a dense matrix of the same type as <code class="docutils literal"><span class="pre">A</span></code>.
 Note that this only applies to Cholesky factorizations.  The matrix
-<img class="math" src="_images/math/9dfa31437b58c0473299320aa638151cd88cf61b.png" alt="D"/> in an <span class="raw-html">LDL<sup><small>T</small></sup></span>
+<img class="math" src="_images/math/3cf5aa5abe312e6fd4996975341a43aa566e8d8d.png" alt="D"/> in an <span class="raw-html">LDL<sup><small>T</small></sup></span>
 factorization can be retrieved via <a class="reference internal" href="#cvxopt.cholmod.solve" title="cvxopt.cholmod.solve"><code class="xref py py-func docutils literal"><span class="pre">solve</span></code></a>
 with <code class="docutils literal"><span class="pre">sys</span></code> equal to 6.</p>
 </dd></dl>
@@ -625,19 +626,19 @@ Default: 0.</dd>
 <p>As an example that illustrates <a class="reference internal" href="#cvxopt.cholmod.diag" title="cvxopt.cholmod.diag"><code class="xref py py-func docutils literal"><span class="pre">diag</span></code></a> and the
 use of <code class="xref py py-attr docutils literal"><span class="pre">cholmod.options</span></code>, we compute the logarithm of the determinant
 of the coefficient matrix in <a href="#equation-e-A-pd">(2)</a> by two methods.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.cholmod</span> <span class="kn">import</span> <span class="n">options</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">log</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.cholmod</span> <span class="k">import</span> <span class="n">options</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">log</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">F</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">symbolic</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cholmod</span><span class="o">.</span><span class="n">numeric</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">cholmod</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">F</span><span class="p">))))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">cholmod</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">F</span><span class="p">))))</span>
 <span class="go">5.50533153593</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="p">[</span><span class="s">&#39;supernodal&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;supernodal&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">F</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">symbolic</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cholmod</span><span class="o">.</span><span class="n">numeric</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Di</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cholmod</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">Di</span><span class="p">,</span> <span class="n">sys</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="o">-</span><span class="nb">sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">Di</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="o">-</span><span class="nb">sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">Di</span><span class="p">)))</span>
 <span class="go">5.50533153593</span>
 </pre></div>
 </div>
@@ -647,41 +648,41 @@ of the coefficient matrix in <a href="#equation-e-A-pd">(2)</a> by two methods.<
 <p>This example illustrates the use of the routines for sparse Cholesky
 factorization.  We consider the problem</p>
 <div class="math" id="equation-e-covsel">
-<p><span class="eqno">(5)</span><img src="_images/math/0f86ac5d8da289ce93680172fb5d39fba1f78a77.png" alt="\newcommand{\Tr}{\mathop{\bf tr}}
+<p><span class="eqno">(5)</span><img src="_images/math/95c1874ffe7da911eda32dcd8f3a11aaff9eb8f1.png" alt="\newcommand{\Tr}{\mathop{\bf tr}}
 \begin{array}{ll}
     \mbox{minimize} &amp; -\log\det K + \Tr(KY) \\
     \mbox{subject to} &amp; K_{ij}=0,\quad (i,j) \not \in S.
 \end{array}"/></p>
-</div><p>The optimization variable is a symmetric matrix <img class="math" src="_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/> of order
-<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> and the domain of the problem is the set of positive definite
-matrices.  The matrix <img class="math" src="_images/math/b018f9153661cd702305aecc28713fd9705e7cb3.png" alt="Y"/> and the index set <img class="math" src="_images/math/11a85f3c69ae6702cb1d99d3de451913b8f84c04.png" alt="S"/> are given.
-We assume that all the diagonal positions are included in <img class="math" src="_images/math/11a85f3c69ae6702cb1d99d3de451913b8f84c04.png" alt="S"/>.
+</div><p>The optimization variable is a symmetric matrix <img class="math" src="_images/math/684381a21cd73ebbf43b63a087d3f7410ee99ce8.png" alt="K"/> of order
+<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> and the domain of the problem is the set of positive definite
+matrices.  The matrix <img class="math" src="_images/math/0062c26909b3e07ee8f5a6285b2563d69bc979ff.png" alt="Y"/> and the index set <img class="math" src="_images/math/1dbc400fcc213305415872f9f625cd2828f97a00.png" alt="S"/> are given.
+We assume that all the diagonal positions are included in <img class="math" src="_images/math/1dbc400fcc213305415872f9f625cd2828f97a00.png" alt="S"/>.
 This problem arises in maximum likelihood estimation of the covariance
 matrix of a zero-mean normal distribution, with constraints
 that specify that pairs of variables are conditionally independent.</p>
-<p>We can express <img class="math" src="_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/> as</p>
+<p>We can express <img class="math" src="_images/math/684381a21cd73ebbf43b63a087d3f7410ee99ce8.png" alt="K"/> as</p>
 <div class="math">
-<p><img src="_images/math/8c805be7cd7c66579717675a5f59630263eb7b0e.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
+<p><img src="_images/math/d07430c9b0d32e3c45ead32710178349359e6288.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
 K(x) = E_1\diag(x)E_2^T+E_2\diag(x)E_1^T"/></p>
-</div><p>where <img class="math" src="_images/math/188c175aac0a8a9c22499336711b5d7256407254.png" alt="x"/> are the nonzero elements in the lower triangular part of
-<img class="math" src="_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/>, with the diagonal elements scaled by 1/2, and</p>
+</div><p>where <img class="math" src="_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/> are the nonzero elements in the lower triangular part of
+<img class="math" src="_images/math/684381a21cd73ebbf43b63a087d3f7410ee99ce8.png" alt="K"/>, with the diagonal elements scaled by 1/2, and</p>
 <div class="math">
-<p><img src="_images/math/c86b80d3cf8c7319c3652e5a4453e29840e97a9c.png" alt="E_1 = \left[ \begin{array}{cccc}
+<p><img src="_images/math/9fe98d3adb5924ecf0ac6bb3d26a6e833c1bdf9b.png" alt="E_1 = \left[ \begin{array}{cccc}
     e_{i_1} &amp; e_{i_2} &amp; \cdots &amp; e_{i_q} \end{array}\right], \qquad
 E_2 = \left[ \begin{array}{cccc}
     e_{j_1} &amp; e_{j_2} &amp; \cdots &amp; e_{j_q} \end{array}\right],"/></p>
-</div><p>where (<img class="math" src="_images/math/4bcc5345587505a3531e55592670a69b99256846.png" alt="i_k"/>, <img class="math" src="_images/math/3544933a920a8ff595213b8ce5a7c34454e8c95b.png" alt="j_k"/>) are the positions of the nonzero entries
-in the lower-triangular part of <img class="math" src="_images/math/28e003020d0ae96250b302d7d779c791f183f707.png" alt="K"/>.  With this notation, we can
+</div><p>where (<img class="math" src="_images/math/a729fab7b286b889be54824b0f442a84566370f4.png" alt="i_k"/>, <img class="math" src="_images/math/7e0c618eb33b8bed638496f82ad1152c65b48b25.png" alt="j_k"/>) are the positions of the nonzero entries
+in the lower-triangular part of <img class="math" src="_images/math/684381a21cd73ebbf43b63a087d3f7410ee99ce8.png" alt="K"/>.  With this notation, we can
 solve problem <a href="#equation-e-covsel">(5)</a> by solving the unconstrained problem</p>
 <div class="math">
-<p><img src="_images/math/b810258d7f5a5470ef5ee8adda6b7a3957875e70.png" alt="\newcommand{\Tr}{\mathop{\bf tr}}
+<p><img src="_images/math/89632a9af2439abbfb901237915c93cce507e6f5.png" alt="\newcommand{\Tr}{\mathop{\bf tr}}
 \begin{array}{ll}
 \mbox{minimize} &amp; f(x) = -\log\det K(x) + \Tr(K(x)Y).
 \end{array}"/></p>
 </div><p>The code below implements Newton&#8217;s method with a backtracking line search.
 The gradient and Hessian of the objective function are given by</p>
 <div class="math">
-<p><img src="_images/math/073f6167ac0531843edee20f5f81d9a0c7cf4671.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
+<p><img src="_images/math/321edeeaaab544f55c8fc274ce9fb10c8a685143.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
 \begin{split}
 \nabla f(x)
     &amp; = 2 \diag( E_1^T (Y - K(x)^{-1}) E_2)) \\
@@ -693,8 +694,8 @@ The gradient and Hessian of the objective function are given by</p>
         + 2 \left(K(x)^{-1}\right)_{IJ} \circ
         \left(K(x)^{-1}\right)_{JI},
 \end{split}"/></p>
-</div><p>where <img class="math" src="_images/math/e3e1b8a98590631e4c5dc9df782ebe2cd9822722.png" alt="\circ"/> denotes Hadamard product.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">amd</span><span class="p">,</span> <span class="n">cholmod</span>
+</div><p>where <img class="math" src="_images/math/8a5aab8ae56b127306339f23c81f7decf9adca3a.png" alt="\circ"/> denotes Hadamard product.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">amd</span><span class="p">,</span> <span class="n">cholmod</span>
 
 <span class="k">def</span> <span class="nf">covsel</span><span class="p">(</span><span class="n">Y</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -709,50 +710,50 @@ The gradient and Hessian of the objective function are given by</p>
 
     <span class="n">I</span><span class="p">,</span> <span class="n">J</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">I</span><span class="p">,</span> <span class="n">Y</span><span class="o">.</span><span class="n">J</span>
     <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="n">I</span> <span class="o">+</span> <span class="n">J</span><span class="o">*</span><span class="n">n</span>         <span class="c"># non-zero positions for one-argument indexing</span>
-    <span class="n">D</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">if</span> <span class="n">I</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">==</span><span class="n">J</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>  <span class="c"># position of diagonal elements</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">I</span> <span class="o">+</span> <span class="n">J</span><span class="o">*</span><span class="n">n</span>         <span class="c1"># non-zero positions for one-argument indexing</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">if</span> <span class="n">I</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">==</span><span class="n">J</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>  <span class="c1"># position of diagonal elements</span>
 
-    <span class="c"># starting point: symmetric identity with nonzero pattern I,J</span>
+    <span class="c1"># starting point: symmetric identity with nonzero pattern I,J</span>
     <span class="n">K</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">)</span>
     <span class="n">K</span><span class="p">[::</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
 
-    <span class="c"># Kn is used in the line search</span>
+    <span class="c1"># Kn is used in the line search</span>
     <span class="n">Kn</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">)</span>
 
-    <span class="c"># symbolic factorization of K</span>
+    <span class="c1"># symbolic factorization of K</span>
     <span class="n">F</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">symbolic</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
 
-    <span class="c"># Kinv will be the inverse of K</span>
+    <span class="c1"># Kinv will be the inverse of K</span>
     <span class="n">Kinv</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
 
     <span class="k">for</span> <span class="n">iters</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
 
-        <span class="c"># numeric factorization of K</span>
+        <span class="c1"># numeric factorization of K</span>
         <span class="n">cholmod</span><span class="o">.</span><span class="n">numeric</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>
 
-        <span class="c"># compute Kinv by solving K*X = I</span>
+        <span class="c1"># compute Kinv by solving K*X = I</span>
         <span class="n">Kinv</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">Kinv</span><span class="p">[::</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="n">cholmod</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">Kinv</span><span class="p">)</span>
 
-        <span class="c"># solve Newton system</span>
+        <span class="c1"># solve Newton system</span>
         <span class="n">grad</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">Y</span><span class="o">.</span><span class="n">V</span> <span class="o">-</span> <span class="n">Kinv</span><span class="p">[</span><span class="n">N</span><span class="p">])</span>
         <span class="n">hess</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">mul</span><span class="p">(</span><span class="n">Kinv</span><span class="p">[</span><span class="n">I</span><span class="p">,</span><span class="n">J</span><span class="p">],</span><span class="n">Kinv</span><span class="p">[</span><span class="n">J</span><span class="p">,</span><span class="n">I</span><span class="p">])</span> <span class="o">+</span> <span class="n">mul</span><span class="p">(</span><span class="n">Kinv</span><span class="p">[</span><span class="n">I</span><span class="p">,</span><span class="n">I</span><span class="p">],</span><span class="n">Kinv</span><span class="p">[</span><span class="n">J</span><span class="p">,</span><span class="n">J</span><span class="p">]))</span>
         <span class="n">v</span> <span class="o">=</span> <span class="o">-</span><span class="n">grad</span>
         <span class="n">lapack</span><span class="o">.</span><span class="n">posv</span><span class="p">(</span><span class="n">hess</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
 
-        <span class="c"># stopping criterion</span>
+        <span class="c1"># stopping criterion</span>
         <span class="n">sqntdecr</span> <span class="o">=</span> <span class="o">-</span><span class="n">blas</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Newton decrement squared:</span><span class="si">%- 7.5e</span><span class="s">&quot;</span> <span class="o">%</span><span class="n">sqntdecr</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">sqntdecr</span> <span class="o">&lt;</span> <span class="mf">1e-12</span><span class="p">):</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&quot;number of iterations: &quot;</span><span class="p">,</span> <span class="n">iters</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Newton decrement squared:</span><span class="si">%- 7.5e</span><span class="s2">&quot;</span> <span class="o">%</span><span class="n">sqntdecr</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">sqntdecr</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">12</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;number of iterations: &quot;</span><span class="p">,</span> <span class="n">iters</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">break</span>
 
-        <span class="c"># line search</span>
+        <span class="c1"># line search</span>
         <span class="n">dx</span> <span class="o">=</span> <span class="o">+</span><span class="n">v</span>
-        <span class="n">dx</span><span class="p">[</span><span class="n">D</span><span class="p">]</span> <span class="o">*=</span> <span class="mi">2</span>      <span class="c"># scale the diagonal elems</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>    <span class="c"># f = -log det K</span>
+        <span class="n">dx</span><span class="p">[</span><span class="n">D</span><span class="p">]</span> <span class="o">*=</span> <span class="mi">2</span>      <span class="c1"># scale the diagonal elems</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>    <span class="c1"># f = -log det K</span>
         <span class="n">s</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">for</span> <span class="n">lsiter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
             <span class="n">Kn</span><span class="o">.</span><span class="n">V</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">V</span> <span class="o">+</span> <span class="n">s</span><span class="o">*</span><span class="n">dx</span>
@@ -793,8 +794,8 @@ The gradient and Hessian of the objective function are given by</p>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="copyright.html">Copyright</a> .
-      Last updated on Sep 22, 2015.
+        &copy; <a href="copyright.html">Copyright</a> 2004-2016, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      Last updated on Nov 29, 2016.
     </p>
   </div>
 
@@ -814,7 +815,7 @@ The gradient and Hessian of the objective function are given by</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -840,7 +841,7 @@ The gradient and Hessian of the objective function are given by</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 </body>

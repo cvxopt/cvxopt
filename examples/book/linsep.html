@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="../../search.html"/>
         <link rel="copyright" title="Copyright" href="../../copyright.html"/>
     <link rel="top" title="CVXOPT" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
@@ -68,8 +69,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-with-atlas">Building CVXOPT with ATLAS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-for-windows">Building CVXOPT for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#windows">Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
@@ -132,29 +135,29 @@
 <img alt="../../_images/fig-8-10.png" src="../../_images/fig-8-10.png" />
 <img alt="../../_images/fig-8-11.png" src="../../_images/fig-8-11.png" />
 <img alt="../../_images/fig-8-12.png" src="../../_images/fig-8-12.png" />
-<p><a class="reference download internal" href="../../_downloads/linsep.py"><code class="xref download docutils literal"><span class="pre">source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" href="../../_downloads/linsep.bin"><code class="xref download docutils literal"><span class="pre">data</span> <span class="pre">file</span></code></a></p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># Figures 8.10-12, page 426-429.</span>
-<span class="c"># Approximate linear discrimination.</span>
+<p><a class="reference download internal" href="../../_downloads/linsep.py" download=""><code class="xref download docutils literal"><span class="pre">source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" href="../../_downloads/linsep.bin" download=""><code class="xref download docutils literal"><span class="pre">data</span> <span class="pre">file</span></code></a></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Figures 8.10-12, page 426-429.</span>
+<span class="c1"># Approximate linear discrimination.</span>
 
 <span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">div</span>
-<span class="kn">from</span> <span class="nn">cvxopt.blas</span> <span class="kn">import</span> <span class="n">dot</span>
-<span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span><span class="p">,</span> <span class="n">op</span>
-<span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">div</span>
+<span class="kn">from</span> <span class="nn">cvxopt.blas</span> <span class="k">import</span> <span class="n">dot</span>
+<span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="k">import</span> <span class="n">variable</span><span class="p">,</span> <span class="n">op</span>
+<span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="k">try</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">pylab</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">False</span>
-<span class="k">else</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">else</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&quot;linsep.bin&quot;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">))</span>
-<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;X&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;Y&#39;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;linsep.bin&quot;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">]</span>
 <span class="n">n</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">M</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Y</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-<span class="c"># Via linear programming.</span>
-<span class="c">#</span>
-<span class="c"># minimize    sum(u) + sum(v)</span>
-<span class="c"># subject to  a&#39;*X - b &gt;= 1 - u</span>
-<span class="c">#             a&#39;*Y - b &lt;= -1 + v</span>
-<span class="c">#             u &gt;= 0, v &gt;= 0</span>
+<span class="c1"># Via linear programming.</span>
+<span class="c1">#</span>
+<span class="c1"># minimize    sum(u) + sum(v)</span>
+<span class="c1"># subject to  a&#39;*X - b &gt;= 1 - u</span>
+<span class="c1">#             a&#39;*Y - b &lt;= -1 + v</span>
+<span class="c1">#             u &gt;= 0, v &gt;= 0</span>
 
 <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">variable</span><span class="p">()</span>
 <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">N</span><span class="p">),</span> <span class="n">variable</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
@@ -164,28 +167,28 @@
 <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">value</span>
 
 <span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
     <span class="n">pts</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s">&#39;ow&#39;</span><span class="p">,</span> <span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">Y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s">&#39;ok&#39;</span><span class="p">,</span>
-        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;-r&#39;</span><span class="p">,</span>
-        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="o">+</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;--r&#39;</span><span class="p">,</span>
-        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;--r&#39;</span> <span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Separation via linear programming (fig. 8.10)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s1">&#39;ow&#39;</span><span class="p">,</span> <span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">Y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s1">&#39;ok&#39;</span><span class="p">,</span>
+        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span>
+        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="o">+</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;--r&#39;</span><span class="p">,</span>
+        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;--r&#39;</span> <span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Separation via linear programming (fig. 8.10)&#39;</span><span class="p">)</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
 
-<span class="c"># Support vector classifier.</span>
-<span class="c">#</span>
-<span class="c"># minimize    t  + gamma*(1&#39;*u + 1&#39;*v)</span>
-<span class="c"># subject to  a&#39;*X - b &gt;= 1 - u</span>
-<span class="c">#             a&#39;*Y - b &lt;= -1 + v</span>
-<span class="c">#             u &gt;= 0, v &gt;= 0</span>
-<span class="c">#             [t*I a; a&#39; t] &gt;= 0</span>
+<span class="c1"># Support vector classifier.</span>
+<span class="c1">#</span>
+<span class="c1"># minimize    t  + gamma*(1&#39;*u + 1&#39;*v)</span>
+<span class="c1"># subject to  a&#39;*X - b &gt;= 1 - u</span>
+<span class="c1">#             a&#39;*Y - b &lt;= -1 + v</span>
+<span class="c1">#             u &gt;= 0, v &gt;= 0</span>
+<span class="c1">#             [t*I a; a&#39; t] &gt;= 0</span>
 
 <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="n">nv</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">N</span> <span class="o">+</span> <span class="n">M</span>   <span class="c"># variables (a, b, t, u, v)</span>
+<span class="n">nv</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">N</span> <span class="o">+</span> <span class="n">M</span>   <span class="c1"># variables (a, b, t, u, v)</span>
 <span class="n">ni</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="n">M</span><span class="p">)</span>
 
 <span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">nv</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
@@ -217,57 +220,57 @@
 <span class="n">hs</span> <span class="o">=</span> <span class="p">[</span><span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))]</span>
 
 <span class="n">sol</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">sdp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">Gl</span><span class="p">,</span> <span class="n">hl</span><span class="p">,</span> <span class="n">Gs</span><span class="p">,</span> <span class="n">hs</span><span class="p">)</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
 
 <span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
     <span class="n">pts</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s">&#39;ow&#39;</span><span class="p">,</span> <span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">Y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s">&#39;ok&#39;</span><span class="p">,</span>
-        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;-r&#39;</span><span class="p">,</span>
-        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="o">+</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;--r&#39;</span><span class="p">,</span>
-        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;--r&#39;</span> <span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Support vector classifier (fig. 8.11)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s1">&#39;ow&#39;</span><span class="p">,</span> <span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">Y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s1">&#39;ok&#39;</span><span class="p">,</span>
+        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span>
+        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="o">+</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;--r&#39;</span><span class="p">,</span>
+        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;--r&#39;</span> <span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Support vector classifier (fig. 8.11)&#39;</span><span class="p">)</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
 
 
-<span class="c"># Via logistic modeling.</span>
-<span class="c">#</span>
-<span class="c"># minimize -sum(X&#39;*a - b) + sum log (1 + exp([X&#39;;Y&#39;]*a - b))</span>
+<span class="c1"># Via logistic modeling.</span>
+<span class="c1">#</span>
+<span class="c1"># minimize -sum(X&#39;*a - b) + sum log (1 + exp([X&#39;;Y&#39;]*a - b))</span>
 
 <span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="n">M</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">A</span><span class="p">[:</span><span class="n">N</span><span class="p">,:</span><span class="n">n</span><span class="p">],</span> <span class="n">A</span><span class="p">[</span><span class="n">N</span><span class="p">:,:</span><span class="n">n</span><span class="p">],</span> <span class="n">A</span><span class="p">[:,</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">Y</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span>
 <span class="n">c</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">))</span> <span class="o">*</span> <span class="n">A</span><span class="p">[:</span><span class="n">N</span><span class="p">,:])</span><span class="o">.</span><span class="n">T</span>
 
-<span class="c"># minimize c&#39;*x + sum log (1 + exp(A*x))</span>
+<span class="c1"># minimize c&#39;*x + sum log (1 + exp(A*x))</span>
 
-<span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-   <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+   <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
    <span class="n">w</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="n">A</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
    <span class="n">f</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">w</span><span class="p">))</span>
    <span class="n">grad</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">div</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="mi">1</span><span class="o">+</span><span class="n">w</span><span class="p">)</span>
-   <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="k">return</span> <span class="n">matrix</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">grad</span><span class="o">.</span><span class="n">T</span>
+   <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="n">matrix</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">grad</span><span class="o">.</span><span class="n">T</span>
    <span class="n">H</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">spdiag</span><span class="p">(</span><span class="n">div</span><span class="p">(</span><span class="n">w</span><span class="p">,(</span><span class="mi">1</span><span class="o">+</span><span class="n">w</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="n">A</span>
    <span class="k">return</span> <span class="n">matrix</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">grad</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">H</span>
 
 <span class="n">sol</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>
-<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][:</span><span class="mi">2</span><span class="p">],</span>  <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][:</span><span class="mi">2</span><span class="p">],</span>  <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
 
 <span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
     <span class="n">pts</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="o">-</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s">&#39;ow&#39;</span><span class="p">,</span> <span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">Y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s">&#39;ok&#39;</span><span class="p">,</span>
-        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;-r&#39;</span><span class="p">,</span>
-        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="o">+</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;--r&#39;</span><span class="p">,</span>
-        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;--r&#39;</span> <span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Separation via logistic modeling (fig. 8.12)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s1">&#39;ow&#39;</span><span class="p">,</span> <span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">Y</span><span class="p">[</span><span class="mi">1</span><span class="p">,:],</span> <span class="s1">&#39;ok&#39;</span><span class="p">,</span>
+        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span>
+        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="o">+</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;--r&#39;</span><span class="p">,</span>
+        <span class="n">pts</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pts</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;--r&#39;</span> <span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Separation via logistic modeling (fig. 8.12)&#39;</span><span class="p">)</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
 
     <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -292,8 +295,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2015, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Sep 22, 2015.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Nov 30, 2016.
     </p>
   </div>
 
@@ -313,7 +316,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -339,7 +342,7 @@
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 <script>

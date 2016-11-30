@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="../../search.html"/>
         <link rel="copyright" title="Copyright" href="../../copyright.html"/>
     <link rel="top" title="CVXOPT" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
@@ -68,8 +69,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-with-atlas">Building CVXOPT with ATLAS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-cvxopt-for-windows">Building CVXOPT for Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#windows">Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
@@ -131,19 +134,19 @@
 <h1>Chebyshev bounds (fig. 7.6-7.7)<a class="headerlink" href="#chebyshev-bounds-fig-7-6-7-7" title="Permalink to this headline">¶</a></h1>
 <img alt="../../_images/fig-7-6.png" src="../../_images/fig-7-6.png" />
 <img alt="../../_images/fig-7-7.png" src="../../_images/fig-7-7.png" />
-<p><a class="reference download internal" href="../../_downloads/probbounds.py"><code class="xref download docutils literal"><span class="pre">source</span> <span class="pre">code</span></code></a></p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># Figures 7.6 and 7.7, page 383.</span>
-<span class="c"># Chebyshev bounds.</span>
+<p><a class="reference download internal" href="../../_downloads/probbounds.py" download=""><code class="xref download docutils literal"><span class="pre">source</span> <span class="pre">code</span></code></a></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Figures 7.6 and 7.7, page 383.</span>
+<span class="c1"># Chebyshev bounds.</span>
 
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sqrt</span>
-<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span>
-<span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span>
+<span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="k">try</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">pylab</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">False</span>
-<span class="k">else</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="k">else</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="c"># Extreme points and inequality description of Voronoi region around</span>
-<span class="c"># first symbol (0,0).</span>
+<span class="c1"># Extreme points and inequality description of Voronoi region around</span>
+<span class="c1"># first symbol (0,0).</span>
 <span class="n">m</span> <span class="o">=</span> <span class="mi">6</span>
 <span class="n">V</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span> <span class="mf">1.0</span><span class="p">,</span>  <span class="mf">1.0</span><span class="p">,</span>
             <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>  <span class="mf">2.0</span><span class="p">,</span>
@@ -156,11 +159,11 @@
 <span class="n">A0</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="o">-</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,:</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">:]),</span> <span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,:</span><span class="n">m</span><span class="p">]</span> <span class="o">-</span> <span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">:]])</span><span class="o">.</span><span class="n">T</span>
 <span class="n">b0</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span><span class="n">A0</span><span class="p">,</span> <span class="n">V</span><span class="p">[:,:</span><span class="n">m</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">*</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 
-<span class="c"># List of symbols.</span>
+<span class="c1"># List of symbols.</span>
 <span class="n">C</span> <span class="o">=</span> <span class="p">[</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="p">]</span> <span class="o">+</span> \
     <span class="p">[</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">b0</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">/</span> <span class="n">blas</span><span class="o">.</span><span class="n">nrm2</span><span class="p">(</span><span class="n">A0</span><span class="p">[</span><span class="n">k</span><span class="p">,:])</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">A0</span><span class="p">[</span><span class="n">k</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="p">]</span>
 
-<span class="c"># Voronoi set around C[1]</span>
+<span class="c1"># Voronoi set around C[1]</span>
 <span class="n">A1</span><span class="p">,</span> <span class="n">b1</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)),</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">A1</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="o">-</span><span class="n">A0</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span>
 <span class="n">b1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">b0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -169,7 +172,7 @@
 <span class="n">A1</span><span class="p">[</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">=</span> <span class="p">(</span><span class="n">C</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
 <span class="n">b1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">A1</span><span class="p">[</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">*</span> <span class="p">(</span> <span class="n">C</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
 
-<span class="c"># Voronoi set around C[2]</span>
+<span class="c1"># Voronoi set around C[2]</span>
 <span class="n">A2</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)),</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">A2</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="o">-</span><span class="n">A0</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span>
 <span class="n">b2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">b0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -181,39 +184,39 @@
 
 <span class="k">def</span> <span class="nf">cheb</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">Sigma</span><span class="p">):</span>
 
-    <span class="c"># Calculates Chebyshev lower bound on Prob(A*x &lt;= b) where</span>
-    <span class="c"># x in R^2 has mean zero and covariance Sigma.</span>
-    <span class="c">#</span>
-    <span class="c"># maximize    1 - tr(Sigma*P) - r</span>
-    <span class="c"># subject to  [ P,                    q - (tauk/2)*ak ]</span>
-    <span class="c">#             [ (q - (tauk/2)*ak)&#39;,   r - 1 + tauk*bk ] &gt;= 0,</span>
-    <span class="c">#                                                 k = 0,...,m-1</span>
-    <span class="c">#             [ P,   q ]</span>
-    <span class="c">#             [ q&#39;,  r ] &gt;= 0</span>
-    <span class="c">#             tauk &gt;= 0, k=0,...,m-1.</span>
-    <span class="c">#</span>
-    <span class="c"># variables P[0,0], P[1,0], P[1,1], q[0], q[1], r, tau[0], ...,</span>
-    <span class="c">#     tau[m-1].</span>
+    <span class="c1"># Calculates Chebyshev lower bound on Prob(A*x &lt;= b) where</span>
+    <span class="c1"># x in R^2 has mean zero and covariance Sigma.</span>
+    <span class="c1">#</span>
+    <span class="c1"># maximize    1 - tr(Sigma*P) - r</span>
+    <span class="c1"># subject to  [ P,                    q - (tauk/2)*ak ]</span>
+    <span class="c1">#             [ (q - (tauk/2)*ak)&#39;,   r - 1 + tauk*bk ] &gt;= 0,</span>
+    <span class="c1">#                                                 k = 0,...,m-1</span>
+    <span class="c1">#             [ P,   q ]</span>
+    <span class="c1">#             [ q&#39;,  r ] &gt;= 0</span>
+    <span class="c1">#             tauk &gt;= 0, k=0,...,m-1.</span>
+    <span class="c1">#</span>
+    <span class="c1"># variables P[0,0], P[1,0], P[1,1], q[0], q[1], r, tau[0], ...,</span>
+    <span class="c1">#     tau[m-1].</span>
 
     <span class="n">m</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">novars</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">m</span>
 
-    <span class="c"># Cost function.</span>
+    <span class="c1"># Cost function.</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">novars</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
     <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Sigma</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="o">*</span><span class="n">Sigma</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">Sigma</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">c</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
 
     <span class="n">Gs</span> <span class="o">=</span> <span class="p">[</span> <span class="n">spmatrix</span><span class="p">([],[],[],</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="n">novars</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="p">]</span>
 
-    <span class="c"># Coefficients of P, q, r in LMI constraints.</span>
+    <span class="c1"># Coefficients of P, q, r in LMI constraints.</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">Gs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>   <span class="c"># P[0,0]</span>
-        <span class="n">Gs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>   <span class="c"># P[1,0]</span>
-        <span class="n">Gs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>   <span class="c"># P[1,1]</span>
-        <span class="n">Gs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>   <span class="c"># q[0]</span>
-        <span class="n">Gs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>   <span class="c"># q[1]</span>
-        <span class="n">Gs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>   <span class="c"># r</span>
-    <span class="c"># Coefficients of tau.</span>
+        <span class="n">Gs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>   <span class="c1"># P[0,0]</span>
+        <span class="n">Gs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>   <span class="c1"># P[1,0]</span>
+        <span class="n">Gs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>   <span class="c1"># P[1,1]</span>
+        <span class="n">Gs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>   <span class="c1"># q[0]</span>
+        <span class="n">Gs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>   <span class="c1"># q[1]</span>
+        <span class="n">Gs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>   <span class="c1"># r</span>
+    <span class="c1"># Coefficients of tau.</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
         <span class="n">Gs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="o">+</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">Gs</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="o">+</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="n">k</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
@@ -222,24 +225,24 @@
     <span class="n">hs</span> <span class="o">=</span> <span class="p">[</span> <span class="n">matrix</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="p">]</span> <span class="o">+</span> \
         <span class="p">[</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span> <span class="p">]</span>
 
-    <span class="c"># Constraints tau &gt;= 0.</span>
+    <span class="c1"># Constraints tau &gt;= 0.</span>
     <span class="n">Gl</span><span class="p">,</span> <span class="n">hl</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="o">+</span><span class="n">m</span><span class="p">)),</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 
     <span class="n">sol</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">sdp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">Gl</span><span class="p">,</span> <span class="n">hl</span><span class="p">,</span> <span class="n">Gs</span><span class="p">,</span> <span class="n">hs</span><span class="p">)</span>
-    <span class="n">P</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
-    <span class="n">q</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span>
     <span class="n">bound</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">Sigma</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">Sigma</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">P</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">Sigma</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="n">P</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">r</span>
 
-    <span class="c"># Worst-case distribution from dual solution.</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Z</span><span class="p">[</span><span class="mi">2</span><span class="p">,:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">Z</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">Z</span> <span class="ow">in</span> <span class="n">sol</span><span class="p">[</span><span class="s">&#39;zs&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">Z</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">1e-5</span> <span class="p">]</span>
+    <span class="c1"># Worst-case distribution from dual solution.</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Z</span><span class="p">[</span><span class="mi">2</span><span class="p">,:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">Z</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">Z</span> <span class="ow">in</span> <span class="n">sol</span><span class="p">[</span><span class="s1">&#39;zs&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">Z</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">5</span> <span class="p">]</span>
 
     <span class="k">return</span> <span class="n">bound</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">X</span>
 
 
-<span class="c"># Compute bound for s0 with sigma = 1.0.</span>
-<span class="c"># Write ellipse {x | x&#39;*P*x + 2*q&#39;*x + r = 1} in the form</span>
-<span class="c"># {xc + L^{-T}*u | ||u||_2 = 1}</span>
+<span class="c1"># Compute bound for s0 with sigma = 1.0.</span>
+<span class="c1"># Write ellipse {x | x&#39;*P*x + 2*q&#39;*x + r = 1} in the form</span>
+<span class="c1"># {xc + L^{-T}*u | ||u||_2 = 1}</span>
 
 <span class="n">Sigma</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
 <span class="n">bnd</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">cheb</span><span class="p">(</span><span class="n">A0</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">Sigma</span><span class="p">)</span>
@@ -250,8 +253,8 @@
 
 <span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">makefig1</span><span class="p">():</span>
-        <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-        <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s">&#39;b-&#39;</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">)</span>
         <span class="n">nopts</span> <span class="o">=</span> <span class="mi">1000</span>
         <span class="n">angles</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span> <span class="p">[</span><span class="n">a</span><span class="o">*</span><span class="mf">2.0</span><span class="o">*</span><span class="n">pi</span><span class="o">/</span><span class="n">nopts</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nopts</span><span class="p">)</span> <span class="p">],</span>
             <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nopts</span><span class="p">)</span> <span class="p">)</span>
@@ -259,9 +262,9 @@
         <span class="n">circle</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">circle</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">angles</span><span class="p">),</span> <span class="n">sin</span><span class="p">(</span><span class="n">angles</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">C</span><span class="p">)):</span>
             <span class="n">c</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-            <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s">&#39;ow&#39;</span><span class="p">)</span>
-            <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&quot;s</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span><span class="n">k</span><span class="p">)</span>
-            <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">circle</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">circle</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s">&#39;g:&#39;</span><span class="p">)</span>
+            <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;ow&#39;</span><span class="p">)</span>
+            <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;s</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="n">k</span><span class="p">)</span>
+            <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">circle</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">circle</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s1">&#39;g:&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="n">V</span><span class="p">[:,</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">k</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
@@ -269,73 +272,73 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="nb">dir</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">C</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">C</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">v</span>
                 <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="nb">dir</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
-                    <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="nb">dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s">&#39;b-&#39;</span><span class="p">)</span>
+                    <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="nb">dir</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;b-&#39;</span><span class="p">)</span>
         <span class="n">ellipse</span> <span class="o">=</span> <span class="o">+</span><span class="n">circle</span>
-        <span class="n">blas</span><span class="o">.</span><span class="n">trsm</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">,</span> <span class="n">transA</span><span class="o">=</span><span class="s">&#39;T&#39;</span><span class="p">)</span>
-        <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">ellipse</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">xc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">ellipse</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s">&#39;r-&#39;</span><span class="p">)</span>
+        <span class="n">blas</span><span class="o">.</span><span class="n">trsm</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">,</span> <span class="n">transA</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">ellipse</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">xc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">ellipse</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">Xk</span> <span class="ow">in</span> <span class="n">X</span><span class="p">:</span>
-            <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">Xk</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">Xk</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s">&#39;ro&#39;</span><span class="p">)</span>
+            <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">Xk</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">Xk</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;ro&#39;</span><span class="p">)</span>
 
         <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
-        <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Geometrical interpretation of Chebyshev bound (fig. 7.7)&#39;</span><span class="p">)</span>
-        <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">&#39;off&#39;</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Geometrical interpretation of Chebyshev bound (fig. 7.7)&#39;</span><span class="p">)</span>
+        <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
     <span class="n">makefig1</span><span class="p">()</span>
-    <span class="c">#print(&quot;Close figure to continue.&quot;)</span>
-    <span class="c">#pylab.show()</span>
+    <span class="c1">#print(&quot;Close figure to continue.&quot;)</span>
+    <span class="c1">#pylab.show()</span>
 
 
-<span class="c"># Compute bounds for s0 with sigma in [0,2.5]</span>
+<span class="c1"># Compute bounds for s0 with sigma in [0,2.5]</span>
 <span class="n">nosigmas</span> <span class="o">=</span> <span class="mi">150</span>
 <span class="n">sigmas</span> <span class="o">=</span> <span class="mf">0.001</span> <span class="o">+</span> <span class="p">(</span><span class="mf">2.5</span> <span class="o">-</span> <span class="mf">0.001</span><span class="p">)</span> <span class="o">/</span> <span class="n">nosigmas</span> <span class="o">*</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">nosigmas</span><span class="p">)),</span>
-    <span class="n">tc</span><span class="o">=</span><span class="s">&#39;d&#39;</span><span class="p">)</span>
+    <span class="n">tc</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">)</span>
 <span class="n">I</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s">&quot;Computing lower bounds for symbol 0 ...&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing lower bounds for symbol 0 ...&quot;</span><span class="p">)</span>
 <span class="n">bnds0</span> <span class="o">=</span> <span class="p">[</span> <span class="n">cheb</span><span class="p">(</span><span class="n">A0</span><span class="p">,</span> <span class="n">b0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">I</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">sigma</span> <span class="ow">in</span> <span class="n">sigmas</span> <span class="p">]</span>
 
 <span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sigmas</span><span class="p">,</span> <span class="n">bnds0</span><span class="p">)</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Chebyshev lower bounds (fig 7.6)&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">sigmas</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="n">bnds0</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="s">&#39;s0&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;sigma&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Probability of correct detection&#39;</span><span class="p">)</span>
-    <span class="c">#print(&quot;Close figure to continue.&quot;)</span>
-    <span class="c">#pylab.show()</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Chebyshev lower bounds (fig 7.6)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">sigmas</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="n">bnds0</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;s0&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;sigma&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Probability of correct detection&#39;</span><span class="p">)</span>
+    <span class="c1">#print(&quot;Close figure to continue.&quot;)</span>
+    <span class="c1">#pylab.show()</span>
 
-<span class="c"># Bounds for s1.</span>
-<span class="n">b1</span> <span class="o">-=</span> <span class="n">A1</span><span class="o">*</span><span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c"># put s1 at the origin</span>
-<span class="k">print</span><span class="p">(</span><span class="s">&quot;Computing lower bounds for symbol 1 ...&quot;</span><span class="p">)</span>
+<span class="c1"># Bounds for s1.</span>
+<span class="n">b1</span> <span class="o">-=</span> <span class="n">A1</span><span class="o">*</span><span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># put s1 at the origin</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing lower bounds for symbol 1 ...&quot;</span><span class="p">)</span>
 <span class="n">bnds1</span> <span class="o">=</span> <span class="p">[</span> <span class="n">cheb</span><span class="p">(</span><span class="n">A1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">I</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">sigma</span> <span class="ow">in</span> <span class="n">sigmas</span> <span class="p">]</span>
 
 <span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sigmas</span><span class="p">,</span><span class="n">bnds0</span><span class="p">,</span> <span class="s">&#39;-b&#39;</span><span class="p">,</span> <span class="n">sigmas</span><span class="p">,</span> <span class="n">bnds1</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sigmas</span><span class="p">,</span><span class="n">bnds0</span><span class="p">,</span> <span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="n">sigmas</span><span class="p">,</span> <span class="n">bnds1</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Chebyshev lower bounds (fig 7.6)&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">sigmas</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="n">bnds0</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="s">&#39;s0&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">sigmas</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="n">bnds1</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="s">&#39;s1&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;sigma&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Probability of correct detection&#39;</span><span class="p">)</span>
-    <span class="c">#print(&quot;Close figure to continue.&quot;)</span>
-    <span class="c">#pylab.show()</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Chebyshev lower bounds (fig 7.6)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">sigmas</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="n">bnds0</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;s0&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">sigmas</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="n">bnds1</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;s1&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;sigma&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Probability of correct detection&#39;</span><span class="p">)</span>
+    <span class="c1">#print(&quot;Close figure to continue.&quot;)</span>
+    <span class="c1">#pylab.show()</span>
 
-<span class="c"># Bounds for s2.</span>
-<span class="n">b2</span> <span class="o">-=</span> <span class="n">A2</span><span class="o">*</span><span class="n">C</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>  <span class="c"># put s2 at the origin</span>
-<span class="k">print</span><span class="p">(</span><span class="s">&quot;Computing lower bounds for symbol 2 ...&quot;</span><span class="p">)</span>
+<span class="c1"># Bounds for s2.</span>
+<span class="n">b2</span> <span class="o">-=</span> <span class="n">A2</span><span class="o">*</span><span class="n">C</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># put s2 at the origin</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing lower bounds for symbol 2 ...&quot;</span><span class="p">)</span>
 <span class="n">bnds2</span> <span class="o">=</span> <span class="p">[</span> <span class="n">cheb</span><span class="p">(</span><span class="n">A2</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">I</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">sigma</span> <span class="ow">in</span> <span class="n">sigmas</span> <span class="p">]</span>
 
 <span class="k">if</span> <span class="n">pylab_installed</span><span class="p">:</span>
     <span class="n">makefig1</span><span class="p">()</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sigmas</span><span class="p">,</span><span class="n">bnds0</span><span class="p">,</span> <span class="s">&#39;-b&#39;</span><span class="p">,</span> <span class="n">sigmas</span><span class="p">,</span> <span class="n">bnds1</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">sigmas</span><span class="p">,</span> <span class="n">bnds2</span><span class="p">,</span> <span class="s">&#39;g&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sigmas</span><span class="p">,</span><span class="n">bnds0</span><span class="p">,</span> <span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="n">sigmas</span><span class="p">,</span> <span class="n">bnds1</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">sigmas</span><span class="p">,</span> <span class="n">bnds2</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Chebyshev lower bounds (fig 7.6)&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">sigmas</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="n">bnds0</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="s">&#39;s0&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">sigmas</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="n">bnds1</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="s">&#39;s1&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">sigmas</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="n">bnds2</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="s">&#39;s2&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;sigma&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Probability of correct detection&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Chebyshev lower bounds (fig 7.6)&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">sigmas</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="n">bnds0</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;s0&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">sigmas</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="n">bnds1</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;s1&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">sigmas</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="n">bnds2</span><span class="p">[</span><span class="n">nosigmas</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;s2&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;sigma&#39;</span><span class="p">)</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Probability of correct detection&#39;</span><span class="p">)</span>
 
     <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -360,8 +363,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2015, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Sep 22, 2015.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Nov 30, 2016.
     </p>
   </div>
 
@@ -381,7 +384,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -407,7 +410,7 @@
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 <script>
