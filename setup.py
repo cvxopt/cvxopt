@@ -60,10 +60,18 @@ if platform.platform().startswith("Darwin"):
     # macOS
     SUITESPARSE_LIB_DIR = '/usr/local/lib'
     SUITESPARSE_INC_DIR = '/usr/local/include'
-else: 
-    # default: Ubuntu/Debian
+elif platform.dist()[0] in ['ubuntu','debian']:
+    # Ubuntu/Debian
     SUITESPARSE_LIB_DIR = "/usr/lib/x86_64-linux-gnu"
     SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
+elif platform.dist()[0] in ['centos','fedora','redhat']:
+    # CentOS/Fedora/RedHat
+    SUITESPARSE_LIB_DIR = "/usr/lib64"
+    SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
+else:
+    # Default
+    SUITESPARSE_LIB_DIR = '/usr/lib'
+    SUITESPARSE_INC_DIR = '/usr/include'
 
 # Directory containing SuiteSparse source
 SUITESPARSE_SRC_DIR = ''
