@@ -34,7 +34,4 @@ Build status
 | Linux/macOS |  [![Build Status](https://travis-ci.org/cvxopt/cvxopt.svg?branch=master)](https://travis-ci.org/cvxopt/cvxopt) | [![Build Status](https://travis-ci.org/cvxopt/cvxopt.svg?branch=dev)](https://travis-ci.org/cvxopt/cvxopt)|
 | Windows    |  [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/cvxopt/cvxopt?branch=master&svg=true)](https://ci.appveyor.com/project/martinandersen/cvxopt)      |  [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/cvxopt/cvxopt?branch=dev&svg=true)](https://ci.appveyor.com/project/martinandersen/cvxopt)    |
 | Coveralls   |  [![Coverage Status](https://coveralls.io/repos/github/cvxopt/cvxopt/badge.svg?branch=master)](https://coveralls.io/github/cvxopt/cvxopt?branch=master)  |  [![Coverage Status](https://coveralls.io/repos/github/cvxopt/cvxopt/badge.svg?branch=dev)](https://coveralls.io/github/cvxopt/cvxopt?branch=dev)   |
-| Readthedocs | [![RTFD Status](https://readthedocs.org/projects/cvxopt/badge/)](http://cvxopt.readthedocs.io/en/latest/?badge=latest) | [![RTFD Status](https://readthedocs.org/projects/cvxopt/badge/?version=dev)](http://cvxopt.readthedocs.io/en/dev/?badge=dev)|
-
-
-
+| Readthedocs | [![RTFD Status](https://readthedocs.org/projects/cvxopt/badge/?version=latest)](http://cvxopt.readthedocs.io/en/latest/?badge=latest) | [![RTFD Status](https://readthedocs.org/projects/cvxopt/badge/?version=dev)](http://cvxopt.readthedocs.io/en/dev/?badge=dev)|
