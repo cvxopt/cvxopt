@@ -197,8 +197,8 @@ else:
         library_dirs = [ BLAS_LIB_DIR ],
         define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
         libraries = LAPACK_LIB + BLAS_LIB,
-        extra_compile_args = ['-Wno-unknown-pragmas'] + WIN_64_EXTRA_COMPILE_ARGS,
-        extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
+        extra_compile_args = ['-Wno-unknown-pragmas'],
+        extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = ['src/C/klu.c' ] +
             [SUITESPARSE_SRC_DIR + 'SuiteSparse_config/SuiteSparse_config.c'] +
             glob('src/C/SuiteSparse_cvxopt_extra/klu/*'))
