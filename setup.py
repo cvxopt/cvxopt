@@ -98,6 +98,8 @@ if platform.architecture() == ('64bit', 'WindowsPE'):
 else:
     WIN_64_EXTRA_COMPILE_ARGS = []
 
+WIN_EXTRA_LINK_ARGS = []
+
 extmods = []
 
 # Macros
@@ -110,7 +112,7 @@ if BUILD_GSL:
     gsl = Extension('gsl', libraries = ['m', 'gsl'] + BLAS_LIB,
         include_dirs = [ GSL_INC_DIR ],
         library_dirs = [ GSL_LIB_DIR, BLAS_LIB_DIR ],
-        extra_link_args = BLAS_EXTRA_LINK_ARGS,
+        extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
         sources = ['src/C/gsl.c'] )
     extmods += [gsl];
 
@@ -118,7 +120,7 @@ if BUILD_FFTW:
     fftw = Extension('fftw', libraries = ['fftw3'] + BLAS_LIB,
         include_dirs = [ FFTW_INC_DIR ],
         library_dirs = [ FFTW_LIB_DIR, BLAS_LIB_DIR ],
-        extra_link_args = BLAS_EXTRA_LINK_ARGS,
+        extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
         sources = ['src/C/fftw.c'] )
     extmods += [fftw];
 
@@ -133,7 +135,7 @@ if BUILD_DSDP:
     dsdp = Extension('dsdp', libraries = ['dsdp'] + LAPACK_LIB + BLAS_LIB,
         include_dirs = [ DSDP_INC_DIR ],
         library_dirs = [ DSDP_LIB_DIR, BLAS_LIB_DIR ],
-        extra_link_args = BLAS_EXTRA_LINK_ARGS,
+        extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
         sources = ['src/C/dsdp.c'] )
     extmods += [dsdp];
 
@@ -143,21 +145,21 @@ base = Extension('base', libraries = ['m'] + LAPACK_LIB + BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
     extra_compile_args = WIN_64_EXTRA_COMPILE_ARGS,
-    extra_link_args = BLAS_EXTRA_LINK_ARGS,
+    extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
     sources = ['src/C/base.c','src/C/dense.c','src/C/sparse.c'])
 
 blas = Extension('blas', libraries = BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
     extra_compile_args = WIN_64_EXTRA_COMPILE_ARGS,
-    extra_link_args = BLAS_EXTRA_LINK_ARGS,
+    extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
     sources = ['src/C/blas.c'] )
 
 lapack = Extension('lapack', libraries = LAPACK_LIB + BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
     extra_compile_args = WIN_64_EXTRA_COMPILE_ARGS,
-    extra_link_args = BLAS_EXTRA_LINK_ARGS,
+    extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
     sources = ['src/C/lapack.c'] )
 
 if SUITESPARSE_EXT_LIB:
@@ -176,7 +178,7 @@ else:
         define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
         libraries = LAPACK_LIB + BLAS_LIB,
         extra_compile_args = ['-Wno-unknown-pragmas'] + WIN_64_EXTRA_COMPILE_ARGS,
-        extra_link_args = BLAS_EXTRA_LINK_ARGS,
+        extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
         sources = [ 'src/C/umfpack.c',
             'src/C/SuiteSparse/UMFPACK/Source/umfpack_global.c',
             'src/C/SuiteSparse/UMFPACK/Source/umfpack_tictoc.c' ] +
@@ -203,7 +205,7 @@ else:
         define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
         libraries = LAPACK_LIB + BLAS_LIB,
         extra_compile_args = ['-Wno-unknown-pragmas'] + WIN_64_EXTRA_COMPILE_ARGS,
-        extra_link_args = BLAS_EXTRA_LINK_ARGS,
+        extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
         sources = ['src/C/klu.c' ] +
             ['src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
             glob('src/C/SuiteSparse_cvxopt_extra/klu/*'))
@@ -228,7 +230,7 @@ else:
             'src/C/SuiteSparse/SuiteSparse_config' ],
         define_macros = MACROS + [('NPARTITION', '1'), ('NTIMER', '1')],
         extra_compile_args = WIN_64_EXTRA_COMPILE_ARGS,
-        extra_link_args = BLAS_EXTRA_LINK_ARGS,
+        extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
         sources = [ 'src/C/cholmod.c' ] +
             ['src/C/SuiteSparse/AMD/Source/' + s for s in ['amd_global.c',
                 'amd_postorder.c', 'amd_post_tree.c', 'amd_2.c']] +
@@ -259,7 +261,7 @@ misc_solvers = Extension('misc_solvers',
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
     extra_compile_args = WIN_64_EXTRA_COMPILE_ARGS,
-    extra_link_args = BLAS_EXTRA_LINK_ARGS,
+    extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
     sources = ['src/C/misc_solvers.c'] )
 
 extmods += [base, blas, lapack, umfpack, klu, cholmod, amd, misc_solvers] 
