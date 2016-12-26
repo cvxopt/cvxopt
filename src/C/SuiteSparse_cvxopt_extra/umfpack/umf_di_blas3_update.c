@@ -1,2 +1,2 @@
 #define DINT
-#include "../../SuiteSparse/UMFPACK/Source/umf_blas3_update.c"
+#include "umf_blas3_update.c"

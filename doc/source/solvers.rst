@@ -1200,7 +1200,7 @@ for matrix-matrix and matrix-vector products.
         v = matrix(0.0, (m,1))
         def Fkkt(x, z, W):
             ds = (2.0 * div(1 + x**2, (1 - x**2)**2))**-0.5
-            Asc = spdiag(ds) * A
+            Asc = A * spdiag(ds) 
             blas.syrk(Asc, S)
             S[::m+1] += 1.0 
             lapack.potrf(S)

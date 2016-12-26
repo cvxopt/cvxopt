@@ -1,74 +1,55 @@
+This document describes the standard CVXOPT installation procedure on
+Unix/Linux systems.  For other platforms, please consult the CVXOPT website
+<www.cvxopt.org>.
 
-This document describes the standard CVXOPT installation procedure on 
-Linux systems.  For other platforms, please consult the CVXOPT website 
-<abel.ee.ucla.edu/cvxopt>.
 
-
-Required and optional software 
+Required and optional software
 ------------------------------
 
-The package requires version 2.7 or 3.x of Python, and is built from 
-source, so the header files and libraries for Python must be installed, 
+The package requires version 2.7 or 3.x of Python, and is built from
+source, so the header files and libraries for Python must be installed,
 as well as the core binaries.
 
-The installation requires either ATLAS or BLAS + LAPACK.  Using 
-architecture optimized ATLAS libraries is recommended and gives a large 
-performance improvement over standard BLAS & LAPACK libraries.  Both 
-header files and libraries must be installed.  
+The installation requires BLAS and LAPACK. Using an architecture
+optimized implementation such as ATLAS, OpenBLAS, or MKL is recommended
+and gives a large performance improvement over reference implementations
+of the BLAS and LAPACK libraries.
 
-The following software libraries are optional.  
+The installation also requires SuiteSparse. We recommend linking against
+a shared SuiteSparse library. It is also possible to build the required
+components of SuiteSparse when building CVXOPT, but this requires the
+SuiteSparse source which is no longer included with CVXOPT.
+
+The following software libraries are optional.
 
 * The GNU Scientific Library GSL <www.gnu.org/software/gsl>.
 
 * FFTW <www.fftw.org> is a C library for discrete Fourier transforms.
 
-* GLPK <www.gnu.org/software/glpk/glpk.html> is a linear programming 
-  package.  
+* GLPK <www.gnu.org/software/glpk/glpk.html> is a linear programming
+  package.
 
-* MOSEK version 7 <www.mosek.com> is a commercial library of convex 
-  optimization solvers.  
+* MOSEK version 8 <www.mosek.com> is a commercial library of convex
+  optimization solvers.
 
-* DSDP5.8 <www-unix.mcs.anl.gov/DSDP> is a semidefinite programming solver. 
-
-
-Installation 
-------------
-
-CVXOPT can be installed globally (for all users on a UNIX system) by 
-writing:
-
-    python setup.py install
-
-It can also be installed locally (for a single user) by typing::
-
-    python setup.py install --user
-
-To test that the installation was successful, go to the examples directory 
-and try one of the examples, for example, 
-
-     cd examples/doc/chap8
-     python lp.py
-
-If Python does not issue an error message, installation was successful.
-
-Additional information can be found in the 
-Python documentation <http://docs.python.org/install/index.html>.
+* DSDP5.8 <www-unix.mcs.anl.gov/DSDP> is a semidefinite programming solver.
 
 
-Customized setup script 
------------------------
+Customizing the setup script
+----------------------------
 
-If needed, the default compilation can be customized by edting src/setup.py.
-The following variables in the setup script can be modified.
+If needed, the default compilation can be customized by editing setup.py or
+by defining some environment variables. The following variables in the setup
+script can be modified:
 
 * BLAS_LIB_DIR: the directory containing the LAPACK and BLAS libraries.
 
-* BUILD_GSL: set this variable to 1 if you would like to use the GSL  
-  random number generators for constructing random matrices in CVXOPT.  
-  If BULD_GSL is 0, the Python random number generators will be used 
-  instead.  
+* BUILD_GSL: set this variable to 1 if you would like to use the GSL
+  random number generators for constructing random matrices in CVXOPT.
+  If BULD_GSL is 0, the Python random number generators will be used
+  instead.
 * GSL_LIB_DIR: the directory containing libgsl.
-* GSL_INC_DIR: the directory containing the GSL header files. 
+* GSL_INC_DIR: the directory containing the GSL header files.
 
 * BUILD_FFTW: set this variable to 1 to install the cvxopt.fftw module,
   which is an interface to FFTW.
@@ -76,22 +57,54 @@ The following variables in the setup script can be modified.
 * FFTW_INC_DIR: the directory containing fftw.h.
 
 * BUILD_GLPK: set this variable to 1 to enable support for the linear
-  programming solver GLPK.  
+  programming solver GLPK.
 * GLPK_LIB_DIR: the directory containing libglpk.
-* GLPK_INC_DIR: the directory containing glpk.h. 
+* GLPK_INC_DIR: the directory containing glpk.h.
 
 * BUILD_DSDP: set this variable to 1 to enable support for the semidefinite
   programming solver DSDP.
 * DSDP_LIB_DIR: the directory containing libdsdp.
 * DSDP_INC_DIR: the directory containing dsdp5.h.
 
+* SUITESPARSE_LIB_DIR: the directory containing SuiteSparse libraries.
+* SUITESPARSE_INC_DIR: the directory containing SuiteSparse header files.
+* SUITESPARSE_SRC_DIR: the directory containing SuiteSparse source. The
+  variables SUITESPARSE_LIB_DIR and SUITESPARSE_INC_DIR are ignored and
+  relevant parts of SuiteSparse are built from source when
+  SUITESPARSE_SRC_DIR is specified.
+
 Each of the variables can be overridden by specifying an environment variable
 with the prefix "CVXOPT_". For example, the following command installs CVXOPT
-locally with BUILD_FFTW=1: 
+locally with BUILD_FFTW=1:
 
      CVXOPT_BUILD_FFTW=1 python setup.py install --user
 
-Support for the linear, second-order cone, and quadratic programming 
-solvers in MOSEK is automatically enabled if the MOSEK Python interface
-pymosek.so is found in the user's PYTHONPATH.
+Support for the linear, second-order cone, and quadratic programming
+solvers in MOSEK is automatically enabled if both MOSEK and the MOSEK
+Python interface are installed.
 
+
+Installation
+------------
+
+CVXOPT can be installed globally (for all users on a UNIX system) using
+the command:
+
+    python setup.py install
+
+It can also be installed locally (for a single user) using the command:
+
+    python setup.py install --user
+
+To test that the installation was successful, run the included tests using
+
+     python -m unittest discover -s tests
+
+or alternatively, if `nose` is installed,
+
+     nosetests
+
+If Python does not issue an error message, installation was successful.
+
+Additional information can be found in the
+Python documentation <http://docs.python.org/install/index.html>.

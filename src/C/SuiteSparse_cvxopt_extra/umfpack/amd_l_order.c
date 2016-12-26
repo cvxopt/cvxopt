@@ -1,3 +1,3 @@
 #define DLONG
 
-#include "../../SuiteSparse/AMD/Source/amd_order.c"
+#include "amd_order.c"

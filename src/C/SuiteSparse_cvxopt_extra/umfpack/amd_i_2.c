@@ -1,3 +1,3 @@
 #define DINT
 
-#include "../../SuiteSparse/AMD/Source/amd_2.c"
+#include "amd_2.c"

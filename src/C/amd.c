@@ -1,9 +1,9 @@
 /*
- * Copyright 2012-2015 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2016 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.8.
+ * This file is part of CVXOPT.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 #include "misc.h"
 
 /* defined in pyconfig.h */
-#if (SIZEOF_INT < SIZEOF_LONG) || defined(MS_WIN64)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
 #define amd_order amd_l_order
 #define amd_defaults amd_l_defaults
 #endif

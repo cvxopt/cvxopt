@@ -1,2 +1,2 @@
 #define DINT
-#include "../../SuiteSparse/UMFPACK/Source/umf_colamd.c"
+#include "umf_colamd.c"

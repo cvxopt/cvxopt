@@ -1,9 +1,9 @@
 /*
- * Copyright 2012-2015 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2016 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.8.
+ * This file is part of CVXOPT.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -233,14 +233,14 @@ static ccs * convert_ccs(ccs *src, int id) {
 spmatrix *SpMatrix_NewFromMatrix(matrix *src, int id)
 {
   spmatrix *A;
-  int nnz = 0, i, j;
+  int_t nnz = 0, i, j;
 
   if (id < MAT_ID(src)) PY_ERR_TYPE("illegal type conversion");
 
   for (j=0; j<MAT_NCOLS(src); j++) {
     for (i=0; i<MAT_NROWS(src); i++) {
 
-      number *a = (number*)(((char*)MAT_BUF(src)) + (i+j*MAT_NROWS(src))*E_SIZE[MAT_ID(src)]);
+      number *a = (number*)((unsigned char*)MAT_BUF(src) + (i+j*MAT_NROWS(src))*E_SIZE[MAT_ID(src)]);
       if (((MAT_ID(src) == INT) && (a->i != Zero[INT].i)) ||
           ((MAT_ID(src) == DOUBLE) && (a->d != Zero[DOUBLE].d)) ||
           ((MAT_ID(src) == COMPLEX) && (a->z != Zero[COMPLEX].z)))
@@ -305,11 +305,11 @@ spmatrix * sparse_concat(PyObject *L, int id_arg)
 
       if (Matrix_Check(Lij)) {
 
-        int ik, jk;
+        int_t ik, jk;
         for (jk=0; jk<MAT_NCOLS(Lij); jk++) {
           for (ik=0; ik<MAT_NROWS(Lij); ik++) {
 
-            number *a = (number*)(((char*)MAT_BUF(Lij)) +
+            number *a = (number*)((unsigned char*)MAT_BUF(Lij) +
 				  (ik+jk*MAT_NROWS(Lij))*E_SIZE[MAT_ID(Lij)]);
 
             if (((MAT_ID(Lij) == INT) && (a->i != Zero[INT].i)) ||
@@ -392,7 +392,7 @@ spmatrix * sparse_concat(PyObject *L, int id_arg)
             }
           } else if SpMatrix_Check(Lij) {
 
-            int ik;
+            int_t ik;
             for (ik=SP_COL(Lij)[jk]; ik<SP_COL(Lij)[jk+1]; ik++) {
               if ((SP_ID(Lij) == DOUBLE) && (SP_VALD(Lij)[ik] != 0.0)) {
                 if (id == DOUBLE)
@@ -630,6 +630,7 @@ spa_daxpy_uplo (double a, ccs *X, int col, spa *y, int j, char uplo) {
   }
 }
 
+/* Unused function
 static inline void
 spa_zaxpy_uplo (double complex a, ccs *X, int col, spa *y, int j, char uplo) {
   int i;
@@ -648,6 +649,7 @@ spa_zaxpy_uplo (double complex a, ccs *X, int col, spa *y, int j, char uplo) {
     }
   }
 }
+*/
 
 static inline void spa_symb_axpy (ccs *X, int col, spa *y) {
   int i;
@@ -3236,7 +3238,7 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
               if (itype == 'n')
                 write_num[id](val_merge, tot_cnt++, &val, 0);
               else
-                convert_num[id]((char*)val_merge + E_SIZE[id]*tot_cnt++,
+                convert_num[id]((unsigned char*)val_merge + E_SIZE[id]*tot_cnt++,
                     value, 0, ilist[rhs_cnt].value);
 
               col_merge[j+1]++;
@@ -3253,7 +3255,7 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
               if (itype == 'n')
                 write_num[id](val_merge, tot_cnt++, &val, 0);
               else
-                convert_num[id]((char*)val_merge + E_SIZE[id]*tot_cnt++,
+                convert_num[id]((unsigned char*)val_merge + E_SIZE[id]*tot_cnt++,
                     value, 0, ilist[rhs_cnt].value);
               col_merge[j+1]++;
             }
@@ -3275,7 +3277,7 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
             if (itype == 'n')
               write_num[id](val_merge, tot_cnt++, &val, 0);
             else
-              convert_num[id]((char*)val_merge + E_SIZE[id]*tot_cnt++,
+              convert_num[id]((unsigned char*)val_merge + E_SIZE[id]*tot_cnt++,
                   value, 0, ilist[rhs_cnt].value);
             col_merge[j+1]++;
           }
@@ -3332,8 +3334,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
                 (rhs_cnt==0 || (rhs_cnt>0 && ilist[rhs_cnt].key !=
                     ilist[rhs_cnt-1].key))) {
               row_merge[tot_cnt] = rhs_i;
-              convert_array((char *)val_merge + E_SIZE[id]*tot_cnt++,
-			    ((char*)SP_VAL(value)) + E_SIZE[val_id]*ilist[rhs_cnt].value,
+              convert_array((unsigned char*)val_merge + E_SIZE[id]*tot_cnt++,
+			    (unsigned char*)SP_VAL(value) + E_SIZE[val_id]*ilist[rhs_cnt].value,
                   id, val_id, 1);
               col_merge[j+1]++;
             }
@@ -3348,8 +3350,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
                 (rhs_cnt>0 && ilist[rhs_cnt].key !=
                     ilist[rhs_cnt-1].key))) {
               row_merge[tot_cnt] = rhs_i;
-              convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
-			    ((char*)SP_VAL(value)) + E_SIZE[val_id]*ilist[rhs_cnt].value,
+              convert_array((unsigned char*)val_merge + E_SIZE[id]*tot_cnt++,
+			    (unsigned char*)SP_VAL(value) + E_SIZE[val_id]*ilist[rhs_cnt].value,
                   id, val_id, 1);
               col_merge[j+1]++;
             }
@@ -3360,8 +3362,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
           }
           else {
             row_merge[tot_cnt] = SP_ROW(self)[i];
-            convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
-			  ((char*)SP_VAL(self)) + E_SIZE[id]*i, id, id, 1);
+            convert_array((unsigned char*)val_merge + E_SIZE[id]*tot_cnt++,
+			  (unsigned char*)SP_VAL(self) + E_SIZE[id]*i, id, id, 1);
             col_merge[j+1]++;
           }
         }
@@ -3369,8 +3371,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
           if (ilist[rhs_cnt].value >= 0 && (rhs_cnt==0 || (rhs_cnt>0 &&
               ilist[rhs_cnt].key != ilist[rhs_cnt-1].key))) {
             row_merge[tot_cnt] = rhs_i;
-            convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
-			  ((char*)SP_VAL(value)) + E_SIZE[val_id]*ilist[rhs_cnt].value,
+            convert_array((unsigned char*)val_merge + E_SIZE[id]*tot_cnt++,
+			  (unsigned char*)SP_VAL(value) + E_SIZE[val_id]*ilist[rhs_cnt].value,
                 id, val_id, 1);
             col_merge[j+1]++;
           }
@@ -3508,7 +3510,7 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
             if (itype == 'n')
               write_num[id](val_merge, tot_cnt++, &val, 0);
             else
-              convert_num[id]((char*)val_merge + E_SIZE[id]*tot_cnt++,
+              convert_num[id]((unsigned char*)val_merge + E_SIZE[id]*tot_cnt++,
                   value, 0, Is[rhs_cnti].value + lgtI*Js[rhs_cntj].value);
             col_merge[j+1]++;
           }
@@ -3524,7 +3526,7 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
             if (itype == 'n')
               write_num[id](val_merge, tot_cnt++, &val, 0);
             else
-              convert_num[id]((char*)val_merge + E_SIZE[id]*tot_cnt++,
+              convert_num[id]((unsigned char*)val_merge + E_SIZE[id]*tot_cnt++,
                   value, 0, Is[rhs_cnti].value + lgtI*Js[rhs_cntj].value);
 
             col_merge[j+1]++;
@@ -3534,8 +3536,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
         }
         else {
           row_merge[tot_cnt] = SP_ROW(self)[i];
-          convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
-			((char*)SP_VAL(self)) + E_SIZE[id]*i, id, id, 1);
+          convert_array((unsigned char*)val_merge + E_SIZE[id]*tot_cnt++,
+			(unsigned char*)SP_VAL(self) + E_SIZE[id]*i, id, id, 1);
           col_merge[j+1]++;
         }
       }
@@ -3548,7 +3550,7 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
           if (itype == 'n')
             write_num[id](val_merge, tot_cnt++, &val, 0);
           else
-            convert_num[id]((char*)val_merge + E_SIZE[id]*tot_cnt++,
+            convert_num[id]((unsigned char*)val_merge + E_SIZE[id]*tot_cnt++,
                 value, 0, Is[rhs_cnti].value + lgtI*Js[rhs_cntj].value);
 
           col_merge[j+1]++;
@@ -3621,8 +3623,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
               (rhs_cnti>0 && Is[rhs_cnti].key != Is[rhs_cnti-1].key))) {
             row_merge[tot_cnt] = rhs_i;
 
-            convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
-			  ((char*)SP_VAL(value)) + E_SIZE[val_id]*
+            convert_array((unsigned char*)val_merge + E_SIZE[id]*tot_cnt++,
+			  (unsigned char*)SP_VAL(value) + E_SIZE[val_id]*
                 (Is[rhs_cnti].value+rhs_offs_rptr), id, val_id, 1);
 
             col_merge[j+1]++;
@@ -3635,8 +3637,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
               (rhs_cnti>0 && Is[rhs_cnti].key != Is[rhs_cnti-1].key))) {
             row_merge[tot_cnt] = rhs_i;
 
-            convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
-			  ((char*)SP_VAL(value)) + E_SIZE[val_id]*
+            convert_array((unsigned char*)val_merge + E_SIZE[id]*tot_cnt++,
+			  (unsigned char*)SP_VAL(value) + E_SIZE[val_id]*
                 (Is[rhs_cnti].value+rhs_offs_rptr), id, val_id, 1);
 
             col_merge[j+1]++;
@@ -3646,8 +3648,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
         }
         else {
           row_merge[tot_cnt] = SP_ROW(self)[i];
-          convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
-			((char*)SP_VAL(self)) + E_SIZE[id]*i, id, id, 1);
+          convert_array((unsigned char*)val_merge + E_SIZE[id]*tot_cnt++,
+			(unsigned char*)SP_VAL(self) + E_SIZE[id]*i, id, id, 1);
           col_merge[j+1]++;
         }
       }
@@ -3657,8 +3659,8 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
 
           row_merge[tot_cnt] = rhs_i;
 
-          convert_array((char*)val_merge + E_SIZE[id]*tot_cnt++,
-			((char*)SP_VAL(value)) + E_SIZE[val_id]*
+          convert_array((unsigned char*)val_merge + E_SIZE[id]*tot_cnt++,
+			(unsigned char*)SP_VAL(value) + E_SIZE[val_id]*
               (Is[rhs_cnti].value+rhs_offs_rptr), id, val_id, 1);
 
           col_merge[j+1]++;
@@ -3963,7 +3965,7 @@ spmatrix_mul(PyObject *self, PyObject *other)
       goto cleanup;
     }
     if (sp_gemm[id]('N', 'N', One[id], x, y, Zero[id],
-        sp_c ? ((spmatrix *)C)->obj : MAT_BUF(C),
+	    sp_c ? (unsigned char*)((spmatrix *)C)->obj : (unsigned char*)MAT_BUF(C),
             SpMatrix_Check(self), SpMatrix_Check(other), sp_c, 0, &z,
             X_NROWS(self), X_NCOLS(other), X_NROWS(other)))
       {

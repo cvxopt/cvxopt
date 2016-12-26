@@ -1,3 +1,3 @@
 #define DLONG
 
-#include "../../SuiteSparse/UMFPACK/Source/umf_is_permutation.c"
+#include "umf_is_permutation.c"

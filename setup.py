@@ -3,15 +3,14 @@ try:
 except ImportError:
     from distutils.core import setup, Extension
 from glob import glob
-import os
-import sys
-import platform
+import os, sys, platform
+import versioneer
 
 # Modifiy this if BLAS and LAPACK libraries are not in /usr/lib.
-BLAS_LIB_DIR = '.'
+BLAS_LIB_DIR = '/usr/lib'
 
 # Default names of BLAS and LAPACK libraries
-BLAS_LIB = ['blas','gfortran']
+BLAS_LIB = ['blas']
 LAPACK_LIB = ['lapack']
 BLAS_EXTRA_LINK_ARGS = []
 
@@ -56,14 +55,18 @@ DSDP_LIB_DIR = '/usr/lib'
 # Directory containing dsdp5.h (used only when BUILD_DSDP = 1).
 DSDP_INC_DIR = '/usr/include/dsdp'
 
-# Set to 1 to use external SuiteSparse library
-SUITESPARSE_EXT_LIB = 0
+# Guess SUITESPARSE_LIB_DIR and SUITESPARSE_INC_DIR
+if platform.platform().startswith("Darwin"):
+    # macOS
+    SUITESPARSE_LIB_DIR = '/usr/local/lib'
+    SUITESPARSE_INC_DIR = '/usr/local/include'
+else: 
+    # default: Ubuntu/Debian
+    SUITESPARSE_LIB_DIR = "/usr/lib/x86_64-linux-gnu"
+    SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
 
-# Directory containing external SuiteSparse library
-SUITESPARSE_LIB_DIR = '/usr/local/lib'
-
-# Directory containing SuiteSparse header files
-SUITESPARSE_INC_DIR = '/usr/local/include'
+# Directory containing SuiteSparse source
+SUITESPARSE_SRC_DIR = ''
 
 # No modifications should be needed below this line.
 
@@ -72,9 +75,9 @@ BLAS_LIB = os.environ.get("CVXOPT_BLAS_LIB",BLAS_LIB)
 LAPACK_LIB = os.environ.get("CVXOPT_LAPACK_LIB",LAPACK_LIB)
 BLAS_LIB_DIR = os.environ.get("CVXOPT_BLAS_LIB_DIR",BLAS_LIB_DIR)
 BLAS_EXTRA_LINK_ARGS = os.environ.get("CVXOPT_BLAS_EXTRA_LINK_ARGS",BLAS_EXTRA_LINK_ARGS)
-if type(BLAS_LIB) is str: BLAS_LIB = BLAS_LIB.strip().split(',')
-if type(LAPACK_LIB) is str: LAPACK_LIB = LAPACK_LIB.strip().split(',')
-if type(BLAS_EXTRA_LINK_ARGS) is str: BLAS_EXTRA_LINK_ARGS = BLAS_EXTRA_LINK_ARGS.strip().split(',')
+if type(BLAS_LIB) is str: BLAS_LIB = BLAS_LIB.strip().split(';')
+if type(LAPACK_LIB) is str: LAPACK_LIB = LAPACK_LIB.strip().split(';')
+if type(BLAS_EXTRA_LINK_ARGS) is str: BLAS_EXTRA_LINK_ARGS = BLAS_EXTRA_LINK_ARGS.strip().split(';')
 BUILD_GSL = int(os.environ.get("CVXOPT_BUILD_GSL",BUILD_GSL))
 GSL_LIB_DIR = os.environ.get("CVXOPT_GSL_LIB_DIR",GSL_LIB_DIR)
 GSL_INC_DIR = os.environ.get("CVXOPT_GSL_INC_DIR",GSL_INC_DIR)
@@ -87,18 +90,11 @@ GLPK_INC_DIR = os.environ.get("CVXOPT_GLPK_INC_DIR",GLPK_INC_DIR)
 BUILD_DSDP = int(os.environ.get("CVXOPT_BUILD_DSDP",BUILD_DSDP))
 DSDP_LIB_DIR = os.environ.get("CVXOPT_DSDP_LIB_DIR",DSDP_LIB_DIR)
 DSDP_INC_DIR = os.environ.get("CVXOPT_DSDP_INC_DIR",DSDP_INC_DIR)
-SUITESPARSE_EXT_LIB = os.environ.get("CVXOPT_SUITESPARSE_EXT_LIB",SUITESPARSE_EXT_LIB)
 SUITESPARSE_LIB_DIR = os.environ.get("CVXOPT_SUITESPARSE_LIB_DIR",SUITESPARSE_LIB_DIR)
 SUITESPARSE_INC_DIR = os.environ.get("CVXOPT_SUITESPARSE_INC_DIR",SUITESPARSE_INC_DIR)
+SUITESPARSE_SRC_DIR = os.environ.get("CVXOPT_SUITESPARSE_SRC_DIR",SUITESPARSE_SRC_DIR)
 
 RT_LIB = ["rt"] if sys.platform.startswith("linux") else []
-if platform.architecture() == ('64bit', 'WindowsPE'):
-    # Windows x64 specific extra compile args
-    WIN_64_EXTRA_COMPILE_ARGS = ['-DMS_WIN64']
-else:
-    WIN_64_EXTRA_COMPILE_ARGS = []
-
-WIN_EXTRA_LINK_ARGS = []
 
 extmods = []
 
@@ -112,7 +108,7 @@ if BUILD_GSL:
     gsl = Extension('gsl', libraries = ['m', 'gsl'] + BLAS_LIB,
         include_dirs = [ GSL_INC_DIR ],
         library_dirs = [ GSL_LIB_DIR, BLAS_LIB_DIR ],
-        extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
+        extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = ['src/C/gsl.c'] )
     extmods += [gsl];
 
@@ -120,7 +116,7 @@ if BUILD_FFTW:
     fftw = Extension('fftw', libraries = ['fftw3'] + BLAS_LIB,
         include_dirs = [ FFTW_INC_DIR ],
         library_dirs = [ FFTW_LIB_DIR, BLAS_LIB_DIR ],
-        extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
+        extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = ['src/C/fftw.c'] )
     extmods += [fftw];
 
@@ -135,7 +131,7 @@ if BUILD_DSDP:
     dsdp = Extension('dsdp', libraries = ['dsdp'] + LAPACK_LIB + BLAS_LIB,
         include_dirs = [ DSDP_INC_DIR ],
         library_dirs = [ DSDP_LIB_DIR, BLAS_LIB_DIR ],
-        extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
+        extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = ['src/C/dsdp.c'] )
     extmods += [dsdp];
 
@@ -144,45 +140,42 @@ if BUILD_DSDP:
 base = Extension('base', libraries = ['m'] + LAPACK_LIB + BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
-    extra_compile_args = WIN_64_EXTRA_COMPILE_ARGS,
-    extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
+    extra_link_args = BLAS_EXTRA_LINK_ARGS,
     sources = ['src/C/base.c','src/C/dense.c','src/C/sparse.c'])
 
 blas = Extension('blas', libraries = BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
-    extra_compile_args = WIN_64_EXTRA_COMPILE_ARGS,
-    extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
+    extra_link_args = BLAS_EXTRA_LINK_ARGS,
     sources = ['src/C/blas.c'] )
 
 lapack = Extension('lapack', libraries = LAPACK_LIB + BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
-    extra_compile_args = WIN_64_EXTRA_COMPILE_ARGS,
-    extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
+    extra_link_args = BLAS_EXTRA_LINK_ARGS,
     sources = ['src/C/lapack.c'] )
 
-if SUITESPARSE_EXT_LIB:
+if not SUITESPARSE_SRC_DIR:
     umfpack = Extension('umfpack',
         libraries = ['umfpack','cholmod','amd','colamd','suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
         include_dirs = [SUITESPARSE_INC_DIR],
-        library_dirs = [SUITESPARSE_LIB_DIR],
+        library_dirs = [SUITESPARSE_LIB_DIR, BLAS_LIB_DIR],
         sources = ['src/C/umfpack.c'])
 else:
     umfpack = Extension('umfpack',
-        include_dirs = [ 'src/C/SuiteSparse/UMFPACK/Include',
-            'src/C/SuiteSparse/AMD/Include',
-            'src/C/SuiteSparse/AMD/Source',
-            'src/C/SuiteSparse/SuiteSparse_config' ],
+        include_dirs = [ SUITESPARSE_SRC_DIR + '/UMFPACK/Include',
+            SUITESPARSE_SRC_DIR + '/AMD/Include',
+            SUITESPARSE_SRC_DIR + '/UMFPACK/Source',
+            SUITESPARSE_SRC_DIR + '/AMD/Source',
+            SUITESPARSE_SRC_DIR + '/SuiteSparse_config' ],
         library_dirs = [ BLAS_LIB_DIR ],
         define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
         libraries = LAPACK_LIB + BLAS_LIB,
-        extra_compile_args = ['-Wno-unknown-pragmas'] + WIN_64_EXTRA_COMPILE_ARGS,
-        extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
+        extra_compile_args = ['-Wno-unknown-pragmas'],
+        extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = [ 'src/C/umfpack.c',
-            'src/C/SuiteSparse/UMFPACK/Source/umfpack_global.c',
-            'src/C/SuiteSparse/UMFPACK/Source/umfpack_tictoc.c' ] +
-            ['src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
+            SUITESPARSE_SRC_DIR + '/UMFPACK/Source/umfpack_tictoc.c',
+            SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
             glob('src/C/SuiteSparse_cvxopt_extra/umfpack/*'))
 
 if SUITESPARSE_EXT_LIB:
@@ -213,35 +206,33 @@ else:
 # Build for int or long?
 if sys.maxsize > 2**31: MACROS += [('DLONG',None)]
 
-if SUITESPARSE_EXT_LIB:
+if not SUITESPARSE_SRC_DIR:
     cholmod = Extension('cholmod',
         libraries = ['cholmod','colamd','amd','suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
         include_dirs = [SUITESPARSE_INC_DIR],
-        library_dirs = [SUITESPARSE_LIB_DIR],
+        library_dirs = [SUITESPARSE_LIB_DIR, BLAS_LIB_DIR],
         sources = [ 'src/C/cholmod.c' ])
 else:
     cholmod = Extension('cholmod',
         library_dirs = [ BLAS_LIB_DIR ],
         libraries = LAPACK_LIB + BLAS_LIB,
-        include_dirs = [ 'src/C/SuiteSparse/CHOLMOD/Include',
-            'src/C/SuiteSparse/COLAMD',
-            'src/C/SuiteSparse/AMD/Include',
-            'src/C/SuiteSparse/COLAMD/Include',
-            'src/C/SuiteSparse/SuiteSparse_config' ],
+        include_dirs = [ SUITESPARSE_SRC_DIR + '/CHOLMOD/Include',
+            SUITESPARSE_SRC_DIR + '/COLAMD',
+            SUITESPARSE_SRC_DIR + '/AMD/Include',
+            SUITESPARSE_SRC_DIR + '/COLAMD/Include',
+            SUITESPARSE_SRC_DIR + '/SuiteSparse_config' ],
         define_macros = MACROS + [('NPARTITION', '1'), ('NTIMER', '1')],
-        extra_compile_args = WIN_64_EXTRA_COMPILE_ARGS,
-        extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
+        extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = [ 'src/C/cholmod.c' ] +
-            ['src/C/SuiteSparse/AMD/Source/' + s for s in ['amd_global.c',
-                'amd_postorder.c', 'amd_post_tree.c', 'amd_2.c']] +
-            ['src/C/SuiteSparse/COLAMD/Source/' + s for s in ['colamd.c']] +
-            ['src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
-            glob('src/C/SuiteSparse/CHOLMOD/Core/c*.c') +
-            glob('src/C/SuiteSparse/CHOLMOD/Cholesky/c*.c') +
-            ['src/C/SuiteSparse/CHOLMOD/Check/cholmod_check.c'] +
-            glob('src/C/SuiteSparse/CHOLMOD/Supernodal/c*.c') )
+            [SUITESPARSE_SRC_DIR + '/AMD/Source/' + s for s in ['amd_postorder.c', 'amd_post_tree.c', 'amd_2.c']] +
+            [SUITESPARSE_SRC_DIR + '/COLAMD/Source/colamd.c'] +
+            [SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
+            glob(SUITESPARSE_SRC_DIR + '/CHOLMOD/Core/c*.c') +
+            glob(SUITESPARSE_SRC_DIR + '/CHOLMOD/Cholesky/c*.c') +
+            [SUITESPARSE_SRC_DIR + '/CHOLMOD/Check/cholmod_check.c'] +
+            glob(SUITESPARSE_SRC_DIR + '/CHOLMOD/Supernodal/c*.c') )
 
-if SUITESPARSE_EXT_LIB:
+if not SUITESPARSE_SRC_DIR:
     amd = Extension('amd',
         libraries = ['amd','suitesparseconfig'] + RT_LIB,
         include_dirs = [SUITESPARSE_INC_DIR],
@@ -249,26 +240,25 @@ if SUITESPARSE_EXT_LIB:
         sources = ['src/C/amd.c'])
 else:
     amd = Extension('amd',
-        include_dirs = [ 'src/C/SuiteSparse/AMD/Include',
-            'src/C/SuiteSparse/SuiteSparse_config' ],
+        include_dirs = [SUITESPARSE_SRC_DIR + '/AMD/Include',
+            SUITESPARSE_SRC_DIR + '/SuiteSparse_config' ],
         define_macros = MACROS + [('NTIMER', '1')],
-        extra_compile_args = WIN_64_EXTRA_COMPILE_ARGS,
-        sources = [ 'src/C/amd.c', 'src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
-        glob('src/C/SuiteSparse/AMD/Source/*.c') )
+        sources = [ 'src/C/amd.c', SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
+        glob(SUITESPARSE_SRC_DIR + '/AMD/Source/*.c') )
 
 misc_solvers = Extension('misc_solvers',
     libraries = LAPACK_LIB + BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
-    extra_compile_args = WIN_64_EXTRA_COMPILE_ARGS,
-    extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
+    extra_link_args = BLAS_EXTRA_LINK_ARGS,
     sources = ['src/C/misc_solvers.c'] )
 
 extmods += [base, blas, lapack, umfpack, klu, cholmod, amd, misc_solvers] 
 
 setup (name = 'cvxopt',
     description = 'Convex optimization package',
-    version = '1.1.8',
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     long_description = '''
 CVXOPT is a free software package for convex optimization based on the
 Python programming language. It can be used with the interactive Python

@@ -5,11 +5,11 @@ Routines for specifying and solving convex optimization problems with
 piecewise-linear objective and constraint functions.
 """
 
-# Copyright 2012-2015 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2016 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.8.
+# This file is part of CVXOPT.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -2578,7 +2578,7 @@ class op(object):
         return (op(cost, constraints), vmap, mmap)
 
 
-    def solve(self, format='dense', solver = 'default'):
+    def solve(self, format='dense', solver = 'default', **kwargs):
 
         """
         Solves LP using dense or sparse solver.
@@ -2626,7 +2626,7 @@ class op(object):
             A = spmatrix(0.0, [], [],  (0,len(x)))
             b = matrix(0.0, (0,1))
 
-        sol = solvers.lp(c[:], G, h, A, b, solver=solver)
+        sol = solvers.lp(c[:], G, h, A, b, solver=solver, **kwargs)
 
         x.value = sol['x']
         inequalities[0].multiplier.value = sol['z']

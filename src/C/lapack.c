@@ -1,9 +1,9 @@
 /*
- * Copyright 2012-2015 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2016 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.8.
+ * This file is part of CVXOPT.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -378,7 +378,7 @@ static PyObject* getrf(PyObject *self, PyObject *args, PyObject *kwrds)
     if (oA + (n-1)*ldA + m > len(A)) err_buf_len("A");
     if (len(ipiv) < MIN(n,m)) err_buf_len("ipiv");
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int *ipiv_ptr = malloc(MIN(m,n)*sizeof(int));
     if (!ipiv_ptr) return PyErr_NoMemory();
 #else
@@ -399,13 +399,13 @@ static PyObject* getrf(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         default:
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
             free(ipiv_ptr);
 #endif
             err_invalid_id;
     }
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int i;  for (i=0; i<MIN(m,n); i++) MAT_BUFI(ipiv)[i] = ipiv_ptr[i];
     free(ipiv_ptr);
 #endif
@@ -491,7 +491,7 @@ static PyObject* getrs(PyObject *self, PyObject *args, PyObject *kwrds)
     if (oB + (nrhs-1)*ldB + n > len(B)) err_buf_len("B");
     if (len(ipiv) < n) err_buf_len("ipiv");
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int *ipiv_ptr = malloc(n*sizeof(int));
     if (!ipiv_ptr) return PyErr_NoMemory();
     int i;  for (i=0; i<n; i++) ipiv_ptr[i] = MAT_BUFI(ipiv)[i];
@@ -516,13 +516,13 @@ static PyObject* getrs(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
 	default:
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
             free(ipiv_ptr);
 #endif
             err_invalid_id;
     }
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     free(ipiv_ptr);
 #endif
     if (info) err_lapack
@@ -573,7 +573,7 @@ static PyObject* getri(PyObject *self, PyObject *args, PyObject *kwrds)
     if (oA + (n-1)*ldA + n > len(A)) err_buf_len("A");
     if (len(ipiv) < n) err_buf_len("ipiv");
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int *ipiv_ptr = malloc(n*sizeof(int));
     if (!ipiv_ptr) return PyErr_NoMemory();
     int i;  for (i=0; i<n; i++) ipiv_ptr[i] = MAT_BUFI(ipiv)[i];
@@ -589,7 +589,7 @@ static PyObject* getri(PyObject *self, PyObject *args, PyObject *kwrds)
             Py_END_ALLOW_THREADS
             lwork = (int) wl.d;
             if (!(work = (void *) calloc(lwork, sizeof(double)))) {
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 free(ipiv_ptr);
 #endif
                 return PyErr_NoMemory();
@@ -608,7 +608,7 @@ static PyObject* getri(PyObject *self, PyObject *args, PyObject *kwrds)
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
             if (!(work = (void *) calloc(lwork, sizeof(double complex)))){
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 free(ipiv_ptr);
 #endif
                 return PyErr_NoMemory();
@@ -621,13 +621,13 @@ static PyObject* getri(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         default:
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
             free(ipiv_ptr);
 #endif
             err_invalid_id;
     }
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     free(ipiv_ptr);
 #endif
     if (info) err_lapack
@@ -699,7 +699,7 @@ static PyObject* gesv(PyObject *self, PyObject *args, PyObject *kwrds)
     if (ipiv && len(ipiv) < n) err_buf_len("ipiv");
 
     if (ipiv) {
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
         if (!(ipivc = (int *) calloc(n, sizeof(int))))
             return PyErr_NoMemory();
 #else
@@ -754,7 +754,7 @@ static PyObject* gesv(PyObject *self, PyObject *args, PyObject *kwrds)
 
         default:
             if (ipiv){
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 free(ipivc);
 #endif
             }
@@ -763,7 +763,7 @@ static PyObject* gesv(PyObject *self, PyObject *args, PyObject *kwrds)
     }
 
     if (ipiv){
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
         for (k=0; k<n; k++) MAT_BUFI(ipiv)[k] = ipivc[k];
         free(ipivc);
 #endif
@@ -822,7 +822,7 @@ static PyObject* gbtrf(PyObject *self, PyObject *args, PyObject *kwrds)
     if (!Matrix_Check(ipiv) || ipiv ->id != INT) err_int_mtrx("ipiv");
     if (len(ipiv) < MIN(n,m)) err_buf_len("ipiv");
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int *ipiv_ptr = malloc(MIN(m,n)*sizeof(int));
     if (!ipiv_ptr) return PyErr_NoMemory();
 #else
@@ -845,13 +845,13 @@ static PyObject* gbtrf(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         default:
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
             free(ipiv_ptr);
 #endif
             err_invalid_id;
     }
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int i;  for (i=0; i<MIN(m,n); i++) MAT_BUFI(ipiv)[i] = ipiv_ptr[i];
     free(ipiv_ptr);
 #endif
@@ -940,7 +940,7 @@ static PyObject* gbtrs(PyObject *self, PyObject *args, PyObject *kwrds)
     if (oB + (nrhs-1)*ldB + n > len(B)) err_buf_len("B");
     if (len(ipiv) < n) err_buf_len("ipiv");
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int *ipiv_ptr = malloc(n*sizeof(int));
     if (!ipiv_ptr) return PyErr_NoMemory();
     int i;  for (i=0; i<n; i++) ipiv_ptr[i] = MAT_BUFI(ipiv)[i];
@@ -965,13 +965,13 @@ static PyObject* gbtrs(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
 	default:
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
             free(ipiv_ptr);
 #endif
             err_invalid_id;
     }
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     free(ipiv_ptr);
 #endif
     if (info) err_lapack
@@ -1052,7 +1052,7 @@ static PyObject* gbsv(PyObject *self, PyObject *args, PyObject *kwrds)
     if (ipiv && len(ipiv) < n) err_buf_len("ipiv");
 
     if (ipiv) {
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
         if (!(ipivc = (int *) calloc(n, sizeof(int))))
             return PyErr_NoMemory();
 #else
@@ -1115,7 +1115,7 @@ static PyObject* gbsv(PyObject *self, PyObject *args, PyObject *kwrds)
 
         default:
             if (ipiv){
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 free(ipivc);
 #endif
             }
@@ -1124,7 +1124,7 @@ static PyObject* gbsv(PyObject *self, PyObject *args, PyObject *kwrds)
     }
 
     if (ipiv){
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
         for (k=0; k<n; k++) MAT_BUFI(ipiv)[k] = ipivc[k];
         free(ipivc);
 #endif
@@ -1190,7 +1190,7 @@ static PyObject* gttrf(PyObject *self, PyObject *args, PyObject *kwrds)
     if (len(ipiv) < n) err_buf_len("ipiv");
     if (n > len(ipiv)) err_buf_len("ipiv");
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int *ipiv_ptr = malloc(n*sizeof(int));
     if (!ipiv_ptr) return PyErr_NoMemory();
 #else
@@ -1213,13 +1213,13 @@ static PyObject* gttrf(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         default:
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
             free(ipiv_ptr);
 #endif
             err_invalid_id;
     }
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int i;  for (i=0; i<n; i++) MAT_BUFI(ipiv)[i] = ipiv_ptr[i];
     free(ipiv_ptr);
 #endif
@@ -1312,7 +1312,7 @@ static PyObject* gttrs(PyObject *self, PyObject *args, PyObject *kwrds)
     if (oB + (nrhs-1)*ldB + n > len(B)) err_buf_len("B");
     if (n > len(ipiv)) err_buf_len("ipiv");
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int *ipiv_ptr = malloc(n*sizeof(int));
     if (!ipiv_ptr) return PyErr_NoMemory();
     int i;  for (i=0; i<n; i++) ipiv_ptr[i] = MAT_BUFI(ipiv)[i];
@@ -1338,13 +1338,13 @@ static PyObject* gttrs(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         default:
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
             free(ipiv_ptr);
 #endif
             err_invalid_id;
     }
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     free(ipiv_ptr);
 #endif
 
@@ -2309,7 +2309,7 @@ static PyObject* sytrf(PyObject *self, PyObject *args, PyObject *kwrds)
     if (oA + (n-1)*ldA + n > len(A)) err_buf_len("A");
     if (len(ipiv) < n) err_buf_len("ipiv");
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int *ipiv_ptr = malloc(n*sizeof(int));
     if (!ipiv_ptr) return PyErr_NoMemory();
 #else
@@ -2324,7 +2324,7 @@ static PyObject* sytrf(PyObject *self, PyObject *args, PyObject *kwrds)
             Py_END_ALLOW_THREADS
             lwork = (int) wl.d;
             if (!(work = (void *) calloc(lwork, sizeof(double)))){
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 free(ipiv_ptr);
 #endif
                 return PyErr_NoMemory();
@@ -2343,7 +2343,7 @@ static PyObject* sytrf(PyObject *self, PyObject *args, PyObject *kwrds)
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
             if (!(work = (void *) calloc(lwork, sizeof(double complex)))){
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 free(ipiv_ptr);
 #endif
                 return PyErr_NoMemory();
@@ -2356,13 +2356,13 @@ static PyObject* sytrf(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         default:
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
             free(ipiv_ptr);
 #endif
             err_invalid_id;
     }
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int i;  for (i=0; i<n; i++)  MAT_BUFI(ipiv)[i] = ipiv_ptr[i];
     free(ipiv_ptr);
 #endif
@@ -2429,7 +2429,7 @@ static PyObject* hetrf(PyObject *self, PyObject *args, PyObject *kwrds)
     if (oA + (n-1)*ldA + n > len(A)) err_buf_len("A");
     if (len(ipiv) < n) err_buf_len("ipiv");
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int *ipiv_ptr = malloc(n*sizeof(int));
     if (!ipiv_ptr) return PyErr_NoMemory();
 #else
@@ -2444,7 +2444,7 @@ static PyObject* hetrf(PyObject *self, PyObject *args, PyObject *kwrds)
             Py_END_ALLOW_THREADS
             lwork = (int) wl.d;
             if (!(work = (void *) calloc(lwork, sizeof(double)))){
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 free(ipiv_ptr);
 #endif
                 return PyErr_NoMemory();
@@ -2463,7 +2463,7 @@ static PyObject* hetrf(PyObject *self, PyObject *args, PyObject *kwrds)
             Py_END_ALLOW_THREADS
             lwork = (int) creal(wl.z);
             if (!(work = (void *) calloc(lwork, sizeof(double complex)))){
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 free(ipiv_ptr);
 #endif
                 return PyErr_NoMemory();
@@ -2476,13 +2476,13 @@ static PyObject* hetrf(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         default:
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
             free(ipiv_ptr);
 #endif
             err_invalid_id;
     }
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int i;  for (i=0; i<n; i++)  MAT_BUFI(ipiv)[i] = ipiv_ptr[i];
     free(ipiv_ptr);
 #endif
@@ -2564,7 +2564,7 @@ static PyObject* sytrs(PyObject *self, PyObject *args, PyObject *kwrds)
     if (oB + (nrhs-1)*ldB + n > len(B)) err_buf_len("B");
     if (len(ipiv) < n) err_buf_len("ipiv");
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int *ipiv_ptr = malloc(n*sizeof(int));
     if (!ipiv_ptr) return PyErr_NoMemory();
     int i;  for (i=0; i<n; i++) ipiv_ptr[i] = MAT_BUFI(ipiv)[i];
@@ -2588,13 +2588,13 @@ static PyObject* sytrs(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
 	default:
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
             free(ipiv_ptr);
 #endif
 	    err_invalid_id;
     }
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     free(ipiv_ptr);
 #endif
     if (info) err_lapack
@@ -2676,7 +2676,7 @@ static PyObject* hetrs(PyObject *self, PyObject *args, PyObject *kwrds)
     if (oB + (nrhs-1)*ldB + n > len(B)) err_buf_len("B");
     if (len(ipiv) < n) err_buf_len("ipiv");
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int *ipiv_ptr = malloc(n*sizeof(int));
     if (!ipiv_ptr) return PyErr_NoMemory();
     int i;  for (i=0; i<n; i++) ipiv_ptr[i] = MAT_BUFI(ipiv)[i];
@@ -2700,13 +2700,13 @@ static PyObject* hetrs(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
 	default:
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
             free(ipiv_ptr);
 #endif
 	    err_invalid_id;
     }
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     free(ipiv_ptr);
 #endif
     if (info) err_lapack
@@ -2772,7 +2772,7 @@ static PyObject* sytri(PyObject *self, PyObject *args, PyObject *kwrds)
     if (oA + (n-1)*ldA + n > len(A)) err_buf_len("A");
     if (len(ipiv) < n) err_buf_len("ipiv");
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int *ipiv_ptr = malloc(n*sizeof(int));
     if (!ipiv_ptr) return PyErr_NoMemory();
     int i;  for (i=0; i<n; i++) ipiv_ptr[i] = MAT_BUFI(ipiv)[i];
@@ -2783,7 +2783,7 @@ static PyObject* sytri(PyObject *self, PyObject *args, PyObject *kwrds)
     switch (MAT_ID(A)){
         case DOUBLE:
             if (!(work = (void *) calloc(n, sizeof(double)))) {
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 free(ipiv_ptr);
 #endif
                 return PyErr_NoMemory();
@@ -2797,7 +2797,7 @@ static PyObject* sytri(PyObject *self, PyObject *args, PyObject *kwrds)
 
 	case COMPLEX:
             if (!(work = (void *) calloc(2*n, sizeof(double complex)))){
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 free(ipiv_ptr);
 #endif
                 return PyErr_NoMemory();
@@ -2810,13 +2810,13 @@ static PyObject* sytri(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         default:
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
             free(ipiv_ptr);
 #endif
             err_invalid_id;
     }
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     free(ipiv_ptr);
 #endif
     if (info) err_lapack
@@ -2882,7 +2882,7 @@ static PyObject* hetri(PyObject *self, PyObject *args, PyObject *kwrds)
     if (oA + (n-1)*ldA + n > len(A)) err_buf_len("A");
     if (len(ipiv) < n) err_buf_len("ipiv");
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int *ipiv_ptr = malloc(n*sizeof(int));
     if (!ipiv_ptr) return PyErr_NoMemory();
     int i;  for (i=0; i<n; i++) ipiv_ptr[i] = MAT_BUFI(ipiv)[i];
@@ -2893,7 +2893,7 @@ static PyObject* hetri(PyObject *self, PyObject *args, PyObject *kwrds)
     switch (MAT_ID(A)){
         case DOUBLE:
             if (!(work = (void *) calloc(n, sizeof(double)))){
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 free(ipiv_ptr);
 #endif
                 return PyErr_NoMemory();
@@ -2907,7 +2907,7 @@ static PyObject* hetri(PyObject *self, PyObject *args, PyObject *kwrds)
 
         case COMPLEX:
             if (!(work = (void *) calloc(n, sizeof(double complex)))){
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 free(ipiv_ptr);
 #endif
                 return PyErr_NoMemory();
@@ -2920,13 +2920,13 @@ static PyObject* hetri(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         default:
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
             free(ipiv_ptr);
 #endif
             err_invalid_id;
     }
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     free(ipiv_ptr);
 #endif
     if (info) err_lapack
@@ -3021,7 +3021,7 @@ static PyObject* sysv(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!(work = (void *) calloc(lwork, sizeof(double))))
                 return PyErr_NoMemory();
             if (ipiv) {
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 if (!(ipivc = (int *) calloc(n, sizeof(int)))){
                     free(work);
                     return PyErr_NoMemory();
@@ -3035,7 +3035,7 @@ static PyObject* sysv(PyObject *self, PyObject *args, PyObject *kwrds)
                     MAT_BUFD(B)+oB, &ldB, (double *) work, &lwork,
                     &info);
                 Py_END_ALLOW_THREADS
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
 		for (k=0; k<n; k++) MAT_BUFI(ipiv)[k] = ipivc[k];
                 free(ipivc);
 #endif
@@ -3068,7 +3068,7 @@ static PyObject* sysv(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!(work = (void *) calloc(lwork, sizeof(double complex))))
                 return PyErr_NoMemory();
             if (ipiv) {
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 if (!(ipivc = (int *) calloc(n, sizeof(int)))){
                     free(work);
                     return PyErr_NoMemory();
@@ -3082,7 +3082,7 @@ static PyObject* sysv(PyObject *self, PyObject *args, PyObject *kwrds)
                     MAT_BUFZ(B)+oB, &ldB, (double complex *) work, 
                     &lwork, &info);
                 Py_END_ALLOW_THREADS
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 for (k=0; k<n; k++) MAT_BUFI(ipiv)[k] = ipivc[k];
                 free(ipivc);
 #endif
@@ -3204,7 +3204,7 @@ static PyObject* hesv(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!(work = (void *) calloc(lwork, sizeof(double))))
                 return PyErr_NoMemory();
             if (ipiv) {
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 if (!(ipivc = (int *) calloc(n,sizeof(int)))){
                     free(work);
                     return PyErr_NoMemory();
@@ -3218,7 +3218,7 @@ static PyObject* hesv(PyObject *self, PyObject *args, PyObject *kwrds)
                     MAT_BUFD(B)+oB, &ldB, (double *) work, &lwork,
                     &info);
                 Py_END_ALLOW_THREADS
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 for (i=0; i<n; i++) MAT_BUFI(ipiv)[i] = ipivc[i];
                 free(ipivc);
 #endif
@@ -3249,7 +3249,7 @@ static PyObject* hesv(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!(work = (void *) calloc(lwork, sizeof(double complex))))
                 return PyErr_NoMemory();
             if (ipiv) {
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 if (!(ipivc = (int *) calloc(n,sizeof(int)))){
                     free(work);
                     return PyErr_NoMemory();
@@ -3263,7 +3263,7 @@ static PyObject* hesv(PyObject *self, PyObject *args, PyObject *kwrds)
                     MAT_BUFZ(B)+oB, &ldB, (double complex *) work, 
                     &lwork, &info);
                 Py_END_ALLOW_THREADS
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
                 for (k=0; k<n; k++) MAT_BUFI(ipiv)[k] = ipivc[k];
                 free(ipivc);
 #endif
@@ -4734,7 +4734,7 @@ static PyObject* geqp3(PyObject *self, PyObject *args, PyObject *kwrds)
     if (len(tau) < MIN(m,n)) err_buf_len("tau");
 
     int i;
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     int *jpvt_ptr = malloc(n*sizeof(int));
     if (!jpvt_ptr) return PyErr_NoMemory();
     for (i=0; i<n; i++) jpvt_ptr[i] = MAT_BUFI(jpvt)[i];
@@ -4777,13 +4777,13 @@ static PyObject* geqp3(PyObject *self, PyObject *args, PyObject *kwrds)
 	    break;
 
         default:
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
             free(jpvt_ptr);
 #endif
             err_invalid_id;
     }
 
-#if (SIZEOF_INT < SIZEOF_LONG)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
     for (i=0; i<n; i++) MAT_BUFI(jpvt)[i] = jpvt_ptr[i];
     free(jpvt_ptr);
 #endif

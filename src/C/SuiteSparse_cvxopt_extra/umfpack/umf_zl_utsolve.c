@@ -1,3 +1,3 @@
 #define ZLONG
 
-#include "../../SuiteSparse/UMFPACK/Source/umf_utsolve.c"
+#include "umf_utsolve.c"

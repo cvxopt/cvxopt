@@ -1,2 +1,2 @@
 #define DINT
-#include "../../SuiteSparse/UMFPACK/Source/umf_singletons.c"
+#include "umf_singletons.c"

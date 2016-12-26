@@ -1,2 +1,2 @@
 #define ZINT
-#include "../../SuiteSparse/UMFPACK/Source/umfpack_free_symbolic.c"
+#include "umfpack_free_symbolic.c"

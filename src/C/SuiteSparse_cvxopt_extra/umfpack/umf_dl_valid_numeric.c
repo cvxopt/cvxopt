@@ -1,3 +1,3 @@
 #define DLONG
 
-#include "../../SuiteSparse/UMFPACK/Source/umf_valid_numeric.c"
+#include "umf_valid_numeric.c"

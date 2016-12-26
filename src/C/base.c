@@ -1,9 +1,9 @@
 /*
- * Copyright 2012-2015 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2016 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.8.
+ * This file is part of CVXOPT.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -647,31 +647,31 @@ static PyObject* base_gemv(PyObject *self, PyObject *args, PyObject *kwrds)
   if (Matrix_Check(A)) {
     int ldA = MAX(1,X_NROWS(A));
     if (trans == 'N' && n == 0)
-      scal[id](&m, (bo ? &b : &Zero[id]), ((char*)MAT_BUF(y))+oy*E_SIZE[id], &iy);
+      scal[id](&m, (bo ? &b : &Zero[id]), (unsigned char*)MAT_BUF(y)+oy*E_SIZE[id], &iy);
     else if ((trans == 'T' || trans == 'C') && m == 0)
-      scal[id](&n, (bo ? &b : &Zero[id]), ((char*)MAT_BUF(y))+oy*E_SIZE[id], &iy);
+      scal[id](&n, (bo ? &b : &Zero[id]), (unsigned char*)MAT_BUF(y)+oy*E_SIZE[id], &iy);
     else
 #if PY_MAJOR_VERSION >= 3
       gemv[id](&trans_, &m, &n, (ao ? &a : &One[id]),
-	       ((char*)MAT_BUF(A)) + oA*E_SIZE[id], &ldA,
-	       ((char*)MAT_BUF(x)) + ox*E_SIZE[id], &ix, (bo ? &b : &Zero[id]),
-	       ((char*)MAT_BUF(y)) + oy*E_SIZE[id], &iy);
+	       (unsigned char*)MAT_BUF(A) + oA*E_SIZE[id], &ldA,
+	       (unsigned char*)MAT_BUF(x) + ox*E_SIZE[id], &ix, (bo ? &b : &Zero[id]),
+	       (unsigned char*)MAT_BUF(y) + oy*E_SIZE[id], &iy);
 #else
       gemv[id](&trans, &m, &n, (ao ? &a : &One[id]),
-	       ((char*)MAT_BUF(A)) + oA*E_SIZE[id], &ldA,
-	       ((char*)MAT_BUF(x)) + ox*E_SIZE[id], &ix, (bo ? &b : &Zero[id]),
-	       ((char*)MAT_BUF(y)) + oy*E_SIZE[id], &iy);
+	       (unsigned char*)MAT_BUF(A) + oA*E_SIZE[id], &ldA,
+	       (unsigned char*)MAT_BUF(x) + ox*E_SIZE[id], &ix, (bo ? &b : &Zero[id]),
+	       (unsigned char*)MAT_BUF(y) + oy*E_SIZE[id], &iy);
 #endif
   } else {
 #if PY_MAJOR_VERSION >= 3
     if (sp_gemv[id](trans_, m, n, (ao ? a : One[id]), ((spmatrix *)A)->obj,
-		    oA, ((char*)MAT_BUF(x)) + ox*E_SIZE[id], ix, (bo ? b : Zero[id]),
-		    ((char*)MAT_BUF(y)) + oy*E_SIZE[id], iy))
+		    oA, (unsigned char*)MAT_BUF(x) + ox*E_SIZE[id], ix, (bo ? b : Zero[id]),
+		    (unsigned char*)MAT_BUF(y) + oy*E_SIZE[id], iy))
       return PyErr_NoMemory();
 #else
     if (sp_gemv[id](trans, m, n, (ao ? a : One[id]), ((spmatrix *)A)->obj,
-		    oA, ((char*)MAT_BUF(x)) + ox*E_SIZE[id], ix, (bo ? b : Zero[id]),
-		    ((char*)MAT_BUF(y)) + oy*E_SIZE[id], iy))
+		    oA, (unsigned char*)MAT_BUF(x) + ox*E_SIZE[id], ix, (bo ? b : Zero[id]),
+		    (unsigned char*)MAT_BUF(y) + oy*E_SIZE[id], iy))
       return PyErr_NoMemory();
 #endif
   }
@@ -890,24 +890,24 @@ static PyObject* base_symv(PyObject *self, PyObject *args, PyObject *kwrds)
 
 #if PY_MAJOR_VERSION >= 3
     symv[id](&uplo_, &n, (ao ? &a : &One[id]),
-	     ((char*)MAT_BUF(A)) + oA*E_SIZE[id], &ldA, ((char*)MAT_BUF(x)) + ox*E_SIZE[id],
-	     &ix, (bo ? &b : &Zero[id]), ((char*)MAT_BUF(y)) + oy*E_SIZE[id], &iy);
+	     (unsigned char*)MAT_BUF(A) + oA*E_SIZE[id], &ldA, (unsigned char*)MAT_BUF(x) + ox*E_SIZE[id],
+	     &ix, (bo ? &b : &Zero[id]), (unsigned char*)MAT_BUF(y) + oy*E_SIZE[id], &iy);
 #else
     symv[id](&uplo, &n, (ao ? &a : &One[id]),
-	     ((char*)MAT_BUF(A)) + oA*E_SIZE[id], &ldA, ((char*)MAT_BUF(x)) + ox*E_SIZE[id],
-	     &ix, (bo ? &b : &Zero[id]), ((char*)MAT_BUF(y)) + oy*E_SIZE[id], &iy);
+	     (unsigned char*)MAT_BUF(A) + oA*E_SIZE[id], &ldA, ((char*)MAT_BUF(x)) + ox*E_SIZE[id],
+	     &ix, (bo ? &b : &Zero[id]), (unsigned char*)MAT_BUF(y) + oy*E_SIZE[id], &iy);
 #endif
   }
   else {
 
 #if PY_MAJOR_VERSION >= 3
     if (sp_symv[id](uplo_, n, (ao ? a : One[id]), ((spmatrix *)A)->obj,
-		    oA, ((char*)MAT_BUF(x)) + ox*E_SIZE[id], ix,
-		    (bo ? b : Zero[id]), ((char*)MAT_BUF(y)) + oy*E_SIZE[id], iy))
+		    oA, (unsigned char*)MAT_BUF(x) + ox*E_SIZE[id], ix,
+		    (bo ? b : Zero[id]), (unsigned char*)MAT_BUF(y) + oy*E_SIZE[id], iy))
 #else
     if (sp_symv[id](uplo, n, (ao ? a : One[id]), ((spmatrix *)A)->obj,
-		    oA, ((char*)MAT_BUF(x)) + ox*E_SIZE[id], ix,
-		    (bo ? b : Zero[id]), ((char*)MAT_BUF(y)) + oy*E_SIZE[id], iy))
+		    oA, (unsigned char*)MAT_BUF(x) + ox*E_SIZE[id], ix,
+		    (bo ? b : Zero[id]), (unsigned char*)MAT_BUF(y) + oy*E_SIZE[id], iy))
 #endif
       return PyErr_NoMemory();
   }

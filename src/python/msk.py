@@ -1,12 +1,12 @@
 """
-CVXOPT interface for MOSEK 7.0
+CVXOPT interface for MOSEK 8.0
 """
 
-# Copyright 2012-2015 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2016 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
-# This file is part of CVXOPT version 1.1.8.
+# This file is part of CVXOPT.
 #
 # CVXOPT is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,20 +24,18 @@ CVXOPT interface for MOSEK 7.0
 import sys
 import mosek
 from cvxopt import matrix, spmatrix, sparse
-from mosek.array import array, zeros
-env = mosek.Env()
+
+import sys
 
 def streamprinter(text): 
     sys.stdout.write(text) 
-    sys.stdout.flush()
-        
-env.set_Stream (mosek.streamtype.log, streamprinter)
+    sys.stdout.flush() 
 
 inf = 0.0
 
 options = {}
 
-def lp(c, G, h, A=None, b=None):
+def lp(c, G, h, A=None, b=None, taskfile=None):
     """
     Solves a pair of primal and dual LPs 
 
@@ -46,7 +44,7 @@ def lp(c, G, h, A=None, b=None):
                     A*x = b                      z >= 0.
                     s >= 0
                     
-    using MOSEK 7.0.
+    using MOSEK 8.0.
 
     (solsta, x, z, y) = lp(c, G, h, A=None, b=None).
 
@@ -57,6 +55,8 @@ def lp(c, G, h, A=None, b=None):
         matrices with one column.  The default values for A and b are 
         empty matrices with zero rows.
 
+        Optionally, the interface can write a .task file, required for
+        support questions on the MOSEK solver.
 
     Return values
 
@@ -78,8 +78,7 @@ def lp(c, G, h, A=None, b=None):
                 mosek.solsta.near_prim_feas
                 mosek.solsta.prim_and_dual_feas
                 mosek.solsta.prim_feas
-             in which case the (x,y,z) value may not be well-defined,
-             c.f., section 17.48 of the MOSEK Python API manual.
+             in which case the (x,y,z) value may not be well-defined.
         
         x, y, z  the primal-dual solution.                    
 
@@ -88,8 +87,10 @@ def lp(c, G, h, A=None, b=None):
     
         >>> msk.options = {mosek.iparam.log: 0} 
     
-    see chapter 15 of the MOSEK Python API manual.                    
+    see the MOSEK Python API manual.                    
     """
+
+    env = mosek.Env()
 
     if type(c) is not matrix or c.typecode != 'd' or c.size[1] != 1: 
         raise TypeError("'c' must be a dense column matrix")
@@ -143,12 +144,12 @@ def lp(c, G, h, A=None, b=None):
 
     task.inputdata (m+p, # number of constraints
                     n,   # number of variables
-                    array(c), # linear objective coefficients  
+                    list(c), # linear objective coefficients  
                     0.0, # objective fixed value  
-                    array(aptrb), 
-                    array(aptre), 
-                    array(asub),
-                    array(acof), 
+                    list(aptrb), 
+                    list(aptre), 
+                    list(asub),
+                    list(acof), 
                     bkc,
                     blc,
                     buc, 
@@ -158,19 +159,22 @@ def lp(c, G, h, A=None, b=None):
 
     task.putobjsense(mosek.objsense.minimize)
 
+    if taskfile:
+        task.writetask(taskfile)
+
     task.optimize()
 
     task.solutionsummary (mosek.streamtype.msg); 
 
     solsta = task.getsolsta(mosek.soltype.bas)
 
-    x, z = zeros(n, float), zeros(m, float)
+    x, z = n*[ 0.0 ], n*[ 0.0 ]
     task.getsolutionslice(mosek.soltype.bas, mosek.solitem.xx, 0, n, x) 
     task.getsolutionslice(mosek.soltype.bas, mosek.solitem.suc, 0, m, z) 
     x, z = matrix(x), matrix(z)
     
     if p is not 0:
-        yu, yl = zeros(p, float), zeros(p, float)
+        yu, yl = p*[0.0], p*[0.0]
         task.getsolutionslice(mosek.soltype.bas, mosek.solitem.suc, m, 
             m+p, yu) 
         task.getsolutionslice(mosek.soltype.bas, mosek.solitem.slc, m, 
@@ -185,7 +189,7 @@ def lp(c, G, h, A=None, b=None):
         return (solsta, x, z, y)
 
 
-def conelp(c, G, h, dims = None):
+def conelp(c, G, h, dims=None, taskfile=None):
     """
     Solves a pair of primal and dual SOCPs
 
@@ -197,25 +201,27 @@ def conelp(c, G, h, dims = None):
         subject to  G'*z + c = 0
                     z >= 0 
 
-    using MOSEK 7.0.   
+    using MOSEK 8.0.   
 
     The inequalities are with respect to a cone C defined as the Cartesian
-    product of N + 1 cones:
+    product of N + M + 1 cones:
     
-        C = C_0 x C_1 x .... x C_N x C_{N+1}.
+        C = C_0 x C_1 x .... x C_N x C_{N+1} x ... x C_{N+M}.
 
     The first cone C_0 is the nonnegative orthant of dimension ml.
-    The other cones are second order cones of dimension mq[0], ..., 
+    The next N cones are second order cones of dimension mq[0], ..., 
     mq[N-1].  The second order cone of dimension m is defined as
     
         { (u0, u1) in R x R^{m-1} | u0 >= ||u1||_2 }.
 
-    The formats of G and h are identical to that used in solvers.conelp(), 
-    except that only componentwise and second order cone inequalities are 
-    (dims['s'] must be zero, if defined).
+    The next M cones are positive semidefinite cones of order ms[0], ...,
+    ms[M-1] >= 0.  
+       
+    The formats of G and h are identical to that used in solvers.conelp().
+
 
     Input arguments.
-   
+
         c is a dense 'd' matrix of size (n,1).
 
         dims is a dictionary with the dimensions of the components of C.  
@@ -225,35 +231,54 @@ def conelp(c, G, h, dims = None):
         - dims['q'] = mq = [ mq[0], mq[1], ..., mq[N-1] ], a list of N 
           integers with the dimensions of the second order cones C_1, ..., 
           C_N.  (N >= 0 and mq[k] >= 1.)
-        The default value of dims is {'l': G.size[0], 'q': []}.
+        - dims['s'] = ms = [ ms[0], ms[1], ..., ms[M-1] ], a list of M  
+          integers with the orders of the semidefinite cones C_{N+1}, ...,
+          C_{N+M}.  (M >= 0 and ms[k] >= 0.)
+        The default value of dims is {'l': G.size[0], 'q': [], 's': []}.
 
         G is a dense or sparse 'd' matrix of size (K,n), where
 
-            K = ml + mq[0] + ... + mq[N-1].
+            K = ml + mq[0] + ... + mq[N-1] + ms[0]**2 + ... + ms[M-1]**2.
 
         Each column of G describes a vector 
 
-            v = ( v_0, v_1, ..., v_N, vec(v_{N+1}) )
+            v = ( v_0, v_1, ..., v_N, vec(v_{N+1}), ..., vec(v_{N+M}) ) 
 
-        in V = R^ml x R^mq[0] x ... x R^mq[N-1] stored as a column vector.
+        in V = R^ml x R^mq[0] x ... x R^mq[N-1] x S^ms[0] x ... x S^ms[M-1]
+        stored as a column vector
+
+            [ v_0; v_1; ...; v_N; vec(v_{N+1}); ...; vec(v_{N+M}) ].
+
+        Here, if u is a symmetric matrix of order m, then vec(u) is the 
+        matrix u stored in column major order as a vector of length m**2.
+        We use BLAS unpacked 'L' storage, i.e., the entries in vec(u) 
+        corresponding to the strictly upper triangular entries of u are 
+        not referenced.
 
         h is a dense 'd' matrix of size (K,1), representing a vector in V,
         in the same format as the columns of G.
     
+        A is a dense or sparse 'd' matrix of size (p,n).  The default value
+        is a sparse 'd' matrix of size (0,n).
 
+        b is a dense 'd' matrix of size (p,1).   The default value is a 
+        dense 'd' matrix of size (0,1).
+     
+        Optionally, the interface can write a .task file, required for
+        support questions on the MOSEK solver.
  
     Return values
 
         solsta is a MOSEK solution status key.
 
             If solsta is mosek.solsta.optimal,
-                then (x, zl, zq) contains the primal-dual solution.
+                then (x, zl, zq, zs) contains the primal-dual solution.
             If solsta is moseksolsta.prim_infeas_cer,
-                then (x, zl, zq) is a certificate of dual infeasibility.
+                then (x, zl, zq, zs) is a certificate of dual infeasibility.
             If solsta is moseksolsta.dual_infeas_cer,
-                then (x, zl, zq) is a certificate of primal infeasibility.
+                then (x, zl, zq, zs) is a certificate of primal infeasibility.
             If solsta is mosek.solsta.unknown,
-                then (x, zl, zq) are all None
+                then (x, zl, zq, zs) are all None
 
             Other return values for solsta include:  
                 mosek.solsta.dual_feas  
@@ -263,8 +288,7 @@ def conelp(c, G, h, dims = None):
                 mosek.solsta.near_prim_feas
                 mosek.solsta.prim_and_dual_feas
                 mosek.solsta.prim_feas
-            in which case the (x,y,z) value may not be well-defined,
-            c.f., section 17.48 of the MOSEK Python API manual.
+            in which case the (x,y,z) value may not be well-defined.
         
         x, z the primal-dual solution.
 
@@ -274,27 +298,29 @@ def conelp(c, G, h, dims = None):
     
         >>> msk.options = {mosek.iparam.log:0} 
     
-    see chapter 15 of the MOSEK Python API manual.                    
+    see the MOSEK Python API manual.                    
     """
+
+    env = mosek.Env()
 
     if dims is None: 
         (solsta, x, y, z) = lp(c, G, h)
         return (solsta, x, z, None)
-
-    try:
-        if len(dims['s']) > 0: raise ValueError("dims['s'] must be zero")
-    except:
-        pass
-
-    N, n = G.size
-    ml, mq = dims['l'], dims['q']
-    cdim = ml + sum(mq)
-    if cdim is 0: raise ValueError("ml+mq cannot be 0")
+    
+    N, n = G.size    
+    
+    ml, mq, ms = dims['l'], dims['q'], [ k*k for k in dims['s'] ]
+    cdim = ml + sum(mq) + sum(ms)
+    if cdim is 0: raise ValueError("ml+mq+ms cannot be 0")
 
     # Data for kth 'q' constraint are found in rows indq[k]:indq[k+1] of G.
     indq = [ dims['l'] ]  
     for k in dims['q']:  indq = indq + [ indq[-1] + k ] 
 
+    # Data for the kth 's' constraint are found in rows indq[-1] + (inds[k]:inds[k+1]) of G.
+    inds = [ 0 ]
+    for k in dims['s']: inds = inds + [ inds[-1] + k*k ]
+        
     if type(h) is not matrix or h.typecode != 'd' or h.size[1] != 1:
         raise TypeError("'h' must be a 'd' matrix with 1 column")
     if type(G) is matrix or type(G) is spmatrix:
@@ -305,20 +331,25 @@ def conelp(c, G, h, dims = None):
     else: 
         raise TypeError("'G' must be a matrix")
 
-    if min(dims['q'])<1: raise TypeError(
+    if len(dims['q']) and min(dims['q'])<1: raise TypeError(
         "dimensions of quadratic cones must be positive")
 
+    if len(dims['s']) and min(dims['s'])<1: raise TypeError(
+        "dimensions of semidefinite cones must be positive")
+
     bkc = n*[ mosek.boundkey.fx ] 
-    blc = array(-c)
-    buc = array(-c)
+    blc = list(-c)
+    buc = list(-c)
 
-    bkx = ml*[ mosek.boundkey.lo ] + sum(mq)*[ mosek.boundkey.fr ]
-    blx = ml*[ 0.0 ] + sum(mq)*[ -inf ]
-    bux = N*[ +inf ] 
-
-    c   = array(-h)       
+    dimx = ml + sum(mq)
+    bkx  = ml*[ mosek.boundkey.lo ] + sum(mq)*[ mosek.boundkey.fr ]
+    blx  = ml*[ 0.0 ] + sum(mq)*[ -inf ]
+    bux  = dimx*[ +inf ] 
+    c    = list(-h)       
     
-    colptr, asub, acof = sparse([G.T]).CCS
+    cl, cs = c[:dimx], sparse(c[dimx:])
+    Gl, Gs = sparse(G[:dimx,:]), sparse(G[dimx:,:])
+    colptr, asub, acof = Gl.T.CCS
     aptrb, aptre = colptr[:-1], colptr[1:]
 
     task = env.Task(0,0) 
@@ -335,14 +366,14 @@ def conelp(c, G, h, dims = None):
         else:
             raise ValueError("invalid MOSEK parameter: "+str(param))
 
-    task.inputdata (n,   # number of constraints
-                    N,   # number of variables
-                    c,   # linear objective coefficients  
-                    0.0, # objective fixed value  
-                    array(aptrb), 
-                    array(aptre), 
-                    array(asub),
-                    array(acof), 
+    task.inputdata (n,    # number of constraints
+                    dimx, # number of variables
+                    cl,   # linear objective coefficients  
+                    0.0,  # objective fixed value  
+                    list(aptrb), 
+                    list(aptre), 
+                    list(asub),
+                    list(acof), 
                     bkc,
                     blc,
                     buc, 
@@ -352,26 +383,91 @@ def conelp(c, G, h, dims = None):
 
     task.putobjsense(mosek.objsense.maximize)
 
+    numbarvar = len(dims['s'])
+    task.appendbarvars(dims['s'])
+    
+    barcsubj, barcsubk, barcsubl = (inds[-1])*[ 0 ], (inds[-1])*[ 0 ], (inds[-1])*[ 0 ]
+    barcval = [ -h[indq[-1]+k] for k in range(inds[0], inds[-1])]
+    for s in range(numbarvar):
+        for (k,idx) in enumerate(range(inds[s],inds[s+1])):
+            barcsubk[idx] = k / dims['s'][s]   
+            barcsubl[idx] = k % dims['s'][s]
+            barcsubj[idx] = s
+
+    # filter out upper triangular part
+    trilidx  = [ idx for idx in range(len(barcsubk)) if barcsubk[idx] >= barcsubl[idx] ]
+    barcsubj = [ barcsubj[k] for k in trilidx ]
+    barcsubk = [ barcsubk[k] for k in trilidx ]
+    barcsubl = [ barcsubl[k] for k in trilidx ]
+    barcval  = [ barcval[k]  for k in trilidx ]
+
+    task.putbarcblocktriplet(len(trilidx), barcsubj, barcsubk, barcsubl, barcval)  
+    
+    Gst = Gs.T
+    barasubi = len(Gst)*[ 0 ]
+    barasubj = len(Gst)*[ 0 ]
+    barasubk = len(Gst)*[ 0 ]
+    barasubl = len(Gst)*[ 0 ]
+    baraval  = len(Gst)*[ 0.0 ]
+    colptr, row, val = Gst.CCS 
+
+    for s in range(numbarvar):
+        for j in range(ms[s]):
+            for idx in range(colptr[inds[s]+j], colptr[inds[s]+j+1]):
+                barasubi[idx] = row[idx]
+                barasubj[idx] = s
+                barasubk[idx] = j / dims['s'][s]
+                barasubl[idx] = j % dims['s'][s]
+                baraval[idx]  = val[idx]
+        
+    # filter out upper triangular part
+    trilidx = [ idx for (idx, (k,l)) in enumerate(zip(barasubk,barasubl)) if k >= l ]
+    barasubi = [ barasubi[k] for k in trilidx ]
+    barasubj = [ barasubj[k] for k in trilidx ]
+    barasubk = [ barasubk[k] for k in trilidx ]
+    barasubl = [ barasubl[k] for k in trilidx ]
+    baraval  = [ baraval[k]  for k in trilidx ]
+     
+    task.putbarablocktriplet(len(trilidx), barasubi, barasubj, barasubk, barasubl, baraval)  
+    
     for k in range(len(mq)):
         task.appendcone(mosek.conetype.quad, 0.0, 
-                        array(range(ml+sum(mq[:k]),ml+sum(mq[:k+1]))))
+                        range(ml+sum(mq[:k]),ml+sum(mq[:k+1])))
+        
+    if taskfile:        
+        task.writetask(taskfile)
+        
     task.optimize()
 
     task.solutionsummary (mosek.streamtype.msg); 
 
     solsta = task.getsolsta(mosek.soltype.itr)
 
-    xu, xl, zq = zeros(n, float), zeros(n, float), zeros(sum(mq), float)
+    xu, xl, zq = n*[ 0.0 ], n*[ 0.0 ], sum(mq)*[ 0.0 ]
     task.getsolutionslice(mosek.soltype.itr, mosek.solitem.slc, 0, n, xl) 
     task.getsolutionslice(mosek.soltype.itr, mosek.solitem.suc, 0, n, xu) 
-    task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, ml, N, zq) 
-    x = matrix(xu-xl)
+    task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, ml, dimx, zq) 
+    x = matrix(xu)-matrix(xl)
     zq = matrix(zq)
-
+    
+    for s in range(numbarvar):
+        xx = (dims['s'][s]*(dims['s'][s] + 1) >> 1)*[0.0]
+        task.getbarxj(mosek.soltype.itr, s, xx)
+        
+        xs = matrix(0.0, (dims['s'][s], dims['s'][s]))
+        idx = 0
+        for j in range(dims['s'][s]):
+            for i in range(j,dims['s'][s]):        
+                xs[i,j] = xx[idx]
+                if i != j:
+                    xs[j,i] = xx[idx]                    
+                idx += 1
+        
+        zq = matrix([zq, xs[:]])
+        
     if ml:
-        zl = zeros(ml, float)
-        task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, 0, ml, 
-            zl) 
+        zl = ml*[ 0.0 ]
+        task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, 0, ml, zl) 
         zl = matrix(zl)
     else:
         zl = matrix(0.0, (0,1))
@@ -383,7 +479,7 @@ def conelp(c, G, h, dims = None):
 
 
 
-def socp(c, Gl = None, hl = None, Gq = None, hq = None):
+def socp(c, Gl=None, hl=None, Gq=None, hq=None, taskfile=None):
     """
     Solves a pair of primal and dual SOCPs
 
@@ -397,9 +493,9 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
         subject to  Gl'*zl + sum_k Gq[k]'*zq[k] + c = 0
                     zl >= 0,  zq[k] >= 0, k = 0, ..., N-1.
                     
-    using MOSEK 7.0.
+    using MOSEK 8.0.
 
-    solsta, x, zl, zq = socp(c, Gl = None, hl = None, Gq = None, hq = None)
+    solsta, x, zl, zq = socp(c, Gl = None, hl = None, Gq = None, hq = None, taskfile=None)
 
     Return values
 
@@ -421,8 +517,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
                 mosek.solsta.near_prim_feas
                 mosek.solsta.prim_and_dual_feas
                 mosek.solsta.prim_feas
-             in which case the (x,y,z) value may not be well-defined,
-             c.f., section 17.48 of the MOSEK Python API manual.
+             in which case the (x,y,z) value may not be well-defined.
         
         x, zl, zq  the primal-dual solution.
 
@@ -432,8 +527,13 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
     
         >>> msk.options = {mosek.iparam.log: 0} 
     
-    see chapter 15 of the MOSEK Python API manual.                    
+    see the MOSEK Python API manual.
+    
+    Optionally, the interface can write a .task file, required for
+    support questions on the MOSEK solver.
     """
+
+    env = mosek.Env()
 
     if type(c) is not matrix or c.typecode != 'd' or c.size[1] != 1: 
         raise TypeError("'c' must be a dense column matrix")
@@ -488,8 +588,8 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
         ind += mq[k]
 
     bkc = n*[ mosek.boundkey.fx ] 
-    blc = array(-c)
-    buc = array(-c)
+    blc = list(-c)
+    buc = list(-c)
 
     bkx = ml*[ mosek.boundkey.lo ] + sum(mq)*[ mosek.boundkey.fr ]
     blx = ml*[ 0.0 ] + sum(mq)*[ -inf ]
@@ -516,12 +616,12 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
 
     task.inputdata (n,   # number of constraints
                     N,   # number of variables
-                    array(c), # linear objective coefficients  
+                    list(c), # linear objective coefficients  
                     0.0, # objective fixed value  
-                    array(aptrb), 
-                    array(aptre), 
-                    array(asub),
-                    array(acof), 
+                    list(aptrb), 
+                    list(aptre), 
+                    list(asub),
+                    list(acof), 
                     bkc,
                     blc,
                     buc, 
@@ -533,14 +633,18 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
 
     for k in range(len(mq)):
         task.appendcone(mosek.conetype.quad, 0.0, 
-                        array(range(ml+sum(mq[:k]),ml+sum(mq[:k+1]))))
+                        list(range(ml+sum(mq[:k]),ml+sum(mq[:k+1]))))
+
+    if taskfile:
+        task.writetask(taskfile)
+    
     task.optimize()
 
     task.solutionsummary (mosek.streamtype.msg); 
 
     solsta = task.getsolsta(mosek.soltype.itr)
 
-    xu, xl, zq = zeros(n, float), zeros(n, float), zeros(sum(mq), float)
+    xu, xl, zq = n*[0.0], n*[0.0], sum(mq)*[0.0]
     task.getsolutionslice(mosek.soltype.itr, mosek.solitem.slc, 0, n, xl) 
     task.getsolutionslice(mosek.soltype.itr, mosek.solitem.suc, 0, n, xu) 
     task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, ml, N, zq) 
@@ -549,7 +653,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
     zq = [ matrix(zq[sum(mq[:k]):sum(mq[:k+1])]) for k in range(len(mq)) ]
     
     if ml:
-        zl = zeros(ml, float)
+        zl = ml*[0.0]
         task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, 0, ml, 
             zl) 
         zl = matrix(zl)
@@ -562,7 +666,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None):
         return (solsta, x, zl, zq)
 
 
-def qp(P, q, G=None, h=None, A=None, b=None):
+def qp(P, q, G=None, h=None, A=None, b=None, taskfile=None):
     """
     Solves a quadratic program
 
@@ -570,9 +674,9 @@ def qp(P, q, G=None, h=None, A=None, b=None):
         subject to  G*x <= h      
                     A*x = b.                    
                     
-    using MOSEK 7.0.
+    using MOSEK 8.0.
 
-    solsta, x, z, y = qp(P, q, G=None, h=None, A=None, b=None)
+    solsta, x, z, y = qp(P, q, G=None, h=None, A=None, b=None, taskfile=None)
 
     Return values
 
@@ -594,8 +698,7 @@ def qp(P, q, G=None, h=None, A=None, b=None):
                 mosek.solsta.near_prim_feas
                 mosek.solsta.prim_and_dual_feas
                 mosek.solsta.prim_feas
-            in which case the (x,y,z) value may not be well-defined,
-            c.f., section 17.48 of the MOSEK Python API manual.
+            in which case the (x,y,z) value may not be well-defined.
         
         x, z, y  the primal-dual solution.                    
 
@@ -604,8 +707,13 @@ def qp(P, q, G=None, h=None, A=None, b=None):
     
         >>> msk.options = {mosek.iparam.log: 0} 
     
-    see chapter 15 of the MOSEK Python API manual.                    
+    see the MOSEK Python API manual.      
+    
+    Optionally, the interface can write a .task file, required for
+    support questions on the MOSEK solver.
     """
+
+    env = mosek.Env()
 
     if (type(P) is not matrix and type(P) is not spmatrix) or \
         P.typecode != 'd' or P.size[0] != P.size[1]:
@@ -640,11 +748,11 @@ def qp(P, q, G=None, h=None, A=None, b=None):
  
     if m+p is 0: raise ValueError("m + p must be greater than 0")
 
-    c = array(q)        
+    c = list(q)        
 
     bkc = m*[ mosek.boundkey.up ] + p*[ mosek.boundkey.fx ]
     blc = m*[ -inf ] + [ bi for bi in b ]
-    buc = matrix([h, b])
+    buc = list(h)+list(b)
 
     bkx = n*[mosek.boundkey.fr] 
     blx = n*[ -inf ] 
@@ -669,12 +777,12 @@ def qp(P, q, G=None, h=None, A=None, b=None):
 
     task.inputdata (m+p, # number of constraints
                     n,   # number of variables
-                    array(c), # linear objective coefficients  
+                    c, # linear objective coefficients  
                     0.0, # objective fixed value  
-                    array(aptrb), 
-                    array(aptre), 
-                    array(asub),
-                    array(acof), 
+                    list(aptrb), 
+                    list(aptre), 
+                    list(asub),
+                    list(acof), 
                     bkc,
                     blc,
                     buc, 
@@ -685,22 +793,25 @@ def qp(P, q, G=None, h=None, A=None, b=None):
     Ps = sparse(P)
     I, J = Ps.I, Ps.J
     tril = [ k for k in range(len(I)) if I[k] >= J[k] ]
-    task.putqobj(array(I[tril]), array(J[tril]), array(Ps.V[tril]))
+    task.putqobj(list(I[tril]), list(J[tril]), list(Ps.V[tril]))
     
     task.putobjsense(mosek.objsense.minimize)
 
+    if taskfile:
+        task.writetask(taskfile)
+        
     task.optimize()
 
     task.solutionsummary (mosek.streamtype.msg); 
 
     solsta = task.getsolsta(mosek.soltype.itr)
 
-    x = zeros(n, float)
+    x = n*[ 0.0 ]
     task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, 0, n, x) 
     x = matrix(x)
 
     if m is not 0:
-        z = zeros(m, float)
+        z = m*[0.0]
         task.getsolutionslice(mosek.soltype.itr, mosek.solitem.suc, 0, m, 
             z) 
         z = matrix(z)
@@ -708,7 +819,7 @@ def qp(P, q, G=None, h=None, A=None, b=None):
         z = matrix(0.0, (0,1))
 
     if p is not 0:
-        yu, yl = zeros(p, float), zeros(p, float)
+        yu, yl = p*[0.0], p*[0.0]
         task.getsolutionslice(mosek.soltype.itr, mosek.solitem.suc, m, m+p,
             yu) 
         task.getsolutionslice(mosek.soltype.itr, mosek.solitem.slc, m, m+p,
@@ -723,7 +834,7 @@ def qp(P, q, G=None, h=None, A=None, b=None):
         return (solsta, x, z, y)
 
 
-def ilp(c, G, h, A=None, b=None, I=None):
+def ilp(c, G, h, A=None, b=None, I=None, taskfile=None):
     """
     Solves the mixed integer LP
 
@@ -733,9 +844,9 @@ def ilp(c, G, h, A=None, b=None, I=None):
                     s >= 0
                     xi integer, forall i in I
                     
-    using MOSEK 7.0.
+    using MOSEK 8.0.
 
-    solsta, x = ilp(c, G, h, A=None, b=None, I=None).
+    solsta, x = ilp(c, G, h, A=None, b=None, I=None, taskfile=None).
 
     Input arguments 
 
@@ -750,6 +861,8 @@ def ilp(c, G, h, A=None, b=None, I=None):
 
         Dual variables are not returned for MOSEK.
 
+        Optionally, the interface can write a .task file, required for
+        support questions on the MOSEK solver.
 
     Return values
 
@@ -771,8 +884,10 @@ def ilp(c, G, h, A=None, b=None, I=None):
     
     >>> msk.options = {mosek.iparam.log: 0} 
     
-    see chapter 15 of the MOSEK Python API manual.                    
+    see the MOSEK Python API manual.                    
     """
+
+    env = mosek.Env()
 
     if type(c) is not matrix or c.typecode != 'd' or c.size[1] != 1: 
         raise TypeError("'c' must be a dense column matrix")
@@ -799,8 +914,6 @@ def ilp(c, G, h, A=None, b=None, I=None):
     if type(b) is not matrix or b.typecode != 'd' or b.size != (p,1): 
         raise TypeError("'b' must be a dense matrix of size (%d,1)" %p)
  
-    c = array(c)        
-
     if I is None: I = set(range(n))
 
     if type(I) is not set: 
@@ -842,12 +955,12 @@ def ilp(c, G, h, A=None, b=None, I=None):
     
     task.inputdata (m+p, # number of constraints
                     n,   # number of variables
-                    array(c), # linear objective coefficients  
+                    list(c), # linear objective coefficients  
                     0.0, # objective fixed value  
-                    array(aptrb), 
-                    array(aptre), 
-                    array(asub),
-                    array(acof), 
+                    list(aptrb), 
+                    list(aptre), 
+                    list(asub),
+                    list(acof), 
                     bkc,
                     blc,
                     buc, 
@@ -863,6 +976,9 @@ def ilp(c, G, h, A=None, b=None, I=None):
 
     task.putintparam (mosek.iparam.mio_mode, mosek.miomode.satisfied) 
 
+    if taskfile:
+        task.writetask(taskfile)
+        
     task.optimize()
 
     task.solutionsummary (mosek.streamtype.msg); 
@@ -872,7 +988,7 @@ def ilp(c, G, h, A=None, b=None, I=None):
     else:
         solsta = task.getsolsta(mosek.soltype.bas)
         
-    x = zeros(n, float)
+    x = n*[0.0]
     if len(I) > 0:
         task.getsolutionslice(mosek.soltype.itg, mosek.solitem.xx, 0, n, x) 
     else:

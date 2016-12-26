@@ -1,0 +1,67 @@
+notifications:
+  email: false
+git:
+  depth: 2
+matrix:
+  include:
+  - os: linux
+    dist: trusty
+    sudo: required
+    language: python
+    python: '2.7'
+    env: CVXOPT_BUILD_GSL=1 CVXOPT_BUILD_DSDP=1 CVXOPT_BUILD_FFTW=1 CVXOPT_BUILD_GLPK=1
+  - os: linux
+    dist: trusty
+    sudo: required
+    language: python
+    python: '2.7'
+    env: CVXOPT_BUILD_GSL=1 CVXOPT_BUILD_DSDP=1 CVXOPT_BUILD_FFTW=1 CVXOPT_BUILD_GLPK=1
+      BUILD_SUITESPARSE=1 COVERALLS=1
+  - os: linux
+    dist: trusty
+    sudo: required
+    language: python
+    python: '3.5'
+    env: CVXOPT_BUILD_GSL=1 CVXOPT_BUILD_DSDP=1 CVXOPT_BUILD_FFTW=1 CVXOPT_BUILD_GLPK=1
+  - os: osx
+    env: PYVERSION=2.7 CVXOPT_BUILD_GSL=1 CVXOPT_BUILD_DSDP=1 CVXOPT_BUILD_FFTW=1
+      CVXOPT_BUILD_GLPK=1 CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib CVXOPT_BLAS_LIB=openblas
+      CVXOPT_LAPACK_LIB=openblas BUILD_SUITESPARSE=1
+    language: generic
+  - os: osx
+    env: PYVERSION=2.7 CVXOPT_BUILD_GSL=1 CVXOPT_BUILD_DSDP=1 CVXOPT_BUILD_FFTW=1
+      CVXOPT_BUILD_GLPK=1 CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib CVXOPT_BLAS_LIB=openblas
+      CVXOPT_LAPACK_LIB=openblas
+    language: generic
+  - os: osx
+    env: PYVERSION=3.5 CVXOPT_BUILD_GSL=1 CVXOPT_BUILD_DSDP=1 CVXOPT_BUILD_FFTW=1
+      CVXOPT_BUILD_GLPK=1 CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib CVXOPT_BLAS_LIB=openblas
+      CVXOPT_LAPACK_LIB=openblas
+    language: generic
+before_install:
+- if [[ "$BUILD_SUITESPARSE" == "1" ]]; then wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-4.5.3.tar.gz; tar -xf SuiteSparse-4.5.3.tar.gz; export CVXOPT_SUITESPARSE_SRC_DIR=$(pwd)/SuiteSparse; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install python-dev libopenblas-dev libfftw3-dev libglpk-dev libdsdp-dev libgsl0-dev; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" && -z "$BUILD_SUITESPARSE" ]]; then sudo add-apt-repository ppa:bzindovic/suitesparse-bugfix-1319687 -y; sudo apt-get update; sudo apt-get install libsuitesparse-dev; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; brew install homebrew/science/openblas homebrew/science/glpk dsdp gsl fftw; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" && -z "$BUILD_SUITESPARSE" ]]; then brew install homebrew/science/suite-sparse; fi 
+- if [[ "$TRAVIS_OS_NAME" == "osx" && "$PYVERSION" == "2.7" ]]; then virtualenv venv -p python; fi 
+- if [[ "$TRAVIS_OS_NAME" == "osx" && "$PYVERSION" == "3.5" ]]; then brew install python3; virtualenv venv -p python3; fi 
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then source venv/bin/activate; fi
+install:
+- pip install coveralls nose
+- python setup.py install
+script:
+- python -c 'from cvxopt import blas,lapack,glpk,fftw,dsdp,gsl,cholmod,umfpack'
+- nosetests --with-coverage --cover-package=cvxopt
+after_success:
+- if [ $COVERALLS ]; then coveralls; fi
+deploy:
+  provider: pypi
+  user: msa
+  password:
+    secure: PSz8CmCBH81v/ZDwsDA6yFTThDZhIsiuWi3tgCRYSVfCpb0yevu58boccheWBDiq+nsaJRDJ6o1U4nzxQJeyHOmNsRtuYG/BiXqTcLf5xJ8bj/fimgNEtqCSZOUaaYRQtMrx1n0uUSbEYBU36YP4NwTaDkXIQk8O22cYrvbBVsoUBW84SuUWa73q/hPmCIsHc1OLqgC4T/EU+3WFNt5EZzGAzesHIEb3KNI3jdG5YlqOomksZlVz2nTxWC1a7dvXI6wK6mGcd+5sW0iyvVZJjVNt2kHcqxR8KHVLtNsc0mE1iNcOV0MOLskEUauzWgf8/M6PcHrZJ3W922H8/sdFmbRMfC+9HgSE2wm/yx4WdKTK0ga0Pk14F+p7bE5uFTEcoGvHQloYVRrFiL2jCcN0pEDUbp7HwWrECjvTfhWYBJ4t4vIaQFMSczdwRWDYOVHFfsHt/LPZTSlUffE7kqYZPc+bxR/YM2GGbiKMvLCqjgQGnGKNEUfkiauTGZiOJoLCM8PqT/7zBCbzz8kM1vHt27BpN4uM3MAGojMKBoGS+QileEPblIT+0KJLon1jW/nyNEQDesbZk0LShu33J/lFZy82knsQ8kkZ0GYCr2IlD6OOafI+5gfSTM/KAWpdl0Wt8/Msqfv0AKLkJ19bwdCjWuNuOt4j/YsG+OZqrM2U8DA=
+  on:
+    branch: master
+    tags: true
+    distributions: sdist
+    repo: cvxopt/cvxopt

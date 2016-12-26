@@ -1,9 +1,9 @@
 /*
- * Copyright 2012-2015 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2016 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.8.
+ * This file is part of CVXOPT.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,13 +28,12 @@
 
 const int E_SIZE[] = { sizeof(int_t), sizeof(double), sizeof(double complex) };
 
-
-#if (SIZEOF_INT < SIZEOF_LONG) || defined(MS_WIN64)
+/* defined in pyconfig.h */
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
 #define CHOL(name) cholmod_l_ ## name
 #else
 #define CHOL(name) cholmod_ ## name
 #endif
-
 
 PyDoc_STRVAR(cholmod__doc__, "Interface to the CHOLMOD library.\n\n"
 "Routines for sparse Cholesky factorization.\n\n"
@@ -529,7 +528,7 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
 
     void *b_old = b->x;
     for (i=0; i<nrhs; i++){
-      b->x = ((char*)MAT_BUF(B)) + (i*ldB + oB)*E_SIZE[MAT_ID(B)];
+        b->x = (unsigned char*)MAT_BUF(B) + (i*ldB + oB)*E_SIZE[MAT_ID(B)];
         x = CHOL(solve) (sysvalues[sys], L, b, &Common);
         if (Common.status != CHOLMOD_OK){
             PyErr_SetString(PyExc_ValueError, "solve step failed");
@@ -786,7 +785,7 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
     }
     b_old = b->x;
     for (i=0; i<nrhs; i++) {
-      b->x = ((char*)MAT_BUF(B)) + (i*ldB + oB)*E_SIZE[MAT_ID(B)];
+        b->x = (unsigned char*)MAT_BUF(B) + (i*ldB + oB)*E_SIZE[MAT_ID(B)];
         x = CHOL(solve) (CHOLMOD_A, L, b, &Common);
         if (Common.status != CHOLMOD_OK){
             PyErr_SetString(PyExc_ValueError, "solve step failed");

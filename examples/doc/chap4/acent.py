@@ -1,7 +1,7 @@
 # The analytic centering example at the end of chapter 4 (The LAPACK 
 # interface).
 
-from cvxopt import matrix, log, mul, div, blas, lapack, base
+from cvxopt import matrix, log, mul, div, blas, lapack, normal, uniform
 from math import sqrt
 
 def acent(A,b):
@@ -57,9 +57,9 @@ def acent(A,b):
 # with random mxn Ar and random b1, b2.
 
 m, n  = 500, 500
-Ar = base.normal(m,n);
+Ar = normal(m,n);
 A = matrix([Ar, -Ar])
-b = base.uniform(2*m,1)
+b = uniform(2*m,1)
 
 x, ntdecrs = acent(A, b)  
 try: 

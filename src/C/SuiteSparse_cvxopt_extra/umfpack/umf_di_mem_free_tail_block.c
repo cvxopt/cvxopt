@@ -1,2 +1,2 @@
 #define DINT
-#include "../../SuiteSparse/UMFPACK/Source/umf_mem_free_tail_block.c"
+#include "umf_mem_free_tail_block.c"

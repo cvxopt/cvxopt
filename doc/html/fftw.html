@@ -28,6 +28,7 @@
   
 
   
+        <link rel="search" title="Search" href="search.html"/>
         <link rel="copyright" title="Copyright" href="copyright.html"/>
     <link rel="top" title="CVXOPT User&#39;s Guide" href="index.html"/>
         <link rel="next" title="Sparse Linear Equations" href="spsolvers.html"/>
@@ -92,7 +93,7 @@
 <li class="toctree-l2"><a class="reference internal" href="lapack.html#example-analytic-centering">Example: Analytic Centering</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Discrete Transforms</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Discrete Transforms</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#discrete-fourier-transform">Discrete Fourier Transform</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#discrete-cosine-transform">Discrete Cosine Transform</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#discrete-sine-transform">Discrete Sine Transform</a></li>
@@ -188,9 +189,9 @@ available during the CVXOPT installation.</p>
 <dt id="cvxopt.fftw.dft">
 <code class="descclassname">cvxopt.fftw.</code><code class="descname">dft</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dft" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces the columns of a dense complex matrix with their discrete
-Fourier transforms:  if <code class="docutils literal"><span class="pre">X</span></code> has <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> rows,</p>
+Fourier transforms:  if <code class="docutils literal"><span class="pre">X</span></code> has <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> rows,</p>
 <div class="math">
-<p><img src="_images/math/28daf2d9ef7d6fc3efb953a00602ff92f0c50e8c.png" alt="X[k,:] := \sum_{j=0}^{n-1} e^{-2\pi j k \sqrt{-1}/n} X[j,:],
+<p><img src="_images/math/9d2fb37f4f2ea8ca60effcfd61365f8962ef0811.png" alt="X[k,:] := \sum_{j=0}^{n-1} e^{-2\pi j k \sqrt{-1}/n} X[j,:],
     \qquad k=0,\ldots,n-1."/></p>
 </div></dd></dl>
 
@@ -198,9 +199,9 @@ Fourier transforms:  if <code class="docutils literal"><span class="pre">X</span
 <dt id="cvxopt.fftw.idft">
 <code class="descclassname">cvxopt.fftw.</code><code class="descname">idft</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idft" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces the columns of a dense complex matrix with their inverse
-discrete Fourier transforms: if <code class="docutils literal"><span class="pre">X</span></code> has <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> rows,</p>
+discrete Fourier transforms: if <code class="docutils literal"><span class="pre">X</span></code> has <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> rows,</p>
 <div class="math">
-<p><img src="_images/math/e1c7f0c9b12f842d6225770277576547e13dce69.png" alt="X[k,:] :=
+<p><img src="_images/math/ea898f4dc35c3010225ae66a6d7993bae88b3a56.png" alt="X[k,:] :=
     \frac{1}{n} \sum_{j=0}^{n-1} e^{2\pi j k \sqrt{-1}/n} X[j,:],
     \qquad k=0,\ldots,n-1."/></p>
 </div></dd></dl>
@@ -241,9 +242,9 @@ cosine transforms.  The second argument, an integer between 1 and 4,
 denotes the type of transform (DCT-I, DCT-II, DCT-III, DCT-IV).
 The DCT-I transform requires that the row dimension of <code class="docutils literal"><span class="pre">X</span></code> is at
 least 2.  These transforms are defined as follows (for a matrix with
-<img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> rows).</p>
+<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> rows).</p>
 <div class="math">
-<p><img src="_images/math/5d07fc103b7ffd76b1fef90c4c130dae17dcb379.png" alt="\mbox{DCT-I:} \qquad
+<p><img src="_images/math/c2284484be2528981dea5018a5d26d80bb413e8e.png" alt="\mbox{DCT-I:} \qquad
     X[k,:] &amp; := X[0,:] + (-1)^k X[n-1,:] +
         2 \sum_{j=1}^{n-2} X[j,:] \cos(\pi j k /(n-1)),
         \qquad k=0,\ldots,n-1.\\
@@ -301,10 +302,10 @@ transform is computed as <code class="docutils literal"><span class="pre">idctn(
 <dd><p>Replaces the columns of a dense real matrix with their discrete
 sine transforms.  The second argument, an integer between 1 and 4,
 denotes the type of transform (DST-I, DST-II, DST-III, DST-IV).
-These transforms are defined as follows (for a matrix with <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/>
+These transforms are defined as follows (for a matrix with <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>
 rows).</p>
 <div class="math">
-<p><img src="_images/math/8823f1b861429c99f6495d784260f4b06544df26.png" alt="\mbox{DST-I:} \qquad
+<p><img src="_images/math/48f2f49c808548509124056cd80e172621168b22.png" alt="\mbox{DST-I:} \qquad
     X[k,:] &amp; :=
         2 \sum_{j=0}^{n-1} X[j,:] \sin(\pi(j+1)(k+1)/(n+1)),
         \qquad k=0,\ldots,n-1.\\
@@ -373,8 +374,8 @@ transform is computed as <code class="docutils literal"><span class="pre">idstn(
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="copyright.html">Copyright</a> .
-      Last updated on Sep 21, 2015.
+        &copy; <a href="copyright.html">Copyright</a> 2004-2016, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      Last updated on Nov 29, 2016.
     </p>
   </div>
 
@@ -394,7 +395,7 @@ transform is computed as <code class="docutils literal"><span class="pre">idstn(
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.8',
+            VERSION:'1.1.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -420,7 +421,7 @@ transform is computed as <code class="docutils literal"><span class="pre">idstn(
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
     </div>
 
 </body>

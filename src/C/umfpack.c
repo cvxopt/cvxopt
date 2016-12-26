@@ -1,9 +1,9 @@
 /*
- * Copyright 2012-2015 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2016 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
- * This file is part of CVXOPT version 1.1.8.
+ * This file is part of CVXOPT.
  *
  * CVXOPT is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 #include "umfpack.h"
 #include "misc.h"
 
-#if (SIZEOF_INT < SIZEOF_LONG) || defined(MS_WIN64)
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
 #define UMFD(name) umfpack_dl_ ## name
 #define UMFZ(name) umfpack_zl_ ## name
 #else
@@ -225,7 +225,7 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
                 (double *)(MAT_BUFZ(B) + k*ldB + oB), NULL, numeric,
                 NULL, info);
         if (info[UMFPACK_STATUS] == UMFPACK_OK)
-	  memcpy(((char*)B->buffer) + (k*ldB + oB)*E_SIZE[SP_ID(A)], x,
+	  memcpy((unsigned char*)B->buffer + (k*ldB + oB)*E_SIZE[SP_ID(A)], x,
                 n*E_SIZE[SP_ID(A)]);
         else
 	    break;
@@ -548,7 +548,7 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
                 (void *) PyCObject_AsVoidPtr(F), NULL, info);
 #endif
         if (info[UMFPACK_STATUS] == UMFPACK_OK)
-	  memcpy(((char*)B->buffer) + (k*ldB + oB)*E_SIZE[SP_ID(A)], x,
+	    memcpy((unsigned char*)B->buffer + (k*ldB + oB)*E_SIZE[SP_ID(A)], x,
                 n*E_SIZE[SP_ID(A)]);
         else
 	    break;
