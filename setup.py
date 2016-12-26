@@ -178,7 +178,7 @@ else:
             SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
             glob('src/C/SuiteSparse_cvxopt_extra/umfpack/*'))
 
-if SUITESPARSE_EXT_LIB:
+if not SUITESPARSE_SRC_DIR:
     klu = Extension('klu',
     libraries=['amd', 'colamd', 'btf', 'suitesparseconfig', 'klu'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
     include_dirs = [SUITESPARSE_INC_DIR],
@@ -186,21 +186,21 @@ if SUITESPARSE_EXT_LIB:
     sources = ['src/C/klu.c'])
 else:
     klu = Extension('klu', 
-        include_dirs = [ 'src/C/SuiteSparse/KLU/Include',
-            'src/C/SuiteSparse/AMD/Include', 
-            'src/C/SuiteSparse/AMD/Source', 
-            'src/C/SuiteSparse/COLAMD/Include', 
-            'src/C/SuiteSparse/COLAMD/Source', 
-            'src/C/SuiteSparse/BTF/Include', 
-            'src/C/SuiteSparse/BTF/Source', 
-            'src/C/SuiteSparse/SuiteSparse_config' ],
+        include_dirs = [ SUITESPARSE_SRC_DIR + '/KLU/Include',
+            SUITESPARSE_SRC_DIR + '/AMD/Include', 
+            SUITESPARSE_SRC_DIR + '/AMD/Source', 
+            SUITESPARSE_SRC_DIR + '/COLAMD/Include', 
+            SUITESPARSE_SRC_DIR + '/COLAMD/Source', 
+            SUITESPARSE_SRC_DIR + '/BTF/Include', 
+            SUITESPARSE_SRC_DIR + '/BTF/Source', 
+            SUITESPARSE_SRC_DIR + '/SuiteSparse_config' ],
         library_dirs = [ BLAS_LIB_DIR ],
         define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
         libraries = LAPACK_LIB + BLAS_LIB,
         extra_compile_args = ['-Wno-unknown-pragmas'] + WIN_64_EXTRA_COMPILE_ARGS,
         extra_link_args = BLAS_EXTRA_LINK_ARGS + WIN_EXTRA_LINK_ARGS,
         sources = ['src/C/klu.c' ] +
-            ['src/C/SuiteSparse/SuiteSparse_config/SuiteSparse_config.c'] +
+            [SUITESPARSE_SRC_DIR + 'SuiteSparse_config/SuiteSparse_config.c'] +
             glob('src/C/SuiteSparse_cvxopt_extra/klu/*'))
 
 # Build for int or long?
