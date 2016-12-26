@@ -200,7 +200,7 @@ else:
         extra_compile_args = ['-Wno-unknown-pragmas'],
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = ['src/C/klu.c' ] +
-            [SUITESPARSE_SRC_DIR + 'SuiteSparse_config/SuiteSparse_config.c'] +
+            [SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
             glob('src/C/SuiteSparse_cvxopt_extra/klu/*'))
 
 # Build for int or long?
