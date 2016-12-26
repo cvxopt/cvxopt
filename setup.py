@@ -182,7 +182,7 @@ if not SUITESPARSE_SRC_DIR:
     klu = Extension('klu',
     libraries=['amd', 'colamd', 'btf', 'suitesparseconfig', 'klu'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
     include_dirs = [SUITESPARSE_INC_DIR],
-    library_dirs = [SUITESPARSE_LIB_DIR],
+    library_dirs = [SUITESPARSE_LIB_DIR, BLAS_LIB_DIR],
     sources = ['src/C/klu.c'])
 else:
     klu = Extension('klu', 
