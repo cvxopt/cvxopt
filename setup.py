@@ -178,6 +178,31 @@ else:
             SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
             glob('src/C/SuiteSparse_cvxopt_extra/umfpack/*'))
 
+if not SUITESPARSE_SRC_DIR:
+    klu = Extension('klu',
+    libraries=['amd', 'colamd', 'btf', 'suitesparseconfig', 'klu'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
+    include_dirs = [SUITESPARSE_INC_DIR],
+    library_dirs = [SUITESPARSE_LIB_DIR, BLAS_LIB_DIR],
+    sources = ['src/C/klu.c'])
+else:
+    klu = Extension('klu', 
+        include_dirs = [ SUITESPARSE_SRC_DIR + '/KLU/Include',
+            SUITESPARSE_SRC_DIR + '/AMD/Include', 
+            SUITESPARSE_SRC_DIR + '/AMD/Source', 
+            SUITESPARSE_SRC_DIR + '/COLAMD/Include', 
+            SUITESPARSE_SRC_DIR + '/COLAMD/Source', 
+            SUITESPARSE_SRC_DIR + '/BTF/Include', 
+            SUITESPARSE_SRC_DIR + '/BTF/Source', 
+            SUITESPARSE_SRC_DIR + '/SuiteSparse_config' ],
+        library_dirs = [ BLAS_LIB_DIR ],
+        define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
+        libraries = LAPACK_LIB + BLAS_LIB,
+        extra_compile_args = ['-Wno-unknown-pragmas'],
+        extra_link_args = BLAS_EXTRA_LINK_ARGS,
+        sources = ['src/C/klu.c' ] +
+            [SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
+            glob('src/C/SuiteSparse_cvxopt_extra/klu/*'))
+
 # Build for int or long?
 if sys.maxsize > 2**31: MACROS += [('DLONG',None)]
 
@@ -228,7 +253,7 @@ misc_solvers = Extension('misc_solvers',
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
     sources = ['src/C/misc_solvers.c'] )
 
-extmods += [base, blas, lapack, umfpack, cholmod, amd, misc_solvers]
+extmods += [base, blas, lapack, umfpack, klu, cholmod, amd, misc_solvers] 
 
 setup (name = 'cvxopt',
     description = 'Convex optimization package',
