@@ -707,7 +707,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
     # ts = min{ t | s + t*e >= 0 }
     ts = misc.max_step(s, dims)
     if ts >= 0 and primalstart: 
-        raise ValueError("initial s is not positive")
+        raise ValueError("initial s is not strictly positive")
 
 
     if dualstart is None:
@@ -736,7 +736,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
     # tz = min{ t | z + t*e >= 0 }
     tz = misc.max_step(z, dims)
     if tz >= 0 and dualstart: 
-        raise ValueError("initial z is not positive")
+        raise ValueError("initial z is not strictly positive")
 
     nrms = misc.snrm2(s, dims)
     nrmz = misc.snrm2(z, dims)
@@ -2117,7 +2117,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
             blas.copy(initvals['s'], s)
             # ts = min{ t | s + t*e >= 0 }
             if misc.max_step(s, dims) >= 0:
-                raise ValueError("initial s is not positive")
+                raise ValueError("initial s is not strictly positive")
         else: 
             s[: dims['l']] = 1.0 
             ind = dims['l']
@@ -2137,7 +2137,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
             blas.copy(initvals['z'], z)
             # tz = min{ t | z + t*e >= 0 }
             if misc.max_step(z, dims) >= 0:
-                raise ValueError("initial z is not positive")
+                raise ValueError("initial z is not strictly positive")
         else:
             z[: dims['l']] = 1.0 
             ind = dims['l']
