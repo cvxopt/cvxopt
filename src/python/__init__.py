@@ -254,6 +254,8 @@ from cvxopt.base import matrix, spmatrix, sparse, spdiag, sqrt, sin, cos, \
 
 from cvxopt import solvers, blas, lapack
 
+from cvxopt import solvers
+
 __all__ = [ 'blas', 'lapack', 'amd', 'umfpack', 'cholmod', 'solvers',
     'modeling', 'printing', 'info', 'matrix', 'spmatrix', 'sparse', 
     'spdiag', 'sqrt', 'sin', 'cos', 'exp', 'log', 'min', 'max', 'mul', 
