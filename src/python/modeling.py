@@ -27,7 +27,7 @@ piecewise-linear objective and constraint functions.
 from cvxopt.base import matrix, spmatrix
 from cvxopt import blas, solvers 
 import sys
-if sys.version_info.major < 3: 
+if sys.version_info[0] < 3: 
     import __builtin__ as builtins
 else:
     import builtins
@@ -185,7 +185,7 @@ class variable(object):
             "implemented for 'variable' objects")
 
 
-    if sys.version_info.major < 3: 
+    if sys.version_info[0] < 3: 
 
         def __div__(self,other):
 
@@ -240,7 +240,7 @@ class variable(object):
         return (+self).__getitem__(key)
 
 
-    if sys.version_info.major >= 3: 
+    if sys.version_info[0] >= 3: 
 
         def __hash__(self):
 
@@ -820,7 +820,7 @@ class _function(object):
         else: 
             raise TypeError('incompatible dimensions or types')
 
-    if sys.version_info.major < 3: 
+    if sys.version_info[0] < 3: 
 
         def __div__(self,other):
 
@@ -853,7 +853,7 @@ class _function(object):
         return NotImplemented
 
 
-    if sys.version_info.major < 3: 
+    if sys.version_info[0] < 3: 
 
         def __idiv__(self,other):
 
