@@ -67,7 +67,8 @@
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation instructions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#standard-installation">Standard installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-a-pre-built-package">Installing a pre-built package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-and-installing-from-source">Building and installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#customizing-the-setup-script">Customizing the setup script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ubuntu-debian">Ubuntu/Debian</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#macos">macOS</a></li>
@@ -129,8 +130,44 @@
             
   <div class="section" id="installation-instructions">
 <h1>Installation instructions<a class="headerlink" href="#installation-instructions" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="standard-installation">
-<h2>Standard installation<a class="headerlink" href="#standard-installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installing-a-pre-built-package">
+<h2>Installing a pre-built package<a class="headerlink" href="#installing-a-pre-built-package" title="Permalink to this headline">¶</a></h2>
+<p class="rubric">Installing via pip</p>
+<p>A pre-built binary wheel package can be installed
+using <a class="reference external" href="https://pip.pypa.io">pip</a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cvxopt</span>
+</pre></div>
+</div>
+<p>Wheels for Linux:</p>
+<ul class="simple">
+<li>are available for Python 2.7, 3.3, 3.4, 3.5, and 3.6 (32 and 64 bit)</li>
+<li>are linked against OpenBLAS</li>
+<li>include all optional extensions (DSDP, GLPK, GSL, and FFTW)</li>
+</ul>
+<p>Wheels for macOS:</p>
+<ul class="simple">
+<li>are available for Python 2.7, 3.4, 3.5, and 3.6 (universal binaries)</li>
+<li>are linked against the built-in BLAS/LAPACK libraries</li>
+<li>include all optional extensions (DSDP, GLPK, GSL, and FFTW)</li>
+</ul>
+<p>Wheels for Windows:</p>
+<ul class="simple">
+<li>are available for Python 27 and 3.4 (64 bit only)</li>
+<li>are linked against OpenBLAS</li>
+<li>do not include any of the optional extensions</li>
+</ul>
+<p class="rubric">Installing via conda</p>
+<p>The <a class="reference external" href="http://anaconda.org/conda-forge/cvxopt">conda-forge</a> channel
+provides pre-built CVXOPT packages for Linux and macOS that can be
+installed using <a class="reference external" href="https://conda.io/docs/">conda</a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">cvxopt</span>
+</pre></div>
+</div>
+<p>These pre-built packages are linked against OpenBLAS and include the optional extensions
+GLPK, GSL, and FFTW.</p>
+</div>
+<div class="section" id="building-and-installing-from-source">
+<h2>Building and installing from source<a class="headerlink" href="#building-and-installing-from-source" title="Permalink to this headline">¶</a></h2>
 <p class="rubric">Required and optional software</p>
 <p>The package requires version 2.7 or 3.x of Python, and is built from
 source, so the header files and libraries for Python must be installed,
@@ -168,10 +205,6 @@ using the command:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span>
 </pre></div>
 </div>
-<p>It is also possible to install CVXOPT using <a class="reference external" href="http://pip.readthedocs.org/">pip</a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cvxopt</span>
-</pre></div>
-</div>
 <p>To test that the installation was successful, run the included tests using:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">unittest</span> <span class="n">discover</span> <span class="o">-</span><span class="n">s</span> <span class="n">tests</span>
 </pre></div>
@@ -181,6 +214,10 @@ using the command:</p>
 </pre></div>
 </div>
 <p>If Python does not issue an error message, the installation was successful.</p>
+<p>It is also possible to install CVXOPT from source using pip:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cvxopt</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">binary</span> <span class="n">cvxopt</span>
+</pre></div>
+</div>
 <p>Additional information can be found in the
 <a class="reference external" href="http://docs.python.org/install/index.html">Python documentation</a>.</p>
 </div>
@@ -223,7 +260,9 @@ locally with <code class="docutils literal"><span class="pre">BUILD_FFTW=1</span
 </pre></div>
 </div>
 <p>This approach also works with pip:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">CVXOPT_BUILD_GLPK</span><span class="o">=</span><span class="mi">1</span> <span class="n">CVXOPT_BUILD_FFTW</span><span class="o">=</span><span class="mi">1</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">cvxopt</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">CVXOPT_BUILD_GLPK</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">export</span> <span class="n">CVXOPT_BUILD_FFTW</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">cvxopt</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">binary</span> <span class="n">cvxopt</span>
 </pre></div>
 </div>
 <p>Support for the linear, second-order cone, and quadratic programming
@@ -266,6 +305,7 @@ following packages should be installed as well:</p>
 CVXOPT can be built with all extensions in Ubuntu 16.04 (or later) as follows:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>git clone https://github.com/cvxopt/cvxopt.git
 <span class="nb">cd</span> cvxopt
+git checkout <span class="sb">`</span>git describe --abbrev<span class="o">=</span><span class="m">0</span> --tags<span class="sb">`</span>
 <span class="nb">export</span> <span class="nv">CVXOPT_BUILD_DSDP</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
 <span class="nb">export</span> <span class="nv">CVXOPT_BUILD_FFTW</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
 <span class="nb">export</span> <span class="nv">CVXOPT_BUILD_GLPK</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
@@ -277,11 +317,12 @@ python setup.py install --user
 library, the necessary SuiteSparse components can be built with CVXOPT
 by downloading the SuiteSparse source and setting <code class="docutils literal"><span class="pre">CVXOPT_SUITESPARSE_SRC_DIR</span></code>
 to the SuiteSparse source directory:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-4.5.3.tar.gz
-tar -xf SuiteSparse-4.5.3.tar.gz
+<div class="highlight-bash"><div class="highlight"><pre><span></span>wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-4.5.4.tar.gz
+tar -xf SuiteSparse-4.5.4.tar.gz
 <span class="nb">export</span> <span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/SuiteSparse
 git clone https://github.com/cvxopt/cvxopt.git
 <span class="nb">cd</span> cvxopt
+git checkout <span class="sb">`</span>git describe --abbrev<span class="o">=</span><span class="m">0</span> --tags<span class="sb">`</span>
 <span class="nb">export</span> <span class="nv">CVXOPT_BUILD_DSDP</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
 <span class="nb">export</span> <span class="nv">CVXOPT_BUILD_FFTW</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
 <span class="nb">export</span> <span class="nv">CVXOPT_BUILD_GLPK</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
@@ -303,6 +344,7 @@ as follows:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>brew install dsdp gsl fftw homebrew/science/suite-sparse homebrew/science/glpk
 git clone https://github.com/cvxopt/cvxopt.git
 <span class="nb">cd</span> cvxopt
+git checkout <span class="sb">`</span>git describe --abbrev<span class="o">=</span><span class="m">0</span> --tags<span class="sb">`</span>
 <span class="nb">export</span> <span class="nv">CVXOPT_BUILD_DSDP</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
 <span class="nb">export</span> <span class="nv">CVXOPT_BUILD_FFTW</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
 <span class="nb">export</span> <span class="nv">CVXOPT_BUILD_GLPK</span><span class="o">=</span><span class="m">1</span>    <span class="c1"># optional</span>
@@ -335,11 +377,12 @@ before running <code class="docutils literal"><span class="pre">python</span> <s
 <p>If SuiteSparse is not available as a dynamic library, the necessary SuiteSparse
 components can be built with CVXOPT by downloading the SuiteSparse source and
 setting <code class="docutils literal"><span class="pre">CVXOPT_SUITESPARSE_SRC_DIR</span></code> to the SuiteSparse source directory:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-4.5.3.tar.gz
-tar -xf SuiteSparse-4.5.3.tar.gz
+<div class="highlight-bash"><div class="highlight"><pre><span></span>wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-4.5.4.tar.gz
+tar -xf SuiteSparse-4.5.4.tar.gz
 <span class="nb">export</span> <span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/SuiteSparse
 git clone https://github.com/cvxopt/cvxopt.git
 <span class="nb">cd</span> cvxopt
+git checkout <span class="sb">`</span>git describe --abbrev<span class="o">=</span><span class="m">0</span> --tags<span class="sb">`</span>
 python setup.py install --user
 </pre></div>
 </div>
@@ -356,16 +399,16 @@ are installed and in the search path. These can be installed with the
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">choco</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">wget</span> <span class="n">git</span> <span class="n">python2</span> <span class="mi">7</span><span class="nb">zip</span><span class="o">.</span><span class="n">commandline</span>
 </pre></div>
 </div>
-<p>We will also assume that <a class="reference external" href="https://pip.pypa.io">pip</a> is available;
+<p>We will also assume that pip is available;
 if it is not, it can now be installed with <code class="docutils literal"><span class="pre">easy_install</span></code>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">Python27</span>\<span class="n">Scripts</span>\<span class="n">easy_install</span> <span class="n">pip</span>
 </pre></div>
 </div>
 <p>Open the Command Prompt and execute the following commands:</p>
 <div class="highlight-batch"><div class="highlight"><pre><span></span><span class="c1">rem Download SuiteSparse source</span>
-wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-4.5.3.tar.gz
-7z x SuiteSparse-4.5.3.tar.gz
-7z x SuiteSparse-4.5.3.tar
+wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-4.5.4.tar.gz
+7z x SuiteSparse-4.5.4.tar.gz
+7z x SuiteSparse-4.5.4.tar
 <span class="k">set</span> <span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="p">=</span><span class="nv">%CD%</span>\SuiteSparse
 
 <span class="c1">rem Download compatible OpenBLAS library</span>
@@ -380,6 +423,7 @@ pip install -i https://pypi.anaconda.org/carlkl/simple mingwpy
 git clone https://github.com/cvxopt/cvxopt.git
 <span class="k">copy</span> openblas\amd64\lib\libopenblaspy.a cvxopt\
 <span class="k">cd</span> cvxopt
+<span class="k">for</span> <span class="k">/f</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;git describe --abbrev^=0 --tags&#39;</span><span class="p">)</span> <span class="k">do</span> git checkout <span class="se">%%</span>a
 <span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB</span><span class="p">=</span>openblaspy
 <span class="k">set</span> <span class="nv">CVXOPT_LAPACK_LIB</span><span class="p">=</span>openblaspy
 <span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB_DIR</span><span class="p">=</span><span class="nv">%CD%</span>
@@ -411,7 +455,7 @@ python -m unittest discover -s tests
   <div role="contentinfo">
     <p>
         &copy; <a href="../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Nov 30, 2016.
+      Last updated on Feb 22, 2017.
     </p>
   </div>
 
@@ -457,7 +501,7 @@ python -m unittest discover -s tests
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.2.
     </div>
 
 <script>
