@@ -2,7 +2,7 @@
 CVXOPT interface for MOSEK 8.0
 """
 
-# Copyright 2012-2016 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2017 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
@@ -168,7 +168,7 @@ def lp(c, G, h, A=None, b=None, taskfile=None):
 
     solsta = task.getsolsta(mosek.soltype.bas)
 
-    x, z = n*[ 0.0 ], n*[ 0.0 ]
+    x, z = n*[ 0.0 ], m*[ 0.0 ]
     task.getsolutionslice(mosek.soltype.bas, mosek.solitem.xx, 0, n, x) 
     task.getsolutionslice(mosek.soltype.bas, mosek.solitem.suc, 0, m, z) 
     x, z = matrix(x), matrix(z)
