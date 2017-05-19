@@ -2120,7 +2120,7 @@ turns off the screen output in subsequent
 
 The MOSEK interior-point algorithm parameters are set to their default 
 values.  They can be modified by adding an entry 
-:attr:`solvers.options['MOSEK']`.  This entry is a dictionary with 
+:attr:`solvers.options['mosek']`.  This entry is a dictionary with 
 MOSEK parameter/value pairs, with the parameter names imported from
 :mod:`mosek`.  For details see Section 15 of the MOSEK Python API Manual.
 
@@ -2128,7 +2128,7 @@ For example, the commands
 
 >>> from cvxopt import solvers 
 >>> import mosek
->>> solvers.options['MOSEK'] = {mosek.iparam.log: 0}
+>>> solvers.options['mosek'] = {mosek.iparam.log: 0}
 
 turn off the screen output during calls of 
 :func:`lp` or :func:`socp` with
