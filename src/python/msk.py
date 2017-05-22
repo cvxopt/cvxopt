@@ -119,7 +119,7 @@ def lp(c, G, h, A=None, b=None, taskfile=None):
  
     bkc = m*[ mosek.boundkey.up ] + p*[ mosek.boundkey.fx ]
     blc = m*[ -inf ] + [ bi for bi in b ]
-    buc = matrix([h, b])
+    buc = list(h) + list(b)
 
     bkx = n*[mosek.boundkey.fr] 
     blx = n*[ -inf ] 
@@ -168,7 +168,7 @@ def lp(c, G, h, A=None, b=None, taskfile=None):
 
     solsta = task.getsolsta(mosek.soltype.bas)
 
-    x, z = n*[ 0.0 ], n*[ 0.0 ]
+    x, z = n*[ 0.0 ], m*[ 0.0 ]
     task.getsolutionslice(mosek.soltype.bas, mosek.solitem.xx, 0, n, x) 
     task.getsolutionslice(mosek.soltype.bas, mosek.solitem.suc, 0, m, z) 
     x, z = matrix(x), matrix(z)
@@ -930,7 +930,7 @@ def ilp(c, G, h, A=None, b=None, I=None, taskfile=None):
 
     bkc = m*[ mosek.boundkey.up ] + p*[ mosek.boundkey.fx ]
     blc = m*[ -inf ] + [ bi for bi in b ]
-    buc = matrix([h, b])
+    buc = list(h) + list(b)
 
     bkx = n*[mosek.boundkey.fr] 
     blx = n*[ -inf ] 
