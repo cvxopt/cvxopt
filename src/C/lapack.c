@@ -7383,7 +7383,6 @@ static PyMethodDef lapack_functions[] = {
 {NULL}  /* Sentinel */
 };
 
-
 #if PY_MAJOR_VERSION >= 3
 
 static PyModuleDef lapack_module = {
