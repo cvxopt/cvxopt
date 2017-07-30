@@ -468,7 +468,7 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 
         if (Common.status == KLU_OK)
             return (PyObject *) PyCapsule_New(
-                       (void *)Numeric, "KLU NUM D FACTOR",
+                       (void *)Numeric, descrdF,
                        (PyCapsule_Destructor) &free_klu_d_numeric);
 
         else
@@ -488,7 +488,7 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 
         if (Common.status == KLU_OK)
             return (PyObject *) PyCapsule_New(
-                       (void *) Numeric, "KLU NUM Z FACTOR",
+                       (void *) Numeric, descrzF,
                        (PyCapsule_Destructor) &free_klu_z_numeric);
 
         else
