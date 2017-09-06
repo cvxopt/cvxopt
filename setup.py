@@ -3,7 +3,7 @@ try:
 except ImportError:
     from distutils.core import setup, Extension
 from glob import glob
-import os, sys, platform
+import os, sys
 import versioneer
 
 # Modifiy this if BLAS and LAPACK libraries are not in /usr/lib.
@@ -56,22 +56,23 @@ DSDP_LIB_DIR = '/usr/lib'
 DSDP_INC_DIR = '/usr/include/dsdp'
 
 # Guess SUITESPARSE_LIB_DIR and SUITESPARSE_INC_DIR
-if platform.platform().startswith("Darwin"):
+if sys.platform.startswith("darwin"):
     # macOS
     SUITESPARSE_LIB_DIR = '/usr/local/lib'
     SUITESPARSE_INC_DIR = '/usr/local/include'
-elif platform.dist()[0] in ['ubuntu','debian']:
-    # Ubuntu/Debian
-    SUITESPARSE_LIB_DIR = "/usr/lib/x86_64-linux-gnu"
-    SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
-elif platform.dist()[0] in ['centos','fedora','redhat']:
-    # CentOS/Fedora/RedHat
-    SUITESPARSE_LIB_DIR = "/usr/lib64"
-    SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
 else:
-    # Default
-    SUITESPARSE_LIB_DIR = '/usr/lib'
-    SUITESPARSE_INC_DIR = '/usr/include'
+    if glob("/usr/lib/x86_64-linux-gnu/libsuitesparse*"):
+        # Ubuntu/Debian
+        SUITESPARSE_LIB_DIR = "/usr/lib/x86_64-linux-gnu"
+        SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
+    elif glob("/usr/lib64/libsuitesparse*"):
+        # CentOS/Fedora/RedHat
+        SUITESPARSE_LIB_DIR = "/usr/lib64"
+        SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
+    else:
+        # Default
+        SUITESPARSE_LIB_DIR = '/usr/lib'
+        SUITESPARSE_INC_DIR = '/usr/include'
 
 # Directory containing SuiteSparse source
 SUITESPARSE_SRC_DIR = ''
