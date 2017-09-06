@@ -57,7 +57,7 @@ PyDoc_STRVAR(cholmod__doc__, "Interface to the CHOLMOD library.\n\n"
 "    the user-provided ordering and the AMD ordering are compared, and \n"
 "    the best ordering is used. (If the user does not provide an \n"
 "    ordering the AMD ordering is used.)  If nmethods is equal to 1, \n"
-"    the user-provided ordering is used. (In this case, the user must \n" 
+"    the user-provided ordering is used. (In this case, the user must \n"
 "    provide an ordering.   If nmethods is equal to 0, the user-provided\n"
 "    ordering (if any), the AMD ordering, and (if installed during the \n"
 "    the CHOLMOD installation) a number of other orderings are compared,\n"
@@ -78,7 +78,7 @@ static int set_options(void)
     PyObject *param, *key, *value;
     char err_str[100];
 #if PY_MAJOR_VERSION < 3
-    char *keystr; 
+    char *keystr;
 #endif
 
     CHOL(defaults)(&Common);
@@ -222,7 +222,7 @@ static void free_matrix(cholmod_sparse *A)
 #if PY_MAJOR_VERSION >= 3
 static void cvxopt_free_cholmod_factor(void *L)
 {
-   void *Lptr = PyCapsule_GetPointer(L, PyCapsule_GetName(L));   
+   void *Lptr = PyCapsule_GetPointer(L, PyCapsule_GetName(L));
    CHOL(free_factor) ((cholmod_factor **) &Lptr, &Common);
 }
 #else
@@ -308,13 +308,13 @@ static PyObject* symbolic(PyObject *self, PyObject *args,
         }
     }
 #if PY_MAJOR_VERSION >= 3
-    return (PyObject *) PyCapsule_New((void *) L, SP_ID(A)==DOUBLE ?  
+    return (PyObject *) PyCapsule_New((void *) L, SP_ID(A)==DOUBLE ?
         (uplo == 'L' ?  "CHOLMOD FACTOR D L" : "CHOLMOD FACTOR D U") :
         (uplo == 'L' ?  "CHOLMOD FACTOR Z L" : "CHOLMOD FACTOR Z U"),
-        (PyCapsule_Destructor) &cvxopt_free_cholmod_factor); 
+        (PyCapsule_Destructor) &cvxopt_free_cholmod_factor);
 #else
     return (PyObject *) PyCObject_FromVoidPtrAndDesc((void *) L,
-        SP_ID(A)==DOUBLE ?  
+        SP_ID(A)==DOUBLE ?
         (uplo == 'L' ?  "CHOLMOD FACTOR D L" : "CHOLMOD FACTOR D U") :
         (uplo == 'L' ?  "CHOLMOD FACTOR Z L" : "CHOLMOD FACTOR Z U"),
 	cvxopt_free_cholmod_factor);
@@ -346,7 +346,7 @@ static char doc_numeric[] =
     "          uplo='U', then only the upper triangular part is used.\n"
     "\n"
     "F         symbolic factorization computed by cholmod.symbolic\n"
-    "          applied to a matrix with the same sparsity patter and\n"
+    "          applied to a matrix with the same sparsity pattern and\n"
     "          type as A.  After a successful call, F contains the\n"
     "          numeric factorization.";
 
@@ -358,9 +358,9 @@ static PyObject* numeric(PyObject *self, PyObject *args)
     cholmod_sparse *Ac = NULL;
     char uplo;
 #if PY_MAJOR_VERSION >= 3
-    const char *descr; 
+    const char *descr;
 #else
-    char *descr; 
+    char *descr;
 #endif
 
     if (!set_options()) return NULL;
@@ -675,7 +675,7 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
 {
     spmatrix *A;
     matrix *B, *P=NULL;
-    int i, n, nnz, oB=0, ldB=0, nrhs=-1;
+    int i, n, oB=0, ldB=0, nrhs=-1;
     cholmod_sparse *Ac=NULL;
     cholmod_factor *L=NULL;
     cholmod_dense *x=NULL, *b=NULL;
@@ -700,7 +700,6 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
     if (!SpMatrix_Check(A) || SP_NROWS(A) != SP_NCOLS(A))
         PY_ERR_TYPE("A is not a sparse matrix");
     n = SP_NROWS(A);
-    nnz = SP_NNZ(A);
 
     if (!Matrix_Check(B) || MAT_ID(B) != SP_ID(A))
         PY_ERR_TYPE("B must be a dense matrix of the same numerical "
@@ -828,7 +827,7 @@ static PyObject* splinsolve(PyObject *self, PyObject *args,
 {
     spmatrix *A, *B, *X;
     matrix *P=NULL;
-    int n, nnz;
+    int n;
     cholmod_sparse *Ac=NULL, *Bc=NULL, *Xc=NULL;
     cholmod_factor *L=NULL;
 #if PY_MAJOR_VERSION >= 3
@@ -850,7 +849,6 @@ static PyObject* splinsolve(PyObject *self, PyObject *args,
     if (!SpMatrix_Check(A) || SP_NROWS(A) != SP_NCOLS(A))
         PY_ERR_TYPE("A is not a square sparse matrix");
     n = SP_NROWS(A);
-    nnz = SP_NNZ(A);
 
     if (!SpMatrix_Check(B) || SP_ID(A) != SP_ID(B))
         PY_ERR_TYPE("B must be a sparse matrix of the same type as A");
@@ -1106,7 +1104,7 @@ PyMODINIT_FUNC PyInit_cholmod(void)
     return cholmod_module;
 }
 
-#else 
+#else
 
 PyMODINIT_FUNC initcholmod(void)
 {

@@ -524,8 +524,8 @@ static PyObject* dot(PyObject *self, PyObject *args, PyObject *kwrds)
             return Py_BuildValue("d", val.d);
 
         case COMPLEX:
-	    if (n==0) val.z = 0.0;
-	    else
+	        if (n==0) val.z = 0.0;
+	        else
 #if USE_CBLAS_ZDOT
                 cblas_zdotc_sub(n, MAT_BUFZ(x)+ox, ix, MAT_BUFZ(y)+oy,
                     iy, &val.z);
@@ -611,8 +611,8 @@ static PyObject* dotu(PyObject *self, PyObject *args, PyObject *kwrds)
             return Py_BuildValue("d", val.d);
 
         case COMPLEX:
-	    if (n==0) val.z = 0.0;
-	    else
+	        if (n==0) val.z = 0.0;
+	        else
 #if USE_CBLAS_ZDOT
                 Py_BEGIN_ALLOW_THREADS
                 cblas_zdotu_sub(n, MAT_BUFZ(x)+ox, ix, MAT_BUFZ(y)+oy,
@@ -2963,8 +2963,8 @@ static PyObject* syrk(PyObject *self, PyObject *args, PyObject *kwrds)
         kwlist, &A, &C, &uplo_, &trans_, &ao, &bo, &n, &k, &ldA, &ldC,
 	&oA, &oC))
         return NULL;
-    uplo = (char) uplo_; 
-    trans = (char) trans_; 
+    uplo = (char) uplo_;
+    trans = (char) trans_;
 #else
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccOOiiiiii",
         kwlist, &A, &C, &uplo, &trans, &ao, &bo, &n, &k, &ldA, &ldC,
@@ -3508,7 +3508,7 @@ static PyObject* trmm(PyObject *self, PyObject *args, PyObject *kwrds)
 
 #if PY_MAJOR_VERSION >= 3
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCCOiiiiii",
-        kwlist, &A, &B, &side_, &uplo_, &transA_, &diag_, &ao, &m, &n, 
+        kwlist, &A, &B, &side_, &uplo_, &transA_, &diag_, &ao, &m, &n,
         &ldA, &ldB, &oA, &oB))
         return NULL;
     side = (char) side_;
@@ -3645,7 +3645,7 @@ static PyObject* trsm(PyObject *self, PyObject *args, PyObject *kwrds)
 
 #if PY_MAJOR_VERSION >= 3
     if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCCOiiiiii",
-        kwlist, &A, &B, &side_, &uplo_, &transA_, &diag_, &ao, &m, &n, 
+        kwlist, &A, &B, &side_, &uplo_, &transA_, &diag_, &ao, &m, &n,
         &ldA, &ldB, &oA, &oB))
         return NULL;
     side = (char) side_;
@@ -3780,7 +3780,7 @@ PyMODINIT_FUNC PyInit_blas(void)
   return m;
 }
 
-#else 
+#else
 
 PyMODINIT_FUNC initblas(void)
 {

@@ -102,7 +102,7 @@ PyObject * (*num2PyObject[])(void *, int) = {
 
 /* val_id: 0 = matrix, 1 = PyNumber */
 static int
-convert_inum(void *dest, void *val, int val_id, int offset)
+convert_inum(void *dest, void *val, int val_id, int_t offset)
 {
   if (val_id==0) { /* 1x1 matrix */
     switch (MAT_ID(val)) {
@@ -127,7 +127,7 @@ convert_inum(void *dest, void *val, int val_id, int offset)
 }
 
 static int
-convert_dnum(void *dest, void *val, int val_id, int offset)
+convert_dnum(void *dest, void *val, int val_id, int_t offset)
 {
   if (val_id==0) { /* matrix */
     switch (MAT_ID(val)) {
@@ -149,7 +149,7 @@ convert_dnum(void *dest, void *val, int val_id, int offset)
 }
 
 static int
-convert_znum(void *dest, void *val, int val_id, int offset)
+convert_znum(void *dest, void *val, int val_id, int_t offset)
 {
   if (val_id==0) { /* 1x1 matrix */
     switch (MAT_ID(val)) {
@@ -168,7 +168,7 @@ convert_znum(void *dest, void *val, int val_id, int offset)
   }
 }
 
-int (*convert_num[])(void *, void *, int, int) = {
+int (*convert_num[])(void *, void *, int, int_t) = {
     convert_inum, convert_dnum, convert_znum };
 
 extern void daxpy_(int *, void *, void *, int *, void *, int *) ;
@@ -940,7 +940,7 @@ sparse(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
   PyObject *Objx = NULL;
   static char *kwlist[] = { "x", "tc", NULL};
-  
+
 #if PY_MAJOR_VERSION >= 3
   int tc = 0;
   if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|C:sparse", kwlist,
@@ -1886,7 +1886,7 @@ PyMODINIT_FUNC PyInit_base(void)
 
 #else
 
-#define INITERROR return 
+#define INITERROR return
 PyMODINIT_FUNC initbase(void)
 
 #endif

@@ -365,15 +365,15 @@ spmatrix * sparse_concat(PyObject *L, int id_arg)
       for (jk=0; jk<tmp; jk++) {
 
         mk = 0;
-        int_t blk_nrows = 0, blk_ncols = 0;
+        int_t blk_nrows = 0;
         for (i=0; i<PyList_GET_SIZE(col); i++) {
 
           PyObject *Lij = PyList_GET_ITEM(col, i);
 
           if (Matrix_Check(Lij) || SpMatrix_Check(Lij)) {
-            blk_nrows = X_NROWS(Lij); blk_ncols = X_NCOLS(Lij);
+            blk_nrows = X_NROWS(Lij);
           } else {
-            blk_nrows = 1; blk_ncols = 1;
+            blk_nrows = 1;
           }
 
           if (Matrix_Check(Lij)) {
@@ -799,7 +799,7 @@ static int sp_daxpy(number a, void *x, void *y, int sp_x, int sp_y,
 
     memcpy(Z->values, X, sizeof(double)*mn);
 
-    int mn_int = (int) mn; 
+    int mn_int = (int) mn;
     scal[Y->id](&mn_int, &a, Z->values, &intOne);
 
     int j, k;
@@ -1061,7 +1061,7 @@ int sp_zsymv(char uplo, int n, number alpha, ccs *A, int oA, void *x, int ix,
 }
 
 static int sp_dgemm(char tA, char tB, number alpha, void *a, void *b,
-    number beta, void *c, int sp_a, int sp_b, int sp_c, int partial, 
+    number beta, void *c, int sp_a, int sp_b, int sp_c, int partial,
     void **z, int m, int n, int k)
 {
 
@@ -2870,9 +2870,9 @@ spmatrix_subscr(spmatrix* self, PyObject* args)
 
   if (PySlice_Check(argI)) {
     int_t rowstart, rowstop, rowstep, rowlgt, rowcnt;
-   
+
 #if PY_MAJOR_VERSION >= 3
-    if (PySlice_GetIndicesEx(argI, SP_NROWS(self), &rowstart, &rowstop, 
+    if (PySlice_GetIndicesEx(argI, SP_NROWS(self), &rowstart, &rowstop,
         &rowstep, &rowlgt) < 0) return NULL;
 #else
     if (PySlice_GetIndicesEx((PySliceObject*)argI, SP_NROWS(self),
@@ -2882,7 +2882,7 @@ spmatrix_subscr(spmatrix* self, PyObject* args)
     int_t colstart, colstop, colstep, collgt, colcnt;
     if (PySlice_Check(argJ)) {
 #if PY_MAJOR_VERSION >= 3
-      if (PySlice_GetIndicesEx(argJ, SP_NCOLS(self), &colstart, &colstop, 
+      if (PySlice_GetIndicesEx(argJ, SP_NCOLS(self), &colstart, &colstop,
           &colstep, &collgt) < 0) return NULL;
 #else
       if (PySlice_GetIndicesEx((PySliceObject*)argJ, SP_NCOLS(self),
@@ -2898,17 +2898,17 @@ spmatrix_subscr(spmatrix* self, PyObject* args)
 #endif
       if ( OUT_RNG(j, SP_NCOLS(self)) )
           PY_ERR(PyExc_IndexError, "index out of range");
-      colstart = CWRAP(j,SP_NCOLS(self)); 
-      colstop = colstart; 
-      collgt = 1; 
+      colstart = CWRAP(j,SP_NCOLS(self));
+      colstop = colstart;
+      collgt = 1;
       colstep = 1;
     }
     else if (PyList_Check(argJ) || Matrix_Check(argJ)) {
-      if (!(Jl = create_indexlist(SP_NCOLS(self), argJ))) 
+      if (!(Jl = create_indexlist(SP_NCOLS(self), argJ)))
         return NULL;
-      colstart = 0; 
-      colstop = MAT_LGT(Jl)-1; 
-      collgt = MAT_LGT(Jl); 
+      colstart = 0;
+      colstop = MAT_LGT(Jl)-1;
+      collgt = MAT_LGT(Jl);
       colstep = 1;
     }
     else PY_ERR_TYPE("invalid index argument");
@@ -2925,13 +2925,13 @@ spmatrix_subscr(spmatrix* self, PyObject* args)
       if (rowstart == 0 && rowstop == SP_NROWS(self) && rowstep == 1) {
         /* copy entire column */
         colptr[colcnt+1] = colptr[colcnt] + SP_COL(self)[j+1] - SP_COL(self)[j];
-      } 
+      }
       else if (rowstart >= 0 && rowstart < rowstop && rowstop <= SP_NROWS(self) && rowstep == 1) {
 	colptr[colcnt+1] = colptr[colcnt];
 	for (k = SP_COL(self)[j]; k < SP_COL(self)[j+1]; k++) {
-	  if (SP_ROW(self)[k] >= rowstart && SP_ROW(self)[k] < rowstop) 
+	  if (SP_ROW(self)[k] >= rowstart && SP_ROW(self)[k] < rowstop)
 	    colptr[colcnt+1]++;
-	} 
+	}
       }
       else {
         colptr[colcnt+1] += colptr[colcnt];
@@ -2949,7 +2949,7 @@ spmatrix_subscr(spmatrix* self, PyObject* args)
               rowcnt++;
             }
           }
-        } 
+        }
 	else {
           for (k=SP_COL(self)[j+1]-1; k>=SP_COL(self)[j]; k--) {
 
@@ -2998,7 +2998,7 @@ spmatrix_subscr(spmatrix* self, PyObject* args)
 	for (k = SP_COL(self)[j]; k < SP_COL(self)[j+1]; k++) {
 	  if (SP_ROW(self)[k] >= rowstart && SP_ROW(self)[k] < rowstop) {
 	    A->rowind[A->colptr[colcnt] + rowcnt] = SP_ROW(self)[k] - rowstart;
-	    if (SP_ID(self) == DOUBLE) 
+	    if (SP_ID(self) == DOUBLE)
 	      ((double *)A->values)[colptr[colcnt] + rowcnt] = SP_VALD(self)[k];
 	    else
 	      ((double complex *)A->values)[colptr[colcnt] + rowcnt] = SP_VALZ(self)[k];
@@ -3126,7 +3126,7 @@ spmatrix_ass_subscr(spmatrix* self, PyObject* args, PyObject* value)
 
   if (!(PY_NUMBER(value) || Matrix_Check(value) || SpMatrix_Check(value))){
 
-    if (PyObject_CheckBuffer(value)) 
+    if (PyObject_CheckBuffer(value))
       value = (PyObject *)Matrix_NewFromPyBuffer(value, -1, &ndim);
     else
       value = (PyObject *)Matrix_NewFromSequence(value, SP_ID(self));
