@@ -1,8 +1,8 @@
 /*
 * @Author: Uriel Sandoval
 * @Date:   2015-04-28 18:56:49
-* @Last Modified by:   Uriel Sandoval
-* @Last Modified time: 2015-12-24 13:09:48
+* @Last Modified by:   A1562
+* @Last Modified time: 2017-09-07 12:50:24
 */
 
 
@@ -11,23 +11,16 @@
 #include "misc.h"
 
 
-// KLU functions
-#if (SIZEOF_INT < SIZEOF_LONG) || defined(MS_WIN64)
+// KLU functions and  types/structures
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
 #define KLUD(name) klu_l_ ## name
 #define KLUZ(name) klu_zl_ ## name
+#define KLUS(name) klu_l_ ## name
 #else
 #define KLUD(name) klu_ ## name
 #define KLUZ(name) klu_z_ ## name
-#endif
-
-
-// KLU types/structures
-#if (SIZEOF_INT < SIZEOF_LONG) || defined(MS_WIN64)
-#define KLUS(name) klu_l_ ## name
-#else
 #define KLUS(name) klu_ ## name
 #endif
-
 
 
 const int E_SIZE[] = {sizeof(int_t), sizeof(double), sizeof(double complex)};
