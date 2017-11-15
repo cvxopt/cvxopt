@@ -389,7 +389,7 @@ def conelp(c, G, h, dims=None, taskfile=None):
             barcval = [ -h[indq[-1]+k] for k in range(inds[0], inds[-1])]
             for s in range(numbarvar):
                 for (k,idx) in enumerate(range(inds[s],inds[s+1])):
-                    barcsubk[idx] = k / dims['s'][s]   
+                    barcsubk[idx] = k // dims['s'][s]
                     barcsubl[idx] = k % dims['s'][s]
                     barcsubj[idx] = s
 
@@ -415,7 +415,7 @@ def conelp(c, G, h, dims=None, taskfile=None):
                     for idx in range(colptr[inds[s]+j], colptr[inds[s]+j+1]):
                         barasubi[idx] = row[idx]
                         barasubj[idx] = s
-                        barasubk[idx] = j / dims['s'][s]
+                        barasubk[idx] = j // dims['s'][s]
                         barasubl[idx] = j % dims['s'][s]
                         baraval[idx]  = val[idx]
 
