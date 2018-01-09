@@ -3,7 +3,11 @@ from cvxopt import matrix, normal, setseed
 from cvxopt.modeling import op, variable, dot, max, sum
 
 class TestModeling(unittest.TestCase):
-    
+
+    def test_exceptions(self):
+        with self.assertRaises(TypeError):
+            x = variable(0)
+
     def test_case1(self):
         x = variable()
         y = variable()
@@ -12,9 +16,13 @@ class TestModeling(unittest.TestCase):
         c3 = ( x >= 0 )
         c4 = ( y >= 0 )
         lp1 = op(-4*x-5*y, [c1,c2,c3,c4])
-        print(lp1)
+        print(repr(x))
+        print(str(x))
+        print(repr(lp1))
         print(str(lp1))
         lp1.solve()
+        print(repr(x))
+        print(str(x))
         self.assertTrue(lp1.status == 'optimal')
 
     def test_case2(self):
@@ -53,6 +61,7 @@ class TestModeling(unittest.TestCase):
         lp.fromfile(os.path.join(os.path.dirname(__file__),"boeing2.mps"))
         lp.solve()
         self.assertTrue(lp.status == 'optimal')
-        
+
+
 if __name__ == '__main__':
     unittest.main()
