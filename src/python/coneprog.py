@@ -2983,6 +2983,8 @@ def lp(c, G, h, A = None, b = None, kktsolver = None, solver = None, primalstart
             dslack = None
 
         else:
+            status = 'unknown'
+
             s = None
             pcost, dcost = None, None
             gap, relgap = None, None
