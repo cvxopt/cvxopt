@@ -48,7 +48,7 @@ before_install:
 - if [[ "$BUILD_SUITESPARSE" == "1" ]]; then wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-4.5.4.tar.gz; tar -xf SuiteSparse-4.5.4.tar.gz; export CVXOPT_SUITESPARSE_SRC_DIR=$(pwd)/SuiteSparse; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install python-dev libopenblas-dev libfftw3-dev libglpk-dev libdsdp-dev libgsl0-dev; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" && -z "$BUILD_SUITESPARSE" ]]; then sudo add-apt-repository ppa:bzindovic/suitesparse-bugfix-1319687 -y; sudo apt-get update; sudo apt-get install libsuitesparse-dev; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; brew install openblas glpk gsl fftw; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; brew cask uninstall oclint; brew install openblas glpk gsl fftw; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" && -z "$BUILD_SUITESPARSE" ]]; then brew install suite-sparse; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" && "$PYVERSION" == "2.7" ]]; then virtualenv venv -p python; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" && "$PYVERSION" == "3.6" ]]; then brew install python3; virtualenv venv -p python3; fi
