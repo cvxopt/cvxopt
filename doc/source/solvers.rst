@@ -673,9 +673,9 @@ Problems with Linear Objectives
             G[17, [12, 17]] = 1.0, -gamma                       #  w1 - gamma * h1 <= 0
             G[18, [13, 18]] = -1.0, 1.0/gamma                   # -w2 + h2/gamma <= 0 
             G[19, [13, 18]] = 1.0, -gamma                       #  w2 - gamma * h2 <= 0
-            G[20, [14, 18]] = -1.0, 1.0/gamma                   # -w3 + h3/gamma <= 0  
+            G[20, [14, 19]] = -1.0, 1.0/gamma                   # -w3 + h3/gamma <= 0  
             G[21, [14, 19]] = 1.0, -gamma                       #  w3 - gamma * h3 <= 0
-            G[22, [15, 19]] = -1.0, 1.0/gamma                   # -w4  + h4/gamma <= 0 
+            G[22, [15, 20]] = -1.0, 1.0/gamma                   # -w4  + h4/gamma <= 0 
             G[23, [15, 20]] = 1.0, -gamma                       #  w4 - gamma * h4 <= 0
             G[24, [16, 21]] = -1.0, 1.0/gamma                   # -w5 + h5/gamma <= 0 
             G[25, [16, 21]] = 1.0, -gamma                       #  w5 - gamma * h5 <= 0.0
