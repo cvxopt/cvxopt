@@ -2,7 +2,7 @@
 Solver for linear and quadratic cone programs. 
 """
 
-# Copyright 2012-2016 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2018 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
@@ -2983,6 +2983,8 @@ def lp(c, G, h, A = None, b = None, kktsolver = None, solver = None, primalstart
             dslack = None
 
         else:
+            status = 'unknown'
+
             s = None
             pcost, dcost = None, None
             gap, relgap = None, None

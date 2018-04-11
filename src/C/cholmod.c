@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2016 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -26,7 +26,13 @@
 #include "cholmod.h"
 #include "complex.h"
 
-const int E_SIZE[] = { sizeof(int_t), sizeof(double), sizeof(double complex) };
+#ifndef _MSC_VER
+typedef double complex complex_t;
+#else
+typedef _Dcomplex complex_t;
+#endif
+
+const int E_SIZE[] = {sizeof(int_t), sizeof(double), sizeof(complex_t)};
 
 /* defined in pyconfig.h */
 #if (SIZEOF_INT < SIZEOF_SIZE_T)
@@ -162,7 +168,7 @@ static cholmod_sparse *pack(spmatrix *A, char uplo)
                 if (SP_ID(A) == DOUBLE)
                     ((double *)B->x)[cnt] = SP_VALD(A)[k];
                 else
-                    ((double complex *)B->x)[cnt] = SP_VALZ(A)[k];
+                    ((complex_t *)B->x)[cnt] = SP_VALZ(A)[k];
                 ((int_t *)B->p)[j+1]++;
                 ((int_t *)B->i)[cnt++] = SP_ROW(A)[k];
 	    }
@@ -183,7 +189,7 @@ static cholmod_sparse *pack(spmatrix *A, char uplo)
                 if (SP_ID(A) == DOUBLE)
                     ((double *)B->x)[cnt] = SP_VALD(A)[k];
                 else
-                    ((double complex *)B->x)[cnt] = SP_VALZ(A)[k];
+                    ((complex_t *)B->x)[cnt] = SP_VALZ(A)[k];
             ((int_t *)B->p)[j+1]++;
             ((int_t *)B->i)[cnt++] = SP_ROW(A)[k];
         }
@@ -952,7 +958,7 @@ static char doc_diag[] =
     "          cholmod.numeric computed with options['supernodal'] = 2";
 
 extern void dcopy_(int *n, double *x, int *incx, double *y, int *incy);
-extern void zcopy_(int *n, double complex *x, int *incx, double complex *y, int *incy);
+extern void zcopy_(int *n, complex_t *x, int *incx, complex_t *y, int *incy);
 
 static PyObject* diag(PyObject *self, PyObject *args)
 {
@@ -1005,7 +1011,7 @@ static PyObject* diag(PyObject *self, PyObject *args)
 	    dcopy_(&ncols, ((double *) L->x) + ((int_t *) L->px)[k],
                 &incy, MAT_BUFD(d)+strt, &incx);
         else
-	    zcopy_(&ncols, ((double complex *) L->x) + ((int_t *) L->px)[k],
+	    zcopy_(&ncols, ((complex_t *) L->x) + ((int_t *) L->px)[k],
                 &incy, MAT_BUFZ(d)+strt, &incx);
         strt += ncols;
     }

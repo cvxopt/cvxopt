@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2016 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -31,7 +31,11 @@
 #define UMFZ(name) umfpack_zi_ ## name
 #endif
 
+#ifndef _MSC_VER
 const int E_SIZE[] = {sizeof(int_t), sizeof(double), sizeof(double complex)};
+#else
+const int E_SIZE[] = {sizeof(int_t), sizeof(double), sizeof(_Dcomplex)};
+#endif
 
 static char umfpack_error[20];
 

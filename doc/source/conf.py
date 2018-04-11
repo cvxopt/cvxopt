@@ -40,7 +40,7 @@ master_doc = 'index'
 
 # General substitutions.
 project = "CVXOPT User's Guide"
-copyright = '2004-2016, M.S. Andersen, J. Dahl, L. Vandenberghe'
+copyright = '2004-2018, M.S. Andersen, J. Dahl, L. Vandenberghe'
 
 # The default replacements for |version| and |release|, also used in various
 # other places throughout the built documents.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2016 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -66,14 +66,26 @@ static PyObject * matrix_iter(matrix *) ;
 
 
 void dscal_(int *, double *, double *, int *) ;
+#ifndef _MSC_VER
 void zscal_(int *, double complex *, double complex *, int *) ;
+#else
+void zscal_(int *, _Dcomplex *, _Dcomplex *, int *) ;
+#endif
 void daxpy_(int *, double *, double *, int *, double *, int *) ;
+#ifndef _MSC_VER
 void zaxpy_(int *, double complex *, double complex *, int *, double complex *, int *) ;
+#else
+void zaxpy_(int *, _Dcomplex *, _Dcomplex *, int *, _Dcomplex *, int *) ;
+#endif
 void dgemm_(char *, char *, int *, int *, int *, double *, double *,
     int *, double *, int *, double *, double *, int *) ;
+#ifndef _MSC_VER
 void zgemm_(char *, char *, int *, int *, int *, double complex *, double complex *,
     int *, double complex *, int *, double complex *, double complex *, int *) ;
-
+#else
+void zgemm_(char *, char *, int *, int *, int *, _Dcomplex *, _Dcomplex *,
+    int *, _Dcomplex *, int *, _Dcomplex *, _Dcomplex *, int *) ;
+#endif
 
 
 static const char err_mtx_list2matrix[][35] =
@@ -261,16 +273,31 @@ matrix *Matrix_NewFromPyBuffer(PyObject *obj, int id, int *ndim)
      case COMPLEX:
        switch (src_id) {
        case INT:
+#ifndef _MSC_VER
 	 if (int_to_int_t)
 	   n.z = *(int *)((unsigned char*)view->buf + i*view->strides[0]+j*view->strides[1]);
 	 else
 	   n.z = *(int_t *)((unsigned char*)view->buf + i*view->strides[0]+j*view->strides[1]);
+#else
+	 if (int_to_int_t)
+	   n.z = _Cbuild((double) *(int *)((unsigned char*)view->buf + i*view->strides[0]+j*view->strides[1]),0.0);
+	 else
+	   n.z = _Cbuild((double) *(int_t *)((unsigned char*)view->buf + i*view->strides[0]+j*view->strides[1]),0.0);
+#endif
     	 break;
        case DOUBLE:
+#ifndef _MSC_VER
 	 n.z = *(double *)((unsigned char*)view->buf+i*view->strides[0]+j*view->strides[1]);
+#else
+	 n.z = _Cbuild(*(double *)((unsigned char*)view->buf+i*view->strides[0]+j*view->strides[1]),0.0);
+#endif
 	 break;
        case COMPLEX:
+#ifndef _MSC_VER
 	 n.z = *(double complex *)((unsigned char*)view->buf+i*view->strides[0]+j*view->strides[1]);
+#else
+	 n.z = *(_Dcomplex *)((unsigned char*)view->buf+i*view->strides[0]+j*view->strides[1]);
+#endif
 	 break;
        }
        MAT_BUFZ(a)[cnt] = n.z;
@@ -1474,7 +1501,11 @@ matrix_add_generic(PyObject *self, PyObject *other, int inplace)
           for (i=0; i<lgt; i++) MAT_BUFD(ret)[i] += n.d;
           break;
         case COMPLEX: 
+#ifndef _MSC_VER
           for (i=0; i<lgt; i++) MAT_BUFZ(ret)[i] += n.z;
+#else
+          for (i=0; i<lgt; i++) MAT_BUFZ(ret)[i] = _Cbuild(creal(n.z)+creal(MAT_BUFZ(ret)[i]), cimag(n.z)+cimag(MAT_BUFZ(ret)[i]));
+#endif
           break;
       }
       return (PyObject *)ret;
@@ -1485,7 +1516,11 @@ matrix_add_generic(PyObject *self, PyObject *other, int inplace)
       switch (id) {
         case INT:     MAT_BUFI(self)[0] += n.i; break;
         case DOUBLE:  MAT_BUFD(self)[0] += n.d; break;
+#ifndef _MSC_VER
         case COMPLEX: MAT_BUFZ(self)[0] += n.z; break;
+#else
+        case COMPLEX: MAT_BUFZ(self)[0] = _Cbuild(creal(n.z)+creal(MAT_BUFZ(self)[0]), cimag(n.z)+cimag(MAT_BUFZ(self)[0])); break;
+#endif
       }
       Py_INCREF(self);
       return self;
@@ -1511,7 +1546,11 @@ matrix_add_generic(PyObject *self, PyObject *other, int inplace)
           for (i=0; i<lgt; i++) MAT_BUFD(ret)[i] += n.d;
           break;
         case COMPLEX: 
+#ifndef _MSC_VER
           for (i=0; i<lgt; i++) MAT_BUFZ(ret)[i] += n.z;
+#else
+          for (i=0; i<lgt; i++) MAT_BUFZ(ret)[i] = _Cbuild(creal(n.z)+creal(MAT_BUFZ(ret)[i]),cimag(n.z)+cimag(MAT_BUFZ(ret)[i]));
+#endif
           break;
       }
 
@@ -1527,7 +1566,11 @@ matrix_add_generic(PyObject *self, PyObject *other, int inplace)
           for (i=0; i<lgt; i++) MAT_BUFD(self)[i] += n.d;
           break;
         case COMPLEX: 
+#ifndef _MSC_VER
           for (i=0; i<lgt; i++) MAT_BUFZ(self)[i] += n.z;
+#else
+          for (i=0; i<lgt; i++) MAT_BUFZ(self)[i] = _Cbuild(creal(n.z)+creal(MAT_BUFZ(self)[i]),cimag(n.z)+cimag(MAT_BUFZ(self)[i]));
+#endif
           break;
       }
 
@@ -1612,7 +1655,11 @@ matrix_sub_generic(PyObject *self, PyObject *other, int inplace)
           for (i=0; i<lgt; i++) MAT_BUFD(ret)[i] = n.d - MAT_BUFD(ret)[i];
           break;
         case COMPLEX: 
+#ifndef _MSC_VER
           for (i=0; i<lgt; i++) MAT_BUFZ(ret)[i] = n.z - MAT_BUFZ(ret)[i];
+#else
+          for (i=0; i<lgt; i++) MAT_BUFZ(ret)[i] = _Cbuild(creal(n.z)-creal(MAT_BUFZ(ret)[i]),cimag(n.z)-cimag(MAT_BUFZ(ret)[i]));
+#endif
           break;
       }
       return (PyObject *)ret;
@@ -1623,7 +1670,11 @@ matrix_sub_generic(PyObject *self, PyObject *other, int inplace)
       switch (id) {
         case INT:     MAT_BUFI(self)[0] -= n.i; break;
         case DOUBLE:  MAT_BUFD(self)[0] -= n.d; break;
+#ifndef _MSC_VER
         case COMPLEX: MAT_BUFZ(self)[0] -= n.z; break;
+#else
+        case COMPLEX: MAT_BUFZ(self)[0] = _Cbuild(creal(MAT_BUFZ(self)[0])-creal(n.z),cimag(MAT_BUFZ(self)[0])-cimag(n.z)); break;
+#endif
       }
 
       Py_INCREF(self);
@@ -1649,7 +1700,11 @@ matrix_sub_generic(PyObject *self, PyObject *other, int inplace)
           for (i=0; i<lgt; i++) MAT_BUFD(ret)[i] -= n.d;
           break;
         case COMPLEX: 
+#ifndef _MSC_VER
           for (i=0; i<lgt; i++) MAT_BUFZ(ret)[i] -= n.z;
+#else
+          for (i=0; i<lgt; i++) MAT_BUFZ(ret)[i] = _Cbuild(creal(MAT_BUFZ(ret)[i])-creal(n.z),cimag(MAT_BUFZ(ret)[i])-cimag(n.z));
+#endif
           break;
       }
 
@@ -1665,7 +1720,11 @@ matrix_sub_generic(PyObject *self, PyObject *other, int inplace)
           for (i=0; i<lgt; i++) MAT_BUFD(self)[i] -= n.d;
           break;
         case COMPLEX: 
+#ifndef _MSC_VER
           for (i=0; i<lgt; i++) MAT_BUFZ(self)[i] -= n.z;
+#else
+          for (i=0; i<lgt; i++) MAT_BUFZ(self)[i] = _Cbuild(creal(MAT_BUFZ(self)[i])-creal(n.z),cimag(MAT_BUFZ(self)[i])-cimag(n.z));
+#endif
           break;
       }
 
@@ -1972,7 +2031,11 @@ static PyObject * matrix_pow(PyObject *self, PyObject *other)
 
       MAT_BUFD(Y)[i] = pow(MAT_BUFD(Y)[i], val.d);
     } else {
+#ifndef _MSC_VER
       if (MAT_BUFZ(Y)[i] == 0.0 && (cimag(val.z) != 0.0 || creal(val.z)<0.0)) {
+#else
+      if ((creal(MAT_BUFZ(Y)[i]) == 0.0 && cimag(MAT_BUFZ(Y)[i]) == 0.0) && (cimag(val.z) != 0.0 || creal(val.z)<0.0)) {
+#endif
         Py_DECREF(Y);
         PY_ERR(PyExc_ValueError, "domain error");
       }
@@ -1989,7 +2052,11 @@ static int matrix_nonzero(matrix *self)
   for (i=0; i<MAT_LGT(self); i++) {
     if ((MAT_ID(self) == INT) && (MAT_BUFI(self)[i] != 0)) res = 1;
     else if ((MAT_ID(self) == DOUBLE) && (MAT_BUFD(self)[i] != 0)) res = 1;
+#ifndef _MSC_VER
     else if ((MAT_ID(self) == COMPLEX) && (MAT_BUFZ(self)[i] != 0)) res = 1;
+#else
+    else if ((MAT_ID(self) == COMPLEX) && (creal(MAT_BUFZ(self)[i]) != 0 || cimag(MAT_BUFZ(self)[i]) != 0)) res = 1;
+#endif
   }
 
   return res;
@@ -2170,7 +2237,11 @@ PyObject * matrix_log(matrix *self, PyObject *args, PyObject *kwrds)
     number n;
     convert_num[COMPLEX](&n, A, 1, 0);
 
+#ifndef _MSC_VER
     if (n.z == 0) PY_ERR(PyExc_ValueError, "domain error");
+#else
+    if (creal(n.z) == 0 && cimag(n.z) == 0) PY_ERR(PyExc_ValueError, "domain error");
+#endif
 
     n.z = clog(n.z);
     return num2PyObject[COMPLEX](&n, 0);
@@ -2209,7 +2280,11 @@ PyObject * matrix_log(matrix *self, PyObject *args, PyObject *kwrds)
 
     int i;
     for (i=0; i<MAT_LGT(A); i++) {
+#ifndef _MSC_VER
       if (MAT_BUFZ(A)[i] == 0) {
+#else
+	if (creal(MAT_BUFZ(A)[i]) == 0 && cimag(MAT_BUFZ(A)[i]) == 0) {
+#endif
         Py_DECREF(ret);
         PY_ERR(PyExc_ValueError, "domain error");
       }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2016 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -32,7 +32,11 @@
 typedef union {
   double d;
   int_t i;
+#ifndef _MSC_VER
   double complex z;
+#else
+  _Dcomplex z;
+#endif
 } number;
 #endif
 
