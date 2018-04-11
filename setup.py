@@ -102,8 +102,11 @@ DSDP_INC_DIR = os.environ.get("CVXOPT_DSDP_INC_DIR",DSDP_INC_DIR)
 SUITESPARSE_LIB_DIR = os.environ.get("CVXOPT_SUITESPARSE_LIB_DIR",SUITESPARSE_LIB_DIR)
 SUITESPARSE_INC_DIR = os.environ.get("CVXOPT_SUITESPARSE_INC_DIR",SUITESPARSE_INC_DIR)
 SUITESPARSE_SRC_DIR = os.environ.get("CVXOPT_SUITESPARSE_SRC_DIR",SUITESPARSE_SRC_DIR)
+MSVC = int(os.environ.get("CVXOPT_MSVC",0)) == True
 
 RT_LIB = ["rt"] if sys.platform.startswith("linux") else []
+M_LIB = ["m"] if not MSVC else []
+UMFPACK_EXTRA_COMPILE_ARGS = ["-Wno-unknown-pragmas"] if not MSVC else []
 
 extmods = []
 
@@ -114,7 +117,7 @@ if BLAS_NOUNDERSCORES: MACROS.append(('BLAS_NO_UNDERSCORE',''))
 # optional modules
 
 if BUILD_GSL:
-    gsl = Extension('gsl', libraries = ['m', 'gsl'] + BLAS_LIB,
+    gsl = Extension('gsl', libraries = M_LIB + ['gsl'] + BLAS_LIB,
         include_dirs = [ GSL_INC_DIR ],
         library_dirs = [ GSL_LIB_DIR, BLAS_LIB_DIR ],
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
@@ -146,7 +149,7 @@ if BUILD_DSDP:
 
 # Required modules
 
-base = Extension('base', libraries = ['m'] + LAPACK_LIB + BLAS_LIB,
+base = Extension('base', libraries = M_LIB + LAPACK_LIB + BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
@@ -180,7 +183,7 @@ else:
         library_dirs = [ BLAS_LIB_DIR ],
         define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
         libraries = LAPACK_LIB + BLAS_LIB,
-        extra_compile_args = ['-Wno-unknown-pragmas'],
+        extra_compile_args = UMFPACK_EXTRA_COMPILE_ARGS,
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = [ 'src/C/umfpack.c',
             SUITESPARSE_SRC_DIR + '/UMFPACK/Source/umfpack_tictoc.c',

@@ -23,9 +23,15 @@
 #include "misc.h"
 #include <fftw3.h>
 
+#ifndef _MSC_VER
+typedef complex double complex_t;
+#else
+typedef _Dcomplex complex_t;
+#endif
+
 PyDoc_STRVAR(fftw__doc__, "Interface to the FFTW3 library.\n");
 
-extern void zscal_(int *n, double complex *alpha, double complex *x, int *incx);
+extern void zscal_(int *n, complex_t *alpha, complex_t *x, int *incx);
 extern void dscal_(int *n, double *alpha, double *x, int *incx);
 
 static char doc_dft[] =

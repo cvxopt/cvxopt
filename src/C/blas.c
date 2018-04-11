@@ -23,6 +23,12 @@
 #include "cvxopt.h"
 #include "misc.h"
 
+#ifndef _MSC_VER
+typedef complex double complex_t;
+#else
+typedef _Dcomplex complex_t;
+#endif
+
 #define USE_CBLAS_ZDOT 0
 
 PyDoc_STRVAR(blas__doc__,"Interface to the double-precision real and "
@@ -40,18 +46,18 @@ PyDoc_STRVAR(blas__doc__,"Interface to the double-precision real and "
 
 /* BLAS 1 prototypes */
 extern void dswap_(int *n, double *x, int *incx, double *y, int *incy);
-extern void zswap_(int *n, double complex *x, int *incx, double complex *y,
+extern void zswap_(int *n, complex_t *x, int *incx, complex_t *y,
     int *incy);
 extern void dscal_(int *n, double *alpha, double *x, int *incx);
-extern void zscal_(int *n, double complex *alpha, double complex *x, int *incx);
-extern void zdscal_(int *n, double *alpha, double complex *x, int *incx);
+extern void zscal_(int *n, complex_t *alpha, complex_t *x, int *incx);
+extern void zdscal_(int *n, double *alpha, complex_t *x, int *incx);
 extern void dcopy_(int *n, double *x, int *incx, double *y, int *incy);
-extern void zcopy_(int *n, double complex *x, int *incx, double complex *y,
+extern void zcopy_(int *n, complex_t *x, int *incx, complex_t *y,
     int *incy);
 extern void daxpy_(int *n, double *alpha, double *x, int *incx,
     double *y, int *incy);
-extern void zaxpy_(int *n, double complex *alpha, double complex *x, int *incx,
-    double complex *y, int *incy);
+extern void zaxpy_(int *n, complex_t *alpha, complex_t *x, int *incx,
+    complex_t *y, int *incy);
 extern double ddot_(int *n, double *x, int *incx, double *y, int *incy);
 #if USE_CBLAS_ZDOT
 extern void cblas_zdotc_sub(int n, void *x, int incx, void *y,
@@ -60,66 +66,66 @@ extern void cblas_zdotu_sub(int n, void *x, int incx, void *y, int incy,
     void *result);
 #endif
 extern double dnrm2_(int *n, double *x, int *incx);
-extern double dznrm2_(int *n, double complex *x, int *incx);
+extern double dznrm2_(int *n, complex_t *x, int *incx);
 extern double dasum_(int *n, double *x, int *incx);
-extern double dzasum_(int *n, double complex *x, int *incx);
+extern double dzasum_(int *n, complex_t *x, int *incx);
 extern int idamax_(int *n, double *x, int *incx);
-extern int izamax_(int *n, double complex *x, int *incx);
+extern int izamax_(int *n, complex_t *x, int *incx);
 
 
 /* BLAS 2 prototypes */
 extern void dgemv_(char* trans, int *m, int *n, double *alpha,
     double *A, int *lda, double *x, int *incx, double *beta, double *y,
     int *incy);
-extern void zgemv_(char* trans, int *m, int *n, double complex *alpha,
-    double complex *A, int *lda, double complex *x, int *incx, double complex *beta,
-    double complex *y, int *incy);
+extern void zgemv_(char* trans, int *m, int *n, complex_t *alpha,
+    complex_t *A, int *lda, complex_t *x, int *incx, complex_t *beta,
+    complex_t *y, int *incy);
 extern void dgbmv_(char* trans, int *m, int *n, int *kl, int *ku,
     double *alpha, double *A, int *lda, double *x, int *incx,
     double *beta, double *y,  int *incy);
 extern void zgbmv_(char* trans, int *m, int *n, int *kl, int *ku,
-    double complex *alpha, double complex *A, int *lda, double complex *x, int *incx,
-    double complex *beta, double complex *y,  int *incy);
+    complex_t *alpha, complex_t *A, int *lda, complex_t *x, int *incx,
+    complex_t *beta, complex_t *y,  int *incy);
 extern void dsymv_(char *uplo, int *n, double *alpha, double *A,
     int *lda, double *x, int *incx, double *beta, double *y, int *incy);
-extern void zhemv_(char *uplo, int *n, double complex *alpha, double complex *A,
-    int *lda, double complex *x, int *incx, double complex *beta, double complex *y,
+extern void zhemv_(char *uplo, int *n, complex_t *alpha, complex_t *A,
+    int *lda, complex_t *x, int *incx, complex_t *beta, complex_t *y,
     int *incy);
 extern void dsbmv_(char *uplo, int *n, int *k, double *alpha, double *A,
     int *lda, double *x, int *incx, double *beta, double *y, int *incy);
-extern void zhbmv_(char *uplo, int *n, int *k, double complex *alpha,
-    double complex *A, int *lda, double complex *x, int *incx, double complex *beta,
-    double complex *y, int *incy);
+extern void zhbmv_(char *uplo, int *n, int *k, complex_t *alpha,
+    complex_t *A, int *lda, complex_t *x, int *incx, complex_t *beta,
+    complex_t *y, int *incy);
 extern void dtrmv_(char *uplo, char *trans, char *diag, int *n,
     double *A, int *lda, double *x, int *incx);
 extern void ztrmv_(char *uplo, char *trans, char *diag, int *n,
-    double complex *A, int *lda, double complex *x, int *incx);
+    complex_t *A, int *lda, complex_t *x, int *incx);
 extern void dtbmv_(char *uplo, char *trans, char *diag, int *n, int *k,
     double *A, int *lda, double *x, int *incx);
 extern void ztbmv_(char *uplo, char *trans, char *diag, int *n, int *k,
-    double complex *A, int *lda, double complex *x, int *incx);
+    complex_t *A, int *lda, complex_t *x, int *incx);
 extern void dtrsv_(char *uplo, char *trans, char *diag, int *n,
     double *A, int *lda, double *x, int *incx);
 extern void ztrsv_(char *uplo, char *trans, char *diag, int *n,
-    double complex *A, int *lda, double complex *x, int *incx);
+    complex_t *A, int *lda, complex_t *x, int *incx);
 extern void dtbsv_(char *uplo, char *trans, char *diag, int *n, int *k,
     double *A, int *lda, double *x, int *incx);
 extern void ztbsv_(char *uplo, char *trans, char *diag, int *n, int *k,
-    double complex *A, int *lda, double complex *x, int *incx);
+    complex_t *A, int *lda, complex_t *x, int *incx);
 extern void dger_(int *m, int *n, double *alpha, double *x, int *incx,
     double *y, int *incy, double *A, int *lda);
-extern void zgerc_(int *m, int *n, double complex *alpha, double complex *x,
-    int *incx, double complex *y, int *incy, double complex *A, int *lda);
-extern void zgeru_(int *m, int *n, double complex *alpha, double complex *x,
-    int *incx, double complex *y, int *incy, double complex *A, int *lda);
+extern void zgerc_(int *m, int *n, complex_t *alpha, complex_t *x,
+    int *incx, complex_t *y, int *incy, complex_t *A, int *lda);
+extern void zgeru_(int *m, int *n, complex_t *alpha, complex_t *x,
+    int *incx, complex_t *y, int *incy, complex_t *A, int *lda);
 extern void dsyr_(char *uplo, int *n, double *alpha, double *x,
     int *incx, double *A, int *lda);
-extern void zher_(char *uplo, int *n, double *alpha, double complex *x,
-    int *incx, double complex *A, int *lda);
+extern void zher_(char *uplo, int *n, double *alpha, complex_t *x,
+    int *incx, complex_t *A, int *lda);
 extern void dsyr2_(char *uplo, int *n, double *alpha, double *x,
     int *incx, double *y, int *incy, double *A, int *lda);
-extern void zher2_(char *uplo, int *n, double complex *alpha, double complex *x,
-    int *incx, double complex *y, int *incy, double complex *A, int *lda);
+extern void zher2_(char *uplo, int *n, complex_t *alpha, complex_t *x,
+    int *incx, complex_t *y, int *incy, complex_t *A, int *lda);
 
 
 /* BLAS 3 prototypes */
@@ -127,46 +133,46 @@ extern void dgemm_(char *transa, char *transb, int *m, int *n, int *k,
     double *alpha, double *A, int *lda, double *B, int *ldb,
     double *beta, double *C, int *ldc);
 extern void zgemm_(char *transa, char *transb, int *m, int *n, int *k,
-    double complex *alpha, double complex *A, int *lda, double complex *B, int *ldb,
-    double complex *beta, double complex *C, int *ldc);
+    complex_t *alpha, complex_t *A, int *lda, complex_t *B, int *ldb,
+    complex_t *beta, complex_t *C, int *ldc);
 extern void dsymm_(char *side, char *uplo, int *m, int *n,
     double *alpha, double *A, int *lda, double *B, int *ldb,
     double *beta, double *C, int *ldc);
 extern void zsymm_(char *side, char *uplo, int *m, int *n,
-    double complex *alpha, double complex *A, int *lda, double complex *B, int *ldb,
-    double complex *beta, double complex *C, int *ldc);
+    complex_t *alpha, complex_t *A, int *lda, complex_t *B, int *ldb,
+    complex_t *beta, complex_t *C, int *ldc);
 extern void zhemm_(char *side, char *uplo, int *m, int *n,
-    double complex *alpha, double complex *A, int *lda, double complex *B, int *ldb,
-    double complex *beta, double complex *C, int *ldc);
+    complex_t *alpha, complex_t *A, int *lda, complex_t *B, int *ldb,
+    complex_t *beta, complex_t *C, int *ldc);
 extern void dsyrk_(char *uplo, char *trans, int *n, int *k,
     double *alpha, double *A, int *lda, double *beta, double *B,
     int *ldb);
 extern void zsyrk_(char *uplo, char *trans, int *n, int *k,
-    double complex *alpha, double complex *A, int *lda, double complex *beta, double complex *B,
+    complex_t *alpha, complex_t *A, int *lda, complex_t *beta, complex_t *B,
     int *ldb);
 extern void zherk_(char *uplo, char *trans, int *n, int *k,
-    double *alpha, double complex *A, int *lda, double *beta, double complex *B,
+    double *alpha, complex_t *A, int *lda, double *beta, complex_t *B,
     int *ldb);
 extern void dsyr2k_(char *uplo, char *trans, int *n, int *k,
     double *alpha, double *A, int *lda, double *B, int *ldb,
     double *beta, double *C, int *ldc);
 extern void zsyr2k_(char *uplo, char *trans, int *n, int *k,
-    double complex *alpha, double complex *A, int *lda, double complex *B, int *ldb,
-    double complex *beta, double complex *C, int *ldc);
+    complex_t *alpha, complex_t *A, int *lda, complex_t *B, int *ldb,
+    complex_t *beta, complex_t *C, int *ldc);
 extern void zher2k_(char *uplo, char *trans, int *n, int *k,
-    double complex *alpha, double complex *A, int *lda, double complex *B, int *ldb,
-    double *beta, double complex *C, int *ldc);
+    complex_t *alpha, complex_t *A, int *lda, complex_t *B, int *ldb,
+    double *beta, complex_t *C, int *ldc);
 extern void dtrmm_(char *side, char *uplo, char *transa, char *diag,
     int *m, int *n, double *alpha, double *A, int *lda, double *B,
     int *ldb);
 extern void ztrmm_(char *side, char *uplo, char *transa, char *diag,
-    int *m, int *n, double complex *alpha, double complex *A, int *lda, double complex *B,
+    int *m, int *n, complex_t *alpha, complex_t *A, int *lda, complex_t *B,
     int *ldb);
 extern void dtrsm_(char *side, char *uplo, char *transa, char *diag,
     int *m, int *n, double *alpha, double *A, int *lda, double *B,
     int *ldb);
 extern void ztrsm_(char *side, char *uplo, char *transa, char *diag,
-    int *m, int *n, double complex *alpha, double complex *A, int *lda, double complex *B,
+    int *m, int *n, complex_t *alpha, complex_t *A, int *lda, complex_t *B,
     int *ldb);
 
 
@@ -192,8 +198,12 @@ static int number_from_pyobject(PyObject *o, number *a, int id)
             if (!PyInt_Check(o) && !PyLong_Check(o) &&
                 !PyFloat_Check(o) && !PyComplex_Check(o)) return -1;
 #endif
+#ifndef _MSC_VER
             (*a).z = PyComplex_RealAsDouble(o) +
                 I*PyComplex_ImagAsDouble(o);
+#else
+            (*a).z = _Cbuild(PyComplex_RealAsDouble(o),PyComplex_ImagAsDouble(o));
+#endif
             return 0;
     }
     return -1;
@@ -450,7 +460,11 @@ static PyObject* axpy(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
             if (!ao) a.z=1.0;
+#else
+            if (!ao) a.z=_Cbuild(1.0,0.0);
+#endif
             Py_BEGIN_ALLOW_THREADS
             zaxpy_(&n, &a.z, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy, &iy);
             Py_END_ALLOW_THREADS
@@ -524,7 +538,11 @@ static PyObject* dot(PyObject *self, PyObject *args, PyObject *kwrds)
             return Py_BuildValue("d", val.d);
 
         case COMPLEX:
+#ifndef _MSC_VER
 	        if (n==0) val.z = 0.0;
+#else
+	        if (n==0) val.z = _Cbuild(0.0,0.0);
+#endif
 	        else
 #if USE_CBLAS_ZDOT
                 cblas_zdotc_sub(n, MAT_BUFZ(x)+ox, ix, MAT_BUFZ(y)+oy,
@@ -533,6 +551,7 @@ static PyObject* dot(PyObject *self, PyObject *args, PyObject *kwrds)
                 ix *= 2;
                 iy *= 2;
                 Py_BEGIN_ALLOW_THREADS
+#ifndef _MSC_VER
                 val.z = (ddot_(&n, MAT_BUFD(x)+2*ox, &ix,
                     MAT_BUFD(y)+2*oy, &iy) +
                     ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
@@ -541,6 +560,16 @@ static PyObject* dot(PyObject *self, PyObject *args, PyObject *kwrds)
                     MAT_BUFD(y)+2*oy + 1, &iy) -
                     ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
                     MAT_BUFD(y)+2*oy, &iy));
+#else
+                val.z = _Cbuild(ddot_(&n, MAT_BUFD(x)+2*ox, &ix,
+				      MAT_BUFD(y)+2*oy, &iy) +
+				ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
+				      MAT_BUFD(y)+2*oy + 1, &iy),
+				ddot_(&n, MAT_BUFD(x)+2*ox, &ix,
+				      MAT_BUFD(y)+2*oy + 1, &iy) -
+				ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
+				      MAT_BUFD(y)+2*oy, &iy));
+#endif
                 Py_END_ALLOW_THREADS
 #endif
 	    return PyComplex_FromDoubles(creal(val.z),cimag(val.z));
@@ -611,7 +640,11 @@ static PyObject* dotu(PyObject *self, PyObject *args, PyObject *kwrds)
             return Py_BuildValue("d", val.d);
 
         case COMPLEX:
+#ifndef _MSC_VER
 	        if (n==0) val.z = 0.0;
+#else
+	        if (n==0) val.z = _Cbuild(0.0,0.0);
+#endif
 	        else
 #if USE_CBLAS_ZDOT
                 Py_BEGIN_ALLOW_THREADS
@@ -622,6 +655,7 @@ static PyObject* dotu(PyObject *self, PyObject *args, PyObject *kwrds)
                 ix *= 2;
                 iy *= 2;
                 Py_BEGIN_ALLOW_THREADS
+#ifndef _MSC_VER
                 val.z = (ddot_(&n, MAT_BUFD(x)+2*ox, &ix,
                     MAT_BUFD(y)+2*oy, &iy) -
                     ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
@@ -630,6 +664,16 @@ static PyObject* dotu(PyObject *self, PyObject *args, PyObject *kwrds)
                     MAT_BUFD(y)+2*oy + 1, &iy) +
                     ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
                     MAT_BUFD(y)+2*oy, &iy));
+#else
+                val.z = _Cbuild(ddot_(&n, MAT_BUFD(x)+2*ox, &ix,
+				      MAT_BUFD(y)+2*oy, &iy) -
+				ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
+				      MAT_BUFD(y)+2*oy + 1, &iy),
+				ddot_(&n, MAT_BUFD(x)+2*ox, &ix,
+				      MAT_BUFD(y)+2*oy + 1, &iy) +
+				ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
+				      MAT_BUFD(y)+2*oy, &iy));
+#endif
                 Py_END_ALLOW_THREADS
 #endif
 	    return PyComplex_FromDoubles(creal(val.z),cimag(val.z));
@@ -909,8 +953,13 @@ static PyObject* gemv(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
             if (!ao) a.z=1.0;
             if (!bo) b.z=0.0;
+#else
+            if (!ao) a.z=_Cbuild(1.0,0.0);
+            if (!bo) b.z=_Cbuild(0.0,0.0);
+#endif
             if (trans == 'N' && n == 0)
                 Py_BEGIN_ALLOW_THREADS
                 zscal_(&m, &b.z, MAT_BUFZ(y)+oy, &iy);
@@ -1058,8 +1107,13 @@ static PyObject* gbmv(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
             if (!ao) a.z=1.0;
             if (!bo) b.z=0.0;
+#else
+            if (!ao) a.z=_Cbuild(1.0,0.0);
+            if (!bo) b.z=_Cbuild(0.0,0.0);
+#endif
             if (trans == 'N' && n == 0)
                 Py_BEGIN_ALLOW_THREADS
                 zscal_(&m, &b.z, MAT_BUFZ(y)+oy, &iy);
@@ -1289,8 +1343,13 @@ static PyObject* hemv(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
             if (!ao) a.z=1.0;
             if (!bo) b.z=0.0;
+#else
+	    if (!ao) a.z=_Cbuild(1.0,0.0);
+            if (!bo) b.z=_Cbuild(0.0,0.0);
+#endif
             Py_BEGIN_ALLOW_THREADS
             zhemv_(&uplo, &n, &a.z, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(x)+ox, &ix, &b.z, MAT_BUFZ(y)+oy, &iy);
@@ -1501,8 +1560,13 @@ static PyObject* hbmv(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
             if (!ao) a.z=1.0;
             if (!bo) b.z=0.0;
+#else
+            if (!ao) a.z=_Cbuild(1.0,0.0);
+            if (!bo) b.z=_Cbuild(0.0,0.0);
+#endif
             Py_BEGIN_ALLOW_THREADS
             zhbmv_(&uplo, &n, &k, &a.z, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(x)+ox, &ix, &b.z, MAT_BUFZ(y)+oy, &iy);
@@ -1984,7 +2048,11 @@ static PyObject* ger(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
             if (!ao) a.z = 1.0;
+#else
+            if (!ao) a.z = _Cbuild(1.0,0.0);
+#endif
             Py_BEGIN_ALLOW_THREADS
             zgerc_(&m, &n, &a.z, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy, &iy,
                 MAT_BUFZ(A)+oA, &ldA);
@@ -2071,7 +2139,11 @@ static PyObject* geru(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
             if (!ao) a.z = 1.0;
+#else
+            if (!ao) a.z = _Cbuild(1.0,0.0);
+#endif
             Py_BEGIN_ALLOW_THREADS
             zgeru_(&m, &n, &a.z, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy,
                 &iy, MAT_BUFZ(A)+oA, &ldA);
@@ -2457,7 +2529,11 @@ static PyObject* her2(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
             if (!ao) a.z = 1.0;
+#else
+            if (!ao) a.z = _Cbuild(1.0,0.0);
+#endif
             Py_BEGIN_ALLOW_THREADS
             zher2_(&uplo, &n, &a.z, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy,
                 &iy, MAT_BUFZ(A)+oA, &ldA);
@@ -2609,8 +2685,13 @@ static PyObject* gemm(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
             if (!ao) a.z = 1.0;
             if (!bo) b.z = 0.0;
+#else
+            if (!ao) a.z = _Cbuild(1.0,0.0);
+            if (!bo) b.z = _Cbuild(0.0,0.0);
+#endif
             Py_BEGIN_ALLOW_THREADS
             zgemm_(&transA, &transB, &m, &n, &k, &a.z,
                 MAT_BUFZ(A)+oA, &ldA, MAT_BUFZ(B)+oB, &ldB, &b.z,
@@ -2752,8 +2833,13 @@ static PyObject* symm(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
             if (!ao) a.z = 1.0;
             if (!bo) b.z = 0.0;
+#else
+            if (!ao) a.z = _Cbuild(1.0,0.0);
+            if (!bo) b.z = _Cbuild(0.0,0.0);
+#endif
             Py_BEGIN_ALLOW_THREADS
             zsymm_(&side, &uplo, &m, &n, &a.z, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(B)+oB, &ldB, &b.z, MAT_BUFZ(C)+oC, &ldC);
@@ -2894,8 +2980,13 @@ static PyObject* hemm(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
             if (!ao) a.z = 1.0;
             if (!bo) b.z = 0.0;
+#else
+            if (!ao) a.z = _Cbuild(1.0,0.0);
+            if (!bo) b.z = _Cbuild(0.0,0.0);
+#endif
             Py_BEGIN_ALLOW_THREADS
             zhemm_(&side, &uplo, &m, &n, &a.z, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(B)+oB, &ldB, &b.z, MAT_BUFZ(C)+oC, &ldC);
@@ -3014,8 +3105,13 @@ static PyObject* syrk(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
             if (!ao) a.z = 1.0;
             if (!bo) b.z = 0.0;
+#else
+            if (!ao) a.z = _Cbuild(1.0,0.0);
+            if (!bo) b.z = _Cbuild(0.0,0.0);
+#endif
             Py_BEGIN_ALLOW_THREADS
             zsyrk_(&uplo, &trans, &n, &k, &a.z, MAT_BUFZ(A)+oA, &ldA,
                 &b.z, MAT_BUFZ(C)+oC, &ldC);
@@ -3282,8 +3378,13 @@ static PyObject* syr2k(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
             if (!ao) a.z = 1.0;
             if (!bo) b.z = 0.0;
+#else
+            if (!ao) a.z = _Cbuild(1.0,0.0);
+            if (!bo) b.z = _Cbuild(0.0,0.0);
+#endif
             Py_BEGIN_ALLOW_THREADS
             zsyr2k_(&uplo, &trans, &n, &k, &a.z, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(B)+oB, &ldB, &b.z, MAT_BUFZ(C)+oC, &ldC);
@@ -3437,7 +3538,11 @@ static PyObject* her2k(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
 	    if (!ao) a.z = 1.0;
+#else
+	    if (!ao) a.z = _Cbuild(1.0,0.0);
+#endif
             Py_BEGIN_ALLOW_THREADS
             zher2k_(&uplo, &trans, &n, &k, &a.z, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(B)+oB, &ldB, &b.d, MAT_BUFZ(C)+oC, &ldC);
@@ -3571,7 +3676,11 @@ static PyObject* trmm(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
    	    if (!ao) a.z = 1.0;
+#else
+   	    if (!ao) a.z = _Cbuild(1.0,0.0);
+#endif
             Py_BEGIN_ALLOW_THREADS
             ztrmm_(&side, &uplo, &transA, &diag, &m, &n, &a.z,
                 MAT_BUFZ(A)+oA, &ldA, MAT_BUFZ(B)+oB, &ldB);
@@ -3708,7 +3817,11 @@ static PyObject* trsm(PyObject *self, PyObject *args, PyObject *kwrds)
             break;
 
         case COMPLEX:
+#ifndef _MSC_VER
   	    if (!ao) a.z = 1.0;
+#else
+  	    if (!ao) a.z = _Cbuild(1.0,0.0);
+#endif
             Py_BEGIN_ALLOW_THREADS
             ztrsm_(&side, &uplo, &transA, &diag, &m, &n, &a.z,
                 MAT_BUFZ(A)+oA, &ldA, MAT_BUFZ(B)+oB, &ldB);

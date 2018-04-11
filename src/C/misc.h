@@ -32,7 +32,11 @@
 typedef union {
   double d;
   int_t i;
+#ifndef _MSC_VER
   double complex z;
+#else
+  _Dcomplex z;
+#endif
 } number;
 #endif
 

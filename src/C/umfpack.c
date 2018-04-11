@@ -31,7 +31,11 @@
 #define UMFZ(name) umfpack_zi_ ## name
 #endif
 
+#ifndef _MSC_VER
 const int E_SIZE[] = {sizeof(int_t), sizeof(double), sizeof(double complex)};
+#else
+const int E_SIZE[] = {sizeof(int_t), sizeof(double), sizeof(_Dcomplex)};
+#endif
 
 static char umfpack_error[20];
 
