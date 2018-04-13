@@ -103,6 +103,8 @@ SUITESPARSE_LIB_DIR = os.environ.get("CVXOPT_SUITESPARSE_LIB_DIR",SUITESPARSE_LI
 SUITESPARSE_INC_DIR = os.environ.get("CVXOPT_SUITESPARSE_INC_DIR",SUITESPARSE_INC_DIR)
 SUITESPARSE_SRC_DIR = os.environ.get("CVXOPT_SUITESPARSE_SRC_DIR",SUITESPARSE_SRC_DIR)
 MSVC = int(os.environ.get("CVXOPT_MSVC",0)) == True
+INSTALL_REQUIRES = os.environ.get("CVXOPT_INSTALL_REQUIRES",[])
+if type(INSTALL_REQUIRES) is str: INSTALL_REQUIRES = INSTALL_REQUIRES.strip().split(';')
 
 RT_LIB = ["rt"] if sys.platform.startswith("linux") else []
 M_LIB = ["m"] if not MSVC else []
@@ -263,6 +265,7 @@ language.''',
     ext_modules = extmods,
     package_dir = {"cvxopt": "src/python"},
     packages = ["cvxopt"],
+    install_requires = INSTALL_REQUIRES,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Science/Research',
