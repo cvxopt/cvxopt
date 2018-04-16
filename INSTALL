@@ -1,6 +1,5 @@
-This document describes the standard CVXOPT installation procedure on
-Unix/Linux systems.  For other platforms, please consult the CVXOPT website
-<www.cvxopt.org>.
+This document describes the standard CVXOPT installation procedure. For more
+information, please consult the CVXOPT website <www.cvxopt.org>.
 
 
 Installing a pre-built package
@@ -41,9 +40,9 @@ Wheels for macOS:
 
 Wheels for Windows:
 
-* are available for Python 27 and 3.4 (64 bit only)
+* are available for Python 2.7, 3.4, 3.5, and 3.6 (64 bit only)
 * are linked against MKL
-* include only one optional extension (GLPK)
+* Python 3.5+ wheels include the optional extension GLPK (wheels for Python 2.7 and 3.4 include none of the optional extensions)
 
 
 Building and installing from source
