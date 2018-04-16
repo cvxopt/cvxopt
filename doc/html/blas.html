@@ -175,7 +175,7 @@
             
   <div class="section" id="the-blas-interface">
 <span id="c-blas"></span><h1>The BLAS Interface<a class="headerlink" href="#the-blas-interface" title="Permalink to this headline">¶</a></h1>
-<p>The <code class="xref py py-mod docutils literal"><span class="pre">cvxopt.blas</span></code> module provides an interface to the double-precision
+<p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">cvxopt.blas</span></code> module provides an interface to the double-precision
 real and complex Basic Linear Algebra Subprograms (BLAS).  The names and
 calling sequences of the Python functions in the interface closely match
 the corresponding Fortran BLAS routines (described in the references below)
@@ -183,8 +183,8 @@ and their functionality is exactly the same.  Many of the operations
 performed by the BLAS routines can be implemented in a more straightforward
 way by using the matrix arithmetic of the section <a class="reference internal" href="matrices.html#s-arithmetic"><span class="std std-ref">Arithmetic Operations</span></a>,
 combined with the slicing and indexing of the section <a class="reference internal" href="matrices.html#s-indexing"><span class="std std-ref">Indexing and Slicing</span></a>.
-As an example, <code class="docutils literal"><span class="pre">C</span> <span class="pre">=</span> <span class="pre">A</span> <span class="pre">*</span> <span class="pre">B</span></code> gives the same result as the BLAS call
-<code class="docutils literal"><span class="pre">gemm(A,</span> <span class="pre">B,</span> <span class="pre">C)</span></code>.  The BLAS interface offers two advantages.  First,
+As an example, <code class="docutils literal notranslate"><span class="pre">C</span> <span class="pre">=</span> <span class="pre">A</span> <span class="pre">*</span> <span class="pre">B</span></code> gives the same result as the BLAS call
+<code class="docutils literal notranslate"><span class="pre">gemm(A,</span> <span class="pre">B,</span> <span class="pre">C)</span></code>.  The BLAS interface offers two advantages.  First,
 some of the functions it includes are not easily implemented using the
 basic matrix arithmetic.  For example, BLAS includes functions that
 efficiently exploit symmetry or triangular matrix structure.  Second, there
@@ -214,24 +214,24 @@ ACM Transactions on Mathematical Software, 16(1), 1-17, 1990.</li>
 <span id="s-conventions"></span><h2>Matrix Classes<a class="headerlink" href="#matrix-classes" title="Permalink to this headline">¶</a></h2>
 <p>The BLAS exploit several types of matrix structure: symmetric, Hermitian,
 triangular, and banded.   We represent all these matrix classes by dense
-real or complex <a class="reference internal" href="matrices.html#cvxopt.matrix" title="cvxopt.matrix"><code class="xref py py-class docutils literal"><span class="pre">matrix</span></code></a> objects, with additional
+real or complex <a class="reference internal" href="matrices.html#cvxopt.matrix" title="cvxopt.matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a> objects, with additional
 arguments that specify the structure.</p>
 <dl class="docutils">
 <dt><strong>Vector</strong></dt>
-<dd>A real or complex <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>-vector is represented by a <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code>
-of type <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code> and length <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, with the
+<dd>A real or complex <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>-vector is represented by a <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code>
+of type <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code> and length <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, with the
 entries of the vector stored in column-major order.</dd>
 <dt><strong>General matrix</strong></dt>
 <dd>A general real or complex <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> by <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> matrix is represented
-by a real or complex <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> of size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>).</dd>
+by a real or complex <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> of size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>).</dd>
 <dt><strong>Symmetric matrix</strong></dt>
 <dd><p class="first">A real or complex symmetric matrix of order <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> is represented
-by a real or complex <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>),
-and a character argument <code class="docutils literal"><span class="pre">uplo</span></code>  with two possible values:
-<code class="xref py py-const docutils literal"><span class="pre">'L'</span></code> and <code class="xref py py-const docutils literal"><span class="pre">'U'</span></code>.  If <code class="docutils literal"><span class="pre">uplo</span></code>  is <code class="xref py py-const docutils literal"><span class="pre">'L'</span></code>, the lower
-triangular part of the symmetric matrix is stored; if <code class="docutils literal"><span class="pre">uplo</span></code> is
-<code class="xref py py-const docutils literal"><span class="pre">'U'</span></code>, the upper triangular part is stored.  A square
-<code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> <code class="docutils literal"><span class="pre">X</span></code> of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) can therefore be
+by a real or complex <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>),
+and a character argument <code class="docutils literal notranslate"><span class="pre">uplo</span></code>  with two possible values:
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'L'</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">'U'</span></code>.  If <code class="docutils literal notranslate"><span class="pre">uplo</span></code>  is <code class="xref py py-const docutils literal notranslate"><span class="pre">'L'</span></code>, the lower
+triangular part of the symmetric matrix is stored; if <code class="docutils literal notranslate"><span class="pre">uplo</span></code> is
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'U'</span></code>, the upper triangular part is stored.  A square
+<code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> <code class="docutils literal notranslate"><span class="pre">X</span></code> of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) can therefore be
 used to represent the symmetric matrices</p>
 <div class="last math">
 <p><img src="_images/math/f82c0db338331096c81e4bf05bcd8197be88cbb6.png" alt="\left[\begin{array}{ccccc}
@@ -252,9 +252,9 @@ used to represent the symmetric matrices</p>
 </div></dd>
 <dt><strong>Complex Hermitian matrix</strong></dt>
 <dd><p class="first">A complex Hermitian matrix of order <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> is represented by a
-<code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> of type <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code> and size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>),
-and a character argument <code class="docutils literal"><span class="pre">uplo</span></code>  with the same meaning as for
-symmetric matrices.  A complex <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> <code class="docutils literal"><span class="pre">X</span></code> of size
+<code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> of type <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code> and size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>),
+and a character argument <code class="docutils literal notranslate"><span class="pre">uplo</span></code>  with the same meaning as for
+symmetric matrices.  A complex <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> <code class="docutils literal notranslate"><span class="pre">X</span></code> of size
 (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) can represent the Hermitian  matrices</p>
 <div class="last math">
 <p><img src="_images/math/10ca09eecd8fb0551ddd4e9d62300702317be858.png" alt="\left[\begin{array}{ccccc}
@@ -279,12 +279,12 @@ symmetric matrices.  A complex <code class="xref py py-class docutils literal"><
 </div></dd>
 <dt><strong>Triangular matrix</strong></dt>
 <dd><p class="first">A real or complex triangular matrix of order <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> is represented
-by a real or complex <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>),
-and two character arguments: an argument <code class="docutils literal"><span class="pre">uplo</span></code>  with possible values
-<code class="xref py py-const docutils literal"><span class="pre">'L'</span></code> and <code class="xref py py-const docutils literal"><span class="pre">'U'</span></code> to distinguish between lower and upper
-triangular matrices, and an argument <code class="docutils literal"><span class="pre">diag</span></code>  with possible values
-<code class="xref py py-const docutils literal"><span class="pre">'U'</span></code> and <code class="xref py py-const docutils literal"><span class="pre">'N'</span></code> to distinguish between unit and non-unit
-triangular matrices.  A square <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> <code class="docutils literal"><span class="pre">X</span></code> of size
+by a real or complex <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>),
+and two character arguments: an argument <code class="docutils literal notranslate"><span class="pre">uplo</span></code>  with possible values
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'L'</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">'U'</span></code> to distinguish between lower and upper
+triangular matrices, and an argument <code class="docutils literal notranslate"><span class="pre">diag</span></code>  with possible values
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'U'</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">'N'</span></code> to distinguish between unit and non-unit
+triangular matrices.  A square <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> <code class="docutils literal notranslate"><span class="pre">X</span></code> of size
 (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) can represent the triangular matrices</p>
 <div class="last math">
 <p><img src="_images/math/a01585ca765cd48aa82f8081a1221eabb29f6c2f.png" alt="\left[\begin{array}{ccccc}
@@ -322,12 +322,12 @@ triangular matrices.  A square <code class="xref py py-class docutils literal"><
 <dt><strong>General band matrix</strong></dt>
 <dd><p class="first">A general real or complex <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> by <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> band matrix  with
 <img class="math" src="_images/math/a924a05649234675f5026f61497b6778f0b26ecd.png" alt="k_l"/> subdiagonals and <img class="math" src="_images/math/77c2c8403e0b49b9da8f08964af53751ab5657ec.png" alt="k_u"/> superdiagonals is represented
-by a real or complex <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> <code class="docutils literal"><span class="pre">X</span></code> of size
+by a real or complex <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> <code class="docutils literal notranslate"><span class="pre">X</span></code> of size
 (<img class="math" src="_images/math/4c3ae20c1973f742b74cfa74972fbc1393cf58b2.png" alt="k_l + k_u + 1"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>), and the two integers <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> and
 <img class="math" src="_images/math/a924a05649234675f5026f61497b6778f0b26ecd.png" alt="k_l"/>.   The diagonals of the band matrix are stored in the rows
-of <code class="docutils literal"><span class="pre">X</span></code>, starting at the top diagonal, and shifted horizontally so that
+of <code class="docutils literal notranslate"><span class="pre">X</span></code>, starting at the top diagonal, and shifted horizontally so that
 the entries of column <img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/> of the band matrix are stored in column
-<img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/> of <code class="docutils literal"><span class="pre">X</span></code>.  A <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> <code class="docutils literal"><span class="pre">X</span></code> of size
+<img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/> of <code class="docutils literal notranslate"><span class="pre">X</span></code>.  A <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> <code class="docutils literal notranslate"><span class="pre">X</span></code> of size
 (<img class="math" src="_images/math/4c3ae20c1973f742b74cfa74972fbc1393cf58b2.png" alt="k_l + k_u + 1"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) therefore represents the <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>
 by <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> band matrix</p>
 <div class="last math">
@@ -350,15 +350,15 @@ by <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.
 </div></dd>
 <dt><strong>Symmetric band matrix</strong></dt>
 <dd><p class="first">A real or complex symmetric band matrix of order <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> with
-<img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/> subdiagonals, is represented by a real or complex matrix <code class="docutils literal"><span class="pre">X</span></code>
-of size (<img class="math" src="_images/math/f8dcb9a4a77e36cd21ed14f3d85f52fabc7b124f.png" alt="k+1"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>), and an argument <code class="docutils literal"><span class="pre">uplo</span></code> to indicate
-whether the subdiagonals (<code class="docutils literal"><span class="pre">uplo</span></code> is <code class="xref py py-const docutils literal"><span class="pre">'L'</span></code>) or superdiagonals
-(<code class="docutils literal"><span class="pre">uplo</span></code> is <code class="xref py py-const docutils literal"><span class="pre">'U'</span></code>) are stored.  The <img class="math" src="_images/math/f8dcb9a4a77e36cd21ed14f3d85f52fabc7b124f.png" alt="k+1"/> diagonals are
-stored as rows of <code class="docutils literal"><span class="pre">X</span></code>, starting at the top diagonal (i.e., the main
-diagonal if <code class="docutils literal"><span class="pre">uplo</span></code> is <code class="xref py py-const docutils literal"><span class="pre">'L'</span></code>,  or the <img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/>-th superdiagonal
-if <code class="docutils literal"><span class="pre">uplo</span></code> is <code class="xref py py-const docutils literal"><span class="pre">'U'</span></code>) and shifted horizontally so that the
+<img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/> subdiagonals, is represented by a real or complex matrix <code class="docutils literal notranslate"><span class="pre">X</span></code>
+of size (<img class="math" src="_images/math/f8dcb9a4a77e36cd21ed14f3d85f52fabc7b124f.png" alt="k+1"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>), and an argument <code class="docutils literal notranslate"><span class="pre">uplo</span></code> to indicate
+whether the subdiagonals (<code class="docutils literal notranslate"><span class="pre">uplo</span></code> is <code class="xref py py-const docutils literal notranslate"><span class="pre">'L'</span></code>) or superdiagonals
+(<code class="docutils literal notranslate"><span class="pre">uplo</span></code> is <code class="xref py py-const docutils literal notranslate"><span class="pre">'U'</span></code>) are stored.  The <img class="math" src="_images/math/f8dcb9a4a77e36cd21ed14f3d85f52fabc7b124f.png" alt="k+1"/> diagonals are
+stored as rows of <code class="docutils literal notranslate"><span class="pre">X</span></code>, starting at the top diagonal (i.e., the main
+diagonal if <code class="docutils literal notranslate"><span class="pre">uplo</span></code> is <code class="xref py py-const docutils literal notranslate"><span class="pre">'L'</span></code>,  or the <img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/>-th superdiagonal
+if <code class="docutils literal notranslate"><span class="pre">uplo</span></code> is <code class="xref py py-const docutils literal notranslate"><span class="pre">'U'</span></code>) and shifted horizontally so that the
 entries of the <img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/>-th column of the band matrix are stored in
-column <img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/> of <code class="docutils literal"><span class="pre">X</span></code>.  A <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> <code class="docutils literal"><span class="pre">X</span></code> of size
+column <img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/> of <code class="docutils literal notranslate"><span class="pre">X</span></code>.  A <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> <code class="docutils literal notranslate"><span class="pre">X</span></code> of size
 (<img class="math" src="_images/math/f8dcb9a4a77e36cd21ed14f3d85f52fabc7b124f.png" alt="k+1"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) can therefore represent the band matrices</p>
 <div class="last math">
 <p><img src="_images/math/5c61e18e05eace356713f7a5c0463feefe8d8abb.png" alt="\left[ \begin{array}{ccccccc}
@@ -392,8 +392,8 @@ column <img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30
 <dt><strong>Hermitian  band matrix</strong></dt>
 <dd><p class="first">A complex Hermitian band matrix of order <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> with <img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/>
 subdiagonals is represented by a complex matrix of size
-(<img class="math" src="_images/math/f8dcb9a4a77e36cd21ed14f3d85f52fabc7b124f.png" alt="k+1"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) and an argument <code class="docutils literal"><span class="pre">uplo</span></code>, with the same meaning
-as for symmetric band matrices.  A <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> <code class="docutils literal"><span class="pre">X</span></code> of size
+(<img class="math" src="_images/math/f8dcb9a4a77e36cd21ed14f3d85f52fabc7b124f.png" alt="k+1"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) and an argument <code class="docutils literal notranslate"><span class="pre">uplo</span></code>, with the same meaning
+as for symmetric band matrices.  A <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> <code class="docutils literal notranslate"><span class="pre">X</span></code> of size
 (<img class="math" src="_images/math/f8dcb9a4a77e36cd21ed14f3d85f52fabc7b124f.png" alt="k+1"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) can represent the band matrices</p>
 <div class="last math">
 <p><img src="_images/math/4bb489d6089f17fba21611b32225b19318efbe60.png" alt="\left[ \begin{array}{ccccccc}
@@ -428,9 +428,9 @@ as for symmetric band matrices.  A <code class="xref py py-class docutils litera
 <dt><strong>Triangular band matrix</strong></dt>
 <dd><p class="first">A triangular band matrix of order <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> with <img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/> subdiagonals
 or superdiagonals is represented by a real complex matrix of size
-(<img class="math" src="_images/math/f8dcb9a4a77e36cd21ed14f3d85f52fabc7b124f.png" alt="k+1"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) and two character arguments <code class="docutils literal"><span class="pre">uplo</span></code>  and
-<code class="docutils literal"><span class="pre">diag</span></code>, with similar conventions as for symmetric band matrices.
-A <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code> <code class="docutils literal"><span class="pre">X</span></code> of size (<img class="math" src="_images/math/f8dcb9a4a77e36cd21ed14f3d85f52fabc7b124f.png" alt="k+1"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) can represent
+(<img class="math" src="_images/math/f8dcb9a4a77e36cd21ed14f3d85f52fabc7b124f.png" alt="k+1"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) and two character arguments <code class="docutils literal notranslate"><span class="pre">uplo</span></code>  and
+<code class="docutils literal notranslate"><span class="pre">diag</span></code>, with similar conventions as for symmetric band matrices.
+A <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> <code class="docutils literal notranslate"><span class="pre">X</span></code> of size (<img class="math" src="_images/math/f8dcb9a4a77e36cd21ed14f3d85f52fabc7b124f.png" alt="k+1"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) can represent
 the band matrices</p>
 <div class="last math">
 <p><img src="_images/math/5b68034adabd474dfe88b59cbee202ac21207a9e.png" alt="\left[ \begin{array}{cccc}
@@ -491,8 +491,8 @@ documented in the docstrings of the source code, and can be viewed with the
 <dd><p>Scales a vector by a constant:</p>
 <div class="math">
 <p><img src="_images/math/ee5c183eedbd158296f2af6d158b95a04fad8713.png" alt="x := \alpha x."/></p>
-</div><p>If <code class="docutils literal"><span class="pre">x</span></code> is a real <code class="xref py py-class docutils literal"><span class="pre">matrix</span></code>, the scalar argument <code class="docutils literal"><span class="pre">alpha</span></code> must
-be a Python integer or float.  If <code class="docutils literal"><span class="pre">x</span></code> is complex, <code class="docutils literal"><span class="pre">alpha</span></code> can be an
+</div><p>If <code class="docutils literal notranslate"><span class="pre">x</span></code> is a real <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code>, the scalar argument <code class="docutils literal notranslate"><span class="pre">alpha</span></code> must
+be a Python integer or float.  If <code class="docutils literal notranslate"><span class="pre">x</span></code> is complex, <code class="docutils literal notranslate"><span class="pre">alpha</span></code> can be an
 integer, float, or complex.</p>
 </dd></dl>
 
@@ -532,8 +532,8 @@ first <img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f304
 <dd><p>Interchanges two vectors:</p>
 <div class="math">
 <p><img src="_images/math/326ee2ce054b2bb832ddd33ae6870e0077bbb6f1.png" alt="x \leftrightarrow y."/></p>
-</div><p><code class="docutils literal"><span class="pre">x</span></code>  and <code class="docutils literal"><span class="pre">y</span></code> are matrices of the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or
-<code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).</p>
+</div><p><code class="docutils literal notranslate"><span class="pre">x</span></code>  and <code class="docutils literal notranslate"><span class="pre">y</span></code> are matrices of the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).</p>
 </dd></dl>
 
 <dl class="function">
@@ -542,8 +542,8 @@ first <img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f304
 <dd><p>Copies a vector to another vector:</p>
 <div class="math">
 <p><img src="_images/math/ad766ef8e2ee4ed4d911217f303ac86b09a349a4.png" alt="y := x."/></p>
-</div><p><code class="docutils literal"><span class="pre">x</span></code> and <code class="docutils literal"><span class="pre">y</span></code> are matrices of the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or
-<code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).</p>
+</div><p><code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are matrices of the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).</p>
 </dd></dl>
 
 <dl class="function">
@@ -552,9 +552,9 @@ first <img class="math" src="_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f304
 <dd><p>Constant times a vector plus a vector:</p>
 <div class="math">
 <p><img src="_images/math/91f2a9f7723d9d544a47407659a431c56ddbcf32.png" alt="y := \alpha x + y."/></p>
-</div><p><code class="docutils literal"><span class="pre">x</span></code> and <code class="docutils literal"><span class="pre">y</span></code> are matrices of the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or
-<code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  If <code class="docutils literal"><span class="pre">x</span></code> is real, the scalar argument <code class="docutils literal"><span class="pre">alpha</span></code> must be
-a Python integer or float.  If <code class="docutils literal"><span class="pre">x</span></code> is complex, <code class="docutils literal"><span class="pre">alpha</span></code> can be an
+</div><p><code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are matrices of the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  If <code class="docutils literal notranslate"><span class="pre">x</span></code> is real, the scalar argument <code class="docutils literal notranslate"><span class="pre">alpha</span></code> must be
+a Python integer or float.  If <code class="docutils literal notranslate"><span class="pre">x</span></code> is complex, <code class="docutils literal notranslate"><span class="pre">alpha</span></code> can be an
 integer, float, or complex.</p>
 </dd></dl>
 
@@ -564,8 +564,8 @@ integer, float, or complex.</p>
 <dd><p>Returns</p>
 <div class="math">
 <p><img src="_images/math/e35c24929388d7335f031fab228dbe1d90730fac.png" alt="x^Hy."/></p>
-</div><p><code class="docutils literal"><span class="pre">x</span></code> and <code class="docutils literal"><span class="pre">y</span></code> are matrices of the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or
-<code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).</p>
+</div><p><code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are matrices of the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).</p>
 </dd></dl>
 
 <dl class="function">
@@ -574,8 +574,8 @@ integer, float, or complex.</p>
 <dd><p>Returns</p>
 <div class="math">
 <p><img src="_images/math/74aed024fafb8079d98a397482cb81b1fd4229e2.png" alt="x^Ty."/></p>
-</div><p><code class="docutils literal"><span class="pre">x</span></code> and <code class="docutils literal"><span class="pre">y</span></code> are matrices of the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or
-<code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).</p>
+</div><p><code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are matrices of the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).</p>
 </dd></dl>
 
 </div>
@@ -595,9 +595,9 @@ y &amp; := \alpha A^T x + \beta y \quad
     (\mathrm{trans} = \mathrm{'T'}),  \\
 y &amp; := \alpha A^H x + \beta y \quad
     (\mathrm{trans} = \mathrm{'C'})."/></p>
-</div><p>The arguments <code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">x</span></code>, and <code class="docutils literal"><span class="pre">y</span></code> must have the same type
-(<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal"><span class="pre">alpha</span></code> and
-<code class="docutils literal"><span class="pre">beta</span></code> are only allowed if <code class="docutils literal"><span class="pre">A</span></code> is complex.</p>
+</div><p>The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code>, and <code class="docutils literal notranslate"><span class="pre">y</span></code> must have the same type
+(<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and
+<code class="docutils literal notranslate"><span class="pre">beta</span></code> are only allowed if <code class="docutils literal notranslate"><span class="pre">A</span></code> is complex.</p>
 </dd></dl>
 
 <dl class="function">
@@ -606,9 +606,9 @@ y &amp; := \alpha A^H x + \beta y \quad
 <dd><p>Matrix-vector  product with a real symmetric matrix:</p>
 <div class="math">
 <p><img src="_images/math/a6643200a05de401ebc17a96e05e38692d1a9667.png" alt="y := \alpha A x + \beta y,"/></p>
-</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a real symmetric matrix.  The arguments <code class="docutils literal"><span class="pre">A</span></code>,
-<code class="docutils literal"><span class="pre">x</span></code>, and <code class="docutils literal"><span class="pre">y</span></code> must have type <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code>, and <code class="docutils literal"><span class="pre">alpha</span></code> and
-<code class="docutils literal"><span class="pre">beta</span></code> must be real.</p>
+</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a real symmetric matrix.  The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>,
+<code class="docutils literal notranslate"><span class="pre">x</span></code>, and <code class="docutils literal notranslate"><span class="pre">y</span></code> must have type <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code>, and <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and
+<code class="docutils literal notranslate"><span class="pre">beta</span></code> must be real.</p>
 </dd></dl>
 
 <dl class="function">
@@ -619,9 +619,9 @@ matrix:</p>
 <div class="math">
 <p><img src="_images/math/a6643200a05de401ebc17a96e05e38692d1a9667.png" alt="y := \alpha A x + \beta y,"/></p>
 </div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is real symmetric or complex Hermitian.  The arguments
-<code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">x</span></code>, <code class="docutils literal"><span class="pre">y</span></code> must have the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or
-<code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal"><span class="pre">alpha</span></code> and <code class="docutils literal"><span class="pre">beta</span></code> are only
-allowed if <code class="docutils literal"><span class="pre">A</span></code>  is complex.</p>
+<code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code> must have the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and <code class="docutils literal notranslate"><span class="pre">beta</span></code> are only
+allowed if <code class="docutils literal notranslate"><span class="pre">A</span></code>  is complex.</p>
 </dd></dl>
 
 <dl class="function">
@@ -632,8 +632,8 @@ allowed if <code class="docutils literal"><span class="pre">A</span></code>  is 
 <p><img src="_images/math/00332ebbcf8fd9b89bfde6fe2806694768b5176b.png" alt="x &amp; := Ax \quad (\mathrm{trans} = \mathrm{'N'}), \\
 x &amp; := A^T x \quad (\mathrm{trans} = \mathrm{'T'}), \\
 x &amp; := A^H x \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
-</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is square and triangular.  The arguments <code class="docutils literal"><span class="pre">A</span></code> and
-<code class="docutils literal"><span class="pre">x</span></code> must have the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).</p>
+</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is square and triangular.  The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code> and
+<code class="docutils literal notranslate"><span class="pre">x</span></code> must have the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).</p>
 </dd></dl>
 
 <dl class="function">
@@ -645,8 +645,8 @@ x &amp; := A^H x \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
 x &amp; := A^{-T}x \quad (\mathrm{trans} = \mathrm{'T'}), \\
 x &amp; := A^{-H}x \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
 </div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is square and triangular with nonzero diagonal elements.
-The arguments <code class="docutils literal"><span class="pre">A</span></code>  and <code class="docutils literal"><span class="pre">x</span></code> must have the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or
-<code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).</p>
+The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>  and <code class="docutils literal notranslate"><span class="pre">x</span></code> must have the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).</p>
 </dd></dl>
 
 <dl class="function">
@@ -661,9 +661,9 @@ y &amp; := \alpha A^T x + \beta y \quad
 y &amp; := \alpha A^H x + \beta y \quad
     (\mathrm{trans} = \mathrm{'C'}),"/></p>
 </div><p>where  <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a rectangular band matrix with <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> rows and
-<img class="math" src="_images/math/a924a05649234675f5026f61497b6778f0b26ecd.png" alt="k_l"/> subdiagonals.  The arguments <code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">x</span></code>, <code class="docutils literal"><span class="pre">y</span></code>  must have
-the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  Complex values of
-<code class="docutils literal"><span class="pre">alpha</span></code>  and <code class="docutils literal"><span class="pre">beta</span></code>  are only allowed if <code class="docutils literal"><span class="pre">A</span></code> is complex.</p>
+<img class="math" src="_images/math/a924a05649234675f5026f61497b6778f0b26ecd.png" alt="k_l"/> subdiagonals.  The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>  must have
+the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  Complex values of
+<code class="docutils literal notranslate"><span class="pre">alpha</span></code>  and <code class="docutils literal notranslate"><span class="pre">beta</span></code>  are only allowed if <code class="docutils literal notranslate"><span class="pre">A</span></code> is complex.</p>
 </dd></dl>
 
 <dl class="function">
@@ -673,8 +673,8 @@ the same type (<code class="xref py py-const docutils literal"><span class="pre"
 <div class="math">
 <p><img src="_images/math/ef349297cc578dd883329245342cdc826daf8fb9.png" alt="y := \alpha Ax + \beta y,"/></p>
 </div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/>  is a real symmetric band matrix.  The arguments
-<code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">x</span></code>, <code class="docutils literal"><span class="pre">y</span></code>  must have type <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code>, and <code class="docutils literal"><span class="pre">alpha</span></code> and
-<code class="docutils literal"><span class="pre">beta</span></code> must be real.</p>
+<code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>  must have type <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code>, and <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and
+<code class="docutils literal notranslate"><span class="pre">beta</span></code> must be real.</p>
 </dd></dl>
 
 <dl class="function">
@@ -685,9 +685,9 @@ matrix:</p>
 <div class="math">
 <p><img src="_images/math/ef349297cc578dd883329245342cdc826daf8fb9.png" alt="y := \alpha Ax + \beta y,"/></p>
 </div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a real symmetric or complex Hermitian band matrix.
-The arguments <code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">x</span></code>,  <code class="docutils literal"><span class="pre">y</span></code>  must have the same type
-(<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal"><span class="pre">alpha</span></code> and
-<code class="docutils literal"><span class="pre">beta</span></code>  are only allowed if <code class="docutils literal"><span class="pre">A</span></code>  is complex.</p>
+The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code>,  <code class="docutils literal notranslate"><span class="pre">y</span></code>  must have the same type
+(<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and
+<code class="docutils literal notranslate"><span class="pre">beta</span></code>  are only allowed if <code class="docutils literal notranslate"><span class="pre">A</span></code>  is complex.</p>
 </dd></dl>
 
 <dl class="function">
@@ -698,8 +698,8 @@ The arguments <code class="docutils literal"><span class="pre">A</span></code>, 
 <p><img src="_images/math/f4b5a48a4f7fa5dd339fa2a03a4e1bf514c285a7.png" alt="x &amp; := Ax \quad (\mathrm{trans} = \mathrm{'N'}), \\
 x &amp; := A^T x \quad (\mathrm{trans} = \mathrm{'T'}), \\
 x &amp; := A^H x \quad (\mathrm{trans} = \mathrm{'C'})."/></p>
-</div><p>The arguments <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">x</span></code>  must have the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or
-<code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).</p>
+</div><p>The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">x</span></code>  must have the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).</p>
 </dd></dl>
 
 <dl class="function">
@@ -711,8 +711,8 @@ x &amp; := A^H x \quad (\mathrm{trans} = \mathrm{'C'})."/></p>
 x &amp; := A^{-T} x \quad (\mathrm{trans} = \mathrm{'T'}), \\
 x &amp; := A^{-H} x \quad (\mathrm{trans} = \mathrm{'T'}),"/></p>
 </div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a triangular band matrix of with nonzero diagonal
-elements.  The arguments <code class="docutils literal"><span class="pre">A</span></code>  and <code class="docutils literal"><span class="pre">x</span></code>  must have the same type
-(<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).</p>
+elements.  The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>  and <code class="docutils literal notranslate"><span class="pre">x</span></code>  must have the same type
+(<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).</p>
 </dd></dl>
 
 <dl class="function">
@@ -721,9 +721,9 @@ elements.  The arguments <code class="docutils literal"><span class="pre">A</spa
 <dd><p>General rank-1 update:</p>
 <div class="math">
 <p><img src="_images/math/834d4eff7cd44df7ca84a6baa5303b845ffaba4e.png" alt="A := A + \alpha x y^H,"/></p>
-</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a general matrix.  The arguments <code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">x</span></code>, and
-<code class="docutils literal"><span class="pre">y</span></code>  must have the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  Complex
-values of <code class="docutils literal"><span class="pre">alpha</span></code>  are only allowed if <code class="docutils literal"><span class="pre">A</span></code>  is complex.</p>
+</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a general matrix.  The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">y</span></code>  must have the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  Complex
+values of <code class="docutils literal notranslate"><span class="pre">alpha</span></code>  are only allowed if <code class="docutils literal notranslate"><span class="pre">A</span></code>  is complex.</p>
 </dd></dl>
 
 <dl class="function">
@@ -732,9 +732,9 @@ values of <code class="docutils literal"><span class="pre">alpha</span></code>  
 <dd><p>General rank-1 update:</p>
 <div class="math">
 <p><img src="_images/math/d5bd2915d0b899019afcc42fc6b2bb7553192491.png" alt="A := A + \alpha x y^T,"/></p>
-</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a general matrix.  The arguments <code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">x</span></code>,  and
-<code class="docutils literal"><span class="pre">y</span></code>  must have the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  Complex
-values of <code class="docutils literal"><span class="pre">alpha</span></code>  are only allowed if <code class="docutils literal"><span class="pre">A</span></code>  is complex.</p>
+</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a general matrix.  The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code>,  and
+<code class="docutils literal notranslate"><span class="pre">y</span></code>  must have the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  Complex
+values of <code class="docutils literal notranslate"><span class="pre">alpha</span></code>  are only allowed if <code class="docutils literal notranslate"><span class="pre">A</span></code>  is complex.</p>
 </dd></dl>
 
 <dl class="function">
@@ -743,8 +743,8 @@ values of <code class="docutils literal"><span class="pre">alpha</span></code>  
 <dd><p>Symmetric rank-1 update:</p>
 <div class="math">
 <p><img src="_images/math/c67cfed686df76e10eed6939c0f01a01b977394d.png" alt="A := A + \alpha xx^T,"/></p>
-</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a real symmetric matrix.  The arguments <code class="docutils literal"><span class="pre">A</span></code>  and
-<code class="docutils literal"><span class="pre">x</span></code>  must have type <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code>.  <code class="docutils literal"><span class="pre">alpha</span></code>  must be a real number.</p>
+</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a real symmetric matrix.  The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>  and
+<code class="docutils literal notranslate"><span class="pre">x</span></code>  must have type <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code>.  <code class="docutils literal notranslate"><span class="pre">alpha</span></code>  must be a real number.</p>
 </dd></dl>
 
 <dl class="function">
@@ -754,8 +754,8 @@ values of <code class="docutils literal"><span class="pre">alpha</span></code>  
 <div class="math">
 <p><img src="_images/math/2feca5b992756ce50c21142d88a041130b652606.png" alt="A := A + \alpha xx^H,"/></p>
 </div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a real symmetric or complex Hermitian matrix.  The
-arguments <code class="docutils literal"><span class="pre">A</span></code>  and <code class="docutils literal"><span class="pre">x</span></code>  must have the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or
-<code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  <code class="docutils literal"><span class="pre">alpha</span></code>  must be a real number.</p>
+arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>  and <code class="docutils literal notranslate"><span class="pre">x</span></code>  must have the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  <code class="docutils literal notranslate"><span class="pre">alpha</span></code>  must be a real number.</p>
 </dd></dl>
 
 <dl class="function">
@@ -764,8 +764,8 @@ arguments <code class="docutils literal"><span class="pre">A</span></code>  and 
 <dd><p>Symmetric rank-2  update:</p>
 <div class="math">
 <p><img src="_images/math/e1351054ae1dc3bcdadd313e15c1528706d2c5de.png" alt="A := A + \alpha (xy^T + yx^T),"/></p>
-</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a real symmetric matrix.  The arguments <code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">x</span></code>,
-and <code class="docutils literal"><span class="pre">y</span></code> must have type <code class="xref py py-const docutils literal"><span class="pre">'d'</span></code>.  <code class="docutils literal"><span class="pre">alpha</span></code>  must be real.</p>
+</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a real symmetric matrix.  The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">y</span></code> must have type <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code>.  <code class="docutils literal notranslate"><span class="pre">alpha</span></code>  must be real.</p>
 </dd></dl>
 
 <dl class="function">
@@ -775,9 +775,9 @@ and <code class="docutils literal"><span class="pre">y</span></code> must have t
 <div class="math">
 <p><img src="_images/math/02297272f19329b6bde145971eda0a691b7cc031.png" alt="A := A + \alpha xy^H + \bar \alpha yx^H,"/></p>
 </div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a a real symmetric or complex Hermitian matrix.
-The arguments <code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">x</span></code>, and <code class="docutils literal"><span class="pre">y</span></code> must have the same type
-(<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal"><span class="pre">alpha</span></code> are only
-allowed if <code class="docutils literal"><span class="pre">A</span></code> is complex.</p>
+The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code>, and <code class="docutils literal notranslate"><span class="pre">y</span></code> must have the same type
+(<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal notranslate"><span class="pre">alpha</span></code> are only
+allowed if <code class="docutils literal notranslate"><span class="pre">A</span></code> is complex.</p>
 </dd></dl>
 
 <p>As an example, the following code multiplies the tridiagonal matrix</p>
@@ -788,7 +788,7 @@ allowed if <code class="docutils literal"><span class="pre">A</span></code> is c
       0 &amp; -3 &amp; -1 &amp; 1
 \end{array}\right]"/></p>
 </div><p>with the vector <img class="math" src="_images/math/905b2454efed0625e688066ffa745b123d984cd0.png" alt="x = (1,-1,2,-2)"/>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.blas</span> <span class="k">import</span> <span class="n">gbmv</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span>  <span class="p">[</span><span class="mf">6.</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.</span><span class="p">],</span>  <span class="p">[</span><span class="mf">3.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span>  <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.</span><span class="p">])</span>
@@ -801,8 +801,8 @@ allowed if <code class="docutils literal"><span class="pre">A</span></code> is c
 </pre></div>
 </div>
 <p>The following example illustrates the use of
-<a class="reference internal" href="#cvxopt.blas.tbsv" title="cvxopt.blas.tbsv"><code class="xref py py-func docutils literal"><span class="pre">tbsv</span></code></a>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span>
+<a class="reference internal" href="#cvxopt.blas.tbsv" title="cvxopt.blas.tbsv"><code class="xref py py-func docutils literal notranslate"><span class="pre">tbsv</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.blas</span> <span class="k">import</span> <span class="n">tbsv</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="o">-</span><span class="mf">6.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
@@ -837,9 +837,9 @@ C := \alpha \op(A) \op(B) + \beta C"/></p>
     B &amp; \mathrm{transB} = \mathrm{'N'} \\
     B^T &amp; \mathrm{transB} = \mathrm{'T'} \\
     B^H &amp; \mathrm{transB} = \mathrm{'C'}. \end{array} \right."/></p>
-</div><p>The arguments <code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">B</span></code>, and <code class="docutils literal"><span class="pre">C</span></code> must have the same type
-(<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal"><span class="pre">alpha</span></code> and
-<code class="docutils literal"><span class="pre">beta</span></code> are only allowed if <code class="docutils literal"><span class="pre">A</span></code> is complex.</p>
+</div><p>The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, and <code class="docutils literal notranslate"><span class="pre">C</span></code> must have the same type
+(<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and
+<code class="docutils literal notranslate"><span class="pre">beta</span></code> are only allowed if <code class="docutils literal notranslate"><span class="pre">A</span></code> is complex.</p>
 </dd></dl>
 
 <dl class="function">
@@ -850,9 +850,9 @@ matrix <img class="math" src="_images/math/9805f44feec6f81d376d09e88b8236635edbb
 <div class="math">
 <p><img src="_images/math/52ccd90b4958ffdc21030f904fbeefb9395f1fbe.png" alt="C &amp; := \alpha AB + \beta C \quad (\mathrm{side} = \mathrm{'L'}), \\
 C &amp; := \alpha BA + \beta C \quad (\mathrm{side} = \mathrm{'R'})."/></p>
-</div><p>The arguments <code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">B</span></code>, and <code class="docutils literal"><span class="pre">C</span></code>  must have the same type
-(<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal"><span class="pre">alpha</span></code>  and
-<code class="docutils literal"><span class="pre">beta</span></code> are only allowed if <code class="docutils literal"><span class="pre">A</span></code> is complex.</p>
+</div><p>The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, and <code class="docutils literal notranslate"><span class="pre">C</span></code>  must have the same type
+(<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal notranslate"><span class="pre">alpha</span></code>  and
+<code class="docutils literal notranslate"><span class="pre">beta</span></code> are only allowed if <code class="docutils literal notranslate"><span class="pre">A</span></code> is complex.</p>
 </dd></dl>
 
 <dl class="function">
@@ -863,9 +863,9 @@ general matrix <img class="math" src="_images/math/9805f44feec6f81d376d09e88b823
 <div class="math">
 <p><img src="_images/math/52ccd90b4958ffdc21030f904fbeefb9395f1fbe.png" alt="C &amp; := \alpha AB + \beta C \quad (\mathrm{side} = \mathrm{'L'}), \\
 C &amp; := \alpha BA + \beta C \quad (\mathrm{side} = \mathrm{'R'})."/></p>
-</div><p>The arguments <code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">B</span></code>,  and <code class="docutils literal"><span class="pre">C</span></code> must have the same type
-(<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal"><span class="pre">alpha</span></code> and
-<code class="docutils literal"><span class="pre">beta</span></code>  are only allowed if <code class="docutils literal"><span class="pre">A</span></code> is complex.</p>
+</div><p>The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>,  and <code class="docutils literal notranslate"><span class="pre">C</span></code> must have the same type
+(<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and
+<code class="docutils literal notranslate"><span class="pre">beta</span></code>  are only allowed if <code class="docutils literal notranslate"><span class="pre">A</span></code> is complex.</p>
 </dd></dl>
 
 <dl class="function">
@@ -885,8 +885,8 @@ B &amp; := \alpha B\op(A) \quad (\mathrm{side} = \mathrm{'R'})
      A &amp; \mathrm{transA} = \mathrm{'N'} \\
      A^T &amp; \mathrm{transA} = \mathrm{'T'} \\
      A^H &amp; \mathrm{transA} = \mathrm{'C'}. \end{array} \right."/></p>
-</div><p>The arguments <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">B</span></code> must have the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or
-<code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal"><span class="pre">alpha</span></code> are only allowed if <code class="docutils literal"><span class="pre">A</span></code>
+</div><p>The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> must have the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal notranslate"><span class="pre">alpha</span></code> are only allowed if <code class="docutils literal notranslate"><span class="pre">A</span></code>
 is complex.</p>
 </dd></dl>
 
@@ -908,8 +908,8 @@ B &amp; := \alpha B\op(A)^{-1} \quad (\mathrm{side} = \mathrm{'R'}),
     A^T &amp; \mathrm{transA} = \mathrm{'T'} \\
     A^H &amp; \mathrm{transA} = \mathrm{'C'}, \end{array} \right."/></p>
 </div><p><img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is triangular and <img class="math" src="_images/math/9805f44feec6f81d376d09e88b8236635edbb3c8.png" alt="B"/> is a general matrix.  The
-arguments <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">B</span></code> must have the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or
-<code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal"><span class="pre">alpha</span></code> are only allowed if <code class="docutils literal"><span class="pre">A</span></code>
+arguments <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> must have the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  Complex values of <code class="docutils literal notranslate"><span class="pre">alpha</span></code> are only allowed if <code class="docutils literal notranslate"><span class="pre">A</span></code>
 is complex.</p>
 </dd></dl>
 
@@ -922,9 +922,9 @@ is complex.</p>
     (\mathrm{trans} = \mathrm{'N'}),  \\
 C &amp; := \alpha A^TA + \beta C \quad
     (\mathrm{trans} = \mathrm{'T'}),"/></p>
-</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a general matrix.  The arguments <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">C</span></code>
-must have the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  Complex values
-of <code class="docutils literal"><span class="pre">alpha</span></code>  and <code class="docutils literal"><span class="pre">beta</span></code> are only allowed if <code class="docutils literal"><span class="pre">A</span></code> is complex.</p>
+</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a general matrix.  The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">C</span></code>
+must have the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  Complex values
+of <code class="docutils literal notranslate"><span class="pre">alpha</span></code>  and <code class="docutils literal notranslate"><span class="pre">beta</span></code> are only allowed if <code class="docutils literal notranslate"><span class="pre">A</span></code> is complex.</p>
 </dd></dl>
 
 <dl class="function">
@@ -937,9 +937,9 @@ of <code class="docutils literal"><span class="pre">alpha</span></code>  and <co
     (\mathrm{trans} = \mathrm{'N'}), \\
 C &amp; := \alpha A^HA + \beta C \quad
     (\mathrm{trans} = \mathrm{'C'}),"/></p>
-</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a general matrix.  The arguments <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">C</span></code>
-must have the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).  <code class="docutils literal"><span class="pre">alpha</span></code> and
-<code class="docutils literal"><span class="pre">beta</span></code> must be real.</p>
+</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a general matrix.  The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">C</span></code>
+must have the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).  <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and
+<code class="docutils literal notranslate"><span class="pre">beta</span></code> must be real.</p>
 </dd></dl>
 
 <dl class="function">
@@ -952,8 +952,8 @@ must have the same type (<code class="xref py py-const docutils literal"><span c
 C &amp; := \alpha (A^TB + B^TA) + \beta C \quad
     (\mathrm{trans} = \mathrm{'T'})."/></p>
 </div><p><img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> and <img class="math" src="_images/math/9805f44feec6f81d376d09e88b8236635edbb3c8.png" alt="B"/> are general real or complex matrices.  The
-arguments <code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">B</span></code>, and <code class="docutils literal"><span class="pre">C</span></code> must have the same type.  Complex
-values of <code class="docutils literal"><span class="pre">alpha</span></code>  and <code class="docutils literal"><span class="pre">beta</span></code> are only allowed if <code class="docutils literal"><span class="pre">A</span></code> is complex.</p>
+arguments <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, and <code class="docutils literal notranslate"><span class="pre">C</span></code> must have the same type.  Complex
+values of <code class="docutils literal notranslate"><span class="pre">alpha</span></code>  and <code class="docutils literal notranslate"><span class="pre">beta</span></code> are only allowed if <code class="docutils literal notranslate"><span class="pre">A</span></code> is complex.</p>
 </dd></dl>
 
 <dl class="function">
@@ -967,9 +967,9 @@ values of <code class="docutils literal"><span class="pre">alpha</span></code>  
 C &amp; := \alpha A^HB + \bar\alpha B^HA + \beta C \quad
     (\mathrm{trans} = \mathrm{'C'}),"/></p>
 </div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> and <img class="math" src="_images/math/9805f44feec6f81d376d09e88b8236635edbb3c8.png" alt="B"/> are general matrices.  The arguments
-<code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">B</span></code>, and <code class="docutils literal"><span class="pre">C</span></code> must have the same type (<code class="xref py py-const docutils literal"><span class="pre">'d'</span></code> or
-<code class="xref py py-const docutils literal"><span class="pre">'z'</span></code>).   Complex values of <code class="docutils literal"><span class="pre">alpha</span></code> are only allowed if <code class="docutils literal"><span class="pre">A</span></code>
-is complex.  <code class="docutils literal"><span class="pre">beta</span></code> must be real.</p>
+<code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, and <code class="docutils literal notranslate"><span class="pre">C</span></code> must have the same type (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).   Complex values of <code class="docutils literal notranslate"><span class="pre">alpha</span></code> are only allowed if <code class="docutils literal notranslate"><span class="pre">A</span></code>
+is complex.  <code class="docutils literal notranslate"><span class="pre">beta</span></code> must be real.</p>
 </dd></dl>
 
 </div>
@@ -993,8 +993,8 @@ is complex.  <code class="docutils literal"><span class="pre">beta</span></code>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="copyright.html">Copyright</a> 2004-2016, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      Last updated on Nov 29, 2016.
+        &copy; <a href="copyright.html">Copyright</a> 2004-2018, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      Last updated on Apr 16, 2018.
     </p>
   </div>
 
@@ -1014,7 +1014,7 @@ is complex.  <code class="docutils literal"><span class="pre">beta</span></code>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.9',
+            VERSION:'1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -1040,7 +1040,7 @@ is complex.  <code class="docutils literal"><span class="pre">beta</span></code>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
     </div>
 
 </body>
