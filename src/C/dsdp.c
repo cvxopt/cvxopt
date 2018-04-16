@@ -108,7 +108,7 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
     PyObject *kwrds)
 {
     matrix *c, *hl=NULL, *hk, *x=NULL, *zl=NULL, *zsk=NULL;
-    PyObject *Gl=NULL, *Gs=NULL, *hs=NULL, *Gk, *t=NULL, *zs=NULL,
+    PyObject *Gl=NULL, *Gs=NULL, *hs=NULL, *Gk, *t=NULL, *zs=NULL, *opts=NULL,
         *param, *key, *value;
     int i, j, k, n, ml, l, mk, nnz, *lp_colptr=NULL, *lp_rowind=NULL,
       incx, incy, lngth, maxm;
@@ -124,24 +124,27 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
     DSDPSolutionType status;
     char err_str[100];
 #if PY_MAJOR_VERSION >= 3
-    const char *keystr; 
+    const char *keystr;
 #else
-    char *keystr; 
+    char *keystr;
 #endif
-    char *kwlist[] = {"c", "Gl", "hl", "Gs", "hs", "gamma", "beta",
+    char *kwlist[] = {"c", "Gl", "hl", "Gs", "hs", "gamma", "beta", "options",
         NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|OOOOdd", kwlist,
-        &c, &Gl, &hl, &Gs, &hs, &gamma, &beta)) return NULL;
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|OOOOddO", kwlist,
+        &c, &Gl, &hl, &Gs, &hs, &gamma, &beta, &opts)) return NULL;
 
     if (!Matrix_Check(c) || MAT_NCOLS(c) != 1 || MAT_ID(c) != DOUBLE)
         PY_ERR_TYPE("c must be a dense 'd' matrix with one column");
     n = MAT_NROWS(c);
 
+    if (Gl == Py_None) Gl = NULL;
     if (Gl && ((!Matrix_Check(Gl) && !SpMatrix_Check(Gl)) ||
         X_NCOLS(Gl) != n || X_ID(Gl) != DOUBLE))
         PY_ERR_TYPE("invalid type or dimensions for Gl");
     ml = Gl ? X_NROWS(Gl) : 0;
+
+    if ((PyObject *)hl == Py_None) hl = NULL;
     if ((!hl && ml) || (hl && (!Matrix_Check(hl) || MAT_NCOLS(hl) != 1
         || MAT_NROWS(hl) != ml || MAT_ID(hl) != DOUBLE)))
         PY_ERR_TYPE("invalid type or dimensions for hl");
@@ -173,8 +176,11 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
         goto done;
     }
 
-    if (!(param = PyObject_GetAttrString(dsdp_module, "options")) ||
-        !PyDict_Check(param)){
+    if (opts && PyDict_Check(opts))
+        param = opts;
+    else
+        param = PyObject_GetAttrString(dsdp_module, "options");
+    if (!param || !PyDict_Check(param)){
         PyErr_SetString(PyExc_AttributeError, "missing dsdp.options "
             " dictionary");
         t = NULL;
@@ -256,7 +262,7 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
     }
     lp_colptr[0] = 0;
     if (ml){
-	if (Matrix_Check(Gl)){
+        if (Matrix_Check(Gl)){
             memcpy(lp_values, MAT_BUFD(Gl), ml*n*sizeof(double));
             for (k=0; k<n; k++){
                 for (j=0; j<ml; j++) lp_rowind[ml*k+j] = j;
