@@ -77,6 +77,9 @@ else:
 # Directory containing SuiteSparse source
 SUITESPARSE_SRC_DIR = ''
 
+# Set to 1 if compiling with MSVC 14 or later
+MSVC=0
+
 # No modifications should be needed below this line.
 
 BLAS_NOUNDERSCORES = int(os.environ.get("CVXOPT_BLAS_NOUNDERSCORES",BLAS_NOUNDERSCORES)) == True
@@ -102,7 +105,7 @@ DSDP_INC_DIR = os.environ.get("CVXOPT_DSDP_INC_DIR",DSDP_INC_DIR)
 SUITESPARSE_LIB_DIR = os.environ.get("CVXOPT_SUITESPARSE_LIB_DIR",SUITESPARSE_LIB_DIR)
 SUITESPARSE_INC_DIR = os.environ.get("CVXOPT_SUITESPARSE_INC_DIR",SUITESPARSE_INC_DIR)
 SUITESPARSE_SRC_DIR = os.environ.get("CVXOPT_SUITESPARSE_SRC_DIR",SUITESPARSE_SRC_DIR)
-MSVC = int(os.environ.get("CVXOPT_MSVC",0)) == True
+MSVC = int(os.environ.get("CVXOPT_MSVC",MSVC)) == True
 INSTALL_REQUIRES = os.environ.get("CVXOPT_INSTALL_REQUIRES",[])
 if type(INSTALL_REQUIRES) is str: INSTALL_REQUIRES = INSTALL_REQUIRES.strip().split(';')
 
