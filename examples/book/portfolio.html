@@ -68,7 +68,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#installing-a-pre-built-package">Installing a pre-built package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-and-installing-from-source">Building and installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
@@ -76,7 +77,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#user-s-guide">User&#8217;s guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#user-s-guide">User’s guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#technical-documentation">Technical documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#discussion-forum">Discussion forum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#revision-history">Revision history</a></li>
@@ -134,8 +135,8 @@
 <h1>Risk-return trade-off (fig. 4.12)<a class="headerlink" href="#risk-return-trade-off-fig-4-12" title="Permalink to this headline">¶</a></h1>
 <img alt="../../_images/fig-4-12a.png" src="../../_images/fig-4-12a.png" />
 <img alt="../../_images/fig-4-12b.png" src="../../_images/fig-4-12b.png" />
-<p><a class="reference download internal" href="../../_downloads/portfolio.py" download=""><code class="xref download docutils literal"><span class="pre">source</span> <span class="pre">code</span></code></a></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Figure 4.12, page 187.</span>
+<p><a class="reference download internal" href="../../_downloads/portfolio.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">source</span> <span class="pre">code</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Figure 4.12, page 187.</span>
 <span class="c1"># Risk-return trade-off.</span>
 
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sqrt</span>
@@ -144,9 +145,9 @@
 <span class="kn">from</span> <span class="nn">cvxopt.solvers</span> <span class="k">import</span> <span class="n">qp</span><span class="p">,</span> <span class="n">options</span>
 
 <span class="n">n</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">S</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span> <span class="p">[[</span> <span class="mi">4</span><span class="n">e</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span>  <span class="mi">6</span><span class="n">e</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="n">e</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span>   <span class="mf">0.0</span> <span class="p">],</span>
-             <span class="p">[</span> <span class="mi">6</span><span class="n">e</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span>  <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span>  <span class="mf">0.0</span><span class="p">,</span>    <span class="mf">0.0</span> <span class="p">],</span>
-             <span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="n">e</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span>  <span class="mf">0.0</span><span class="p">,</span>   <span class="mf">2.5e-3</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">],</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span> <span class="p">[[</span> <span class="mf">4e-2</span><span class="p">,</span>  <span class="mf">6e-3</span><span class="p">,</span> <span class="o">-</span><span class="mf">4e-3</span><span class="p">,</span>   <span class="mf">0.0</span> <span class="p">],</span>
+             <span class="p">[</span> <span class="mf">6e-3</span><span class="p">,</span>  <span class="mf">1e-2</span><span class="p">,</span>  <span class="mf">0.0</span><span class="p">,</span>    <span class="mf">0.0</span> <span class="p">],</span>
+             <span class="p">[</span><span class="o">-</span><span class="mf">4e-3</span><span class="p">,</span>  <span class="mf">0.0</span><span class="p">,</span>   <span class="mf">2.5e-3</span><span class="p">,</span> <span class="mf">0.0</span> <span class="p">],</span>
              <span class="p">[</span> <span class="mf">0.0</span><span class="p">,</span>   <span class="mf">0.0</span><span class="p">,</span>   <span class="mf">0.0</span><span class="p">,</span>    <span class="mf">0.0</span> <span class="p">]]</span> <span class="p">)</span>
 <span class="n">pbar</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="o">.</span><span class="mi">12</span><span class="p">,</span> <span class="o">.</span><span class="mi">10</span><span class="p">,</span> <span class="o">.</span><span class="mi">07</span><span class="p">,</span> <span class="o">.</span><span class="mi">03</span><span class="p">])</span>
 
@@ -217,8 +218,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Nov 30, 2016.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2018, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Apr 17, 2018.
     </p>
   </div>
 
@@ -238,7 +239,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.9',
+            VERSION:'1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -264,7 +265,7 @@
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
     </div>
 
 <script>

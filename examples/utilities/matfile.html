@@ -65,7 +65,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#installing-a-pre-built-package">Installing a pre-built package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-and-installing-from-source">Building and installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
@@ -73,7 +74,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#user-s-guide">User&#8217;s guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#user-s-guide">User’s guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#technical-documentation">Technical documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#discussion-forum">Discussion forum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#revision-history">Revision history</a></li>
@@ -129,7 +130,7 @@
 <h1>Reading and writing Matlab mat-files<a class="headerlink" href="#reading-and-writing-matlab-mat-files" title="Permalink to this headline">¶</a></h1>
 <p>
 <a href="src/matfile.py">source code</a>
-</p><div class="highlight-default"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+</p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Functions for reading and writing Matlab mat-files.</span>
 
 <span class="sd">Based on the documentation of the mat-file format at</span>
@@ -174,7 +175,7 @@
         <span class="k">if</span> <span class="n">datatype</span> <span class="o">==</span> <span class="mi">14</span><span class="p">:</span>
 
             <span class="n">utype</span><span class="p">,</span> <span class="n">ulgt</span><span class="p">,</span> <span class="n">flags</span> <span class="o">=</span>  <span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">iii&quot;</span><span class="o">%</span><span class="n">E</span><span class="p">,</span><span class="n">s</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span><span class="o">+</span><span class="mi">12</span><span class="p">])</span>
-            <span class="n">flags</span><span class="p">,</span> <span class="n">cls</span> <span class="o">=</span> <span class="p">(</span><span class="n">flags</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">,</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">flags</span><span class="p">,</span> <span class="bp">cls</span> <span class="o">=</span> <span class="p">(</span><span class="n">flags</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">,</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
             <span class="n">nzmax</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">,</span><span class="n">s</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="mi">12</span><span class="p">:</span><span class="n">idx</span><span class="o">+</span><span class="mi">16</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># only for sparse</span>
             <span class="n">idx</span> <span class="o">+=</span> <span class="mi">16</span>
 
@@ -190,15 +191,15 @@
             <span class="n">name</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%i</span><span class="s2">s&quot;</span><span class="o">%</span><span class="n">ulgt</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="n">offs</span><span class="p">:</span><span class="n">idx</span><span class="o">+</span><span class="n">offs</span><span class="o">+</span><span class="n">ulgt</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">idx</span> <span class="o">+=</span> <span class="n">inc</span>
 
-            <span class="k">if</span> <span class="n">cls</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]:</span>
-                <span class="k">return</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">CLASS</span><span class="p">[</span><span class="n">cls</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot; not implemented&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">CLASS</span><span class="p">[</span><span class="bp">cls</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot; not implemented&quot;</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">cls</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">cls</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
                 <span class="p">(</span><span class="n">utype</span><span class="p">,</span> <span class="n">ulgt</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">inc</span><span class="p">)</span> <span class="o">=</span> <span class="n">get_tag</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span><span class="o">+</span><span class="mi">8</span><span class="p">])</span>
                 <span class="k">return</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">unpack</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%i</span><span class="s2">s&quot;</span><span class="o">%</span><span class="n">ulgt</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="n">offs</span><span class="p">:</span><span class="n">idx</span><span class="o">+</span><span class="n">offs</span><span class="o">+</span><span class="n">ulgt</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
 
             <span class="c1"># sparse data</span>
-            <span class="k">elif</span> <span class="n">cls</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">cls</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="mi">8</span><span class="p">):</span> <span class="k">return</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;complex sparse not implemented&quot;</span><span class="p">)</span>
 
                 <span class="p">(</span><span class="n">utype</span><span class="p">,</span> <span class="n">ulgt</span><span class="p">,</span> <span class="n">offs</span><span class="p">,</span> <span class="n">inc</span><span class="p">)</span> <span class="o">=</span> <span class="n">get_tag</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span><span class="o">+</span><span class="mi">8</span><span class="p">])</span>
@@ -232,7 +233,7 @@
             <span class="n">pr</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">s</span><span class="p">[</span><span class="n">idx</span><span class="o">+</span><span class="n">offs</span><span class="p">:</span><span class="n">idx</span><span class="o">+</span><span class="n">offs</span><span class="o">+</span><span class="n">ulgt</span><span class="p">])</span>
             <span class="n">idx</span> <span class="o">+=</span> <span class="n">inc</span>
 
-            <span class="k">if</span> <span class="n">cls</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="bp">cls</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">]:</span>
                 <span class="n">tc</span> <span class="o">=</span> <span class="s1">&#39;d&#39;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">tc</span> <span class="o">=</span> <span class="s1">&#39;i&#39;</span>
@@ -330,17 +331,17 @@
             <span class="n">flags</span> <span class="o">=</span> <span class="mi">8</span><span class="o">*</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">typecode</span> <span class="o">==</span> <span class="s1">&#39;z&#39;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">val</span><span class="o">.</span><span class="n">typecode</span> <span class="o">==</span> <span class="s1">&#39;i&#39;</span><span class="p">:</span>
-                <span class="n">cls</span> <span class="o">=</span> <span class="mi">12</span>
+                <span class="bp">cls</span> <span class="o">=</span> <span class="mi">12</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">cls</span> <span class="o">=</span> <span class="mi">6</span>
+                <span class="bp">cls</span> <span class="o">=</span> <span class="mi">6</span>
 
-            <span class="n">s</span>  <span class="o">=</span> <span class="n">pack</span><span class="p">(</span><span class="s2">&quot;iiixxxx&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">flags</span><span class="o">*</span><span class="mi">256</span><span class="o">+</span><span class="n">cls</span><span class="p">)</span>
+            <span class="n">s</span>  <span class="o">=</span> <span class="n">pack</span><span class="p">(</span><span class="s2">&quot;iiixxxx&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">flags</span><span class="o">*</span><span class="mi">256</span><span class="o">+</span><span class="bp">cls</span><span class="p">)</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s2">&quot;iiii&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">val</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">val</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="n">encode_str</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="n">encode_cvxopt_mtx</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">):</span>
-            <span class="n">flags</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">nzmax</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="n">flags</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">nzmax</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
 
             <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">I</span><span class="p">,</span> <span class="n">val</span><span class="o">.</span><span class="n">J</span><span class="p">,</span> <span class="n">val</span><span class="o">.</span><span class="n">V</span>
 
@@ -351,7 +352,7 @@
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
                 <span class="n">cp</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">cp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
-            <span class="n">s</span>  <span class="o">=</span> <span class="n">pack</span><span class="p">(</span><span class="s2">&quot;iiii&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">flags</span><span class="o">*</span><span class="mi">256</span><span class="o">+</span><span class="n">cls</span><span class="p">,</span> <span class="n">nzmax</span><span class="p">)</span>
+            <span class="n">s</span>  <span class="o">=</span> <span class="n">pack</span><span class="p">(</span><span class="s2">&quot;iiii&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">flags</span><span class="o">*</span><span class="mi">256</span><span class="o">+</span><span class="bp">cls</span><span class="p">,</span> <span class="n">nzmax</span><span class="p">)</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s2">&quot;iiii&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">val</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">val</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="n">encode_str</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 
@@ -360,8 +361,8 @@
             <span class="n">s</span> <span class="o">+=</span> <span class="n">encode_cvxopt_mtx</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">flags</span><span class="p">,</span> <span class="n">cls</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span>
-            <span class="n">s</span>  <span class="o">=</span> <span class="n">pack</span><span class="p">(</span><span class="s2">&quot;iiixxxx&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">flags</span><span class="o">*</span><span class="mi">256</span><span class="o">+</span><span class="n">cls</span><span class="p">)</span>
+            <span class="n">flags</span><span class="p">,</span> <span class="bp">cls</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span>
+            <span class="n">s</span>  <span class="o">=</span> <span class="n">pack</span><span class="p">(</span><span class="s2">&quot;iiixxxx&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">flags</span><span class="o">*</span><span class="mi">256</span><span class="o">+</span><span class="bp">cls</span><span class="p">)</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s2">&quot;iiii&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="n">encode_str</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="n">encode_str</span><span class="p">(</span><span class="n">val</span><span class="p">,</span><span class="mi">16</span><span class="p">)</span>
@@ -410,8 +411,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Nov 30, 2016.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2018, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Apr 17, 2018.
     </p>
   </div>
 
@@ -431,7 +432,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.9',
+            VERSION:'1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -457,7 +458,7 @@
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
     </div>
 
 <script>

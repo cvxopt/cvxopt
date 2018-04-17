@@ -68,7 +68,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#installing-a-pre-built-package">Installing a pre-built package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-and-installing-from-source">Building and installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
@@ -76,7 +77,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#user-s-guide">User&#8217;s guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#user-s-guide">User’s guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#technical-documentation">Technical documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#discussion-forum">Discussion forum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#revision-history">Revision history</a></li>
@@ -132,7 +133,7 @@
             
   <div class="section" id="solving-a-linear-program">
 <h1>Solving a linear program<a class="headerlink" href="#solving-a-linear-program" title="Permalink to this headline">¶</a></h1>
-<p>Linear programs can be specified via the <code class="xref py py-func docutils literal"><span class="pre">solvers.lp()</span></code> function.
+<p>Linear programs can be specified via the <code class="xref py py-func docutils literal notranslate"><span class="pre">solvers.lp()</span></code> function.
 As an example, we can solve the problem</p>
 <div class="math">
 <p><img src="../../_images/math/db4f673921a8ef61e3bb3f26bbdee1f6fda77ad6.png" alt="\begin{array}{ll}
@@ -143,7 +144,7 @@ As an example, we can solve the problem</p>
        &amp; x_1 -2x_2 \leq 4
 \end{array}"/></p>
 </div><p>as follows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">]</span> <span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">4.0</span> <span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="p">])</span>
@@ -180,8 +181,8 @@ As an example, we can solve the problem</p>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Nov 30, 2016.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2018, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Apr 17, 2018.
     </p>
   </div>
 
@@ -201,7 +202,7 @@ As an example, we can solve the problem</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.9',
+            VERSION:'1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -227,7 +228,7 @@ As an example, we can solve the problem</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
     </div>
 
 <script>

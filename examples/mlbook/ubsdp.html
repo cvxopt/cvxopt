@@ -68,7 +68,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#installing-a-pre-built-package">Installing a pre-built package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-and-installing-from-source">Building and installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
@@ -76,7 +77,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#user-s-guide">User&#8217;s guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#user-s-guide">User’s guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#technical-documentation">Technical documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#discussion-forum">Discussion forum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#revision-history">Revision history</a></li>
@@ -134,15 +135,15 @@
 <h1>SDPs with upper bounds<a class="headerlink" href="#sdps-with-upper-bounds" title="Permalink to this headline">¶</a></h1>
 <p>Consider a standard form SDP with an added upper bound</p>
 <div class="math" id="equation-ubsdp">
-<p><span class="eqno">(1)</span><img src="../../_images/math/b281afd0f53cf4914d3d8c55a03331a82fedd4cc.png" alt="\begin{array}{ll}
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-ubsdp" title="Permalink to this equation">¶</a></span><img src="../../_images/math/b281afd0f53cf4914d3d8c55a03331a82fedd4cc.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; \mathbf{Tr}(BX) \\
 \mbox{subject to} &amp; \mathbf{Tr}(A_iX) + c_i = 0, \quad i =
                      1,\ldots, n \\
                   &amp; 0 \preceq X \preceq I
 \end{array}"/></p>
-</div><p>with variable <img class="math" src="../../_images/math/acda08287ca4167227e776e95338f4b2381ee3d9.png" alt="X \in \mathbf{S}^m"/>. The problem <a href="#equation-ubsdp">(1)</a> can be reformulated by introducing a slack variable <img class="math" src="../../_images/math/1dbc400fcc213305415872f9f625cd2828f97a00.png" alt="S"/></p>
-<div class="math" id="equation-ubsdp_2">
-<p><span class="eqno">(2)</span><img src="../../_images/math/71ea7a97be349b41730aa955051aab75c05f3d5f.png" alt="\begin{array}{ll}
+</div><p>with variable <img class="math" src="../../_images/math/acda08287ca4167227e776e95338f4b2381ee3d9.png" alt="X \in \mathbf{S}^m"/>. The problem <a class="reference internal" href="#equation-ubsdp">(1)</a> can be reformulated by introducing a slack variable <img class="math" src="../../_images/math/1dbc400fcc213305415872f9f625cd2828f97a00.png" alt="S"/></p>
+<div class="math" id="equation-ubsdp-2">
+<p><span class="eqno">(2)<a class="headerlink" href="#equation-ubsdp-2" title="Permalink to this equation">¶</a></span><img src="../../_images/math/71ea7a97be349b41730aa955051aab75c05f3d5f.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; \mathbf{Tr}(BX) \\
 \mbox{subject to} &amp; \mathbf{Tr}(A_iX) + c_i = 0, \quad i =
                      1,\ldots, n \\
@@ -150,22 +151,22 @@
                   &amp; X \succeq 0, \ S \succeq 0.
 \end{array}"/></p>
 </div><h3> Documentation </h3><p>A custom solver for SDPs with upper bounds is available as a Python
-module <a class="reference download internal" href="../../_downloads/ubsdp.py" download=""><code class="xref download docutils literal"><span class="pre">ubsdp.py</span></code></a>. The  module implements the following function:</p>
+module <a class="reference download internal" href="../../_downloads/ubsdp.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">ubsdp.py</span></code></a>. The  module implements the following function:</p>
 <blockquote>
 <div><dl class="function">
 <dt id="ubsdp">
 <code class="descname">ubsdp</code><span class="sig-paren">(</span><em>c</em>, <em>A</em>, <em>B</em>, <em>pstart = None</em>, <em>dstart = None</em><span class="sig-paren">)</span><a class="headerlink" href="#ubsdp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solves the problem <a href="#equation-ubsdp_2">(2)</a> using a custom KKT solver.</p>
+<dd><p>Solves the problem <a class="reference internal" href="#equation-ubsdp-2">(2)</a> using a custom KKT solver.</p>
 <p>The input arguments are <img class="math" src="../../_images/math/8b430f74880c3bfa6bf1304fc0dee5835035d169.png" alt="c \in \mathbf{R}^n"/>, a matrix
 <img class="math" src="../../_images/math/05eb084a6f2f59fefe1ec95b39fb8107481c1ceb.png" alt="A \in \mathbf{R}^{m^2 \times n}"/>, and a matrix <img class="math" src="../../_images/math/531f8ea684e6b7c19720c62d7b02165bea73c6a4.png" alt="B
 \in \mathbf{S}^m"/>. The columns of <img class="math" src="../../_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> are
 <img class="math" src="../../_images/math/ecc3026df152907bbf739beaa120dba565752ecb.png" alt="\mathbf{vec}(A_i)"/> where <img class="math" src="../../_images/math/22199c4b27e42a54186d56b43b536eb4c11e1a8b.png" alt="A_i \in \mathbf{S}^m"/> is
-the i&#8217;th data matrix.</p>
+the i’th data matrix.</p>
 <p>Returns the solution <img class="math" src="../../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/>.</p>
 </dd></dl>
 
 </div></blockquote>
-<h3> Example </h3><div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">misc</span><span class="p">,</span> <span class="n">lapack</span>
+<h3> Example </h3><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">misc</span><span class="p">,</span> <span class="n">lapack</span>
 <span class="kn">from</span> <span class="nn">ubsdp</span> <span class="k">import</span> <span class="n">ubsdp</span>
 
 <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span>
@@ -220,8 +221,8 @@ the i&#8217;th data matrix.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Nov 30, 2016.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2018, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Apr 17, 2018.
     </p>
   </div>
 
@@ -241,7 +242,7 @@ the i&#8217;th data matrix.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.9',
+            VERSION:'1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -267,7 +268,7 @@ the i&#8217;th data matrix.</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
     </div>
 
 <script>

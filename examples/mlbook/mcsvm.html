@@ -68,7 +68,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#installing-a-pre-built-package">Installing a pre-built package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-and-installing-from-source">Building and installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
@@ -76,7 +77,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#user-s-guide">User&#8217;s guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#user-s-guide">User’s guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#technical-documentation">Technical documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#discussion-forum">Discussion forum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#revision-history">Revision history</a></li>
@@ -135,8 +136,8 @@
 <p>Crammer and Singer (2001) have extended the binary SVM classifier to
 classification problems with more than two classes. The training
 problem of the Crammer-Singer multiclass SVM can be expressed as a QP</p>
-<div class="math" id="equation-multiclass_svm">
-<p><span class="eqno">(1)</span><img src="../../_images/math/9373d86452c365758cc6cab027313daf0f910d06.png" alt="\begin{array}{ll}
+<div class="math" id="equation-multiclass-svm">
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-multiclass-svm" title="Permalink to this equation">¶</a></span><img src="../../_images/math/9373d86452c365758cc6cab027313daf0f910d06.png" alt="\begin{array}{ll}
 \mbox{maximize}   &amp;  -(1/2)  \mathbf{Tr}(U^TQU)  + \mathbf{Tr}(E^TU) \\
 \mbox{subject to} &amp; U \preceq \gamma E \\
                   &amp; U \mathbf{1}_m = 0
@@ -145,37 +146,37 @@ problem of the Crammer-Singer multiclass SVM can be expressed as a QP</p>
 the number of training examples and <img class="math" src="../../_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> the number of
 classes. The <img class="math" src="../../_images/math/d1006c841dfdabaf3f3a08dd9c9d8d45189ce063.png" alt="N \times N"/> kernel matrix <img class="math" src="../../_images/math/331157c6afbd113256867fd408d80277d1a24756.png" alt="Q"/> is given by
 <img class="math" src="../../_images/math/8bda8a74154e5213db10dcb65d16942e9082be21.png" alt="Q_{ij} = K(x_i, x_j)"/> where <img class="math" src="../../_images/math/684381a21cd73ebbf43b63a087d3f7410ee99ce8.png" alt="K"/> is a kernel function and
-<img class="math" src="../../_images/math/cfc2ae31c0b62416b21a41638a288a510a8d0612.png" alt="x_i^T"/> is the i&#8217;th row of the <img class="math" src="../../_images/math/59aaed99d544e822161a741b0f899801eb51cb90.png" alt="N \times n"/> data matrix
+<img class="math" src="../../_images/math/cfc2ae31c0b62416b21a41638a288a510a8d0612.png" alt="x_i^T"/> is the i’th row of the <img class="math" src="../../_images/math/59aaed99d544e822161a741b0f899801eb51cb90.png" alt="N \times n"/> data matrix
 <img class="math" src="../../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/>, and <img class="math" src="../../_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/> is an <img class="math" src="../../_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/>-vector with labels (<em>i.e.</em>
 <img class="math" src="../../_images/math/3a61b3c7509c54cb33a929be0a4724e08ba66d7d.png" alt="d_i \in \{ 0,1,\ldots,m-1 \}"/>).</p>
 <h3> Documentation </h3><p>A custom solver for the multiclass support vector machine training
-problem is available as a Python module <a class="reference download internal" href="../../_downloads/mcsvm.py" download=""><code class="xref download docutils literal"><span class="pre">mcsvm</span></code></a>. The module
+problem is available as a Python module <a class="reference download internal" href="../../_downloads/mcsvm.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">mcsvm</span></code></a>. The module
 implements the following function:</p>
 <blockquote>
 <div><dl class="function">
 <dt id="mcsvm">
 <code class="descname">mcsvm</code><span class="sig-paren">(</span><em>X</em>, <em>labels</em>, <em>gamma</em>, <em>kernel = 'linear'</em>, <em>sigma = 1.0</em>, <em>degree = 1</em><span class="sig-paren">)</span><a class="headerlink" href="#mcsvm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solves the problem <a href="#equation-multiclass_svm">(1)</a> using a custom KKT solver.</p>
+<dd><p>Solves the problem <a class="reference internal" href="#equation-multiclass-svm">(1)</a> using a custom KKT solver.</p>
 <p>The input arguments are the data matrix <img class="math" src="../../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/> (with the
 <img class="math" src="../../_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/> training examples <img class="math" src="../../_images/math/cfc2ae31c0b62416b21a41638a288a510a8d0612.png" alt="x_i^T"/> as rows), the label
 vector <img class="math" src="../../_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/>, and the positive parameter <img class="math" src="../../_images/math/3666981dc77862de77b6ecfcb64aad59b425cbaf.png" alt="\gamma"/>.</p>
 <p>Valid kernel functions are:</p>
 <dl class="docutils">
-<dt><code class="xref py py-const docutils literal"><span class="pre">'linear'</span></code></dt>
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'linear'</span></code></dt>
 <dd>the linear kernel: <img class="math" src="../../_images/math/2ab619574b60172dc44b0fa72668c721a7c9af9f.png" alt="K(x_i,x_j) = x_i^Tx_j"/></dd>
-<dt><code class="xref py py-const docutils literal"><span class="pre">'poly'</span></code></dt>
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'poly'</span></code></dt>
 <dd>the polynomial kernel: <img class="math" src="../../_images/math/2f51a5f8e4cb3b9a9d1a6db28f8b5b6c6fec6887.png" alt="K(x_i,x_j) = (x_i^Tx_j/\sigma)^d"/></dd>
 </dl>
 <p>The kernel parameters <img class="math" src="../../_images/math/011e5790a6c33043ceadca81d9657dde6c61d769.png" alt="\sigma"/> and <img class="math" src="../../_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/> are specified
 using the input arguments <cite>sigma</cite> and <cite>degree</cite>, respectively.</p>
-<p>Returns the function <code class="xref py py-func docutils literal"><span class="pre">classifier()</span></code>.  If <img class="math" src="../../_images/math/0062c26909b3e07ee8f5a6285b2563d69bc979ff.png" alt="Y"/> is
+<p>Returns the function <code class="xref py py-func docutils literal notranslate"><span class="pre">classifier()</span></code>.  If <img class="math" src="../../_images/math/0062c26909b3e07ee8f5a6285b2563d69bc979ff.png" alt="Y"/> is
 <img class="math" src="../../_images/math/09a3aa954ab4a98bdc63ba44b9b97e047ad7bdd8.png" alt="M \times n"/> then <cite>classifier(Y)</cite> returns a list with as
-its k&#8217;th element</p>
+its k’th element</p>
 <div class="math">
 <p><img src="../../_images/math/972589f7d688e5797c3ae8896fb716392d2b7368.png" alt="\operatorname*{arg\,max}_{j=0,\ldots,m-1}  \sum_{i=1}^N U_{ij} K(x_i, y_k)"/></p>
 </div><p>where <img class="math" src="../../_images/math/a36791dcb32ee10416d65fcdd26e78c2fd223392.png" alt="y_k^T"/> is row <img class="math" src="../../_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/> of <img class="math" src="../../_images/math/0062c26909b3e07ee8f5a6285b2563d69bc979ff.png" alt="Y"/>, <img class="math" src="../../_images/math/cfc2ae31c0b62416b21a41638a288a510a8d0612.png" alt="x_i^T"/>
 is row <img class="math" src="../../_images/math/0b7c1e16a3a8a849bb8ffdcdbf86f65fd1f30438.png" alt="k"/> of <img class="math" src="../../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/>, and <img class="math" src="../../_images/math/169c982b5e649cd1bd6445df5583affe427ea269.png" alt="U"/> is the optimal
-solution of the QP <a href="#equation-multiclass_svm">(1)</a>.</p>
+solution of the QP <a class="reference internal" href="#equation-multiclass-svm">(1)</a>.</p>
 </dd></dl>
 
 </div></blockquote>
@@ -199,8 +200,8 @@ solution of the QP <a href="#equation-multiclass_svm">(1)</a>.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Nov 30, 2016.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2018, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Apr 17, 2018.
     </p>
   </div>
 
@@ -220,7 +221,7 @@ solution of the QP <a href="#equation-multiclass_svm">(1)</a>.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.9',
+            VERSION:'1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -246,7 +247,7 @@ solution of the QP <a href="#equation-multiclass_svm">(1)</a>.</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
     </div>
 
 <script>

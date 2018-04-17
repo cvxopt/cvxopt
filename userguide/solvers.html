@@ -188,8 +188,8 @@ form</p>
 linear inequalities are generalized inequalities with respect to a proper
 convex cone, defined as a product of a nonnegative orthant, second-order
 cones, and positive semidefinite cones.</p>
-<p>The basic functions are <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal"><span class="pre">cp</span></code></a> and
-<a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code></a>, described in the sections
+<p>The basic functions are <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> and
+<a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal notranslate"><span class="pre">cpl</span></code></a>, described in the sections
 <a class="reference internal" href="#s-cp"><span class="std std-ref">Problems with Nonlinear Objectives</span></a> and <a class="reference internal" href="#s-cpl"><span class="std std-ref">Problems with Linear Objectives</span></a>.   A simpler interface for geometric
 programming problems is discussed in the section <a class="reference internal" href="#s-gp"><span class="std std-ref">Geometric Programming</span></a>.
 In the section <a class="reference internal" href="#s-nlcp"><span class="std std-ref">Exploiting Structure</span></a> we explain how custom solvers can be
@@ -203,41 +203,41 @@ describes the algorithm parameters that control the solvers.</p>
 <code class="descclassname">cvxopt.solvers.</code><code class="descname">cp</code><span class="sig-paren">(</span><em>F</em><span class="optional">[</span>, <em>G</em>, <em>h</em><span class="optional">[</span>, <em>dims</em><span class="optional">[</span>, <em>A</em>, <em>b</em><span class="optional">[</span>, <em>kktsolver</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a convex optimization problem</p>
 <div class="math" id="equation-e-nlcp">
-<p><span class="eqno">(1)</span><img src="_images/math/1dd7d279d208e0c3ddbbac62828e346ee154581a.png" alt="\begin{array}{ll}
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-e-nlcp" title="Permalink to this equation">¶</a></span><img src="_images/math/1dd7d279d208e0c3ddbbac62828e346ee154581a.png" alt="\begin{array}{ll}
     \mbox{minimize}   &amp; f_0(x) \\
     \mbox{subject to} &amp; f_k(x) \leq 0, \quad k=1,\ldots,m \\
                       &amp; G x \preceq h  \\
                       &amp; A x = b.
 \end{array}"/></p>
-</div><p>The argument <code class="docutils literal"><span class="pre">F</span></code> is a function that evaluates the objective and
+</div><p>The argument <code class="docutils literal notranslate"><span class="pre">F</span></code> is a function that evaluates the objective and
 nonlinear constraint functions.  It must handle the following calling
 sequences.</p>
 <ul>
-<li><p class="first"><code class="docutils literal"><span class="pre">F()</span></code> returns a tuple (<code class="docutils literal"><span class="pre">m</span></code>, <code class="docutils literal"><span class="pre">x0</span></code>), where <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> is
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">F()</span></code> returns a tuple (<code class="docutils literal notranslate"><span class="pre">m</span></code>, <code class="docutils literal notranslate"><span class="pre">x0</span></code>), where <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> is
 the number of nonlinear constraints and <img class="math" src="_images/math/307e583980f527b3f26e1e159435e0a8d262736b.png" alt="x_0"/> is a point in
-the domain of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>.  <code class="docutils literal"><span class="pre">x0</span></code> is a dense real matrix of size
+the domain of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>.  <code class="docutils literal notranslate"><span class="pre">x0</span></code> is a dense real matrix of size
 (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1).</p>
 </li>
-<li><p class="first"><code class="docutils literal"><span class="pre">F(x)</span></code>, with <code class="docutils literal"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1),
-returns a tuple (<code class="docutils literal"><span class="pre">f</span></code>, <code class="docutils literal"><span class="pre">Df</span></code>).  <code class="docutils literal"><span class="pre">f</span></code> is a dense real matrix of
-size (<img class="math" src="_images/math/edec40cd12b3d08dac5b9da86d7f4f0170e2da1e.png" alt="m+1"/>, 1), with <code class="docutils literal"><span class="pre">f[k]</span></code> equal to <img class="math" src="_images/math/3c0b0ce8e71182c7b2607dfa04b31f7a62d1bf08.png" alt="f_k(x)"/>.
-(If <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> is zero, <code class="docutils literal"><span class="pre">f</span></code> can also be returned as a number.)
-<code class="docutils literal"><span class="pre">Df</span></code> is a dense or sparse real matrix of size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> + 1,
-<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) with <code class="docutils literal"><span class="pre">Df[k,:]</span></code> equal to the transpose of the
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">F(x)</span></code>, with <code class="docutils literal notranslate"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1),
+returns a tuple (<code class="docutils literal notranslate"><span class="pre">f</span></code>, <code class="docutils literal notranslate"><span class="pre">Df</span></code>).  <code class="docutils literal notranslate"><span class="pre">f</span></code> is a dense real matrix of
+size (<img class="math" src="_images/math/edec40cd12b3d08dac5b9da86d7f4f0170e2da1e.png" alt="m+1"/>, 1), with <code class="docutils literal notranslate"><span class="pre">f[k]</span></code> equal to <img class="math" src="_images/math/3c0b0ce8e71182c7b2607dfa04b31f7a62d1bf08.png" alt="f_k(x)"/>.
+(If <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> is zero, <code class="docutils literal notranslate"><span class="pre">f</span></code> can also be returned as a number.)
+<code class="docutils literal notranslate"><span class="pre">Df</span></code> is a dense or sparse real matrix of size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> + 1,
+<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) with <code class="docutils literal notranslate"><span class="pre">Df[k,:]</span></code> equal to the transpose of the
 gradient <img class="math" src="_images/math/0e2ea72e52b611ad8a9f16109340d69b717036d5.png" alt="\nabla f_k(x)"/>.  If <img class="math" src="_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/> is not in the domain
-of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>, <code class="docutils literal"><span class="pre">F(x)</span></code> returns <code class="xref py py-const docutils literal"><span class="pre">None</span></code> or a tuple
-(<code class="xref py py-const docutils literal"><span class="pre">None</span></code>, <code class="xref py py-const docutils literal"><span class="pre">None</span></code>).</p>
+of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>, <code class="docutils literal notranslate"><span class="pre">F(x)</span></code> returns <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> or a tuple
+(<code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>).</p>
 </li>
-<li><p class="first"><code class="docutils literal"><span class="pre">F(x,z)</span></code>, with <code class="docutils literal"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1)
-and <code class="docutils literal"><span class="pre">z</span></code> a positive dense real matrix of size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> + 1, 1)
-returns a tuple (<code class="docutils literal"><span class="pre">f</span></code>, <code class="docutils literal"><span class="pre">Df</span></code>, <code class="docutils literal"><span class="pre">H</span></code>).  <code class="docutils literal"><span class="pre">f</span></code> and <code class="docutils literal"><span class="pre">Df</span></code> are
-defined as above.  <code class="docutils literal"><span class="pre">H</span></code> is a square dense or sparse real matrix of
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">F(x,z)</span></code>, with <code class="docutils literal notranslate"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1)
+and <code class="docutils literal notranslate"><span class="pre">z</span></code> a positive dense real matrix of size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> + 1, 1)
+returns a tuple (<code class="docutils literal notranslate"><span class="pre">f</span></code>, <code class="docutils literal notranslate"><span class="pre">Df</span></code>, <code class="docutils literal notranslate"><span class="pre">H</span></code>).  <code class="docutils literal notranslate"><span class="pre">f</span></code> and <code class="docutils literal notranslate"><span class="pre">Df</span></code> are
+defined as above.  <code class="docutils literal notranslate"><span class="pre">H</span></code> is a square dense or sparse real matrix of
 size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>), whose lower triangular part contains
 the lower triangular part of</p>
 <div class="math">
 <p><img src="_images/math/5ffc98c086faf80af48ced3587e76f4c79a413db.png" alt="z_0 \nabla^2f_0(x) + z_1 \nabla^2f_1(x) + \cdots +
     z_m \nabla^2f_m(x)."/></p>
-</div><p>If <code class="docutils literal"><span class="pre">F</span></code> is called with two arguments, it can be assumed that
+</div><p>If <code class="docutils literal notranslate"><span class="pre">F</span></code> is called with two arguments, it can be assumed that
 <img class="math" src="_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/> is in the domain of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>.</p>
 </li>
 </ul>
@@ -262,14 +262,14 @@ second-order cones, and a number of positive semidefinite cones:</p>
 \end{split}"/></p>
 </div><p>Here <img class="math" src="_images/math/3f388864dffc1723d778509bebc50ffa11beb27d.png" alt="\mathbf{vec}(u)"/> denotes a symmetric matrix <img class="math" src="_images/math/92e3f44c99a016c5238a790c96f12fd46aa93c4a.png" alt="u"/>
 stored as a vector in column major order.</p>
-<p>The arguments <code class="docutils literal"><span class="pre">h</span></code> and <code class="docutils literal"><span class="pre">b</span></code> are real single-column dense matrices.
-<code class="docutils literal"><span class="pre">G</span></code> and <code class="docutils literal"><span class="pre">A</span></code> are real dense or sparse matrices.  The default values
-for <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">b</span></code> are sparse matrices with zero rows, meaning that
-there are no equality constraints.  The number of rows of <code class="docutils literal"><span class="pre">G</span></code> and
-<code class="docutils literal"><span class="pre">h</span></code> is equal to</p>
+<p>The arguments <code class="docutils literal notranslate"><span class="pre">h</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> are real single-column dense matrices.
+<code class="docutils literal notranslate"><span class="pre">G</span></code> and <code class="docutils literal notranslate"><span class="pre">A</span></code> are real dense or sparse matrices.  The default values
+for <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> are sparse matrices with zero rows, meaning that
+there are no equality constraints.  The number of rows of <code class="docutils literal notranslate"><span class="pre">G</span></code> and
+<code class="docutils literal notranslate"><span class="pre">h</span></code> is equal to</p>
 <div class="math">
 <p><img src="_images/math/caa71a9b77cfd382474d0f3a9d79df47ece035d8.png" alt="K = l + \sum_{k=0}^{M-1} r_k + \sum_{k=0}^{N-1} t_k^2."/></p>
-</div><p>The columns of <code class="docutils literal"><span class="pre">G</span></code> and <code class="docutils literal"><span class="pre">h</span></code> are vectors in</p>
+</div><p>The columns of <code class="docutils literal notranslate"><span class="pre">G</span></code> and <code class="docutils literal notranslate"><span class="pre">h</span></code> are vectors in</p>
 <div class="math">
 <p><img src="_images/math/ba4c0fd6d9ed059a067b57b0d283ab58b0edb3af.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
 \reals^l \times \reals^{r_0} \times \cdots \times
@@ -278,38 +278,38 @@ there are no equality constraints.  The number of rows of <code class="docutils 
 </div><p>where the last <img class="math" src="_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/> components represent symmetric matrices stored
 in column major order.  The strictly upper triangular entries of these
 matrices are not accessed (i.e., the symmetric matrices are stored
-in the <code class="xref py py-const docutils literal"><span class="pre">'L'</span></code>-type column major order used in the <code class="xref py py-mod docutils literal"><span class="pre">blas</span></code>
-and <code class="xref py py-mod docutils literal"><span class="pre">lapack</span></code> modules).</p>
-<p>The argument <code class="docutils literal"><span class="pre">dims</span></code> is a dictionary with the dimensions of the cones.
+in the <code class="xref py py-const docutils literal notranslate"><span class="pre">'L'</span></code>-type column major order used in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">blas</span></code>
+and <code class="xref py py-mod docutils literal notranslate"><span class="pre">lapack</span></code> modules).</p>
+<p>The argument <code class="docutils literal notranslate"><span class="pre">dims</span></code> is a dictionary with the dimensions of the cones.
 It has three fields.</p>
 <dl class="docutils">
-<dt><code class="docutils literal"><span class="pre">dims['l']</span></code>:</dt>
+<dt><code class="docutils literal notranslate"><span class="pre">dims['l']</span></code>:</dt>
 <dd><img class="math" src="_images/math/b359488b993294ebbc2c7b30ab8f749dcbc6826d.png" alt="l"/>, the dimension of the nonnegative orthant (a nonnegative
 integer).</dd>
-<dt><code class="docutils literal"><span class="pre">dims['q']</span></code>:</dt>
+<dt><code class="docutils literal notranslate"><span class="pre">dims['q']</span></code>:</dt>
 <dd><img class="math" src="_images/math/36ea2edb987d61b7a416f46b04c5ff585102d601.png" alt="[r_0, \ldots, r_{M-1}]"/>, a list with the dimensions of the
 second-order cones (positive integers).</dd>
-<dt><code class="docutils literal"><span class="pre">dims['s']</span></code>:</dt>
+<dt><code class="docutils literal notranslate"><span class="pre">dims['s']</span></code>:</dt>
 <dd><img class="math" src="_images/math/432ccc192ef023379324f33ea54f2c59fbf07df4.png" alt="[t_0, \ldots, t_{N-1}]"/>, a list with the dimensions of the
 positive semidefinite cones (nonnegative integers).</dd>
 </dl>
-<p>The default value of <code class="docutils literal"><span class="pre">dims</span></code> is
-<code class="docutils literal"><span class="pre">{'l':</span> <span class="pre">h.size[0],</span> <span class="pre">'q':</span> <span class="pre">[],</span> <span class="pre">'s':</span> <span class="pre">[]}</span></code>, i.e., the default
+<p>The default value of <code class="docutils literal notranslate"><span class="pre">dims</span></code> is
+<code class="docutils literal notranslate"><span class="pre">{'l':</span> <span class="pre">h.size[0],</span> <span class="pre">'q':</span> <span class="pre">[],</span> <span class="pre">'s':</span> <span class="pre">[]}</span></code>, i.e., the default
 assumption is that the linear inequalities are componentwise
 inequalities.</p>
-<p>The role of the optional argument <code class="docutils literal"><span class="pre">kktsolver</span></code> is explained in the
+<p>The role of the optional argument <code class="docutils literal notranslate"><span class="pre">kktsolver</span></code> is explained in the
 section <a class="reference internal" href="#s-nlcp"><span class="std std-ref">Exploiting Structure</span></a>.</p>
-<p><code class="xref py py-func docutils literal"><span class="pre">cp</span></code> returns a dictionary that contains the result and
+<p><a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> returns a dictionary that contains the result and
 information about the accuracy of the solution.  The most important
-fields have keys <code class="xref py py-const docutils literal"><span class="pre">'status'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'x'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'snl'</span></code>,
-<code class="xref py py-const docutils literal"><span class="pre">'sl'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'y'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'znl'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'zl'</span></code>.  The
-possible values of the <code class="xref py py-const docutils literal"><span class="pre">'status'</span></code> key are:</p>
+fields have keys <code class="xref py py-const docutils literal notranslate"><span class="pre">'status'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'x'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'snl'</span></code>,
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'sl'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'y'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'znl'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'zl'</span></code>.  The
+possible values of the <code class="xref py py-const docutils literal notranslate"><span class="pre">'status'</span></code> key are:</p>
 <dl class="docutils">
-<dt><code class="xref py py-const docutils literal"><span class="pre">'optimal'</span></code></dt>
-<dd><p class="first">In this case the <code class="xref py py-const docutils literal"><span class="pre">'x'</span></code> entry of the dictionary is the primal
-optimal solution, the <code class="xref py py-const docutils literal"><span class="pre">'snl'</span></code> and <code class="xref py py-const docutils literal"><span class="pre">'sl'</span></code> entries are
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'optimal'</span></code></dt>
+<dd><p class="first">In this case the <code class="xref py py-const docutils literal notranslate"><span class="pre">'x'</span></code> entry of the dictionary is the primal
+optimal solution, the <code class="xref py py-const docutils literal notranslate"><span class="pre">'snl'</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">'sl'</span></code> entries are
 the corresponding slacks in the nonlinear and linear inequality
-constraints, and the <code class="xref py py-const docutils literal"><span class="pre">'znl'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'zl'</span></code> and <code class="xref py py-const docutils literal"><span class="pre">'y'</span></code>
+constraints, and the <code class="xref py py-const docutils literal notranslate"><span class="pre">'znl'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'zl'</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">'y'</span></code>
 entries are the optimal values of the dual variables associated
 with the nonlinear inequalities, the linear inequalities, and the
 linear equality constraints.  These vectors approximately satisfy
@@ -328,15 +328,15 @@ s_\mathrm{nl}^T z_\mathrm{nl} +
 s_\mathrm{l}^T z_\mathrm{l} = 0"/></p>
 </div><p class="last">where <img class="math" src="_images/math/5263638cee7138e0a51bc5c226dc6975f2f9c0d1.png" alt="\tilde f = (f_1,\ldots, f_m)"/>.</p>
 </dd>
-<dt><code class="xref py py-const docutils literal"><span class="pre">'unknown'</span></code></dt>
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'unknown'</span></code></dt>
 <dd>This indicates that the algorithm terminated before a solution was
 found, due to numerical difficulties or because the maximum number
-of iterations was reached.  The <code class="xref py py-const docutils literal"><span class="pre">'x'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'snl'</span></code>,
-<code class="xref py py-const docutils literal"><span class="pre">'sl'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'y'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'znl'</span></code>, and <code class="xref py py-const docutils literal"><span class="pre">'zl'</span></code>
+of iterations was reached.  The <code class="xref py py-const docutils literal notranslate"><span class="pre">'x'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'snl'</span></code>,
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'sl'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'y'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'znl'</span></code>, and <code class="xref py py-const docutils literal notranslate"><span class="pre">'zl'</span></code>
 entries contain the iterates when the algorithm terminated.</dd>
 </dl>
-<p><code class="xref py py-func docutils literal"><span class="pre">cp</span></code> solves the problem by applying
-<a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code></a> to the epigraph
+<p><a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> solves the problem by applying
+<a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal notranslate"><span class="pre">cpl</span></code></a> to the epigraph
 form problem</p>
 <div class="math">
 <p><img src="_images/math/68a75e578d73fa99a03d8abcedb98203f378cafb.png" alt="\begin{array}{ll}
@@ -346,11 +346,11 @@ form problem</p>
                   &amp; Gx \preceq h \\
                   &amp; Ax = b.
 \end{array}"/></p>
-</div><p>The other entries in the output dictionary of <code class="xref py py-func docutils literal"><span class="pre">cp</span></code> describe
+</div><p>The other entries in the output dictionary of <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> describe
 the accuracy of the solution and are copied from the output of
-<a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code></a> applied to this epigraph form
+<a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal notranslate"><span class="pre">cpl</span></code></a> applied to this epigraph form
 problem.</p>
-<p><code class="xref py py-func docutils literal"><span class="pre">cp</span></code> requires that the problem is strictly primal and dual
+<p><a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> requires that the problem is strictly primal and dual
 feasible and that</p>
 <div class="math">
 <p><img src="_images/math/0946b57c221471c3607b52bc6e4b8edcb9162b07.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
@@ -370,9 +370,9 @@ feasible and that</p>
 \mbox{minimize} &amp; -\sum\limits_{i=1}^m \log x_i \\
 \mbox{subject to} &amp; Ax = b.
 \end{array}"/></p>
-</div><p>The function <code class="xref py py-func docutils literal"><span class="pre">acent</span></code> defined  below solves the problem, assuming
+</div><p>The function <code class="xref py py-func docutils literal notranslate"><span class="pre">acent</span></code> defined  below solves the problem, assuming
 it is solvable.</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">log</span>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">log</span>
 
 <span class="k">def</span> <span class="nf">acent</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span>
@@ -389,7 +389,7 @@ it is solvable.</p>
 </div>
 </dd>
 <dt><strong>Example: robust least-squares</strong></dt>
-<dd><p class="first">The function <code class="xref py py-func docutils literal"><span class="pre">robls</span></code> defined below solves the unconstrained
+<dd><p class="first">The function <code class="xref py py-func docutils literal notranslate"><span class="pre">robls</span></code> defined below solves the unconstrained
 problem</p>
 <div class="math">
 <p><img src="_images/math/6fbadea27ea012c041c6ad34f038a2bb1a9a6eec.png" alt="\begin{array}{ll}
@@ -397,7 +397,7 @@ problem</p>
 \end{array}
 \qquad \phi(u) = \sqrt{\rho + u^2},"/></p>
 </div><p>where <img class="math" src="_images/math/726977cc88937e2a8bac10441f555f9306f97a48.png" alt="A \in\mathbf{R}^{m\times n}"/>.</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">div</span>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">div</span>
 
 <span class="k">def</span> <span class="nf">robls</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">rho</span><span class="p">):</span>
     <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span>
@@ -436,7 +436,7 @@ problem</p>
           20 &amp; 10 &amp; 40 \\ 10 &amp; 80 &amp; 10 \\ 40 &amp; 10 &amp; 15
           \end{array}\right].
 \end{array}"/></p>
-</div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">solvers</span>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">solvers</span>
 
 <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
      <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
@@ -475,33 +475,33 @@ problem</p>
                   &amp; G x \preceq h  \\
                   &amp; A x = b.
 \end{array}"/></p>
-</div><p><code class="docutils literal"><span class="pre">c</span></code> is a real single-column dense matrix.</p>
-<p><code class="docutils literal"><span class="pre">F</span></code> is a function that evaluates the nonlinear constraint functions.
+</div><p><code class="docutils literal notranslate"><span class="pre">c</span></code> is a real single-column dense matrix.</p>
+<p><code class="docutils literal notranslate"><span class="pre">F</span></code> is a function that evaluates the nonlinear constraint functions.
 It must handle the following calling sequences.</p>
 <ul>
-<li><p class="first"><code class="docutils literal"><span class="pre">F()</span></code> returns a tuple (<code class="docutils literal"><span class="pre">m</span></code>, <code class="docutils literal"><span class="pre">x0</span></code>), where <code class="docutils literal"><span class="pre">m</span></code> is the
-number of nonlinear constraints and <code class="docutils literal"><span class="pre">x0</span></code> is a point in the domain
-of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>.  <code class="docutils literal"><span class="pre">x0</span></code> is a dense real matrix of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1).</p>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">F()</span></code> returns a tuple (<code class="docutils literal notranslate"><span class="pre">m</span></code>, <code class="docutils literal notranslate"><span class="pre">x0</span></code>), where <code class="docutils literal notranslate"><span class="pre">m</span></code> is the
+number of nonlinear constraints and <code class="docutils literal notranslate"><span class="pre">x0</span></code> is a point in the domain
+of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>.  <code class="docutils literal notranslate"><span class="pre">x0</span></code> is a dense real matrix of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1).</p>
 </li>
-<li><p class="first"><code class="docutils literal"><span class="pre">F(x)</span></code>, with <code class="docutils literal"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1),
-returns a tuple (<code class="docutils literal"><span class="pre">f</span></code>, <code class="docutils literal"><span class="pre">Df</span></code>).  <code class="docutils literal"><span class="pre">f</span></code> is a dense real matrix of
-size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>, 1), with <code class="docutils literal"><span class="pre">f[k]</span></code> equal to <img class="math" src="_images/math/3c0b0ce8e71182c7b2607dfa04b31f7a62d1bf08.png" alt="f_k(x)"/>.
-<code class="docutils literal"><span class="pre">Df</span></code> is a dense or sparse real matrix of size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>,
-<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) with <code class="docutils literal"><span class="pre">Df[k,:]</span></code> equal to the transpose of the
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">F(x)</span></code>, with <code class="docutils literal notranslate"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1),
+returns a tuple (<code class="docutils literal notranslate"><span class="pre">f</span></code>, <code class="docutils literal notranslate"><span class="pre">Df</span></code>).  <code class="docutils literal notranslate"><span class="pre">f</span></code> is a dense real matrix of
+size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>, 1), with <code class="docutils literal notranslate"><span class="pre">f[k]</span></code> equal to <img class="math" src="_images/math/3c0b0ce8e71182c7b2607dfa04b31f7a62d1bf08.png" alt="f_k(x)"/>.
+<code class="docutils literal notranslate"><span class="pre">Df</span></code> is a dense or sparse real matrix of size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>,
+<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) with <code class="docutils literal notranslate"><span class="pre">Df[k,:]</span></code> equal to the transpose of the
 gradient <img class="math" src="_images/math/0e2ea72e52b611ad8a9f16109340d69b717036d5.png" alt="\nabla f_k(x)"/>.  If <img class="math" src="_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/> is not in the domain
-of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>, <code class="docutils literal"><span class="pre">F(x)</span></code> returns <code class="xref py py-const docutils literal"><span class="pre">None</span></code> or a tuple
-(<code class="xref py py-const docutils literal"><span class="pre">None</span></code>, <code class="xref py py-const docutils literal"><span class="pre">None</span></code>).</p>
+of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>, <code class="docutils literal notranslate"><span class="pre">F(x)</span></code> returns <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> or a tuple
+(<code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>).</p>
 </li>
-<li><p class="first"><code class="docutils literal"><span class="pre">F(x,z)</span></code>, with <code class="docutils literal"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1)
-and <code class="docutils literal"><span class="pre">z</span></code> a positive dense real matrix of size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>, 1)
-returns a tuple (<code class="docutils literal"><span class="pre">f</span></code>, <code class="docutils literal"><span class="pre">Df</span></code>, <code class="docutils literal"><span class="pre">H</span></code>).  <code class="docutils literal"><span class="pre">f</span></code> and <code class="docutils literal"><span class="pre">Df</span></code> are defined
-as above.  <code class="docutils literal"><span class="pre">H</span></code> is a square dense or sparse real matrix of size
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">F(x,z)</span></code>, with <code class="docutils literal notranslate"><span class="pre">x</span></code> a dense real matrix of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, 1)
+and <code class="docutils literal notranslate"><span class="pre">z</span></code> a positive dense real matrix of size (<img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/>, 1)
+returns a tuple (<code class="docutils literal notranslate"><span class="pre">f</span></code>, <code class="docutils literal notranslate"><span class="pre">Df</span></code>, <code class="docutils literal notranslate"><span class="pre">H</span></code>).  <code class="docutils literal notranslate"><span class="pre">f</span></code> and <code class="docutils literal notranslate"><span class="pre">Df</span></code> are defined
+as above.  <code class="docutils literal notranslate"><span class="pre">H</span></code> is a square dense or sparse real matrix of size
 (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>), whose lower triangular part contains the
 lower triangular part of</p>
 <div class="math">
 <p><img src="_images/math/ffe103c3355b97f4e158f8d9b8719f88a457bbe8.png" alt="z_0 \nabla^2f_0(x) + z_1 \nabla^2f_1(x) + \cdots +
 z_{m-1} \nabla^2f_{m-1}(x)."/></p>
-</div><p>If <code class="docutils literal"><span class="pre">F</span></code> is called with two arguments, it can be assumed that
+</div><p>If <code class="docutils literal notranslate"><span class="pre">F</span></code> is called with two arguments, it can be assumed that
 <img class="math" src="_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/> is in the domain of <img class="math" src="_images/math/875eb40014526135383caa89fd500ae40a835f56.png" alt="f"/>.</p>
 </li>
 </ul>
@@ -525,14 +525,14 @@ C_{k+M+1} &amp;= \left\{ \svec(u) \; | \;
 \end{split}"/></p>
 </div><p>Here <img class="math" src="_images/math/3f388864dffc1723d778509bebc50ffa11beb27d.png" alt="\mathbf{vec}(u)"/> denotes a symmetric matrix <img class="math" src="_images/math/92e3f44c99a016c5238a790c96f12fd46aa93c4a.png" alt="u"/>
 stored as a vector in column major order.</p>
-<p>The arguments <code class="docutils literal"><span class="pre">h</span></code> and <code class="docutils literal"><span class="pre">b</span></code> are real single-column dense matrices.
-<code class="docutils literal"><span class="pre">G</span></code> and <code class="docutils literal"><span class="pre">A</span></code> are real dense or sparse matrices.  The default values
-for <code class="docutils literal"><span class="pre">A</span></code> and <code class="docutils literal"><span class="pre">b</span></code> are sparse matrices with zero rows, meaning that
-there are no equality constraints.  The number of rows of <code class="docutils literal"><span class="pre">G</span></code> and
-<code class="docutils literal"><span class="pre">h</span></code> is equal to</p>
+<p>The arguments <code class="docutils literal notranslate"><span class="pre">h</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> are real single-column dense matrices.
+<code class="docutils literal notranslate"><span class="pre">G</span></code> and <code class="docutils literal notranslate"><span class="pre">A</span></code> are real dense or sparse matrices.  The default values
+for <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> are sparse matrices with zero rows, meaning that
+there are no equality constraints.  The number of rows of <code class="docutils literal notranslate"><span class="pre">G</span></code> and
+<code class="docutils literal notranslate"><span class="pre">h</span></code> is equal to</p>
 <div class="math">
 <p><img src="_images/math/caa71a9b77cfd382474d0f3a9d79df47ece035d8.png" alt="K = l + \sum_{k=0}^{M-1} r_k + \sum_{k=0}^{N-1} t_k^2."/></p>
-</div><p>The columns of <code class="docutils literal"><span class="pre">G</span></code> and <code class="docutils literal"><span class="pre">h</span></code> are vectors in</p>
+</div><p>The columns of <code class="docutils literal notranslate"><span class="pre">G</span></code> and <code class="docutils literal notranslate"><span class="pre">h</span></code> are vectors in</p>
 <div class="math">
 <p><img src="_images/math/ba4c0fd6d9ed059a067b57b0d283ab58b0edb3af.png" alt="\newcommand{\reals}{{\mbox{\bf R}}}
 \reals^l \times \reals^{r_0} \times \cdots \times
@@ -541,39 +541,39 @@ there are no equality constraints.  The number of rows of <code class="docutils 
 </div><p>where the last <img class="math" src="_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/> components represent symmetric matrices stored
 in column major order.  The strictly upper triangular entries of these
 matrices are not accessed (i.e., the symmetric matrices are stored
-in the <code class="xref py py-const docutils literal"><span class="pre">'L'</span></code>-type column major order used in the <code class="xref py py-mod docutils literal"><span class="pre">blas</span></code> and
-<code class="xref py py-mod docutils literal"><span class="pre">lapack</span></code> modules.</p>
-<p>The argument <code class="docutils literal"><span class="pre">dims</span></code> is a dictionary with the dimensions of the cones.
+in the <code class="xref py py-const docutils literal notranslate"><span class="pre">'L'</span></code>-type column major order used in the <code class="xref py py-mod docutils literal notranslate"><span class="pre">blas</span></code> and
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">lapack</span></code> modules.</p>
+<p>The argument <code class="docutils literal notranslate"><span class="pre">dims</span></code> is a dictionary with the dimensions of the cones.
 It has three fields.</p>
 <dl class="docutils">
-<dt><code class="docutils literal"><span class="pre">dims['l']</span></code>:</dt>
+<dt><code class="docutils literal notranslate"><span class="pre">dims['l']</span></code>:</dt>
 <dd><img class="math" src="_images/math/b359488b993294ebbc2c7b30ab8f749dcbc6826d.png" alt="l"/>, the dimension of the nonnegative orthant (a nonnegative
 integer).</dd>
-<dt><code class="docutils literal"><span class="pre">dims['q']</span></code>:</dt>
+<dt><code class="docutils literal notranslate"><span class="pre">dims['q']</span></code>:</dt>
 <dd><img class="math" src="_images/math/36ea2edb987d61b7a416f46b04c5ff585102d601.png" alt="[r_0, \ldots, r_{M-1}]"/>, a list with the dimensions of the
 second-order cones (positive integers).</dd>
-<dt><code class="docutils literal"><span class="pre">dims['s']</span></code>:</dt>
+<dt><code class="docutils literal notranslate"><span class="pre">dims['s']</span></code>:</dt>
 <dd><img class="math" src="_images/math/432ccc192ef023379324f33ea54f2c59fbf07df4.png" alt="[t_0, \ldots, t_{N-1}]"/>, a list with the dimensions of the
 positive semidefinite cones (nonnegative integers).</dd>
 </dl>
-<p>The default value of <code class="docutils literal"><span class="pre">dims</span></code> is
-<code class="docutils literal"><span class="pre">{'l':</span> <span class="pre">h.size[0],</span> <span class="pre">'q':</span> <span class="pre">[],</span> <span class="pre">'s':</span> <span class="pre">[]}</span></code>, i.e., the default
+<p>The default value of <code class="docutils literal notranslate"><span class="pre">dims</span></code> is
+<code class="docutils literal notranslate"><span class="pre">{'l':</span> <span class="pre">h.size[0],</span> <span class="pre">'q':</span> <span class="pre">[],</span> <span class="pre">'s':</span> <span class="pre">[]}</span></code>, i.e., the default
 assumption is that the linear inequalities are componentwise
 inequalities.</p>
-<p>The role of the optional argument <code class="docutils literal"><span class="pre">kktsolver</span></code> is explained in the
+<p>The role of the optional argument <code class="docutils literal notranslate"><span class="pre">kktsolver</span></code> is explained in the
 section <a class="reference internal" href="#s-nlcp"><span class="std std-ref">Exploiting Structure</span></a>.</p>
-<p><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code> returns a dictionary that contains the result and
+<p><a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal notranslate"><span class="pre">cpl</span></code></a> returns a dictionary that contains the result and
 information about the accuracy of the solution.  The most important
-fields have keys <code class="xref py py-const docutils literal"><span class="pre">'status'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'x'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'snl'</span></code>,
-<code class="xref py py-const docutils literal"><span class="pre">'sl'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'y'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'znl'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'zl'</span></code>.
-The possible values of the <code class="xref py py-const docutils literal"><span class="pre">'status'</span></code> key are:</p>
+fields have keys <code class="xref py py-const docutils literal notranslate"><span class="pre">'status'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'x'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'snl'</span></code>,
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'sl'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'y'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'znl'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'zl'</span></code>.
+The possible values of the <code class="xref py py-const docutils literal notranslate"><span class="pre">'status'</span></code> key are:</p>
 <dl class="docutils">
-<dt><code class="xref py py-const docutils literal"><span class="pre">'optimal'</span></code></dt>
-<dd><p class="first">In this case the <code class="xref py py-const docutils literal"><span class="pre">'x'</span></code> entry of the dictionary is the primal
-optimal solution, the <code class="xref py py-const docutils literal"><span class="pre">'snl'</span></code> and <code class="xref py py-const docutils literal"><span class="pre">'sl'</span></code> entries are
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'optimal'</span></code></dt>
+<dd><p class="first">In this case the <code class="xref py py-const docutils literal notranslate"><span class="pre">'x'</span></code> entry of the dictionary is the primal
+optimal solution, the <code class="xref py py-const docutils literal notranslate"><span class="pre">'snl'</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">'sl'</span></code> entries are
 the corresponding slacks in the nonlinear and linear inequality
-constraints, and the <code class="xref py py-const docutils literal"><span class="pre">'znl'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'zl'</span></code>, and
-<code class="xref py py-const docutils literal"><span class="pre">'y'</span></code> entries are the optimal values of the dual variables
+constraints, and the <code class="xref py py-const docutils literal notranslate"><span class="pre">'znl'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'zl'</span></code>, and
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'y'</span></code> entries are the optimal values of the dual variables
 associated with the nonlinear inequalities, the linear
 inequalities, and the linear equality constraints.  These vectors
 approximately satisfy the Karush-Kuhn-Tucker (KKT) conditions</p>
@@ -590,16 +590,16 @@ s_\mathrm{nl}\succeq 0, \qquad s_\mathrm{l}\succeq 0, \qquad
 s_\mathrm{nl}^T z_\mathrm{nl} +  s_\mathrm{l}^T z_\mathrm{l}
     = 0."/></p>
 </div></dd>
-<dt><code class="xref py py-const docutils literal"><span class="pre">'unknown'</span></code></dt>
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'unknown'</span></code></dt>
 <dd>This indicates that the algorithm terminated before a solution was
 found, due to numerical difficulties or because the maximum number
-of iterations was reached.  The <code class="xref py py-const docutils literal"><span class="pre">'x'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'snl'</span></code>,
-<code class="xref py py-const docutils literal"><span class="pre">'sl'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'y'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'znl'</span></code>, and <code class="xref py py-const docutils literal"><span class="pre">'zl'</span></code>
+of iterations was reached.  The <code class="xref py py-const docutils literal notranslate"><span class="pre">'x'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'snl'</span></code>,
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'sl'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'y'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'znl'</span></code>, and <code class="xref py py-const docutils literal notranslate"><span class="pre">'zl'</span></code>
 entries contain the iterates when the algorithm terminated.</dd>
 </dl>
 <p>The other entries in the output dictionary describe the accuracy
-of the solution.  The entries <code class="xref py py-const docutils literal"><span class="pre">'primal</span> <span class="pre">objective'</span></code>,
-<code class="xref py py-const docutils literal"><span class="pre">'dual</span> <span class="pre">objective'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'gap'</span></code>, and <code class="xref py py-const docutils literal"><span class="pre">'relative</span> <span class="pre">gap'</span></code>     give the primal objective <img class="math" src="_images/math/0940add1e3a60af86e727e639fe59c08263e4c11.png" alt="c^Tx"/>, the dual objective, calculated
+of the solution.  The entries <code class="xref py py-const docutils literal notranslate"><span class="pre">'primal</span> <span class="pre">objective'</span></code>,
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'dual</span> <span class="pre">objective'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'gap'</span></code>, and <code class="xref py py-const docutils literal notranslate"><span class="pre">'relative</span> <span class="pre">gap'</span></code>     give the primal objective <img class="math" src="_images/math/0940add1e3a60af86e727e639fe59c08263e4c11.png" alt="c^Tx"/>, the dual objective, calculated
 as</p>
 <div class="math">
 <p><img src="_images/math/5673dfadcf895d10d82a27b5337a04e01fec5a28.png" alt="c^Tx + z_\mathrm{nl}^T f(x) + z_\mathrm{l}^T (Gx - h) + y^T(Ax-b),"/></p>
@@ -612,22 +612,22 @@ as</p>
     \quad \mbox{if\ } \mbox{primal objective} &lt; 0, \qquad
 \frac{\mbox{gap}}{\mbox{dual objective}}
     \quad \mbox{if\ } \mbox{dual objective} &gt; 0,"/></p>
-</div><p>and <code class="xref py py-const docutils literal"><span class="pre">None</span></code> otherwise.  The entry with key
-<code class="xref py py-const docutils literal"><span class="pre">'primal</span> <span class="pre">infeasibility'</span></code> gives the residual in the primal
+</div><p>and <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> otherwise.  The entry with key
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'primal</span> <span class="pre">infeasibility'</span></code> gives the residual in the primal
 constraints,</p>
 <div class="math">
 <p><img src="_images/math/95c396807a80852bb5eb906d12bd1c5d23a3ac6c.png" alt="\newcommand{\ones}{{\bf 1}}
 \frac{\| ( f(x) + s_{\mathrm{nl}},  Gx + s_\mathrm{l} - h,
     Ax-b ) \|_2} {\max\{1, \| ( f(x_0) + \ones,
 Gx_0 + \ones-h, Ax_0-b) \|_2 \}}"/></p>
-</div><p>where <img class="math" src="_images/math/307e583980f527b3f26e1e159435e0a8d262736b.png" alt="x_0"/> is the point returned by <code class="docutils literal"><span class="pre">F()</span></code>.  The entry
-with key <code class="xref py py-const docutils literal"><span class="pre">'dual</span> <span class="pre">infeasibility'</span></code> gives the residual</p>
+</div><p>where <img class="math" src="_images/math/307e583980f527b3f26e1e159435e0a8d262736b.png" alt="x_0"/> is the point returned by <code class="docutils literal notranslate"><span class="pre">F()</span></code>.  The entry
+with key <code class="xref py py-const docutils literal notranslate"><span class="pre">'dual</span> <span class="pre">infeasibility'</span></code> gives the residual</p>
 <div class="math">
 <p><img src="_images/math/45b394f7aeb822d8e41dfa855fa4c48f49912376.png" alt="\newcommand{\ones}{{\bf 1}}
 \frac
     { \| c +  Df(x)^Tz_\mathrm{nl} + G^Tz_\mathrm{l} + A^T y \|_2}
     { \max\{ 1, \| c + Df(x_0)^T\ones + G^T\ones \|_2 \} }."/></p>
-</div><p><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code> requires that the problem is strictly primal and dual
+</div><p><a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal notranslate"><span class="pre">cpl</span></code></a> requires that the problem is strictly primal and dual
 feasible and that</p>
 <div class="math">
 <p><img src="_images/math/81184371d9f14b55f2c95d326e7f1fba2711d2ea.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
@@ -664,10 +664,10 @@ feasible and that</p>
 W, \qquad H, \qquad x\in\reals^5, \qquad y\in\reals^5, \qquad
 w\in\reals^5, \qquad h\in\reals^5,"/></p>
 </div><p>5 nonlinear inequality constraints, and 26 linear inequality
-constraints.  The code belows defines a function <code class="xref py py-func docutils literal"><span class="pre">floorplan</span></code>
-that solves the problem by calling <code class="xref py py-func docutils literal"><span class="pre">cp</span></code>, then applies it to
+constraints.  The code belows defines a function <code class="xref py py-func docutils literal notranslate"><span class="pre">floorplan</span></code>
+that solves the problem by calling <code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code>, then applies it to
 4 instances, and creates a figure.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pylab</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pylab</span>
 <span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span>
 
 <span class="k">def</span> <span class="nf">floorplan</span><span class="p">(</span><span class="n">Amin</span><span class="p">):</span>
@@ -736,9 +736,9 @@ that solves the problem by calling <code class="xref py py-func docutils literal
     <span class="n">G</span><span class="p">[</span><span class="mi">17</span><span class="p">,</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">17</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>                       <span class="c1">#  w1 - gamma * h1 &lt;= 0</span>
     <span class="n">G</span><span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">18</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c1"># -w2 + h2/gamma &lt;= 0</span>
     <span class="n">G</span><span class="p">[</span><span class="mi">19</span><span class="p">,</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">18</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>                       <span class="c1">#  w2 - gamma * h2 &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">18</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c1"># -w3 + h3/gamma &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">19</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c1"># -w3 + h3/gamma &lt;= 0</span>
     <span class="n">G</span><span class="p">[</span><span class="mi">21</span><span class="p">,</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">19</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>                       <span class="c1">#  w3 - gamma * h3 &lt;= 0</span>
-    <span class="n">G</span><span class="p">[</span><span class="mi">22</span><span class="p">,</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">19</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c1"># -w4  + h4/gamma &lt;= 0</span>
+    <span class="n">G</span><span class="p">[</span><span class="mi">22</span><span class="p">,</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c1"># -w4  + h4/gamma &lt;= 0</span>
     <span class="n">G</span><span class="p">[</span><span class="mi">23</span><span class="p">,</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>                       <span class="c1">#  w4 - gamma * h4 &lt;= 0</span>
     <span class="n">G</span><span class="p">[</span><span class="mi">24</span><span class="p">,</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">21</span><span class="p">]]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">gamma</span>                   <span class="c1"># -w5 + h5/gamma &lt;= 0</span>
     <span class="n">G</span><span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">21</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="n">gamma</span>                       <span class="c1">#  w5 - gamma * h5 &lt;= 0.0</span>
@@ -825,25 +825,25 @@ g = \left[ \begin{array}{cccc}
      g_0^T &amp; g_1^T &amp; \cdots &amp; g_m^T
     \end{array}\right]^T,"/></p>
 </div><p>and the vector inequality denotes componentwise inequality.
-<code class="docutils literal"><span class="pre">K</span></code> is a list of <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> + 1 positive integers with <code class="docutils literal"><span class="pre">K[i]</span></code>
-equal to the number of rows in <img class="math" src="_images/math/42b6c756573328a1e9009cecd029bac50b7e9e4b.png" alt="F_i"/>.  <code class="docutils literal"><span class="pre">F</span></code> is a dense or
-sparse real matrix of size <code class="docutils literal"><span class="pre">(sum(K),</span> <span class="pre">n)</span></code>.
-<code class="docutils literal"><span class="pre">g</span></code> is a dense real matrix with one column and the same number of
-rows as <code class="docutils literal"><span class="pre">F</span></code>.
-<code class="docutils literal"><span class="pre">G</span></code> and <code class="docutils literal"><span class="pre">A</span></code> are dense or sparse real matrices.  Their default
+<code class="docutils literal notranslate"><span class="pre">K</span></code> is a list of <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> + 1 positive integers with <code class="docutils literal notranslate"><span class="pre">K[i]</span></code>
+equal to the number of rows in <img class="math" src="_images/math/42b6c756573328a1e9009cecd029bac50b7e9e4b.png" alt="F_i"/>.  <code class="docutils literal notranslate"><span class="pre">F</span></code> is a dense or
+sparse real matrix of size <code class="docutils literal notranslate"><span class="pre">(sum(K),</span> <span class="pre">n)</span></code>.
+<code class="docutils literal notranslate"><span class="pre">g</span></code> is a dense real matrix with one column and the same number of
+rows as <code class="docutils literal notranslate"><span class="pre">F</span></code>.
+<code class="docutils literal notranslate"><span class="pre">G</span></code> and <code class="docutils literal notranslate"><span class="pre">A</span></code> are dense or sparse real matrices.  Their default
 values are sparse matrices with zero rows.
-<code class="docutils literal"><span class="pre">h</span></code> and <code class="docutils literal"><span class="pre">b</span></code> are dense real matrices with one column.  Their
+<code class="docutils literal notranslate"><span class="pre">h</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> are dense real matrices with one column.  Their
 default values are matrices of size (0, 1).</p>
-<p><code class="xref py py-func docutils literal"><span class="pre">gp</span></code> returns a dictionary with keys <code class="xref py py-const docutils literal"><span class="pre">'status'</span></code>,
-<code class="xref py py-const docutils literal"><span class="pre">'x'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'snl'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'sl'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'y'</span></code>,
-<code class="xref py py-const docutils literal"><span class="pre">'znl'</span></code>, and <code class="xref py py-const docutils literal"><span class="pre">'zl'</span></code>.  The possible values of the
-<code class="xref py py-const docutils literal"><span class="pre">'status'</span></code> key are:</p>
+<p><a class="reference internal" href="#cvxopt.solvers.gp" title="cvxopt.solvers.gp"><code class="xref py py-func docutils literal notranslate"><span class="pre">gp</span></code></a> returns a dictionary with keys <code class="xref py py-const docutils literal notranslate"><span class="pre">'status'</span></code>,
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'x'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'snl'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'sl'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'y'</span></code>,
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'znl'</span></code>, and <code class="xref py py-const docutils literal notranslate"><span class="pre">'zl'</span></code>.  The possible values of the
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'status'</span></code> key are:</p>
 <dl class="docutils">
-<dt><code class="xref py py-const docutils literal"><span class="pre">'optimal'</span></code></dt>
-<dd><p class="first">In this case the <code class="xref py py-const docutils literal"><span class="pre">'x'</span></code> entry is the primal optimal solution,
-the <code class="xref py py-const docutils literal"><span class="pre">'snl'</span></code> and <code class="xref py py-const docutils literal"><span class="pre">'sl'</span></code> entries are the corresponding
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'optimal'</span></code></dt>
+<dd><p class="first">In this case the <code class="xref py py-const docutils literal notranslate"><span class="pre">'x'</span></code> entry is the primal optimal solution,
+the <code class="xref py py-const docutils literal notranslate"><span class="pre">'snl'</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">'sl'</span></code> entries are the corresponding
 slacks in the nonlinear and linear inequality constraints.  The
-<code class="xref py py-const docutils literal"><span class="pre">'znl'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'zl'</span></code>, and <code class="xref py py-const docutils literal"><span class="pre">'y'</span></code> entries are the
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'znl'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'zl'</span></code>, and <code class="xref py py-const docutils literal notranslate"><span class="pre">'y'</span></code> entries are the
 optimal values of the dual variables associated with the nonlinear
 and linear inequality constraints and the linear equality
 constraints.  These values approximately satisfy</p>
@@ -859,16 +859,26 @@ z_\mathrm{nl} \succeq 0, \qquad z_\mathrm{l} \succeq 0,
 
 s_\mathrm{nl}^T z_\mathrm{nl} + s_\mathrm{l}^T z_\mathrm{l} =0."/></p>
 </div></dd>
-<dt><code class="xref py py-const docutils literal"><span class="pre">'unknown'</span></code></dt>
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'unknown'</span></code></dt>
 <dd>This indicates that the algorithm terminated before a solution was
 found, due to numerical difficulties or because the maximum number
-of iterations was reached.  The <code class="xref py py-const docutils literal"><span class="pre">'x'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'snl'</span></code>,
-<code class="xref py py-const docutils literal"><span class="pre">'sl'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'y'</span></code>, <code class="xref py py-const docutils literal"><span class="pre">'znl'</span></code>, and <code class="xref py py-const docutils literal"><span class="pre">'zl'</span></code>
+of iterations was reached.  The <code class="xref py py-const docutils literal notranslate"><span class="pre">'x'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'snl'</span></code>,
+<code class="xref py py-const docutils literal notranslate"><span class="pre">'sl'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'y'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'znl'</span></code>, and <code class="xref py py-const docutils literal notranslate"><span class="pre">'zl'</span></code>
 contain the iterates when the algorithm terminated.</dd>
 </dl>
 <p>The other entries in the output dictionary describe the accuracy
 of the solution, and are taken from the output of
-<a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal"><span class="pre">cp</span></code></a>.</p>
+<a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a>.</p>
+<p><a class="reference internal" href="#cvxopt.solvers.gp" title="cvxopt.solvers.gp"><code class="xref py py-func docutils literal notranslate"><span class="pre">gp</span></code></a> requires that the problem is strictly primal and dual
+feasible and that</p>
+<div class="math">
+<p><img src="_images/math/0946b57c221471c3607b52bc6e4b8edcb9162b07.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
+\Rank(A) = p, \qquad
+\Rank \left( \left[ \begin{array}{cccccc}
+     \sum_{k=0}^m z_k \nabla^2 f_k(x) &amp; A^T &amp;
+      \nabla f_1(x) &amp; \cdots \nabla f_m(x) &amp; G^T
+      \end{array} \right] \right) = n,"/></p>
+</div><p>for all <img class="math" src="_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/> and all positive <img class="math" src="_images/math/683f2dd9129a91d21aaf1c04afa6f78b39d4cb0a.png" alt="z"/>.</p>
 </dd></dl>
 
 <p>As an example, we solve the small GP of section 2.4 of the paper
@@ -887,7 +897,7 @@ The  posynomial form of the problem is</p>
     &amp;   (1/\delta)dw^{-1} \leq 1
  \end{array}"/></p>
 </div><p>with variables <img class="math" src="_images/math/293fb39e1b93282c804a86186e721b32f829f1b2.png" alt="h"/>, <img class="math" src="_images/math/ecd1ee2a1cd226b40c37e079aca62398d4b774f5.png" alt="w"/>, <img class="math" src="_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">solvers</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">solvers</span>
 
 <span class="n">Aflr</span>  <span class="o">=</span> <span class="mf">1000.0</span>
 <span class="n">Awall</span> <span class="o">=</span> <span class="mf">100.0</span>
@@ -907,17 +917,17 @@ The  posynomial form of the problem is</p>
 </div>
 <div class="section" id="exploiting-structure">
 <span id="s-nlcp"></span><h2>Exploiting Structure<a class="headerlink" href="#exploiting-structure" title="Permalink to this headline">¶</a></h2>
-<p>By default, the functions <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal"><span class="pre">cp</span></code></a> and
-<a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code></a> do not exploit problem
+<p>By default, the functions <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> and
+<a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal notranslate"><span class="pre">cpl</span></code></a> do not exploit problem
 structure.  Two mechanisms are provided for implementing customized solvers
 that take advantage of problem structure.</p>
 <dl class="docutils">
 <dt><strong>Providing a function for solving KKT equations</strong></dt>
 <dd><p class="first">The most expensive step of each iteration of
-<a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal"><span class="pre">cp</span></code></a> is the
+<a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> is the
 solution of a set of linear equations (<em>KKT equations</em>) of the form</p>
 <div class="math" id="equation-e-cp-kkt">
-<p><span class="eqno">(2)</span><img src="_images/math/83d3511f2f96681be2af99f41de56c6a5de63d07.png" alt="\left[\begin{array}{ccc}
+<p><span class="eqno">(2)<a class="headerlink" href="#equation-e-cp-kkt" title="Permalink to this equation">¶</a></span><img src="_images/math/83d3511f2f96681be2af99f41de56c6a5de63d07.png" alt="\left[\begin{array}{ccc}
     H        &amp; A^T &amp; \tilde G^T \\
     A        &amp; 0   &amp; 0  \\
     \tilde G &amp; 0   &amp; -W^T W
@@ -1012,55 +1022,55 @@ k = 0,\ldots,N-1."/></p>
 </div></li>
 </ul>
 <p>It is often possible to exploit problem structure to solve
-<a href="#equation-e-cp-kkt">(2)</a> faster than by standard methods.  The last argument
-<code class="docutils literal"><span class="pre">kktsolver</span></code> of <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal"><span class="pre">cp</span></code></a> allows the user to
+<a class="reference internal" href="#equation-e-cp-kkt">(2)</a> faster than by standard methods.  The last argument
+<code class="docutils literal notranslate"><span class="pre">kktsolver</span></code> of <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> allows the user to
 supply a Python function
 for solving the KKT equations.  This function will be called as
-<code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">kktsolver(x,</span> <span class="pre">z,</span> <span class="pre">W)</span></code>.  The argument <code class="docutils literal"><span class="pre">x</span></code> is the point at
-which the derivatives in the KKT matrix are evaluated.  <code class="docutils literal"><span class="pre">z</span></code> is a
+<code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">kktsolver(x,</span> <span class="pre">z,</span> <span class="pre">W)</span></code>.  The argument <code class="docutils literal notranslate"><span class="pre">x</span></code> is the point at
+which the derivatives in the KKT matrix are evaluated.  <code class="docutils literal notranslate"><span class="pre">z</span></code> is a
 positive vector of length it <img class="math" src="_images/math/edba97b4c0d864d26e92ea7ea73767fa38eef3f7.png" alt="m"/> + 1, containing the coefficients
-in the 1,1 block <img class="math" src="_images/math/44d4c3f22452acebfb3ac644e23508b67500be90.png" alt="H"/>.  <code class="docutils literal"><span class="pre">W</span></code> is a dictionary that contains the
+in the 1,1 block <img class="math" src="_images/math/44d4c3f22452acebfb3ac644e23508b67500be90.png" alt="H"/>.  <code class="docutils literal notranslate"><span class="pre">W</span></code> is a dictionary that contains the
 parameters of the scaling:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">W['dnl']</span></code> is the positive vector that defines the diagonal
-scaling for the nonlinear inequalities.  <code class="docutils literal"><span class="pre">W['dnli']</span></code> is its
+<li><code class="docutils literal notranslate"><span class="pre">W['dnl']</span></code> is the positive vector that defines the diagonal
+scaling for the nonlinear inequalities.  <code class="docutils literal notranslate"><span class="pre">W['dnli']</span></code> is its
 componentwise inverse.</li>
-<li><code class="docutils literal"><span class="pre">W['d']</span></code> is the positive vector that defines the diagonal
-scaling for the componentwise linear inequalities.  <code class="docutils literal"><span class="pre">W['di']</span></code>
+<li><code class="docutils literal notranslate"><span class="pre">W['d']</span></code> is the positive vector that defines the diagonal
+scaling for the componentwise linear inequalities.  <code class="docutils literal notranslate"><span class="pre">W['di']</span></code>
 is its componentwise inverse.</li>
-<li><code class="docutils literal"><span class="pre">W['beta']</span></code> and <code class="docutils literal"><span class="pre">W['v']</span></code> are lists of length <img class="math" src="_images/math/450a8e2c2320d77181e0d4fc68c947e9a5de8ecb.png" alt="M"/>
+<li><code class="docutils literal notranslate"><span class="pre">W['beta']</span></code> and <code class="docutils literal notranslate"><span class="pre">W['v']</span></code> are lists of length <img class="math" src="_images/math/450a8e2c2320d77181e0d4fc68c947e9a5de8ecb.png" alt="M"/>
 with the coefficients and vectors that define the hyperbolic
 Householder transformations.</li>
-<li><code class="docutils literal"><span class="pre">W['r']</span></code> is a list of length <img class="math" src="_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/> with the matrices that
-define the the congruence transformations.  <code class="docutils literal"><span class="pre">W['rti']</span></code> is a
+<li><code class="docutils literal notranslate"><span class="pre">W['r']</span></code> is a list of length <img class="math" src="_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/> with the matrices that
+define the the congruence transformations.  <code class="docutils literal notranslate"><span class="pre">W['rti']</span></code> is a
 list of length <img class="math" src="_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/> with the transposes of the inverses of the
-matrices in <code class="docutils literal"><span class="pre">W['r']</span></code>.</li>
+matrices in <code class="docutils literal notranslate"><span class="pre">W['r']</span></code>.</li>
 </ul>
-<p>The function call <code class="docutils literal"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">kktsolver(x,</span> <span class="pre">z,</span> <span class="pre">W)</span></code> should return a
-routine for solving the KKT system <a href="#equation-e-cp-kkt">(2)</a> defined by <code class="docutils literal"><span class="pre">x</span></code>,
-<code class="docutils literal"><span class="pre">z</span></code>, <code class="docutils literal"><span class="pre">W</span></code>.  It will be called as <code class="docutils literal"><span class="pre">f(bx,</span> <span class="pre">by,</span> <span class="pre">bz)</span></code>.
-On entry, <code class="docutils literal"><span class="pre">bx</span></code>, <code class="docutils literal"><span class="pre">by</span></code>, <code class="docutils literal"><span class="pre">bz</span></code> contain the right-hand side.  On exit,
+<p>The function call <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">kktsolver(x,</span> <span class="pre">z,</span> <span class="pre">W)</span></code> should return a
+routine for solving the KKT system <a class="reference internal" href="#equation-e-cp-kkt">(2)</a> defined by <code class="docutils literal notranslate"><span class="pre">x</span></code>,
+<code class="docutils literal notranslate"><span class="pre">z</span></code>, <code class="docutils literal notranslate"><span class="pre">W</span></code>.  It will be called as <code class="docutils literal notranslate"><span class="pre">f(bx,</span> <span class="pre">by,</span> <span class="pre">bz)</span></code>.
+On entry, <code class="docutils literal notranslate"><span class="pre">bx</span></code>, <code class="docutils literal notranslate"><span class="pre">by</span></code>, <code class="docutils literal notranslate"><span class="pre">bz</span></code> contain the right-hand side.  On exit,
 they should contain the solution of the KKT system, with the last
 component scaled, i.e., on exit,</p>
 <div class="math">
 <p><img src="_images/math/5330603c234899d17a5c01ab6c1dafe59dcbb6d3.png" alt="b_x := u_x, \qquad b_y := u_y, \qquad b_z := W u_z."/></p>
-</div><p>The role of the argument <code class="docutils literal"><span class="pre">kktsolver</span></code> in the function
-<a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code></a> is similar, except that in
-<a href="#equation-e-cp-kkt">(2)</a>,</p>
+</div><p>The role of the argument <code class="docutils literal notranslate"><span class="pre">kktsolver</span></code> in the function
+<a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal notranslate"><span class="pre">cpl</span></code></a> is similar, except that in
+<a class="reference internal" href="#equation-e-cp-kkt">(2)</a>,</p>
 <div class="last math">
 <p><img src="_images/math/758988bd12116a0f9bab75039b66af16957dc20b.png" alt="H = \sum_{k=0}^{m-1} z_k \nabla^2f_k(x), \qquad
 \tilde G = \left[\begin{array}{cccc}
 \nabla f_0(x) &amp; \cdots &amp; \nabla f_{m-1}(x) &amp; G^T \end{array}\right]^T."/></p>
 </div></dd>
 <dt><strong>Specifying constraints via Python functions</strong></dt>
-<dd><p class="first">In the default use of <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal"><span class="pre">cp</span></code></a>, the arguments
-<code class="docutils literal"><span class="pre">G</span></code> and <code class="docutils literal"><span class="pre">A</span></code> are the
-coefficient matrices in the constraints of <a href="#equation-e-cp-kkt">(2)</a>.  It is also
+<dd><p class="first">In the default use of <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a>, the arguments
+<code class="docutils literal notranslate"><span class="pre">G</span></code> and <code class="docutils literal notranslate"><span class="pre">A</span></code> are the
+coefficient matrices in the constraints of <a class="reference internal" href="#equation-e-cp-kkt">(2)</a>.  It is also
 possible to specify these matrices by providing Python functions that
 evaluate the corresponding matrix-vector products and their adjoints.</p>
 <ul>
-<li><p class="first">If the argument <code class="docutils literal"><span class="pre">G</span></code> of <code class="xref py py-func docutils literal"><span class="pre">cp</span></code> is a Python function, then
-<code class="docutils literal"><span class="pre">G(u,</span> <span class="pre">v[,</span> <span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0,</span> <span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0,</span> <span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'])</span></code> should
+<li><p class="first">If the argument <code class="docutils literal notranslate"><span class="pre">G</span></code> of <code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code> is a Python function, then
+<code class="docutils literal notranslate"><span class="pre">G(u,</span> <span class="pre">v[,</span> <span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0,</span> <span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0,</span> <span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'])</span></code> should
 evaluates the matrix-vector products</p>
 <blockquote>
 <div><div class="math">
@@ -1070,8 +1080,8 @@ v := \alpha G^T u + \beta v \quad
    (\mathrm{trans} = \mathrm{'T'})."/></p>
 </div></div></blockquote>
 </li>
-<li><p class="first">Similarly, if the argument <code class="docutils literal"><span class="pre">A</span></code> is a Python function, then
-<code class="docutils literal"><span class="pre">A(u,</span> <span class="pre">v[,</span> <span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0,</span> <span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0,</span> <span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'])</span></code> should
+<li><p class="first">Similarly, if the argument <code class="docutils literal notranslate"><span class="pre">A</span></code> is a Python function, then
+<code class="docutils literal notranslate"><span class="pre">A(u,</span> <span class="pre">v[,</span> <span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0,</span> <span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0,</span> <span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'])</span></code> should
 evaluate the matrix-vector products</p>
 <blockquote>
 <div><div class="math">
@@ -1081,11 +1091,11 @@ v := \alpha A^T u + \beta v \quad
     (\mathrm{trans} = \mathrm{'T'})."/></p>
 </div></div></blockquote>
 </li>
-<li><p class="first">In a similar way, when the first argument <code class="docutils literal"><span class="pre">F</span></code> of
-<a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal"><span class="pre">cp</span></code></a> returns matrices of first
-derivatives or second derivatives <code class="docutils literal"><span class="pre">Df</span></code>, <code class="docutils literal"><span class="pre">H</span></code>, these matrices can
-be specified as Python functions.  If <code class="docutils literal"><span class="pre">Df</span></code> is a Python function,
-then <code class="docutils literal"><span class="pre">Df(u,</span> <span class="pre">v[,</span> <span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0,</span> <span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0,</span> <span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'])</span></code> should
+<li><p class="first">In a similar way, when the first argument <code class="docutils literal notranslate"><span class="pre">F</span></code> of
+<a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> returns matrices of first
+derivatives or second derivatives <code class="docutils literal notranslate"><span class="pre">Df</span></code>, <code class="docutils literal notranslate"><span class="pre">H</span></code>, these matrices can
+be specified as Python functions.  If <code class="docutils literal notranslate"><span class="pre">Df</span></code> is a Python function,
+then <code class="docutils literal notranslate"><span class="pre">Df(u,</span> <span class="pre">v[,</span> <span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0,</span> <span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0,</span> <span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'])</span></code> should
 evaluate the matrix-vector products</p>
 <blockquote>
 <div><div class="math">
@@ -1094,7 +1104,7 @@ evaluate the matrix-vector products</p>
 v := \alpha Df(x)^T u + \beta v \quad
     (\mathrm{trans} = \mathrm{'T'})."/></p>
 </div></div></blockquote>
-<p>If <code class="docutils literal"><span class="pre">H</span></code> is a Python function, then <code class="docutils literal"><span class="pre">H(u,</span> <span class="pre">v[,</span> <span class="pre">alpha,</span> <span class="pre">beta])</span></code> should
+<p>If <code class="docutils literal notranslate"><span class="pre">H</span></code> is a Python function, then <code class="docutils literal notranslate"><span class="pre">H(u,</span> <span class="pre">v[,</span> <span class="pre">alpha,</span> <span class="pre">beta])</span></code> should
 evaluate the matrix-vector product</p>
 <blockquote>
 <div><div class="math">
@@ -1102,8 +1112,8 @@ evaluate the matrix-vector product</p>
 </div></div></blockquote>
 </li>
 </ul>
-<p class="last">If <code class="docutils literal"><span class="pre">G</span></code>, <code class="docutils literal"><span class="pre">A</span></code>, <code class="docutils literal"><span class="pre">Df</span></code>, or <code class="docutils literal"><span class="pre">H</span></code> are Python functions, then the
-argument <code class="docutils literal"><span class="pre">kktsolver</span></code> must also be provided.</p>
+<p class="last">If <code class="docutils literal notranslate"><span class="pre">G</span></code>, <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">Df</span></code>, or <code class="docutils literal notranslate"><span class="pre">H</span></code> are Python functions, then the
+argument <code class="docutils literal notranslate"><span class="pre">kktsolver</span></code> must also be provided.</p>
 </dd>
 </dl>
 <p>As an example, we consider the unconstrained problem</p>
@@ -1117,7 +1127,7 @@ term:</p>
 <div class="math">
 <p><img src="_images/math/034de8d75847e3a6830b359bee22164074e99e55.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
 H = A^TA + \diag(d), \qquad d_i = \frac{2(1+x_i^2)}{(1-x_i^2)^2}."/></p>
-</div><p>We can exploit this property when solving <a href="#equation-e-cp-kkt">(2)</a> by applying
+</div><p>We can exploit this property when solving <a class="reference internal" href="#equation-e-cp-kkt">(2)</a> by applying
 the matrix inversion lemma. We first solve</p>
 <div class="math">
 <p><img src="_images/math/9519e689e8fadf1e5ba7c19b9720796c9e3301ec.png" alt="\newcommand{\diag}{\mbox{\bf diag}\,}
@@ -1128,7 +1138,7 @@ the matrix inversion lemma. We first solve</p>
 u_x = \diag(d)^{-1}(b_x/z_0 - A^T v)."/></p>
 </div><p>The following code follows this method.  It also uses BLAS functions
 for matrix-matrix and matrix-vector products.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">base</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">base</span>
 
 <span class="k">def</span> <span class="nf">l2ac</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1199,35 +1209,35 @@ for matrix-matrix and matrix-vector products.</p>
 <div class="section" id="algorithm-parameters">
 <span id="s-parameters2"></span><h2>Algorithm Parameters<a class="headerlink" href="#algorithm-parameters" title="Permalink to this headline">¶</a></h2>
 <p>The following algorithm control parameters are accessible via the
-dictionary <code class="xref py py-attr docutils literal"><span class="pre">solvers.options</span></code>.  By default the dictionary
+dictionary <code class="xref py py-attr docutils literal notranslate"><span class="pre">solvers.options</span></code>.  By default the dictionary
 is empty and the default values of the parameters are used.</p>
 <p>One can change the parameters in the default solvers by
 adding entries with the following key values.</p>
 <dl class="docutils">
-<dt><code class="xref py py-const docutils literal"><span class="pre">'show_progress'</span></code></dt>
-<dd><code class="xref py py-const docutils literal"><span class="pre">True</span></code> or <code class="xref py py-const docutils literal"><span class="pre">False</span></code>; turns the output to the screen on or
-off (default: <code class="xref py py-const docutils literal"><span class="pre">True</span></code>).</dd>
-<dt><code class="xref py py-const docutils literal"><span class="pre">'maxiters'</span></code></dt>
-<dd>maximum number of iterations (default: <code class="xref py py-const docutils literal"><span class="pre">100</span></code>).</dd>
-<dt><code class="xref py py-const docutils literal"><span class="pre">'abstol'</span></code></dt>
-<dd>absolute accuracy (default: <code class="xref py py-const docutils literal"><span class="pre">1e-7</span></code>).</dd>
-<dt><code class="xref py py-const docutils literal"><span class="pre">'reltol'</span></code></dt>
-<dd>relative accuracy (default: <code class="xref py py-const docutils literal"><span class="pre">1e-6</span></code>).</dd>
-<dt><code class="xref py py-const docutils literal"><span class="pre">'feastol'</span></code></dt>
-<dd>tolerance for feasibility conditions (default: <code class="xref py py-const docutils literal"><span class="pre">1e-7</span></code>).</dd>
-<dt><code class="xref py py-const docutils literal"><span class="pre">'refinement'</span></code></dt>
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'show_progress'</span></code></dt>
+<dd><code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code>; turns the output to the screen on or
+off (default: <code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code>).</dd>
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'maxiters'</span></code></dt>
+<dd>maximum number of iterations (default: <code class="xref py py-const docutils literal notranslate"><span class="pre">100</span></code>).</dd>
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'abstol'</span></code></dt>
+<dd>absolute accuracy (default: <code class="xref py py-const docutils literal notranslate"><span class="pre">1e-7</span></code>).</dd>
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'reltol'</span></code></dt>
+<dd>relative accuracy (default: <code class="xref py py-const docutils literal notranslate"><span class="pre">1e-6</span></code>).</dd>
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'feastol'</span></code></dt>
+<dd>tolerance for feasibility conditions (default: <code class="xref py py-const docutils literal notranslate"><span class="pre">1e-7</span></code>).</dd>
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'refinement'</span></code></dt>
 <dd>number of iterative refinement steps when solving KKT equations
-(default: <code class="xref py py-const docutils literal"><span class="pre">1</span></code>).</dd>
+(default: <code class="xref py py-const docutils literal notranslate"><span class="pre">1</span></code>).</dd>
 </dl>
 <p>For example the command</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">solvers</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">solvers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 </pre></div>
 </div>
 <p>turns off the screen output during calls to the solvers.  The tolerances
-<code class="xref py py-const docutils literal"><span class="pre">abstol</span></code>, <code class="xref py py-const docutils literal"><span class="pre">reltol</span></code> and <code class="xref py py-const docutils literal"><span class="pre">feastol</span></code> have the
-following meaning in <a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code></a>.</p>
-<p><code class="xref py py-func docutils literal"><span class="pre">cpl</span></code> returns with status <code class="xref py py-const docutils literal"><span class="pre">'optimal'</span></code> if</p>
+<code class="xref py py-const docutils literal notranslate"><span class="pre">abstol</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">reltol</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">feastol</span></code> have the
+following meaning in <a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal notranslate"><span class="pre">cpl</span></code></a>.</p>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">cpl</span></code> returns with status <code class="xref py py-const docutils literal notranslate"><span class="pre">'optimal'</span></code> if</p>
 <div class="math">
 <p><img src="_images/math/189260cbfb3f9287a2b57d052f6d4fbc5e79ede0.png" alt="\newcommand{\ones}{{\bf 1}}
 \frac{\| c +  Df(x)^Tz_\mathrm{nl} + G^Tz_\mathrm{l} + A^T y \|_2 }
@@ -1237,7 +1247,7 @@ following meaning in <a class="reference internal" href="#cvxopt.solvers.cpl" ti
  Ax-b ) \|_2}
 {\max\{1, \| ( f(x_0) + \ones,
 Gx_0 + \ones-h, Ax_0-b) \|_2 \}} \leq \epsilon_\mathrm{feas}"/></p>
-</div><p>where <img class="math" src="_images/math/307e583980f527b3f26e1e159435e0a8d262736b.png" alt="x_0"/> is the point returned by <code class="docutils literal"><span class="pre">F()</span></code>, and</p>
+</div><p>where <img class="math" src="_images/math/307e583980f527b3f26e1e159435e0a8d262736b.png" alt="x_0"/> is the point returned by <code class="docutils literal notranslate"><span class="pre">F()</span></code>, and</p>
 <div class="math">
 <p><img src="_images/math/f3eb52613474589c136d20acff516c3126eb4591.png" alt="\mathrm{gap} \leq \epsilon_\mathrm{abs}
 \qquad \mbox{or} \qquad \left( c^Tx &lt; 0, \quad
@@ -1255,9 +1265,9 @@ Gx_0 + \ones-h, Ax_0-b) \|_2 \}} \leq \epsilon_\mathrm{feas}"/></p>
 \qquad
 L(x,y,z) = c^Tx + z_\mathrm{nl}^T f(x) +
     z_\mathrm{l}^T (Gx-h) + y^T(Ax-b)."/></p>
-</div><p>The functions <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal"><span class="pre">cp</span></code></a> and
-<a class="reference internal" href="#cvxopt.solvers.gp" title="cvxopt.solvers.gp"><code class="xref py py-func docutils literal"><span class="pre">gp</span></code></a> call <code class="xref py py-func docutils literal"><span class="pre">cpl</span></code> and hence use the
-same stopping criteria (with <img class="math" src="_images/math/c41c7e348eddc72b86c210246eeedc53ce3911ca.png" alt="x_0 = 0"/> for <code class="xref py py-func docutils literal"><span class="pre">gp</span></code>).</p>
+</div><p>The functions <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> and
+<a class="reference internal" href="#cvxopt.solvers.gp" title="cvxopt.solvers.gp"><code class="xref py py-func docutils literal notranslate"><span class="pre">gp</span></code></a> call <code class="xref py py-func docutils literal notranslate"><span class="pre">cpl</span></code> and hence use the
+same stopping criteria (with <img class="math" src="_images/math/c41c7e348eddc72b86c210246eeedc53ce3911ca.png" alt="x_0 = 0"/> for <code class="xref py py-func docutils literal notranslate"><span class="pre">gp</span></code>).</p>
 </div>
 </div>
 
@@ -1279,8 +1289,8 @@ same stopping criteria (with <img class="math" src="_images/math/c41c7e348eddc72
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="copyright.html">Copyright</a> 2004-2016, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      Last updated on Nov 29, 2016.
+        &copy; <a href="copyright.html">Copyright</a> 2004-2018, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      Last updated on Apr 16, 2018.
     </p>
   </div>
 
@@ -1300,7 +1310,7 @@ same stopping criteria (with <img class="math" src="_images/math/c41c7e348eddc72
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.9',
+            VERSION:'1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -1326,7 +1336,7 @@ same stopping criteria (with <img class="math" src="_images/math/c41c7e348eddc72
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
     </div>
 
 </body>

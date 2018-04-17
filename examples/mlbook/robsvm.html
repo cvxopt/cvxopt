@@ -68,7 +68,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#standard-installation">Standard installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#installing-a-pre-built-package">Installing a pre-built package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-and-installing-from-source">Building and installing from source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
@@ -76,7 +77,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#user-s-guide">User&#8217;s guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#user-s-guide">User’s guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#technical-documentation">Technical documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#discussion-forum">Discussion forum</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#revision-history">Revision history</a></li>
@@ -145,9 +146,9 @@
 \mathbf{R}"/>, <img class="math" src="../../_images/math/64c3187732a1a07fe835349b844adc7d037e5b63.png" alt="v \in \mathbf{R}^N"/>, and <img class="math" src="../../_images/math/cb5ce7070be7cfe1cbc22278bb4d2a5135e31679.png" alt="u \in
 \mathbf{R}^t"/>. The matrix <img class="math" src="../../_images/math/024e873de6ab1126a0b188777327b19e33138902.png" alt="X \in \mathbf{R}^{N×n}"/> has as its
 rows the training examples <img class="math" src="../../_images/math/cfc2ae31c0b62416b21a41638a288a510a8d0612.png" alt="x_i^T"/> and the vector <img class="math" src="../../_images/math/59f199227e3b9a48178f3f448873ddc763ee4df2.png" alt="d \in
-\{−1, 1\}^N"/> contains the training labels. The matrices <img class="math" src="../../_images/math/93942edb8a2b3e2fb91299f42e8ab0d83bb20e17.png" alt="S_j"/> define the shape and the size of the uncertainty ellipsoids, and the matrix <img class="math" src="../../_images/math/4b6222b865b812d2a59368cd1629eed6b54454d5.png" alt="E"/> is a selector matrix with zeros and one &#8216;1&#8217; per
-row.  <img class="math" src="../../_images/math/da18cb43129ad7e5fdb8b2ff54d74a894cb5a9a2.png" alt="E_{ij} = 1"/> means that the i&#8217;th training vector is
-associated with the j&#8217;th uncertainty ellipsoid. For <img class="math" src="../../_images/math/7d18e301247447e4600046af051b2bfe857faaa0.png" alt="t = 0"/>, the
+\{−1, 1\}^N"/> contains the training labels. The matrices <img class="math" src="../../_images/math/93942edb8a2b3e2fb91299f42e8ab0d83bb20e17.png" alt="S_j"/> define the shape and the size of the uncertainty ellipsoids, and the matrix <img class="math" src="../../_images/math/4b6222b865b812d2a59368cd1629eed6b54454d5.png" alt="E"/> is a selector matrix with zeros and one ‘1’ per
+row.  <img class="math" src="../../_images/math/da18cb43129ad7e5fdb8b2ff54d74a894cb5a9a2.png" alt="E_{ij} = 1"/> means that the i’th training vector is
+associated with the j’th uncertainty ellipsoid. For <img class="math" src="../../_images/math/7d18e301247447e4600046af051b2bfe857faaa0.png" alt="t = 0"/>, the
 term <img class="math" src="../../_images/math/1491c814eb06e81a60c824c6b98da33827bd44dd.png" alt="Eu"/> and the norm constraints are absent, and the problem
 reduces to the standard linear SVM</p>
 <div class="math">
@@ -158,26 +159,26 @@ reduces to the standard linear SVM</p>
                   &amp; v \succeq 0.
 \end{array}"/></p>
 </div><h3> Documentation </h3><p>A custom solver for the robust SVM problem is available as a Python
-module <a class="reference download internal" href="../../_downloads/robsvm.py" download=""><code class="xref download docutils literal"><span class="pre">robsvm.py</span></code></a>. The  module implements the following function:</p>
+module <a class="reference download internal" href="../../_downloads/robsvm.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">robsvm.py</span></code></a>. The  module implements the following function:</p>
 <blockquote>
 <div><dl class="function">
 <dt id="robsvm">
 <code class="descname">robsvm</code><span class="sig-paren">(</span><em>X</em>, <em>labels</em>, <em>gamma</em>, <em>P</em>, <em>e</em><span class="sig-paren">)</span><a class="headerlink" href="#robsvm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Solves the &#8216;soft-margin&#8217; robust SVM problem.</p>
+<dd><p>Solves the ‘soft-margin’ robust SVM problem.</p>
 <p>The first three input arguments are the data matrix <img class="math" src="../../_images/math/7a7bb470119808e2db2879fc2b2526f467b7a40b.png" alt="X"/>
 (with the <img class="math" src="../../_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/> training examples <img class="math" src="../../_images/math/cfc2ae31c0b62416b21a41638a288a510a8d0612.png" alt="x_i^T"/> as rows),
 the label vector <img class="math" src="../../_images/math/b9d10b54744d07746b97f53c55eb98046fd76c8c.png" alt="d"/>, and the positive parameter
 <img class="math" src="../../_images/math/3666981dc77862de77b6ecfcb64aad59b425cbaf.png" alt="\gamma"/>. The fourth input argument <cite>P</cite> must be a Python
 list of <img class="math" src="../../_images/math/5ec053cf70dc1c98cc297322250569eda193e7a4.png" alt="t"/> matrices <img class="math" src="../../_images/math/277d4d6fcd5425494233f1d7bb70dc506769a95d.png" alt="S_1,\ldots,S_t"/>. The last
-argument <cite>e</cite> is an <img class="math" src="../../_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/>-vector where the i&#8217;th element
+argument <cite>e</cite> is an <img class="math" src="../../_images/math/f4170ed8938b79490d8923857962695514a8e4cb.png" alt="N"/>-vector where the i’th element
 <img class="math" src="../../_images/math/98fd14343cce41d999f819809be54423d320eaa6.png" alt="e_i \in \{0,..,t-1\}"/> is the index of the uncertainty
-ellipsoid associated with the i&#8217;th training vector.</p>
+ellipsoid associated with the i’th training vector.</p>
 <p>The function returns <img class="math" src="../../_images/math/ecd1ee2a1cd226b40c37e079aca62398d4b774f5.png" alt="w"/>, <img class="math" src="../../_images/math/57c9d14bb082716df9000146882ce365335d08f1.png" alt="b"/>, <img class="math" src="../../_images/math/92e3f44c99a016c5238a790c96f12fd46aa93c4a.png" alt="u"/>, <img class="math" src="../../_images/math/8d230554a01423c4c6560104b2918b65607c9406.png" alt="v"/>,
 and the number of iterations (an integer).</p>
 </dd></dl>
 
 </div></blockquote>
-<h3> Example </h3><div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robsvm</span> <span class="k">import</span> <span class="n">robsvm</span>
+<h3> Example </h3><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">robsvm</span> <span class="k">import</span> <span class="n">robsvm</span>
 <span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">uniform</span>
 
 <span class="c1"># parameters</span>
@@ -227,8 +228,8 @@ and the number of iterations (an integer).</p>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2016, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Nov 30, 2016.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2018, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+      Last updated on Apr 17, 2018.
     </p>
   </div>
 
@@ -248,7 +249,7 @@ and the number of iterations (an integer).</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.9',
+            VERSION:'1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -274,7 +275,7 @@ and the number of iterations (an integer).</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
     </div>
 
 <script>
