@@ -134,13 +134,14 @@
 <h2>Installing a pre-built package<a class="headerlink" href="#installing-a-pre-built-package" title="Permalink to this headline">¶</a></h2>
 <p class="rubric">Installing via conda</p>
 <p>The <a class="reference external" href="http://anaconda.org/conda-forge/cvxopt">conda-forge</a> channel
-provides pre-built CVXOPT packages for Linux and macOS that can be
+provides pre-built CVXOPT packages for Linux, macOS, and Windows that can be
 installed using <a class="reference external" href="https://conda.io/docs/">conda</a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">cvxopt</span>
 </pre></div>
 </div>
-<p>These pre-built packages are linked against OpenBLAS and include the optional extensions
-GLPK, GSL, and FFTW.</p>
+<p>These pre-built packages are linked against OpenBLAS. The Linux/macOS versions
+include the optional extensions GLPK, GSL, and FFTW, and the Windows version
+includes GLPK.</p>
 <p class="rubric">Installing via pip</p>
 <p>A pre-built binary wheel package can be installed
 using <a class="reference external" href="https://pip.pypa.io">pip</a>:</p>
@@ -156,7 +157,7 @@ using <a class="reference external" href="https://pip.pypa.io">pip</a>:</p>
 <p>Wheels for macOS:</p>
 <ul class="simple">
 <li>are available for Python 2.7, 3.4, 3.5, and 3.6 (universal binaries)</li>
-<li>are linked against OpenBLAS</li>
+<li>are linked against BLAS/LAPACK from the Accelerate framework</li>
 <li>include all optional extensions (DSDP, GLPK, GSL, and FFTW)</li>
 </ul>
 <p>Wheels for Windows:</p>
@@ -413,11 +414,13 @@ are installed and in the search path. These can be installed with the
 </div>
 <p>We also will assume that the environment variable <code class="docutils literal notranslate"><span class="pre">%PYTHON%</span></code> contains
 the path to the Python installation directory, e.g.,</p>
-<blockquote>
-<div>set PYTHON=c:PythonXX</div></blockquote>
+<div class="highlight-batch notranslate"><div class="highlight"><pre><span></span><span class="k">set</span> <span class="nv">PYTHON</span><span class="p">=</span>c:\PythonXX
+</pre></div>
+</div>
 <p>or alternatively,</p>
-<blockquote>
-<div>for /f %i in (‘python -c “import sys, os; print(os.path.dirname(sys.executable))”’) do set PYTHON=%i</div></blockquote>
+<div class="highlight-batch notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="k">/f</span> <span class="nv">%i in (&#39;python -c &quot;import sys, os; print(os.path.dirname(sys.executable))&quot;&#39;) do set PYTHON=%</span>i
+</pre></div>
+</div>
 <p>where <code class="docutils literal notranslate"><span class="pre">%</span></code> must be replaced by <code class="docutils literal notranslate"><span class="pre">%%</span></code> if the above line is included in a batch file.</p>
 <p>Finally, we will assume that pip is available;
 if it is not, it can now be installed with <code class="docutils literal notranslate"><span class="pre">easy_install</span></code>:</p>
@@ -454,7 +457,7 @@ python -m unittest discover -s tests
 </pre></div>
 </div>
 <p class="rubric">Python 3.5+</p>
-<p>CVXOPT 1.2+ can be built for Windows (64 bit) with MSVC14 and MKL.</p>
+<p>CVXOPT 1.2.0+ can be built for Windows (64 bit) with MSVC14 and MKL.</p>
 <p>Open the Command Prompt and execute the following commands:</p>
 <div class="highlight-batch notranslate"><div class="highlight"><pre><span></span><span class="c1">rem Download SuiteSparse source</span>
 wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-5.2.0.tar.gz
@@ -500,7 +503,7 @@ python -m unittest discover -s tests
   <div role="contentinfo">
     <p>
         &copy; <a href="../copyright.html">Copyright</a> 2004-2018, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Apr 17, 2018.
+      Last updated on Apr 18, 2018.
     </p>
   </div>
 
