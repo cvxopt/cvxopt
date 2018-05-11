@@ -140,8 +140,8 @@ installed using <a class="reference external" href="https://conda.io/docs/">cond
 </pre></div>
 </div>
 <p>These pre-built packages are linked against OpenBLAS. The Linux/macOS versions
-include the optional extensions GLPK, GSL, and FFTW, and the Windows version
-includes GLPK.</p>
+include all the optional extensions (DSDP, FFTW, GLPK, and GSL), and the Windows
+version includes all the optional extensions but DSDP (FFTW, GLPK, and GSL).</p>
 <p class="rubric">Installing via pip</p>
 <p>A pre-built binary wheel package can be installed
 using <a class="reference external" href="https://pip.pypa.io">pip</a>:</p>
@@ -503,7 +503,7 @@ python -m unittest discover -s tests
   <div role="contentinfo">
     <p>
         &copy; <a href="../copyright.html">Copyright</a> 2004-2018, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Apr 18, 2018.
+      Last updated on May 11, 2018.
     </p>
   </div>
 
