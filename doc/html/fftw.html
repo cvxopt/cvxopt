@@ -175,7 +175,7 @@
             
   <div class="section" id="discrete-transforms">
 <span id="c-fftw"></span><h1>Discrete Transforms<a class="headerlink" href="#discrete-transforms" title="Permalink to this headline">¶</a></h1>
-<p>The <code class="xref py py-mod docutils literal"><span class="pre">cvxopt.fftw</span></code> module is an interface to the FFTW library and
+<p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">cvxopt.fftw</span></code> module is an interface to the FFTW library and
 contains routines for discrete Fourier, cosine, and sine transforms.
 This module is optional, and only installed when the FFTW library is made
 available during the CVXOPT installation.</p>
@@ -189,7 +189,7 @@ available during the CVXOPT installation.</p>
 <dt id="cvxopt.fftw.dft">
 <code class="descclassname">cvxopt.fftw.</code><code class="descname">dft</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dft" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces the columns of a dense complex matrix with their discrete
-Fourier transforms:  if <code class="docutils literal"><span class="pre">X</span></code> has <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> rows,</p>
+Fourier transforms:  if <code class="docutils literal notranslate"><span class="pre">X</span></code> has <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> rows,</p>
 <div class="math">
 <p><img src="_images/math/9d2fb37f4f2ea8ca60effcfd61365f8962ef0811.png" alt="X[k,:] := \sum_{j=0}^{n-1} e^{-2\pi j k \sqrt{-1}/n} X[j,:],
     \qquad k=0,\ldots,n-1."/></p>
@@ -199,7 +199,7 @@ Fourier transforms:  if <code class="docutils literal"><span class="pre">X</span
 <dt id="cvxopt.fftw.idft">
 <code class="descclassname">cvxopt.fftw.</code><code class="descname">idft</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idft" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces the columns of a dense complex matrix with their inverse
-discrete Fourier transforms: if <code class="docutils literal"><span class="pre">X</span></code> has <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> rows,</p>
+discrete Fourier transforms: if <code class="docutils literal notranslate"><span class="pre">X</span></code> has <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> rows,</p>
 <div class="math">
 <p><img src="_images/math/ea898f4dc35c3010225ae66a6d7993bae88b3a56.png" alt="X[k,:] :=
     \frac{1}{n} \sum_{j=0}^{n-1} e^{2\pi j k \sqrt{-1}/n} X[j,:],
@@ -218,8 +218,8 @@ transform to all the rows of the matrix.</p>
 <code class="descclassname">cvxopt.fftw.</code><code class="descname">dftn</code><span class="sig-paren">(</span><em>X</em><span class="optional">[</span>, <em>dims = X.size</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dftn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces a dense complex matrix with its <em>N</em>-dimensional discrete
 Fourier transform.  The dimensions of the <em>N</em>-dimensional matrix
-are given by the <em>N</em>-tuple <code class="docutils literal"><span class="pre">dims</span></code>.  The two-dimensional transform is
-computed as <code class="docutils literal"><span class="pre">dftn(X,</span> <span class="pre">X.size)</span></code>.</p>
+are given by the <em>N</em>-tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>.  The two-dimensional transform is
+computed as <code class="docutils literal notranslate"><span class="pre">dftn(X,</span> <span class="pre">X.size)</span></code>.</p>
 </dd></dl>
 
 <dl class="function">
@@ -227,8 +227,8 @@ computed as <code class="docutils literal"><span class="pre">dftn(X,</span> <spa
 <code class="descclassname">cvxopt.fftw.</code><code class="descname">idftn</code><span class="sig-paren">(</span><em>X</em><span class="optional">[</span>, <em>dims = X.size</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idftn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces a dense complex <em>N</em>-dimensional matrix with its inverse
 <em>N</em>-dimensional discrete Fourier transform.  The dimensions of the
-matrix are given by the tuple <code class="docutils literal"><span class="pre">dims</span></code>. The two-dimensional inverse
-transform is computed as <code class="docutils literal"><span class="pre">idftn(X,</span> <span class="pre">X.size)</span></code>.</p>
+matrix are given by the tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>. The two-dimensional inverse
+transform is computed as <code class="docutils literal notranslate"><span class="pre">idftn(X,</span> <span class="pre">X.size)</span></code>.</p>
 </dd></dl>
 
 </div>
@@ -240,7 +240,7 @@ transform is computed as <code class="docutils literal"><span class="pre">idftn(
 <dd><p>Replaces the columns of a dense real matrix with their discrete
 cosine transforms.  The second argument, an integer between 1 and 4,
 denotes the type of transform (DCT-I, DCT-II, DCT-III, DCT-IV).
-The DCT-I transform requires that the row dimension of <code class="docutils literal"><span class="pre">X</span></code> is at
+The DCT-I transform requires that the row dimension of <code class="docutils literal notranslate"><span class="pre">X</span></code> is at
 least 2.  These transforms are defined as follows (for a matrix with
 <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> rows).</p>
 <div class="math">
@@ -280,8 +280,8 @@ transform to all the columns of the matrix.</p>
 <code class="descclassname">cvxopt.fftw.</code><code class="descname">dctn</code><span class="sig-paren">(</span><em>X</em><span class="optional">[</span>, <em>dims = X.size</em>, <em>type = 2</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dctn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces a dense real matrix with its <em>N</em>-dimensional discrete cosine
 transform. The dimensions of the <em>N</em>-dimensional matrix are given by
-the <em>N</em>-tuple <code class="docutils literal"><span class="pre">dims</span></code>.  The two-dimensional transform is computed as
-<code class="docutils literal"><span class="pre">dctn(X,</span> <span class="pre">X.size)</span></code>.</p>
+the <em>N</em>-tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>.  The two-dimensional transform is computed as
+<code class="docutils literal notranslate"><span class="pre">dctn(X,</span> <span class="pre">X.size)</span></code>.</p>
 </dd></dl>
 
 <dl class="function">
@@ -289,8 +289,8 @@ the <em>N</em>-tuple <code class="docutils literal"><span class="pre">dims</span
 <code class="descclassname">cvxopt.fftw.</code><code class="descname">idctn</code><span class="sig-paren">(</span><em>X</em><span class="optional">[</span>, <em>dims = X.size</em>, <em>type = 2</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idctn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces a dense real <em>N</em>-dimensional matrix with its inverse
 <em>N</em>-dimensional discrete cosine transform. The dimensions of the
-matrix are given by the tuple <code class="docutils literal"><span class="pre">dims</span></code>.  The two-dimensional inverse
-transform is computed as <code class="docutils literal"><span class="pre">idctn(X,</span> <span class="pre">X.size)</span></code>.</p>
+matrix are given by the tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>.  The two-dimensional inverse
+transform is computed as <code class="docutils literal notranslate"><span class="pre">idctn(X,</span> <span class="pre">X.size)</span></code>.</p>
 </dd></dl>
 
 </div>
@@ -340,8 +340,8 @@ transform to all the columns of the matrix.</p>
 <code class="descclassname">cvxopt.fftw.</code><code class="descname">dstn</code><span class="sig-paren">(</span><em>X</em><span class="optional">[</span>, <em>dims = X.size</em>, <em>type = 2</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dstn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces a dense real matrix with its <em>N</em>-dimensional discrete sine
 transform. The dimensions of the <em>N</em>-dimensional matrix are given by
-the <em>N</em>-tuple <code class="docutils literal"><span class="pre">dims</span></code>.  The two-dimensional transform is computed as
-<code class="docutils literal"><span class="pre">dstn(X,</span> <span class="pre">X.size)</span></code>.</p>
+the <em>N</em>-tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>.  The two-dimensional transform is computed as
+<code class="docutils literal notranslate"><span class="pre">dstn(X,</span> <span class="pre">X.size)</span></code>.</p>
 </dd></dl>
 
 <dl class="function">
@@ -349,8 +349,8 @@ the <em>N</em>-tuple <code class="docutils literal"><span class="pre">dims</span
 <code class="descclassname">cvxopt.fftw.</code><code class="descname">idstn</code><span class="sig-paren">(</span><em>X</em><span class="optional">[</span>, <em>dims = X.size</em>, <em>type = 2</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idstn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replaces a dense real <em>N</em>-dimensional matrix with its inverse
 <em>N</em>-dimensional discrete sine transform.  The dimensions of the
-matrix are given by the tuple <code class="docutils literal"><span class="pre">dims</span></code>.  The two-dimensional inverse
-transform is computed as <code class="docutils literal"><span class="pre">idstn(X,</span> <span class="pre">X.size)</span></code>.</p>
+matrix are given by the tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>.  The two-dimensional inverse
+transform is computed as <code class="docutils literal notranslate"><span class="pre">idstn(X,</span> <span class="pre">X.size)</span></code>.</p>
 </dd></dl>
 
 </div>
@@ -374,8 +374,8 @@ transform is computed as <code class="docutils literal"><span class="pre">idstn(
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="copyright.html">Copyright</a> 2004-2016, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      Last updated on Nov 29, 2016.
+        &copy; <a href="copyright.html">Copyright</a> 2004-2018, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      Last updated on Apr 16, 2018.
     </p>
   </div>
 
@@ -395,7 +395,7 @@ transform is computed as <code class="docutils literal"><span class="pre">idstn(
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.9',
+            VERSION:'1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -421,7 +421,7 @@ transform is computed as <code class="docutils literal"><span class="pre">idstn(
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.9.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
     </div>
 
 </body>

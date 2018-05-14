@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2016 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -32,7 +32,7 @@ PyDoc_STRVAR(glpk__doc__,
     "section 2.10.5 for the MILP solver).  The control  parameters can \n"
     "be modified by making an entry in the dictionary glpk.options.\n"
     "For example, glpk.options['msg_lev'] = 'GLP_MSG_OFF' turns off the \n"
-    "printed output will be turned off during execution of glpk.lp().\n"  
+    "printed output will be turned off during execution of glpk.lp().\n"
     "Setting glpk.options['it_lim'] = 10 sets the simplex iteration \n"
     "limit to 10.  Unrecognized entries in glpk.options are ignored.");
 
@@ -85,16 +85,16 @@ static char doc_simplex[] =
 static PyObject *simplex(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *c, *h, *b=NULL, *x=NULL, *z=NULL, *y=NULL;
-    PyObject *G, *A=NULL, *t=NULL, *param, *key, *value;
+    PyObject *G, *A=NULL, *t=NULL, *param, *key, *value, *opts=NULL;
     glp_prob *lp;
     glp_smcp smcp;
     int m, n, p, i, j, k, nnz, nnzmax, *rn=NULL, *cn=NULL;
     int_t pos=0;
     double *a=NULL, val;
-    char *kwlist[] = {"c", "G", "h", "A", "b", NULL};
+    char *kwlist[] = {"c", "G", "h", "A", "b", "options", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|OO", kwlist, &c,
-        &G, &h, &A, &b)) return NULL;
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|OOO", kwlist, &c,
+        &G, &h, &A, &b, &opts)) return NULL;
 
     if ((Matrix_Check(G) && MAT_ID(G) != DOUBLE) ||
         (SpMatrix_Check(G) && SP_ID(G) != DOUBLE) ||
@@ -113,6 +113,7 @@ static PyObject *simplex(PyObject *self, PyObject *args, PyObject *kwrds)
         return NULL;
     }
 
+    if (A == Py_None) A = NULL;
     if (A){
         if ((Matrix_Check(A) && MAT_ID(A) != DOUBLE) ||
             (SpMatrix_Check(A) && SP_ID(A) != DOUBLE) ||
@@ -131,6 +132,7 @@ static PyObject *simplex(PyObject *self, PyObject *args, PyObject *kwrds)
     }
     else p = 0;
 
+    if ((PyObject *)b == Py_None) b = NULL;
     if (b && (!Matrix_Check(b) || b->id != DOUBLE)) err_dbl_mtrx("b");
     if ((b && (b->nrows != p || b->ncols != 1)) || (!b && p !=0 )){
         PyErr_SetString(PyExc_ValueError, "incompatible dimensions");
@@ -157,7 +159,7 @@ static PyObject *simplex(PyObject *self, PyObject *args, PyObject *kwrds)
     rn = (int *) calloc(nnzmax+1, sizeof(int));
     cn = (int *) calloc(nnzmax+1, sizeof(int));
     if (!a || !rn || !cn){
-        free(a);  free(rn);  free(cn);  
+        free(a);  free(rn);  free(cn);
         glp_delete_prob(lp);
         return PyErr_NoMemory();
     }
@@ -205,12 +207,16 @@ static PyObject *simplex(PyObject *self, PyObject *args, PyObject *kwrds)
         return PyErr_NoMemory();
     }
 
-    if (!(param = PyObject_GetAttrString(glpk_module, "options"))
-        || !PyDict_Check(param)){
-            glp_delete_prob(lp);
-            PyErr_SetString(PyExc_AttributeError,
+
+    if (opts && PyDict_Check(opts))
+        param = opts;
+    else
+        param = PyObject_GetAttrString(glpk_module, "options");
+    if (!param || !PyDict_Check(param)){
+        glp_delete_prob(lp);
+        PyErr_SetString(PyExc_AttributeError,
                 "missing glpk.options dictionary");
-            return NULL;
+        return NULL;
     }
 
     glp_init_smcp(&smcp);
@@ -221,133 +227,133 @@ static PyObject *simplex(PyObject *self, PyObject *args, PyObject *kwrds)
                 if (PYSTRING_CHECK(value)){
                     if (!PYSTRING_COMPARE(value, "GLP_MSG_OFF"))
                         smcp.msg_lev = GLP_MSG_OFF;
-                    else if (!PYSTRING_COMPARE(value, "GLP_MSG_ERR")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_MSG_ERR"))
                         smcp.msg_lev = GLP_MSG_ERR;
-                    else if (!PYSTRING_COMPARE(value, "GLP_MSG_ON")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_MSG_ON"))
                         smcp.msg_lev = GLP_MSG_ON;
-                    else if (!PYSTRING_COMPARE(value, "GLP_MSG_ALL")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_MSG_ALL"))
                         smcp.msg_lev = GLP_MSG_ALL;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
-                            "glpk.options['msg_lev'] with default value", 
+                            "glpk.options['msg_lev'] with default value",
                             1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['msg_lev'] "
                         "with default value", 1);
-            else if (!PYSTRING_COMPARE(key, "meth")) 
+            else if (!PYSTRING_COMPARE(key, "meth"))
                 if (PYSTRING_CHECK(value)){
                     if (!PYSTRING_COMPARE(value, "GLP_PRIMAL"))
                         smcp.meth = GLP_PRIMAL;
-                    else if (!PYSTRING_COMPARE(value, "GLP_DUAL")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_DUAL"))
                         smcp.meth = GLP_DUAL;
-                    else if (!PYSTRING_COMPARE(value, "GLP_DUALP")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_DUALP"))
                         smcp.meth = GLP_DUALP;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
                             "glpk.options['meth'] with default value", 1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['meth'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "pricing"))
                 if (PYSTRING_CHECK(value)){
                     if (!PYSTRING_COMPARE(value, "GLP_PT_STD"))
                         smcp.pricing = GLP_PT_STD;
-                    else if (!PYSTRING_COMPARE(value, "GLP_PT_PSE")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_PT_PSE"))
                         smcp.pricing = GLP_PT_PSE;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
                             "glpk.options['pricing'] with default value",
                             1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['pricing'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "r_test"))
                 if (PYSTRING_CHECK(value)){
                     if (!PYSTRING_COMPARE(value, "GLP_RT_STD"))
                         smcp.r_test = GLP_RT_STD;
-                    else if (!PYSTRING_COMPARE(value, "GLP_RT_HAR")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_RT_HAR"))
                         smcp.r_test = GLP_RT_HAR;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
                             "glpk.options['r_test'] with default value",
                             1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['r_test'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "tol_bnd"))
                 if (PyFloat_Check(value))
                     smcp.tol_bnd = PyFloat_AsDouble(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['tol_bnd'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "tol_dj"))
                 if (PyFloat_Check(value))
                     smcp.tol_dj = PyFloat_AsDouble(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['tol_dj'] "
                         "with default value", 1);
-            else if (!PYSTRING_COMPARE(key, "tol_piv")) 
+            else if (!PYSTRING_COMPARE(key, "tol_piv"))
                 if (PyFloat_Check(value))
                     smcp.tol_piv = PyFloat_AsDouble(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['tol_piv'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "obj_ll"))
                 if (PyFloat_Check(value))
                     smcp.obj_ll = PyFloat_AsDouble(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['obj_ll'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "obj_ul"))
                 if (PyFloat_Check(value))
                     smcp.obj_ul = PyFloat_AsDouble(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['obj_ul'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "it_lim"))
-                if (PYINT_CHECK(value)) 
+                if (PYINT_CHECK(value))
                     smcp.it_lim = PYINT_AS_LONG(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['it_lim'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "tm_lim"))
-                if (PYINT_CHECK(value)) 
+                if (PYINT_CHECK(value))
                     smcp.tm_lim = PYINT_AS_LONG(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['tm_lim'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "out_frq"))
-                if (PYINT_CHECK(value)) 
+                if (PYINT_CHECK(value))
                     smcp.out_frq = PYINT_AS_LONG(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['out_frq'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "out_dly"))
-                if (PYINT_CHECK(value)) 
+                if (PYINT_CHECK(value))
                     smcp.out_dly = PYINT_AS_LONG(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['out_dly'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "presolve")){
                 if (PYSTRING_CHECK(value)) {
                     if (!PYSTRING_COMPARE(value, "GLP_ON"))
                         smcp.presolve = GLP_ON;
-                    else if (!PYSTRING_COMPARE(value, "GLP_OFF")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_OFF"))
                         smcp.presolve = GLP_OFF;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
                             "glpk.options['presolve'] with default value",
                             1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing "
                         "glpk.options['presolve'] with default value", 1);
             }
-        }    
+        }
 
     Py_DECREF(param);
 
@@ -398,7 +404,7 @@ static PyObject *simplex(PyObject *self, PyObject *args, PyObject *kwrds)
                         PYSTRING_FROMSTRING("dual infeasible"));
                     break;
 
-                default: 
+                default:
                     PyTuple_SET_ITEM(t, 0, (PyObject *)
                         PYSTRING_FROMSTRING("unknown"));
             }
@@ -462,16 +468,16 @@ static PyObject *integer(PyObject *self, PyObject *args,
 {
     matrix *c, *h, *b=NULL, *x=NULL;
     PyObject *G, *A=NULL, *IntSet=NULL, *BinSet = NULL;
-    PyObject *t=NULL, *param, *key, *value;
+    PyObject *t=NULL, *param, *key, *value, *opts=NULL;
     glp_prob *lp;
     glp_iocp iocp;
     int m, n, p, i, j, k, nnz, nnzmax, *rn=NULL, *cn=NULL, info, status;
     int_t pos=0;
     double *a=NULL, val;
-    char *kwlist[] = {"c", "G", "h", "A", "b", "I", "B", NULL};
+    char *kwlist[] = {"c", "G", "h", "A", "b", "I", "B", "options", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|OOOO", kwlist, &c,
-	    &G, &h, &A, &b, &IntSet, &BinSet)) return NULL;
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|OOOOO", kwlist, &c,
+	    &G, &h, &A, &b, &IntSet, &BinSet, &opts)) return NULL;
 
     if ((Matrix_Check(G) && MAT_ID(G) != DOUBLE) ||
         (SpMatrix_Check(G) && SP_ID(G) != DOUBLE) ||
@@ -490,6 +496,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
         return NULL;
     }
 
+    if (A == Py_None) A = NULL;
     if (A){
         if ((Matrix_Check(A) && MAT_ID(A) != DOUBLE) ||
             (SpMatrix_Check(A) && SP_ID(A) != DOUBLE) ||
@@ -508,6 +515,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
     }
     else p = 0;
 
+    if ((PyObject *)b == Py_None) b = NULL;
     if (b && (!Matrix_Check(b) || b->id != DOUBLE)) err_dbl_mtrx("b");
     if ((b && (b->nrows != p || b->ncols != 1)) || (!b && p !=0 )){
         PyErr_SetString(PyExc_ValueError, "incompatible dimensions");
@@ -587,12 +595,15 @@ static PyObject *integer(PyObject *self, PyObject *args,
         return PyErr_NoMemory();
     }
 
-    if (!(param = PyObject_GetAttrString(glpk_module, "options"))
-        || !PyDict_Check(param)){
-            glp_delete_prob(lp);
-            PyErr_SetString(PyExc_AttributeError,
-                "missing glpk.options dictionary");
-            return NULL;
+    if (opts && PyDict_Check(opts))
+        param = opts;
+    else
+        param = PyObject_GetAttrString(glpk_module, "options");
+    if (!param || !PyDict_Check(param)){
+        glp_delete_prob(lp);
+        PyErr_SetString(PyExc_AttributeError,
+            "missing glpk.options dictionary");
+        return NULL;
     }
 
     glp_init_iocp(&iocp);
@@ -603,86 +614,86 @@ static PyObject *integer(PyObject *self, PyObject *args,
                 if (PYSTRING_CHECK(value)){
                     if (!PYSTRING_COMPARE(value, "GLP_MSG_OFF"))
                         iocp.msg_lev = GLP_MSG_OFF;
-                    else if (!PYSTRING_COMPARE(value, "GLP_MSG_ERR")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_MSG_ERR"))
                         iocp.msg_lev = GLP_MSG_ERR;
-                    else if (!PYSTRING_COMPARE(value, "GLP_MSG_ON")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_MSG_ON"))
                         iocp.msg_lev = GLP_MSG_ON;
-                    else if (!PYSTRING_COMPARE(value, "GLP_MSG_ALL")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_MSG_ALL"))
                         iocp.msg_lev = GLP_MSG_ALL;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
-                            "glpk.options['msg_lev'] with default value", 
+                            "glpk.options['msg_lev'] with default value",
                             1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['msg_lev'] "
                         "with default value", 1);
-            else if (!PYSTRING_COMPARE(key, "br_tech")) 
+            else if (!PYSTRING_COMPARE(key, "br_tech"))
                 if (PYSTRING_CHECK(value)){
                     if (!PYSTRING_COMPARE(value, "GLP_BR_FFV"))
                         iocp.br_tech= GLP_BR_FFV;
-                    else if (!PYSTRING_COMPARE(value, "GLP_BR_LFV")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_BR_LFV"))
                         iocp.br_tech = GLP_BR_LFV;
-                    else if (!PYSTRING_COMPARE(value, "GLP_BR_MFV")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_BR_MFV"))
                         iocp.br_tech = GLP_BR_MFV;
-                    else if (!PYSTRING_COMPARE(value, "GLP_BR_DTH")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_BR_DTH"))
                         iocp.br_tech = GLP_BR_DTH;
-                    else if (!PYSTRING_COMPARE(value, "GLP_BR_PCH")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_BR_PCH"))
                         iocp.br_tech = GLP_BR_PCH;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
-                            "glpk.options['br_tech'] with default value", 
+                            "glpk.options['br_tech'] with default value",
                              1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['br_tech'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "bt_tech"))
                 if (PYSTRING_CHECK(value)){
                     if (!PYSTRING_COMPARE(value, "GLP_BT_DFS"))
                         iocp.bt_tech = GLP_BT_DFS;
-                    else if (!PYSTRING_COMPARE(value, "GLP_BT_BFS")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_BT_BFS"))
                         iocp.bt_tech = GLP_BT_BFS;
-                    else if (!PYSTRING_COMPARE(value, "GLP_BT_BLB")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_BT_BLB"))
                         iocp.bt_tech = GLP_BT_BLB;
-                    else if (!PYSTRING_COMPARE(value, "GLP_BT_BPH")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_BT_BPH"))
                         iocp.bt_tech = GLP_BT_BPH;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
                             "glpk.options['bt_tech'] with default value",
                             1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['bt_tech'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "pp_tech"))
                 if (PYSTRING_CHECK(value)){
                     if (!PYSTRING_COMPARE(value, "GLP_PP_NONE"))
                         iocp.pp_tech = GLP_PP_NONE;
-                    else if (!PYSTRING_COMPARE(value, "GLP_PP_ROOT")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_PP_ROOT"))
                         iocp.pp_tech = GLP_PP_ROOT;
-                    else if (!PYSTRING_COMPARE(value, "GLP_PP_ALL")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_PP_ALL"))
                         iocp.pp_tech = GLP_PP_ALL;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
                             "glpk.options['pp_tech'] with default value",
                             1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['pp_tech'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "fp_heur"))
                 if (PYSTRING_CHECK(value)){
                     if (!PYSTRING_COMPARE(value, "GLP_ON"))
                         iocp.fp_heur = GLP_ON;
-                    else if (!PYSTRING_COMPARE(value, "GLP_OFF")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_OFF"))
                         iocp.fp_heur = GLP_OFF;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
                             "glpk.options['fp_heur'] with default value",
                             1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['fp_heur'] "
                         "with default value", 1);
 #if 0
@@ -690,20 +701,20 @@ static PyObject *integer(PyObject *self, PyObject *args,
                 if (PYSTRING_CHECK(value)){
                     if (!PYSTRING_COMPARE(value, "GLP_ON"))
                         iocp.ps_heur = GLP_ON;
-                    else if (!PYSTRING_COMPARE(value, "GLP_OFF")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_OFF"))
                         iocp.ps_heur = GLP_OFF;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
                             "glpk.options['ps_heur'] with default value",
                             1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['ps_heur'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "ps_tm_lim"))
-                if (PYINT_CHECK(value)) 
+                if (PYINT_CHECK(value))
                     iocp.ps_tm_lim = PYINT_AS_LONG(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing "
                         "glpk.options['ps_tm_lim'] with default value", 1);
 #endif
@@ -711,92 +722,92 @@ static PyObject *integer(PyObject *self, PyObject *args,
                 if (PYSTRING_CHECK(value)){
                     if (!PYSTRING_COMPARE(value, "GLP_ON"))
                         iocp.gmi_cuts = GLP_ON;
-                    else if (!PYSTRING_COMPARE(value, "GLP_OFF")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_OFF"))
                         iocp.gmi_cuts = GLP_OFF;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
                             "glpk.options['gmi_cuts'] with default value",
                             1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing "
                         "glpk.options['gmi_cuts'] with default value", 1);
             else if (!PYSTRING_COMPARE(key, "mir_cuts"))
                 if (PYSTRING_CHECK(value)){
                     if (!PYSTRING_COMPARE(value, "GLP_ON"))
                         iocp.mir_cuts = GLP_ON;
-                    else if (!PYSTRING_COMPARE(value, "GLP_OFF")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_OFF"))
                         iocp.mir_cuts = GLP_OFF;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
                             "glpk.options['mir_cuts'] with default value",
                             1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing "
                         "glpk.options['mir_cuts'] with default value", 1);
             else if (!PYSTRING_COMPARE(key, "cov_cuts"))
                 if (PYSTRING_CHECK(value)){
                     if (!PYSTRING_COMPARE(value, "GLP_ON"))
                         iocp.cov_cuts = GLP_ON;
-                    else if (!PYSTRING_COMPARE(value, "GLP_OFF")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_OFF"))
                         iocp.cov_cuts = GLP_OFF;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
                             "glpk.options['cov_cuts'] with default value",
                             1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing "
                         "glpk.options['cov_cuts'] with default value", 1);
             else if (!PYSTRING_COMPARE(key, "clq_cuts"))
                 if (PYSTRING_CHECK(value)){
                     if (!PYSTRING_COMPARE(value, "GLP_ON"))
                         iocp.clq_cuts = GLP_ON;
-                    else if (!PYSTRING_COMPARE(value, "GLP_OFF")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_OFF"))
                         iocp.clq_cuts = GLP_OFF;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
                             "glpk.options['clq_cuts'] with default value",
                             1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing "
                         "glpk.options['clq_cuts'] with default value", 1);
             else if (!PYSTRING_COMPARE(key, "tol_int"))
                 if (PyFloat_Check(value))
                     iocp.tol_int = PyFloat_AsDouble(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['tol_int'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "tol_obj"))
                 if (PyFloat_Check(value))
                     iocp.tol_obj = PyFloat_AsDouble(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['tol_obj'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "mip_gap"))
                 if (PyFloat_Check(value))
                     iocp.mip_gap = PyFloat_AsDouble(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['mip_gap'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "tm_lim"))
-                if (PYINT_CHECK(value)) 
+                if (PYINT_CHECK(value))
                     iocp.tm_lim = PYINT_AS_LONG(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['tm_lim'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "out_frq"))
-                if (PYINT_CHECK(value)) 
+                if (PYINT_CHECK(value))
                     iocp.out_frq = PYINT_AS_LONG(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['out_frq'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "out_dly"))
-                if (PYINT_CHECK(value)) 
+                if (PYINT_CHECK(value))
                     iocp.out_dly = PYINT_AS_LONG(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['out_dly'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "glp_tree"))
@@ -806,9 +817,9 @@ static PyObject *integer(PyObject *self, PyObject *args,
                 PyErr_WarnEx(NULL, "replacing glpk.options['cb_info'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "cb_size"))
-                if (PYINT_CHECK(value)) 
+                if (PYINT_CHECK(value))
                     iocp.cb_size = PYINT_AS_LONG(value);
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing glpk.options['cb_size'] "
                         "with default value", 1);
             else if (!PYSTRING_COMPARE(key, "presolve"))
@@ -820,25 +831,25 @@ static PyObject *integer(PyObject *self, PyObject *args,
                         PyErr_WarnEx(NULL, "replacing "
                             "glpk.options['presolve'] with GLP_ON", 1);
                     }
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
                             "glpk.options['presolve'] with GLP_ON", 1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing "
                         "glpk.options['presolve'] with GLP_ON", 1);
             else if (!PYSTRING_COMPARE(key, "binarize")) {
                 if (PYSTRING_CHECK(value)) {
                     if (!PYSTRING_COMPARE(value, "GLP_ON"))
                         iocp.binarize = GLP_ON;
-                    else if (!PYSTRING_COMPARE(value, "GLP_OFF")) 
+                    else if (!PYSTRING_COMPARE(value, "GLP_OFF"))
                         iocp.binarize = GLP_OFF;
-                    else 
+                    else
                         PyErr_WarnEx(NULL, "replacing "
                             "glpk.options['binarize'] with default "
                             "value", 1);
                 }
-                else 
+                else
                     PyErr_WarnEx(NULL, "replacing "
                         "glpk.options['binarize'] with default value", 1);
             }
@@ -848,7 +859,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
     iocp.presolve = GLP_ON;
 
     if (IntSet) {
-        PyObject *iter = PySequence_Fast(IntSet, 
+        PyObject *iter = PySequence_Fast(IntSet,
             "Critical error: not sequence");
         for (i=0; i<PySet_GET_SIZE(IntSet); i++) {
             PyObject *tmp = PySequence_Fast_GET_ITEM(iter, i);
@@ -870,7 +881,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
     }
 
     if (BinSet){
-        PyObject *iter = PySequence_Fast(BinSet, 
+        PyObject *iter = PySequence_Fast(BinSet,
             "Critical error: not sequence");
         for (i=0; i<PySet_GET_SIZE(BinSet); i++) {
             PyObject *tmp = PySequence_Fast_GET_ITEM(iter, i);
@@ -883,7 +894,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
             if ((k < 0) || (k >= n)) {
                 glp_delete_prob(lp);
                 Py_DECREF(iter);
-                PY_ERR(PyExc_IndexError, 
+                PY_ERR(PyExc_IndexError,
                     "index element out of range in B");
 	    }
 	    glp_set_col_kind(lp, k+1, GLP_BV);
@@ -910,13 +921,13 @@ static PyObject *integer(PyObject *self, PyObject *args,
                         return PyErr_NoMemory();
                     }
                     if (status == GLP_OPT)
-                        PyTuple_SET_ITEM(t, 0, 
+                        PyTuple_SET_ITEM(t, 0,
                             (PyObject *) PYSTRING_FROMSTRING("optimal"));
                     else if (status == GLP_FEAS)
-                        PyTuple_SET_ITEM(t, 0, 
+                        PyTuple_SET_ITEM(t, 0,
                            (PyObject *)PYSTRING_FROMSTRING("feasible"));
-                    else 
-                        PyTuple_SET_ITEM(t, 0, 
+                    else
+                        PyTuple_SET_ITEM(t, 0,
                            (PyObject *)PYSTRING_FROMSTRING("undefined"));
                     for (i=0; i<n; i++)
                         MAT_BUFD(x)[i] = glp_mip_col_val(lp, i+1);
@@ -931,7 +942,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
                     PyTuple_SET_ITEM(t, 1, Py_BuildValue(""));
                     break;
 
-                default: 
+                default:
                     PyTuple_SET_ITEM(t, 1, Py_BuildValue(""));
                     PyTuple_SET_ITEM(t, 0, (PyObject *)
                         PYSTRING_FROMSTRING("unknown"));
@@ -1008,7 +1019,7 @@ PyMODINIT_FUNC PyInit_glpk(void)
 
 PyMODINIT_FUNC initglpk(void)
 {
-    glpk_module = Py_InitModule3("cvxopt.glpk", glpk_functions, 
+    glpk_module = Py_InitModule3("cvxopt.glpk", glpk_functions,
         glpk__doc__);
     PyModule_AddObject(glpk_module, "options", PyDict_New());
     if (import_cvxopt() < 0) return;

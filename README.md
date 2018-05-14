@@ -24,9 +24,10 @@ Related projects
 ----------------
 
 * [Original CVXOPT package](https://github.com/cvxopt/cvxopt)
-* [Julia interface to CVXOPT](https://github.com/cvxopt/CVXOPT.jl)
 * [CVXOPT wheels](https://github.com/cvxopt/cvxopt-wheels)
-* [Conda-forge package](https://github.com/conda-forge/cvxopt-feedstock)
+* [CVXOPT conda-forge package](https://github.com/conda-forge/cvxopt-feedstock)
+* [Julia interface to CVXOPT](https://github.com/cvxopt/CVXOPT.jl)
+* [MATLAB interface to CVXOPT](https://github.com/cvxopt/cvxopt-matlab)
 
 
 Build status

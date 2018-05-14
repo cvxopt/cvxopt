@@ -1,14 +1,58 @@
-This document describes the standard CVXOPT installation procedure on
-Unix/Linux systems.  For other platforms, please consult the CVXOPT website
-<www.cvxopt.org>.
+This document describes the standard CVXOPT installation procedure. For more
+information, please consult the CVXOPT website <www.cvxopt.org>.
 
+
+Installing a pre-built package
+==============================
+
+Installing via conda
+--------------------
+
+The `conda-forge <http://anaconda.org/conda-forge/cvxopt>`_ channel
+provides pre-built CVXOPT packages for Linux and macOS that can be
+installed using `conda <https://conda.io/docs/>`_::
+
+	conda install -c conda-forge cvxopt
+
+These pre-built packages are linked against OpenBLAS and include the optional extensions
+GLPK, GSL, and FFTW.
+
+
+Installing via pip
+------------------
+
+A pre-built binary wheel package can be installed
+using `pip <https://pip.pypa.io>`_::
+
+	pip install cvxopt
+
+Wheels for Linux:
+
+* are available for Python 2.7, 3.3, 3.4, 3.5, and 3.6 (32 and 64 bit)
+* are linked against OpenBLAS
+* include all optional extensions (DSDP, GLPK, GSL, and FFTW)
+
+Wheels for macOS:
+
+* are available for Python 2.7, 3.4, 3.5, and 3.6 (universal binaries)
+* are linked against OpenBLAS
+* include all optional extensions (DSDP, GLPK, GSL, and FFTW)
+
+Wheels for Windows:
+
+* are available for Python 2.7, 3.4, 3.5, and 3.6 (64 bit only)
+* are linked against MKL
+* Python 3.5+ wheels include the optional extension GLPK (wheels for Python 2.7 and 3.4 include none of the optional extensions)
+
+
+Building and installing from source
+===================================
 
 Required and optional software
 ------------------------------
 
-The package requires version 2.7 or 3.x of Python, and is built from
-source, so the header files and libraries for Python must be installed,
-as well as the core binaries.
+The package requires version 2.7 or 3.x of Python, and building from
+source requires core binaries and header files and libraries for Python.
 
 The installation requires BLAS and LAPACK. Using an architecture
 optimized implementation such as ATLAS, OpenBLAS, or MKL is recommended
@@ -72,6 +116,8 @@ script can be modified:
   variables SUITESPARSE_LIB_DIR and SUITESPARSE_INC_DIR are ignored and
   relevant parts of SuiteSparse are built from source when
   SUITESPARSE_SRC_DIR is specified.
+
+* MSVC: set this variable to 1 if compiling with MSVC 14 or later
 
 Each of the variables can be overridden by specifying an environment variable
 with the prefix "CVXOPT_". For example, the following command installs CVXOPT

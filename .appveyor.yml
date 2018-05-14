@@ -1,50 +1,104 @@
-version: 1.1.9.{build}-{branch}
-configuration: Release
-platform: x64
+version: 1.2.{build}-{branch}
+image: Visual Studio 2017
 init:
-- cmd: >-
-    choco install wget
+    - choco install wget checksum
+
 environment:
-  CVXOPT_BLAS_LIB: openblaspy
-  CVXOPT_LAPACK_LIB: openblaspy
-  CVXOPT_BLAS_LIB_DIR: c:\projects\cvxopt
-  CVXOPT_BLAS_EXTRA_LINK_ARGS: -lgfortran;-lquadmath
-  CVXOPT_SUITESPARSE_SRC_DIR: SuiteSparse
+  global:
+    PYTHON: C:\Miniconda36-x64
+    PYTHON_ARCH: "64"
+    PACKAGE_NAME: "cvxopt"
+    BUILD_DEPENDS: "mkl"
+    TEST_DEPENDS: "nose"
+    CVXOPT_BLAS_LIB: mkl_rt
+    CVXOPT_LAPACK_LIB: mkl_rt
+    CVXOPT_BUILD_GLPK: "1"
+    CVXOPT_INSTALL_REQUIRES: mkl
+    GLPK_VERSION: "4.65"
+    GLPK_SHA256: "4281e29b628864dfe48d393a7bedd781e5b475387c20d8b0158f329994721a10"
+    SUITESPARSE_VERSION: "5.2.0"
+    SUITESPARSE_SHA256: "3c46c035ea8217649958a0f73360e825b0c9dcca4e32a9349d2c7678c0d48813"
+
   matrix:
-  - PYTHON: C:\Python27-x64
-    PYTHON_VERSION: 27
-  - PYTHON: C:\Python34-x64
-    PYTHON_VERSION: 34
+    - PYTHON_VERSION: 3.6
+      CVXOPT_MSVC: 1
+    - PYTHON_VERSION: 3.5
+      CVXOPT_MSVC: 1
+    - PYTHON_VERSION: 3.4
+      COMPILER: mingwpy
+    - PYTHON_VERSION: 2.7
+      COMPILER: mingwpy
+
+platform:
+    - x64
+
 install:
-- cmd: >-
-    set PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
+    - if [%PYTHON_ARCH%]==[64] (
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+      ) else (
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
+      )
 
-    wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-4.5.3.tar.gz && "C:\Program Files\7-Zip\7z" x SuiteSparse-4.5.3.tar.gz && "C:\Program Files\7-Zip\7z" x SuiteSparse-4.5.3.tar
+    # Set up miniconda build environment
+    - SET "PATH=%PYTHON%;%PYTHON%\Scripts;%PYTHON%\Library\bin;%ProgramFiles%\7-Zip;%PATH%"
+    - conda info
+    - conda create --yes -n build_env python=%PYTHON_VERSION% %BUILD_DEPENDS%
+    - activate build_env
+    - if [%COMPILER%]==[mingwpy] ( pip install -i https://pypi.anaconda.org/carlkl/simple mingwpy )
+    - SET CVXOPT_BLAS_LIB_DIR=%PYTHON%\envs\build_env\Library\lib
 
-    wget https://bitbucket.org/carlkl/mingw-w64-for-python/downloads/OpenBLAS-0.2.17_amd64.7z && mkdir openblas && "C:\Program Files\7-Zip\7z" x OpenBLAS-0.2.17_amd64.7z -aoa -oopenblas
+    # Download SuiteSparse and set CVXOPT_SUITESPARSE_SRC_DIR
+    - wget -nv http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-%SUITESPARSE_VERSION%.tar.gz
+    - checksum -t sha256 -c %SUITESPARSE_SHA256% SuiteSparse-%SUITESPARSE_VERSION%.tar.gz
+    - 7z x -bso0 -bsp0 SuiteSparse-%SUITESPARSE_VERSION%.tar.gz && 7z x -bso0 -bsp0 SuiteSparse-%SUITESPARSE_VERSION%.tar
+    - SET CVXOPT_SUITESPARSE_SRC_DIR=%cd%\SuiteSparse
 
-    copy openblas\amd64\lib\libopenblaspy.a libopenblaspy.a
+    # Download and build GLPK
+    - if [%CVXOPT_BUILD_GLPK%]==[1] (
+        if [%CVXOPT_MSVC%]==[1] (
+          wget -nv http://ftp.gnu.org/gnu/glpk/glpk-%GLPK_VERSION%.tar.gz &&
+          checksum -t sha256 -c %GLPK_SHA256% glpk-%GLPK_VERSION%.tar.gz &&
+          7z x -bso0 -bsp0 glpk-%GLPK_VERSION%.tar.gz && 7z x -bso0 -bsp0 glpk-%GLPK_VERSION%.tar &&
+          cd glpk-%GLPK_VERSION%\w64 &&
+          copy config_VC config.h &&
+          nmake /f Makefile_VC glpk.lib &&
+          cd ..\.. &&
+          SET "CVXOPT_GLPK_LIB_DIR=%cd%\glpk-%GLPK_VERSION%\w64" &&
+          SET "CVXOPT_GLPK_INC_DIR=%cd%\glpk-%GLPK_VERSION%\src"
+        ) else (
+          appveyor AddMessage "Disabled GLPK extension" -Category Warning &&
+          SET "CVXOPT_BUILD_GLPK=0"
+        )
+      )
 
-    python --version
+    # Check that we have the expected version and architecture for Python
+    - python --version
+    - python -c "import struct; print(struct.calcsize('P') * 8)"
 
-    python -c "import struct; print(struct.calcsize('P') * 8)"
-
-    pip install --disable-pip-version-check --user --upgrade pip
-
-    pip install -i https://pypi.anaconda.org/carlkl/simple mingwpy
-
-    pip install wheel nose
 build_script:
-- cmd: >-
-    python setup.py build --compiler=mingw32
+    # Build wheel
+    - if [%COMPILER%]==[mingwpy] ( python setup.py build --compiler=mingw32 )
+      else ( python setup.py build --compiler=msvc )
+    - python setup.py bdist_wheel
+    - ls dist/*
 
-    python setup.py install
-
-    python setup.py bdist_wheel
 test_script:
-- cmd: >-
-    python -c "from cvxopt import blas,lapack,cholmod,umfpack"
+    # Create test env
+    - conda create --yes -n test_env python=%PYTHON_VERSION% %TEST_DEPENDS%
+    - activate test_env
 
-    nosetests
+    # Install from wheel
+    - pip install %CVXOPT_INSTALL_REQUIRES%
+    - pip install --no-index --find-links dist/ %PACKAGE_NAME%
+
+    # Run tests
+    - python --version
+    - python -c "from cvxopt import blas,lapack,cholmod,umfpack"
+    - if [%CVXOPT_BUILD_DSDP%]==[1] ( python -c "from cvxopt import dsdp" )
+    - if [%CVXOPT_BUILD_FFTW%]==[1] ( python -c "from cvxopt import fftw" )
+    - if [%CVXOPT_BUILD_GLPK%]==[1] ( python -c "from cvxopt import glpk" )
+    - if [%CVXOPT_BUILD_GSL%]==[1] ( python -c "from cvxopt import gsl" )
+    - nosetests
+
 artifacts:
-- path: dist/*.whl
+    - path: dist/*.whl

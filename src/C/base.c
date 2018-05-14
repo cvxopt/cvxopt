@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2016 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -57,7 +57,12 @@ extern int (*sp_symv[])(char, int, number, ccs *, int, void *, int,
 extern int (*sp_syrk[])(char, char, number, void *, number,
     void *, int, int, int, int, void **) ;
 
+#ifndef _MSC_VER
 const int  E_SIZE[] = { sizeof(int_t), sizeof(double), sizeof(double complex) };
+#else
+const int  E_SIZE[] = { sizeof(int_t), sizeof(double), sizeof(_Dcomplex) };
+#endif
+
 const char TC_CHAR[][2] = {"i","d","z"} ;
 
 /*
@@ -76,7 +81,11 @@ static void write_dnum(void *dest, int i, void *src, int j) {
 }
 
 static void write_znum(void *dest, int i, void *src, int j) {
+#ifndef _MSC_VER
   ((double complex *)dest)[i]  = ((double complex *)src)[j];
+#else
+  ((_Dcomplex *)dest)[i]  = ((_Dcomplex *)src)[j];
+#endif
 }
 
 void (*write_num[])(void *, int, void *, int) = {
@@ -92,8 +101,13 @@ static PyObject * dnum2PyObject(void *src, int i) {
 
 static PyObject * znum2PyObject(void *src, int i) {
   Py_complex z;
+#ifndef _MSC_VER
   z.real = creal (((double complex *)src)[i]);
   z.imag = cimag (((double complex *)src)[i]);
+#else
+  z.real = creal (((_Dcomplex *)src)[i]);
+  z.imag = cimag (((_Dcomplex *)src)[i]);
+#endif
   return Py_BuildValue("D", &z);
 }
 
@@ -102,7 +116,7 @@ PyObject * (*num2PyObject[])(void *, int) = {
 
 /* val_id: 0 = matrix, 1 = PyNumber */
 static int
-convert_inum(void *dest, void *val, int val_id, int offset)
+convert_inum(void *dest, void *val, int val_id, int_t offset)
 {
   if (val_id==0) { /* 1x1 matrix */
     switch (MAT_ID(val)) {
@@ -127,7 +141,7 @@ convert_inum(void *dest, void *val, int val_id, int offset)
 }
 
 static int
-convert_dnum(void *dest, void *val, int val_id, int offset)
+convert_dnum(void *dest, void *val, int val_id, int_t offset)
 {
   if (val_id==0) { /* matrix */
     switch (MAT_ID(val)) {
@@ -149,26 +163,42 @@ convert_dnum(void *dest, void *val, int val_id, int offset)
 }
 
 static int
-convert_znum(void *dest, void *val, int val_id, int offset)
+convert_znum(void *dest, void *val, int val_id, int_t offset)
 {
   if (val_id==0) { /* 1x1 matrix */
     switch (MAT_ID(val)) {
     case INT:
+#ifndef _MSC_VER
       *(double complex *)dest = MAT_BUFI(val)[offset]; return 0;
+#else
+      *(int_t *)dest = MAT_BUFI(val)[offset]; return 0;
+#endif
     case DOUBLE:
+#ifndef _MSC_VER
       *(double complex *)dest = MAT_BUFD(val)[offset]; return 0;
+#else
+      *(double *)dest = MAT_BUFD(val)[offset]; return 0;
+#endif
     case COMPLEX:
+#ifndef _MSC_VER
       *(double complex *)dest = MAT_BUFZ(val)[offset]; return 0;
+#else
+      *(_Dcomplex *)dest = MAT_BUFZ(val)[offset]; return 0;
+#endif
     default: return -1;
     }
   } else { /* PyNumber */
     Py_complex c = PyComplex_AsCComplex((PyObject *)val);
+#ifndef _MSC_VER
     *(double complex *)dest = c.real + I*c.imag;
+#else
+    *(_Dcomplex *)dest = _Cbuild(c.real,c.imag);
+#endif
     return 0;
   }
 }
 
-int (*convert_num[])(void *, void *, int, int) = {
+int (*convert_num[])(void *, void *, int, int_t) = {
     convert_inum, convert_dnum, convert_znum };
 
 extern void daxpy_(int *, void *, void *, int *, void *, int *) ;
@@ -256,7 +286,11 @@ static void mtx_dabs(void *src, void *dest, int n) {
 static void mtx_zabs(void *src, void *dest, int n) {
   int i;
   for (i=0; i<n; i++)
+#ifndef _MSC_VER
     ((double *)dest)[i] = cabs(((double complex *)src)[i]);
+#else
+    ((double *)dest)[i] = cabs(((_Dcomplex *)src)[i]);
+#endif
 }
 
 void (*mtx_abs[])(void *, void *, int) = { mtx_iabs, mtx_dabs, mtx_zabs };
@@ -283,7 +317,11 @@ static int zdiv(void *dest, number a, int n) {
     PY_ERR_INT(PyExc_ZeroDivisionError, "division by zero");
 
   int _n = n, int1 = 1;
+#ifndef _MSC_VER
   double complex _a = 1.0/a.z;
+#else
+  _Dcomplex _a = _Cmulcr(conj(a.z),1.0/norm(a.z));
+#endif
   zscal_(&_n, (void *)&_a, dest, &int1);
   return 0;
 }
@@ -940,7 +978,7 @@ sparse(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
   PyObject *Objx = NULL;
   static char *kwlist[] = { "x", "tc", NULL};
-  
+
 #if PY_MAJOR_VERSION >= 3
   int tc = 0;
   if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|C:sparse", kwlist,
@@ -973,8 +1011,13 @@ sparse(PyTypeObject *type, PyObject *args, PyObject *kwds)
 
     for (jk=0; jk<SP_NCOLS(Objx); jk++) {
       for (ik=SP_COL(Objx)[jk]; ik<SP_COL(Objx)[jk+1]; ik++) {
+#ifndef _MSC_VER
         if (((SP_ID(Objx) == DOUBLE) && (SP_VALD(Objx)[ik] != 0.0)) ||
             ((SP_ID(Objx) == COMPLEX) && (SP_VALZ(Objx)[ik] != 0.0)))
+#else
+        if (((SP_ID(Objx) == DOUBLE) && (SP_VALD(Objx)[ik] != 0.0)) ||
+            ((SP_ID(Objx) == COMPLEX) && (creal(SP_VALZ(Objx)[ik]) != 0.0 || cimag(SP_VALZ(Objx)[ik]))))
+#endif
           nnz++;
       }
     }
@@ -990,7 +1033,11 @@ sparse(PyTypeObject *type, PyObject *args, PyObject *kwds)
           SP_ROW(ret)[nnz++] = SP_ROW(Objx)[ik];
           SP_COL(ret)[jk+1]++;
         }
+#ifndef _MSC_VER
         else if ((SP_ID(Objx) == COMPLEX) && (SP_VALZ(Objx)[ik] != 0.0)) {
+#else
+        else if ((SP_ID(Objx) == COMPLEX) && (creal(SP_VALZ(Objx)[ik]) != 0.0 || cimag(SP_VALZ(Objx)[ik]) != 0.0)) {
+#endif
           SP_VALZ(ret)[nnz] = SP_VALZ(Objx)[ik];
           SP_ROW(ret)[nnz++] = SP_ROW(Objx)[ik];
           SP_COL(ret)[jk+1]++;
@@ -1134,11 +1181,17 @@ spdiag(PyTypeObject *type, PyObject *args, PyObject *kwds)
                   MAT_BUFD(Dk)[l + j*MAT_NROWS(Dk)] :
               MAT_BUFI(Dk)[l + j*MAT_NROWS(Dk)]);
             else
+#ifndef _MSC_VER
               SP_VALZ(ret)[idx] = (MAT_ID(Dk) == COMPLEX ?
                   MAT_BUFZ(Dk)[l + j*MAT_NROWS(Dk)] :
               (MAT_ID(Dk) == DOUBLE ? MAT_BUFD(Dk)[l + j*MAT_NROWS(Dk)] :
               MAT_BUFI(Dk)[l + j*MAT_NROWS(Dk)]));
-
+#else
+              SP_VALZ(ret)[idx] = (MAT_ID(Dk) == COMPLEX ?
+                  MAT_BUFZ(Dk)[l + j*MAT_NROWS(Dk)] :
+              (MAT_ID(Dk) == DOUBLE ? _Cbuild(MAT_BUFD(Dk)[l + j*MAT_NROWS(Dk)],0.0) :
+	       _Cbuild((double)MAT_BUFI(Dk)[l + j*MAT_NROWS(Dk)],0.0)));
+#endif
             idx++;
           }
         } else {
@@ -1149,8 +1202,13 @@ spdiag(PyTypeObject *type, PyObject *args, PyObject *kwds)
             if (id == DOUBLE)
               SP_VALD(ret)[idx] = SP_VALD(Dk)[l];
             else
+#ifndef _MSC_VER
               SP_VALZ(ret)[idx] = (SP_ID(Dk) == COMPLEX ?
                   SP_VALZ(Dk)[l] : SP_VALD(Dk)[l]);
+#else
+              SP_VALZ(ret)[idx] = (SP_ID(Dk) == COMPLEX ?
+		  SP_VALZ(Dk)[l] : _Cbuild(SP_VALD(Dk)[l],0.0));
+#endif
             idx++;
           }
         }
@@ -1567,7 +1625,11 @@ PyObject * matrix_elem_mul(matrix *self, PyObject *args, PyObject *kwrds)
         return Py_BuildValue("d", a.d*b.d );
       else {
         number c;
+#ifndef _MSC_VER
         c.z = a.z*b.z;
+#else
+        c.z = _Cmulcc(a.z,b.z);
+#endif
         return znum2PyObject(&c, 0);
       }
     }
@@ -1596,7 +1658,11 @@ PyObject * matrix_elem_mul(matrix *self, PyObject *args, PyObject *kwrds)
       else if (id == DOUBLE)
         MAT_BUFD(ret)[i] = a.d*b.d;
       else
+#ifndef _MSC_VER
         MAT_BUFZ(ret)[i] = a.z*b.z;
+#else
+        MAT_BUFZ(ret)[i] = _Cmulcc(a.z,b.z);
+#endif
     }
 
     return ret;
@@ -1615,7 +1681,11 @@ PyObject * matrix_elem_mul(matrix *self, PyObject *args, PyObject *kwrds)
         if (id == DOUBLE)
           SP_VALD(ret)[k] *= b.d;
         else
+#ifndef _MSC_VER
           SP_VALZ(ret)[k] *= b.z;
+#else
+          SP_VALZ(ret)[k] = _Cmulcc(SP_VALZ(ret)[k],b.z);
+#endif
       }
     }
 
@@ -1634,7 +1704,11 @@ PyObject * matrix_elem_mul(matrix *self, PyObject *args, PyObject *kwrds)
         if (id == DOUBLE)
           SP_VALD(ret)[k] *= a.d;
         else
+#ifndef _MSC_VER
           SP_VALZ(ret)[k] *= a.z;
+#else
+          SP_VALZ(ret)[k] = _Cmulcc(SP_VALZ(ret)[k],a.z);
+#endif
       }
     }
 
@@ -1695,9 +1769,15 @@ PyObject * matrix_elem_mul(matrix *self, PyObject *args, PyObject *kwrds)
           if (id == DOUBLE)
             SP_VALD(ret)[kret] = SP_VALD(A)[ka]*SP_VALD(B)[kb];
           else
+#ifndef _MSC_VER
             SP_VALZ(ret)[kret] =
                 (X_ID(A) == DOUBLE ? SP_VALD(A)[ka] : SP_VALZ(A)[ka])*
                 (X_ID(B) == DOUBLE ? SP_VALD(B)[kb] : SP_VALZ(B)[kb]);
+#else
+	  SP_VALZ(ret)[kret] = _Cmulcc(
+		(X_ID(A) == DOUBLE ? _Cbuild(SP_VALD(A)[ka],0.0) : SP_VALZ(A)[ka]),
+		(X_ID(B) == DOUBLE ? _Cbuild(SP_VALD(B)[kb],0.0) : SP_VALZ(B)[kb]));
+#endif
 
           kret++; ka++; kb++;
         }
@@ -1766,9 +1846,17 @@ PyObject * matrix_elem_div(matrix *self, PyObject *args, PyObject *kwrds)
       return Py_BuildValue("d", a.d/b.d );
     }
     else {
+#ifndef _MSC_VER
       if (b.z == 0.0) PY_ERR(PyExc_ArithmeticError, "division by zero");
+#else
+      if (creal(b.z) == 0.0 && cimag(b.z) == 0.0) PY_ERR(PyExc_ArithmeticError, "division by zero");
+#endif
       number c;
+#ifndef _MSC_VER
       c.z = a.z/b.z;
+#else
+      c.z = _Cmulcc(a.z, _Cmulcr(conj(b.z),1.0/norm(b.z)));
+#endif
       return znum2PyObject(&c, 0);
     }
   }
@@ -1800,8 +1888,13 @@ PyObject * matrix_elem_div(matrix *self, PyObject *args, PyObject *kwrds)
         MAT_BUFD(ret)[i] = a.d/b.d;
       }
       else {
+#ifndef _MSC_VER
         if (b.z == 0) goto divzero;
         MAT_BUFZ(ret)[i] = a.z/b.z;
+#else
+        if (creal(b.z) == 0 && cimag(b.z)== 0) goto divzero;
+        MAT_BUFZ(ret)[i] = _Cmulcc(a.z,_Cmulcr(b.z,1.0/norm(b.z)));
+#endif
       }
     }
 
@@ -1822,8 +1915,13 @@ PyObject * matrix_elem_div(matrix *self, PyObject *args, PyObject *kwrds)
           SP_VALD(ret)[k] /= b.d;
         }
         else {
-          if (b.z == 0.0) goto divzero;
-          SP_VALZ(ret)[k] /= b.z;
+#ifndef _MSC_VER
+         if (b.z == 0) goto divzero;
+         SP_VALZ(ret)[k] /= b.z;
+#else
+         if (creal(b.z) == 0 && cimag(b.z)== 0) goto divzero;
+         SP_VALZ(ret)[k] = _Cmulcc(SP_VALZ(ret)[k],_Cmulcr(b.z,1.0/norm(b.z)));
+#endif   
         }
       }
     }
@@ -1886,7 +1984,7 @@ PyMODINIT_FUNC PyInit_base(void)
 
 #else
 
-#define INITERROR return 
+#define INITERROR return
 PyMODINIT_FUNC initbase(void)
 
 #endif
@@ -1924,11 +2022,23 @@ PyMODINIT_FUNC initbase(void)
   if (PyModule_AddObject(base_mod, "spmatrix", (PyObject *) &spmatrix_tp) < 0)
     INITERROR;
 
+#ifndef _MSC_VER
   One[INT].i = 1; One[DOUBLE].d = 1.0; One[COMPLEX].z = 1.0;
+#else
+  One[INT].i = 1; One[DOUBLE].d = 1.0; One[COMPLEX].z = _Cbuild(1.0,0.0);
+#endif
 
+#ifndef _MSC_VER
   MinusOne[INT].i = -1; MinusOne[DOUBLE].d = -1.0; MinusOne[COMPLEX].z = -1.0;
+#else
+  MinusOne[INT].i = -1; MinusOne[DOUBLE].d = -1.0; MinusOne[COMPLEX].z = _Cbuild(-1.0,0.0);
+#endif
 
+#ifndef _MSC_VER
   Zero[INT].i = 0; Zero[DOUBLE].d = 0.0; Zero[COMPLEX].z = 0.0;
+#else
+  Zero[INT].i = 0; Zero[DOUBLE].d = 0.0; Zero[COMPLEX].z = _Cbuild(0.0,0.0);
+#endif
 
   /* initialize the C API object */
   base_API[0] = (void *)Matrix_New;

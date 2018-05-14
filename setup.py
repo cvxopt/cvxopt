@@ -3,7 +3,7 @@ try:
 except ImportError:
     from distutils.core import setup, Extension
 from glob import glob
-import os, sys, platform
+import os, sys
 import versioneer
 
 # Modifiy this if BLAS and LAPACK libraries are not in /usr/lib.
@@ -13,9 +13,6 @@ BLAS_LIB_DIR = '/usr/lib'
 BLAS_LIB = ['blas']
 LAPACK_LIB = ['lapack']
 BLAS_EXTRA_LINK_ARGS = []
-
-# Global compilation flags
-COMP_ARGS = []
 
 # Set environment variable BLAS_NOUNDERSCORES=1 if your BLAS/LAPACK do
 # not use trailing underscores
@@ -59,29 +56,29 @@ DSDP_LIB_DIR = '/usr/lib'
 DSDP_INC_DIR = '/usr/include/dsdp'
 
 # Guess SUITESPARSE_LIB_DIR and SUITESPARSE_INC_DIR
-if platform.platform().startswith("Darwin"):
+if sys.platform.startswith("darwin"):
     # macOS
     SUITESPARSE_LIB_DIR = '/usr/local/lib'
     SUITESPARSE_INC_DIR = '/usr/local/include'
-elif platform.dist()[0] in ['ubuntu','debian']:
-    # Ubuntu/Debian
-    SUITESPARSE_LIB_DIR = "/usr/lib/x86_64-linux-gnu"
-    SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
-elif platform.dist()[0] in ['centos','fedora','redhat']:
-    # CentOS/Fedora/RedHat
-    SUITESPARSE_LIB_DIR = "/usr/lib64"
-    SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
 else:
-    # Default
-    SUITESPARSE_LIB_DIR = '/usr/lib'
-    SUITESPARSE_INC_DIR = '/usr/include'
-
-# Define windows arquitecture
-if platform.architecture() == ('64bit', 'WindowsPE'):
-    COMP_ARGS += ['-D MS_WIN64']
+    if glob("/usr/lib/x86_64-linux-gnu/libsuitesparse*"):
+        # Ubuntu/Debian
+        SUITESPARSE_LIB_DIR = "/usr/lib/x86_64-linux-gnu"
+        SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
+    elif glob("/usr/lib64/libsuitesparse*"):
+        # CentOS/Fedora/RedHat
+        SUITESPARSE_LIB_DIR = "/usr/lib64"
+        SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
+    else:
+        # Default
+        SUITESPARSE_LIB_DIR = '/usr/lib'
+        SUITESPARSE_INC_DIR = '/usr/include'
 
 # Directory containing SuiteSparse source
 SUITESPARSE_SRC_DIR = ''
+
+# Set to 1 if compiling with MSVC 14 or later
+MSVC=0
 
 # No modifications should be needed below this line.
 
@@ -108,10 +105,13 @@ DSDP_INC_DIR = os.environ.get("CVXOPT_DSDP_INC_DIR",DSDP_INC_DIR)
 SUITESPARSE_LIB_DIR = os.environ.get("CVXOPT_SUITESPARSE_LIB_DIR",SUITESPARSE_LIB_DIR)
 SUITESPARSE_INC_DIR = os.environ.get("CVXOPT_SUITESPARSE_INC_DIR",SUITESPARSE_INC_DIR)
 SUITESPARSE_SRC_DIR = os.environ.get("CVXOPT_SUITESPARSE_SRC_DIR",SUITESPARSE_SRC_DIR)
-COMP_ARGS = os.environ.get("CVXOPT_COMP_ARGS",COMP_ARGS)
-if type(COMP_ARGS) is str: COMP_ARGS = COMP_ARGS.strip().split(';')
+MSVC = int(os.environ.get("CVXOPT_MSVC",MSVC)) == True
+INSTALL_REQUIRES = os.environ.get("CVXOPT_INSTALL_REQUIRES",[])
+if type(INSTALL_REQUIRES) is str: INSTALL_REQUIRES = INSTALL_REQUIRES.strip().split(';')
 
 RT_LIB = ["rt"] if sys.platform.startswith("linux") else []
+M_LIB = ["m"] if not MSVC else []
+UMFPACK_EXTRA_COMPILE_ARGS = ["-Wno-unknown-pragmas"] if not MSVC else []
 
 extmods = []
 
@@ -122,11 +122,10 @@ if BLAS_NOUNDERSCORES: MACROS.append(('BLAS_NO_UNDERSCORE',''))
 # optional modules
 
 if BUILD_GSL:
-    gsl = Extension('gsl', libraries = ['m', 'gsl'] + BLAS_LIB,
+    gsl = Extension('gsl', libraries = M_LIB + ['gsl'] + BLAS_LIB,
         include_dirs = [ GSL_INC_DIR ],
         library_dirs = [ GSL_LIB_DIR, BLAS_LIB_DIR ],
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
-        extra_compile_args = COMP_ARGS,
         sources = ['src/C/gsl.c'] )
     extmods += [gsl];
 
@@ -135,7 +134,6 @@ if BUILD_FFTW:
         include_dirs = [ FFTW_INC_DIR ],
         library_dirs = [ FFTW_LIB_DIR, BLAS_LIB_DIR ],
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
-        extra_compile_args = COMP_ARGS,
         sources = ['src/C/fftw.c'] )
     extmods += [fftw];
 
@@ -143,7 +141,6 @@ if BUILD_GLPK:
     glpk = Extension('glpk', libraries = ['glpk'],
         include_dirs = [ GLPK_INC_DIR ],
         library_dirs = [ GLPK_LIB_DIR ],
-        extra_compile_args = COMP_ARGS,
         sources = ['src/C/glpk.c'] )
     extmods += [glpk];
 
@@ -152,7 +149,6 @@ if BUILD_DSDP:
         include_dirs = [ DSDP_INC_DIR ],
         library_dirs = [ DSDP_LIB_DIR, BLAS_LIB_DIR ],
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
-        extra_compile_args = COMP_ARGS,
         sources = ['src/C/dsdp.c'] )
     extmods += [dsdp];
 
@@ -162,21 +158,18 @@ base = Extension('base', libraries = ['m'] + LAPACK_LIB + BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    extra_compile_args = COMP_ARGS,
     sources = ['src/C/base.c','src/C/dense.c','src/C/sparse.c'])
 
 blas = Extension('blas', libraries = BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    extra_compile_args = COMP_ARGS,
     sources = ['src/C/blas.c'] )
 
 lapack = Extension('lapack', libraries = LAPACK_LIB + BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    extra_compile_args = COMP_ARGS,
     sources = ['src/C/lapack.c'] )
 
 if not SUITESPARSE_SRC_DIR:
@@ -184,7 +177,6 @@ if not SUITESPARSE_SRC_DIR:
         libraries = ['umfpack','cholmod','amd','colamd','suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
         include_dirs = [SUITESPARSE_INC_DIR],
         library_dirs = [SUITESPARSE_LIB_DIR, BLAS_LIB_DIR],
-        extra_compile_args = COMP_ARGS,
         sources = ['src/C/umfpack.c'])
 else:
     umfpack = Extension('umfpack',
@@ -196,7 +188,7 @@ else:
         library_dirs = [ BLAS_LIB_DIR ],
         define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
         libraries = LAPACK_LIB + BLAS_LIB,
-        extra_compile_args = ['-Wno-unknown-pragmas'] + COMP_ARGS,
+        extra_compile_args = UMFPACK_EXTRA_COMPILE_ARGS,
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = [ 'src/C/umfpack.c',
             SUITESPARSE_SRC_DIR + '/UMFPACK/Source/umfpack_tictoc.c',
@@ -208,7 +200,6 @@ if not SUITESPARSE_SRC_DIR:
     libraries=['klu', 'amd', 'colamd', 'btf', 'suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
     include_dirs = [SUITESPARSE_INC_DIR],
     library_dirs = [SUITESPARSE_LIB_DIR, BLAS_LIB_DIR],
-    extra_compile_args = COMP_ARGS,
     sources = ['src/C/klu.c'])
 else:
     klu = Extension('klu', 
@@ -223,7 +214,7 @@ else:
         library_dirs = [ BLAS_LIB_DIR ],
         define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
         libraries = LAPACK_LIB + BLAS_LIB,
-        extra_compile_args = ['-Wno-unknown-pragmas'] + COMP_ARGS,
+        extra_compile_args = UMFPACK_EXTRA_COMPILE_ARGS,
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = ['src/C/klu.c' ] +
             [SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
@@ -237,7 +228,6 @@ if not SUITESPARSE_SRC_DIR:
         libraries = ['cholmod','colamd','amd','suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
         include_dirs = [SUITESPARSE_INC_DIR],
         library_dirs = [SUITESPARSE_LIB_DIR, BLAS_LIB_DIR],
-        extra_compile_args = COMP_ARGS,
         sources = [ 'src/C/cholmod.c' ])
 else:
     cholmod = Extension('cholmod',
@@ -250,7 +240,6 @@ else:
             SUITESPARSE_SRC_DIR + '/SuiteSparse_config' ],
         define_macros = MACROS + [('NPARTITION', '1'), ('NTIMER', '1')],
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
-        extra_compile_args = COMP_ARGS,
         sources = [ 'src/C/cholmod.c' ] +
             [SUITESPARSE_SRC_DIR + '/AMD/Source/' + s for s in ['amd_postorder.c', 'amd_post_tree.c', 'amd_2.c']] +
             [SUITESPARSE_SRC_DIR + '/COLAMD/Source/colamd.c'] +
@@ -265,14 +254,12 @@ if not SUITESPARSE_SRC_DIR:
         libraries = ['amd','suitesparseconfig'] + RT_LIB,
         include_dirs = [SUITESPARSE_INC_DIR],
         library_dirs = [SUITESPARSE_LIB_DIR],
-        extra_compile_args = COMP_ARGS,
         sources = ['src/C/amd.c'])
 else:
     amd = Extension('amd',
         include_dirs = [SUITESPARSE_SRC_DIR + '/AMD/Include',
             SUITESPARSE_SRC_DIR + '/SuiteSparse_config' ],
         define_macros = MACROS + [('NTIMER', '1')],
-        extra_compile_args = COMP_ARGS,
         sources = [ 'src/C/amd.c', SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
         glob(SUITESPARSE_SRC_DIR + '/AMD/Source/*.c') )
 
@@ -281,7 +268,6 @@ misc_solvers = Extension('misc_solvers',
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
     extra_link_args = BLAS_EXTRA_LINK_ARGS,
-    extra_compile_args = COMP_ARGS,
     sources = ['src/C/misc_solvers.c'] )
 
 extmods += [base, blas, lapack, umfpack, klu, cholmod, amd, misc_solvers] 
@@ -307,6 +293,7 @@ language.''',
     ext_modules = extmods,
     package_dir = {"cvxopt": "src/python"},
     packages = ["cvxopt"],
+    install_requires = INSTALL_REQUIRES,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Science/Research',
