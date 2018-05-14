@@ -4,6 +4,7 @@ except ImportError:
     from distutils.core import setup, Extension
 from glob import glob
 import os, sys
+import platform
 import versioneer
 
 # Modifiy this if BLAS and LAPACK libraries are not in /usr/lib.
@@ -119,6 +120,9 @@ extmods = []
 MACROS = []
 if BLAS_NOUNDERSCORES: MACROS.append(('BLAS_NO_UNDERSCORE',''))
 
+if platform.architecture() == ('64bit', 'WindowsPE') and not MSVC:
+    MACROS += [('MS_WIN64', 1)]
+
 # optional modules
 
 if BUILD_GSL:
@@ -214,7 +218,6 @@ else:
         library_dirs = [ BLAS_LIB_DIR ],
         define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
         libraries = LAPACK_LIB + BLAS_LIB,
-        extra_compile_args = UMFPACK_EXTRA_COMPILE_ARGS,
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = ['src/C/klu.c' ] +
             [SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
