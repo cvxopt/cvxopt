@@ -1,9 +1,6 @@
 notifications:
   email: false
 
-git:
-  depth: 2
-
 env:
   global:
     - SUITESPARSE_VERSION=5.3.0
@@ -15,28 +12,28 @@ env:
 matrix:
   include:
     - os: linux
-      dist: trusty
+      dist: xenial
       sudo: required
       language: python
       python: '2.7'
       env: CVXOPT_BUILD_DSDP=1
     - os: linux
-      dist: trusty
+      dist: xenial
       sudo: required
       language: python
       python: '2.7'
       env: CVXOPT_BUILD_DSDP=1 BUILD_SUITESPARSE=1
     - os: linux
-      dist: trusty
-      sudo: required
-      language: python
-      python: '3.5'
-      env: CVXOPT_BUILD_DSDP=1
-    - os: linux
-      dist: trusty
+      dist: xenial
       sudo: required
       language: python
       python: '3.6'
+      env: CVXOPT_BUILD_DSDP=1
+    - os: linux
+      dist: xenial
+      sudo: required
+      language: python
+      python: '3.7'
       env: CVXOPT_BUILD_DSDP=1
     - os: osx
       language: python
