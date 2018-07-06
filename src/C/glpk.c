@@ -355,7 +355,8 @@ static PyObject *simplex(PyObject *self, PyObject *args, PyObject *kwrds)
             }
         }
 
-    Py_DECREF(param);
+    if (param != opts)
+        Py_DECREF(param);
 
     switch (glp_simplex(lp, &smcp)){
 
@@ -855,7 +856,8 @@ static PyObject *integer(PyObject *self, PyObject *args,
             }
         }
 
-    Py_DECREF(param);
+    if (param != opts)
+        Py_DECREF(param);
     iocp.presolve = GLP_ON;
 
     if (IntSet) {

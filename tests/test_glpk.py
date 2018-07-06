@@ -72,5 +72,9 @@ class TestGLPK(unittest.TestCase):
         sol4 = glpk.ilp(c,G,h,A,b,set(),set([0]),options={'msg_lev' : 'GLP_MSG_ALL'})
         self.assertTrue(sol4[0]=='optimal')
 
+        solvers.options['glpk'] = {'msg_lev' : 'GLP_MSG_ON'}
+        sol5 = solvers.lp(c,G,h,solver='glpk')
+        self.assertTrue(sol5['status']=='optimal')
+
 if __name__ == '__main__':
     unittest.main()
