@@ -6,8 +6,8 @@ git:
 
 env:
   global:
-    - SUITESPARSE_VERSION=5.2.0
-    - SUITESPARSE_SHA256=3c46c035ea8217649958a0f73360e825b0c9dcca4e32a9349d2c7678c0d48813
+    - SUITESPARSE_VERSION=5.3.0
+    - SUITESPARSE_SHA256=90e69713d8c454da5a95a839aea5d97d8d03d00cc1f667c4bdfca03f640f963d
     - CVXOPT_BUILD_GSL=1
     - CVXOPT_BUILD_FFTW=1
     - CVXOPT_BUILD_GLPK=1
@@ -56,14 +56,21 @@ matrix:
         CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib
         CVXOPT_BLAS_LIB=openblas CVXOPT_LAPACK_LIB=openblas
       language: generic
+    - os: osx
+      language: python
+      env: PYVERSION=3.7 CVXOPT_BUILD_DSDP=0
+        CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib
+        CVXOPT_BLAS_LIB=openblas CVXOPT_LAPACK_LIB=openblas
+      language: generic
 before_install:
   - if [[ "$BUILD_SUITESPARSE" == "1" ]]; then wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-${SUITESPARSE_VERSION}.tar.gz; echo "${SUITESPARSE_SHA256}  SuiteSparse-${SUITESPARSE_VERSION}.tar.gz" > SuiteSparse.sha256; tar -xf SuiteSparse-${SUITESPARSE_VERSION}.tar.gz; export CVXOPT_SUITESPARSE_SRC_DIR=$(pwd)/SuiteSparse; fi
   - if [[ "$BUILD_SUITESPARSE" == "1" && "$TRAVIS_OS_NAME" == "linux" ]]; then sha256sum -c SuiteSparse.sha256; fi
   - if [[ "$BUILD_SUITESPARSE" == "1" && "$TRAVIS_OS_NAME" == "osx" ]]; then shasum -a 256 -c SuiteSparse.sha256; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install python-dev libopenblas-dev libfftw3-dev libglpk-dev libdsdp-dev libgsl0-dev; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" && -z "$BUILD_SUITESPARSE" ]]; then sudo add-apt-repository ppa:bzindovic/suitesparse-bugfix-1319687 -y; sudo apt-get update; sudo apt-get install libsuitesparse-dev; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall oclint; brew install openblas glpk gsl fftw; brew info openblas; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" && -z "$BUILD_SUITESPARSE" ]]; then brew install suite-sparse; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall oclint; brew install openblas glpk gsl fftw; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew info openblas; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" && -z "$BUILD_SUITESPARSE" ]]; then brew install suite-sparse; brew info suitesparse; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;bash miniconda.sh -b -p $HOME/miniconda; export PATH="$HOME/miniconda/bin:$PATH" ;  fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then conda create -y -n myenv python=$PYVERSION && source $HOME/miniconda/bin/activate myenv; fi
   - pip install pytest pytest-cov coveralls
