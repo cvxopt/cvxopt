@@ -13,8 +13,10 @@ class TestCustomKKT(unittest.TestCase):
         m,n = 500,250
         P = normal(m,n)
         q = normal(m,1)
-        u1 = l1(P,q)
-        u2 = l1blas(P,q)
+        u1,st1 = l1(P,q)
+        u2,st2 = l1blas(P,q)
+        self.assertTrue(st1 == 'optimal')
+        self.assertTrue(st2 == 'optimal')
         self.assertAlmostEqualLists(list(u1),list(u2),places=3)
 
     def test_l1regls(self):
@@ -23,7 +25,8 @@ class TestCustomKKT(unittest.TestCase):
         A = normal(m,n)
         b = normal(m,1)
 
-        x = l1regls(A,b)
+        x,st = l1regls(A,b)
+        self.assertTrue(st == 'optimal')
         # Check optimality conditions (list should be empty, e.g., False)
         self.assertFalse([t for t in zip(A.T*(A*x-b),x) if abs(t[1])>1e-6 and abs(t[0]) > 1.0])
 
@@ -124,7 +127,7 @@ def l1(P, q):
     dims = {'l': 2*m, 'q': [], 's': []}
     sol = solvers.conelp(c, Fi, h, dims, kktsolver = Fkkt,
         primalstart={'x': x0, 's': s0}, dualstart={'z': z0})
-    return sol['x'][:n]
+    return sol['x'][:n],sol['status']
 
 
 def l1blas (P, q):
@@ -249,8 +252,7 @@ def l1blas (P, q):
     dims = {'l': 2*m, 'q': [], 's': []}
     sol = solvers.conelp(c, Fi, h, dims, kktsolver = Fkkt,
         primalstart={'x': x0, 's': s0}, dualstart={'z': z0})
-    return sol['x'][:n]
-
+    return sol['x'][:n],sol['status']
 
 def l1regls(A, b):
     """
@@ -381,7 +383,8 @@ def l1regls(A, b):
 
         return g
 
-    return solvers.coneqp(P, q, G, h, kktsolver = Fkkt)['x'][:n]
+    sol = solvers.coneqp(P, q, G, h, kktsolver = Fkkt)
+    return sol['x'][:n],sol['status']
 
 
 if __name__ == '__main__':
