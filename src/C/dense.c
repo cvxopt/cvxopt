@@ -144,7 +144,7 @@ void * convert_mtx_alloc(matrix *src, int id)
 matrix * Matrix_New(int nrows, int ncols, int id)
 {
   matrix *a;
-  if ((nrows < 0) || (ncols < 0) || (id < INT) || (id > COMPLEX)) || (ncols > 0 && nrows > (2147483647/ncols)) {
+  if ((nrows < 0) || (ncols < 0) || (id < INT) || (id > COMPLEX) || (ncols > 0 && nrows > (2147483647/ncols))) {
     PyErr_BadInternalCall();
     return NULL;
   }
