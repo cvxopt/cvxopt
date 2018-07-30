@@ -37,27 +37,30 @@ matrix:
       env: CVXOPT_BUILD_DSDP=1
     - os: osx
       language: python
-      env: PYVERSION=2.7 CVXOPT_BUILD_DSDP=0 BUILD_SUITESPARSE=1
+      env: PYVERSION=2.7 CVXOPT_BUILD_DSDP=1 BUILD_SUITESPARSE=1
         CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib
         CVXOPT_BLAS_LIB=openblas CVXOPT_LAPACK_LIB=openblas
       language: generic
     - os: osx
       language: python
-      env: PYVERSION=2.7 CVXOPT_BUILD_DSDP=0
+      env: PYVERSION=2.7 CVXOPT_BUILD_DSDP=1
         CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib
         CVXOPT_BLAS_LIB=openblas CVXOPT_LAPACK_LIB=openblas
+        CVXOPT_DSDP_INC_DIR=$HOME/miniconda/envs/myenv/include CVXOPT_DSDP_LIB_DIR=$HOME/miniconda/envs/myenv/lib
       language: generic
     - os: osx
       language: python
-      env: PYVERSION=3.6 CVXOPT_BUILD_DSDP=0
+      env: PYVERSION=3.6 CVXOPT_BUILD_DSDP=1
         CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib
         CVXOPT_BLAS_LIB=openblas CVXOPT_LAPACK_LIB=openblas
+        CVXOPT_DSDP_INC_DIR=$HOME/miniconda/envs/myenv/include CVXOPT_DSDP_LIB_DIR=$HOME/miniconda/envs/myenv/lib
       language: generic
     - os: osx
       language: python
-      env: PYVERSION=3.7 CVXOPT_BUILD_DSDP=0
+      env: PYVERSION=3.7 CVXOPT_BUILD_DSDP=1
         CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib
         CVXOPT_BLAS_LIB=openblas CVXOPT_LAPACK_LIB=openblas
+        CVXOPT_DSDP_INC_DIR=$HOME/miniconda/envs/myenv/include CVXOPT_DSDP_LIB_DIR=$HOME/miniconda/envs/myenv/lib
       language: generic
 before_install:
   - if [[ "$BUILD_SUITESPARSE" == "1" ]]; then wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-${SUITESPARSE_VERSION}.tar.gz; echo "${SUITESPARSE_SHA256}  SuiteSparse-${SUITESPARSE_VERSION}.tar.gz" > SuiteSparse.sha256; tar -xf SuiteSparse-${SUITESPARSE_VERSION}.tar.gz; export CVXOPT_SUITESPARSE_SRC_DIR=$(pwd)/SuiteSparse; fi
@@ -69,13 +72,13 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew info openblas; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" && -z "$BUILD_SUITESPARSE" ]]; then brew install suite-sparse; brew info suitesparse; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;bash miniconda.sh -b -p $HOME/miniconda; export PATH="$HOME/miniconda/bin:$PATH" ;  fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then conda create -y -n myenv python=$PYVERSION && source $HOME/miniconda/bin/activate myenv; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then conda create -y -n myenv python=$PYVERSION dsdp && source $HOME/miniconda/bin/activate myenv; fi
   - pip install pytest pytest-cov coveralls
 install:
-  - python setup.py install
+  - python setup.py build
+  - pip install .
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then python -c 'from cvxopt import blas,lapack,glpk,fftw,dsdp,gsl,cholmod,umfpack'; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then python -c 'from cvxopt import blas,lapack,glpk,fftw,gsl,cholmod,umfpack'; fi
+  - python -c 'from cvxopt import blas,lapack,glpk,fftw,dsdp,gsl,cholmod,umfpack'
   - py.test --cov=cvxopt tests/
 after_success:
   - coveralls
