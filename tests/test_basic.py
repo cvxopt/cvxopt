@@ -34,9 +34,9 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(cvxopt.min(a),1.0)
         self.assertEqual(cvxopt.min(c),-2.0)
         self.assertEqual(cvxopt.min(d),1.0)
-        with self.assertRaises(MemoryError):
+        with self.assertRaises(OverflowError):
             cvxopt.matrix(1.0,(32780*4,32780))
-        with self.assertRaises(MemoryError):
+        with self.assertRaises(OverflowError):
             cvxopt.spmatrix(1.0,(0,32780*4),(0,32780))+1
 
     def test_basic_no_gsl(self):
