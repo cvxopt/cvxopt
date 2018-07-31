@@ -372,7 +372,7 @@ static PyObject *simplex(PyObject *self, PyObject *args, PyObject *kwrds)
                         Py_XDECREF(y);
                         Py_XDECREF(t);
                         glp_delete_prob(lp);
-                        return PyErr_NoMemory();
+                        return NULL;
                     }
 
                     PyTuple_SET_ITEM(t, 0, (PyObject *)
@@ -920,7 +920,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
                     if (!x) {
                         Py_XDECREF(t);
                         glp_delete_prob(lp);
-                        return PyErr_NoMemory();
+                        return NULL;
                     }
                     if (status == GLP_OPT)
                         PyTuple_SET_ITEM(t, 0,
