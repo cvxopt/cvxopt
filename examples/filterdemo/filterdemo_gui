@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 from cvxopt import matrix, cos
 from cvxopt.solvers import options
 from cvxopt.modeling import op, variable, max

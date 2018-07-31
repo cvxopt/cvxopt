@@ -149,13 +149,13 @@ reswc = sqrt( matrix(1.0, (1,m)) * mul(r,r) )
 if pylab_installed:
    pylab.figure(2, facecolor='w')
    pylab.hist(list(resls), numpy.array([0.1*k for k in range(50)]), fc='w', 
-       normed=True)
+       density=True)
    pylab.text(4.4, 0.4, 'least-squares')
    pylab.hist(list(restik), numpy.array([0.1*k for k in range(50)]), fc='#D0D0D0', 
-       normed=True)
+       density=True)
    pylab.text(2.9, 0.75, 'Tikhonov')
    pylab.hist(list(reswc), numpy.array([0.1*k for k in range(50)]), fc='#B0B0B0', 
-       normed=True)
+       density=True)
    pylab.text(2.5, 2.0, 'robust least-squares')
    pylab.xlabel('residual')
    pylab.ylabel('frequency/binwidth')
