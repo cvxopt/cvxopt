@@ -120,7 +120,8 @@ if pylab_installed:
     pylab.subplot(121) 
     X = matrix(0.0, (N+M,2))
     X[:N,:], X[N:,:] = X1, Xf
-    pylab.plot(Xf[:,0], Xf[:,1], 'sw', X1[:,0], X1[:,1], 'or', ms=10)
+    pylab.plot(Xf[:,0], Xf[:,1], 'sw', mec = 'k')
+    pylab.plot(X1[:,0], X1[:,1], 'or', ms=10)
     for s, t in E:  pylab.plot([X[s,0], X[t,0]], [X[s,1],X[t,1]], 'b:')
     pylab.axis([-1.1, 1.1, -1.1, 1.1])
     pylab.axis('equal')
@@ -128,7 +129,7 @@ if pylab_installed:
     
     pylab.subplot(122) 
     lngths = sqrt((A1*X1 + B)**2 * matrix(1.0, (2,1)))
-    pylab.hist(lngths, numpy.array([.1*k for k in range(15)]))
+    pylab.hist(list(lngths), [.1*k for k in range(15)])
     x = pylab.arange(0, 1.6, 1.6/500)
     pylab.plot( x, 5.0/1.6*x, '--k')
     pylab.axis([0, 1.6, 0, 5.5])
@@ -140,7 +141,8 @@ if pylab_installed:
     pylab.figure(2, figsize=(10,4), facecolor='w')
     pylab.subplot(121) 
     X[:N,:], X[N:,:] = X2, Xf
-    pylab.plot(Xf[:,0], Xf[:,1], 'sw', X2[:,0], X2[:,1], 'or', ms=10)
+    pylab.plot(Xf[:,0], Xf[:,1], 'sw', mec = 'k')
+    pylab.plot(X2[:,0], X2[:,1], 'or', ms=10)
     for s, t in E:  pylab.plot([X[s,0], X[t,0]], [X[s,1],X[t,1]], 'b:')
     pylab.axis([-1.1, 1.1, -1.1, 1.1])
     pylab.axis('equal')
@@ -148,7 +150,7 @@ if pylab_installed:
     
     pylab.subplot(122) 
     lngths = sqrt((A1*X2 + B)**2 * matrix(1.0, (2,1)))
-    pylab.hist(lngths, numpy.array([.1*k for k in range(15)]))
+    pylab.hist(list(lngths), [.1*k for k in range(15)])
     x = pylab.arange(0, 1.5, 1.5/500)
     pylab.plot( x, 5.0/1.5**2 * x**2, '--k')
     pylab.axis([0, 1.5, 0, 5.5])
@@ -160,7 +162,8 @@ if pylab_installed:
     pylab.figure(3, figsize=(10,4), facecolor='w')
     pylab.subplot(121) 
     X[:N,:], X[N:,:] = X4, Xf
-    pylab.plot(Xf[:,0], Xf[:,1], 'sw', X4[:,0], X4[:,1], 'or', ms=10)
+    pylab.plot(Xf[:,0], Xf[:,1], 'sw', mec ='k')
+    pylab.plot(X4[:,0], X4[:,1], 'or', ms=10)
     for s, t in E:  pylab.plot([X[s,0], X[t,0]], [X[s,1],X[t,1]], 'b:')
     pylab.axis([-1.1, 1.1, -1.1, 1.1])
     pylab.axis('equal')
@@ -168,7 +171,7 @@ if pylab_installed:
     
     pylab.subplot(122) 
     lngths = sqrt((A1*X4 + B)**2 * matrix(1.0, (2,1)))
-    pylab.hist(lngths, numpy.array([.1*k for k in range(15)]))
+    pylab.hist(list(lngths), [.1*k for k in range(15)])
     x = pylab.arange(0, 1.5, 1.5/500)
     pylab.plot( x, 6.0/1.4**4 * x**4, '--k')
     pylab.axis([0, 1.4, 0, 6.5])

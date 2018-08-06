@@ -122,7 +122,8 @@ if pylab_installed:
     ellipse2 = 0.5 * circle + c[:, nopts*[0]]
     
     pylab.plot(ellipse[0,:].T, ellipse[1,:].T, 'k-')
-    pylab.fill(ellipse2[0,:].T, ellipse2[1,:].T, facecolor = '#F0F0F0')
+    pylab.fill(ellipse2[0,:].T, ellipse2[1,:].T, facecolor = '#F0F0F0',
+       ec = 'k')
     pylab.title('Loewner-John ellipsoid (fig 8.3)')
     pylab.axis('equal')
     pylab.axis('off')
@@ -221,7 +222,8 @@ if pylab_installed:
     ellipse2 = 2.0 * L * circle + c[:, nopts*[0]]
     
     pylab.plot(ellipse2[0,:].T, ellipse2[1,:].T, 'k-')
-    pylab.fill(ellipse[0,:].T, ellipse[1,:].T, facecolor = '#F0F0F0')
+    pylab.fill(ellipse[0,:].T, ellipse[1,:].T, facecolor = '#F0F0F0', 
+        ec = 'k')
     pylab.title('Maximum volume inscribed ellipsoid (fig 8.4)')
     pylab.axis('equal')
     pylab.axis('off')

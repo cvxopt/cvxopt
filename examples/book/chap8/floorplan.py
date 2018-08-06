@@ -168,7 +168,7 @@ if pylab_installed:
     for k in range(5):
         pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
                    [y[k], y[k]+h[k], y[k]+h[k], y[k]], 
-                   facecolor = '#D0D0D0')
+                   facecolor = '#D0D0D0', ec='k')
         pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
     pylab.axis([-1.0, 26, -1.0, 26])
     pylab.xticks([])
@@ -181,7 +181,7 @@ if pylab_installed:
     for k in range(5):
         pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
                    [y[k], y[k]+h[k], y[k]+h[k], y[k]], 
-                   facecolor = '#D0D0D0')
+                   facecolor = '#D0D0D0', ec = 'k')
         pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
     pylab.axis([-1.0, 26, -1.0, 26])
     pylab.xticks([])
@@ -194,7 +194,7 @@ if pylab_installed:
     for k in range(5):
         pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
                    [y[k], y[k]+h[k], y[k]+h[k], y[k]], 
-                   facecolor = '#D0D0D0')
+                   facecolor = '#D0D0D0', ec = 'k')
         pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
     pylab.axis([-1.0, 26, -1.0, 26])
     pylab.xticks([])
@@ -207,7 +207,7 @@ if pylab_installed:
     for k in range(5):
         pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
                    [y[k], y[k]+h[k], y[k]+h[k], y[k]], 
-                   facecolor = '#D0D0D0')
+                   facecolor = '#D0D0D0', ec = 'k')
         pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
     pylab.axis([-1.0, 26, -1.0, 26])
     pylab.xticks([])
