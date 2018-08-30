@@ -31,7 +31,8 @@ b = b.value
 if pylab_installed:
     pylab.figure(1, facecolor='w', figsize=(5,5))
     pts = matrix([-10.0, 10.0], (2,1))
-    pylab.plot(X[0,:], X[1,:], 'ow', Y[0,:], Y[1,:], 'ok',
+    pylab.plot(X[0,:], X[1,:], 'ow', mec = 'k'),
+    pylab.plot(Y[0,:], Y[1,:], 'ok',
         pts, (b - a[0]*pts)/a[1], '-r', 
         pts, (b+1.0 - a[0]*pts)/a[1], '--r',
         pts, (b-1.0 - a[0]*pts)/a[1], '--r' )
@@ -88,7 +89,8 @@ b = sol['x'][2]
 if pylab_installed:
     pylab.figure(2, facecolor='w', figsize=(5,5))
     pts = matrix([-10.0, 10.0], (2,1))
-    pylab.plot(X[0,:], X[1,:], 'ow', Y[0,:], Y[1,:], 'ok',
+    pylab.plot(X[0,:], X[1,:], 'ow', mec = 'k')
+    pylab.plot(Y[0,:], Y[1,:], 'ok',
         pts, (b - a[0]*pts)/a[1], '-r', 
         pts, (b+1.0 - a[0]*pts)/a[1], '--r',
         pts, (b-1.0 - a[0]*pts)/a[1], '--r' )
@@ -124,7 +126,8 @@ a, b = sol['x'][:2],  sol['x'][2]
 if pylab_installed:
     pylab.figure(3, facecolor='w', figsize=(5,5))
     pts = matrix([-10.0, 10.0], (2,1))
-    pylab.plot(X[0,:], X[1,:], 'ow', Y[0,:], Y[1,:], 'ok',
+    pylab.plot(X[0,:], X[1,:], 'ow', mec = 'k')
+    pylab.plot(Y[0,:], Y[1,:], 'ok',
         pts, (b - a[0]*pts)/a[1], '-r', 
         pts, (b+1.0 - a[0]*pts)/a[1], '--r',
         pts, (b-1.0 - a[0]*pts)/a[1], '--r' )

@@ -124,7 +124,7 @@ means the following.  The sparsity pattern and the nonzero values are
 stored in three fields:
 
 :c:member:`values` 
-    A :const:`'d'` or :const:`'z'` matrix of size ``(nnz,1)``  with the 
+    An array of floating-point numbers of length `nnz` with the 
     nonzero entries of the matrix stored columnwise.  
 
 :c:member:`rowind` 
@@ -192,7 +192,7 @@ values :const:`DOUBLE` and :const:`COMPLEX`.
 
 Sparse matrices are created using the following functions from the API. 
 
-.. c:function:: spmatrix * SpMatrix_New(int nrows, int ncols, int nzmax, int id) 
+.. c:function:: spmatrix * SpMatrix_New(int_t nrows, int_t ncols, int_t nzmax, int id) 
 
   Returns a sparse zero matrix with `nrows` rows and `ncols` columns. 
   `nzmax` is the number of elements that will be allocated (the length of 
@@ -204,7 +204,7 @@ Sparse matrices are created using the following functions from the API.
       Returns a copy the sparse matrix \var{src}. 
 
 
-.. c:function:: spmatrix * SpMatrix_NewFromIJV(matrix *I, matrix *J, matrix *V, int nrows, int ncols, int nzmax, int id)
+.. c:function:: spmatrix * SpMatrix_NewFromIJV(matrix *I, matrix *J, matrix *V, int_t nrows, int_t ncols, int id)
 
     Creates a sparse matrix with `nrows` rows and `ncols` columns from a 
     triplet description.  `I` and `J` must be integer matrices and `V` 

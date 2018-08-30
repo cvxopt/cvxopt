@@ -25,6 +25,7 @@
 #include "cvxopt.h"
 #include "misc.h"
 #include <complexobject.h>
+#include <limits.h>
 
 /* prototyping and forward declarations */
 extern void (*axpy[])(int *, number *, void *, int *, void *, int *) ;
@@ -148,9 +149,14 @@ matrix * Matrix_New(int nrows, int ncols, int id)
     PyErr_BadInternalCall();
     return NULL;
   }
-
-  if (!(a = (matrix *)matrix_tp.tp_alloc(&matrix_tp, 0)))
+  else if (ncols > 0 && nrows > (INT_MAX/ncols)) {
+    PyErr_SetString(PyExc_OverflowError, "number of elements exceeds INT_MAX");
     return NULL;
+  }
+  else if (!(a = (matrix *)matrix_tp.tp_alloc(&matrix_tp, 0))) {
+    PyErr_NoMemory();
+    return NULL;
+  }
 
   a->id = id; a->nrows = nrows; a->ncols = ncols;
   if ((a->buffer = calloc(nrows*ncols,E_SIZE[id])))
@@ -177,8 +183,8 @@ matrix *Matrix_NewFromMatrix(matrix *src, int id)
   if (PY_NUMBER((PyObject *)src))
     return Matrix_NewFromNumber(1, 1, id, src, 1);
 
-  if (!(a = Matrix_New(src->nrows, src->ncols, id)))
-    return (matrix *)PyErr_NoMemory();
+  if (!(a = Matrix_New(src->nrows, src->ncols, id))) 
+    return NULL;
 
   if (convert_mtx(src, a->buffer, id)) {
     Py_DECREF(a); PY_ERR_TYPE("illegal type conversion");
@@ -238,7 +244,7 @@ matrix *Matrix_NewFromPyBuffer(PyObject *obj, int id, int *ndim)
  if (!a) {
    PyBuffer_Release(view); 
    free(view);
-   return (matrix *)PyErr_NoMemory();
+   return NULL;
  }
 
  int i, j, cnt;
@@ -320,7 +326,7 @@ Matrix_NewFromNumber(int nrows, int ncols, int id, void *val, int val_id)
 
   int_t i;
   matrix *a = Matrix_New(nrows, ncols, id);
-  if (!a) return (matrix *)PyErr_NoMemory();
+  if (!a) return NULL;
 
   number n;
   if (convert_num[id](&n, val, val_id, 0)) { Py_DECREF(a); return NULL; }
@@ -338,7 +344,6 @@ matrix * Matrix_NewFromSequence(PyObject *x, int id)
   PyObject *seq = PySequence_Fast(x, "list is not iterable");
   if (!seq) return NULL;
 
-
   if (id == -1) {
     for (i=0; i<len; i++) {
       PyObject *item = PySequence_Fast_GET_ITEM(seq, i);
@@ -354,7 +359,7 @@ matrix * Matrix_NewFromSequence(PyObject *x, int id)
   if (!len) { Py_DECREF(seq); return Matrix_New(0, 1, (id < 0 ? INT : id)); }
 
   matrix *L = Matrix_New(len,1,id);
-  if (!L) { Py_DECREF(seq); return (matrix *)PyErr_NoMemory(); }
+  if (!L) { Py_DECREF(seq); return NULL; }
 
   for (i=0; i<len; i++) {
     PyObject *item = PySequence_Fast_GET_ITEM(seq, i);
@@ -381,7 +386,7 @@ matrix * dense(spmatrix *self)
   int_t j, k;
 
   if (!(A = Matrix_New(SP_NROWS(self),SP_NCOLS(self),SP_ID(self))))
-    return (matrix *)PyErr_NoMemory();
+    return NULL;
 
   if (SP_ID(self) == DOUBLE) {
     for (j=0; j<SP_NCOLS(self); j++)
@@ -449,7 +454,7 @@ matrix * dense_concat(PyObject *L, int id_arg)
   id = MAX(id, id_arg);
 
   matrix *A = Matrix_New(m, n, id);
-  if (!A) return (matrix *)PyErr_NoMemory();
+  if (!A) return NULL;
 
   nk = 0;
   for (j=0; j<(single_col ? 1 : PyList_GET_SIZE(L)); j++) {
@@ -550,7 +555,7 @@ matrix_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
   /* sparse matrix */
   else if (SpMatrix_Check(Objx)) {
     matrix *tmp = dense((spmatrix *)Objx);
-    if (!tmp) return PyErr_NoMemory();
+    if (!tmp) return NULL;
     if (tmp->id != id) {
       ret = Matrix_NewFromMatrix(tmp, (id == -1 ? SP_ID(Objx) : id));
       Py_DECREF(tmp);
@@ -682,7 +687,7 @@ matrix * create_indexlist(int_t dim, PyObject *A)
     if ((x = Matrix_New((int)lgt, 1, INT)))
       for (i=start, j=0; j<lgt; i += step, j++) MAT_BUFI(x)[j] = i;
     else {
-      return (matrix *)PyErr_NoMemory();
+      return NULL;
     }
     return x;
   }
@@ -736,7 +741,7 @@ matrix_subscr(matrix* self, PyObject* args)
     int i;
     if (!(ret = Matrix_New(MAT_LGT(Il), 1, self->id) ))
       free_lists_exit(args,(PyObject *)NULL,Il,(PyObject *)NULL,
-          PyErr_NoMemory());
+          NULL);
 
     for (i=0; i<MAT_LGT(Il); i++)
       write_num[self->id](ret->buffer, i, self->buffer,
@@ -783,7 +788,7 @@ matrix_subscr(matrix* self, PyObject* args)
 #endif
 
     if (!(ret = Matrix_New((int)rowlgt, (int)collgt, self->id)))
-      return PyErr_NoMemory();
+      return NULL;
 
     int i, j, icnt, jcnt, cnt=0;
     for (j=colstart, jcnt=0; jcnt<collgt; jcnt++, j+=colstep)
@@ -811,7 +816,7 @@ matrix_subscr(matrix* self, PyObject* args)
 
   int i, j, cnt;
   if (!(ret = Matrix_New(MAT_LGT(Il), MAT_LGT(Jl), self->id)))
-    free_lists_exit(argI, argJ, Il, Jl, PyErr_NoMemory());
+    free_lists_exit(argI, argJ, Il, Jl, NULL);
 
   for (j=0, cnt=0; j < MAT_LGT(Jl); j++)
     for (i=0; i < MAT_LGT(Il); i++) {
@@ -1032,7 +1037,7 @@ static PyMappingMethods matrix_as_mapping = {
 static PyObject * matrix_transpose(matrix *self) {
 
   matrix *ret = Matrix_New(self->ncols, self->nrows, self->id);
-  if (!ret) return PyErr_NoMemory();
+  if (!ret) return NULL;
 
   int i, j, cnt = 0;
   for (i=0; i < ret->nrows; i++)
@@ -1047,7 +1052,7 @@ static PyObject * matrix_ctranspose(matrix *self) {
   if (self->id != COMPLEX) return matrix_transpose(self);
 
   matrix *ret = Matrix_New(self->ncols, self->nrows, self->id);
-  if (!ret) return PyErr_NoMemory();
+  if (!ret) return NULL;
 
   int i, j, cnt = 0;
   for (i=0; i < ret->nrows; i++)
@@ -1063,7 +1068,7 @@ static PyObject * matrix_real(matrix *self) {
     return (PyObject *)Matrix_NewFromMatrix(self,self->id);
 
   matrix *ret = Matrix_New(self->nrows, self->ncols, DOUBLE);
-  if (!ret) return PyErr_NoMemory();
+  if (!ret) return NULL;
 
   int i;
   for (i=0; i < MAT_LGT(self); i++)
@@ -1079,13 +1084,13 @@ static PyObject * matrix_imag(matrix *self) {
     PyObject *a = PyFloat_FromDouble(0);
     ret = Matrix_NewFromNumber(self->nrows, self->ncols, self->id, a, 2);
     Py_DECREF(a);
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
 
     return (PyObject *)ret;
   }
 
   if (!(ret = Matrix_New(self->nrows, self->ncols, DOUBLE)))
-    return PyErr_NoMemory();
+    return NULL;
 
   int i;
   for (i=0; i < MAT_LGT(self); i++)
@@ -1490,7 +1495,7 @@ matrix_add_generic(PyObject *self, PyObject *other, int inplace)
       convert_num[id](&n,self,(Matrix_Check(self) ? 0 : 1),0);
 
       matrix *ret = Matrix_NewFromMatrix((matrix *)other, id);
-      if (!ret) return PyErr_NoMemory();
+      if (!ret) return NULL;
 
       int lgt = MAT_LGT(ret); int i;
       switch (id) {
@@ -1535,7 +1540,7 @@ matrix_add_generic(PyObject *self, PyObject *other, int inplace)
 
     if (!inplace) {
       matrix *ret = Matrix_NewFromMatrix((matrix *)self, id);
-      if (!ret) return PyErr_NoMemory();
+      if (!ret) return NULL;
 
       int lgt = MAT_LGT(self); int i;
       switch (id) {
@@ -1588,7 +1593,7 @@ matrix_add_generic(PyObject *self, PyObject *other, int inplace)
 
     if (!inplace) {
       matrix *ret = Matrix_NewFromMatrix((matrix *)self, id);
-      if (!ret) return PyErr_NoMemory();
+      if (!ret) return NULL;
 
       int lgt = MAT_LGT(self), int1 = 1;
       axpy[id](&lgt, &One[id], other_coerce, &int1, MAT_BUF(ret), &int1);
@@ -1644,7 +1649,7 @@ matrix_sub_generic(PyObject *self, PyObject *other, int inplace)
       convert_num[id](&n,self,(Matrix_Check(self) ? 0 : 1),0);
 
       matrix *ret = Matrix_NewFromMatrix((matrix *)other, id);
-      if (!ret) return PyErr_NoMemory();
+      if (!ret) return NULL;
 
       int lgt = MAT_LGT(ret); int i; 
       switch (id) {
@@ -1689,7 +1694,7 @@ matrix_sub_generic(PyObject *self, PyObject *other, int inplace)
 
     if (!inplace) {
       matrix *ret = Matrix_NewFromMatrix((matrix *)self, id);
-      if (!ret) return PyErr_NoMemory();
+      if (!ret) return NULL;
 
       int lgt = MAT_LGT(self); int i;
       switch (id) {
@@ -1742,7 +1747,7 @@ matrix_sub_generic(PyObject *self, PyObject *other, int inplace)
 
     if (!inplace) {
       matrix *ret = Matrix_NewFromMatrix((matrix *)self, id);
-      if (!ret) return PyErr_NoMemory();
+      if (!ret) return NULL;
 
       int lgt = MAT_LGT(self), int1 = 1;
       axpy[id](&lgt, &MinusOne[id], other_coerce, &int1, MAT_BUF(ret), &int1);
@@ -1798,7 +1803,7 @@ matrix_mul_generic(PyObject *self, PyObject *other, int inplace)
       convert_num[id](&n,self,(Matrix_Check(self) ? 0 : 1),0);
 
       matrix *ret = Matrix_NewFromMatrix((matrix *)other, id);
-      if (!ret) return PyErr_NoMemory();
+      if (!ret) return NULL;
 
       int lgt = MAT_LGT(ret), int1 = 1;
       scal[id](&lgt, &n, ret->buffer, &int1);
@@ -1823,7 +1828,7 @@ matrix_mul_generic(PyObject *self, PyObject *other, int inplace)
 
     if (!inplace) {
       matrix *ret = Matrix_NewFromMatrix((matrix *)self, id);
-      if (!ret) return PyErr_NoMemory();
+      if (!ret) return NULL;
 
       int lgt = MAT_LGT(self), int1 = 1;
       scal[id](&lgt, &n, ret->buffer, &int1);
@@ -1861,7 +1866,7 @@ matrix_mul_generic(PyObject *self, PyObject *other, int inplace)
     if (!c) {
       if (MAT_ID(self) != id)  { free(self_coerce); }
       if (MAT_ID(other) != id) { free(other_coerce); }
-      return PyErr_NoMemory();
+      return NULL;
     }
 
     gemm[id](&transA, &transB, &m, &n, &k, &One[id], self_coerce,
@@ -1904,7 +1909,7 @@ matrix_div_generic(PyObject *self, PyObject *other, int inplace)
 
   if (!inplace) {
     matrix *ret = Matrix_NewFromMatrix((matrix *)self, id);
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
 
     int lgt = MAT_LGT(ret);
     if (div_array[id](ret->buffer, n, lgt)) { Py_DECREF(ret); return NULL; }
@@ -1950,7 +1955,7 @@ matrix_rem_generic(PyObject *self, PyObject *other, int inplace)
 
   if (!inplace) {
     matrix *ret = Matrix_NewFromMatrix((matrix *)self, id);
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
 
     int lgt = MAT_LGT(ret);
     if (mtx_rem[id](ret->buffer, n, lgt)) { Py_DECREF(ret); return NULL; }
@@ -1982,7 +1987,7 @@ static PyObject * matrix_irem(PyObject *self, PyObject *other)
 static PyObject * matrix_neg(matrix *self)
 {
   matrix *x = Matrix_NewFromMatrix(self,self->id);
-  if (!x) return PyErr_NoMemory();
+  if (!x) return NULL;
 
   int n = MAT_LGT(x), int1 = 1;
   scal[x->id](&n, &MinusOne[x->id], x->buffer, &int1);
@@ -1993,7 +1998,7 @@ static PyObject * matrix_neg(matrix *self)
 static PyObject * matrix_pos(matrix *self)
 {
   matrix *x = Matrix_NewFromMatrix(self, self->id);
-  if (!x) return PyErr_NoMemory();
+  if (!x) return NULL;
 
   return (PyObject *)x;
 }
@@ -2003,7 +2008,7 @@ static PyObject * matrix_abs(matrix *self)
   matrix *ret = Matrix_New(self->nrows, self->ncols,
       (self->id == COMPLEX ? DOUBLE : self->id));
 
-  if (!ret) return PyErr_NoMemory();
+  if (!ret) return NULL;
 
   mtx_abs[self->id](MAT_BUF(self), MAT_BUF(ret), MAT_LGT(self));
   return (PyObject *)ret;
@@ -2017,7 +2022,7 @@ static PyObject * matrix_pow(PyObject *self, PyObject *other)
   int id = MAX(DOUBLE, MAX(MAT_ID(self), get_id(other, 1)));
   convert_num[id](&val, other, 1, 0);
   matrix *Y = Matrix_NewFromMatrix((matrix *)self, id);
-  if (!Y) return PyErr_NoMemory();
+  if (!Y) return NULL;
 
   int i;
   for (i=0; i<MAT_LGT(Y); i++) {
@@ -2263,7 +2268,7 @@ PyObject * matrix_log(matrix *self, PyObject *args, PyObject *kwrds)
 
     if (val > 0.0) {
       matrix *ret = Matrix_New(MAT_NROWS(A), MAT_NCOLS(A), DOUBLE);
-      if (!ret) return PyErr_NoMemory();
+      if (!ret) return NULL;
 
       for (i=0; i<MAT_LGT(A); i++)
         MAT_BUFD(ret)[i] = log((MAT_ID(A)== INT ?
@@ -2276,7 +2281,7 @@ PyObject * matrix_log(matrix *self, PyObject *args, PyObject *kwrds)
   }
   else if (Matrix_Check(A) && MAT_ID(A) == COMPLEX) {
     matrix *ret = Matrix_New(MAT_NROWS(A), MAT_NCOLS(A), COMPLEX);
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
 
     int i;
     for (i=0; i<MAT_LGT(A); i++) {
@@ -2318,7 +2323,7 @@ PyObject * matrix_exp(matrix *self, PyObject *args, PyObject *kwrds)
   else if (Matrix_Check(A)) {
     matrix *ret = Matrix_New(MAT_NROWS(A),MAT_NCOLS(A),
         (MAT_ID(A) == COMPLEX ? COMPLEX : DOUBLE));
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
 
     int i;
     if (MAT_ID(ret) == DOUBLE)
@@ -2372,7 +2377,7 @@ PyObject * matrix_sqrt(matrix *self, PyObject *args, PyObject *kwrds)
 
     if (val >= 0.0) {
       matrix *ret = Matrix_New(MAT_NROWS(A), MAT_NCOLS(A), DOUBLE);
-      if (!ret) return PyErr_NoMemory();
+      if (!ret) return NULL;
 
       for (i=0; i<MAT_LGT(A); i++)
         MAT_BUFD(ret)[i] = sqrt((MAT_ID(A)== INT ?
@@ -2385,7 +2390,7 @@ PyObject * matrix_sqrt(matrix *self, PyObject *args, PyObject *kwrds)
   }
   else if (Matrix_Check(A) && MAT_ID(A) == COMPLEX) {
     matrix *ret = Matrix_New(MAT_NROWS(A), MAT_NCOLS(A), COMPLEX);
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
 
     int i;
     for (i=0; i<MAT_LGT(A); i++)
@@ -2419,7 +2424,7 @@ PyObject * matrix_cos(matrix *self, PyObject *args, PyObject *kwrds)
   else if (Matrix_Check(A)) {
     matrix *ret = Matrix_New(MAT_NROWS(A),MAT_NCOLS(A),
         (MAT_ID(A) == COMPLEX ? COMPLEX : DOUBLE));
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
 
     int_t i;
     if (MAT_ID(ret) == DOUBLE)
@@ -2458,7 +2463,7 @@ PyObject * matrix_sin(matrix *self, PyObject *args, PyObject *kwrds)
   else if (Matrix_Check(A)) {
     matrix *ret = Matrix_New(MAT_NROWS(A),MAT_NCOLS(A),
         (MAT_ID(A) == COMPLEX ? COMPLEX : DOUBLE));
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
 
     int_t i;
     if (MAT_ID(ret) == DOUBLE)

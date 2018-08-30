@@ -1,4 +1,4 @@
-version: 1.2.{build}-{branch}
+version: 1.2.1-{build}-{branch}
 image: Visual Studio 2017
 init:
     - choco install wget checksum
@@ -9,23 +9,23 @@ environment:
     PYTHON_ARCH: "64"
     PACKAGE_NAME: "cvxopt"
     BUILD_DEPENDS: "mkl"
-    TEST_DEPENDS: "nose"
+    TEST_DEPENDS: "pytest"
     CVXOPT_BLAS_LIB: mkl_rt
     CVXOPT_LAPACK_LIB: mkl_rt
     CVXOPT_BUILD_GLPK: "1"
     CVXOPT_INSTALL_REQUIRES: mkl
     GLPK_VERSION: "4.65"
     GLPK_SHA256: "4281e29b628864dfe48d393a7bedd781e5b475387c20d8b0158f329994721a10"
-    SUITESPARSE_VERSION: "5.2.0"
-    SUITESPARSE_SHA256: "3c46c035ea8217649958a0f73360e825b0c9dcca4e32a9349d2c7678c0d48813"
+    SUITESPARSE_VERSION: "5.3.0"
+    SUITESPARSE_SHA256: "90e69713d8c454da5a95a839aea5d97d8d03d00cc1f667c4bdfca03f640f963d"
 
   matrix:
+    - PYTHON_VERSION: 3.7
+      CVXOPT_MSVC: 1
     - PYTHON_VERSION: 3.6
       CVXOPT_MSVC: 1
     - PYTHON_VERSION: 3.5
       CVXOPT_MSVC: 1
-    - PYTHON_VERSION: 3.4
-      COMPILER: mingwpy
     - PYTHON_VERSION: 2.7
       COMPILER: mingwpy
 
@@ -98,7 +98,7 @@ test_script:
     - if [%CVXOPT_BUILD_FFTW%]==[1] ( python -c "from cvxopt import fftw" )
     - if [%CVXOPT_BUILD_GLPK%]==[1] ( python -c "from cvxopt import glpk" )
     - if [%CVXOPT_BUILD_GSL%]==[1] ( python -c "from cvxopt import gsl" )
-    - nosetests
+    - pytest
 
 artifacts:
     - path: dist/*.whl

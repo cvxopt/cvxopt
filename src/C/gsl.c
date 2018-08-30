@@ -101,7 +101,7 @@ normal(PyObject *self, PyObject *args, PyObject *kwrds)
   }
 
   if (!(obj = Matrix_New(nrows, ncols, DOUBLE)))
-    return PyErr_NoMemory();
+    return NULL;
 
   gsl_rng_env_setup();
   rng_type = gsl_rng_default;
@@ -148,7 +148,7 @@ uniform(PyObject *self, PyObject *args, PyObject *kwrds)
     PY_ERR_TYPE("dimensions must be non-negative");
 
   if (!(obj = (matrix *)Matrix_New(nrows, ncols, DOUBLE)))
-    return PyErr_NoMemory();
+    return NULL;
 
   gsl_rng_env_setup();
   rng_type = gsl_rng_default;

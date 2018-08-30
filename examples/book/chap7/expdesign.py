@@ -69,7 +69,8 @@ xd = solvers.cp(F, G, h, A = A, b = b)['x']
 
 if pylab_installed:
     pylab.figure(1, facecolor='w', figsize=(6,6)) 
-    pylab.plot(V[0,:], V[1,:],'ow', [0], [0], 'k+')
+    pylab.plot(V[0,:], V[1,:],'ow', mec='k')
+    pylab.plot([0], [0], 'k+')
     I = [ k for k in range(n) if xd[k] > 1e-5 ]
     pylab.plot(V[0,I], V[1,I],'or')
 
@@ -114,7 +115,8 @@ mu = sol['y'][0]
 
 if pylab_installed:
     pylab.figure(2, facecolor='w', figsize=(6,6)) 
-    pylab.plot(V[0,:], V[1,:],'ow', [0], [0], 'k+')
+    pylab.plot(V[0,:], V[1,:],'ow', mec = 'k')
+    pylab.plot([0], [0], 'k+')
     I = [ k for k in range(n) if xe[k] > 1e-5 ]
     pylab.plot(V[0,I], V[1,I],'or')
 
@@ -170,7 +172,8 @@ mu = sol['y'][0]
 
 if pylab_installed:
     pylab.figure(3, facecolor='w', figsize = (6,6))
-    pylab.plot(V[0,:], V[1,:],'ow', [0], [0], 'k+')
+    pylab.plot(V[0,:], V[1,:],'ow', mec = 'k')
+    pylab.plot([0], [0], 'k+')
     I = [ k for k in range(n) if xa[k] > 1e-5 ]
     pylab.plot(V[0,I], V[1,I],'or')
 

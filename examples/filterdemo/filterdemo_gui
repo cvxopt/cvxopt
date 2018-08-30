@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 from cvxopt import matrix, cos
 from cvxopt.solvers import options
 from cvxopt.modeling import op, variable, max
@@ -8,8 +8,8 @@ from math import log10, pi, floor
 import gtk
 
 import matplotlib
-matplotlib.use('GTK')  # or 'GTK'
-from matplotlib.backends.backend_gtk import FigureCanvasGTK as FigureCanvas
+matplotlib.use('GTKAgg')  # or 'GTK'
+from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
 import pylab 
 
 

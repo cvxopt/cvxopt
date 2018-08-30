@@ -183,7 +183,10 @@ convert_array(void *dest, void *src, int dest_id, int src_id, int n) {
 ccs * alloc_ccs(int_t nrows, int_t ncols, int_t nnz, int id)
 {
   ccs *obj = malloc(sizeof(ccs));
-  if (!obj) return NULL;
+  if (!obj) {
+    PyErr_NoMemory();
+    return NULL;
+  }
 
   obj->nrows = nrows;
   obj->ncols = ncols;
@@ -195,6 +198,7 @@ ccs * alloc_ccs(int_t nrows, int_t ncols, int_t nnz, int id)
 
   if (!obj->values || !obj->colptr || !obj->rowind) {
     free(obj->values); free(obj->colptr); free(obj->rowind); free(obj);
+    PyErr_NoMemory();
     return NULL;
   }
 
@@ -234,7 +238,7 @@ static ccs * convert_ccs(ccs *src, int id) {
   if (id != MAX(id,src->id)) PY_ERR_TYPE("incompatible matrix types");
 
   ccs *ret = alloc_ccs(src->nrows,src->ncols,CCS_NNZ(src),id);
-  if (!ret) return (ccs *)PyErr_NoMemory();
+  if (!ret) return NULL;
 
   convert_array(ret->values, src->values, id, src->id, CCS_NNZ(src));
   memcpy(ret->rowind, src->rowind, CCS_NNZ(src)*sizeof(int_t));
@@ -265,7 +269,7 @@ spmatrix *SpMatrix_NewFromMatrix(matrix *src, int id)
   }
 
   if (!(A = SpMatrix_New(MAT_NROWS(src), MAT_NCOLS(src), (int_t)nnz, id)))
-    return (spmatrix *)PyErr_NoMemory();
+    return NULL;
 
   int cnt = 0;
   for (j=0; j<MAT_NCOLS(src); j++) {
@@ -378,7 +382,7 @@ spmatrix * sparse_concat(PyObject *L, int id_arg)
 
   id = MAX(DOUBLE, MAX(id, id_arg));
   spmatrix *A = SpMatrix_New(m, n, nnz, id);
-  if (!A) return (spmatrix *)PyErr_NoMemory();
+if (!A) return NULL;
 
   int_t ik = 0, jk, cnt = 0;
   nk = 0;
@@ -569,6 +573,7 @@ static spa * alloc_spa(int_t n, int id) {
 
   if (!s || !s->val || !s->nz || !s->idx) {
     free(s->val); free(s->nz); free(s->idx); free(s);
+    PyErr_NoMemory();
     return NULL;
   }
 
@@ -2554,7 +2559,7 @@ spmatrix * SpMatrix_NewFromSpMatrix(spmatrix *A, int id)
   spmatrix *ret = SpMatrix_New
       (SP_NROWS(A), SP_NCOLS(A), SP_NNZ(A), id);
 
-  if (!ret) return (spmatrix *)PyErr_NoMemory();
+  if (!ret) NULL;
 
   convert_array(SP_VAL(ret), SP_VAL(A), id, SP_ID(A), SP_NNZ(A));
   memcpy(SP_COL(ret), SP_COL(A), (SP_NCOLS(A)+1)*sizeof(int_t));
@@ -2723,7 +2728,7 @@ spmatrix_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     if (!(V = Matrix_NewFromNumber(MAT_LGT(Il), 1, get_id(V, 1), V, 1))) {
       Py_DECREF(Il);
       Py_DECREF(Jl);
-      return PyErr_NoMemory();
+      return NULL;
     }
     }
   else {
@@ -2874,7 +2879,7 @@ static PyObject *
 spmatrix_get_V(spmatrix *self, void *closure)
 {
   matrix *ret = Matrix_New(SP_NNZ(self), 1, SP_ID(self));
-  if (!ret) return PyErr_NoMemory();
+  if (!ret) return NULL;
 
   memcpy(MAT_BUF(ret), SP_VAL(self), SP_NNZ(self)*E_SIZE[SP_ID(self)]);
   return (PyObject *)ret;
@@ -2907,7 +2912,7 @@ spmatrix_set_V(spmatrix *self, PyObject *value, void *closure)
 static PyObject *spmatrix_get_I(spmatrix *self, void *closure)
 {
   matrix *A = Matrix_New( SP_NNZ(self), 1, INT);
-  if (!A) return PyErr_NoMemory();
+  if (!A) return NULL;
 
   memcpy(MAT_BUF(A), SP_ROW(self), SP_NNZ(self)*sizeof(int_t));
   return (PyObject *)A;
@@ -2916,7 +2921,7 @@ static PyObject *spmatrix_get_I(spmatrix *self, void *closure)
 static PyObject * spmatrix_get_J(spmatrix *self, void *closure)
 {
   matrix *A = Matrix_New( SP_NNZ(self), 1, INT);
-  if (!A) return PyErr_NoMemory();
+  if (!A) return NULL;
 
   int_t k, j;
   for (k=0; k<SP_NCOLS(self); k++)
@@ -3023,7 +3028,7 @@ static PyObject * spmatrix_real(spmatrix *self) {
 
   spmatrix *ret = SpMatrix_New(SP_NROWS(self), SP_NCOLS(self),
       SP_NNZ(self), DOUBLE);
-  if (!ret) return PyErr_NoMemory();
+  if (!ret) return NULL;
 
   int i;
   for (i=0; i < SP_NNZ(self); i++)
@@ -3041,7 +3046,7 @@ static PyObject * spmatrix_imag(spmatrix *self) {
 
   spmatrix *ret = SpMatrix_New(SP_NROWS(self), SP_NCOLS(self),
       SP_NNZ(self), DOUBLE);
-  if (!ret) return PyErr_NoMemory();
+  if (!ret) return NULL;
 
   int i;
   for (i=0; i < SP_NNZ(self); i++)
@@ -3200,7 +3205,7 @@ spmatrix_subscr(spmatrix* self, PyObject* args)
     }
 
     spmatrix *B = SpMatrix_New(lgt,1,nnz,SP_ID(self));
-    if (!B) { Py_DECREF(Il); return PyErr_NoMemory(); }
+    if (!B) { Py_DECREF(Il); return NULL; }
 
     SP_COL(B)[1] = nnz;
     /* fill up rowind and values */
@@ -3339,7 +3344,7 @@ spmatrix_subscr(spmatrix* self, PyObject* args)
     if (!(A = alloc_ccs(rowlgt, collgt, colptr[collgt], SP_ID(self)))) {
       free(colptr);
       if (Jl && !Matrix_Check(argJ)) { Py_DECREF(Jl); }
-      return PyErr_NoMemory();
+      return NULL;
     }
 
     free(A->colptr);
@@ -4088,7 +4093,7 @@ static PyMappingMethods spmatrix_as_mapping = {
 static PyObject * spmatrix_neg(spmatrix *self)
 {
   spmatrix *x = SpMatrix_NewFromSpMatrix(self,SP_ID(self));
-  if (!x) return PyErr_NoMemory();
+  if (!x) return NULL;
 
   int n=SP_NNZ(x);
   scal[SP_ID(self)](&n, &MinusOne[SP_ID(self)], SP_VAL(x), &intOne);
@@ -4099,7 +4104,7 @@ static PyObject * spmatrix_neg(spmatrix *self)
 static PyObject * spmatrix_pos(spmatrix *self)
 {
   spmatrix *x = SpMatrix_NewFromSpMatrix(self,SP_ID(self));
-  if (!x) return PyErr_NoMemory();
+  if (!x) return NULL;
 
   return (PyObject *)x;
 }
@@ -4108,7 +4113,7 @@ static PyObject * spmatrix_abs(spmatrix *self)
 {
   spmatrix *x = SpMatrix_New(SP_NROWS(self), SP_NCOLS(self),
       SP_NNZ(self), DOUBLE);
-  if (!x) return PyErr_NoMemory();
+  if (!x) return NULL;
 
   int_t i;
 
@@ -4168,7 +4173,7 @@ spmatrix_add_helper(PyObject *self, PyObject *other, int add)
   if (SpMatrix_Check(other)) {
     if (((ccs *)y)->id != id) free_ccs(y);
     spmatrix *ret = SpMatrix_New(SP_NROWS(other), SP_NCOLS(other), 0, id);
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
     free_ccs(ret->obj);
     ret->obj = z;
     return (PyObject *)ret;

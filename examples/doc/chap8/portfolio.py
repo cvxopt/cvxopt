@@ -44,9 +44,12 @@ else:
     c3 = [ x[0] + x[1] + x[2] for x in xs ] 
     c4 = [ x[0] + x[1] + x[2] + x[3] for x in xs ]
     pylab.fill(risks + [.20], c1 + [0.0], facecolor = '#F0F0F0') 
-    pylab.fill(risks[-1::-1] + risks, c2[-1::-1] + c1, facecolor='#D0D0D0') 
-    pylab.fill(risks[-1::-1] + risks, c3[-1::-1] + c2, facecolor='#F0F0F0') 
-    pylab.fill(risks[-1::-1] + risks, c4[-1::-1] + c3, facecolor='#D0D0D0') 
+    pylab.fill(risks[-1::-1] + risks, c2[-1::-1] + c1, facecolor='#D0D0D0',
+       edgecolor = 'black') 
+    pylab.fill(risks[-1::-1] + risks, c3[-1::-1] + c2, facecolor='#F0F0F0',
+       edgecolor = 'black') 
+    pylab.fill(risks[-1::-1] + risks, c4[-1::-1] + c3, facecolor='#D0D0D0',
+       edgecolor = 'black') 
     pylab.axis([0.0, 0.2, 0.0, 1.0])
     pylab.xlabel('standard deviation')
     pylab.ylabel('allocation')

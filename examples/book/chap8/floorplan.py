@@ -135,13 +135,13 @@ def floorplan(Amin):
     G[19, [13, 18]] = 1.0, -gamma
 
     # -w3 + h3/gamma <= 0  
-    G[20, [14, 18]] = -1.0, 1.0/gamma
+    G[20, [14, 19]] = -1.0, 1.0/gamma
 
     # w3 - gamma * h3 <= 0
     G[21, [14, 19]] = 1.0, -gamma
 
     # -w4  + h4/gamma <= 0 
-    G[22, [15, 19]] = -1.0, 1.0/gamma
+    G[22, [15, 20]] = -1.0, 1.0/gamma
 
     # w4 - gamma * h4 <= 0
     G[23, [15, 20]] = 1.0, -gamma
@@ -168,7 +168,7 @@ if pylab_installed:
     for k in range(5):
         pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
                    [y[k], y[k]+h[k], y[k]+h[k], y[k]], 
-                   facecolor = '#D0D0D0')
+                   facecolor = '#D0D0D0', ec='k')
         pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
     pylab.axis([-1.0, 26, -1.0, 26])
     pylab.xticks([])
@@ -181,7 +181,7 @@ if pylab_installed:
     for k in range(5):
         pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
                    [y[k], y[k]+h[k], y[k]+h[k], y[k]], 
-                   facecolor = '#D0D0D0')
+                   facecolor = '#D0D0D0', ec = 'k')
         pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
     pylab.axis([-1.0, 26, -1.0, 26])
     pylab.xticks([])
@@ -194,7 +194,7 @@ if pylab_installed:
     for k in range(5):
         pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
                    [y[k], y[k]+h[k], y[k]+h[k], y[k]], 
-                   facecolor = '#D0D0D0')
+                   facecolor = '#D0D0D0', ec = 'k')
         pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
     pylab.axis([-1.0, 26, -1.0, 26])
     pylab.xticks([])
@@ -207,7 +207,7 @@ if pylab_installed:
     for k in range(5):
         pylab.fill([x[k], x[k], x[k]+w[k], x[k]+w[k]], 
                    [y[k], y[k]+h[k], y[k]+h[k], y[k]], 
-                   facecolor = '#D0D0D0')
+                   facecolor = '#D0D0D0', ec = 'k')
         pylab.text(x[k]+.5*w[k], y[k]+.5*h[k], "%d" %(k+1))
     pylab.axis([-1.0, 26, -1.0, 26])
     pylab.xticks([])

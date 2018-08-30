@@ -46,9 +46,9 @@ copyright = '2004-2018, M.S. Andersen, J. Dahl, L. Vandenberghe'
 # other places throughout the built documents.
 #
 # The short X.Y version.
-version = '1.2'
+version = '1.2.1'
 # The full version, including alpha/beta/rc tags.
-release = '1.2'
+release = '1.2.1'
 
 
 # There are two options for replacing |today|: either, you set today to some

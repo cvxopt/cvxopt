@@ -125,7 +125,7 @@ if pylab_installed:
         circle[0,:], circle[1,:] = cos(angles), sin(angles)
         for k in range(len(C)):
             c = C[k]
-            pylab.plot([c[0]], [c[1]], 'ow')
+            pylab.plot([c[0]], [c[1]], 'og')
             pylab.text(c[0], c[1], "s%d" %k)
             pylab.plot(c[0] + circle[0,:].T, c[1]+circle[1,:].T, 'g:')
             if k >= 1:
