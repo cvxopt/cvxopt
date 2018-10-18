@@ -39,6 +39,20 @@ class TestBasic(unittest.TestCase):
         with self.assertRaises(OverflowError):
             cvxopt.spmatrix(1.0,(0,32780*4),(0,32780))+1
 
+    def test_basic_complex(self):
+        import cvxopt
+        a = cvxopt.matrix([1,-2,3])
+        b = cvxopt.matrix([1.0,-2.0,3.0])
+        c = cvxopt.matrix([1.0+2j,1-2j,0+1j])
+        self.assertAlmostEqualLists(list(cvxopt.div(b,c)),[0.2-0.4j,-0.4-0.8j,-3j])
+        self.assertAlmostEqualLists(list(cvxopt.div(b,2.0j)),[-0.5j,1j,-1.5j])
+        self.assertAlmostEqualLists(list(cvxopt.div(a,c)),[0.2-0.4j,-0.4-0.8j,-3j])
+        self.assertAlmostEqualLists(list(cvxopt.div(c,a)),[(1+2j),(-0.5+1j),0.3333333333333333j])
+        self.assertAlmostEqualLists(list(cvxopt.div(c,c)),[1.0,1.0,1.0])
+        self.assertAlmostEqualLists(list(cvxopt.div(a,2.0j)),[-0.5j,1j,-1.5j])
+        self.assertAlmostEqualLists(list(cvxopt.div(c,1.0j)),[2-1j,-2-1j,1+0j])
+        self.assertAlmostEqualLists(list(cvxopt.div(1j,c)),[0.4+0.2j,-0.4+0.2j,1+0j])
+
     def test_basic_no_gsl(self):
         import sys
         sys.modules['gsl'] = None

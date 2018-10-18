@@ -4,7 +4,7 @@
 CVXOPT User's Guide
 ####################
 
-**Release 1.2.1 -- August 30, 2018**
+**Release 1.2.2 -- October 18, 2018**
 
 **Martin Andersen, Joachim Dahl, and Lieven Vandenberghe**
 
