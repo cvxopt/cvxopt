@@ -171,13 +171,13 @@ convert_znum(void *dest, void *val, int val_id, int_t offset)
 #ifndef _MSC_VER
       *(double complex *)dest = MAT_BUFI(val)[offset]; return 0;
 #else
-      *(int_t *)dest = MAT_BUFI(val)[offset]; return 0;
+      *(_Dcomplex *)dest = _Cbuild((double)MAT_BUFI(val)[offset],0.0); return 0;
 #endif
     case DOUBLE:
 #ifndef _MSC_VER
       *(double complex *)dest = MAT_BUFD(val)[offset]; return 0;
 #else
-      *(double *)dest = MAT_BUFD(val)[offset]; return 0;
+      *(_Dcomplex *)dest = _Cbuild(MAT_BUFD(val)[offset],0.0); return 0;
 #endif
     case COMPLEX:
 #ifndef _MSC_VER
@@ -1893,7 +1893,7 @@ PyObject * matrix_elem_div(matrix *self, PyObject *args, PyObject *kwrds)
         MAT_BUFZ(ret)[i] = a.z/b.z;
 #else
         if (creal(b.z) == 0 && cimag(b.z)== 0) goto divzero;
-        MAT_BUFZ(ret)[i] = _Cmulcc(a.z,_Cmulcr(b.z,1.0/norm(b.z)));
+        MAT_BUFZ(ret)[i] = _Cmulcc(a.z,_Cmulcr(conj(b.z),1.0/norm(b.z)));
 #endif
       }
     }
@@ -1920,8 +1920,8 @@ PyObject * matrix_elem_div(matrix *self, PyObject *args, PyObject *kwrds)
          SP_VALZ(ret)[k] /= b.z;
 #else
          if (creal(b.z) == 0 && cimag(b.z)== 0) goto divzero;
-         SP_VALZ(ret)[k] = _Cmulcc(SP_VALZ(ret)[k],_Cmulcr(b.z,1.0/norm(b.z)));
-#endif   
+         SP_VALZ(ret)[k] = _Cmulcc(SP_VALZ(ret)[k],_Cmulcr(conj(b.z),1.0/norm(b.z)));
+#endif
         }
       }
     }

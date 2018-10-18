@@ -8,7 +8,7 @@ environment:
     PYTHON: C:\Miniconda36-x64
     PYTHON_ARCH: "64"
     PACKAGE_NAME: "cvxopt"
-    BUILD_DEPENDS: "mkl"
+    BUILD_DEPENDS: "mkl==2018.0.3"
     TEST_DEPENDS: "pytest"
     CVXOPT_BLAS_LIB: mkl_rt
     CVXOPT_LAPACK_LIB: mkl_rt
