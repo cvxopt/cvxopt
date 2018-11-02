@@ -3488,8 +3488,6 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             pinfres, dinfres = None, None
             pslack, dslack = None, None
 
-        print(status)
-
         return {'status': status, 'x': x, 'sl': sl, 'sq': sq, 'y': y,
             'zl': zl, 'zq': zq, 'primal objective': pcost,
             'dual objective': dcost, 'gap': gap, 'relative gap': relgap,
