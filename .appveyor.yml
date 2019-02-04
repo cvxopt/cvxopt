@@ -1,4 +1,4 @@
-version: 1.2.1-{build}-{branch}
+version: 1.2.2-{build}-{branch}
 image: Visual Studio 2017
 init:
     - choco install wget checksum
