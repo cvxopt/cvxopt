@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2019 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -262,7 +262,7 @@ spmatrix *SpMatrix_NewFromMatrix(matrix *src, int id)
 #ifndef _MSC_VER
           ((MAT_ID(src) == COMPLEX) && (a->z != Zero[COMPLEX].z)))
 #else
-          ((MAT_ID(src) == COMPLEX) && (creal(a->z) != 0.0 && cimag(a->z) != 0.0)))
+          ((MAT_ID(src) == COMPLEX) && (creal(a->z) != 0.0 || cimag(a->z) != 0.0)))
 #endif
         nnz++;
     }
@@ -282,7 +282,7 @@ spmatrix *SpMatrix_NewFromMatrix(matrix *src, int id)
 #ifndef _MSC_VER 
           ((id == COMPLEX) && (a.z != Zero[COMPLEX].z))) {
 #else
-          ((id == COMPLEX) && (creal(a.z) != 0.0 && cimag(a.z) != 0.0))) {
+          ((id == COMPLEX) && (creal(a.z) != 0.0 || cimag(a.z) != 0.0))) {
 #endif
         write_num[id](SP_VAL(A), cnt, &a, 0);
         SP_ROW(A)[cnt++] = i;
@@ -341,7 +341,7 @@ spmatrix * sparse_concat(PyObject *L, int id_arg)
 #ifndef _MSC_VER
                 ((MAT_ID(Lij) == COMPLEX) && (a->z != Zero[COMPLEX].z)))
 #else
-	        ((MAT_ID(Lij) == COMPLEX) && (creal(a->z) != 0.0 && cimag(a->z) != 0.0)))
+	        ((MAT_ID(Lij) == COMPLEX) && (creal(a->z) != 0.0 || cimag(a->z) != 0.0)))
 #endif
               nnz++;
           }
@@ -355,7 +355,7 @@ spmatrix * sparse_concat(PyObject *L, int id_arg)
 #ifndef _MSC_VER
                 ((SP_ID(Lij) == COMPLEX) && (SP_VALZ(Lij)[ik] != 0.0)))
 #else
-	        ((SP_ID(Lij) == COMPLEX) && (creal(SP_VALZ(Lij)[ik]) != 0.0 && cimag(SP_VALZ(Lij)[ik]) != 0.0)))
+	        ((SP_ID(Lij) == COMPLEX) && (creal(SP_VALZ(Lij)[ik]) != 0.0 || cimag(SP_VALZ(Lij)[ik]) != 0.0)))
 #endif
               nnz++;
           }
@@ -418,7 +418,7 @@ if (!A) return NULL;
 #ifndef _MSC_VER
                   ((id == COMPLEX) && (a.z != Zero[COMPLEX].z))) {
 #else
-		  ((id == COMPLEX) && (creal(a.z) != 0.0 && cimag(a.z) != 0.0))) {
+		  ((id == COMPLEX) && (creal(a.z) != 0.0 || cimag(a.z) != 0.0))) {
 #endif
 
                 write_num[id](SP_VAL(A), cnt, &a, 0);
@@ -447,7 +447,7 @@ if (!A) return NULL;
 #ifndef _MSC_VER
               else if ((SP_ID(Lij) == COMPLEX) && (SP_VALZ(Lij)[ik] != 0.0)) {
 #else
-              else if ((SP_ID(Lij) == COMPLEX) && (creal(SP_VALZ(Lij)[ik]) != 0.0 && cimag(SP_VALZ(Lij)[ik]) != 0.0)) {
+              else if ((SP_ID(Lij) == COMPLEX) && (creal(SP_VALZ(Lij)[ik]) != 0.0 || cimag(SP_VALZ(Lij)[ik]) != 0.0)) {
 #endif
 
                 SP_VALZ(A)[cnt] = SP_VALZ(Lij)[ik];
@@ -465,7 +465,7 @@ if (!A) return NULL;
 #ifndef _MSC_VER
                 ((id == COMPLEX) && (a.z != Zero[COMPLEX].z))) {
 #else
-	        ((id == COMPLEX) && (creal(a.z) != 0.0 && cimag(a.z) != 0.0))) {
+	        ((id == COMPLEX) && (creal(a.z) != 0.0 || cimag(a.z) != 0.0))) {
 #endif
 
               write_num[id](SP_VAL(A), cnt, &a, 0);

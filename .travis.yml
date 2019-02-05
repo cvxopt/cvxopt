@@ -68,8 +68,7 @@ before_install:
   - if [[ "$BUILD_SUITESPARSE" == "1" && "$TRAVIS_OS_NAME" == "osx" ]]; then shasum -a 256 -c SuiteSparse.sha256; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install python-dev libopenblas-dev libfftw3-dev libglpk-dev libdsdp-dev libgsl0-dev; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" && -z "$BUILD_SUITESPARSE" ]]; then sudo add-apt-repository ppa:bzindovic/suitesparse-bugfix-1319687 -y; sudo apt-get update; sudo apt-get install libsuitesparse-dev; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask uninstall oclint; brew install openblas glpk gsl fftw; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew info openblas; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install openblas glpk gsl fftw;  brew info openblas; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" && -z "$BUILD_SUITESPARSE" ]]; then brew install suite-sparse; brew info suitesparse; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;bash miniconda.sh -b -p $HOME/miniconda; export PATH="$HOME/miniconda/bin:$PATH" ;  fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then conda create -y -n myenv python=$PYVERSION dsdp && source $HOME/miniconda/bin/activate myenv; fi

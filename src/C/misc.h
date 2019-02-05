@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2019 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *

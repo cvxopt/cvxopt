@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2019 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -1016,7 +1016,7 @@ sparse(PyTypeObject *type, PyObject *args, PyObject *kwds)
             ((SP_ID(Objx) == COMPLEX) && (SP_VALZ(Objx)[ik] != 0.0)))
 #else
         if (((SP_ID(Objx) == DOUBLE) && (SP_VALD(Objx)[ik] != 0.0)) ||
-            ((SP_ID(Objx) == COMPLEX) && (creal(SP_VALZ(Objx)[ik]) != 0.0 || cimag(SP_VALZ(Objx)[ik]))))
+            ((SP_ID(Objx) == COMPLEX) && (creal(SP_VALZ(Objx)[ik]) != 0.0 || cimag(SP_VALZ(Objx)[ik]) != 0.0)))
 #endif
           nnz++;
       }
