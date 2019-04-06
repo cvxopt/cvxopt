@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2019 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -171,13 +171,13 @@ convert_znum(void *dest, void *val, int val_id, int_t offset)
 #ifndef _MSC_VER
       *(double complex *)dest = MAT_BUFI(val)[offset]; return 0;
 #else
-      *(int_t *)dest = MAT_BUFI(val)[offset]; return 0;
+      *(_Dcomplex *)dest = _Cbuild((double)MAT_BUFI(val)[offset],0.0); return 0;
 #endif
     case DOUBLE:
 #ifndef _MSC_VER
       *(double complex *)dest = MAT_BUFD(val)[offset]; return 0;
 #else
-      *(double *)dest = MAT_BUFD(val)[offset]; return 0;
+      *(_Dcomplex *)dest = _Cbuild(MAT_BUFD(val)[offset],0.0); return 0;
 #endif
     case COMPLEX:
 #ifndef _MSC_VER
@@ -1016,14 +1016,14 @@ sparse(PyTypeObject *type, PyObject *args, PyObject *kwds)
             ((SP_ID(Objx) == COMPLEX) && (SP_VALZ(Objx)[ik] != 0.0)))
 #else
         if (((SP_ID(Objx) == DOUBLE) && (SP_VALD(Objx)[ik] != 0.0)) ||
-            ((SP_ID(Objx) == COMPLEX) && (creal(SP_VALZ(Objx)[ik]) != 0.0 || cimag(SP_VALZ(Objx)[ik]))))
+            ((SP_ID(Objx) == COMPLEX) && (creal(SP_VALZ(Objx)[ik]) != 0.0 || cimag(SP_VALZ(Objx)[ik]) != 0.0)))
 #endif
           nnz++;
       }
     }
 
     ret = SpMatrix_New(SP_NROWS(Objx), SP_NCOLS(Objx), nnz, SP_ID(Objx));
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
 
     nnz = 0;
     for (jk=0; jk<SP_NCOLS(Objx); jk++) {
@@ -1085,7 +1085,7 @@ spdiag(PyTypeObject *type, PyObject *args, PyObject *kwds)
     int j, id = MAX(DOUBLE, MAT_ID(diag)), n = MAT_LGT(diag);
 
     spmatrix *ret = SpMatrix_New((int_t)n, (int_t)n, (int_t)n, id);
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
     SP_COL(ret)[0] = 0;
 
     for (j=0; j<n; j++) {
@@ -1107,7 +1107,7 @@ spdiag(PyTypeObject *type, PyObject *args, PyObject *kwds)
     int_t n = SP_LGT(diag);
 
     spmatrix *ret = SpMatrix_New(n, n, SP_NNZ(diag), id);
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
     SP_COL(ret)[0] = 0;
 
     for (k=0; k<SP_NNZ(diag); k++) {
@@ -1151,7 +1151,7 @@ spdiag(PyTypeObject *type, PyObject *args, PyObject *kwds)
   }
 
   spmatrix *ret = SpMatrix_New(n, n, nnz, id);
-  if (!ret) return PyErr_NoMemory();
+  if (!ret) return NULL;
   SP_COL(ret)[0] = 0;
 
   n = 0, idx = 0;
@@ -1282,17 +1282,17 @@ PyObject * matrix_elem_max(PyObject *self, PyObject *args, PyObject *kwrds)
     int freeA = SpMatrix_Check(A) && (SP_LGT(A) > 1);
     int freeB = SpMatrix_Check(B) && (SP_LGT(B) > 1);
     if (freeA) {
-      if (!(A = (PyObject *)dense((spmatrix *)A)) ) return PyErr_NoMemory();
+      if (!(A = (PyObject *)dense((spmatrix *)A)) ) return NULL;
     }
     if (freeB) {
-      if (!(B = (PyObject *)dense((spmatrix *)B)) ) return PyErr_NoMemory();
+      if (!(B = (PyObject *)dense((spmatrix *)B)) ) return NULL;
     }
 
     PyObject *ret = (PyObject *)Matrix_New((int)m, (int)n, id);
     if (!ret) {
       if (freeA) { Py_DECREF(A); }
       if (freeB) { Py_DECREF(B); }
-      return PyErr_NoMemory();
+      return NULL;
     }
     int_t i;
     for (i=0; i<m*n; i++) {
@@ -1312,7 +1312,7 @@ PyObject * matrix_elem_max(PyObject *self, PyObject *args, PyObject *kwrds)
   } else {
 
     spmatrix *ret = SpMatrix_New(m, n, 0, DOUBLE);
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
 
     int_t j, ka = 0, kb = 0, kret = 0;
     for (j=0; j<n; j++) {
@@ -1461,17 +1461,17 @@ PyObject * matrix_elem_min(PyObject *self, PyObject *args, PyObject *kwrds)
     int freeA = SpMatrix_Check(A) && (SP_LGT(A) > 1);
     int freeB = SpMatrix_Check(B) && (SP_LGT(B) > 1);
     if (freeA) {
-      if (!(A = (PyObject *)dense((spmatrix *)A)) ) return PyErr_NoMemory();
+      if (!(A = (PyObject *)dense((spmatrix *)A)) ) return NULL;
     }
     if (freeB) {
-      if (!(B = (PyObject *)dense((spmatrix *)B)) ) return PyErr_NoMemory();
+      if (!(B = (PyObject *)dense((spmatrix *)B)) ) return NULL;
     }
 
     PyObject *ret = (PyObject *)Matrix_New(m, n, id);
     if (!ret) {
       if (freeA) { Py_DECREF(A); }
       if (freeB) { Py_DECREF(B); }
-      return PyErr_NoMemory();
+      return NULL;
     }
     int_t i;
     for (i=0; i<m*n; i++) {
@@ -1491,7 +1491,7 @@ PyObject * matrix_elem_min(PyObject *self, PyObject *args, PyObject *kwrds)
   } else {
 
     spmatrix *ret = SpMatrix_New(m, n, 0, DOUBLE);
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
 
     int_t j, ka = 0, kb = 0, kret = 0;
     for (j=0; j<n; j++) {
@@ -1646,7 +1646,7 @@ PyObject * matrix_elem_mul(matrix *self, PyObject *args, PyObject *kwrds)
   if ((Matrix_Check(A) || a_is_number) && (Matrix_Check(B) || b_is_number)) {
 
     PyObject *ret = (PyObject *)Matrix_New(m, n, id);
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
 
     int_t i;
     for (i=0; i<m*n; i++) {
@@ -1671,7 +1671,7 @@ PyObject * matrix_elem_mul(matrix *self, PyObject *args, PyObject *kwrds)
   else if (SpMatrix_Check(A) && !SpMatrix_Check(B)) {
 
     PyObject *ret = (PyObject *)SpMatrix_NewFromSpMatrix((spmatrix *)A, id);
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
 
     int_t j, k;
     for (j=0; j<SP_NCOLS(A); j++) {
@@ -1694,7 +1694,7 @@ PyObject * matrix_elem_mul(matrix *self, PyObject *args, PyObject *kwrds)
   else if (SpMatrix_Check(B) && !SpMatrix_Check(A)) {
 
     PyObject *ret = (PyObject *)SpMatrix_NewFromSpMatrix((spmatrix *)B, id);
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
 
     int_t j, k;
     for (j=0; j<SP_NCOLS(B); j++) {
@@ -1718,7 +1718,7 @@ PyObject * matrix_elem_mul(matrix *self, PyObject *args, PyObject *kwrds)
   else {
 
     spmatrix *ret = SpMatrix_New(m, n, 0, id);
-    if (!ret) return PyErr_NoMemory();
+    if (!ret) return NULL;
 
     int_t j, ka = 0, kb = 0, kret = 0;
     for (j=0; j<n; j++) {
@@ -1872,7 +1872,7 @@ PyObject * matrix_elem_div(matrix *self, PyObject *args, PyObject *kwrds)
   if ((Matrix_Check(A) || a_is_number) && (Matrix_Check(B) || b_is_number)) {
 
     if (!(ret = (PyObject *)Matrix_New(m, n, id)))
-      return PyErr_NoMemory();
+      return NULL;
 
     int i;
     for (i=0; i<m*n; i++) {
@@ -1893,7 +1893,7 @@ PyObject * matrix_elem_div(matrix *self, PyObject *args, PyObject *kwrds)
         MAT_BUFZ(ret)[i] = a.z/b.z;
 #else
         if (creal(b.z) == 0 && cimag(b.z)== 0) goto divzero;
-        MAT_BUFZ(ret)[i] = _Cmulcc(a.z,_Cmulcr(b.z,1.0/norm(b.z)));
+        MAT_BUFZ(ret)[i] = _Cmulcc(a.z,_Cmulcr(conj(b.z),1.0/norm(b.z)));
 #endif
       }
     }
@@ -1903,7 +1903,7 @@ PyObject * matrix_elem_div(matrix *self, PyObject *args, PyObject *kwrds)
   else { // (SpMatrix_Check(A) && !SpMatrix_Check(B)) {
 
     if (!(ret = (PyObject *)SpMatrix_NewFromSpMatrix((spmatrix *)A, id)))
-      return PyErr_NoMemory();
+      return NULL;
 
     int j, k;
     for (j=0; j<SP_NCOLS(A); j++) {
@@ -1920,8 +1920,8 @@ PyObject * matrix_elem_div(matrix *self, PyObject *args, PyObject *kwrds)
          SP_VALZ(ret)[k] /= b.z;
 #else
          if (creal(b.z) == 0 && cimag(b.z)== 0) goto divzero;
-         SP_VALZ(ret)[k] = _Cmulcc(SP_VALZ(ret)[k],_Cmulcr(b.z,1.0/norm(b.z)));
-#endif   
+         SP_VALZ(ret)[k] = _Cmulcc(SP_VALZ(ret)[k],_Cmulcr(conj(b.z),1.0/norm(b.z)));
+#endif
         }
       }
     }

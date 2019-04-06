@@ -285,7 +285,7 @@ means the following.  The sparsity pattern and the nonzero values are
 stored in three fields:</p>
 <dl class="docutils">
 <dt><code class="xref c c-member docutils literal notranslate"><span class="pre">values</span></code></dt>
-<dd>A <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code> matrix of size <code class="docutils literal notranslate"><span class="pre">(nnz,1)</span></code>  with the
+<dd>An array of floating-point numbers of length <cite>nnz</cite> with the
 nonzero entries of the matrix stored columnwise.</dd>
 <dt><code class="xref c c-member docutils literal notranslate"><span class="pre">rowind</span></code></dt>
 <dd>An array of integers of length <cite>nnz</cite> containing the row indices of
@@ -341,7 +341,7 @@ values <code class="xref py py-const docutils literal notranslate"><span class="
 <p>Sparse matrices are created using the following functions from the API.</p>
 <dl class="function">
 <dt id="c.SpMatrix_New">
-spmatrix * <code class="descname">SpMatrix_New</code><span class="sig-paren">(</span>int<em>&nbsp;nrows</em>, int<em>&nbsp;ncols</em>, int<em>&nbsp;nzmax</em>, int<em>&nbsp;id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_New" title="Permalink to this definition">¶</a></dt>
+spmatrix * <code class="descname">SpMatrix_New</code><span class="sig-paren">(</span>int_t<em>&nbsp;nrows</em>, int_t<em>&nbsp;ncols</em>, int_t<em>&nbsp;nzmax</em>, int<em>&nbsp;id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_New" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a sparse zero matrix with <cite>nrows</cite> rows and <cite>ncols</cite> columns.
 <cite>nzmax</cite> is the number of elements that will be allocated (the length of
 the <code class="xref c c-member docutils literal notranslate"><span class="pre">values</span></code> and <code class="xref c c-member docutils literal notranslate"><span class="pre">rowind</span></code> fields).</p>
@@ -355,7 +355,7 @@ spmatrix * <code class="descname">SpMatrix_NewFromMatrix</code><span class="sig-
 
 <dl class="function">
 <dt id="c.SpMatrix_NewFromIJV">
-spmatrix * <code class="descname">SpMatrix_NewFromIJV</code><span class="sig-paren">(</span>matrix<em>&nbsp;*I</em>, matrix<em>&nbsp;*J</em>, matrix<em>&nbsp;*V</em>, int<em>&nbsp;nrows</em>, int<em>&nbsp;ncols</em>, int<em>&nbsp;nzmax</em>, int<em>&nbsp;id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromIJV" title="Permalink to this definition">¶</a></dt>
+spmatrix * <code class="descname">SpMatrix_NewFromIJV</code><span class="sig-paren">(</span>matrix<em>&nbsp;*I</em>, matrix<em>&nbsp;*J</em>, matrix<em>&nbsp;*V</em>, int_t<em>&nbsp;nrows</em>, int_t<em>&nbsp;ncols</em>, int<em>&nbsp;id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromIJV" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a sparse matrix with <cite>nrows</cite> rows and <cite>ncols</cite> columns from a
 triplet description.  <cite>I</cite> and <cite>J</cite> must be integer matrices and <cite>V</cite>
 either a double or complex matrix, or <code class="xref py py-const docutils literal notranslate"><span class="pre">NULL</span></code>. If <cite>V</cite> is
@@ -408,8 +408,8 @@ a sparse matrix:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="copyright.html">Copyright</a> 2004-2018, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      Last updated on Apr 16, 2018.
+        &copy; <a href="copyright.html">Copyright</a> 2004-2019, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      Last updated on Feb 05, 2019.
     </p>
   </div>
 
@@ -429,7 +429,7 @@ a sparse matrix:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.2',
+            VERSION:'1.2.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
@@ -455,7 +455,7 @@ a sparse matrix:</p>
   </script>
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.8.2.
     </div>
 
 </body>

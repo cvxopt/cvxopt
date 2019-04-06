@@ -146,16 +146,16 @@ P[:,0], P[:,1] = Ap[0]*xwc, Ap[1]*xwc
 r = P*u + q[:,notrials*[0]]
 reswc = sqrt( matrix(1.0, (1,m)) * mul(r,r) )
 
-if pylab_installed:
+if 1:  #pylab_installed:
    pylab.figure(2, facecolor='w')
-   pylab.hist(list(resls), numpy.array([0.1*k for k in range(50)]), fc='w', 
-       normed=True)
+   pylab.hist(list(resls), [0.1*k for k in range(50)], fc='w', 
+       ec = 'black', normed=True)
    pylab.text(4.4, 0.4, 'least-squares')
-   pylab.hist(list(restik), numpy.array([0.1*k for k in range(50)]), fc='#D0D0D0', 
-       normed=True)
+   pylab.hist(list(restik), [0.1*k for k in range(50)], fc='#D0D0D0', 
+       ec = 'black', normed=True)
    pylab.text(2.9, 0.75, 'Tikhonov')
-   pylab.hist(list(reswc), numpy.array([0.1*k for k in range(50)]), fc='#B0B0B0', 
-       normed=True)
+   pylab.hist(list(reswc), [0.1*k for k in range(50)], fc='#B0B0B0', 
+       ec = 'black', normed=True)
    pylab.text(2.5, 2.0, 'robust least-squares')
    pylab.xlabel('residual')
    pylab.ylabel('frequency/binwidth')

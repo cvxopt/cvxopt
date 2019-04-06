@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2019 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -61,13 +61,16 @@ typedef union {
 #define X_NCOLS(O) (Matrix_Check(O) ? MAT_NCOLS(O) : SP_NCOLS(O))
 #define X_Matrix_Check(O) (Matrix_Check(O) || SpMatrix_Check(O))
 
+#if PY_MAJOR_VERSION >= 3
 #define TypeCheck_Capsule(O,str,errstr) { \
     if (!PyCapsule_CheckExact(O)) PY_ERR(PyExc_TypeError, errstr); \
     const char *descr = PyCapsule_GetName(O);  \
     if (!descr || strcmp(descr,str)) PY_ERR(PyExc_TypeError,errstr); }
+#else
 #define TypeCheck_CObject(O,str,errstr) { \
     char *descr = PyCObject_GetDesc(O);   \
     if (!descr || strcmp(descr,str)) PY_ERR(PyExc_TypeError,errstr); }
+#endif
 
 
 #define len(x) (Matrix_Check(x) ? MAT_LGT(x) : SP_LGT(x))

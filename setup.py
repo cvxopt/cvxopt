@@ -1,7 +1,4 @@
-try:
-    from setuptools import setup, Extension
-except ImportError:
-    from distutils.core import setup, Extension
+from setuptools import setup, Extension
 from glob import glob
 import os, sys
 import platform
@@ -75,6 +72,13 @@ else:
         SUITESPARSE_LIB_DIR = '/usr/lib'
         SUITESPARSE_INC_DIR = '/usr/include'
 
+if sys.platform.startswith("win"):
+    GSL_MACROS = [('GSL_DLL',''),('WIN32','')]
+    FFTW_MACROS = [('FFTW_DLL',''),('FFTW_NO_Complex','')]
+else:
+    GSL_MACROS = []
+    FFTW_MACROS = []
+
 # Directory containing SuiteSparse source
 SUITESPARSE_SRC_DIR = ''
 
@@ -129,6 +133,7 @@ if BUILD_GSL:
     gsl = Extension('gsl', libraries = M_LIB + ['gsl'] + BLAS_LIB,
         include_dirs = [ GSL_INC_DIR ],
         library_dirs = [ GSL_LIB_DIR, BLAS_LIB_DIR ],
+        define_macros = GSL_MACROS,
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = ['src/C/gsl.c'] )
     extmods += [gsl];
@@ -137,6 +142,7 @@ if BUILD_FFTW:
     fftw = Extension('fftw', libraries = ['fftw3'] + BLAS_LIB,
         include_dirs = [ FFTW_INC_DIR ],
         library_dirs = [ FFTW_LIB_DIR, BLAS_LIB_DIR ],
+        define_macros = FFTW_MACROS,
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = ['src/C/fftw.c'] )
     extmods += [fftw];
@@ -158,7 +164,7 @@ if BUILD_DSDP:
 
 # Required modules
 
-base = Extension('base', libraries = ['m'] + LAPACK_LIB + BLAS_LIB,
+base = Extension('base', libraries = M_LIB + LAPACK_LIB + BLAS_LIB,
     library_dirs = [ BLAS_LIB_DIR ],
     define_macros = MACROS,
     extra_link_args = BLAS_EXTRA_LINK_ARGS,

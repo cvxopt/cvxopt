@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2019 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -355,7 +355,8 @@ static PyObject *simplex(PyObject *self, PyObject *args, PyObject *kwrds)
             }
         }
 
-    Py_DECREF(param);
+    if (param != opts)
+        Py_DECREF(param);
 
     switch (glp_simplex(lp, &smcp)){
 
@@ -371,7 +372,7 @@ static PyObject *simplex(PyObject *self, PyObject *args, PyObject *kwrds)
                         Py_XDECREF(y);
                         Py_XDECREF(t);
                         glp_delete_prob(lp);
-                        return PyErr_NoMemory();
+                        return NULL;
                     }
 
                     PyTuple_SET_ITEM(t, 0, (PyObject *)
@@ -855,7 +856,8 @@ static PyObject *integer(PyObject *self, PyObject *args,
             }
         }
 
-    Py_DECREF(param);
+    if (param != opts)
+        Py_DECREF(param);
     iocp.presolve = GLP_ON;
 
     if (IntSet) {
@@ -918,7 +920,7 @@ static PyObject *integer(PyObject *self, PyObject *args,
                     if (!x) {
                         Py_XDECREF(t);
                         glp_delete_prob(lp);
-                        return PyErr_NoMemory();
+                        return NULL;
                     }
                     if (status == GLP_OPT)
                         PyTuple_SET_ITEM(t, 0,

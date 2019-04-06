@@ -2,7 +2,7 @@
 Solver for linear and quadratic cone programs.
 """
 
-# Copyright 2012-2018 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2019 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 #
@@ -3487,8 +3487,6 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
             pres, dres = None, None
             pinfres, dinfres = None, None
             pslack, dslack = None, None
-
-        print(status)
 
         return {'status': status, 'x': x, 'sl': sl, 'sq': sq, 'y': y,
             'zl': zl, 'zq': zq, 'primal objective': pcost,

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2019 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -207,7 +207,11 @@ static PyObject *idft(PyObject *self, PyObject *args, PyObject *kwrds)
   Py_END_ALLOW_THREADS
 
   number a;
+#ifndef _MSC_VER
   a.z = 1.0/m;
+#else
+  a.z = _Cbuild(1.0/m,0.0);
+#endif
   int mn = m*n, ix = 1;
   zscal_(&mn, &a.z, MAT_BUFZ(X), &ix);
 
@@ -313,7 +317,11 @@ static PyObject *idftn(PyObject *self, PyObject *args, PyObject *kwrds)
   }
 
   number a;
+#ifndef _MSC_VER
   a.z = 1.0/proddim;
+#else
+  a.z = _Cbuild(1.0/proddim,0.0);
+#endif
 
   int ix = 1;
   zscal_(&proddim, &a.z, MAT_BUFZ(X), &ix);

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 import getopt, sys
 
 from cvxopt import matrix
@@ -13,7 +13,7 @@ import gtk
 
 import matplotlib
 matplotlib.use('GTKAgg')  # or 'GTK'
-from matplotlib.backends.backend_gtk import FigureCanvasGTK as FigureCanvas
+from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
 import pylab 
 
 def frange(a,b,N):    

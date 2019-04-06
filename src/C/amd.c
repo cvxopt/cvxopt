@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2019 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -157,7 +157,7 @@ static PyObject* order_c(PyObject *self, PyObject *args, PyObject *kwrds)
     }
     if (uplo != 'U' && uplo != 'L') err_char("uplo", "'L', 'U'");
     if (!(perm = (matrix *) Matrix_New((int)SP_NROWS(A),1,INT)))
-        return PyErr_NoMemory();
+      return NULL;
     n = SP_NROWS(A);
     for (nnz=0, j=0; j<n; j++) {
         if (uplo == 'L'){

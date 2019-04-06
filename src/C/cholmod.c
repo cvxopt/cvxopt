@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2019 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -637,7 +637,7 @@ static PyObject* spsolve(PyObject *self, PyObject *args,
         ((int_t*)Xc->p)[Xc->ncol], (L->xtype == CHOLMOD_REAL ? DOUBLE :
         COMPLEX)))) {
         CHOL(free_sparse)(&Xc, &Common);
-        return PyErr_NoMemory();
+        return NULL;
     }
     memcpy(SP_COL(X), Xc->p, (Xc->ncol+1)*sizeof(int_t));
     memcpy(SP_ROW(X), Xc->i, ((int_t *)Xc->p)[Xc->ncol]*sizeof(int_t));
@@ -932,7 +932,7 @@ static PyObject* splinsolve(PyObject *self, PyObject *args,
     if (!(X = SpMatrix_New(Xc->nrow, Xc->ncol,
         ((int_t*)Xc->p)[Xc->ncol], SP_ID(A)))) {
         CHOL(free_sparse)(&Xc, &Common);
-        return PyErr_NoMemory();
+        return NULL;
     }
     memcpy(SP_COL(X), (int_t *) Xc->p, (Xc->ncol+1)*sizeof(int_t));
     memcpy(SP_ROW(X), (int_t *) Xc->i,
@@ -995,7 +995,7 @@ static PyObject* diag(PyObject *self, PyObject *args)
         PY_ERR(PyExc_ValueError, "F must be a nonsingular supernodal "
             "Cholesky factor");
     if (!(d = Matrix_New(L->n,1,L->xtype == CHOLMOD_REAL ? DOUBLE :
-        COMPLEX))) return PyErr_NoMemory();
+			 COMPLEX))) return NULL;
 
     strt = 0;
     for (k=0; k<L->nsuper; k++){
@@ -1058,7 +1058,7 @@ static PyObject* getfactor(PyObject *self, PyObject *args)
        (Ls->xtype == CHOLMOD_REAL ? DOUBLE : COMPLEX));
     if (!ret) {
         CHOL(free_sparse)(&Ls, &Common);
-        return PyErr_NoMemory();
+        return NULL;
     }
 
     memcpy(SP_COL(ret), Ls->p, (Ls->ncol+1)*sizeof(int_t));

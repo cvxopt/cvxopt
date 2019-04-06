@@ -1,9 +1,9 @@
 # Figures 7.2 and 7.3, pages 363 and 364.
 # Maximum entropy distribution.
-import functools
 
 from cvxopt import solvers, blas, matrix, spmatrix, spdiag, log, div
 #solvers.options['show_progress'] = False
+import functools
 
 # minimize     p'*log p  
 # subject to  -0.1 <= a'*p <= 0.1

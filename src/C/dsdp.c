@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2018 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2019 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -409,44 +409,39 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
     if (info == DSDP_CONVERGED) {
         switch (status){
             case DSDP_PDFEASIBLE:
-                PyTuple_SET_ITEM(t, 0, (PyObject *)
 #if PY_MAJOR_VERSION >= 3
-                    PyUnicode_FromString("DSDP_PDFEASIBLE"));
+                PyTuple_SET_ITEM(t, 0, (PyObject *)PyUnicode_FromString("DSDP_PDFEASIBLE"));
 #else
-                    PyString_FromString("DSDP_PDFEASIBLE"));
+                PyTuple_SET_ITEM(t, 0, (PyObject *)PyString_FromString("DSDP_PDFEASIBLE"));
 #endif
                 break;
             case DSDP_UNBOUNDED:
-                PyTuple_SET_ITEM(t, 0, (PyObject *)
 #if PY_MAJOR_VERSION >= 3
-                    PyUnicode_FromString("DSDP_UNBOUNDED"));
+                PyTuple_SET_ITEM(t, 0, (PyObject *)PyUnicode_FromString("DSDP_UNBOUNDED"));
 #else
-                    PyString_FromString("DSDP_UNBOUNDED"));
+                PyTuple_SET_ITEM(t, 0, (PyObject *)PyString_FromString("DSDP_UNBOUNDED"));
 #endif
                 break;
             case DSDP_INFEASIBLE:
-                PyTuple_SET_ITEM(t, 0, (PyObject *)
 #if PY_MAJOR_VERSION >= 3
-                    PyUnicode_FromString("DSDP_INFEASIBLE"));
+                PyTuple_SET_ITEM(t, 0, (PyObject *)PyUnicode_FromString("DSDP_INFEASIBLE"));
 #else
-                    PyString_FromString("DSDP_INFEASIBLE"));
+                PyTuple_SET_ITEM(t, 0, (PyObject *)PyString_FromString("DSDP_INFEASIBLE"));
 #endif
                 break;
             case DSDP_PDUNKNOWN:
-                PyTuple_SET_ITEM(t, 0, (PyObject *)
 #if PY_MAJOR_VERSION >= 3
-                    PyUnicode_FromString("DSDP_UNKNOWN"));
+                PyTuple_SET_ITEM(t, 0, (PyObject *)PyUnicode_FromString("DSDP_UNKNOWN"));
 #else
-                    PyString_FromString("DSDP_UNKNOWN"));
+                PyTuple_SET_ITEM(t, 0, (PyObject *)PyString_FromString("DSDP_UNKNOWN"));
 #endif
                 break;
         }
     } else {
-        PyTuple_SET_ITEM(t, 0, (PyObject *)
 #if PY_MAJOR_VERSION >= 3
-        PyUnicode_FromString("DSDP_UNKNOWN"));
+        PyTuple_SET_ITEM(t, 0, (PyObject *)PyUnicode_FromString("DSDP_UNKNOWN"));
 #else
-        PyString_FromString("DSDP_UNKNOWN"));
+        PyTuple_SET_ITEM(t, 0, (PyObject *)PyString_FromString("DSDP_UNKNOWN"));
 #endif
     }
 
