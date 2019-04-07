@@ -22,8 +22,6 @@
 #define KLUS(name) klu_ ## name
 #endif
 
-
-const int E_SIZE[] = {sizeof(int_t), sizeof(double), sizeof(double complex)};
 const char *descrdFs = "KLU SYM D FACTOR";
 const char *descrzFs = "KLU SYM Z FACTOR";
 const char *descrdF = "KLU NUM D FACTOR";
@@ -40,23 +38,22 @@ PyDoc_STRVAR(klu__doc__, "Interface to the KLU library.\n\n"
              "See also http://faculty.cse.tamu.edu/davis/suitesparse.html");
 
 
-static void free_klu_d_symbolic(PyObject *F)
-{
+static void free_klu_d_symbolic(PyObject *F) {
     KLUS(common) Common;
     KLUD(defaults)(&Common);
     KLUS(symbolic) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
     KLUD(free_symbolic)(&Fptr, &Common);
 }
-static void free_klu_d_numeric(PyObject *F)
-{
+
+static void free_klu_d_numeric(PyObject *F) {
     KLUS(common) Common;
     KLUD(defaults)(&Common);
     KLUD(numeric) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
     if (Fptr != NULL)
         KLUD(free_numeric)(&Fptr, &Common);
 }
-static void free_klu_z_numeric(PyObject *F)
-{
+
+static void free_klu_z_numeric(PyObject *F) {
     KLUS(common) Common;
     KLUD(defaults)(&Common);
     KLUS(numeric) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
@@ -297,10 +294,9 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
             return PyErr_NoMemory();
         else {
             if (Common.status == KLU_SINGULAR)
-                PyErr_SetString(PyExc_ArithmeticError, "singular "
-                                "matrix");
+                PyErr_SetString(PyExc_ArithmeticError, "singular matrix");
             else {
-                snprintf(klu_error, 20, "%s %i", "KLU ERROR",
+                snprintf(klu_error, 20, "%s %i", "KLU ERROR", 
                          (int) Common.status);
                 PyErr_SetString(PyExc_ValueError, klu_error);
             }
@@ -317,7 +313,8 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
     }
     else {
         if (trans == 'N')
-            KLUZ(solve)(Symbolic, Numeric, n, nrhs, (double *) MAT_BUFZ(B), &Common);
+            KLUZ(solve)(Symbolic, Numeric, n, nrhs, (double *) MAT_BUFZ(B), 
+                            &Common);
         else
             KLUZ(tsolve)(Symbolic, Numeric, n, nrhs, (double *) MAT_BUFZ(B),
                          trans == 'C' ? 1 : 0, &Common);
@@ -677,7 +674,7 @@ PyMODINIT_FUNC PyInit_klu(void)
 PyMODINIT_FUNC initklu(void)
 {
     PyObject *m;
-    m = Py_InitModule3("klu", klu_functions, klu__doc__);
+    m = Py_InitModule3("cvxopt.klu", klu_functions, klu__doc__);
     if (import_cvxopt() < 0) return;
 }
 #endif

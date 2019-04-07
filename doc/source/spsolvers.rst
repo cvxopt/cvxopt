@@ -390,8 +390,7 @@ code computes
 [-1.31e-01]
 
 
-Additionally, this module includes a function for computing the determinant of
-a sparse matrix.
+Additionally, this module includes a function for computing the determinant of a sparse matrix.
 
 .. function:: cvxopt.klu.det(A, F, N)
 
