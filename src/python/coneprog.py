@@ -2033,7 +2033,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
 
         return { 'status': 'optimal', 'x': x,  'y': y, 'z':
             matrix(0.0, (0,1)), 's': matrix(0.0, (0,1)),
-            'gap': 0.0, 'relgap': 0.0,
+            'gap': 0.0, 'relative gap': 0.0,
             'primal objective': pcost,
             'dual objective': pcost,
             'primal slack': 0.0, 'dual slack': 0.0,
