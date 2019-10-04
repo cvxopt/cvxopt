@@ -913,7 +913,7 @@ else:
     # 
     # where Yk = mat(yk) if diag is 'N' and Yk = diag(yk) if diag is 'D'.
 
-    if diag is 'N':
+    if diag == 'N':
         maxm = max([0] + dims['s'])
         A = matrix(0.0, (maxm, maxm))
 

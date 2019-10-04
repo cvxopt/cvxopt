@@ -133,7 +133,7 @@ def setseed(val = 0):
         gsl.setseed(val)
     except:
         from random import seed
-        if val is 0: val = None
+        if val == 0: val = None
         seed(val)
         
  

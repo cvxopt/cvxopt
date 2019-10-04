@@ -102,7 +102,7 @@ def lp(c, G, h, A=None, b=None, taskfile=None, **kwargs):
             raise TypeError("'G' must be a dense or sparse 'd' matrix "\
                 "with %d columns" %n)
         m = G.size[0]
-        if m is 0: raise ValueError("m cannot be 0")
+        if m == 0: raise ValueError("m cannot be 0")
 
         if type(h) is not matrix or h.typecode != 'd' or h.size != (m,1):
             raise TypeError("'h' must be a 'd' matrix of size (%d,1)" %m)
@@ -175,7 +175,7 @@ def lp(c, G, h, A=None, b=None, taskfile=None, **kwargs):
             task.getsolutionslice(mosek.soltype.bas, mosek.solitem.suc, 0, m, z)
             x, z = matrix(x), matrix(z)
 
-            if p is not 0:
+            if p != 0:
                 yu, yl = p*[0.0], p*[0.0]
                 task.getsolutionslice(mosek.soltype.bas, mosek.solitem.suc, m, m+p, yu)
                 task.getsolutionslice(mosek.soltype.bas, mosek.solitem.slc, m, m+p, yl)
@@ -311,7 +311,7 @@ def conelp(c, G, h, dims=None, taskfile=None, **kwargs):
 
         ml, mq, ms = dims['l'], dims['q'], [ k*k for k in dims['s'] ]
         cdim = ml + sum(mq) + sum(ms)
-        if cdim is 0: raise ValueError("ml+mq+ms cannot be 0")
+        if cdim == 0: raise ValueError("ml+mq+ms cannot be 0")
 
         # Data for kth 'q' constraint are found in rows indq[k]:indq[k+1] of G.
         indq = [ dims['l'] ]
@@ -747,7 +747,7 @@ def qp(P, q, G=None, h=None, A=None, b=None, taskfile=None, **kwargs):
         if type(b) is not matrix or b.typecode != 'd' or b.size != (p,1):
             raise TypeError("'b' must be a dense matrix of size (%d,1)" %p)
 
-        if m+p is 0: raise ValueError("m + p must be greater than 0")
+        if m+p == 0: raise ValueError("m + p must be greater than 0")
 
         c = list(q)
 
@@ -812,7 +812,7 @@ def qp(P, q, G=None, h=None, A=None, b=None, taskfile=None, **kwargs):
             task.getsolutionslice(mosek.soltype.itr, mosek.solitem.xx, 0, n, x)
             x = matrix(x)
 
-            if m is not 0:
+            if m != 0:
                 z = m*[0.0]
                 task.getsolutionslice(mosek.soltype.itr, mosek.solitem.suc, 0, m,
                     z)
@@ -820,7 +820,7 @@ def qp(P, q, G=None, h=None, A=None, b=None, taskfile=None, **kwargs):
             else:
                 z = matrix(0.0, (0,1))
 
-            if p is not 0:
+            if p != 0:
                 yu, yl = p*[0.0], p*[0.0]
                 task.getsolutionslice(mosek.soltype.itr, mosek.solitem.suc, m, m+p,
                     yu)
@@ -901,7 +901,7 @@ def ilp(c, G, h, A=None, b=None, I=None, taskfile=None, **kwargs):
             raise TypeError("'G' must be a dense or sparse 'd' matrix "\
                 "with %d columns" %n)
         m = G.size[0]
-        if m is 0: raise ValueError("m cannot be 0")
+        if m == 0: raise ValueError("m cannot be 0")
 
         if type(h) is not matrix or h.typecode != 'd' or h.size != (m,1):
             raise TypeError("'h' must be a 'd' matrix of size (%d,1)" %m)

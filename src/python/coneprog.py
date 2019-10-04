@@ -4040,7 +4040,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
             pslack = -misc.max_step(s, dims)
             dslack = -misc.max_step(z, dims)
 
-            if status is 'optimal' or dcost <= 0.0:
+            if status == 'optimal' or dcost <= 0.0:
                 pinfres = None
             else:
                 # rx = G'*z
@@ -4058,7 +4058,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
                     ind += ms[k]
                 pinfres = blas.nrm2(rx) / resx0 / dcost
 
-            if status is 'optimal' or pcost >= 0.0:
+            if status == 'optimal' or pcost >= 0.0:
                 dinfres = None
             else:
                 # rz = G*x + s
