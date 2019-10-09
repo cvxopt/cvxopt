@@ -4409,7 +4409,7 @@ static PyObject *
 spmatrix_div_generic(spmatrix *A, PyObject *B, int inplace)
 {
   if (!SpMatrix_Check(A) || !(PY_NUMBER(B) ||
-      (Matrix_Check(B) && MAT_LGT(B)) == 1))
+      (Matrix_Check(B) && MAT_LGT(B) == 1)))
     PY_ERR_TYPE("invalid operands for sparse division");
 
   int idA = get_id(A, 0);
