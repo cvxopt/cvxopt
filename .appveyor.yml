@@ -1,5 +1,5 @@
 version: 1.2.3-{build}-{branch}
-image: Visual Studio 2017
+image: Visual Studio 2019
 init:
     - choco install wget checksum
 
@@ -34,9 +34,9 @@ platform:
 
 install:
     - if [%PYTHON_ARCH%]==[64] (
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
       ) else (
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
       )
 
     # Set up miniconda build environment
