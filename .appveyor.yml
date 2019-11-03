@@ -16,15 +16,15 @@ environment:
     CVXOPT_INSTALL_REQUIRES: mkl
     GLPK_VERSION: "4.65"
     GLPK_SHA256: "4281e29b628864dfe48d393a7bedd781e5b475387c20d8b0158f329994721a10"
-    SUITESPARSE_VERSION: "5.3.0"
-    SUITESPARSE_SHA256: "90e69713d8c454da5a95a839aea5d97d8d03d00cc1f667c4bdfca03f640f963d"
+    SUITESPARSE_VERSION: "5.6.0"
+    SUITESPARSE_SHA256: "76d34d9f6dafc592b69af14f58c1dc59e24853dcd7c2e8f4c98ffa223f6a1adb"
 
   matrix:
+    - PYTHON_VERSION: 3.8
+      CVXOPT_MSVC: 1
     - PYTHON_VERSION: 3.7
       CVXOPT_MSVC: 1
     - PYTHON_VERSION: 3.6
-      CVXOPT_MSVC: 1
-    - PYTHON_VERSION: 3.5
       CVXOPT_MSVC: 1
     - PYTHON_VERSION: 2.7
       COMPILER: mingwpy
@@ -48,10 +48,10 @@ install:
     - SET CVXOPT_BLAS_LIB_DIR=%PYTHON%\envs\build_env\Library\lib
 
     # Download SuiteSparse and set CVXOPT_SUITESPARSE_SRC_DIR
-    - wget -nv http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-%SUITESPARSE_VERSION%.tar.gz
-    - checksum -t sha256 -c %SUITESPARSE_SHA256% SuiteSparse-%SUITESPARSE_VERSION%.tar.gz
-    - 7z x -bso0 -bsp0 SuiteSparse-%SUITESPARSE_VERSION%.tar.gz && 7z x -bso0 -bsp0 SuiteSparse-%SUITESPARSE_VERSION%.tar
-    - SET CVXOPT_SUITESPARSE_SRC_DIR=%cd%\SuiteSparse
+    - wget -nv https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v%SUITESPARSE_VERSION%.tar.gz
+    - checksum -t sha256 -c %SUITESPARSE_SHA256% v%SUITESPARSE_VERSION%.tar.gz
+    - 7z x -bso0 -bsp0 v%SUITESPARSE_VERSION%.tar.gz && 7z x -bso0 -bsp0 v%SUITESPARSE_VERSION%.tar
+    - SET CVXOPT_SUITESPARSE_SRC_DIR=%cd%\SuiteSparse-%SUITESPARSE_VERSION%
 
     # Download and build GLPK
     - if [%CVXOPT_BUILD_GLPK%]==[1] (
