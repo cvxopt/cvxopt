@@ -153,7 +153,7 @@ matrix:
       language: generic
 
 before_install:
-  - if [[ "$BUILD_SUITESPARSE" == "1" ]]; then wget https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${SUITESPARSE_VERSION}.tar.gz; echo "${SUITESPARSE_SHA256} v${SUITESPARSE_VERSION}.tar.gz" > SuiteSparse.sha256; tar -xf v${SUITESPARSE_VERSION}.tar.gz; export CVXOPT_SUITESPARSE_SRC_DIR=$(pwd)/SuiteSparse-${SUITESPARSE_VERSION}; fi
+  - if [[ "$BUILD_SUITESPARSE" == "1" ]]; then wget https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${SUITESPARSE_VERSION}.tar.gz; echo "${SUITESPARSE_SHA256}  v${SUITESPARSE_VERSION}.tar.gz" > SuiteSparse.sha256; tar -xf v${SUITESPARSE_VERSION}.tar.gz; export CVXOPT_SUITESPARSE_SRC_DIR=$(pwd)/SuiteSparse-${SUITESPARSE_VERSION}; fi
   - if [[ "$BUILD_SUITESPARSE" == "1" && "$TRAVIS_OS_NAME" == "linux" ]]; then sha256sum -c SuiteSparse.sha256; fi
   - if [[ "$BUILD_SUITESPARSE" == "1" && "$TRAVIS_OS_NAME" == "osx" ]]; then shasum -a 256 -c SuiteSparse.sha256; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" && -z "$BUILD_SUITESPARSE" ]]; then sudo add-apt-repository ppa:bzindovic/suitesparse-bugfix-1319687 -y; sudo apt-get update; sudo apt-get install libsuitesparse-dev; fi
