@@ -69,7 +69,22 @@ matrix:
       dist: xenial
       sudo: required
       language: python
-      python: '3.7'
+      python: '3.8'
+      env: CVXOPT_BUILD_DSDP=1
+    - os: linux
+      addons:
+        apt:
+          packages:
+            - python-dev
+            - libopenblas-dev
+            - libfftw3-dev
+            - libglpk-dev
+            - libdsdp-dev
+            - libgsl0-dev
+      dist: xenial
+      sudo: required
+      language: python
+      python: '3.8'
       env: CVXOPT_BUILD_DSDP=1 BUILD_SUITESPARSE=1
     - os: osx
       addons:
@@ -140,8 +155,28 @@ matrix:
             - glpk
             - gsl
             - fftw
+            - suite-sparse
       language: python
-      env: PYVERSION=3.7
+      env: PYVERSION=3.8
+        CVXOPT_BUILD_DSDP=1
+        CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib
+        CVXOPT_BLAS_LIB=openblas
+        CVXOPT_LAPACK_LIB=openblas
+        CVXOPT_DSDP_INC_DIR=$HOME/miniconda/envs/myenv/include
+        CVXOPT_DSDP_LIB_DIR=$HOME/miniconda/envs/myenv/lib
+        CVXOPT_GSL_INC_DIR=/usr/local/opt/gsl/include
+      language: generic
+    - os: osx
+      addons:
+        homebrew:
+          update: true
+          packages:
+            - openblas
+            - glpk
+            - gsl
+            - fftw
+      language: python
+      env: PYVERSION=3.8
         CVXOPT_BUILD_DSDP=1
         BUILD_SUITESPARSE=1
         CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib
