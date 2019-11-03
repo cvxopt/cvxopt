@@ -2892,7 +2892,7 @@ def lp(c, G, h, A = None, b = None, kktsolver = None, solver = None, primalstart
         resy0 = max(1.0, blas.nrm2(b))
         resz0 = max(1.0, blas.nrm2(h))
 
-        if solsta in (mosek.solsta.optimal, mosek.solsta.near_optimal):
+        if solsta in (mosek.solsta.optimal, getattr(mosek.solsta,'near_optimal',None)):
             if solsta is mosek.solsta.optimal: status = 'optimal'
             else: status = 'near optimal'
 
@@ -3350,7 +3350,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
         rh = matrix([ blas.nrm2(hl) ] + [ blas.nrm2(hqk) for hqk in hq ])
         resz0 = max(1.0, blas.nrm2(rh))
 
-        if solsta in (mosek.solsta.optimal, mosek.solsta.near_optimal):
+        if solsta in (mosek.solsta.optimal, getattr(mosek.solsta,'near_optimal')):
             if solsta is mosek.solsta.optimal: status = 'optimal'
             else: status = 'near optimal'
 
@@ -4365,7 +4365,7 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
         resy0 = max(1.0, blas.nrm2(b))
         resz0 = max(1.0, blas.nrm2(h))
 
-        if solsta in (mosek.solsta.optimal, mosek.solsta.near_optimal):
+        if solsta in (mosek.solsta.optimal, getattr(mosek.solsta,'near_optimal',None)):
             if solsta is mosek.solsta.optimal: status = 'optimal'
             else: status = 'near optimal'
 
