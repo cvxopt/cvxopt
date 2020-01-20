@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Sparse Linear Equations &mdash; CVXOPT User&#39;s Guide</title>
@@ -12,93 +13,84 @@
 
   
   
+  
+  
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-        <link rel="search" title="Search" href="search.html"/>
-        <link rel="copyright" title="Copyright" href="copyright.html"/>
-    <link rel="top" title="CVXOPT User&#39;s Guide" href="index.html"/>
-        <link rel="next" title="Cone Programming" href="coneprog.html"/>
-        <link rel="prev" title="Discrete Transforms" href="fftw.html"/> 
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="copyright" title="Copyright" href="copyright.html" />
+    <link rel="next" title="Cone Programming" href="coneprog.html" />
+    <link rel="prev" title="Discrete Transforms" href="fftw.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        <a href="index.html" class="fa fa-home"> CVXOPT User's Guide</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-      </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
-        
-            <ul class="current">
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="matrices.html">Dense and Sparse Matrices</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="matrices.html#dense-matrices">Dense Matrices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="matrices.html#sparse-matrices">Sparse Matrices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="matrices.html#arithmetic-operations">Arithmetic Operations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="matrices.html#indexing-and-slicing">Indexing and Slicing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="matrices.html#attributes-and-methods">Attributes and Methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="matrices.html#built-in-functions">Built-In Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="matrices.html#other-matrix-functions">Other Matrix Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="matrices.html#randomly-generated-matrices">Randomly Generated Matrices</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="blas.html">The BLAS Interface</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="blas.html#matrix-classes">Matrix Classes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blas.html#level-1-blas">Level 1 BLAS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blas.html#level-2-blas">Level 2 BLAS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blas.html#level-3-blas">Level 3 BLAS</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="lapack.html">The LAPACK Interface</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="lapack.html#general-linear-equations">General Linear Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lapack.html#positive-definite-linear-equations">Positive Definite Linear Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lapack.html#symmetric-and-hermitian-linear-equations">Symmetric and Hermitian Linear Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lapack.html#triangular-linear-equations">Triangular Linear Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lapack.html#least-squares-and-least-norm-problems">Least-Squares and Least-Norm Problems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lapack.html#symmetric-and-hermitian-eigenvalue-decomposition">Symmetric and Hermitian Eigenvalue Decomposition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lapack.html#generalized-symmetric-definite-eigenproblems">Generalized Symmetric Definite Eigenproblems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lapack.html#singular-value-decomposition">Singular Value Decomposition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lapack.html#schur-and-generalized-schur-factorization">Schur and Generalized Schur Factorization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="lapack.html#example-analytic-centering">Example: Analytic Centering</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="fftw.html">Discrete Transforms</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="fftw.html#discrete-fourier-transform">Discrete Fourier Transform</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fftw.html#discrete-cosine-transform">Discrete Cosine Transform</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fftw.html#discrete-sine-transform">Discrete Sine Transform</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="matrices.html">Dense and Sparse Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="blas.html">The BLAS Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lapack.html">The LAPACK Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fftw.html">Discrete Transforms</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Sparse Linear Equations</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#matrix-orderings">Matrix Orderings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#general-linear-equations">General Linear Equations</a></li>
@@ -106,72 +98,73 @@
 <li class="toctree-l2"><a class="reference internal" href="#example-covariance-selection">Example: Covariance Selection</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="coneprog.html">Cone Programming</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="coneprog.html#linear-cone-programs">Linear Cone Programs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coneprog.html#quadratic-cone-programs">Quadratic Cone Programs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coneprog.html#linear-programming">Linear Programming</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coneprog.html#quadratic-programming">Quadratic Programming</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coneprog.html#second-order-cone-programming">Second-Order Cone Programming</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coneprog.html#semidefinite-programming">Semidefinite Programming</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coneprog.html#exploiting-structure">Exploiting Structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coneprog.html#optional-solvers">Optional Solvers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coneprog.html#algorithm-parameters">Algorithm Parameters</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="solvers.html">Nonlinear Convex Optimization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="solvers.html#problems-with-nonlinear-objectives">Problems with Nonlinear Objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="solvers.html#problems-with-linear-objectives">Problems with Linear Objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="solvers.html#geometric-programming">Geometric Programming</a></li>
-<li class="toctree-l2"><a class="reference internal" href="solvers.html#exploiting-structure">Exploiting Structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="solvers.html#algorithm-parameters">Algorithm Parameters</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="modeling.html">Modeling</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modeling.html#variables">Variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modeling.html#functions">Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modeling.html#constraints">Constraints</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modeling.html#optimization-problems">Optimization Problems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modeling.html#examples">Examples</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="c-api.html">C API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="c-api.html#dense-matrices">Dense Matrices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="c-api.html#sparse-matrices">Sparse Matrices</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="coneprog.html">Cone Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solvers.html">Nonlinear Convex Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modeling.html">Modeling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="c-api.html">C API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="printing.html">Matrix Formatting</a></li>
 <li class="toctree-l1"><a class="reference external" href="http://cvxopt.org">cvxopt.org</a></li>
 </ul>
 
-        
+            
+          
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">CVXOPT User's Guide</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CVXOPT User's Guide</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Sparse Linear Equations</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Sparse Linear Equations</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
+            
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
-          <div role="main">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="sparse-linear-equations">
 <span id="c-spsolvers"></span><h1>Sparse Linear Equations<a class="headerlink" href="#sparse-linear-equations" title="Permalink to this headline">¶</a></h1>
@@ -179,7 +172,7 @@
 equations.</p>
 <p>A real symmetric or complex Hermitian sparse matrix is stored as an
 <a class="reference internal" href="matrices.html#cvxopt.spmatrix" title="cvxopt.spmatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">spmatrix</span></code></a> object <code class="docutils literal notranslate"><span class="pre">X</span></code>  of size
-(<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>) and an
+(<img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/>, <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/>) and an
 additional character argument <code class="docutils literal notranslate"><span class="pre">uplo</span></code> with possible values <code class="xref py py-const docutils literal notranslate"><span class="pre">'L'</span></code>
 and <code class="xref py py-const docutils literal notranslate"><span class="pre">'U'</span></code>.  If <code class="docutils literal notranslate"><span class="pre">uplo</span></code> is <code class="xref py py-const docutils literal notranslate"><span class="pre">'L'</span></code>, the lower triangular part
 of <code class="docutils literal notranslate"><span class="pre">X</span></code> contains the lower triangular part of the symmetric or Hermitian
@@ -187,8 +180,8 @@ matrix, and the upper triangular matrix of <code class="docutils literal notrans
 is <code class="xref py py-const docutils literal notranslate"><span class="pre">'U'</span></code>, the upper triangular part of <code class="docutils literal notranslate"><span class="pre">X</span></code> contains the upper
 triangular part of the matrix, and the lower triangular matrix of <code class="docutils literal notranslate"><span class="pre">X</span></code> is
 ignored.</p>
-<p>A general sparse square matrix of order <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> is represented by an
-<code class="xref py py-class docutils literal notranslate"><span class="pre">spmatrix</span></code> object of size (<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>, <img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/>).</p>
+<p>A general sparse square matrix of order <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/> is represented by an
+<code class="xref py py-class docutils literal notranslate"><span class="pre">spmatrix</span></code> object of size (<img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/>, <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/>).</p>
 <p>Dense matrices, which appear as right-hand sides of equations, are
 stored using the same conventions as in the BLAS and LAPACK modules.</p>
 <div class="section" id="matrix-orderings">
@@ -196,19 +189,19 @@ stored using the same conventions as in the BLAS and LAPACK modules.</p>
 <p>CVXOPT includes an interface to the AMD library for computing approximate
 minimum degree orderings of sparse matrices.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li>P. R. Amestoy, T. A. Davis, I. S. Duff,  Algorithm 837: AMD, An
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p>P. R. Amestoy, T. A. Davis, I. S. Duff,  Algorithm 837: AMD, An
 Approximate Minimum Degree Ordering Algorithm, ACM Transactions on
-Mathematical Software, 30(3), 381-388, 2004.</li>
+Mathematical Software, 30(3), 381-388, 2004.</p></li>
 </ul>
 </div>
 <dl class="function">
 <dt id="cvxopt.amd.order">
-<code class="descclassname">cvxopt.amd.</code><code class="descname">order</code><span class="sig-paren">(</span><em>A</em><span class="optional">[</span>, <em>uplo = 'L'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.amd.order" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cvxopt.amd.</code><code class="sig-name descname">order</code><span class="sig-paren">(</span><em class="sig-param">A</em><span class="optional">[</span>, <em class="sig-param">uplo = 'L'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.amd.order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the approximate mimimum degree ordering of a symmetric  sparse
-matrix <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/>.  The ordering is returned as an integer dense matrix
-with length equal to the order of <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/>.  Its entries specify a
+matrix <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/>.  The ordering is returned as an integer dense matrix
+with length equal to the order of <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/>.  Its entries specify a
 permutation that reduces fill-in during the Cholesky factorization.
 More precisely, if <code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">order(A)</span></code> , then <code class="docutils literal notranslate"><span class="pre">A[p,</span> <span class="pre">p]</span></code> has
 sparser Cholesky factors than <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
@@ -216,13 +209,13 @@ sparser Cholesky factors than <code class="docutils literal notranslate"><span c
 
 <p>As an example we consider the matrix</p>
 <div class="math">
-<p><img src="_images/math/e889033c88d6e990944a43933c03add058e92546.png" alt="\left[ \begin{array}{rrrr}
+<p><img src="_images/math/d66b4ab25c0eef60d649ef489104789f43f45a0b.png" alt="\left[ \begin{array}{rrrr}
  10 &amp;  0 &amp; 3 &amp;  0 \\
   0 &amp;  5 &amp; 0 &amp; -2 \\
   3 &amp;  0 &amp; 5 &amp;  0 \\
   0 &amp; -2 &amp; 0 &amp;  2
 \end{array}\right]."/></p>
-</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">amd</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">amd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">P</span> <span class="o">=</span> <span class="n">amd</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
@@ -240,22 +233,22 @@ sparse non-symmetric sets of linear equations.  They call routines from
 the UMFPACK library, with all control options set to the default values
 described in the UMFPACK user guide.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li>T. A. Davis, Algorithm 832: UMFPACK – an unsymmetric-pattern
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p>T. A. Davis, Algorithm 832: UMFPACK – an unsymmetric-pattern
 multifrontal method with a column pre-ordering strategy, ACM
-Transactions on Mathematical Software, 30(2), 196-199, 2004.</li>
+Transactions on Mathematical Software, 30(2), 196-199, 2004.</p></li>
 </ul>
 </div>
 <dl class="function">
 <dt id="cvxopt.umfpack.linsolve">
-<code class="descclassname">cvxopt.umfpack.</code><code class="descname">linsolve</code><span class="sig-paren">(</span><em>A</em>, <em>B</em><span class="optional">[</span>, <em>trans = 'N'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.linsolve" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cvxopt.umfpack.</code><code class="sig-name descname">linsolve</code><span class="sig-paren">(</span><em class="sig-param">A</em>, <em class="sig-param">B</em><span class="optional">[</span>, <em class="sig-param">trans = 'N'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.linsolve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a sparse set of linear equations</p>
 <div class="math">
-<p><img src="_images/math/aee0706bd00f21b4a276d87252aec9d4af767404.png" alt="AX &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
+<p><img src="_images/math/908a083a0806ab219190adac99ec60da04c65f48.png" alt="AX &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
 A^TX &amp; = B \quad (\mathrm{trans} = \mathrm{'T'}), \\
 A^HX &amp; = B \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
-</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a sparse matrix and <img class="math" src="_images/math/9805f44feec6f81d376d09e88b8236635edbb3c8.png" alt="B"/> is a dense matrix.
+</div><p>where <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> is a sparse matrix and <img class="math" src="_images/math/4bc3e94a67870b41b7c20179693e889251e2c136.png" alt="B"/> is a dense matrix.
 The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> must have the same type
 (<code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>) as <code class="docutils literal notranslate"><span class="pre">A</span></code>.  On exit <code class="docutils literal notranslate"><span class="pre">B</span></code> contains
 the solution.  Raises an <code class="xref py py-exc docutils literal notranslate"><span class="pre">ArithmeticError</span></code> if the coefficient
@@ -264,14 +257,14 @@ matrix is singular.</p>
 
 <p>In the following example we solve an equation with coefficient matrix</p>
 <div class="math" id="equation-e-sp-adef">
-<p><span class="eqno">(1)<a class="headerlink" href="#equation-e-sp-adef" title="Permalink to this equation">¶</a></span><img src="_images/math/3efbb02413dbe3ace070038d8b70910f87001efc.png" alt="A = \left[\begin{array}{rrrrr}
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-e-sp-adef" title="Permalink to this equation">¶</a></span><img src="_images/math/5046b770f82749051a01f8f102c8e5ff69c4a3e4.png" alt="A = \left[\begin{array}{rrrrr}
     2 &amp; 3 &amp; 0 &amp; 0 &amp; 0 \\
     3 &amp; 0 &amp; 4 &amp; 0 &amp; 6 \\
     0 &amp;-1 &amp;-3 &amp; 2 &amp; 0 \\
     0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
     0 &amp; 4 &amp; 2 &amp; 0 &amp; 1
     \end{array}\right]."/></p>
-</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">umfpack</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">umfpack</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">V</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">I</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">J</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
@@ -290,7 +283,7 @@ matrix is singular.</p>
 equivalent to the following three functions called in sequence.</p>
 <dl class="function">
 <dt id="cvxopt.umfpack.symbolic">
-<code class="descclassname">cvxopt.umfpack.</code><code class="descname">symbolic</code><span class="sig-paren">(</span><em>A</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.symbolic" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cvxopt.umfpack.</code><code class="sig-name descname">symbolic</code><span class="sig-paren">(</span><em class="sig-param">A</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.symbolic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reorders the columns of <code class="docutils literal notranslate"><span class="pre">A</span></code> to reduce fill-in and performs a symbolic
 LU factorization.  <code class="docutils literal notranslate"><span class="pre">A</span></code> is a sparse, possibly rectangular, matrix.
 Returns the symbolic factorization as an opaque C object that can be
@@ -299,7 +292,7 @@ passed on to <a class="reference internal" href="#cvxopt.umfpack.numeric" title=
 
 <dl class="function">
 <dt id="cvxopt.umfpack.numeric">
-<code class="descclassname">cvxopt.umfpack.</code><code class="descname">numeric</code><span class="sig-paren">(</span><em>A</em>, <em>F</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.numeric" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cvxopt.umfpack.</code><code class="sig-name descname">numeric</code><span class="sig-paren">(</span><em class="sig-param">A</em>, <em class="sig-param">F</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.numeric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a numeric LU factorization of a sparse, possibly rectangular,
 matrix <code class="docutils literal notranslate"><span class="pre">A</span></code>.   The argument <code class="docutils literal notranslate"><span class="pre">F</span></code> is the symbolic factorization
 computed by <a class="reference internal" href="#cvxopt.umfpack.symbolic" title="cvxopt.umfpack.symbolic"><code class="xref py py-func docutils literal notranslate"><span class="pre">symbolic</span></code></a>
@@ -313,13 +306,13 @@ that that can be passed on to
 
 <dl class="function">
 <dt id="cvxopt.umfpack.solve">
-<code class="descclassname">cvxopt.umfpack.</code><code class="descname">solve</code><span class="sig-paren">(</span><em>A</em>, <em>F</em>, <em>B</em><span class="optional">[</span>, <em>trans = 'N'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.solve" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cvxopt.umfpack.</code><code class="sig-name descname">solve</code><span class="sig-paren">(</span><em class="sig-param">A</em>, <em class="sig-param">F</em>, <em class="sig-param">B</em><span class="optional">[</span>, <em class="sig-param">trans = 'N'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a set of linear equations</p>
 <div class="math">
-<p><img src="_images/math/aee0706bd00f21b4a276d87252aec9d4af767404.png" alt="AX &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
+<p><img src="_images/math/908a083a0806ab219190adac99ec60da04c65f48.png" alt="AX &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
 A^TX &amp; = B \quad (\mathrm{trans} = \mathrm{'T'}), \\
 A^HX &amp; = B \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
-</div><p>where <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is a sparse matrix and <img class="math" src="_images/math/9805f44feec6f81d376d09e88b8236635edbb3c8.png" alt="B"/> is a dense matrix.
+</div><p>where <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> is a sparse matrix and <img class="math" src="_images/math/4bc3e94a67870b41b7c20179693e889251e2c136.png" alt="B"/> is a dense matrix.
 The arguments <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> must have the same type.  The argument
 <code class="docutils literal notranslate"><span class="pre">F</span></code> is a numeric factorization computed
 by <a class="reference internal" href="#cvxopt.umfpack.numeric" title="cvxopt.umfpack.numeric"><code class="xref py py-func docutils literal notranslate"><span class="pre">numeric</span></code></a>.
@@ -334,21 +327,21 @@ The symbolic factorization depends only on the sparsity pattern of
 the matrix, and not on the numerical values of the nonzero coefficients.
 The numerical factorization on the other hand depends on the sparsity
 pattern of the matrix and on its the numerical values.</p>
-<p>As an example, suppose <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> is the matrix <a class="reference internal" href="#equation-e-sp-adef">(1)</a> and</p>
+<p>As an example, suppose <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> is the matrix <a class="reference internal" href="#equation-e-sp-adef">(1)</a> and</p>
 <div class="math">
-<p><img src="_images/math/46223c63c5cb3a98d23d5a2c39fc4a92d7bdd0b0.png" alt="B = \left[\begin{array}{rrrrr}
+<p><img src="_images/math/7b694e55a0813fe78e01121684b12a40fad86d86.png" alt="B = \left[\begin{array}{rrrrr}
     4 &amp; 3 &amp; 0 &amp; 0 &amp; 0 \\
     3 &amp; 0 &amp; 4 &amp; 0 &amp; 6 \\
     0 &amp;-1 &amp;-3 &amp; 2 &amp; 0 \\
     0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
     0 &amp; 4 &amp; 2 &amp; 0 &amp; 2
     \end{array}\right],"/></p>
-</div><p>which differs from <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> in its first and last entries.  The following
+</div><p>which differs from <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> in its first and last entries.  The following
 code computes</p>
 <div class="math">
-<p><img src="_images/math/4555f864257035da7942169592454d5b8d3405f8.png" alt="\newcommand{\ones}{\mathbf 1}
+<p><img src="_images/math/2e7d885be2f8d9a7556b4e6dded7b42315803547.png" alt="\newcommand{\ones}{\mathbf 1}
 x = A^{-T}B^{-1}A^{-1}\ones."/></p>
-</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">umfpack</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">umfpack</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">VA</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">VB</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">I</span> <span class="o">=</span>  <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
@@ -382,27 +375,27 @@ The routines can also be used for computing
 (or
 <span class="raw-html">LDL<sup><small>H</small></sup></span>
 factorizations
-of symmetric indefinite matrices (with <img class="math" src="_images/math/ae2b750f71e1fc0daaa3de9a85d42794d7cd1326.png" alt="L"/> unit lower-triangular and
-<img class="math" src="_images/math/3cf5aa5abe312e6fd4996975341a43aa566e8d8d.png" alt="D"/> diagonal and nonsingular) if such a factorization exists.</p>
+of symmetric indefinite matrices (with <img class="math" src="_images/math/19eef1966f7c545af3ac8c0fa486974d873e3c65.png" alt="L"/> unit lower-triangular and
+<img class="math" src="_images/math/0fcab9067b50b87e868c4fd70f213a086addb964.png" alt="D"/> diagonal and nonsingular) if such a factorization exists.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<ul class="last simple">
-<li>Y. Chen, T. A. Davis, W. W. Hager, S. Rajamanickam,
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p>Y. Chen, T. A. Davis, W. W. Hager, S. Rajamanickam,
 Algorithm 887: CHOLMOD, Supernodal Sparse Cholesky Factorization
 and Update/Downdate, ACM Transactions on Mathematical Software,
-35(3), 22:1-22:14, 2008.</li>
+35(3), 22:1-22:14, 2008.</p></li>
 </ul>
 </div>
 <dl class="function">
 <dt id="cvxopt.cholmod.linsolve">
-<code class="descclassname">cvxopt.cholmod.</code><code class="descname">linsolve</code><span class="sig-paren">(</span><em>A</em>, <em>B</em><span class="optional">[</span>, <em>p = None</em>, <em>uplo = 'L'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.linsolve" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cvxopt.cholmod.</code><code class="sig-name descname">linsolve</code><span class="sig-paren">(</span><em class="sig-param">A</em>, <em class="sig-param">B</em><span class="optional">[</span>, <em class="sig-param">p = None</em>, <em class="sig-param">uplo = 'L'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.linsolve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves</p>
 <div class="math">
-<p><img src="_images/math/59427484d9e039d9ed1ca3acc9158de7bf228f8c.png" alt="AX = B"/></p>
-</div><p>with <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> sparse and real symmetric or complex Hermitian.</p>
+<p><img src="_images/math/e44d29f0cbcc5fa7a0f3f83d3bddc988f9b022ea.png" alt="AX = B"/></p>
+</div><p>with <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> sparse and real symmetric or complex Hermitian.</p>
 <p><code class="docutils literal notranslate"><span class="pre">B</span></code> is a dense matrix of the same type as <code class="docutils literal notranslate"><span class="pre">A</span></code>.  On exit it
 is overwritten with the solution.  The argument <code class="docutils literal notranslate"><span class="pre">p</span></code> is an integer
-matrix with length equal to the order of <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/>, and specifies an
+matrix with length equal to the order of <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/>, and specifies an
 optional reordering.
 See the comment on
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">options['nmethods']</span></code> for details on which ordering is used
@@ -412,7 +405,7 @@ by CHOLMOD.</p>
 
 <p>As an  example, we solve</p>
 <div class="math" id="equation-e-a-pd">
-<p><span class="eqno">(2)<a class="headerlink" href="#equation-e-a-pd" title="Permalink to this equation">¶</a></span><img src="_images/math/10196df756ffbc52013aef9f1fed403b2c510049.png" alt="\left[ \begin{array}{rrrr}
+<p><span class="eqno">(2)<a class="headerlink" href="#equation-e-a-pd" title="Permalink to this equation">¶</a></span><img src="_images/math/aaf2039a0ca644d308dc578303aa096fd3775907.png" alt="\left[ \begin{array}{rrrr}
         10 &amp;  0 &amp; 3 &amp;  0 \\
          0 &amp;  5 &amp; 0 &amp; -2 \\
          3 &amp;  0 &amp; 5 &amp;  0 \\
@@ -421,7 +414,7 @@ by CHOLMOD.</p>
     \left[ \begin{array}{cc}
          0 &amp; 4 \\ 1 &amp; 5 \\ 2 &amp; 6 \\ 3 &amp; 7
     \end{array} \right]."/></p>
-</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">cholmod</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">cholmod</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;d&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cholmod</span><span class="o">.</span><span class="n">linsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">X</span><span class="p">)</span>
@@ -434,7 +427,7 @@ by CHOLMOD.</p>
 </div>
 <dl class="function">
 <dt id="cvxopt.cholmod.splinsolve">
-<code class="descclassname">cvxopt.cholmod.</code><code class="descname">splinsolve</code><span class="sig-paren">(</span><em>A</em>, <em>B</em><span class="optional">[</span>, <em>p = None</em>, <em>uplo = 'L'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.splinsolve" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cvxopt.cholmod.</code><code class="sig-name descname">splinsolve</code><span class="sig-paren">(</span><em class="sig-param">A</em>, <em class="sig-param">B</em><span class="optional">[</span>, <em class="sig-param">p = None</em>, <em class="sig-param">uplo = 'L'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.splinsolve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Similar to <a class="reference internal" href="#cvxopt.cholmod.linsolve" title="cvxopt.cholmod.linsolve"><code class="xref py py-func docutils literal notranslate"><span class="pre">linsolve</span></code></a> except that
 <code class="docutils literal notranslate"><span class="pre">B</span></code> is an <a class="reference internal" href="matrices.html#cvxopt.spmatrix" title="cvxopt.spmatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">spmatrix</span></code></a> and
 that the solution is returned as an output argument (as a new
@@ -446,7 +439,7 @@ by CHOLMOD.</p>
 
 <p>The following code computes the inverse of the coefficient matrix
 in <a class="reference internal" href="#equation-e-a-pd">(2)</a> as a sparse matrix.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">splinsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">splinsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="go">[ 1.22e-01     0     -7.32e-02     0    ]</span>
 <span class="go">[    0      3.33e-01     0      3.33e-01]</span>
@@ -462,16 +455,16 @@ in <a class="reference internal" href="#equation-e-a-pd">(2)</a> as a sparse mat
 <a class="reference internal" href="#cvxopt.cholmod.spsolve" title="cvxopt.cholmod.spsolve"><code class="xref py py-func docutils literal notranslate"><span class="pre">spsolve</span></code></a>.</p>
 <dl class="function">
 <dt id="cvxopt.cholmod.symbolic">
-<code class="descclassname">cvxopt.cholmod.</code><code class="descname">symbolic</code><span class="sig-paren">(</span><em>A</em><span class="optional">[</span>, <em>p = None</em>, <em>uplo = 'L'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.symbolic" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cvxopt.cholmod.</code><code class="sig-name descname">symbolic</code><span class="sig-paren">(</span><em class="sig-param">A</em><span class="optional">[</span>, <em class="sig-param">p = None</em>, <em class="sig-param">uplo = 'L'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.symbolic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a symbolic analysis of a sparse real symmetric or
-complex Hermitian matrix <img class="math" src="_images/math/0043fe6507e9b1d112e07a2801e24927e267dd50.png" alt="A"/> for one of the two factorizations:</p>
+complex Hermitian matrix <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> for one of the two factorizations:</p>
 <div class="math" id="equation-e-chol-ll">
-<p><span class="eqno">(3)<a class="headerlink" href="#equation-e-chol-ll" title="Permalink to this equation">¶</a></span><img src="_images/math/8028aa7af272108bb6496b539471d80301b0bff7.png" alt="PAP^T = LL^T, \qquad PAP^T = LL^H,"/></p>
+<p><span class="eqno">(3)<a class="headerlink" href="#equation-e-chol-ll" title="Permalink to this equation">¶</a></span><img src="_images/math/c9a3af023076f58fe1ee0b35f88cad484ba194fa.png" alt="PAP^T = LL^T, \qquad PAP^T = LL^H,"/></p>
 </div><p>and</p>
 <div class="math" id="equation-e-chol-ldl">
-<p><span class="eqno">(4)<a class="headerlink" href="#equation-e-chol-ldl" title="Permalink to this equation">¶</a></span><img src="_images/math/48e50af0d2f7e8baffd74eb1f118505cd4927acc.png" alt="PAP^T = LDL^T, \qquad PAP^T = LDL^H,"/></p>
-</div><p>where <img class="math" src="_images/math/9dcbbef8e0f76051d388013b90a95bec3069e484.png" alt="P"/> is a permutation matrix, <img class="math" src="_images/math/ae2b750f71e1fc0daaa3de9a85d42794d7cd1326.png" alt="L"/> is lower triangular
-(unit lower triangular in the second factorization), and <img class="math" src="_images/math/3cf5aa5abe312e6fd4996975341a43aa566e8d8d.png" alt="D"/> is
+<p><span class="eqno">(4)<a class="headerlink" href="#equation-e-chol-ldl" title="Permalink to this equation">¶</a></span><img src="_images/math/340c54d7b4f301eb582e5ce306364e1cc4fe20b1.png" alt="PAP^T = LDL^T, \qquad PAP^T = LDL^H,"/></p>
+</div><p>where <img class="math" src="_images/math/c2aa3dff9bffb099e9dff196fd36aed56ec16baf.png" alt="P"/> is a permutation matrix, <img class="math" src="_images/math/19eef1966f7c545af3ac8c0fa486974d873e3c65.png" alt="L"/> is lower triangular
+(unit lower triangular in the second factorization), and <img class="math" src="_images/math/0fcab9067b50b87e868c4fd70f213a086addb964.png" alt="D"/> is
 nonsingular diagonal.  The type of factorization depends on the value
 of <code class="xref py py-attr docutils literal notranslate"><span class="pre">options['supernodal']</span></code> (see below).</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">uplo</span></code> is <code class="xref py py-const docutils literal notranslate"><span class="pre">'L'</span></code>, only the lower triangular part of <code class="docutils literal notranslate"><span class="pre">A</span></code>
@@ -487,7 +480,7 @@ by CHOLMOD.</p>
 
 <dl class="function">
 <dt id="cvxopt.cholmod.numeric">
-<code class="descclassname">cvxopt.cholmod.</code><code class="descname">numeric</code><span class="sig-paren">(</span><em>A</em>, <em>F</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.numeric" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cvxopt.cholmod.</code><code class="sig-name descname">numeric</code><span class="sig-paren">(</span><em class="sig-param">A</em>, <em class="sig-param">F</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.numeric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs a numeric factorization of a sparse symmetric matrix
 as <a class="reference internal" href="#equation-e-chol-ll">(3)</a> or <a class="reference internal" href="#equation-e-chol-ldl">(4)</a>.  The argument <code class="docutils literal notranslate"><span class="pre">F</span></code> is the
 symbolic factorization computed by
@@ -509,67 +502,67 @@ Raises an <code class="xref py py-exc docutils literal notranslate"><span class=
 
 <dl class="function">
 <dt id="cvxopt.cholmod.solve">
-<code class="descclassname">cvxopt.cholmod.</code><code class="descname">solve</code><span class="sig-paren">(</span><em>F</em>, <em>B</em><span class="optional">[</span>, <em>sys = 0</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.solve" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cvxopt.cholmod.</code><code class="sig-name descname">solve</code><span class="sig-paren">(</span><em class="sig-param">F</em>, <em class="sig-param">B</em><span class="optional">[</span>, <em class="sig-param">sys = 0</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves one of the following linear equations where <code class="docutils literal notranslate"><span class="pre">B</span></code> is a dense
 matrix and <code class="docutils literal notranslate"><span class="pre">F</span></code> is the numeric factorization <a class="reference internal" href="#equation-e-chol-ll">(3)</a>
 or <a class="reference internal" href="#equation-e-chol-ldl">(4)</a> computed by
 <a class="reference internal" href="#cvxopt.cholmod.numeric" title="cvxopt.cholmod.numeric"><code class="xref py py-func docutils literal notranslate"><span class="pre">numeric</span></code></a>.
 <code class="docutils literal notranslate"><span class="pre">sys</span></code> is an integer with values between 0 and 8.</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="31%" />
-<col width="69%" />
+<col style="width: 31%" />
+<col style="width: 69%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">sys</span></code></td>
-<td>equation</td>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sys</span></code></p></td>
+<td><p>equation</p></td>
 </tr>
-<tr class="row-even"><td>0</td>
-<td><img class="math" src="_images/math/d77e0813854d00a321e68060f73c1cf73f0a79cb.png" alt="AX = B"/></td>
+<tr class="row-even"><td><p>0</p></td>
+<td><p><img class="math" src="_images/math/936adf4ee141541b19f32162898758c0de10fa8d.png" alt="AX = B"/></p></td>
 </tr>
-<tr class="row-odd"><td>1</td>
-<td><img class="math" src="_images/math/4a92485769efc131c21ef19fa0f39242ce5b8dbc.png" alt="LDL^TX = B"/></td>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p><img class="math" src="_images/math/36dfce98812a98045ee08f8608788e512eed0fe3.png" alt="LDL^TX = B"/></p></td>
 </tr>
-<tr class="row-even"><td>2</td>
-<td><img class="math" src="_images/math/d69f091a6a4afaeb38f7ba548495ee52ae2f4e7f.png" alt="LDX = B"/></td>
+<tr class="row-even"><td><p>2</p></td>
+<td><p><img class="math" src="_images/math/eb21ee2e4d5e09a543f19ff14ce49d682ad586af.png" alt="LDX = B"/></p></td>
 </tr>
-<tr class="row-odd"><td>3</td>
-<td><img class="math" src="_images/math/fbfdcbd7ea53f9cfc932ae393b8c423fa5e7a674.png" alt="DL^TX=B"/></td>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p><img class="math" src="_images/math/7911e1577218dbb02d5e98a311635e1b2347ff57.png" alt="DL^TX=B"/></p></td>
 </tr>
-<tr class="row-even"><td>4</td>
-<td><img class="math" src="_images/math/313d5a3f8b736d1c4d5b948876005d9932bce253.png" alt="LX=B"/></td>
+<tr class="row-even"><td><p>4</p></td>
+<td><p><img class="math" src="_images/math/8621cd51e6bdca11da768ea315ebf1b8c319a975.png" alt="LX=B"/></p></td>
 </tr>
-<tr class="row-odd"><td>5</td>
-<td><img class="math" src="_images/math/02fce4c8ae8731b85d0f428b16f945fcee39442d.png" alt="L^TX=B"/></td>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p><img class="math" src="_images/math/e71fcd98134a69534acee44a765e20abefe6e316.png" alt="L^TX=B"/></p></td>
 </tr>
-<tr class="row-even"><td>6</td>
-<td><img class="math" src="_images/math/6610c3549faee1423975e1af34f53e4449a84152.png" alt="DX=B"/></td>
+<tr class="row-even"><td><p>6</p></td>
+<td><p><img class="math" src="_images/math/69ff02759612b6bf7f038a67b9fb4b557f2be247.png" alt="DX=B"/></p></td>
 </tr>
-<tr class="row-odd"><td>7</td>
-<td><img class="math" src="_images/math/c50f19b9760bf5950d395d65b58390bdb1e03916.png" alt="P^TX=B"/></td>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p><img class="math" src="_images/math/38e9e9d3b438f8da362e850c8eb1c0252af8373a.png" alt="P^TX=B"/></p></td>
 </tr>
-<tr class="row-even"><td>8</td>
-<td><img class="math" src="_images/math/06d393e05858b891619138cd70ec4c9d29ab3024.png" alt="PX=B"/></td>
+<tr class="row-even"><td><p>8</p></td>
+<td><p><img class="math" src="_images/math/00b60df5731428a5a02b49ca7bc4d5aaa7afac9c.png" alt="PX=B"/></p></td>
 </tr>
 </tbody>
 </table>
 <p>(If <code class="docutils literal notranslate"><span class="pre">F</span></code> is a Cholesky factorization of the form <a class="reference internal" href="#equation-e-chol-ll">(3)</a>,
-<img class="math" src="_images/math/3cf5aa5abe312e6fd4996975341a43aa566e8d8d.png" alt="D"/> is an identity matrix in this table.  If <code class="docutils literal notranslate"><span class="pre">A</span></code> is complex,
-<img class="math" src="_images/math/a8ff71f5be8de0f0b80a4ee5033cb2efcfa86cce.png" alt="L^T"/> should be replaced by <img class="math" src="_images/math/bee11ec6e62981b655c4b0608fcd0aa4ffdaea53.png" alt="L^H"/>.)</p>
+<img class="math" src="_images/math/0fcab9067b50b87e868c4fd70f213a086addb964.png" alt="D"/> is an identity matrix in this table.  If <code class="docutils literal notranslate"><span class="pre">A</span></code> is complex,
+<img class="math" src="_images/math/249b38285050bda51fd1579d716b5553f8114a0d.png" alt="L^T"/> should be replaced by <img class="math" src="_images/math/183e9814ec579a80697d078963ce0412589322f1.png" alt="L^H"/>.)</p>
 <p>The matrix <code class="docutils literal notranslate"><span class="pre">B</span></code> is a dense <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code> matrix, with
 the same type as <code class="docutils literal notranslate"><span class="pre">A</span></code>.  On exit it is overwritten by the solution.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="cvxopt.cholmod.spsolve">
-<code class="descclassname">cvxopt.cholmod.</code><code class="descname">spsolve</code><span class="sig-paren">(</span><em>F</em>, <em>B</em><span class="optional">[</span>, <em>sys = 0</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.spsolve" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cvxopt.cholmod.</code><code class="sig-name descname">spsolve</code><span class="sig-paren">(</span><em class="sig-param">F</em>, <em class="sig-param">B</em><span class="optional">[</span>, <em class="sig-param">sys = 0</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.spsolve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Similar to <a class="reference internal" href="#cvxopt.cholmod.solve" title="cvxopt.cholmod.solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">solve</span></code></a>, except that <code class="docutils literal notranslate"><span class="pre">B</span></code> is
 a class:<cite>spmatrix</cite>, and the solution is returned as an output argument
 (as an <code class="xref py py-class docutils literal notranslate"><span class="pre">spmatrix</span></code>).  <code class="docutils literal notranslate"><span class="pre">B</span></code> must have the same typecode as <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
 </dd></dl>
 
 <p>For the same example as above:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;d&#39;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;d&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">F</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">symbolic</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cholmod</span><span class="o">.</span><span class="n">numeric</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cholmod</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
@@ -582,11 +575,11 @@ a class:<cite>spmatrix</cite>, and the solution is returned as an output argumen
 </div>
 <dl class="function">
 <dt id="cvxopt.cholmod.diag">
-<code class="descclassname">cvxopt.cholmod.</code><code class="descname">diag</code><span class="sig-paren">(</span><em>F</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.diag" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the diagonal elements of the Cholesky factor <img class="math" src="_images/math/ae2b750f71e1fc0daaa3de9a85d42794d7cd1326.png" alt="L"/>
+<code class="sig-prename descclassname">cvxopt.cholmod.</code><code class="sig-name descname">diag</code><span class="sig-paren">(</span><em class="sig-param">F</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.diag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the diagonal elements of the Cholesky factor <img class="math" src="_images/math/19eef1966f7c545af3ac8c0fa486974d873e3c65.png" alt="L"/>
 in <a class="reference internal" href="#equation-e-chol-ll">(3)</a>, as a dense matrix of the same type as <code class="docutils literal notranslate"><span class="pre">A</span></code>.
 Note that this only applies to Cholesky factorizations.  The matrix
-<img class="math" src="_images/math/3cf5aa5abe312e6fd4996975341a43aa566e8d8d.png" alt="D"/> in an <span class="raw-html">LDL<sup><small>T</small></sup></span>
+<img class="math" src="_images/math/0fcab9067b50b87e868c4fd70f213a086addb964.png" alt="D"/> in an <span class="raw-html">LDL<sup><small>T</small></sup></span>
 factorization can be retrieved via <a class="reference internal" href="#cvxopt.cholmod.solve" title="cvxopt.cholmod.solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">solve</span></code></a>
 with <code class="docutils literal notranslate"><span class="pre">sys</span></code> equal to 6.</p>
 </dd></dl>
@@ -600,15 +593,14 @@ entry in the dictionary <code class="xref py py-attr docutils literal notranslat
 The meaning of the options <code class="xref py py-attr docutils literal notranslate"><span class="pre">options['supernodal']</span></code>  and
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">options['nmethods']</span></code> is summarized as follows (and described
 in detail in the CHOLMOD user guide).</p>
-<dl class="docutils">
-<dt><code class="xref py py-attr docutils literal notranslate"><span class="pre">options['supernodal']</span></code></dt>
-<dd>If equal to 0, a factorization <a class="reference internal" href="#equation-e-chol-ldl">(4)</a> is computed using a
+<dl class="simple">
+<dt><code class="xref py py-attr docutils literal notranslate"><span class="pre">options['supernodal']</span></code></dt><dd><p>If equal to 0, a factorization <a class="reference internal" href="#equation-e-chol-ldl">(4)</a> is computed using a
 simplicial algorithm.  If equal to 2, a factorization <a class="reference internal" href="#equation-e-chol-ll">(3)</a>
 is computed using a supernodal algorithm.  If equal to 1, the most
 efficient of the two factorizations is selected, based on the sparsity
-pattern.  Default: 2.</dd>
-<dt><code class="xref py py-attr docutils literal notranslate"><span class="pre">options['nmethods']</span></code></dt>
-<dd>The default ordering used by the CHOLMOD is the ordering in the  AMD
+pattern.  Default: 2.</p>
+</dd>
+<dt><code class="xref py py-attr docutils literal notranslate"><span class="pre">options['nmethods']</span></code></dt><dd><p>The default ordering used by the CHOLMOD is the ordering in the  AMD
 library, but depending on the value of <code class="xref py py-attr docutils literal notranslate"><span class="pre">options['nmethods']</span></code>.
 other orderings are also considered.
 If <code class="docutils literal notranslate"><span class="pre">nmethods</span></code> is equal to 2, the ordering specified
@@ -621,14 +613,15 @@ If equal to 0, all available orderings are compared and the best
 ordering is used.  The available orderings include the AMD ordering,
 the ordering specified by the user (if any), and possibly other
 orderings if they are installed during the CHOLMOD installation.
-Default: 0.</dd>
+Default: 0.</p>
+</dd>
 </dl>
 <p>As an example that illustrates <a class="reference internal" href="#cvxopt.cholmod.diag" title="cvxopt.cholmod.diag"><code class="xref py py-func docutils literal notranslate"><span class="pre">diag</span></code></a> and the
 use of <code class="xref py py-attr docutils literal notranslate"><span class="pre">cholmod.options</span></code>, we compute the logarithm of the determinant
 of the coefficient matrix in <a class="reference internal" href="#equation-e-a-pd">(2)</a> by two methods.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.cholmod</span> <span class="k">import</span> <span class="n">options</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">log</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.cholmod</span> <span class="kn">import</span> <span class="n">options</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">log</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">F</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">symbolic</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cholmod</span><span class="o">.</span><span class="n">numeric</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">cholmod</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">F</span><span class="p">))))</span>
@@ -648,41 +641,41 @@ of the coefficient matrix in <a class="reference internal" href="#equation-e-a-p
 <p>This example illustrates the use of the routines for sparse Cholesky
 factorization.  We consider the problem</p>
 <div class="math" id="equation-e-covsel">
-<p><span class="eqno">(5)<a class="headerlink" href="#equation-e-covsel" title="Permalink to this equation">¶</a></span><img src="_images/math/95c1874ffe7da911eda32dcd8f3a11aaff9eb8f1.png" alt="\newcommand{\Tr}{\mathop{\bf tr}}
+<p><span class="eqno">(5)<a class="headerlink" href="#equation-e-covsel" title="Permalink to this equation">¶</a></span><img src="_images/math/4e317307fb34d4308336c7711497db123b7d9def.png" alt="\newcommand{\Tr}{\mathop{\bf tr}}
 \begin{array}{ll}
     \mbox{minimize} &amp; -\log\det K + \Tr(KY) \\
     \mbox{subject to} &amp; K_{ij}=0,\quad (i,j) \not \in S.
 \end{array}"/></p>
-</div><p>The optimization variable is a symmetric matrix <img class="math" src="_images/math/684381a21cd73ebbf43b63a087d3f7410ee99ce8.png" alt="K"/> of order
-<img class="math" src="_images/math/e11f2701c4a39c7fe543a6c4150b421d50f1c159.png" alt="n"/> and the domain of the problem is the set of positive definite
-matrices.  The matrix <img class="math" src="_images/math/0062c26909b3e07ee8f5a6285b2563d69bc979ff.png" alt="Y"/> and the index set <img class="math" src="_images/math/1dbc400fcc213305415872f9f625cd2828f97a00.png" alt="S"/> are given.
-We assume that all the diagonal positions are included in <img class="math" src="_images/math/1dbc400fcc213305415872f9f625cd2828f97a00.png" alt="S"/>.
+</div><p>The optimization variable is a symmetric matrix <img class="math" src="_images/math/52ddc0cde6d632f631533173562fe3ca375b1f32.png" alt="K"/> of order
+<img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/> and the domain of the problem is the set of positive definite
+matrices.  The matrix <img class="math" src="_images/math/7daf0d4815e763eb90f0d5f1dc406f668c1e21db.png" alt="Y"/> and the index set <img class="math" src="_images/math/b988975be41fd13b4d091c10202ba19374643586.png" alt="S"/> are given.
+We assume that all the diagonal positions are included in <img class="math" src="_images/math/b988975be41fd13b4d091c10202ba19374643586.png" alt="S"/>.
 This problem arises in maximum likelihood estimation of the covariance
 matrix of a zero-mean normal distribution, with constraints
 that specify that pairs of variables are conditionally independent.</p>
-<p>We can express <img class="math" src="_images/math/684381a21cd73ebbf43b63a087d3f7410ee99ce8.png" alt="K"/> as</p>
+<p>We can express <img class="math" src="_images/math/52ddc0cde6d632f631533173562fe3ca375b1f32.png" alt="K"/> as</p>
 <div class="math">
-<p><img src="_images/math/d07430c9b0d32e3c45ead32710178349359e6288.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
+<p><img src="_images/math/e35d7cbe33a34f4456eea34b9bd28642bfc52fa4.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
 K(x) = E_1\diag(x)E_2^T+E_2\diag(x)E_1^T"/></p>
-</div><p>where <img class="math" src="_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/> are the nonzero elements in the lower triangular part of
-<img class="math" src="_images/math/684381a21cd73ebbf43b63a087d3f7410ee99ce8.png" alt="K"/>, with the diagonal elements scaled by 1/2, and</p>
+</div><p>where <img class="math" src="_images/math/888f7c323ac0341871e867220ae2d76467d74d6e.png" alt="x"/> are the nonzero elements in the lower triangular part of
+<img class="math" src="_images/math/52ddc0cde6d632f631533173562fe3ca375b1f32.png" alt="K"/>, with the diagonal elements scaled by 1/2, and</p>
 <div class="math">
-<p><img src="_images/math/9fe98d3adb5924ecf0ac6bb3d26a6e833c1bdf9b.png" alt="E_1 = \left[ \begin{array}{cccc}
+<p><img src="_images/math/716fbcea39bcb0c1e19a3e26c60836bf5b111b91.png" alt="E_1 = \left[ \begin{array}{cccc}
     e_{i_1} &amp; e_{i_2} &amp; \cdots &amp; e_{i_q} \end{array}\right], \qquad
 E_2 = \left[ \begin{array}{cccc}
     e_{j_1} &amp; e_{j_2} &amp; \cdots &amp; e_{j_q} \end{array}\right],"/></p>
-</div><p>where (<img class="math" src="_images/math/a729fab7b286b889be54824b0f442a84566370f4.png" alt="i_k"/>, <img class="math" src="_images/math/7e0c618eb33b8bed638496f82ad1152c65b48b25.png" alt="j_k"/>) are the positions of the nonzero entries
-in the lower-triangular part of <img class="math" src="_images/math/684381a21cd73ebbf43b63a087d3f7410ee99ce8.png" alt="K"/>.  With this notation, we can
+</div><p>where (<img class="math" src="_images/math/fc18e7de656eaf3eacbb104912233162cf9042e4.png" alt="i_k"/>, <img class="math" src="_images/math/db5b465a483d35549d1b8a4577cc4163f9ece3aa.png" alt="j_k"/>) are the positions of the nonzero entries
+in the lower-triangular part of <img class="math" src="_images/math/52ddc0cde6d632f631533173562fe3ca375b1f32.png" alt="K"/>.  With this notation, we can
 solve problem <a class="reference internal" href="#equation-e-covsel">(5)</a> by solving the unconstrained problem</p>
 <div class="math">
-<p><img src="_images/math/89632a9af2439abbfb901237915c93cce507e6f5.png" alt="\newcommand{\Tr}{\mathop{\bf tr}}
+<p><img src="_images/math/86a2d178f8f888b9c84ff42573fdaf015c8bfbb2.png" alt="\newcommand{\Tr}{\mathop{\bf tr}}
 \begin{array}{ll}
 \mbox{minimize} &amp; f(x) = -\log\det K(x) + \Tr(K(x)Y).
 \end{array}"/></p>
 </div><p>The code below implements Newton’s method with a backtracking line search.
 The gradient and Hessian of the objective function are given by</p>
 <div class="math">
-<p><img src="_images/math/321edeeaaab544f55c8fc274ce9fb10c8a685143.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
+<p><img src="_images/math/a121b0efd1dfa559be59e332b528608d97906c46.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
 \begin{split}
 \nabla f(x)
     &amp; = 2 \diag( E_1^T (Y - K(x)^{-1}) E_2)) \\
@@ -694,8 +687,8 @@ The gradient and Hessian of the objective function are given by</p>
         + 2 \left(K(x)^{-1}\right)_{IJ} \circ
         \left(K(x)^{-1}\right)_{JI},
 \end{split}"/></p>
-</div><p>where <img class="math" src="_images/math/8a5aab8ae56b127306339f23c81f7decf9adca3a.png" alt="\circ"/> denotes Hadamard product.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">amd</span><span class="p">,</span> <span class="n">cholmod</span>
+</div><p>where <img class="math" src="_images/math/ecdff306b10b7e2991a2c20df2fccba0f947155b.png" alt="\circ"/> denotes Hadamard product.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">amd</span><span class="p">,</span> <span class="n">cholmod</span>
 
 <span class="k">def</span> <span class="nf">covsel</span><span class="p">(</span><span class="n">Y</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -777,15 +770,17 @@ The gradient and Hessian of the objective function are given by</p>
 </div>
 
 
+           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="coneprog.html" class="btn btn-neutral float-right" title="Cone Programming">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="coneprog.html" class="btn btn-neutral float-right" title="Cone Programming" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="fftw.html" class="btn btn-neutral" title="Discrete Transforms"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="fftw.html" class="btn btn-neutral float-left" title="Discrete Transforms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -794,13 +789,17 @@ The gradient and Hessian of the objective function are given by</p>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="copyright.html">Copyright</a> 2004-2019, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      Last updated on Feb 05, 2019.
+        &copy; <a href="copyright.html">Copyright</a> 2004-2020, M.S. Andersen, J. Dahl, L. Vandenberghe
+      <span class="lastupdated">
+        Last updated on Jan 20, 2020.
+      </span>
+
     </p>
   </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
 </footer>
+
         </div>
       </div>
 
@@ -810,38 +809,18 @@ The gradient and Hessian of the objective function are given by</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'1.2.3',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  false
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.8.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.3.1.
     </div>
 
 </body>

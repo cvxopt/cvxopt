@@ -1,4 +1,4 @@
-# Copyright 2012-2019 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2020 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
@@ -40,8 +40,8 @@ def matrix_str_default(X):
     if width < 0: width = maxsize
     if height < 0: height = maxsize
 
-    if width*height is 0: return ""
-    if len(X) is 0: return ""
+    if width*height == 0: return ""
+    if len(X) == 0: return ""
 
     rlist = range(0,min(m,height))
     clist = range(0,min(n,width))
@@ -98,7 +98,7 @@ def spmatrix_str_default(X):
     if width < 0: width = maxsize
     if height < 0: height = maxsize
 
-    if width*height is 0: return ""
+    if width*height == 0: return ""
  
     rlist = range(0,min(m,height))
     clist = range(0,min(n,width))

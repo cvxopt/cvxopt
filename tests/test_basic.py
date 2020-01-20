@@ -34,6 +34,7 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(cvxopt.min(a),1.0)
         self.assertEqual(cvxopt.min(c),-2.0)
         self.assertEqual(cvxopt.min(d),1.0)
+        self.assertEqual(len(c.imag()),0)
         with self.assertRaises(OverflowError):
             cvxopt.matrix(1.0,(32780*4,32780))
         with self.assertRaises(OverflowError):

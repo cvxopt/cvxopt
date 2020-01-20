@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2020 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -1252,13 +1252,13 @@ PyObject * matrix_elem_max(PyObject *self, PyObject *args, PyObject *kwrds)
     if (PyNumber_Check(A) || Matrix_Check(A))
       convert_num[id](&a, A, PyNumber_Check(A), 0);
     else
-      a.d = (SP_LGT(A) ? SP_VALD(A)[0] : 0.0);
+      a.d = ((SP_LGT(A) > 0) ? SP_VALD(A)[0] : 0.0);
   }
   if (b_is_number) {
     if (PyNumber_Check(B) || Matrix_Check(B))
       convert_num[id](&b, B, PyNumber_Check(B), 0);
     else
-      b.d = (SP_LGT(B) ? SP_VALD(B)[0] : 0.0);
+      b.d = ((SP_LGT(B) > 0) ? SP_VALD(B)[0] : 0.0);
   }
 
   if ((a_is_number && b_is_number) &&
@@ -1431,13 +1431,13 @@ PyObject * matrix_elem_min(PyObject *self, PyObject *args, PyObject *kwrds)
     if (PyNumber_Check(A) || Matrix_Check(A))
       convert_num[id](&a, A, PyNumber_Check(A), 0);
     else
-      a.d = (SP_LGT(A) ? SP_VALD(A)[0] : 0.0);
+      a.d = ((SP_LGT(A) > 0) ? SP_VALD(A)[0] : 0.0);
   }
   if (b_is_number) {
     if (PyNumber_Check(B) || Matrix_Check(B))
       convert_num[id](&b, B, PyNumber_Check(B), 0);
     else
-      b.d = (SP_LGT(B) ? SP_VALD(B)[0] : 0.0);
+      b.d = ((SP_LGT(B) > 0) ? SP_VALD(B)[0] : 0.0);
   }
 
   if ((a_is_number && b_is_number) &&

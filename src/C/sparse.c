@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2020 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -3041,8 +3041,11 @@ static PyObject * spmatrix_real(spmatrix *self) {
 
 static PyObject * spmatrix_imag(spmatrix *self) {
 
-  if (SP_ID(self) != COMPLEX)
-    return (PyObject *)SpMatrix_NewFromSpMatrix(self, SP_ID(self));
+  if (SP_ID(self) != COMPLEX) {
+    spmatrix *ret = SpMatrix_New(SP_NROWS(self), SP_NCOLS(self), 0, SP_ID(self));
+    if (!ret) NULL;
+    return (PyObject *)ret;
+  }
 
   spmatrix *ret = SpMatrix_New(SP_NROWS(self), SP_NCOLS(self),
       SP_NNZ(self), DOUBLE);
@@ -4409,7 +4412,7 @@ static PyObject *
 spmatrix_div_generic(spmatrix *A, PyObject *B, int inplace)
 {
   if (!SpMatrix_Check(A) || !(PY_NUMBER(B) ||
-      (Matrix_Check(B) && MAT_LGT(B)) == 1))
+      (Matrix_Check(B) && MAT_LGT(B) == 1)))
     PY_ERR_TYPE("invalid operands for sparse division");
 
   int idA = get_id(A, 0);

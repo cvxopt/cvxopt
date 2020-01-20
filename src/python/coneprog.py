@@ -2,7 +2,7 @@
 Solver for linear and quadratic cone programs.
 """
 
-# Copyright 2012-2019 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2020 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 #
@@ -2892,7 +2892,7 @@ def lp(c, G, h, A = None, b = None, kktsolver = None, solver = None, primalstart
         resy0 = max(1.0, blas.nrm2(b))
         resz0 = max(1.0, blas.nrm2(h))
 
-        if solsta in (mosek.solsta.optimal, mosek.solsta.near_optimal):
+        if solsta in (mosek.solsta.optimal, getattr(mosek.solsta,'near_optimal',None)):
             if solsta is mosek.solsta.optimal: status = 'optimal'
             else: status = 'near optimal'
 
@@ -3350,7 +3350,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
         rh = matrix([ blas.nrm2(hl) ] + [ blas.nrm2(hqk) for hqk in hq ])
         resz0 = max(1.0, blas.nrm2(rh))
 
-        if solsta in (mosek.solsta.optimal, mosek.solsta.near_optimal):
+        if solsta in (mosek.solsta.optimal, getattr(mosek.solsta,'near_optimal')):
             if solsta is mosek.solsta.optimal: status = 'optimal'
             else: status = 'near optimal'
 
@@ -4040,7 +4040,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
             pslack = -misc.max_step(s, dims)
             dslack = -misc.max_step(z, dims)
 
-            if status is 'optimal' or dcost <= 0.0:
+            if status == 'optimal' or dcost <= 0.0:
                 pinfres = None
             else:
                 # rx = G'*z
@@ -4058,7 +4058,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
                     ind += ms[k]
                 pinfres = blas.nrm2(rx) / resx0 / dcost
 
-            if status is 'optimal' or pcost >= 0.0:
+            if status == 'optimal' or pcost >= 0.0:
                 dinfres = None
             else:
                 # rz = G*x + s
@@ -4365,7 +4365,7 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
         resy0 = max(1.0, blas.nrm2(b))
         resz0 = max(1.0, blas.nrm2(h))
 
-        if solsta in (mosek.solsta.optimal, mosek.solsta.near_optimal):
+        if solsta in (mosek.solsta.optimal, getattr(mosek.solsta,'near_optimal',None)):
             if solsta is mosek.solsta.optimal: status = 'optimal'
             else: status = 'near optimal'
 

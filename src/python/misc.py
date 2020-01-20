@@ -1,4 +1,4 @@
-# Copyright 2012-2019 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2020 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
@@ -913,7 +913,7 @@ else:
     # 
     # where Yk = mat(yk) if diag is 'N' and Yk = diag(yk) if diag is 'D'.
 
-    if diag is 'N':
+    if diag == 'N':
         maxm = max([0] + dims['s'])
         A = matrix(0.0, (maxm, maxm))
 
