@@ -3041,8 +3041,11 @@ static PyObject * spmatrix_real(spmatrix *self) {
 
 static PyObject * spmatrix_imag(spmatrix *self) {
 
-  if (SP_ID(self) != COMPLEX)
-    return (PyObject *)SpMatrix_NewFromSpMatrix(self, SP_ID(self));
+  if (SP_ID(self) != COMPLEX) {
+    spmatrix *ret = SpMatrix_New(SP_NROWS(self), SP_NCOLS(self), 0, SP_ID(self));
+    if (!ret) NULL;
+    return (PyObject *)ret;
+  }
 
   spmatrix *ret = SpMatrix_New(SP_NROWS(self), SP_NCOLS(self),
       SP_NNZ(self), DOUBLE);

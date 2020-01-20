@@ -1,4 +1,4 @@
-version: 1.2.3-{build}-{branch}
+version: 1.2.4-{build}-{branch}
 image: Visual Studio 2019
 init:
     - choco install wget checksum
@@ -20,8 +20,6 @@ environment:
     SUITESPARSE_SHA256: "76d34d9f6dafc592b69af14f58c1dc59e24853dcd7c2e8f4c98ffa223f6a1adb"
 
   matrix:
-    - PYTHON_VERSION: 3.8
-      CVXOPT_MSVC: 1
     - PYTHON_VERSION: 3.7
       CVXOPT_MSVC: 1
     - PYTHON_VERSION: 3.6
