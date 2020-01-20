@@ -40,15 +40,15 @@ master_doc = 'index'
 
 # General substitutions.
 project = "CVXOPT User's Guide"
-copyright = '2004-2019, M.S. Andersen, J. Dahl, L. Vandenberghe'
+copyright = '2004-2020, M.S. Andersen, J. Dahl, L. Vandenberghe'
 
 # The default replacements for |version| and |release|, also used in various
 # other places throughout the built documents.
 #
 # The short X.Y version.
-version = '1.2.3'
+version = '1.2.4'
 # The full version, including alpha/beta/rc tags.
-release = '1.2.3'
+release = '1.2.4'
 
 
 # There are two options for replacing |today|: either, you set today to some
@@ -90,7 +90,7 @@ pygments_style = 'sphinx'
 # given in html_static_path.
 #html_style = 'cvxopt.css'
 html_theme = "sphinx_rtd_theme"
-html_theme_path = [".themes", ]
+#html_theme_path = [".themes", ]
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
