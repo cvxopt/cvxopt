@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>L1-norm approximation &mdash; CVXOPT</title>
@@ -12,191 +13,228 @@
 
   
   
+  
+  
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-        <link rel="search" title="Search" href="../../search.html"/>
-        <link rel="copyright" title="Copyright" href="../../copyright.html"/>
-    <link rel="top" title="CVXOPT" href="../../index.html"/>
-        <link rel="up" title="Examples" href="../index.html"/>
-        <link rel="next" title="L1-norm regularized least-squares" href="l1regls.html"/>
-        <link rel="prev" title="Floor planning example (fig. 8.20)" href="../book/floorplan.html"/> 
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="L1-norm regularized least-squares" href="l1regls.html" />
+    <link rel="prev" title="Floor planning example (fig. 8.20)" href="../book/floorplan.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        <a href="../../index.html" class="fa fa-home"> CVXOPT</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> CVXOPT
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-      </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
-        
-            <ul class="current">
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and license</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../download/index.html">Download</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../download/index.html#latest-version">Latest version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../download/index.html#older-versions">Older versions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#installing-a-pre-built-package">Installing a pre-built package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-and-installing-from-source">Building and installing from source</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#windows">Windows</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#user-s-guide">User’s guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#technical-documentation">Technical documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#discussion-forum">Discussion forum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#revision-history">Revision history</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../download/index.html">Download</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#tutorial-examples">Tutorial examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#book-examples">Book examples</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html#custom-interior-point-solvers">Custom interior-point solvers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#custom-interior-point-solvers">Custom interior-point solvers</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">L1-norm approximation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="l1regls.html">L1-norm regularized least-squares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mcsvm.html">Multiclass SVM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="robsvm.html">Robust SVM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ubsdp.html">SDPs with upper bounds</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#utility-functions">Utility functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#other-examples">Other examples</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../applications/index.html">Applications and extensions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../applications/openoffice/index.html">OpenOffice plugin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../applications/nucnrm/index.html">Nuclear norm approximation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../applications/svm/index.html">Support Vector Machines</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../applications/index.html">Applications and extensions</a></li>
 </ul>
 
-        
+            
+          
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">CVXOPT</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CVXOPT</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../index.html">Examples</a> &raquo;</li>
-      
-    <li>L1-norm approximation</li>
+        
+      <li>L1-norm approximation</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
+            
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
-          <div role="main">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="l1-norm-approximation">
 <h1>L1-norm approximation<a class="headerlink" href="#l1-norm-approximation" title="Permalink to this headline">¶</a></h1>
-<p>The <img class="math" src="../../_images/math/a301afaec3a8e4e639ad1d14140c7c5470a8eef2.png" alt="\ell_1"/>-norm approximation problem is given by</p>
+<p>The <img class="math" src="../../_images/math/f2b8d38e08000500cc6e5e308c0ca84b2b47c349.png" alt="\ell_1"/>-norm approximation problem is given by</p>
 <div class="math" id="equation-l1approx">
-<p><span class="eqno">(1)<a class="headerlink" href="#equation-l1approx" title="Permalink to this equation">¶</a></span><img src="../../_images/math/4db24b0bebfe996cd1e7dfe8409831b592d3bdc8.png" alt="\begin{array}{ll}
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-l1approx" title="Permalink to this equation">¶</a></span><img src="../../_images/math/b490fd1f7d2a88a31aa3c441c8d12c6c6b6860fb.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp;  \| Pu - q \|_1
 \end{array}"/></p>
-</div><p>with variable <img class="math" src="../../_images/math/f38bb28bb90a66d78288b0c154b4b8fdb8f1f6e6.png" alt="u \in \mathbf{R}^n"/> and problem data <img class="math" src="../../_images/math/427a1485ef14e0a0bd54d6b186b62a0a9b82cc6f.png" alt="P \in \mathbf{R}^{m \times n}"/> and <img class="math" src="../../_images/math/e0cda675bd8d4c27fc3cbbc21c9f45f8dafdcfd9.png" alt="q \in
+</div><p>with variable <img class="math" src="../../_images/math/3873b0f2596b5470c195cde0b03ad5ad8e6aa63d.png" alt="u \in \mathbf{R}^n"/> and problem data <img class="math" src="../../_images/math/af4e515fdcfe2a7eecd7cb1b8c14a2447abe0a5a.png" alt="P \in \mathbf{R}^{m \times n}"/> and <img class="math" src="../../_images/math/c351f7f7b7f69036821d452a62275345de98bb67.png" alt="q \in
 \mathbf{R}^m"/>. The problem is equivalent to an LP</p>
 <div class="math" id="equation-l1approx-lp">
-<p><span class="eqno">(2)<a class="headerlink" href="#equation-l1approx-lp" title="Permalink to this equation">¶</a></span><img src="../../_images/math/85ace4836c4103ac389d2e1a664ae7da3c7e3dba.png" alt="\begin{array}{ll}
+<p><span class="eqno">(2)<a class="headerlink" href="#equation-l1approx-lp" title="Permalink to this equation">¶</a></span><img src="../../_images/math/bc887d7c0e21be894a966ac01d72c7a8adcf8376.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; \mathbf{1}^Tv \\
 \mbox{subject to} &amp;  \begin{bmatrix} P &amp; -I\\ -P &amp; - I \end{bmatrix}
                     \begin{bmatrix} u \\ v \end{bmatrix}
                     \preceq
                     \begin{bmatrix} q \\ -q \end{bmatrix}
 \end{array}"/></p>
-</div><p>with <img class="math" src="../../_images/math/1a8412024c2fd36b27bd03b4661b6ef6fa0f9f70.png" alt="m + n"/> variables and <img class="math" src="../../_images/math/4fe737d93ce8628abf4af90e0893925f686cb039.png" alt="2m"/> constraints. Yet another
+</div><p>with <img class="math" src="../../_images/math/c5513997d74a544426dbca35eb9d917e75b2bc35.png" alt="m + n"/> variables and <img class="math" src="../../_images/math/dfb6a7448689332faf9dd4120d7e928003736a4e.png" alt="2m"/> constraints. Yet another
 equivalent formulation is the problem</p>
 <div class="math" id="equation-l1approx-lp2">
-<p><span class="eqno">(3)<a class="headerlink" href="#equation-l1approx-lp2" title="Permalink to this equation">¶</a></span><img src="../../_images/math/527c4556e0e91be5247810f6bb62fbc065a59d76.png" alt="\begin{array}{ll}
+<p><span class="eqno">(3)<a class="headerlink" href="#equation-l1approx-lp2" title="Permalink to this equation">¶</a></span><img src="../../_images/math/b4549d421257ebc78116c35e6b55015fe7e9300d.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; e^Ts + e^Tt \\
 \mbox{subject to} &amp;  Pu - q = s - t \\
                   &amp; s, t \geq 0
 \end{array}"/></p>
-</div><p>with variables <img class="math" src="../../_images/math/f38bb28bb90a66d78288b0c154b4b8fdb8f1f6e6.png" alt="u \in \mathbf{R}^n"/>, <img class="math" src="../../_images/math/b98891ac9712b1d77a30c49b3229e872582b9740.png" alt="s \in \mathbf{R}^m"/>, and <img class="math" src="../../_images/math/61a95657ead3d9e698d9488e343d05babc5ad257.png" alt="t \in \mathbf{R}^m"/>.</p>
-<h3> Documentation </h3><p>A custom solver for the <img class="math" src="../../_images/math/a301afaec3a8e4e639ad1d14140c7c5470a8eef2.png" alt="\ell_1"/>-norm approximation problem is
-available as a Python module <a class="reference download internal" download="" href="../../_downloads/70ad68728fd73ac0ee75c6f8baf9da60/l1.py"><code class="xref download docutils literal notranslate"><span class="pre">l1.py</span></code></a> (or <a class="reference download internal" download="" href="../../_downloads/87fa48bbafce813693aa72898f6bb1d8/l1_mosek6.py"><code class="xref download docutils literal notranslate"><span class="pre">l1_mosek6.py</span></code></a> or <a class="reference download internal" download="" href="../../_downloads/44521cc1343cb2e8365225fda17970c1/l1_mosek7.py"><code class="xref download docutils literal notranslate"><span class="pre">l1_mosek7.py</span></code></a> for earlier
+</div><p>with variables <img class="math" src="../../_images/math/3873b0f2596b5470c195cde0b03ad5ad8e6aa63d.png" alt="u \in \mathbf{R}^n"/>, <img class="math" src="../../_images/math/3c55b97d12cab891a1811b87ca22118fcc8e5829.png" alt="s \in \mathbf{R}^m"/>, and <img class="math" src="../../_images/math/97a767714970a5e07916766d3e70c33d480b66f1.png" alt="t \in \mathbf{R}^m"/>.</p>
+<h3> Documentation </h3><p>A custom solver for the <img class="math" src="../../_images/math/f2b8d38e08000500cc6e5e308c0ca84b2b47c349.png" alt="\ell_1"/>-norm approximation problem is
+available as a Python module <a class="reference download internal" download="" href="../../_downloads/de89203bab11257e9f768c78f3752397/l1.py"><code class="xref download docutils literal notranslate"><span class="pre">l1.py</span></code></a> (or <a class="reference download internal" download="" href="../../_downloads/df757e92918f4c404691a3e36d7ff3af/l1_mosek6.py"><code class="xref download docutils literal notranslate"><span class="pre">l1_mosek6.py</span></code></a> or <a class="reference download internal" download="" href="../../_downloads/eafde324d6802fa87c2400901d5382ba/l1_mosek7.py"><code class="xref download docutils literal notranslate"><span class="pre">l1_mosek7.py</span></code></a> for earlier
 versions of CVXOPT that use either MOSEK 6 or 7). The module implements
 the following four functions:</p>
 <blockquote>
 <div><dl class="function">
 <dt id="l1">
-<code class="descname">l1</code><span class="sig-paren">(</span><em>P</em>, <em>q</em><span class="sig-paren">)</span><a class="headerlink" href="#l1" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">l1</code><span class="sig-paren">(</span><em class="sig-param">P</em>, <em class="sig-param">q</em><span class="sig-paren">)</span><a class="headerlink" href="#l1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-l1approx-lp">(2)</a> using a custom KKT solver.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/92e3f44c99a016c5238a790c96f12fd46aa93c4a.png" alt="u"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/9b444cf6329a14140aee8ff5a06ff30772cc1c2f.png" alt="u"/>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="l1blas">
-<code class="descname">l1blas</code><span class="sig-paren">(</span><em>P</em>, <em>q</em><span class="sig-paren">)</span><a class="headerlink" href="#l1blas" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">l1blas</code><span class="sig-paren">(</span><em class="sig-param">P</em>, <em class="sig-param">q</em><span class="sig-paren">)</span><a class="headerlink" href="#l1blas" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-l1approx-lp">(2)</a> using a custom KKT solver. This
 function implements the same custom KKT solver as <a class="reference internal" href="#l1" title="l1"><code class="xref py py-func docutils literal notranslate"><span class="pre">l1()</span></code></a>, but it
 uses BLAS routines instead of overloaded arithmetic.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/92e3f44c99a016c5238a790c96f12fd46aa93c4a.png" alt="u"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/9b444cf6329a14140aee8ff5a06ff30772cc1c2f.png" alt="u"/>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="l1mosek">
-<code class="descname">l1mosek</code><span class="sig-paren">(</span><em>P</em>, <em>q</em><span class="sig-paren">)</span><a class="headerlink" href="#l1mosek" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">l1mosek</code><span class="sig-paren">(</span><em class="sig-param">P</em>, <em class="sig-param">q</em><span class="sig-paren">)</span><a class="headerlink" href="#l1mosek" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-l1approx-lp">(2)</a> using MOSEK. This function
 is only available if MOSEK is installed.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/92e3f44c99a016c5238a790c96f12fd46aa93c4a.png" alt="u"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/9b444cf6329a14140aee8ff5a06ff30772cc1c2f.png" alt="u"/>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="l1mosek2">
-<code class="descname">l1mosek2</code><span class="sig-paren">(</span><em>P</em>, <em>q</em><span class="sig-paren">)</span><a class="headerlink" href="#l1mosek2" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">l1mosek2</code><span class="sig-paren">(</span><em class="sig-param">P</em>, <em class="sig-param">q</em><span class="sig-paren">)</span><a class="headerlink" href="#l1mosek2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-l1approx-lp2">(3)</a> using MOSEK. This function
 is only available if MOSEK is installed.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/92e3f44c99a016c5238a790c96f12fd46aa93c4a.png" alt="u"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/9b444cf6329a14140aee8ff5a06ff30772cc1c2f.png" alt="u"/>.</p>
 </dd></dl>
 
 </div></blockquote>
-<h3> Example </h3><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">l1</span> <span class="k">import</span> <span class="n">l1</span>
-<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">normal</span>
+<h3> Example </h3><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">l1</span> <span class="kn">import</span> <span class="n">l1</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">normal</span>
 
 <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">100</span>
 <span class="n">P</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
@@ -206,15 +244,17 @@ is only available if MOSEK is installed.</p>
 </div>
 
 
+           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="l1regls.html" class="btn btn-neutral float-right" title="L1-norm regularized least-squares">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="l1regls.html" class="btn btn-neutral float-right" title="L1-norm regularized least-squares" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../book/floorplan.html" class="btn btn-neutral" title="Floor planning example (fig. 8.20)"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../book/floorplan.html" class="btn btn-neutral float-left" title="Floor planning example (fig. 8.20)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -223,13 +263,17 @@ is only available if MOSEK is installed.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2019, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Feb 05, 2019.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2020, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe
+      <span class="lastupdated">
+        Last updated on Jan 20, 2020.
+      </span>
+
     </p>
   </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
 </footer>
+
         </div>
       </div>
 
@@ -239,38 +283,18 @@ is only available if MOSEK is installed.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'1.2.3',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  false
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.8.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.3.1.
     </div>
 
 <script>

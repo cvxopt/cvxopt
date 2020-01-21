@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Applications and extensions &mdash; CVXOPT</title>
@@ -12,84 +13,83 @@
 
   
   
+  
+  
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-        <link rel="search" title="Search" href="../search.html"/>
-        <link rel="copyright" title="Copyright" href="../copyright.html"/>
-    <link rel="top" title="CVXOPT" href="../index.html"/>
-        <link rel="next" title="OpenOffice plugin" href="openoffice/index.html"/>
-        <link rel="prev" title="Using CVXOPT from C" href="../examples/other/embed_cvxopt.html"/> 
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="next" title="OpenOffice plugin" href="openoffice/index.html" />
+    <link rel="prev" title="Using CVXOPT from C" href="../examples/other/embed_cvxopt.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        <a href="../index.html" class="fa fa-home"> CVXOPT</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> CVXOPT
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-      </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
-        
-            <ul class="current">
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../copyright.html">Copyright and license</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../download/index.html">Download</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../download/index.html#latest-version">Latest version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../download/index.html#older-versions">Older versions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation instructions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../install/index.html#installing-a-pre-built-package">Installing a pre-built package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../install/index.html#building-and-installing-from-source">Building and installing from source</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../install/index.html#macos">macOS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../install/index.html#windows">Windows</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../documentation/index.html">Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../documentation/index.html#user-s-guide">User’s guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../documentation/index.html#technical-documentation">Technical documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../documentation/index.html#discussion-forum">Discussion forum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../documentation/index.html#revision-history">Revision history</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/index.html#tutorial-examples">Tutorial examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/index.html#book-examples">Book examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/index.html#custom-interior-point-solvers">Custom interior-point solvers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/index.html#utility-functions">Utility functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/index.html#other-examples">Other examples</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../download/index.html">Download</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation/index.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Applications and extensions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="openoffice/index.html">OpenOffice plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nucnrm/index.html">Nuclear norm approximation</a></li>
@@ -98,35 +98,65 @@
 </li>
 </ul>
 
-        
+            
+          
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../index.html">CVXOPT</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CVXOPT</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../index.html">Docs</a> &raquo;</li>
-      
-    <li>Applications and extensions</li>
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Applications and extensions</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
+            
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
-          <div role="main">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="applications-and-extensions">
 <h1>Applications and extensions<a class="headerlink" href="#applications-and-extensions" title="Permalink to this headline">¶</a></h1>
@@ -138,30 +168,32 @@
 </ul>
 </div>
 <ul class="simple">
-<li><a class="reference external" href="http://cvxopt.github.io/chompack">CHOMPACK</a>: chordal matrix package</li>
-<li><a class="reference external" href="http://cvxopt.github.io/smcp">SMCP</a>: a solver for sparse matrix cone programs</li>
+<li><p><a class="reference external" href="http://cvxopt.github.io/chompack">CHOMPACK</a>: chordal matrix package</p></li>
+<li><p><a class="reference external" href="http://cvxopt.github.io/smcp">SMCP</a>: a solver for sparse matrix cone programs</p></li>
 </ul>
 <p class="rubric">Other projects that use CVXOPT</p>
 <ul class="simple">
-<li><a class="reference external" href="http://cvxpy.org">CVXPY</a>:   a convex optimization modeling package.</li>
-<li><a class="reference external" href="http://picos.zib.de">PICOS</a>: a Python Interface for Conic Optimization Solvers</li>
-<li><a class="reference external" href="http://sagemath.org">Sage</a>: a free alternative to Magma, Maple, Mathematica and Matlab.</li>
-<li><a class="reference external" href="http://openopt.org">OpenOpt</a>:  a general platform for numerical optimization.</li>
-<li><a class="reference external" href="http://pages.cs.wisc.edu/~kline/cvxopt/">Iterative Solvers</a>:  a collection of iterative solvers for CVXOPT.</li>
-<li><a class="reference external" href="http://www.stanford.edu/~udell/sigopt">SIGOPT</a>:  a python package for sigmoidal programming.</li>
+<li><p><a class="reference external" href="http://cvxpy.org">CVXPY</a>:   a convex optimization modeling package.</p></li>
+<li><p><a class="reference external" href="http://picos.zib.de">PICOS</a>: a Python Interface for Conic Optimization Solvers</p></li>
+<li><p><a class="reference external" href="http://sagemath.org">Sage</a>: a free alternative to Magma, Maple, Mathematica and Matlab.</p></li>
+<li><p><a class="reference external" href="http://openopt.org">OpenOpt</a>:  a general platform for numerical optimization.</p></li>
+<li><p><a class="reference external" href="http://pages.cs.wisc.edu/~kline/cvxopt/">Iterative Solvers</a>:  a collection of iterative solvers for CVXOPT.</p></li>
+<li><p><a class="reference external" href="http://www.stanford.edu/~udell/sigopt">SIGOPT</a>:  a python package for sigmoidal programming.</p></li>
 </ul>
 </div>
 
 
+           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="openoffice/index.html" class="btn btn-neutral float-right" title="OpenOffice plugin">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="openoffice/index.html" class="btn btn-neutral float-right" title="OpenOffice plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../examples/other/embed_cvxopt.html" class="btn btn-neutral" title="Using CVXOPT from C"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../examples/other/embed_cvxopt.html" class="btn btn-neutral float-left" title="Using CVXOPT from C" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -170,13 +202,17 @@
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../copyright.html">Copyright</a> 2004-2019, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Feb 05, 2019.
+        &copy; <a href="../copyright.html">Copyright</a> 2004-2020, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe
+      <span class="lastupdated">
+        Last updated on Jan 20, 2020.
+      </span>
+
     </p>
   </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
 </footer>
+
         </div>
       </div>
 
@@ -186,38 +222,18 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'1.2.3',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  false
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.8.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.3.1.
     </div>
 
 <script>

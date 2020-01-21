@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>L1-norm regularized least-squares &mdash; CVXOPT</title>
@@ -12,178 +13,215 @@
 
   
   
+  
+  
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-        <link rel="search" title="Search" href="../../search.html"/>
-        <link rel="copyright" title="Copyright" href="../../copyright.html"/>
-    <link rel="top" title="CVXOPT" href="../../index.html"/>
-        <link rel="up" title="Examples" href="../index.html"/>
-        <link rel="next" title="Multiclass SVM" href="mcsvm.html"/>
-        <link rel="prev" title="L1-norm approximation" href="l1.html"/> 
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Multiclass SVM" href="mcsvm.html" />
+    <link rel="prev" title="L1-norm approximation" href="l1.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        <a href="../../index.html" class="fa fa-home"> CVXOPT</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> CVXOPT
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-      </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
-        
-            <ul class="current">
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and license</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../download/index.html">Download</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../download/index.html#latest-version">Latest version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../download/index.html#older-versions">Older versions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#installing-a-pre-built-package">Installing a pre-built package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-and-installing-from-source">Building and installing from source</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#windows">Windows</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#user-s-guide">User’s guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#technical-documentation">Technical documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#discussion-forum">Discussion forum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#revision-history">Revision history</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../download/index.html">Download</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#tutorial-examples">Tutorial examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#book-examples">Book examples</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html#custom-interior-point-solvers">Custom interior-point solvers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#custom-interior-point-solvers">Custom interior-point solvers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="l1.html">L1-norm approximation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">L1-norm regularized least-squares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mcsvm.html">Multiclass SVM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="robsvm.html">Robust SVM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ubsdp.html">SDPs with upper bounds</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#utility-functions">Utility functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#other-examples">Other examples</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../applications/index.html">Applications and extensions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../applications/openoffice/index.html">OpenOffice plugin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../applications/nucnrm/index.html">Nuclear norm approximation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../applications/svm/index.html">Support Vector Machines</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../applications/index.html">Applications and extensions</a></li>
 </ul>
 
-        
+            
+          
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">CVXOPT</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CVXOPT</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../index.html">Examples</a> &raquo;</li>
-      
-    <li>L1-norm regularized least-squares</li>
+        
+      <li>L1-norm regularized least-squares</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
+            
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
-          <div role="main">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="l1-norm-regularized-least-squares">
 <h1>L1-norm regularized least-squares<a class="headerlink" href="#l1-norm-regularized-least-squares" title="Permalink to this headline">¶</a></h1>
-<p>We consider a least-squares problem with <img class="math" src="../../_images/math/a301afaec3a8e4e639ad1d14140c7c5470a8eef2.png" alt="\ell_1"/>-norm
+<p>We consider a least-squares problem with <img class="math" src="../../_images/math/f2b8d38e08000500cc6e5e308c0ca84b2b47c349.png" alt="\ell_1"/>-norm
 regularization</p>
 <div class="math" id="equation-regls">
-<p><span class="eqno">(1)<a class="headerlink" href="#equation-regls" title="Permalink to this equation">¶</a></span><img src="../../_images/math/e74cd75a0413f0ddd22ad3e26b39314c7745e159.png" alt="\begin{array}{ll}
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-regls" title="Permalink to this equation">¶</a></span><img src="../../_images/math/fde3e7749b4996b392a93e573f0c63d4c16b5c30.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp;  \| Ax - b \|_2^2  + \| x \|_1
 \end{array}"/></p>
-</div><p>with variable <img class="math" src="../../_images/math/44d07c846295627aabe4ea050beac4e3f2d215b8.png" alt="x \in \mathbf{R}^n"/> and problem data <img class="math" src="../../_images/math/6420ecf43abdffa29510fd39ecee621412af6a6c.png" alt="A \in \mathbf{R}^{m \times n}"/> and <img class="math" src="../../_images/math/e742ebb51605f57e449436d723a77a55e8a331b9.png" alt="b \in
+</div><p>with variable <img class="math" src="../../_images/math/4c339889519d7dc4a6b75e132b6def0ec579e43b.png" alt="x \in \mathbf{R}^n"/> and problem data <img class="math" src="../../_images/math/80ca29856fc8f358a313b5b2123f2530d27e9cfa.png" alt="A \in \mathbf{R}^{m \times n}"/> and <img class="math" src="../../_images/math/7792814eb4aa4c480f04e74a96073db13adf3685.png" alt="b \in
 \mathbf{R}^m"/>. The problem is equivalent to a QP</p>
 <div class="math" id="equation-regls-qp">
-<p><span class="eqno">(2)<a class="headerlink" href="#equation-regls-qp" title="Permalink to this equation">¶</a></span><img src="../../_images/math/9e5600bd5cde8ed6fa28e455c7bcd8e777c157fe.png" alt="\begin{array}{ll}
+<p><span class="eqno">(2)<a class="headerlink" href="#equation-regls-qp" title="Permalink to this equation">¶</a></span><img src="../../_images/math/f2aa29c990916e302b638b5c353dcff899a525e3.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; \| Ax - b \|_2^2  +  \mathbf{1}^Tv\\
 \mbox{subject to} &amp; -v \preceq x \preceq v
 \end{array}"/></p>
-</div><p>with <img class="math" src="../../_images/math/8a1ab61a49bf0439e8492a826f93c358646ff302.png" alt="2n"/> variables and <img class="math" src="../../_images/math/8a1ab61a49bf0439e8492a826f93c358646ff302.png" alt="2n"/> constraints. The problem can
+</div><p>with <img class="math" src="../../_images/math/229cf04e5888a4b7150a66bf161da88895a2635b.png" alt="2n"/> variables and <img class="math" src="../../_images/math/229cf04e5888a4b7150a66bf161da88895a2635b.png" alt="2n"/> constraints. The problem can
 also be written as a separable QP</p>
 <div class="math" id="equation-regls-qp2">
-<p><span class="eqno">(3)<a class="headerlink" href="#equation-regls-qp2" title="Permalink to this equation">¶</a></span><img src="../../_images/math/7c97d492aa9d5da0c965095f89a8f5b35b8ae2fb.png" alt="\begin{array}{ll}
+<p><span class="eqno">(3)<a class="headerlink" href="#equation-regls-qp2" title="Permalink to this equation">¶</a></span><img src="../../_images/math/39bb7168bc46e81784a9c4d9dba410360f9a8f2a.png" alt="\begin{array}{ll}
 \mbox{minimize}   &amp; w^Tw + e^Tu\\
 \mbox{subject to} &amp; -u \preceq x \preceq u \\
                   &amp; Ax - w = b.
 \end{array}"/></p>
-</div><h3> Documentation </h3><p>Solvers for the <img class="math" src="../../_images/math/a301afaec3a8e4e639ad1d14140c7c5470a8eef2.png" alt="\ell_1"/>-norm regularized least-squares problem are
-available as a Python module <a class="reference download internal" download="" href="../../_downloads/130d3533b6350b6d014537efc67626a4/l1regls.py"><code class="xref download docutils literal notranslate"><span class="pre">l1regls.py</span></code></a>
-(or <a class="reference download internal" download="" href="../../_downloads/92ac9d0f45c5c69909ca628f5bed4059/l1regls_mosek6.py"><code class="xref download docutils literal notranslate"><span class="pre">l1regls_mosek6.py</span></code></a> or <a class="reference download internal" download="" href="../../_downloads/fadd87c7fc617e6d404d6f409886d8af/l1regls_mosek7.py"><code class="xref download docutils literal notranslate"><span class="pre">l1regls_mosek7.py</span></code></a> for earlier versions of CVXOPT that use MOSEK 6 or 7). The module implements the following three functions:</p>
+</div><h3> Documentation </h3><p>Solvers for the <img class="math" src="../../_images/math/f2b8d38e08000500cc6e5e308c0ca84b2b47c349.png" alt="\ell_1"/>-norm regularized least-squares problem are
+available as a Python module <a class="reference download internal" download="" href="../../_downloads/d5ed902eb903c26fc18bd73731b5e67d/l1regls.py"><code class="xref download docutils literal notranslate"><span class="pre">l1regls.py</span></code></a>
+(or <a class="reference download internal" download="" href="../../_downloads/c85481ca9c63e8f47fc000a08da93766/l1regls_mosek6.py"><code class="xref download docutils literal notranslate"><span class="pre">l1regls_mosek6.py</span></code></a> or <a class="reference download internal" download="" href="../../_downloads/0d06b964e77b8ad03bfe2d8aeba79b79/l1regls_mosek7.py"><code class="xref download docutils literal notranslate"><span class="pre">l1regls_mosek7.py</span></code></a> for earlier versions of CVXOPT that use MOSEK 6 or 7). The module implements the following three functions:</p>
 <blockquote>
 <div><dl class="function">
 <dt id="l1regls">
-<code class="descname">l1regls</code><span class="sig-paren">(</span><em>A</em>, <em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#l1regls" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">l1regls</code><span class="sig-paren">(</span><em class="sig-param">A</em>, <em class="sig-param">b</em><span class="sig-paren">)</span><a class="headerlink" href="#l1regls" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-regls-qp">(2)</a> using a custom KKT solver.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/888f7c323ac0341871e867220ae2d76467d74d6e.png" alt="x"/>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="l1regls_mosek">
-<code class="descname">l1regls_mosek</code><span class="sig-paren">(</span><em>A</em>, <em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#l1regls_mosek" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">l1regls_mosek</code><span class="sig-paren">(</span><em class="sig-param">A</em>, <em class="sig-param">b</em><span class="sig-paren">)</span><a class="headerlink" href="#l1regls_mosek" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-regls-qp">(2)</a> using MOSEK. This function is
 only available if MOSEK is installed.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/888f7c323ac0341871e867220ae2d76467d74d6e.png" alt="x"/>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="l1regls_mosek2">
-<code class="descname">l1regls_mosek2</code><span class="sig-paren">(</span><em>A</em>, <em>b</em><span class="sig-paren">)</span><a class="headerlink" href="#l1regls_mosek2" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">l1regls_mosek2</code><span class="sig-paren">(</span><em class="sig-param">A</em>, <em class="sig-param">b</em><span class="sig-paren">)</span><a class="headerlink" href="#l1regls_mosek2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-regls-qp2">(3)</a> using MOSEK. This function is
 only available if MOSEK is installed.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/a59f68a4202623bb859a7093f0316bf466e6f75d.png" alt="x"/>.</p>
+<p>Returns the solution <img class="math" src="../../_images/math/888f7c323ac0341871e867220ae2d76467d74d6e.png" alt="x"/>.</p>
 </dd></dl>
 
 </div></blockquote>
-<h3> Example </h3><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">l1regls</span> <span class="k">import</span> <span class="n">l1regls</span>
-<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">normal</span>
+<h3> Example </h3><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">l1regls</span> <span class="kn">import</span> <span class="n">l1regls</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">normal</span>
 
 <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">200</span>
 <span class="n">A</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
@@ -193,15 +231,17 @@ only available if MOSEK is installed.</p>
 </div>
 
 
+           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="mcsvm.html" class="btn btn-neutral float-right" title="Multiclass SVM">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="mcsvm.html" class="btn btn-neutral float-right" title="Multiclass SVM" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="l1.html" class="btn btn-neutral" title="L1-norm approximation"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="l1.html" class="btn btn-neutral float-left" title="L1-norm approximation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -210,13 +250,17 @@ only available if MOSEK is installed.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2019, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Feb 05, 2019.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2020, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe
+      <span class="lastupdated">
+        Last updated on Jan 20, 2020.
+      </span>
+
     </p>
   </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
 </footer>
+
         </div>
       </div>
 
@@ -226,38 +270,18 @@ only available if MOSEK is installed.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'1.2.3',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  false
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.8.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.3.1.
     </div>
 
 <script>

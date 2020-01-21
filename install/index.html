@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Installation instructions &mdash; CVXOPT</title>
@@ -12,60 +13,80 @@
 
   
   
+  
+  
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-        <link rel="search" title="Search" href="../search.html"/>
-        <link rel="copyright" title="Copyright" href="../copyright.html"/>
-    <link rel="top" title="CVXOPT" href="../index.html"/>
-        <link rel="next" title="Documentation" href="../documentation/index.html"/>
-        <link rel="prev" title="Download" href="../download/index.html"/> 
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="next" title="Documentation" href="../documentation/index.html" />
+    <link rel="prev" title="Download" href="../download/index.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        <a href="../index.html" class="fa fa-home"> CVXOPT</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> CVXOPT
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-      </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
-        
-            <ul class="current">
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../copyright.html">Copyright and license</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../download/index.html">Download</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../download/index.html#latest-version">Latest version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../download/index.html#older-versions">Older versions</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../download/index.html">Download</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation instructions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#installing-a-pre-built-package">Installing a pre-built package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#building-and-installing-from-source">Building and installing from source</a></li>
@@ -75,58 +96,70 @@
 <li class="toctree-l2"><a class="reference internal" href="#windows">Windows</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../documentation/index.html">Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../documentation/index.html#user-s-guide">User’s guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../documentation/index.html#technical-documentation">Technical documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../documentation/index.html#discussion-forum">Discussion forum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../documentation/index.html#revision-history">Revision history</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/index.html#tutorial-examples">Tutorial examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/index.html#book-examples">Book examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/index.html#custom-interior-point-solvers">Custom interior-point solvers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/index.html#utility-functions">Utility functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/index.html#other-examples">Other examples</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../applications/index.html">Applications and extensions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../applications/openoffice/index.html">OpenOffice plugin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../applications/nucnrm/index.html">Nuclear norm approximation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../applications/svm/index.html">Support Vector Machines</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation/index.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../applications/index.html">Applications and extensions</a></li>
 </ul>
 
-        
+            
+          
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../index.html">CVXOPT</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CVXOPT</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../index.html">Docs</a> &raquo;</li>
-      
-    <li>Installation instructions</li>
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Installation instructions</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
+            
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
-          <div role="main">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="installation-instructions">
 <h1>Installation instructions<a class="headerlink" href="#installation-instructions" title="Permalink to this headline">¶</a></h1>
@@ -149,21 +182,21 @@ using <a class="reference external" href="https://pip.pypa.io">pip</a>:</p>
 </div>
 <p>Wheels for Linux:</p>
 <ul class="simple">
-<li>are available for Python 2.7, 3.5, 3.6, and 3.7 (32 and 64 bit)</li>
-<li>are linked against OpenBLAS</li>
-<li>include all optional extensions (DSDP, GLPK, GSL, and FFTW)</li>
+<li><p>are available for Python 2.7, 3.5, 3.6, 3.7, and 3.8 (32 and 64 bit)</p></li>
+<li><p>are linked against OpenBLAS</p></li>
+<li><p>include all optional extensions (DSDP, GLPK, GSL, and FFTW)</p></li>
 </ul>
 <p>Wheels for macOS:</p>
 <ul class="simple">
-<li>are available for Python 2.7, 3.5, 3.6, and 3.7 (universal binaries)</li>
-<li>are linked against BLAS/LAPACK from the Accelerate framework</li>
-<li>include all optional extensions (DSDP, GLPK, GSL, and FFTW)</li>
+<li><p>are available for Python 2.7, 3.5, 3.6, 3.7, and 3.8 (universal binaries)</p></li>
+<li><p>are linked against BLAS/LAPACK from the Accelerate framework</p></li>
+<li><p>include all optional extensions (DSDP, GLPK, GSL, and FFTW)</p></li>
 </ul>
 <p>Wheels for Windows:</p>
 <ul class="simple">
-<li>are available for Python 27, 3.4, 3.5, 3.6, and 3.7 (64 bit only)</li>
-<li>are linked against MKL</li>
-<li>Python 3.5+ wheels include the optional extension GLPK (wheels for Python 2.7 and 3.4 include none of the optional extensions)</li>
+<li><p>are available for Python 27, 3.5, 3.6, and 3.7 (64 bit only)</p></li>
+<li><p>are linked against MKL</p></li>
+<li><p>Python 3.5+ wheels include the optional extension GLPK (the wheel for Python 2.7 does no include any of the optional extensions)</p></li>
 </ul>
 </div>
 <div class="section" id="building-and-installing-from-source">
@@ -186,13 +219,13 @@ SuiteSparse source which is no longer included with CVXOPT and must be
 downloaded separately.</p>
 <p>The following software libraries are optional.</p>
 <ul class="simple">
-<li><a class="reference external" href="www.gnu.org/software/gsl">The GNU Scientific Library GSL</a>.</li>
-<li><a class="reference external" href="www.fftw.org">FFTW</a> is a C library for discrete Fourier transforms.</li>
-<li><a class="reference external" href="www.gnu.org/software/glpk/glpk.html">GLPK</a> is a linear programming
-package.</li>
-<li><a class="reference external" href="www.mosek.com">MOSEK version 8</a> is a commercial library of convex
-optimization solvers.</li>
-<li><a class="reference external" href="www-unix.mcs.anl.gov/DSDP">DSDP5.8</a> is a semidefinite programming solver.</li>
+<li><p><a class="reference external" href="www.gnu.org/software/gsl">The GNU Scientific Library GSL</a>.</p></li>
+<li><p><a class="reference external" href="www.fftw.org">FFTW</a> is a C library for discrete Fourier transforms.</p></li>
+<li><p><a class="reference external" href="www.gnu.org/software/glpk/glpk.html">GLPK</a> is a linear programming
+package.</p></li>
+<li><p><a class="reference external" href="www.mosek.com">MOSEK version 9</a> is a commercial library of convex
+optimization solvers.</p></li>
+<li><p><a class="reference external" href="www-unix.mcs.anl.gov/DSDP">DSDP5.8</a> is a semidefinite programming solver.</p></li>
 </ul>
 <p class="rubric">Installation</p>
 <p>CVXOPT can be installed globally (for all users on a UNIX/Linux system)
@@ -226,32 +259,32 @@ using the command:</p>
 by means of environment variables. The following variables in the setup
 script can be modified:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">BLAS_LIB_DIR</span></code>: the directory containing the LAPACK and BLAS libraries.</li>
-<li><code class="docutils literal notranslate"><span class="pre">BUILD_GSL</span></code>: set this variable to 1 if you would like to use the GSL
+<li><p><code class="docutils literal notranslate"><span class="pre">BLAS_LIB_DIR</span></code>: the directory containing the LAPACK and BLAS libraries.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BUILD_GSL</span></code>: set this variable to 1 if you would like to use the GSL
 random number generators for constructing random matrices in CVXOPT.
 If <code class="docutils literal notranslate"><span class="pre">BULD_GSL</span></code> is 0, the Python random number generators will be used
-instead.</li>
-<li><code class="docutils literal notranslate"><span class="pre">GSL_LIB_DIR</span></code>: the directory containing <code class="docutils literal notranslate"><span class="pre">libgsl</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">GSL_INC_DIR</span></code>: the directory containing the GSL header files.</li>
-<li><code class="docutils literal notranslate"><span class="pre">BUILD_FFTW</span></code>: set this variable to 1 to install the <code class="docutils literal notranslate"><span class="pre">cvxopt.fftw</span></code> module,
-which is an interface to FFTW.</li>
-<li><code class="docutils literal notranslate"><span class="pre">FFTW_LIB_DIR</span></code>: the directory containing <code class="docutils literal notranslate"><span class="pre">libfftw3</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">FFTW_INC_DIR</span></code>: the directory containing <code class="docutils literal notranslate"><span class="pre">fftw.h</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">BUILD_GLPK</span></code>: set this variable to 1 to enable support for the linear
-programming solver GLPK.</li>
-<li><code class="docutils literal notranslate"><span class="pre">GLPK_LIB_DIR</span></code>: the directory containing <code class="docutils literal notranslate"><span class="pre">libglpk</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">GLPK_INC_DIR</span></code>: the directory containing <code class="docutils literal notranslate"><span class="pre">glpk.h</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">BUILD_DSDP</span></code>: set this variable to 1 to enable support for the semidefinite
-programming solver DSDP.</li>
-<li><code class="docutils literal notranslate"><span class="pre">DSDP_LIB_DIR</span></code>: the directory containing <code class="docutils literal notranslate"><span class="pre">libdsdp</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">DSDP_INC_DIR</span></code>: the directory containing <code class="docutils literal notranslate"><span class="pre">dsdp5.h</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">SUITESPARSE_LIB_DIR</span></code>: the directory containing SuiteSparse libraries.</li>
-<li><code class="docutils literal notranslate"><span class="pre">SUITESPARSE_INC_DIR</span></code>: the directory containing SuiteSparse header files.</li>
-<li><code class="docutils literal notranslate"><span class="pre">SUITESPARSE_SRC_DIR</span></code>: the directory containing SuiteSparse source. The
+instead.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GSL_LIB_DIR</span></code>: the directory containing <code class="docutils literal notranslate"><span class="pre">libgsl</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GSL_INC_DIR</span></code>: the directory containing the GSL header files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BUILD_FFTW</span></code>: set this variable to 1 to install the <code class="docutils literal notranslate"><span class="pre">cvxopt.fftw</span></code> module,
+which is an interface to FFTW.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FFTW_LIB_DIR</span></code>: the directory containing <code class="docutils literal notranslate"><span class="pre">libfftw3</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FFTW_INC_DIR</span></code>: the directory containing <code class="docutils literal notranslate"><span class="pre">fftw.h</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BUILD_GLPK</span></code>: set this variable to 1 to enable support for the linear
+programming solver GLPK.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GLPK_LIB_DIR</span></code>: the directory containing <code class="docutils literal notranslate"><span class="pre">libglpk</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GLPK_INC_DIR</span></code>: the directory containing <code class="docutils literal notranslate"><span class="pre">glpk.h</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">BUILD_DSDP</span></code>: set this variable to 1 to enable support for the semidefinite
+programming solver DSDP.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DSDP_LIB_DIR</span></code>: the directory containing <code class="docutils literal notranslate"><span class="pre">libdsdp</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DSDP_INC_DIR</span></code>: the directory containing <code class="docutils literal notranslate"><span class="pre">dsdp5.h</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SUITESPARSE_LIB_DIR</span></code>: the directory containing SuiteSparse libraries.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SUITESPARSE_INC_DIR</span></code>: the directory containing SuiteSparse header files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SUITESPARSE_SRC_DIR</span></code>: the directory containing SuiteSparse source. The
 variables <code class="docutils literal notranslate"><span class="pre">SUITESPARSE_LIB_DIR</span></code> and <code class="docutils literal notranslate"><span class="pre">SUITESPARSE_INC_DIR</span></code> are ignored and
 relevant parts of SuiteSparse are build from source when
-<code class="docutils literal notranslate"><span class="pre">SUITESPARSE_SRC_DIR</span></code> is specified.</li>
-<li><code class="docutils literal notranslate"><span class="pre">MSVC</span></code>: set this variable to 1 if compiling with MSVC 14 or later</li>
+<code class="docutils literal notranslate"><span class="pre">SUITESPARSE_SRC_DIR</span></code> is specified.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MSVC</span></code>: set this variable to 1 if compiling with MSVC 14 or later</p></li>
 </ul>
 <p>Each of the variables can be overridden by specifying an environment variable
 with the prefix <code class="docutils literal notranslate"><span class="pre">CVXOPT_</span></code>. For example, the following command installs CVXOPT
@@ -274,9 +307,9 @@ Python interface are installed.</p>
 <code class="docutils literal notranslate"><span class="pre">build-essential</span></code> and <code class="docutils literal notranslate"><span class="pre">python-dev</span></code> as well as BLAS and LAPACK library packages
 such as</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">libopenblas-dev</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">libatlas-dev</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">libblas-dev</span></code> and <code class="docutils literal notranslate"><span class="pre">liblapack-dev</span></code></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libopenblas-dev</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libatlas-dev</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libblas-dev</span></code> and <code class="docutils literal notranslate"><span class="pre">liblapack-dev</span></code></p></li>
 </ul>
 <p>If multiple BLAS and LAPACK libraries have been installed, you can verify
 the current configuration using the following commands:</p>
@@ -285,8 +318,8 @@ the current configuration using the following commands:</p>
 </pre></div>
 </div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last">Debian Science: <a class="reference external" href="https://wiki.debian.org/DebianScience/LinearAlgebraLibraries">Handle different versions of BLAS and LAPACK</a>.</p>
+<p class="admonition-title">See also</p>
+<p>Debian Science: <a class="reference external" href="https://wiki.debian.org/DebianScience/LinearAlgebraLibraries">Handle different versions of BLAS and LAPACK</a>.</p>
 </div>
 <p>As of Ubuntu 16.04, SuiteSparse can be installed as a dynamic library by
 installing the <code class="docutils literal notranslate"><span class="pre">libsuitesparse-dev</span></code> package. Alternatively, if SuiteSparse is
@@ -295,10 +328,10 @@ not available as a dynamic library, the
 <p>To build the optional CVXOPT extensions (DSDP, FFTW, GLPK, and GSL), the
 following packages should be installed as well:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">libdsdp-dev</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">libfftw3-dev</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">libglpk-dev</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">libgsl-dev</span></code></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libdsdp-dev</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libfftw3-dev</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libglpk-dev</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libgsl-dev</span></code></p></li>
 </ul>
 <p>When all the necessary Ubuntu packages have been installed,
 CVXOPT can be built with all extensions in Ubuntu 16.04 (or later) as follows:</p>
@@ -329,8 +362,10 @@ before running <code class="docutils literal notranslate"><span class="pre">pyth
 library, the necessary SuiteSparse components can be built with CVXOPT
 by downloading the SuiteSparse source and setting <code class="docutils literal notranslate"><span class="pre">CVXOPT_SUITESPARSE_SRC_DIR</span></code>
 to the SuiteSparse source directory:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-5.3.0.tar.gz
-tar -xf SuiteSparse-5.3.0.tar.gz
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/DrTimothyAldenDavis/SuiteSparse.git
+<span class="nb">pushd</span> SuiteSparse
+git checkout v5.6.0
+<span class="nb">popd</span>
 <span class="nb">export</span> <span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/SuiteSparse
 git clone https://github.com/cvxopt/cvxopt.git
 <span class="nb">cd</span> cvxopt
@@ -393,8 +428,10 @@ pip install git+https://github.com/cvxopt/cvxopt
 <p>If SuiteSparse is not available as a dynamic library, the necessary SuiteSparse
 components can be built with CVXOPT by downloading the SuiteSparse source and
 setting <code class="docutils literal notranslate"><span class="pre">CVXOPT_SUITESPARSE_SRC_DIR</span></code> to the SuiteSparse source directory:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-5.3.0.tar.gz
-tar -xf SuiteSparse-5.3.0.tar.gz
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/DrTimothyAldenDavis/SuiteSparse.git
+<span class="nb">pushd</span> SuiteSparse
+git checkout v5.6.0
+<span class="nb">popd</span>
 <span class="nb">export</span> <span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/SuiteSparse
 git clone https://github.com/cvxopt/cvxopt.git
 <span class="nb">cd</span> cvxopt
@@ -432,9 +469,10 @@ if it is not, it can now be installed with <code class="docutils literal notrans
 Mingwpy currently only supports Python version 2.7 through 3.4.</p>
 <p>Open the Command Prompt and execute the following commands:</p>
 <div class="highlight-batch notranslate"><div class="highlight"><pre><span></span><span class="c1">rem Download SuiteSparse source</span>
-wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-5.3.0.tar.gz
-7z x SuiteSparse-5.3.0.tar.gz
-7z x SuiteSparse-5.3.0.tar
+git clone https://github.com/DrTimothyAldenDavis/SuiteSparse.git
+<span class="k">cd</span> SuiteSparse
+git checkout v5.6.0
+<span class="k">cd</span> ..
 <span class="k">set</span> <span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="p">=</span><span class="nv">%CD%</span>\SuiteSparse
 
 <span class="c1">rem Install MKL</span>
@@ -459,9 +497,10 @@ python -m unittest discover -s tests
 <p>CVXOPT 1.2.0+ can be built for Windows (64 bit) with MSVC14 and MKL.</p>
 <p>Open the Command Prompt and execute the following commands:</p>
 <div class="highlight-batch notranslate"><div class="highlight"><pre><span></span><span class="c1">rem Download SuiteSparse source</span>
-wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-5.3.0.tar.gz
-7z x SuiteSparse-5.3.0.tar.gz
-7z x SuiteSparse-5.3.0.tar
+git clone https://github.com/DrTimothyAldenDavis/SuiteSparse.git
+<span class="k">cd</span> SuiteSparse
+git checkout v5.6.0
+<span class="k">cd</span> ..
 <span class="k">set</span> <span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="p">=</span><span class="nv">%CD%</span>\SuiteSparse
 
 <span class="c1">rem Install MKL</span>
@@ -484,15 +523,17 @@ python -m unittest discover -s tests
 </div>
 
 
+           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../documentation/index.html" class="btn btn-neutral float-right" title="Documentation">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../documentation/index.html" class="btn btn-neutral float-right" title="Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../download/index.html" class="btn btn-neutral" title="Download"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../download/index.html" class="btn btn-neutral float-left" title="Download" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -501,13 +542,17 @@ python -m unittest discover -s tests
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../copyright.html">Copyright</a> 2004-2019, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Feb 05, 2019.
+        &copy; <a href="../copyright.html">Copyright</a> 2004-2020, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe
+      <span class="lastupdated">
+        Last updated on Jan 21, 2020.
+      </span>
+
     </p>
   </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
 </footer>
+
         </div>
       </div>
 
@@ -517,38 +562,18 @@ python -m unittest discover -s tests
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'1.2.3',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  false
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.8.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.3.1.
     </div>
 
 <script>

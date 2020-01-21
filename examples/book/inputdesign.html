@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Input design (fig. 6.6) &mdash; CVXOPT</title>
@@ -12,134 +13,189 @@
 
   
   
+  
+  
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-        <link rel="search" title="Search" href="../../search.html"/>
-        <link rel="copyright" title="Copyright" href="../../copyright.html"/>
-    <link rel="top" title="CVXOPT" href="../../index.html"/>
-        <link rel="up" title="Examples" href="../index.html"/>
-        <link rel="next" title="Sparse regressor selection (fig. 6.7)" href="regsel.html"/>
-        <link rel="prev" title="Robust regression (fig. 6.5)" href="huber.html"/> 
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="copyright" title="Copyright" href="../../copyright.html" />
+    <link rel="next" title="Sparse regressor selection (fig. 6.7)" href="regsel.html" />
+    <link rel="prev" title="Robust regression (fig. 6.5)" href="huber.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
+   
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        <a href="../../index.html" class="fa fa-home"> CVXOPT</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> CVXOPT
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-      </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
-        
-            <ul class="current">
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and license</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../download/index.html">Download</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../download/index.html#latest-version">Latest version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../download/index.html#older-versions">Older versions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#installing-a-pre-built-package">Installing a pre-built package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#building-and-installing-from-source">Building and installing from source</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#customizing-the-setup-script">Customizing the setup script</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#ubuntu-debian">Ubuntu/Debian</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#macos">macOS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install/index.html#windows">Windows</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#user-s-guide">User’s guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#technical-documentation">Technical documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#discussion-forum">Discussion forum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.html#revision-history">Revision history</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../download/index.html">Download</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation instructions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation/index.html">Documentation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#tutorial-examples">Tutorial examples</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html#book-examples">Book examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#book-examples">Book examples</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rls.html">Optimal trade-off curve for a regularized least-squares problem (fig. 4.11)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="portfolio.html">Risk-return trade-off (fig. 4.12)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="penalties.html">Penalty function approximation (fig. 6.2)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="huber.html">Robust regression  (fig. 6.5)</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Input design (fig. 6.6)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="regsel.html">Sparse regressor selection (fig. 6.7)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="smoothrec.html">Quadratic smoothing (fig. 6.8-6.10)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tv.html">Total variation reconstruction (fig. 6.11-6.14)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="robls.html">Stochastic and worst-case robust approximation (fig. 6.15-6.16)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="polapprox.html">Polynomial and spline fitting (fig. 6.19-6.20)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="basispursuit.html">Basis pursuit (fig 6.21-6.23)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cvxfit.html">Least-squares fit of a convex function (fig. 6.24)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consumerpref.html">Consumer preference analysis (fig. 6.25-6.26)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="logreg.html">Logistic regression (fig. 7.1)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="maxent.html">Maximum entropy distribution (fig. 7.2-7.3)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="probbounds.html">Chebyshev bounds (fig. 7.6-7.7)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chernoff.html">Chernoff lower bound (fig. 7.8)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expdesign.html">Experiment design (fig. 7.9-7.11)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ellipsoids.html">Ellipsoidal approximations (fig. 8.3-8.4)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="centers.html">Centers of polyhedra (fig. 8.5-8.7)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linsep.html">Approximate linear discrimination (fig. 8.10-8.12)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="placement.html">Linear, quadratic, and fourth-order placement (fig. 8.15-8.17)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="floorplan.html">Floor planning example (fig. 8.20)</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#custom-interior-point-solvers">Custom interior-point solvers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#utility-functions">Utility functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#other-examples">Other examples</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../applications/index.html">Applications and extensions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../applications/openoffice/index.html">OpenOffice plugin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../applications/nucnrm/index.html">Nuclear norm approximation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../applications/svm/index.html">Support Vector Machines</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../applications/index.html">Applications and extensions</a></li>
 </ul>
 
-        
+            
+          
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../index.html">CVXOPT</a>
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CVXOPT</a>
+        
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../index.html">Examples</a> &raquo;</li>
-      
-    <li>Input design (fig. 6.6)</li>
+        
+      <li>Input design (fig. 6.6)</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
+            
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
-          <div role="main">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="input-design-fig-6-6">
 <h1>Input design (fig. 6.6)<a class="headerlink" href="#input-design-fig-6-6" title="Permalink to this headline">¶</a></h1>
 <img alt="../../_images/fig-6-6.png" src="../../_images/fig-6-6.png" />
-<p><a class="reference download internal" download="" href="../../_downloads/44173ca25cf00033df3131005af98b3b/inputdesign.py"><code class="xref download docutils literal notranslate"><span class="pre">source</span> <span class="pre">code</span></code></a></p>
+<p><a class="reference download internal" download="" href="../../_downloads/04cc18744c2680be02ff1f2deef0df21/inputdesign.py"><code class="xref download docutils literal notranslate"><span class="pre">source</span> <span class="pre">code</span></code></a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Figure 6.6, page 309.</span>
 <span class="c1"># Input design.</span>
 
-<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sqrt</span>
-<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="k">import</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">matrix</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sqrt</span>
+<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">matrix</span>
 <span class="k">try</span><span class="p">:</span> <span class="kn">import</span> <span class="nn">pylab</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="k">else</span><span class="p">:</span> <span class="n">pylab_installed</span> <span class="o">=</span> <span class="kc">True</span>
@@ -235,15 +291,17 @@
 </div>
 
 
+           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="regsel.html" class="btn btn-neutral float-right" title="Sparse regressor selection (fig. 6.7)">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="regsel.html" class="btn btn-neutral float-right" title="Sparse regressor selection (fig. 6.7)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="huber.html" class="btn btn-neutral" title="Robust regression (fig. 6.5)"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="huber.html" class="btn btn-neutral float-left" title="Robust regression (fig. 6.5)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -252,13 +310,17 @@
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../../copyright.html">Copyright</a> 2004-2019, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
-      Last updated on Feb 05, 2019.
+        &copy; <a href="../../copyright.html">Copyright</a> 2004-2020, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe
+      <span class="lastupdated">
+        Last updated on Jan 20, 2020.
+      </span>
+
     </p>
   </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
 </footer>
+
         </div>
       </div>
 
@@ -268,38 +330,18 @@
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'1.2.3',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  false
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.8.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.3.1.
     </div>
 
 <script>
