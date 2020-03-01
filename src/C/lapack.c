@@ -6661,7 +6661,7 @@ extern int fselect_c(complex_t *w)
         return -1;
     }
 #if PY_MAJOR_VERSION >= 3
-    if PyLong_Check(result) a = (int) PyLong_AsLong(result);
+    if (PyLong_Check(result)) a = (int) PyLong_AsLong(result);
 #else
     if PyInt_Check(result) a = (int) PyInt_AsLong(result);
 #endif
@@ -6683,7 +6683,7 @@ extern int fselect_r(double *wr, double *wi)
         return -1;
     }
 #if PY_MAJOR_VERSION >= 3
-    if PyLong_Check(result) a = (int) PyLong_AsLong(result);
+    if (PyLong_Check(result)) a = (int) PyLong_AsLong(result);
 #else
     if PyInt_Check(result) a = (int) PyInt_AsLong(result);
 #endif
@@ -6883,7 +6883,7 @@ extern int fselect_gc(complex_t *w, double *v)
        return -1;
    }
 #if PY_MAJOR_VERSION >= 3
-   if PyLong_Check(result) a = (int) PyLong_AsLong(result);
+   if (PyLong_Check(result)) a = (int) PyLong_AsLong(result);
 #else
    if PyInt_Check(result) a = (int) PyInt_AsLong(result);
 #endif
@@ -6907,7 +6907,7 @@ extern int fselect_gr(double *wr, double *wi, double *v)
        return -1;
    }
 #if PY_MAJOR_VERSION >= 3
-   if PyLong_Check(result) a = (int) PyLong_AsLong(result);
+   if (PyLong_Check(result)) a = (int) PyLong_AsLong(result);
 #else
    if PyInt_Check(result) a = (int) PyInt_AsLong(result);
 #endif
