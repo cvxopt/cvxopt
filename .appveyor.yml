@@ -1,4 +1,4 @@
-version: 1.2.4-{build}-{branch}
+version: 1.2.5-{build}-{branch}
 image: Visual Studio 2019
 init:
     - choco install wget checksum
@@ -16,8 +16,8 @@ environment:
     CVXOPT_INSTALL_REQUIRES: mkl
     GLPK_VERSION: "4.65"
     GLPK_SHA256: "4281e29b628864dfe48d393a7bedd781e5b475387c20d8b0158f329994721a10"
-    SUITESPARSE_VERSION: "5.6.0"
-    SUITESPARSE_SHA256: "76d34d9f6dafc592b69af14f58c1dc59e24853dcd7c2e8f4c98ffa223f6a1adb"
+    SUITESPARSE_VERSION: "5.7.2"
+    SUITESPARSE_SHA256: "fe3bc7c3bd1efdfa5cffffb5cebf021ff024c83b5daf0ab445429d3d741bd3ad"
 
   matrix:
     - PYTHON_VERSION: 3.7
