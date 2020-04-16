@@ -4536,7 +4536,7 @@ typedef struct {
   spmatrix *mObj;   /* Set to NULL when iterator is exhausted */
 } spmatrixiter;
 
-static PyTypeObject spmatrixiter_tp;
+PyTypeObject spmatrixiter_tp;
 
 #define SpMatrixIter_Check(O) PyObject_TypeCheck(O, &spmatrixiter_tp)
 
@@ -4549,9 +4549,6 @@ spmatrix_iter(spmatrix *obj)
     PyErr_BadInternalCall();
     return NULL;
   }
-
-  spmatrixiter_tp.tp_iter = PyObject_SelfIter;
-  spmatrixiter_tp.tp_getattro = PyObject_GenericGetAttr;
 
   it = PyObject_GC_New(spmatrixiter, &spmatrixiter_tp);
   if (it == NULL)
@@ -4592,7 +4589,7 @@ spmatrixiter_next(spmatrixiter *it)
   return num2PyObject[SP_ID(it->mObj)](SP_VAL(it->mObj), it->index++);
 }
 
-static PyTypeObject spmatrixiter_tp = {
+PyTypeObject spmatrixiter_tp = {
 #if PY_MAJOR_VERSION >= 3
     PyVarObject_HEAD_INIT(NULL, 0)
 #else
@@ -4614,7 +4611,7 @@ static PyTypeObject spmatrixiter_tp = {
     0,                                        /* tp_hash */
     0,                                        /* tp_call */
     0,                                        /* tp_str */
-    0,                                        /* tp_getattro */
+    PyObject_GenericGetAttr,                  /* tp_getattro */
     0,                                        /* tp_setattro */
     0,                                        /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,  /* tp_flags */
@@ -4623,7 +4620,7 @@ static PyTypeObject spmatrixiter_tp = {
     0,                                        /* tp_clear */
     0,                                        /* tp_richcompare */
     0,                                        /* tp_weaklistoffset */
-    0,                                        /* tp_iter */
+    PyObject_SelfIter,                        /* tp_iter */
     (iternextfunc)spmatrixiter_next,          /* tp_iternext */
     0,                                        /* tp_methods */
 };
