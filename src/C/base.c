@@ -30,12 +30,14 @@
 PyDoc_STRVAR(base__doc__,"Convex optimization package");
 
 extern PyTypeObject matrix_tp ;
+extern PyTypeObject matrixiter_tp ;
 matrix * Matrix_New(int, int, int) ;
 matrix * Matrix_NewFromMatrix(matrix *, int) ;
 matrix * Matrix_NewFromSequence(PyObject *, int) ;
 matrix * Matrix_NewFromPyBuffer(PyObject *, int, int *) ;
 
 extern PyTypeObject spmatrix_tp ;
+extern PyTypeObject spmatrixiter_tp ;
 spmatrix * SpMatrix_New(int_t, int_t, int_t, int ) ;
 spmatrix * SpMatrix_NewFromMatrix(matrix *, int) ;
 spmatrix * SpMatrix_NewFromSpMatrix(spmatrix *, int) ;
@@ -2006,7 +2008,7 @@ PyMODINIT_FUNC initbase(void)
   if (PyType_Ready(&matrix_tp) < 0)
     INITERROR;
 
-  if (PyType_Ready(&matrix_tp) < 0)
+  if (PyType_Ready(&matrixiter_tp) < 0)
     INITERROR;
 
   Py_INCREF(&matrix_tp);
@@ -2016,6 +2018,9 @@ PyMODINIT_FUNC initbase(void)
   spmatrix_tp.tp_alloc = PyType_GenericAlloc;
   spmatrix_tp.tp_free = PyObject_Del;
   if (PyType_Ready(&spmatrix_tp) < 0)
+    INITERROR;
+
+  if (PyType_Ready(&spmatrixiter_tp) < 0)
     INITERROR;
 
   Py_INCREF(&spmatrix_tp);
