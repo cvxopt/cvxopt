@@ -40,12 +40,12 @@ Optimization variables are represented by :class:`variable` objects.
 The function :func:`!len` returns the length of a :class:`variable`.  
 A :class:`variable` ``x`` has two attributes.
 
-.. attribute:: name 
+.. attribute:: variable.name 
 
     The name of the variable.  
 
 
-.. attribute:: value
+.. attribute:: variable.value
 
     Either :const:`None` or a dense :const:`'d'` matrix of size 
     ``len(x)`` by 1.
@@ -413,18 +413,18 @@ constraint function.
 
 Constraints have four public attributes.
 
-.. attribute:: type
+.. attribute:: constraint.type
 
     Returns :const:`'='` if the constraint is an equality constraint, and 
     **'<'** if the constraint is an inequality constraint.
 
 
-.. attribute:: value 
+.. attribute:: constraint.value 
 
     Returns the value of the constraint function.  
 
 
-.. attribute:: multiplier
+.. attribute:: constraint.multiplier
 
     For a constraint ``c``, ``c.multiplier`` is a :class:`variable` 
     object of dimension ``len(c)``.  It is used to represent the 
@@ -433,7 +433,7 @@ Constraints have four public attributes.
     an assignment to ``c.multiplier.value``.
 
 
-.. attribute:: name
+.. attribute:: constraint.name
 
     The name of the constraint.  Changing the name of a constraint also 
     changes the name of the multiplier of ``c``.  For example, the command  
@@ -466,38 +466,38 @@ function.
 The following attributes and methods are useful for examining
 and modifying optimization problems.
 
-.. attribute:: objective
+.. attribute:: op.objective
 
     The objective or cost function.  One can write to this attribute to 
     change the objective of an existing problem.  
 
 
-.. method:: variables
+.. method:: op.variables
 
     Returns a list of the variables of the problem.
 
 
-.. method:: constraints
+.. method:: op.constraints
 
     Returns a list of the constraints.
 
 
-.. method:: inequalities
+.. method:: op.inequalities
 
     Returns a list of the inequality constraints.
 
 
-.. method:: equalities
+.. method:: op.equalities
 
     Returns a list of the equality constraints.
 
 
-.. method:: delconstraint(c)
+.. method:: op.delconstraint(c)
 
     Deletes constraint ``c`` from the problem.
 
 
-.. :: addconstraint(c)
+.. method:: op.addconstraint(c)
 
     Adds constraint ``c`` to the problem.
 
@@ -505,7 +505,7 @@ and modifying optimization problems.
 An optimization problem with convex piecewise-linear objective and
 constraints can be solved by calling the method :func:`solve`.
 
-.. method:: solve([format[, solver]]) 
+.. method:: op.solve([format[, solver]]) 
 
     This function converts the optimization problem to a linear program in 
     matrix form and then solves it using the solver described in 

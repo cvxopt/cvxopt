@@ -3,8 +3,8 @@ notifications:
 
 env:
   global:
-    - SUITESPARSE_VERSION=5.6.0
-    - SUITESPARSE_SHA256=76d34d9f6dafc592b69af14f58c1dc59e24853dcd7c2e8f4c98ffa223f6a1adb
+    - SUITESPARSE_VERSION=5.7.2
+    - SUITESPARSE_SHA256=fe3bc7c3bd1efdfa5cffffb5cebf021ff024c83b5daf0ab445429d3d741bd3ad
     - CVXOPT_BUILD_GSL=1
     - CVXOPT_BUILD_FFTW=1
     - CVXOPT_BUILD_GLPK=1

@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.2.4
+                1.2.5
               </div>
             
           
@@ -200,7 +200,7 @@ sections describe optional interfaces to external solvers, and the
 algorithm parameters that control the cone programming solvers.</p>
 <div class="section" id="linear-cone-programs">
 <span id="s-conelp"></span><h2>Linear Cone Programs<a class="headerlink" href="#linear-cone-programs" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
+<dl class="py function">
 <dt id="cvxopt.solvers.conelp">
 <code class="sig-prename descclassname">cvxopt.solvers.</code><code class="sig-name descname">conelp</code><span class="sig-paren">(</span><em class="sig-param">c</em>, <em class="sig-param">G</em>, <em class="sig-param">h</em><span class="optional">[</span>, <em class="sig-param">dims</em><span class="optional">[</span>, <em class="sig-param">A</em>, <em class="sig-param">b</em><span class="optional">[</span>, <em class="sig-param">primalstart</em><span class="optional">[</span>, <em class="sig-param">dualstart</em><span class="optional">[</span>, <em class="sig-param">kktsolver</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.conelp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a pair of primal and dual cone programs</p>
@@ -471,7 +471,7 @@ obtain the same result if we define <code class="docutils literal notranslate"><
 </div>
 <div class="section" id="quadratic-cone-programs">
 <span id="s-coneqp"></span><h2>Quadratic Cone Programs<a class="headerlink" href="#quadratic-cone-programs" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
+<dl class="py function">
 <dt id="cvxopt.solvers.coneqp">
 <code class="sig-prename descclassname">cvxopt.solvers.</code><code class="sig-name descname">coneqp</code><span class="sig-paren">(</span><em class="sig-param">P</em>, <em class="sig-param">q</em><span class="optional">[</span>, <em class="sig-param">G</em>, <em class="sig-param">h</em><span class="optional">[</span>, <em class="sig-param">dims</em><span class="optional">[</span>, <em class="sig-param">A</em>, <em class="sig-param">b</em><span class="optional">[</span>, <em class="sig-param">initvals</em><span class="optional">[</span>, <em class="sig-param">kktsolver</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.coneqp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a pair of primal and dual quadratic cone programs</p>
@@ -655,7 +655,7 @@ b = \left[ \begin{array}{r} 1.5 \\ 0.0 \\ -1.2 \\ -0.7 \\ 0.0
 <a class="reference internal" href="#cvxopt.solvers.conelp" title="cvxopt.solvers.conelp"><code class="xref py py-func docutils literal notranslate"><span class="pre">conelp</span></code></a> for linear
 programs.  It also provides the option of using the linear programming
 solvers from GLPK or MOSEK.</p>
-<dl class="function">
+<dl class="py function">
 <dt id="cvxopt.solvers.lp">
 <code class="sig-prename descclassname">cvxopt.solvers.</code><code class="sig-name descname">lp</code><span class="sig-paren">(</span><em class="sig-param">c</em>, <em class="sig-param">G</em>, <em class="sig-param">h</em><span class="optional">[</span>, <em class="sig-param">A</em>, <em class="sig-param">b</em><span class="optional">[</span>, <em class="sig-param">solver</em><span class="optional">[</span>, <em class="sig-param">primalstart</em><span class="optional">[</span>, <em class="sig-param">dualstart</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.lp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the pair of primal and dual linear programs</p>
@@ -716,7 +716,7 @@ all the other fields in the output dictionary are <code class="xref py py-const 
 <a class="reference internal" href="#cvxopt.solvers.coneqp" title="cvxopt.solvers.coneqp"><code class="xref py py-func docutils literal notranslate"><span class="pre">coneqp</span></code></a> for quadratic
 programs.  It also provides the option of using the quadratic programming
 solver from MOSEK.</p>
-<dl class="function">
+<dl class="py function">
 <dt id="cvxopt.solvers.qp">
 <code class="sig-prename descclassname">cvxopt.solvers.</code><code class="sig-name descname">qp</code><span class="sig-paren">(</span><em class="sig-param">P</em>, <em class="sig-param">q</em><span class="optional">[</span>, <em class="sig-param">G</em>, <em class="sig-param">h</em><span class="optional">[</span>, <em class="sig-param">A</em>, <em class="sig-param">b</em><span class="optional">[</span>, <em class="sig-param">solver</em><span class="optional">[</span>, <em class="sig-param">initvals</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.qp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the pair of primal and dual convex quadratic programs</p>
@@ -840,7 +840,7 @@ the trade-off curve and produces two figures using the
 <p>The function <a class="reference internal" href="#cvxopt.solvers.socp" title="cvxopt.solvers.socp"><code class="xref py py-func docutils literal notranslate"><span class="pre">socp</span></code></a> is a simpler interface to
 <a class="reference internal" href="#cvxopt.solvers.conelp" title="cvxopt.solvers.conelp"><code class="xref py py-func docutils literal notranslate"><span class="pre">conelp</span></code></a> for
 cone programs with no linear matrix inequality constraints.</p>
-<dl class="function">
+<dl class="py function">
 <dt id="cvxopt.solvers.socp">
 <code class="sig-prename descclassname">cvxopt.solvers.</code><code class="sig-name descname">socp</code><span class="sig-paren">(</span><em class="sig-param">c</em><span class="optional">[</span>, <em class="sig-param">Gl</em>, <em class="sig-param">hl</em><span class="optional">[</span>, <em class="sig-param">Gq</em>, <em class="sig-param">hq</em><span class="optional">[</span>, <em class="sig-param">A</em>, <em class="sig-param">b</em><span class="optional">[</span>, <em class="sig-param">solver</em><span class="optional">[</span>, <em class="sig-param">primalstart</em><span class="optional">[</span>, <em class="sig-param">dualstart</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.socp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the pair of primal and dual second-order cone programs</p>
@@ -965,7 +965,7 @@ same meaning as in the output of
 <a class="reference internal" href="#cvxopt.solvers.conelp" title="cvxopt.solvers.conelp"><code class="xref py py-func docutils literal notranslate"><span class="pre">conelp</span></code></a> for cone
 programs with no second-order cone constraints.  It also provides the
 option of using the DSDP semidefinite programming solver.</p>
-<dl class="function">
+<dl class="py function">
 <dt id="cvxopt.solvers.sdp">
 <code class="sig-prename descclassname">cvxopt.solvers.</code><code class="sig-name descname">sdp</code><span class="sig-paren">(</span><em class="sig-param">c</em><span class="optional">[</span>, <em class="sig-param">Gl</em>, <em class="sig-param">hl</em><span class="optional">[</span>, <em class="sig-param">Gs</em>, <em class="sig-param">hs</em><span class="optional">[</span>, <em class="sig-param">A</em>, <em class="sig-param">b</em><span class="optional">[</span>, <em class="sig-param">solver</em><span class="optional">[</span>, <em class="sig-param">primalstart</em><span class="optional">[</span>, <em class="sig-param">dualstart</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.sdp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the pair of primal and dual semidefinite programs</p>
@@ -2034,7 +2034,7 @@ instances should be solved in parallel, but using different options.</p>
     <p>
         &copy; <a href="copyright.html">Copyright</a> 2004-2020, M.S. Andersen, J. Dahl, L. Vandenberghe
       <span class="lastupdated">
-        Last updated on Jan 20, 2020.
+        Last updated on Apr 16, 2020.
       </span>
 
     </p>
@@ -2063,7 +2063,7 @@ instances should be solved in parallel, but using different options.</p>
     
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.0.1.
     </div>
 
 </body>
