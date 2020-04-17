@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.2.4
+                1.2.5
               </div>
             
           
@@ -215,24 +215,24 @@ essentially a  structure with four fields.  The fields <code class="xref c c-mem
 field is an array that contains the matrix elements stored contiguously in
 column-major order.</p>
 <p>The following C functions can be used to create matrices.</p>
-<dl class="function">
+<dl class="c function">
 <dt id="c.Matrix_New">
-matrix * <code class="sig-name descname">Matrix_New</code><span class="sig-paren">(</span>int<em> nrows</em>, int<em> ncols</em>, int<em> id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_New" title="Permalink to this definition">¶</a></dt>
+matrix *<code class="sig-name descname">Matrix_New</code><span class="sig-paren">(</span>int <em>nrows</em>, int <em>ncols</em>, int <em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_New" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> object of type <cite>id</cite> with <cite>nrows</cite> rows and
 <cite>ncols</cite> columns.  The elements of the matrix are uninitialized.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.Matrix_NewFromMatrix">
-matrix * <code class="sig-name descname">Matrix_NewFromMatrix</code><span class="sig-paren">(</span>matrix<em> *src</em>, int<em> id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_NewFromMatrix" title="Permalink to this definition">¶</a></dt>
+matrix *<code class="sig-name descname">Matrix_NewFromMatrix</code><span class="sig-paren">(</span>matrix *<em>src</em>, int <em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_NewFromMatrix" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns a copy of the matrix <cite>src</cite> converted to type <cite>id</cite>.  The
 following type conversions are allowed:  <code class="xref py py-const docutils literal notranslate"><span class="pre">'i'</span></code> to <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code>,
 <code class="xref py py-const docutils literal notranslate"><span class="pre">'i'</span></code> to <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>, and <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code>  to <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.Matrix_NewFromSequence">
-matrix * <code class="sig-name descname">Matrix_NewFromSequence</code><span class="sig-paren">(</span>PyListObject<em> *x</em>, int<em> id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_NewFromSequence" title="Permalink to this definition">¶</a></dt>
+matrix *<code class="sig-name descname">Matrix_NewFromSequence</code><span class="sig-paren">(</span>PyListObject *<em>x</em>, int <em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_NewFromSequence" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Creates a matrix of type <cite>id</cite> from the Python sequence type <cite>x</cite>. The
 returned matrix has size <code class="docutils literal notranslate"><span class="pre">(len(x),</span> <span class="pre">1)</span></code>.  The size can be changed
 by modifying the <code class="xref c c-member docutils literal notranslate"><span class="pre">nrows</span></code> and <code class="xref c c-member docutils literal notranslate"><span class="pre">ncols</span></code> fields of the
@@ -330,23 +330,23 @@ automatically as the number of non-zero elements grows.</p>
 <p>The <code class="xref c c-member docutils literal notranslate"><span class="pre">id</span></code> field controls the type of the matrix and can have
 values <code class="xref py py-const docutils literal notranslate"><span class="pre">DOUBLE</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">COMPLEX</span></code>.</p>
 <p>Sparse matrices are created using the following functions from the API.</p>
-<dl class="function">
+<dl class="c function">
 <dt id="c.SpMatrix_New">
-spmatrix * <code class="sig-name descname">SpMatrix_New</code><span class="sig-paren">(</span>int_t<em> nrows</em>, int_t<em> ncols</em>, int_t<em> nzmax</em>, int<em> id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_New" title="Permalink to this definition">¶</a></dt>
+spmatrix *<code class="sig-name descname">SpMatrix_New</code><span class="sig-paren">(</span>int_t <em>nrows</em>, int_t <em>ncols</em>, int_t <em>nzmax</em>, int <em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_New" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns a sparse zero matrix with <cite>nrows</cite> rows and <cite>ncols</cite> columns.
 <cite>nzmax</cite> is the number of elements that will be allocated (the length of
 the <code class="xref c c-member docutils literal notranslate"><span class="pre">values</span></code> and <code class="xref c c-member docutils literal notranslate"><span class="pre">rowind</span></code> fields).</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.SpMatrix_NewFromMatrix">
-spmatrix * <code class="sig-name descname">SpMatrix_NewFromMatrix</code><span class="sig-paren">(</span>spmatrix<em> *src</em>, int<em> id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromMatrix" title="Permalink to this definition">¶</a></dt>
+spmatrix *<code class="sig-name descname">SpMatrix_NewFromMatrix</code><span class="sig-paren">(</span>spmatrix *<em>src</em>, int <em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromMatrix" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns a copy the sparse matrix var{src}.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.SpMatrix_NewFromIJV">
-spmatrix * <code class="sig-name descname">SpMatrix_NewFromIJV</code><span class="sig-paren">(</span>matrix<em> *I</em>, matrix<em> *J</em>, matrix<em> *V</em>, int_t<em> nrows</em>, int_t<em> ncols</em>, int<em> id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromIJV" title="Permalink to this definition">¶</a></dt>
+spmatrix *<code class="sig-name descname">SpMatrix_NewFromIJV</code><span class="sig-paren">(</span>matrix *<em>I</em>, matrix *<em>J</em>, matrix *<em>V</em>, int_t <em>nrows</em>, int_t <em>ncols</em>, int <em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromIJV" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Creates a sparse matrix with <cite>nrows</cite> rows and <cite>ncols</cite> columns from a
 triplet description.  <cite>I</cite> and <cite>J</cite> must be integer matrices and <cite>V</cite>
 either a double or complex matrix, or <code class="xref py py-const docutils literal notranslate"><span class="pre">NULL</span></code>. If <cite>V</cite> is
@@ -403,7 +403,7 @@ a sparse matrix:</p>
     <p>
         &copy; <a href="copyright.html">Copyright</a> 2004-2020, M.S. Andersen, J. Dahl, L. Vandenberghe
       <span class="lastupdated">
-        Last updated on Jan 20, 2020.
+        Last updated on Apr 16, 2020.
       </span>
 
     </p>
@@ -432,7 +432,7 @@ a sparse matrix:</p>
     
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.0.1.
     </div>
 
 </body>

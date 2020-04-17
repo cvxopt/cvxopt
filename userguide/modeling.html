@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.2.4
+                1.2.5
               </div>
             
           
@@ -185,7 +185,7 @@ and nested evaluations of <code class="xref py py-func docutils literal notransl
 <div class="section" id="variables">
 <span id="s-variables"></span><h2>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h2>
 <p>Optimization variables are represented by <code class="xref py py-class docutils literal notranslate"><span class="pre">variable</span></code> objects.</p>
-<dl class="function">
+<dl class="py function">
 <dt id="cvxopt.modeling.variable">
 <code class="sig-prename descclassname">cvxopt.modeling.</code><code class="sig-name descname">variable</code><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param">size</em><span class="optional">[</span>, <em class="sig-param">name</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.variable" title="Permalink to this definition">¶</a></dt>
 <dd><p>A vector variable.  The first argument is the dimension of the vector
@@ -200,15 +200,15 @@ files.</p>
 
 <p>The function <code class="xref py py-func docutils literal notranslate"><span class="pre">len</span></code> returns the length of a <code class="xref py py-class docutils literal notranslate"><span class="pre">variable</span></code>.
 A <code class="xref py py-class docutils literal notranslate"><span class="pre">variable</span></code> <code class="docutils literal notranslate"><span class="pre">x</span></code> has two attributes.</p>
-<dl class="attribute">
-<dt id="name">
-<code class="sig-name descname">name</code><a class="headerlink" href="#name" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt id="variable.name">
+<code class="sig-prename descclassname">variable.</code><code class="sig-name descname">name</code><a class="headerlink" href="#variable.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>The name of the variable.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="value">
-<code class="sig-name descname">value</code><a class="headerlink" href="#value" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt id="variable.value">
+<code class="sig-prename descclassname">variable.</code><code class="sig-name descname">value</code><a class="headerlink" href="#variable.value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Either <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> or a dense <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> matrix of size
 <code class="docutils literal notranslate"><span class="pre">len(x)</span></code> by 1.</p>
 <p>The attribute <code class="docutils literal notranslate"><span class="pre">x.value</span></code> is set to <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> when the variable
@@ -248,15 +248,15 @@ elements of <code class="docutils literal notranslate"><span class="pre">x.value
 on variables and other functions.  A function <code class="docutils literal notranslate"><span class="pre">f</span></code> is interpreted as a
 column vector, with length <code class="docutils literal notranslate"><span class="pre">len(f)</span></code> and with a value that depends on
 the values of its variables.  Functions have two public attributes.</p>
-<dl class="attribute">
-<dt>
-<code class="sig-name descname">variables</code></dt>
+<dl class="py attribute">
+<dt id="id0">
+<code class="sig-name descname">variables</code><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a copy of the list of variables of the function.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt>
-<code class="sig-name descname">value</code></dt>
+<dl class="py attribute">
+<dt id="value">
+<code class="sig-name descname">value</code><a class="headerlink" href="#value" title="Permalink to this definition">¶</a></dt>
 <dd><p>The function value.  If any of the variables of <code class="docutils literal notranslate"><span class="pre">f</span></code> has value
 <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>, then <code class="docutils literal notranslate"><span class="pre">f.value()</span></code> returns <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>.  Otherwise,
 it returns a dense <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> matrix of size <code class="docutils literal notranslate"><span class="pre">(len(f),1)</span></code> with
@@ -309,17 +309,17 @@ matrix with one column.</p>
 <dt><strong>Inner products</strong></dt><dd><p>The following two functions return scalar affine functions defined
 as inner products of a constant vector with  a variable or affine
 function.</p>
-<dl class="function">
+<dl class="py function">
 <dt id="cvxopt.modeling.sum">
-<code class="sig-prename descclassname">cvxopt.modeling.</code><code class="sig-name descname">sum</code><span class="sig-paren">(</span><em class="sig-param">v</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.sum" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cvxopt.modeling.</code><code class="sig-name descname">sum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.sum" title="Permalink to this definition">¶</a></dt>
 <dd><p>The argument is an affine function or a variable.  The result is an
 affine function of length 1, with the sum of the components of the
 argument <code class="docutils literal notranslate"><span class="pre">v</span></code>.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="cvxopt.modeling.dot">
-<code class="sig-prename descclassname">cvxopt.modeling.</code><code class="sig-name descname">dot</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.dot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">cvxopt.modeling.</code><code class="sig-name descname">dot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">u</span></em>, <em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.dot" title="Permalink to this definition">¶</a></dt>
 <dd><p>If <code class="docutils literal notranslate"><span class="pre">v</span></code> is a variable or affine function and <code class="docutils literal notranslate"><span class="pre">u</span></code> is a
 <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> matrix of size <code class="docutils literal notranslate"><span class="pre">(len(v),</span> <span class="pre">1)</span></code>, then
 <code class="docutils literal notranslate"><span class="pre">dot(u,</span> <span class="pre">v)</span></code> and <code class="docutils literal notranslate"><span class="pre">dot(v,</span> <span class="pre">u)</span></code> are equivalent to
@@ -523,22 +523,22 @@ constraint function <code class="docutils literal notranslate"><span class="pre"
 <p>The built-in function <code class="xref py py-func docutils literal notranslate"><span class="pre">len</span></code> returns the dimension of the
 constraint function.</p>
 <p>Constraints have four public attributes.</p>
-<dl class="attribute">
-<dt id="type">
-<code class="sig-name descname">type</code><a class="headerlink" href="#type" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt id="constraint.type">
+<code class="sig-prename descclassname">constraint.</code><code class="sig-name descname">type</code><a class="headerlink" href="#constraint.type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns <code class="xref py py-const docutils literal notranslate"><span class="pre">'='</span></code> if the constraint is an equality constraint, and
 <strong>‘&lt;’</strong> if the constraint is an inequality constraint.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt>
-<code class="sig-name descname">value</code></dt>
+<dl class="py attribute">
+<dt id="constraint.value">
+<code class="sig-prename descclassname">constraint.</code><code class="sig-name descname">value</code><a class="headerlink" href="#constraint.value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the value of the constraint function.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="multiplier">
-<code class="sig-name descname">multiplier</code><a class="headerlink" href="#multiplier" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt id="constraint.multiplier">
+<code class="sig-prename descclassname">constraint.</code><code class="sig-name descname">multiplier</code><a class="headerlink" href="#constraint.multiplier" title="Permalink to this definition">¶</a></dt>
 <dd><p>For a constraint <code class="docutils literal notranslate"><span class="pre">c</span></code>, <code class="docutils literal notranslate"><span class="pre">c.multiplier</span></code> is a <code class="xref py py-class docutils literal notranslate"><span class="pre">variable</span></code>
 object of dimension <code class="docutils literal notranslate"><span class="pre">len(c)</span></code>.  It is used to represent the
 Lagrange multiplier or dual variable associated with the constraint.
@@ -546,9 +546,9 @@ Its value is initialized as <code class="xref py py-const docutils literal notra
 an assignment to <code class="docutils literal notranslate"><span class="pre">c.multiplier.value</span></code>.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt>
-<code class="sig-name descname">name</code></dt>
+<dl class="py attribute">
+<dt id="constraint.name">
+<code class="sig-prename descclassname">constraint.</code><code class="sig-name descname">name</code><a class="headerlink" href="#constraint.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>The name of the constraint.  Changing the name of a constraint also
 changes the name of the multiplier of <code class="docutils literal notranslate"><span class="pre">c</span></code>.  For example, the command
 <code class="docutils literal notranslate"><span class="pre">c.name</span> <span class="pre">=</span> <span class="pre">'newname'</span></code> also changes
@@ -560,7 +560,7 @@ changes the name of the multiplier of <code class="docutils literal notranslate"
 <span id="s-lp"></span><h2>Optimization Problems<a class="headerlink" href="#optimization-problems" title="Permalink to this headline">¶</a></h2>
 <p>Optimization problems are be constructed by calling the following
 function.</p>
-<dl class="function">
+<dl class="py function">
 <dt id="cvxopt.modeling.op">
 <code class="sig-prename descclassname">cvxopt.modeling.</code><code class="sig-name descname">op</code><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param">objective</em><span class="optional">[</span>, <em class="sig-param">constraints</em><span class="optional">[</span>, <em class="sig-param">name</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.op" title="Permalink to this definition">¶</a></dt>
 <dd><p>The first argument specifies the objective function to be minimized.
@@ -575,48 +575,54 @@ The default value is the empty string.</p>
 
 <p>The following attributes and methods are useful for examining
 and modifying optimization problems.</p>
-<dl class="attribute">
-<dt id="objective">
-<code class="sig-name descname">objective</code><a class="headerlink" href="#objective" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt id="op.objective">
+<code class="sig-prename descclassname">op.</code><code class="sig-name descname">objective</code><a class="headerlink" href="#op.objective" title="Permalink to this definition">¶</a></dt>
 <dd><p>The objective or cost function.  One can write to this attribute to
 change the objective of an existing problem.</p>
 </dd></dl>
 
-<dl class="method">
-<dt>
-<code class="sig-name descname">variables</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dl class="py method">
+<dt id="op.variables">
+<code class="sig-prename descclassname">op.</code><code class="sig-name descname">variables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#op.variables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of the variables of the problem.</p>
 </dd></dl>
 
-<dl class="method">
-<dt>
-<code class="sig-name descname">constraints</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dl class="py method">
+<dt id="op.constraints">
+<code class="sig-prename descclassname">op.</code><code class="sig-name descname">constraints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#op.constraints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of the constraints.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="inequalities">
-<code class="sig-name descname">inequalities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#inequalities" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt id="op.inequalities">
+<code class="sig-prename descclassname">op.</code><code class="sig-name descname">inequalities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#op.inequalities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of the inequality constraints.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="equalities">
-<code class="sig-name descname">equalities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#equalities" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt id="op.equalities">
+<code class="sig-prename descclassname">op.</code><code class="sig-name descname">equalities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#op.equalities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of the equality constraints.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="delconstraint">
-<code class="sig-name descname">delconstraint</code><span class="sig-paren">(</span><em class="sig-param">c</em><span class="sig-paren">)</span><a class="headerlink" href="#delconstraint" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt id="op.delconstraint">
+<code class="sig-prename descclassname">op.</code><code class="sig-name descname">delconstraint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">c</span></em><span class="sig-paren">)</span><a class="headerlink" href="#op.delconstraint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes constraint <code class="docutils literal notranslate"><span class="pre">c</span></code> from the problem.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt id="op.addconstraint">
+<code class="sig-prename descclassname">op.</code><code class="sig-name descname">addconstraint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">c</span></em><span class="sig-paren">)</span><a class="headerlink" href="#op.addconstraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds constraint <code class="docutils literal notranslate"><span class="pre">c</span></code> to the problem.</p>
+</dd></dl>
+
 <p>An optimization problem with convex piecewise-linear objective and
-constraints can be solved by calling the method <a class="reference internal" href="#solve" title="solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">solve</span></code></a>.</p>
-<dl class="method">
-<dt id="solve">
-<code class="sig-name descname">solve</code><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param">format</em><span class="optional">[</span>, <em class="sig-param">solver</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#solve" title="Permalink to this definition">¶</a></dt>
+constraints can be solved by calling the method <code class="xref py py-func docutils literal notranslate"><span class="pre">solve</span></code>.</p>
+<dl class="py method">
+<dt id="op.solve">
+<code class="sig-prename descclassname">op.</code><code class="sig-name descname">solve</code><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param">format</em><span class="optional">[</span>, <em class="sig-param">solver</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#op.solve" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function converts the optimization problem to a linear program in
 matrix form and then solves it using the solver described in
 the section <a class="reference internal" href="coneprog.html#s-lpsolver"><span class="std std-ref">Linear Programming</span></a>.</p>
@@ -642,14 +648,14 @@ problem are set to the computed dual optimal solution.</p></li>
 The <a class="reference internal" href="#value" title="value"><code class="xref py py-attr docutils literal notranslate"><span class="pre">value</span></code></a> attributes of the variables are set to
 <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>.  The <a class="reference internal" href="#value" title="value"><code class="xref py py-attr docutils literal notranslate"><span class="pre">value</span></code></a> attributes of the multipliers of
 the constraints of the problem are set to a certificate of primal
-infeasibility.  With the <code class="xref py py-const docutils literal notranslate"><span class="pre">'glpk'</span></code> option, <a class="reference internal" href="#solve" title="solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">solve</span></code></a> does
+infeasibility.  With the <code class="xref py py-const docutils literal notranslate"><span class="pre">'glpk'</span></code> option, <a class="reference internal" href="#op.solve" title="op.solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">solve</span></code></a> does
 not provide certificates of infeasibility.</p></li>
 <li><p>If it is determined that the problem is dual infeasible,
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">self.status</span></code> is set to <code class="xref py py-const docutils literal notranslate"><span class="pre">'dual</span> <span class="pre">infeasible'</span></code>.
 The <a class="reference internal" href="#value" title="value"><code class="xref py py-attr docutils literal notranslate"><span class="pre">value</span></code></a> attributes of the multipliers of the constraints of
 the problem are set to <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>.  The <a class="reference internal" href="#value" title="value"><code class="xref py py-attr docutils literal notranslate"><span class="pre">value</span></code></a> attributes
 of the variables are set to a certificate of dual infeasibility.
-With the <code class="xref py py-const docutils literal notranslate"><span class="pre">'glpk'</span></code> option, <a class="reference internal" href="#solve" title="solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">solve</span></code></a> does not provide
+With the <code class="xref py py-const docutils literal notranslate"><span class="pre">'glpk'</span></code> option, <a class="reference internal" href="#op.solve" title="op.solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">solve</span></code></a> does not provide
 certificates of infeasibility.</p></li>
 <li><p>If the problem was not solved successfully, <code class="xref py py-attr docutils literal notranslate"><span class="pre">self.status</span></code> is set
 to <code class="xref py py-const docutils literal notranslate"><span class="pre">'unknown'</span></code>.  The <a class="reference internal" href="#value" title="value"><code class="xref py py-attr docutils literal notranslate"><span class="pre">value</span></code></a> attributes of the variables
@@ -718,7 +724,7 @@ the different solver options.</p>
 <p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">op</span></code> class also includes two methods for writing and reading
 files in
 <a class="reference external" href="http://lpsolve.sourceforge.net/5.5/mps-format.htm">MPS format</a>.</p>
-<dl class="method">
+<dl class="py method">
 <dt>
 <code class="sig-name descname">tofile(filename) :noindex:</code></dt>
 <dd><p>If the problem is an LP, writes it to the file <cite>filename</cite> using the
@@ -726,7 +732,7 @@ MPS format.  Row and column labels are assigned based on the variable
 and constraint names in the LP.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
 <code class="sig-name descname">fromfile(filename) :noindex:</code></dt>
 <dd><p>Reads the LP from the file <cite>filename</cite>.  The file must be a fixed-format
@@ -896,7 +902,7 @@ equivalent LP</p>
     <p>
         &copy; <a href="copyright.html">Copyright</a> 2004-2020, M.S. Andersen, J. Dahl, L. Vandenberghe
       <span class="lastupdated">
-        Last updated on Jan 20, 2020.
+        Last updated on Apr 16, 2020.
       </span>
 
     </p>
@@ -925,7 +931,7 @@ equivalent LP</p>
     
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 2.3.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.0.1.
     </div>
 
 </body>
