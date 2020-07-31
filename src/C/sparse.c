@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2020 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -3041,8 +3041,11 @@ static PyObject * spmatrix_real(spmatrix *self) {
 
 static PyObject * spmatrix_imag(spmatrix *self) {
 
-  if (SP_ID(self) != COMPLEX)
-    return (PyObject *)SpMatrix_NewFromSpMatrix(self, SP_ID(self));
+  if (SP_ID(self) != COMPLEX) {
+    spmatrix *ret = SpMatrix_New(SP_NROWS(self), SP_NCOLS(self), 0, SP_ID(self));
+    if (!ret) NULL;
+    return (PyObject *)ret;
+  }
 
   spmatrix *ret = SpMatrix_New(SP_NROWS(self), SP_NCOLS(self),
       SP_NNZ(self), DOUBLE);
@@ -4409,7 +4412,7 @@ static PyObject *
 spmatrix_div_generic(spmatrix *A, PyObject *B, int inplace)
 {
   if (!SpMatrix_Check(A) || !(PY_NUMBER(B) ||
-      (Matrix_Check(B) && MAT_LGT(B)) == 1))
+      (Matrix_Check(B) && MAT_LGT(B) == 1)))
     PY_ERR_TYPE("invalid operands for sparse division");
 
   int idA = get_id(A, 0);
@@ -4533,7 +4536,7 @@ typedef struct {
   spmatrix *mObj;   /* Set to NULL when iterator is exhausted */
 } spmatrixiter;
 
-static PyTypeObject spmatrixiter_tp;
+PyTypeObject spmatrixiter_tp;
 
 #define SpMatrixIter_Check(O) PyObject_TypeCheck(O, &spmatrixiter_tp)
 
@@ -4546,9 +4549,6 @@ spmatrix_iter(spmatrix *obj)
     PyErr_BadInternalCall();
     return NULL;
   }
-
-  spmatrixiter_tp.tp_iter = PyObject_SelfIter;
-  spmatrixiter_tp.tp_getattro = PyObject_GenericGetAttr;
 
   it = PyObject_GC_New(spmatrixiter, &spmatrixiter_tp);
   if (it == NULL)
@@ -4589,7 +4589,7 @@ spmatrixiter_next(spmatrixiter *it)
   return num2PyObject[SP_ID(it->mObj)](SP_VAL(it->mObj), it->index++);
 }
 
-static PyTypeObject spmatrixiter_tp = {
+PyTypeObject spmatrixiter_tp = {
 #if PY_MAJOR_VERSION >= 3
     PyVarObject_HEAD_INIT(NULL, 0)
 #else
@@ -4611,7 +4611,7 @@ static PyTypeObject spmatrixiter_tp = {
     0,                                        /* tp_hash */
     0,                                        /* tp_call */
     0,                                        /* tp_str */
-    0,                                        /* tp_getattro */
+    PyObject_GenericGetAttr,                  /* tp_getattro */
     0,                                        /* tp_setattro */
     0,                                        /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,  /* tp_flags */
@@ -4620,7 +4620,7 @@ static PyTypeObject spmatrixiter_tp = {
     0,                                        /* tp_clear */
     0,                                        /* tp_richcompare */
     0,                                        /* tp_weaklistoffset */
-    0,                                        /* tp_iter */
+    PyObject_SelfIter,                        /* tp_iter */
     (iternextfunc)spmatrixiter_next,          /* tp_iternext */
     0,                                        /* tp_methods */
 };

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2020 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -2133,7 +2133,7 @@ typedef struct {
   matrix *mObj;
 } matrixiter;
 
-static PyTypeObject matrixiter_tp;
+PyTypeObject matrixiter_tp;
 
 #define MatrixIter_Check(O) PyObject_TypeCheck(O, &matrixiter_tp)
 
@@ -2149,9 +2149,6 @@ matrix_iter(matrix *obj)
 
   it = PyObject_GC_New(matrixiter, &matrixiter_tp);
   if (!it) return NULL;
-
-  matrixiter_tp.tp_iter = PyObject_SelfIter;
-  matrixiter_tp.tp_getattro = PyObject_GenericGetAttr;
 
   Py_INCREF(obj);
   it->index = 0;
@@ -2188,7 +2185,7 @@ matrixiter_next(matrixiter *it)
   return num2PyObject[it->mObj->id](it->mObj->buffer, it->index++);
 }
 
-static PyTypeObject matrixiter_tp = {
+PyTypeObject matrixiter_tp = {
     PyVarObject_HEAD_INIT(NULL, 0)
     "matrixiter",                       /* tp_name */
     sizeof(matrixiter),                 /* tp_basicsize */
@@ -2205,7 +2202,7 @@ static PyTypeObject matrixiter_tp = {
     0,                                  /* tp_hash */
     0,                                  /* tp_call */
     0,                                  /* tp_str */
-    0,                                  /* tp_getattro */
+    PyObject_GenericGetAttr,            /* tp_getattro */
     0,                                  /* tp_setattro */
     0,	                                /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_GC,/* tp_flags */
@@ -2214,7 +2211,7 @@ static PyTypeObject matrixiter_tp = {
     0,                                  /* tp_clear */
     0,                                  /* tp_richcompare */
     0,                                  /* tp_weaklistoffset */
-    0,                                  /* tp_iter */
+    PyObject_SelfIter,                  /* tp_iter */
     (iternextfunc)matrixiter_next,      /* tp_iternext */
     0,                                  /* tp_methods */
 };

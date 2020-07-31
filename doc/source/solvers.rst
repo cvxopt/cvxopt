@@ -330,7 +330,7 @@ Problems with Nonlinear Objectives
              val = -sum(log(u))
              Df = div(2*x, u).T
              if z is None:  return val, Df
-             H = spdiag(2 * z[0] * div(1 + u**2, u**2))
+             H = spdiag(2 * z[0] * div(1 + x**2, u**2))
              return val, Df, H
 
         G = matrix([ [0., -1.,  0.,  0., -21., -11.,   0., -11.,  10.,   8.,   0.,   8., 5.],

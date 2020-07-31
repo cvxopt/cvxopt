@@ -11,7 +11,7 @@ library and on the strengths of Python as a high-level programming
 language.
 """ 
 
-# Copyright 2012-2019 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2020 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
@@ -30,7 +30,7 @@ language.
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-__copyright__ = """Copyright (c) 2012-2019 M. Andersen and L. Vandenberghe.
+__copyright__ = """Copyright (c) 2012-2020 M. Andersen and L. Vandenberghe.
 Copyright (c) 2010-2011 L. Vandenberghe.
 Copyright (c) 2004-2009 J. Dahl and L. Vandenberghe."""
 
@@ -133,7 +133,7 @@ def setseed(val = 0):
         gsl.setseed(val)
     except:
         from random import seed
-        if val is 0: val = None
+        if val == 0: val = None
         seed(val)
         
  

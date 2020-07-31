@@ -1,5 +1,5 @@
-version: 1.2.3-{build}-{branch}
-image: Visual Studio 2017
+version: 1.2.5-{build}-{branch}
+image: Visual Studio 2019
 init:
     - choco install wget checksum
 
@@ -16,15 +16,13 @@ environment:
     CVXOPT_INSTALL_REQUIRES: mkl
     GLPK_VERSION: "4.65"
     GLPK_SHA256: "4281e29b628864dfe48d393a7bedd781e5b475387c20d8b0158f329994721a10"
-    SUITESPARSE_VERSION: "5.3.0"
-    SUITESPARSE_SHA256: "90e69713d8c454da5a95a839aea5d97d8d03d00cc1f667c4bdfca03f640f963d"
+    SUITESPARSE_VERSION: "5.7.2"
+    SUITESPARSE_SHA256: "fe3bc7c3bd1efdfa5cffffb5cebf021ff024c83b5daf0ab445429d3d741bd3ad"
 
   matrix:
     - PYTHON_VERSION: 3.7
       CVXOPT_MSVC: 1
     - PYTHON_VERSION: 3.6
-      CVXOPT_MSVC: 1
-    - PYTHON_VERSION: 3.5
       CVXOPT_MSVC: 1
     - PYTHON_VERSION: 2.7
       COMPILER: mingwpy
@@ -34,9 +32,9 @@ platform:
 
 install:
     - if [%PYTHON_ARCH%]==[64] (
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
       ) else (
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
       )
 
     # Set up miniconda build environment
@@ -48,10 +46,10 @@ install:
     - SET CVXOPT_BLAS_LIB_DIR=%PYTHON%\envs\build_env\Library\lib
 
     # Download SuiteSparse and set CVXOPT_SUITESPARSE_SRC_DIR
-    - wget -nv http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-%SUITESPARSE_VERSION%.tar.gz
-    - checksum -t sha256 -c %SUITESPARSE_SHA256% SuiteSparse-%SUITESPARSE_VERSION%.tar.gz
-    - 7z x -bso0 -bsp0 SuiteSparse-%SUITESPARSE_VERSION%.tar.gz && 7z x -bso0 -bsp0 SuiteSparse-%SUITESPARSE_VERSION%.tar
-    - SET CVXOPT_SUITESPARSE_SRC_DIR=%cd%\SuiteSparse
+    - wget -nv https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v%SUITESPARSE_VERSION%.tar.gz
+    - checksum -t sha256 -c %SUITESPARSE_SHA256% v%SUITESPARSE_VERSION%.tar.gz
+    - 7z x -bso0 -bsp0 v%SUITESPARSE_VERSION%.tar.gz && 7z x -bso0 -bsp0 v%SUITESPARSE_VERSION%.tar
+    - SET CVXOPT_SUITESPARSE_SRC_DIR=%cd%\SuiteSparse-%SUITESPARSE_VERSION%
 
     # Download and build GLPK
     - if [%CVXOPT_BUILD_GLPK%]==[1] (

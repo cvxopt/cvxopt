@@ -18,10 +18,12 @@ class TestBasic(unittest.TestCase):
     def test_basic(self):
         import cvxopt
         a = cvxopt.matrix([1.0,2.0,3.0])
+        assert list(a) == [1.0, 2.0, 3.0]
         b = cvxopt.matrix([3.0,-2.0,-1.0])
         c = cvxopt.spmatrix([1.0,-2.0,3.0],[0,2,4],[1,2,4],(6,5))
         d = cvxopt.spmatrix([1.0,2.0,5.0],[0,1,2],[0,0,0],(3,1))
-        self.assertEqualLists(list(cvxopt.mul(a,b)),[3.0,-4.0,-3.0])
+        e = cvxopt.mul(a, b)
+        self.assertEqualLists(e, [3.0,-4.0,-3.0])
         self.assertAlmostEqualLists(list(cvxopt.div(a,b)),[1.0/3.0,-1.0,-3.0])
         self.assertAlmostEqual(cvxopt.div([1.0,2.0,0.25]),2.0)
         self.assertEqualLists(list(cvxopt.min(a,b)),[1.0,-2.0,-1.0])
@@ -34,6 +36,7 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(cvxopt.min(a),1.0)
         self.assertEqual(cvxopt.min(c),-2.0)
         self.assertEqual(cvxopt.min(d),1.0)
+        self.assertEqual(len(c.imag()),0)
         with self.assertRaises(OverflowError):
             cvxopt.matrix(1.0,(32780*4,32780))
         with self.assertRaises(OverflowError):

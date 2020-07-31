@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2020 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -30,12 +30,14 @@
 PyDoc_STRVAR(base__doc__,"Convex optimization package");
 
 extern PyTypeObject matrix_tp ;
+extern PyTypeObject matrixiter_tp ;
 matrix * Matrix_New(int, int, int) ;
 matrix * Matrix_NewFromMatrix(matrix *, int) ;
 matrix * Matrix_NewFromSequence(PyObject *, int) ;
 matrix * Matrix_NewFromPyBuffer(PyObject *, int, int *) ;
 
 extern PyTypeObject spmatrix_tp ;
+extern PyTypeObject spmatrixiter_tp ;
 spmatrix * SpMatrix_New(int_t, int_t, int_t, int ) ;
 spmatrix * SpMatrix_NewFromMatrix(matrix *, int) ;
 spmatrix * SpMatrix_NewFromSpMatrix(spmatrix *, int) ;
@@ -1252,13 +1254,13 @@ PyObject * matrix_elem_max(PyObject *self, PyObject *args, PyObject *kwrds)
     if (PyNumber_Check(A) || Matrix_Check(A))
       convert_num[id](&a, A, PyNumber_Check(A), 0);
     else
-      a.d = (SP_LGT(A) ? SP_VALD(A)[0] : 0.0);
+      a.d = ((SP_LGT(A) > 0) ? SP_VALD(A)[0] : 0.0);
   }
   if (b_is_number) {
     if (PyNumber_Check(B) || Matrix_Check(B))
       convert_num[id](&b, B, PyNumber_Check(B), 0);
     else
-      b.d = (SP_LGT(B) ? SP_VALD(B)[0] : 0.0);
+      b.d = ((SP_LGT(B) > 0) ? SP_VALD(B)[0] : 0.0);
   }
 
   if ((a_is_number && b_is_number) &&
@@ -1431,13 +1433,13 @@ PyObject * matrix_elem_min(PyObject *self, PyObject *args, PyObject *kwrds)
     if (PyNumber_Check(A) || Matrix_Check(A))
       convert_num[id](&a, A, PyNumber_Check(A), 0);
     else
-      a.d = (SP_LGT(A) ? SP_VALD(A)[0] : 0.0);
+      a.d = ((SP_LGT(A) > 0) ? SP_VALD(A)[0] : 0.0);
   }
   if (b_is_number) {
     if (PyNumber_Check(B) || Matrix_Check(B))
       convert_num[id](&b, B, PyNumber_Check(B), 0);
     else
-      b.d = (SP_LGT(B) ? SP_VALD(B)[0] : 0.0);
+      b.d = ((SP_LGT(B) > 0) ? SP_VALD(B)[0] : 0.0);
   }
 
   if ((a_is_number && b_is_number) &&
@@ -2006,7 +2008,7 @@ PyMODINIT_FUNC initbase(void)
   if (PyType_Ready(&matrix_tp) < 0)
     INITERROR;
 
-  if (PyType_Ready(&matrix_tp) < 0)
+  if (PyType_Ready(&matrixiter_tp) < 0)
     INITERROR;
 
   Py_INCREF(&matrix_tp);
@@ -2016,6 +2018,9 @@ PyMODINIT_FUNC initbase(void)
   spmatrix_tp.tp_alloc = PyType_GenericAlloc;
   spmatrix_tp.tp_free = PyObject_Del;
   if (PyType_Ready(&spmatrix_tp) < 0)
+    INITERROR;
+
+  if (PyType_Ready(&spmatrixiter_tp) < 0)
     INITERROR;
 
   Py_INCREF(&spmatrix_tp);

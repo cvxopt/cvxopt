@@ -3,8 +3,8 @@ notifications:
 
 env:
   global:
-    - SUITESPARSE_VERSION=5.3.0
-    - SUITESPARSE_SHA256=90e69713d8c454da5a95a839aea5d97d8d03d00cc1f667c4bdfca03f640f963d
+    - SUITESPARSE_VERSION=5.7.2
+    - SUITESPARSE_SHA256=fe3bc7c3bd1efdfa5cffffb5cebf021ff024c83b5daf0ab445429d3d741bd3ad
     - CVXOPT_BUILD_GSL=1
     - CVXOPT_BUILD_FFTW=1
     - CVXOPT_BUILD_GLPK=1
@@ -12,64 +12,187 @@ env:
 matrix:
   include:
     - os: linux
+      addons:
+        apt:
+          packages:
+            - python-dev
+            - libopenblas-dev
+            - libfftw3-dev
+            - libglpk-dev
+            - libdsdp-dev
+            - libgsl0-dev
       dist: xenial
       sudo: required
       language: python
       python: '2.7'
       env: CVXOPT_BUILD_DSDP=1
     - os: linux
-      dist: xenial
-      sudo: required
-      language: python
-      python: '2.7'
-      env: CVXOPT_BUILD_DSDP=1 BUILD_SUITESPARSE=1
-    - os: linux
+      addons:
+        apt:
+          packages:
+            - python-dev
+            - libopenblas-dev
+            - libfftw3-dev
+            - libglpk-dev
+            - libdsdp-dev
+            - libgsl0-dev
       dist: xenial
       sudo: required
       language: python
       python: '3.6'
       env: CVXOPT_BUILD_DSDP=1
     - os: linux
+      addons:
+        apt:
+          packages:
+            - python-dev
+            - libopenblas-dev
+            - libfftw3-dev
+            - libglpk-dev
+            - libdsdp-dev
+            - libgsl0-dev
       dist: xenial
       sudo: required
       language: python
       python: '3.7'
       env: CVXOPT_BUILD_DSDP=1
-    - os: osx
+    - os: linux
+      addons:
+        apt:
+          packages:
+            - python-dev
+            - libopenblas-dev
+            - libfftw3-dev
+            - libglpk-dev
+            - libdsdp-dev
+            - libgsl0-dev
+      dist: xenial
+      sudo: required
       language: python
-      env: PYVERSION=2.7 CVXOPT_BUILD_DSDP=1 BUILD_SUITESPARSE=1
+      python: '3.8'
+      env: CVXOPT_BUILD_DSDP=1
+    - os: linux
+      addons:
+        apt:
+          packages:
+            - python-dev
+            - libopenblas-dev
+            - libfftw3-dev
+            - libglpk-dev
+            - libdsdp-dev
+            - libgsl0-dev
+      dist: xenial
+      sudo: required
+      language: python
+      python: '3.8'
+      env: CVXOPT_BUILD_DSDP=1 BUILD_SUITESPARSE=1
+    - os: osx
+      addons:
+        homebrew:
+          update: true
+          packages:
+            - openblas
+            - glpk
+            - gsl
+            - fftw
+            - suite-sparse
+      language: python
+      env: PYVERSION=2.7
+        CVXOPT_BUILD_DSDP=1
         CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib
-        CVXOPT_BLAS_LIB=openblas CVXOPT_LAPACK_LIB=openblas
+        CVXOPT_BLAS_LIB=openblas
+        CVXOPT_LAPACK_LIB=openblas
+        CVXOPT_DSDP_INC_DIR=$HOME/miniconda/envs/myenv/include
+        CVXOPT_DSDP_LIB_DIR=$HOME/miniconda/envs/myenv/lib
+        CVXOPT_GSL_INC_DIR=/usr/local/opt/gsl/include
       language: generic
     - os: osx
+      addons:
+        homebrew:
+          update: true
+          packages:
+            - openblas
+            - glpk
+            - gsl
+            - fftw
+            - suite-sparse
       language: python
-      env: PYVERSION=2.7 CVXOPT_BUILD_DSDP=1
+      env: PYVERSION=3.6
+        CVXOPT_BUILD_DSDP=1
         CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib
-        CVXOPT_BLAS_LIB=openblas CVXOPT_LAPACK_LIB=openblas
-        CVXOPT_DSDP_INC_DIR=$HOME/miniconda/envs/myenv/include CVXOPT_DSDP_LIB_DIR=$HOME/miniconda/envs/myenv/lib
+        CVXOPT_BLAS_LIB=openblas
+        CVXOPT_LAPACK_LIB=openblas
+        CVXOPT_DSDP_INC_DIR=$HOME/miniconda/envs/myenv/include
+        CVXOPT_DSDP_LIB_DIR=$HOME/miniconda/envs/myenv/lib
+        CVXOPT_GSL_INC_DIR=/usr/local/opt/gsl/include
       language: generic
     - os: osx
+      addons:
+        homebrew:
+          update: true
+          packages:
+            - openblas
+            - glpk
+            - gsl
+            - fftw
+            - suite-sparse
       language: python
-      env: PYVERSION=3.6 CVXOPT_BUILD_DSDP=1
+      env: PYVERSION=3.7
+        CVXOPT_BUILD_DSDP=1
         CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib
-        CVXOPT_BLAS_LIB=openblas CVXOPT_LAPACK_LIB=openblas
-        CVXOPT_DSDP_INC_DIR=$HOME/miniconda/envs/myenv/include CVXOPT_DSDP_LIB_DIR=$HOME/miniconda/envs/myenv/lib
+        CVXOPT_BLAS_LIB=openblas
+        CVXOPT_LAPACK_LIB=openblas
+        CVXOPT_DSDP_INC_DIR=$HOME/miniconda/envs/myenv/include
+        CVXOPT_DSDP_LIB_DIR=$HOME/miniconda/envs/myenv/lib
+        CVXOPT_GSL_INC_DIR=/usr/local/opt/gsl/include
       language: generic
     - os: osx
+      addons:
+        homebrew:
+          update: true
+          packages:
+            - openblas
+            - glpk
+            - gsl
+            - fftw
+            - suite-sparse
       language: python
-      env: PYVERSION=3.7 CVXOPT_BUILD_DSDP=1
+      env: PYVERSION=3.8
+        CVXOPT_BUILD_DSDP=1
         CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib
-        CVXOPT_BLAS_LIB=openblas CVXOPT_LAPACK_LIB=openblas
-        CVXOPT_DSDP_INC_DIR=$HOME/miniconda/envs/myenv/include CVXOPT_DSDP_LIB_DIR=$HOME/miniconda/envs/myenv/lib
+        CVXOPT_BLAS_LIB=openblas
+        CVXOPT_LAPACK_LIB=openblas
+        CVXOPT_DSDP_INC_DIR=$HOME/miniconda/envs/myenv/include
+        CVXOPT_DSDP_LIB_DIR=$HOME/miniconda/envs/myenv/lib
+        CVXOPT_GSL_INC_DIR=/usr/local/opt/gsl/include
       language: generic
+    - os: osx
+      addons:
+        homebrew:
+          update: true
+          packages:
+            - openblas
+            - glpk
+            - gsl
+            - fftw
+      language: python
+      env: PYVERSION=3.8
+        CVXOPT_BUILD_DSDP=1
+        BUILD_SUITESPARSE=1
+        CVXOPT_BLAS_LIB_DIR=/usr/local/opt/openblas/lib
+        CVXOPT_BLAS_LIB=openblas
+        CVXOPT_LAPACK_LIB=openblas
+        CVXOPT_DSDP_INC_DIR=$HOME/miniconda/envs/myenv/include
+        CVXOPT_DSDP_LIB_DIR=$HOME/miniconda/envs/myenv/lib
+        CVXOPT_GSL_INC_DIR=/usr/local/opt/gsl/include
+      language: generic
+
 before_install:
-  - if [[ "$BUILD_SUITESPARSE" == "1" ]]; then wget http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-${SUITESPARSE_VERSION}.tar.gz; echo "${SUITESPARSE_SHA256}  SuiteSparse-${SUITESPARSE_VERSION}.tar.gz" > SuiteSparse.sha256; tar -xf SuiteSparse-${SUITESPARSE_VERSION}.tar.gz; export CVXOPT_SUITESPARSE_SRC_DIR=$(pwd)/SuiteSparse; fi
+  - if [[ "$BUILD_SUITESPARSE" == "1" ]]; then wget https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${SUITESPARSE_VERSION}.tar.gz; echo "${SUITESPARSE_SHA256}  v${SUITESPARSE_VERSION}.tar.gz" > SuiteSparse.sha256; tar -xf v${SUITESPARSE_VERSION}.tar.gz; export CVXOPT_SUITESPARSE_SRC_DIR=$(pwd)/SuiteSparse-${SUITESPARSE_VERSION}; fi
   - if [[ "$BUILD_SUITESPARSE" == "1" && "$TRAVIS_OS_NAME" == "linux" ]]; then sha256sum -c SuiteSparse.sha256; fi
   - if [[ "$BUILD_SUITESPARSE" == "1" && "$TRAVIS_OS_NAME" == "osx" ]]; then shasum -a 256 -c SuiteSparse.sha256; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install python-dev libopenblas-dev libfftw3-dev libglpk-dev libdsdp-dev libgsl0-dev; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" && -z "$BUILD_SUITESPARSE" ]]; then sudo add-apt-repository ppa:bzindovic/suitesparse-bugfix-1319687 -y; sudo apt-get update; sudo apt-get install libsuitesparse-dev; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install openblas glpk gsl fftw;  brew info openblas; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" && -z "$BUILD_SUITESPARSE" ]]; then brew install suite-sparse; brew info suitesparse; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" && -z "$BUILD_SUITESPARSE" ]]; then brew info suitesparse; brew info gsl; brew info openblas; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;bash miniconda.sh -b -p $HOME/miniconda; export PATH="$HOME/miniconda/bin:$PATH" ;  fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then conda create -y -n myenv python=$PYVERSION dsdp && source $HOME/miniconda/bin/activate myenv; fi
   - pip install pytest pytest-cov coveralls

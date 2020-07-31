@@ -22,7 +22,7 @@ class TestExamples(unittest.TestCase):
 
     def test_ch8_conelp(self):
         gdict = self.exec_example('doc/chap8/conelp.py')
-        self.assertTrue(gdict['sol']['status'] is 'optimal')
+        self.assertEqual(gdict['sol']['status'], 'optimal')
 
     def test_ch8_coneqp(self):
         gdict = self.exec_example('doc/chap8/coneqp.py')
@@ -30,16 +30,16 @@ class TestExamples(unittest.TestCase):
 
     def test_ch8_lp(self):
         gdict = self.exec_example('doc/chap8/lp.py')
-        self.assertTrue(gdict['sol']['status'] is 'optimal')
+        self.assertEqual(gdict['sol']['status'], 'optimal')
         self.assertAlmostEqualLists(list(gdict['sol']['x']),[1.0,1.0],5)
 
     def test_ch8_socp(self):
         gdict = self.exec_example('doc/chap8/socp.py')
-        self.assertTrue(gdict['sol']['status'] is 'optimal')
+        self.assertEqual(gdict['sol']['status'], 'optimal')
 
     def test_ch8_sdp(self):
         gdict = self.exec_example('doc/chap8/sdp.py')
-        self.assertTrue(gdict['sol']['status'] is 'optimal')
+        self.assertEqual(gdict['sol']['status'], 'optimal')
 
     def test_ch8_mcsdp(self):
         gdict = self.exec_example('doc/chap8/mcsdp.py')
