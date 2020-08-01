@@ -1,4 +1,4 @@
 #define COMPLEX
 #define DINT
 
-#include "../../SuiteSparse/KLU/Source/klu_kernel.c"
+#include "klu_kernel.c"

@@ -1,8 +1,8 @@
 /*
 * @Author: Uriel Sandoval
 * @Date:   2015-04-28 18:56:49
-* @Last Modified by:   A1562
-* @Last Modified time: 2017-09-07 12:50:24
+* @Last Modified by:   Uriel Sandoval
+* @Last Modified time: 2020-08-01 10:20:22
 */
 
 
@@ -35,7 +35,7 @@ PyDoc_STRVAR(klu__doc__, "Interface to the KLU library.\n\n"
              "matrices and for solving sparse sets of linear equations.\n"
              "This library is well-suited for circuit simulation.\n\n"
              "The default control settings of KLU are used.\n\n"
-             "See also http://faculty.cse.tamu.edu/davis/suitesparse.html");
+             "See also www.suitesparse.com.");
 
 
 static void free_klu_d_symbolic(PyObject *F) {
@@ -43,6 +43,13 @@ static void free_klu_d_symbolic(PyObject *F) {
     KLUD(defaults)(&Common);
     KLUS(symbolic) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
     KLUD(free_symbolic)(&Fptr, &Common);
+}
+
+static void free_klu_z_symbolic(PyObject *F) {
+    KLUS(common) Common;
+    KLUD(defaults)(&Common);
+    KLUS(symbolic) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
+    KLUZ(free_symbolic)(&Fptr, &Common);
 }
 
 static void free_klu_d_numeric(PyObject *F) {
@@ -639,7 +646,7 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
 
 
 static PyMethodDef klu_functions[] = {
-    {   "linsolve", (PyCFunction) linsolve, METH_VARARGS | METH_KEYWORDS,
+    {"linsolve", (PyCFunction) linsolve, METH_VARARGS | METH_KEYWORDS,
         doc_linsolve
     },
     {"symbolic", (PyCFunction) symbolic, METH_VARARGS, doc_symbolic},

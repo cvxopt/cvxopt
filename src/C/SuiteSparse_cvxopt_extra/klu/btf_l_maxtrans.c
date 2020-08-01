@@ -1,3 +1,3 @@
 #define DLONG
 
-#include "../../SuiteSparse/BTF/Source/btf_maxtrans.c"
+#include "btf_maxtrans.c"

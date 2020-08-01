@@ -1,2 +1,2 @@
 #define DLONG
-#include "../../SuiteSparse/KLU/Source/klu_defaults.c"
+#include "klu_defaults.c"

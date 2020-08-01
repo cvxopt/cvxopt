@@ -1,3 +1,3 @@
 #define COMPLEX
 #define DLONG
-#include "../../SuiteSparse/KLU/Source/klu_scale.c"
+#include "klu_scale.c"

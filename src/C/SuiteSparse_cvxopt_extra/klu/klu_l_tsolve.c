@@ -1,2 +1,2 @@
 #define DLONG
-#include "../../SuiteSparse/KLU/Source/klu_tsolve.c"
+#include "klu_tsolve.c"

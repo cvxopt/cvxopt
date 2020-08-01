@@ -1,3 +1,3 @@
 #define COMPLEX
 #define DINT
-#include "../../SuiteSparse/KLU/Source/klu_tsolve.c"
+#include "klu_tsolve.c"

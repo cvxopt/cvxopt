@@ -1,3 +1,3 @@
 #define DLONG
 
-#include "../../SuiteSparse/BTF/Source/btf_strongcomp.c"
+#include "btf_strongcomp.c"

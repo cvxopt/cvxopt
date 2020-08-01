@@ -1,2 +1,2 @@
 #define DLONG
-#include "../../SuiteSparse/KLU/Source/klu_memory.c"
+#include "klu_memory.c"

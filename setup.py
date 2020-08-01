@@ -213,7 +213,8 @@ if not SUITESPARSE_SRC_DIR:
     sources = ['src/C/klu.c'])
 else:
     klu = Extension('klu', 
-        include_dirs = [ SUITESPARSE_SRC_DIR + '/KLU/Include',
+        include_dirs = [ SUITESPARSE_SRC_DIR + '/KLU/Include', 
+            SUITESPARSE_SRC_DIR + '/KLU/Source',
             SUITESPARSE_SRC_DIR + '/AMD/Include', 
             SUITESPARSE_SRC_DIR + '/AMD/Source', 
             SUITESPARSE_SRC_DIR + '/COLAMD/Include', 

@@ -1,3 +1,3 @@
 #define DLONG
 
-#include "../../SuiteSparse/AMD/Source/amd_preprocess.c"
+#include "amd_preprocess.c"

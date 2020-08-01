@@ -1,3 +1,3 @@
 #define COMPLEX
 #define DLONG
-#include "../../SuiteSparse/KLU/Source/klu_solve.c"
+#include "klu_solve.c"
