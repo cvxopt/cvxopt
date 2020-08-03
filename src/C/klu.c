@@ -2,7 +2,7 @@
 * @Author: Uriel Sandoval
 * @Date:   2015-04-28 18:56:49
 * @Last Modified by:   Uriel Sandoval
-* @Last Modified time: 2020-08-01 10:20:22
+* @Last Modified time: 2020-08-03 18:19:25
 */
 
 
@@ -475,7 +475,6 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
     case COMPLEX:
         TypeCheck_Capsule(Fs, descrzFs, "Fs is not the KLU symbolic "
                           "factor of a 'z' matrix");
-
         if (!(Fsptr = (KLUS(symbolic) *) PyCapsule_GetPointer(Fs, descrzFs)))
             err_CO("Fs");
 
