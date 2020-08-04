@@ -133,7 +133,7 @@ if BUILD_GSL:
     gsl = Extension('gsl', libraries = M_LIB + ['gsl'] + BLAS_LIB,
         include_dirs = [ GSL_INC_DIR ],
         library_dirs = [ GSL_LIB_DIR, BLAS_LIB_DIR ],
-        define_macros = GSL_MACROS,
+        define_macros = MACROS + GSL_MACROS,
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = ['src/C/gsl.c'] )
     extmods += [gsl];
@@ -142,7 +142,7 @@ if BUILD_FFTW:
     fftw = Extension('fftw', libraries = ['fftw3'] + BLAS_LIB,
         include_dirs = [ FFTW_INC_DIR ],
         library_dirs = [ FFTW_LIB_DIR, BLAS_LIB_DIR ],
-        define_macros = FFTW_MACROS,
+        define_macros = MACROS + FFTW_MACROS,
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = ['src/C/fftw.c'] )
     extmods += [fftw];
@@ -151,6 +151,7 @@ if BUILD_GLPK:
     glpk = Extension('glpk', libraries = ['glpk'],
         include_dirs = [ GLPK_INC_DIR ],
         library_dirs = [ GLPK_LIB_DIR ],
+        define_macros = MACROS,
         sources = ['src/C/glpk.c'] )
     extmods += [glpk];
 
@@ -159,6 +160,7 @@ if BUILD_DSDP:
         include_dirs = [ DSDP_INC_DIR ],
         library_dirs = [ DSDP_LIB_DIR, BLAS_LIB_DIR ],
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
+        define_macros = MACROS, 
         sources = ['src/C/dsdp.c'] )
     extmods += [dsdp];
 
@@ -186,6 +188,7 @@ if not SUITESPARSE_SRC_DIR:
     umfpack = Extension('umfpack',
         libraries = ['umfpack','cholmod','amd','colamd','suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
         include_dirs = [SUITESPARSE_INC_DIR],
+        define_macros = MACROS,
         library_dirs = [SUITESPARSE_LIB_DIR, BLAS_LIB_DIR],
         sources = ['src/C/umfpack.c'])
 else:
@@ -209,6 +212,7 @@ if not SUITESPARSE_SRC_DIR:
     klu = Extension('klu',
     libraries=['klu', 'amd', 'colamd', 'btf', 'suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
     include_dirs = [SUITESPARSE_INC_DIR],
+    define_macros = MACROS,
     library_dirs = [SUITESPARSE_LIB_DIR, BLAS_LIB_DIR],
     sources = ['src/C/klu.c'])
 else:
@@ -237,6 +241,7 @@ if not SUITESPARSE_SRC_DIR:
     cholmod = Extension('cholmod',
         libraries = ['cholmod','colamd','amd','suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
         include_dirs = [SUITESPARSE_INC_DIR],
+        define_macros = MACROS,
         library_dirs = [SUITESPARSE_LIB_DIR, BLAS_LIB_DIR],
         sources = [ 'src/C/cholmod.c' ])
 else:
@@ -263,6 +268,7 @@ if not SUITESPARSE_SRC_DIR:
     amd = Extension('amd',
         libraries = ['amd','suitesparseconfig'] + RT_LIB,
         include_dirs = [SUITESPARSE_INC_DIR],
+        define_macros = MACROS,
         library_dirs = [SUITESPARSE_LIB_DIR],
         sources = ['src/C/amd.c'])
 else:

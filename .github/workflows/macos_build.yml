@@ -1,0 +1,62 @@
+name: macOS build
+on:
+  push:
+    branches: [ master]
+  schedule:
+    - cron: '0 0 * * 0'
+
+jobs:    
+  build:
+    runs-on: macos-latest
+    env:
+      CVXOPT_BUILD_GSL: 1
+      CVXOPT_BUILD_FFTW: 1
+      CVXOPT_BUILD_GLPK: 1
+      CVXOPT_BUILD_DSDP: 0
+      SUITESPARSE_VERSION: 5.7.2
+      SUITESPARSE_SHA256: fe3bc7c3bd1efdfa5cffffb5cebf021ff024c83b5daf0ab445429d3d741bd3ad
+
+    strategy:
+      matrix:
+        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+        suite-sparse: [lib_suitesparse, src_suitesparse]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov coveralls
+
+      - name: Install libraries
+        run: |
+            brew install openblas glpk gsl fftw
+      
+      - name: Config suite-sparse library
+        run:
+            brew install suite-sparse
+        if: ${{ matrix.suite-sparse == 'lib_suitesparse' }}
+
+      - name: Config suite-sparse source
+        run: |
+            wget https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${SUITESPARSE_VERSION}.tar.gz
+            echo "${SUITESPARSE_SHA256}  v${SUITESPARSE_VERSION}.tar.gz" > SuiteSparse.sha256
+            tar -xf v${SUITESPARSE_VERSION}.tar.gz
+            echo "::set-env name=CVXOPT_SUITESPARSE_SRC_DIR::${{ github.workspace}}/SuiteSparse-${{ env.SUITESPARSE_VERSION }}" 
+        if: ${{ matrix.suite-sparse == 'src_suitesparse' }}
+
+      - name: Install 
+        run: |
+          python setup.py build
+          pip install .
+
+      - name: Test
+        run: |
+          echo ${CVXOPT_SUITESPARSE_SRC_DIR}
+          python -c 'from cvxopt import blas,lapack,glpk,fftw,gsl,cholmod,umfpack,klu'
+          py.test --cov=cvxopt tests/
