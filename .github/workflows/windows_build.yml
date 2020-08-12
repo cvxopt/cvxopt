@@ -1,4 +1,4 @@
-name: Windows build
+name: Windows build 2.7 MINGW
 on:
   push:
     branches: [ github-actions-test ]
@@ -18,7 +18,6 @@ jobs:
 
     strategy:
       matrix:
-        #python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
         python-version: [2.7]
         suite-sparse: [lib_suitesparse, src_suitesparse]
 
@@ -37,7 +36,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pytest-cov coveralls
+          pip install pytest pytest-cov coveralls wheel
 
       # - name: Install mingwpy
       #   run: |
@@ -76,7 +75,8 @@ jobs:
       - name: Install (windows)
         run: |
           python setup.py build --compiler=mingw32
-          pip install .
+          python setup.py bdist_wheel
+          python -m pip install --no-index --find-links=dist cvxopt
 
       - name: Test
         run: |

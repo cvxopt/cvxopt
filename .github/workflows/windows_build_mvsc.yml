@@ -1,0 +1,91 @@
+name: Windows build with MSVC
+on:
+  push:
+    branches: [ github-actions-test ]
+  schedule:
+    - cron: '0 0 * * 0'
+
+jobs:    
+  build:
+    runs-on: windows-latest
+    env:
+      CVXOPT_BUILD_GSL: 0
+      CVXOPT_BUILD_FFTW: 0
+      CVXOPT_BUILD_GLPK: 0
+      CVXOPT_BUILD_DSDP: 0
+      CVXOPT_MSVC: 1
+      SUITESPARSE_VERSION: 5.7.2
+      SUITESPARSE_SHA256: fe3bc7c3bd1efdfa5cffffb5cebf021ff024c83b5daf0ab445429d3d741bd3ad
+      OPENBLAS_VERSION: 0.3.10
+
+    strategy:
+      matrix:
+        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+        suite-sparse: [src_suitesparse]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Setup msys2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+
+      - name: Install VCPYTHON27
+        if: ${{ matrix.python-version == '2.7' }}
+        run: |
+            choco install vcpython27 -y
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov coveralls wheel
+
+
+      - name: Download openblas
+        run: |
+            Invoke-WebRequest  https://github.com/xianyi/OpenBLAS/releases/download/v${{ env.OPENBLAS_VERSION }}/OpenBLAS-${{ env.OPENBLAS_VERSION }}-x64.zip -OutFile OpenBLAS-${{ env.OPENBLAS_VERSION }}-x64.zip
+            Expand-Archive OpenBLAS-${{ env.OPENBLAS_VERSION }}-x64.zip
+            echo "::set-env name=CVXOPT_BLAS_LIB_DIR::${{ github.workspace}}/OpenBLAS-${{ env.OPENBLAS_VERSION }}-x64/lib" 
+            echo "::set-env name=CVXOPT_BLAS_BIN_DIR::${{ github.workspace}}/OpenBLAS-${{ env.OPENBLAS_VERSION }}-x64/bin" 
+            echo "::set-env name=CVXOPT_LAPACK_LIB::libopenblas" 
+            echo "::set-env name=CVXOPT_BLAS_LIB::libopenblas" 
+
+      - name: Config suite-sparse source
+        shell: msys2 {0}
+        run: |
+            wget https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${{ env.SUITESPARSE_VERSION }}.tar.gz
+            echo "${SUITESPARSE_SHA256}  v${{ env.SUITESPARSE_VERSION }}.tar.gz" > SuiteSparse.sha256
+            tar -xf v${{ env.SUITESPARSE_VERSION }}.tar.gz
+            echo "::set-env name=CVXOPT_SUITESPARSE_SRC_DIR::${{ github.workspace}}/SuiteSparse-${{ env.SUITESPARSE_VERSION }}" 
+
+
+      - name: Cofigure VCPYTHON27
+        if: ${{ matrix.python-version == '2.7' }}
+        run: |
+            call "C:\Program Files (x86)\Common Files\Microsoft\Visual C++ for Python\9.0\VC\bin\vcvars64.bat"
+        shell: cmd
+
+      - name: Cofigure Visual Studio 2019
+        if: ${{ matrix.python-version != '2.7' }}
+        run: |
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        shell: cmd
+
+
+      - name: Install (windows)
+        run: |
+          python setup.py build
+          python setup.py bdist_wheel
+          python -m pip install --no-index --find-links=dist cvxopt
+        shell: cmd
+
+      - name: Test
+        run: |
+          echo ${CVXOPT_SUITESPARSE_SRC_DIR}
+          python -c 'from cvxopt import blas,lapack,cholmod,umfpack,klu'
+          py.test --cov=cvxopt tests/
