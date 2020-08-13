@@ -9,9 +9,6 @@ from distutils.file_util import copy_file
 # Modifiy this if BLAS and LAPACK libraries are not in /usr/lib.
 BLAS_LIB_DIR = '/usr/lib'
 
-# Modifiy this to include Windows DLL. This DLL will be copied to package dir
-BLAS_BIN_DIR = ''
-
 # Default names of BLAS and LAPACK libraries
 BLAS_LIB = ['blas']
 LAPACK_LIB = ['lapack']
@@ -96,7 +93,6 @@ BLAS_NOUNDERSCORES = int(os.environ.get("CVXOPT_BLAS_NOUNDERSCORES",BLAS_NOUNDER
 BLAS_LIB = os.environ.get("CVXOPT_BLAS_LIB",BLAS_LIB)
 LAPACK_LIB = os.environ.get("CVXOPT_LAPACK_LIB",LAPACK_LIB)
 BLAS_LIB_DIR = os.environ.get("CVXOPT_BLAS_LIB_DIR",BLAS_LIB_DIR)
-BLAS_BIN_DIR = os.environ.get("CVXOPT_BLAS_BIN_DIR",BLAS_BIN_DIR)
 BLAS_EXTRA_LINK_ARGS = os.environ.get("CVXOPT_BLAS_EXTRA_LINK_ARGS",BLAS_EXTRA_LINK_ARGS)
 if type(BLAS_LIB) is str: BLAS_LIB = BLAS_LIB.strip().split(';')
 if type(LAPACK_LIB) is str: LAPACK_LIB = LAPACK_LIB.strip().split(';')
@@ -125,16 +121,6 @@ M_LIB = ["m"] if not MSVC else []
 UMFPACK_EXTRA_COMPILE_ARGS = ["-Wno-unknown-pragmas"] if not MSVC else []
 
 extmods = []
-package_data_files = []
-
-if sys.platform.startswith("win") and BLAS_BIN_DIR:
-    for lb in BLAS_LIB:
-        # Copy blas DLL to local dir
-        copy_file(path.join(BLAS_BIN_DIR, lb+ '.dll'), '.')
-        package_data_files.append(lb+ '.dll')
-# Check that SUITESPARSE SRC DIR is relpath
-if SUITESPARSE_SRC_DIR and path.isabs(SUITESPARSE_SRC_DIR):
-    SUITESPARSE_SRC_DIR = path.relpath(SUITESPARSE_SRC_DIR, os.path.dirname(os.path.abspath(__file__)))
 
 
 # Macros
@@ -305,13 +291,6 @@ misc_solvers = Extension('misc_solvers',
 
 extmods += [base, blas, lapack, umfpack, klu, cholmod, amd, misc_solvers] 
 
-if package_data_files:
-    package_data = {'cvxopt': package_data_files}
-    data_files = [('Lib/site-packages/cvxopt', package_data_files)]
-else:
-    package_data = {}
-    data_files = []
-
 
 setup (name = 'cvxopt',
     description = 'Convex optimization package',
@@ -333,9 +312,7 @@ language.''',
     ext_package = "cvxopt",
     ext_modules = extmods,
     package_dir = {"cvxopt": "src/python"},
-    package_data = package_data,
-    include_package_data = True,
-    data_files = data_files,
+    package_data = {'': ['*.dll']},
     packages = ["cvxopt"],
     install_requires = INSTALL_REQUIRES,
     classifiers=[

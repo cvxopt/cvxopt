@@ -51,7 +51,6 @@ jobs:
             Invoke-WebRequest  https://github.com/xianyi/OpenBLAS/releases/download/v${{ env.OPENBLAS_VERSION }}/OpenBLAS-${{ env.OPENBLAS_VERSION }}-x64.zip -OutFile OpenBLAS-${{ env.OPENBLAS_VERSION }}-x64.zip
             Expand-Archive OpenBLAS-${{ env.OPENBLAS_VERSION }}-x64.zip
             echo "::set-env name=CVXOPT_BLAS_LIB_DIR::${{ github.workspace}}/OpenBLAS-${{ env.OPENBLAS_VERSION }}-x64/lib" 
-            echo "::set-env name=CVXOPT_BLAS_BIN_DIR::${{ github.workspace}}/OpenBLAS-${{ env.OPENBLAS_VERSION }}-x64/bin" 
             echo "::set-env name=CVXOPT_LAPACK_LIB::libopenblas" 
             echo "::set-env name=CVXOPT_BLAS_LIB::libopenblas" 
 
@@ -80,8 +79,9 @@ jobs:
       - name: Install (windows)
         run: |
           python setup.py build
+          copy OpenBLAS-${{ env.OPENBLAS_VERSION }}-x64\bin\libopenblas.dll build\lib.win-amd64-${{ matrix.python-version}}\cvxopt
           python setup.py bdist_wheel
-          python -m pip install --no-index --find-links=dist cvxopt
+          pip install .
         shell: cmd
 
       - name: Test
