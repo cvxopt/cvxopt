@@ -1,7 +1,7 @@
 name: Windows build with MSVC
 on:
   push:
-    branches: [ github-actions-test ]
+    branches: [ master ]
   schedule:
     - cron: '0 0 * * 0'
 
@@ -38,7 +38,7 @@ jobs:
       - name: Install VCPYTHON27
         if: ${{ matrix.python-version == '2.7' }}
         run: |
-            choco install vcpython27 -y
+            choco install windows-sdk-7.1 vcpython27 -y
 
       - name: Install dependencies
         run: |

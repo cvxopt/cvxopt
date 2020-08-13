@@ -1,7 +1,7 @@
-name: Windows build 2.7 MINGW
+name: Windows build 2.7 with MINGW
 on:
   push:
-    branches: [ github-actions-test ]
+    branches: [ master ]
   schedule:
     - cron: '0 0 * * 0'
 
