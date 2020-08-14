@@ -20,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+        python-version: [3.5, 3.6, 3.7, 3.8]
         suite-sparse: [src_suitesparse]
         ARCH: [x64, x86]
         include:
@@ -45,11 +45,6 @@ jobs:
         with:
           msystem: MINGW64
 
-      - name: Install VCPYTHON27
-        if: ${{ matrix.python-version == '2.7' }}
-        run: |
-            choco install windows-sdk-7.1 vcpython27 -y
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -73,20 +68,10 @@ jobs:
             echo "::set-env name=CVXOPT_SUITESPARSE_SRC_DIR::${{ github.workspace}}/SuiteSparse-${{ env.SUITESPARSE_VERSION }}" 
 
 
-      - name: Cofigure VCPYTHON27
-        if: ${{ matrix.python-version == '2.7' }}
-        run: |
-            call "C:\Program Files (x86)\Common Files\Microsoft\Visual C++ for Python\9.0\VC\bin\vcvars64.bat"
-        shell: cmd
-
       - name: Cofigure Visual Studio 2019
-        if: ${{ matrix.python-version != '2.7'}}
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars${{ matrix.VC_TARGET }}.bat"
         shell: cmd
-
-
-
 
       - name: Install (windows)
         run: |
