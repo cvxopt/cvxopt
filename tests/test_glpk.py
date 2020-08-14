@@ -4,7 +4,7 @@ class TestGLPK(unittest.TestCase):
 
     def setUp(self):
         try:
-            from cvxopt import glpk, matrix
+            from kvxopt import glpk, matrix
             c = matrix([-4., -5.])
             G = matrix([[2., 1., -1., 0.], [1., 2., 0., -1.]])
             h = matrix([3., 3., 0., 0.])
@@ -15,7 +15,7 @@ class TestGLPK(unittest.TestCase):
             self.skipTest("GLPK not available")
 
     def test_lp(self):
-        from cvxopt import solvers, glpk
+        from kvxopt import solvers, glpk
         c,G,h,A,b = self._prob_data
         sol1 = solvers.lp(c,G,h)
         self.assertTrue(sol1['status']=='optimal')
@@ -33,7 +33,7 @@ class TestGLPK(unittest.TestCase):
         self.assertTrue(sol7[0]=='optimal')
 
     def test_ilp(self):
-        from cvxopt import glpk, matrix
+        from kvxopt import glpk, matrix
         c,G,h,A,b = self._prob_data
         sol1 = glpk.ilp(c, G, h, A, b, set([0]), set())
         self.assertTrue(sol1[0]=='optimal')
@@ -47,7 +47,7 @@ class TestGLPK(unittest.TestCase):
         self.assertTrue(sol5[0]=='LP relaxation is primal infeasible')
 
     def test_options(self):
-        from cvxopt import glpk, solvers
+        from kvxopt import glpk, solvers
         c,G,h,A,b = self._prob_data
         glpk.options = {'msg_lev' : 'GLP_MSG_OFF'}
 

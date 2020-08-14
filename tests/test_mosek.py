@@ -4,7 +4,7 @@ class TestMOSEK(unittest.TestCase):
 
     def setUp(self):
         try:
-            from cvxopt import msk
+            from kvxopt import msk
         except:
             self.skipTest("MOSEK not available")
 
@@ -13,7 +13,7 @@ class TestMOSEK(unittest.TestCase):
         for u,v in zip(L1,L2): self.assertAlmostEqual(u,v,places)
 
     def test_conelp(self):
-        from cvxopt import matrix, msk, solvers
+        from kvxopt import matrix, msk, solvers
         c = matrix([-6., -4., -5.])
         G = matrix([[ 16., 7.,  24.,  -8.,   8.,  -1.,  0., -1.,  0.,  0.,   7.,  -5.,   1.,  -5.,   1.,  -7.,   1.,   -7.,  -4.],
                     [-14., 2.,   7., -13., -18.,   3.,  0.,  0., -1.,  0.,   3.,   13.,  -6.,  13.,  12., -10.,  -6.,  -10., -28.],
@@ -23,7 +23,7 @@ class TestMOSEK(unittest.TestCase):
         self.assertAlmostEqualLists(list(solvers.conelp(c, G, h, dims)['x']),list(msk.conelp(c, G, h, dims)[1]))
 
     def test_lp(self):
-        from cvxopt import matrix, msk, solvers
+        from kvxopt import matrix, msk, solvers
         c = matrix([-4., -5.])
         G = matrix([[2., 1., -1., 0.], [1., 2., 0., -1.]])
         h = matrix([3., 3., 0., 0.])
@@ -37,7 +37,7 @@ class TestMOSEK(unittest.TestCase):
     #    msk.qp()
 
     def test_socp(self):
-        from cvxopt import matrix, msk, solvers
+        from kvxopt import matrix, msk, solvers
         c = matrix([-2., 1., 5.])
         G = [ matrix( [[12., 13., 12.], [6., -3., -12.], [-5., -5., 6.]] ) ]
         G += [ matrix( [[3., 3., -1., 1.], [-6., -6., -9., 19.], [10., -2., -2., -3.]] ) ]
@@ -45,7 +45,7 @@ class TestMOSEK(unittest.TestCase):
         self.assertAlmostEqualLists(list(solvers.socp(c, Gq = G, hq = h)['x']),list(msk.socp(c, Gq = G, hq = h)[1]))
 
     def test_options(self):
-        from cvxopt import matrix, msk, solvers
+        from kvxopt import matrix, msk, solvers
         msk.options = {msk.mosek.iparam.log: 0}
         c = matrix([-4., -5.])
         G = matrix([[2., 1., -1., 0.], [1., 2., 0., -1.]])

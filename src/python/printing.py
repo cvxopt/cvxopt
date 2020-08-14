@@ -25,7 +25,7 @@ options = {'dformat' : '% .2e',
 def matrix_str_default(X):
 
     from sys import maxsize
-    from cvxopt.printing import options
+    from kvxopt.printing import options
 
     width, height = options['width'], options['height']
     iformat, dformat = options['iformat'], options['dformat']
@@ -83,7 +83,7 @@ def matrix_repr_default(X):
 def spmatrix_str_default(X):
 
     from sys import maxsize
-    from cvxopt.printing import options
+    from kvxopt.printing import options
 
     width, height = options['width'], options['height']
     iformat, dformat = options['iformat'], options['dformat']
@@ -146,7 +146,7 @@ def spmatrix_str_default(X):
 
 def spmatrix_str_triplet(X):
 
-    from cvxopt.printing import options
+    from kvxopt.printing import options
 
     iformat, dformat = options['iformat'], options['dformat']
 

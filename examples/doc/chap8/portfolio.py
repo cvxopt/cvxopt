@@ -1,9 +1,9 @@
 # The risk-return trade-off of section 8.4 (Quadratic programming).
 
 from math import sqrt
-from cvxopt import matrix
-from cvxopt.blas import dot 
-from cvxopt.solvers import qp, options 
+from kvxopt import matrix
+from kvxopt.blas import dot 
+from kvxopt.solvers import qp, options 
 
 n = 4
 S = matrix( [[ 4e-2,  6e-3, -4e-3,   0.0 ], 

@@ -32,10 +32,10 @@ options:  dictionary with customizable algorithm parameters.
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import cvxopt
-from cvxopt.cvxprog import cp, cpl, gp 
-from cvxopt.coneprog import conelp, lp, sdp, socp, coneqp, qp
+import kvxopt
+from kvxopt.cvxprog import cp, cpl, gp 
+from kvxopt.coneprog import conelp, lp, sdp, socp, coneqp, qp
 options = {}
-cvxopt.cvxprog.options = options
-cvxopt.coneprog.options = options
+kvxopt.cvxprog.options = options
+kvxopt.coneprog.options = options
 __all__ = ['conelp', 'coneqp', 'lp', 'socp', 'sdp', 'qp', 'cp', 'cpl', 'gp']

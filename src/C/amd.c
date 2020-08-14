@@ -242,15 +242,15 @@ PyMODINIT_FUNC PyInit_amd(void)
 {
     if (!(amd_module = PyModule_Create(&amd_module_def))) return NULL;
     PyModule_AddObject(amd_module, "options", PyDict_New());
-    if (import_cvxopt() < 0) return NULL;
+    if (import_kvxopt() < 0) return NULL;
     return amd_module;
 }
 
 #else
 PyMODINIT_FUNC initamd(void)
 {
-    amd_module = Py_InitModule3("cvxopt.amd", amd_functions, amd__doc__);
+    amd_module = Py_InitModule3("kvxopt.amd", amd_functions, amd__doc__);
     PyModule_AddObject(amd_module, "options", PyDict_New());
-    if (import_cvxopt() < 0) return;
+    if (import_kvxopt() < 0) return;
 }
 #endif

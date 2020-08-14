@@ -1,6 +1,6 @@
 # The SDP example of section 8.7 (Exploiting structure).
 
-from cvxopt import blas, lapack, solvers, matrix, normal
+from kvxopt import blas, lapack, solvers, matrix, normal
 
 def mcsdp(w):
     """

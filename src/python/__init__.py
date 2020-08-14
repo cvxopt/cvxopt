@@ -47,7 +47,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>."""
 
-import cvxopt.base
+import kvxopt.base
 
 def copyright():
     print(__copyright__)
@@ -77,9 +77,9 @@ def normal(nrows, ncols=1, mean=0.0, std=1.0):
     '''
 
     try:    
-        from cvxopt import gsl
+        from kvxopt import gsl
     except:
-        from cvxopt.base import matrix
+        from kvxopt.base import matrix
         from random import gauss
         return matrix([gauss(mean, std) for k in range(nrows*ncols)],
                       (nrows,ncols), 'd' )
@@ -108,9 +108,9 @@ def uniform(nrows, ncols=1, a=0, b=1):
     '''
 
     try:    
-        from cvxopt import gsl
+        from kvxopt import gsl
     except:
-        from cvxopt.base import matrix
+        from kvxopt.base import matrix
         from random import uniform
         return matrix([uniform(a, b) for k in range(nrows*ncols)],
                       (nrows,ncols), 'd' )
@@ -129,7 +129,7 @@ def setseed(val = 0):
     '''    
 
     try:    
-        from cvxopt import gsl
+        from kvxopt import gsl
         gsl.setseed(val)
     except:
         from random import seed
@@ -145,7 +145,7 @@ def getseed():
     '''
 
     try:    
-        from cvxopt import gsl
+        from kvxopt import gsl
         return gsl.getseed()
     except:
         raise NotImplementedError("getseed() not installed (requires GSL)")
@@ -179,16 +179,16 @@ def max(*args):
     
     if len(args) == 1 and type(args[0]).__name__ in \
             ['list', 'tuple', 'xrange', 'range', 'generator']: 
-        return +reduce(cvxopt.base.emax, *args)
-    elif len(args) == 1 and type(args[0]) is cvxopt.base.matrix:
+        return +reduce(kvxopt.base.emax, *args)
+    elif len(args) == 1 and type(args[0]) is kvxopt.base.matrix:
         return omax(args[0])
-    elif len(args) == 1 and type(args[0]) is cvxopt.base.spmatrix:
+    elif len(args) == 1 and type(args[0]) is kvxopt.base.spmatrix:
         if len(args[0]) == mul(args[0].size):
             return omax(args[0])
         else:
             return omax(omax(args[0]), 0.0)
     else:
-        return +reduce(cvxopt.base.emax, args)
+        return +reduce(kvxopt.base.emax, args)
 
 
 def min(*args):
@@ -208,16 +208,16 @@ def min(*args):
 
     if len(args) == 1 and type(args[0]).__name__ in \
             ['list', 'tuple', 'xrange', 'range', 'generator']: 
-        return +reduce(cvxopt.base.emin, *args)
-    elif len(args) == 1 and type(args[0]) is cvxopt.base.matrix:
+        return +reduce(kvxopt.base.emin, *args)
+    elif len(args) == 1 and type(args[0]) is kvxopt.base.matrix:
         return omin(args[0])
-    elif len(args) == 1 and type(args[0]) is cvxopt.base.spmatrix:
+    elif len(args) == 1 and type(args[0]) is kvxopt.base.spmatrix:
         if len(args[0]) == mul(args[0].size):
             return omin(args[0])
         else:
             return omin(omin(args[0]), 0.0)
     else:
-        return +reduce(cvxopt.base.emin, args)
+        return +reduce(kvxopt.base.emin, args)
 
 def mul(*args):
     ''' 
@@ -237,9 +237,9 @@ def mul(*args):
 
     if len(args) == 1 and type(args[0]).__name__ in \
             ['list', 'tuple', 'xrange', 'range', 'generator']: 
-        return +reduce(cvxopt.base.emul, *args)
+        return +reduce(kvxopt.base.emul, *args)
     else:
-        return +reduce(cvxopt.base.emul, args)
+        return +reduce(kvxopt.base.emul, args)
 
 def div(*args):
     ''' 
@@ -259,24 +259,24 @@ def div(*args):
 
     if len(args) == 1 and type(args[0]).__name__ in \
             ['list', 'tuple', 'xrange', 'range', 'generator']: 
-        return +reduce(cvxopt.base.ediv, *args)
+        return +reduce(kvxopt.base.ediv, *args)
     else:
-        return +reduce(cvxopt.base.ediv, args)
+        return +reduce(kvxopt.base.ediv, args)
 
-cvxopt.base.normal, cvxopt.base.uniform = normal, uniform
-cvxopt.base.setseed, cvxopt.base.getseed = setseed, getseed
-cvxopt.base.mul, cvxopt.base.div = mul, div
+kvxopt.base.normal, kvxopt.base.uniform = normal, uniform
+kvxopt.base.setseed, kvxopt.base.getseed = setseed, getseed
+kvxopt.base.mul, kvxopt.base.div = mul, div
 
-from cvxopt import printing
+from kvxopt import printing
 matrix_str    = printing.matrix_str_default
 matrix_repr   = printing.matrix_repr_default
 spmatrix_str  = printing.spmatrix_str_default
 spmatrix_repr = printing.spmatrix_repr_default
 
-from cvxopt.base import matrix, spmatrix, sparse, spdiag, sqrt, sin, cos, \
+from kvxopt.base import matrix, spmatrix, sparse, spdiag, sqrt, sin, cos, \
     exp, log
 
-from cvxopt import solvers, blas, lapack
+from kvxopt import solvers, blas, lapack
 
 __all__ = [ 'blas', 'lapack', 'amd', 'umfpack', 'klu', 'cholmod', 'solvers',
     'modeling', 'printing', 'info', 'matrix', 'spmatrix', 'sparse', 

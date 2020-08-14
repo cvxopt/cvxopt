@@ -24,8 +24,8 @@ piecewise-linear objective and constraint functions.
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from cvxopt.base import matrix, spmatrix
-from cvxopt import blas, solvers 
+from kvxopt.base import matrix, spmatrix
+from kvxopt import blas, solvers 
 import sys
 if sys.version_info[0] < 3: 
     import __builtin__ as builtins

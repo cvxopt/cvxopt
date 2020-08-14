@@ -75,37 +75,37 @@ typedef struct {
 
 #else
 
-static void **cvxopt_API;
+static void **kvxopt_API;
 
-#define Matrix_New (*(matrix * (*)(int, int, int)) cvxopt_API[0])
-#define Matrix_NewFromMatrix (*(matrix * (*)(matrix *, int)) cvxopt_API[1])
-#define Matrix_NewFromList (*(matrix * (*)(PyObject *, int)) cvxopt_API[2])
-#define Matrix_Check (*(int * (*)(void *)) cvxopt_API[3])
+#define Matrix_New (*(matrix * (*)(int, int, int)) kvxopt_API[0])
+#define Matrix_NewFromMatrix (*(matrix * (*)(matrix *, int)) kvxopt_API[1])
+#define Matrix_NewFromList (*(matrix * (*)(PyObject *, int)) kvxopt_API[2])
+#define Matrix_Check (*(int * (*)(void *)) kvxopt_API[3])
 
-#define SpMatrix_New (*(spmatrix * (*)(int_t, int_t, int_t, int)) cvxopt_API[4])
+#define SpMatrix_New (*(spmatrix * (*)(int_t, int_t, int_t, int)) kvxopt_API[4])
 #define SpMatrix_NewFromSpMatrix \
-  (*(spmatrix * (*)(spmatrix *, int)) cvxopt_API[5])
+  (*(spmatrix * (*)(spmatrix *, int)) kvxopt_API[5])
 #define SpMatrix_NewFromIJV \
   (*(spmatrix * (*)(matrix *, matrix *, matrix *, int_t, int_t, int)) \
-      cvxopt_API[6])
-#define SpMatrix_Check (*(int * (*)(void *)) cvxopt_API[7])
+      kvxopt_API[6])
+#define SpMatrix_Check (*(int * (*)(void *)) kvxopt_API[7])
 
 /* Return -1 and set exception on error, 0 on success. */
 static int
-import_cvxopt(void)
+import_kvxopt(void)
 {
-  PyObject *module = PyImport_ImportModule("cvxopt.base");
+  PyObject *module = PyImport_ImportModule("kvxopt.base");
 
   if (module != NULL) {
     PyObject *c_api_object = PyObject_GetAttrString(module, "_C_API");
 #if PY_MAJOR_VERSION >= 3
     if (!c_api_object || !PyCapsule_IsValid(c_api_object, "base_API"))
         return -1;
-    cvxopt_API = (void **) PyCapsule_GetPointer(c_api_object, "base_API");
+    kvxopt_API = (void **) PyCapsule_GetPointer(c_api_object, "base_API");
 #else
     if (!c_api_object || !(PyCObject_Check(c_api_object)))
         return -1;
-    cvxopt_API = (void **) PyCObject_AsVoidPtr(c_api_object);
+    kvxopt_API = (void **) PyCObject_AsVoidPtr(c_api_object);
 #endif
     Py_DECREF(c_api_object);
   }

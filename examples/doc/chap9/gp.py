@@ -1,6 +1,6 @@
 # The small GP of section 9.3 (Geometric programming).
 
-from cvxopt import matrix, log, exp, solvers  
+from kvxopt import matrix, log, exp, solvers  
  
 Aflr  = 1000.0  
 Awall = 100.0  

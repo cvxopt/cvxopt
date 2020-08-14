@@ -418,7 +418,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
 
     """
     import math
-    from cvxopt import base, blas, misc, matrix, spmatrix
+    from kvxopt import base, blas, misc, matrix, spmatrix
 
     EXPON = 3
     STEP = 0.99
@@ -1761,8 +1761,8 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
 
     """
     import math
-    from cvxopt import base, blas, misc
-    from cvxopt.base import matrix, spmatrix
+    from kvxopt import base, blas, misc
+    from kvxopt.base import matrix, spmatrix
 
     STEP = 0.99
     EXPON = 3
@@ -2780,8 +2780,8 @@ def lp(c, G, h, A = None, b = None, kktsolver = None, solver = None, primalstart
     options = kwargs.get('options',globals()['options'])
 
     import math
-    from cvxopt import base, blas, misc
-    from cvxopt.base import matrix, spmatrix
+    from kvxopt import base, blas, misc
+    from kvxopt.base import matrix, spmatrix
 
     if not isinstance(c, matrix) or c.typecode != 'd' or c.size[1] != 1:
         raise TypeError("'c' must be a dense column matrix")
@@ -2805,7 +2805,7 @@ def lp(c, G, h, A = None, b = None, kktsolver = None, solver = None, primalstart
         raise TypeError("'b' must be a dense matrix of size (%d,1)" %p)
 
     if solver == 'glpk':
-        try: from cvxopt import glpk
+        try: from kvxopt import glpk
         except ImportError: raise ValueError("invalid option "\
             "(solver = 'glpk'): cvxopt.glpk is not installed")
         opts = options.get('glpk',None)
@@ -2876,7 +2876,7 @@ def lp(c, G, h, A = None, b = None, kktsolver = None, solver = None, primalstart
 
     if solver == 'mosek':
         try:
-            from cvxopt import msk
+            from kvxopt import msk
             import mosek
         except ImportError:
             raise ValueError("invalid option (solver = 'mosek'): "\
@@ -3279,8 +3279,8 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
         values.
     """
 
-    from cvxopt import base, blas
-    from cvxopt.base import matrix, spmatrix
+    from kvxopt import base, blas
+    from kvxopt.base import matrix, spmatrix
 
     if not isinstance(c,matrix) or c.typecode != 'd' or c.size[1] != 1:
         raise TypeError("'c' must be a dense column matrix")
@@ -3330,9 +3330,9 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
     N = ml + sum(mq)
 
     if solver == 'mosek':
-        from cvxopt import misc
+        from kvxopt import misc
         try:
-            from cvxopt import msk
+            from kvxopt import msk
             import mosek
         except ImportError:
             raise ValueError("invalid option (solver = 'mosek'): "\
@@ -3840,8 +3840,8 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
     options = kwargs.get('options',globals()['options'])
 
     import math
-    from cvxopt import base, blas, misc
-    from cvxopt.base import matrix, spmatrix
+    from kvxopt import base, blas, misc
+    from kvxopt.base import matrix, spmatrix
 
     if not isinstance(c,matrix) or c.typecode != 'd' or c.size[1] != 1:
         raise TypeError("'c' must be a dense column matrix")
@@ -3891,7 +3891,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
     N = ml + sum([ m**2 for m in ms ])
 
     if solver == 'dsdp':
-        try: from cvxopt import dsdp
+        try: from kvxopt import dsdp
         except ImportError: raise ValueError("invalid option "\
             "(solver = 'dsdp'): cvxopt.dsdp is not installed")
         if p: raise ValueError("sdp() with the solver = 'dsdp' option "\
@@ -4337,13 +4337,13 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
 
     options = kwargs.get('options',globals()['options'])
 
-    from cvxopt import base, blas
-    from cvxopt.base import matrix, spmatrix
+    from kvxopt import base, blas
+    from kvxopt.base import matrix, spmatrix
 
     if solver == 'mosek':
-        from cvxopt import misc
+        from kvxopt import misc
         try:
-            from cvxopt import msk
+            from kvxopt import msk
             import mosek
         except ImportError: raise ValueError("invalid option "\
             "(solver='mosek'): cvxopt.msk is not installed")

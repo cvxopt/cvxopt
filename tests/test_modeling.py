@@ -1,6 +1,6 @@
 import unittest, os
-from cvxopt import matrix, normal, setseed
-from cvxopt.modeling import op, variable, dot, max, sum
+from kvxopt import matrix, normal, setseed
+from kvxopt.modeling import op, variable, dot, max, sum
 
 class TestModeling(unittest.TestCase):
 

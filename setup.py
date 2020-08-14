@@ -89,31 +89,31 @@ MSVC=0
 
 # No modifications should be needed below this line.
 
-BLAS_NOUNDERSCORES = int(os.environ.get("CVXOPT_BLAS_NOUNDERSCORES",BLAS_NOUNDERSCORES)) == True
-BLAS_LIB = os.environ.get("CVXOPT_BLAS_LIB",BLAS_LIB)
-LAPACK_LIB = os.environ.get("CVXOPT_LAPACK_LIB",LAPACK_LIB)
-BLAS_LIB_DIR = os.environ.get("CVXOPT_BLAS_LIB_DIR",BLAS_LIB_DIR)
-BLAS_EXTRA_LINK_ARGS = os.environ.get("CVXOPT_BLAS_EXTRA_LINK_ARGS",BLAS_EXTRA_LINK_ARGS)
+BLAS_NOUNDERSCORES = int(os.environ.get("KVXOPT_BLAS_NOUNDERSCORES",BLAS_NOUNDERSCORES)) == True
+BLAS_LIB = os.environ.get("KVXOPT_BLAS_LIB",BLAS_LIB)
+LAPACK_LIB = os.environ.get("KVXOPT_LAPACK_LIB",LAPACK_LIB)
+BLAS_LIB_DIR = os.environ.get("KVXOPT_BLAS_LIB_DIR",BLAS_LIB_DIR)
+BLAS_EXTRA_LINK_ARGS = os.environ.get("KVXOPT_BLAS_EXTRA_LINK_ARGS",BLAS_EXTRA_LINK_ARGS)
 if type(BLAS_LIB) is str: BLAS_LIB = BLAS_LIB.strip().split(';')
 if type(LAPACK_LIB) is str: LAPACK_LIB = LAPACK_LIB.strip().split(';')
 if type(BLAS_EXTRA_LINK_ARGS) is str: BLAS_EXTRA_LINK_ARGS = BLAS_EXTRA_LINK_ARGS.strip().split(';')
-BUILD_GSL = int(os.environ.get("CVXOPT_BUILD_GSL",BUILD_GSL))
-GSL_LIB_DIR = os.environ.get("CVXOPT_GSL_LIB_DIR",GSL_LIB_DIR)
-GSL_INC_DIR = os.environ.get("CVXOPT_GSL_INC_DIR",GSL_INC_DIR)
-BUILD_FFTW = int(os.environ.get("CVXOPT_BUILD_FFTW",BUILD_FFTW))
-FFTW_LIB_DIR = os.environ.get("CVXOPT_FFTW_LIB_DIR",FFTW_LIB_DIR)
-FFTW_INC_DIR = os.environ.get("CVXOPT_FFTW_INC_DIR",FFTW_INC_DIR)
-BUILD_GLPK = int(os.environ.get("CVXOPT_BUILD_GLPK",BUILD_GLPK))
-GLPK_LIB_DIR = os.environ.get("CVXOPT_GLPK_LIB_DIR",GLPK_LIB_DIR)
-GLPK_INC_DIR = os.environ.get("CVXOPT_GLPK_INC_DIR",GLPK_INC_DIR)
-BUILD_DSDP = int(os.environ.get("CVXOPT_BUILD_DSDP",BUILD_DSDP))
-DSDP_LIB_DIR = os.environ.get("CVXOPT_DSDP_LIB_DIR",DSDP_LIB_DIR)
-DSDP_INC_DIR = os.environ.get("CVXOPT_DSDP_INC_DIR",DSDP_INC_DIR)
-SUITESPARSE_LIB_DIR = os.environ.get("CVXOPT_SUITESPARSE_LIB_DIR",SUITESPARSE_LIB_DIR)
-SUITESPARSE_INC_DIR = os.environ.get("CVXOPT_SUITESPARSE_INC_DIR",SUITESPARSE_INC_DIR)
-SUITESPARSE_SRC_DIR = os.environ.get("CVXOPT_SUITESPARSE_SRC_DIR",SUITESPARSE_SRC_DIR)
-MSVC = int(os.environ.get("CVXOPT_MSVC",MSVC)) == True
-INSTALL_REQUIRES = os.environ.get("CVXOPT_INSTALL_REQUIRES",[])
+BUILD_GSL = int(os.environ.get("KVXOPT_BUILD_GSL",BUILD_GSL))
+GSL_LIB_DIR = os.environ.get("KVXOPT_GSL_LIB_DIR",GSL_LIB_DIR)
+GSL_INC_DIR = os.environ.get("KVXOPT_GSL_INC_DIR",GSL_INC_DIR)
+BUILD_FFTW = int(os.environ.get("KVXOPT_BUILD_FFTW",BUILD_FFTW))
+FFTW_LIB_DIR = os.environ.get("KVXOPT_FFTW_LIB_DIR",FFTW_LIB_DIR)
+FFTW_INC_DIR = os.environ.get("KVXOPT_FFTW_INC_DIR",FFTW_INC_DIR)
+BUILD_GLPK = int(os.environ.get("KVXOPT_BUILD_GLPK",BUILD_GLPK))
+GLPK_LIB_DIR = os.environ.get("KVXOPT_GLPK_LIB_DIR",GLPK_LIB_DIR)
+GLPK_INC_DIR = os.environ.get("KVXOPT_GLPK_INC_DIR",GLPK_INC_DIR)
+BUILD_DSDP = int(os.environ.get("KVXOPT_BUILD_DSDP",BUILD_DSDP))
+DSDP_LIB_DIR = os.environ.get("KVXOPT_DSDP_LIB_DIR",DSDP_LIB_DIR)
+DSDP_INC_DIR = os.environ.get("KVXOPT_DSDP_INC_DIR",DSDP_INC_DIR)
+SUITESPARSE_LIB_DIR = os.environ.get("KVXOPT_SUITESPARSE_LIB_DIR",SUITESPARSE_LIB_DIR)
+SUITESPARSE_INC_DIR = os.environ.get("KVXOPT_SUITESPARSE_INC_DIR",SUITESPARSE_INC_DIR)
+SUITESPARSE_SRC_DIR = os.environ.get("KVXOPT_SUITESPARSE_SRC_DIR",SUITESPARSE_SRC_DIR)
+MSVC = int(os.environ.get("KVXOPT_MSVC",MSVC)) == True
+INSTALL_REQUIRES = os.environ.get("KVXOPT_INSTALL_REQUIRES",[])
 if type(INSTALL_REQUIRES) is str: INSTALL_REQUIRES = INSTALL_REQUIRES.strip().split(';')
 
 RT_LIB = ["rt"] if sys.platform.startswith("linux") else []
@@ -292,11 +292,14 @@ misc_solvers = Extension('misc_solvers',
 extmods += [base, blas, lapack, umfpack, klu, cholmod, amd, misc_solvers] 
 
 
-setup (name = 'cvxopt',
-    description = 'Convex optimization package',
+setup (name = 'kvxopt',
+    description = 'Convex optimization package and Suite Sparse interface',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     long_description = '''
+KVXOPT is a fork from CVXOPT wich contains more functions and 
+wrappers to Suite Sparse library.
+
 CVXOPT is a free software package for convex optimization based on the
 Python programming language. It can be used with the interactive Python
 interpreter, on the command line by executing Python scripts, or
@@ -304,16 +307,17 @@ integrated in other software via Python extension modules. Its main
 purpose is to make the development of software for convex optimization
 applications straightforward by building on Python's extensive standard
 library and on the strengths of Python as a high-level programming
-language.''',
-    author = 'M. Andersen, J. Dahl, and L. Vandenberghe',
-    author_email = 'martin.skovgaard.andersen@gmail.com, dahl.joachim@gmail.com, vandenbe@ee.ucla.edu',
-    url = 'http://cvxopt.org',
+language.
+''',
+    author = 'M. Andersen, J. Dahl, L. Vandenberghe, and U. Sandoval',
+    author_email = 'martin.skovgaard.andersen@gmail.com, dahl.joachim@gmail.com, vandenbe@ee.ucla.edu, sanurielf@gmail.com',
+    url = '',
     license = 'GNU GPL version 3',
-    ext_package = "cvxopt",
+    ext_package = "kvxopt",
     ext_modules = extmods,
-    package_dir = {"cvxopt": "src/python"},
+    package_dir = {"kvxopt": "src/python"},
     package_data = {'': ['*.dll']},
-    packages = ["cvxopt"],
+    packages = ["kvxopt"],
     install_requires = INSTALL_REQUIRES,
     classifiers=[
         'Development Status :: 5 - Production/Stable',

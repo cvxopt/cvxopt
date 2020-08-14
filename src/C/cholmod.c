@@ -226,13 +226,13 @@ static void free_matrix(cholmod_sparse *A)
 }
 
 #if PY_MAJOR_VERSION >= 3
-static void cvxopt_free_cholmod_factor(void *L)
+static void kvxopt_free_cholmod_factor(void *L)
 {
    void *Lptr = PyCapsule_GetPointer(L, PyCapsule_GetName(L));
    CHOL(free_factor) ((cholmod_factor **) &Lptr, &Common);
 }
 #else
-static void cvxopt_free_cholmod_factor(void *L, void *descr)
+static void kvxopt_free_cholmod_factor(void *L, void *descr)
 {
     CHOL(free_factor) ((cholmod_factor **) &L, &Common) ;
 }
@@ -317,13 +317,13 @@ static PyObject* symbolic(PyObject *self, PyObject *args,
     return (PyObject *) PyCapsule_New((void *) L, SP_ID(A)==DOUBLE ?
         (uplo == 'L' ?  "CHOLMOD FACTOR D L" : "CHOLMOD FACTOR D U") :
         (uplo == 'L' ?  "CHOLMOD FACTOR Z L" : "CHOLMOD FACTOR Z U"),
-        (PyCapsule_Destructor) &cvxopt_free_cholmod_factor);
+        (PyCapsule_Destructor) &kvxopt_free_cholmod_factor);
 #else
     return (PyObject *) PyCObject_FromVoidPtrAndDesc((void *) L,
         SP_ID(A)==DOUBLE ?
         (uplo == 'L' ?  "CHOLMOD FACTOR D L" : "CHOLMOD FACTOR D U") :
         (uplo == 'L' ?  "CHOLMOD FACTOR Z L" : "CHOLMOD FACTOR Z U"),
-	cvxopt_free_cholmod_factor);
+	kvxopt_free_cholmod_factor);
 #endif
 }
 
@@ -1106,7 +1106,7 @@ PyMODINIT_FUNC PyInit_cholmod(void)
     if (!(cholmod_module = PyModule_Create(&cholmod_module_def)))
         return NULL;
     PyModule_AddObject(cholmod_module, "options", PyDict_New());
-    if (import_cvxopt() < 0) return NULL;
+    if (import_kvxopt() < 0) return NULL;
     return cholmod_module;
 }
 
@@ -1115,9 +1115,9 @@ PyMODINIT_FUNC PyInit_cholmod(void)
 PyMODINIT_FUNC initcholmod(void)
 {
     CHOL(start) (&Common);
-    cholmod_module = Py_InitModule3("cvxopt.cholmod", cholmod_functions,
+    cholmod_module = Py_InitModule3("kvxopt.cholmod", cholmod_functions,
         cholmod__doc__);
     PyModule_AddObject(cholmod_module, "options", PyDict_New());
-    if (import_cvxopt() < 0) return;
+    if (import_kvxopt() < 0) return;
 }
 #endif

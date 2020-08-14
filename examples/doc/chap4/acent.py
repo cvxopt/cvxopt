@@ -1,7 +1,7 @@
 # The analytic centering example at the end of chapter 4 (The LAPACK 
 # interface).
 
-from cvxopt import matrix, log, mul, div, blas, lapack, normal, uniform
+from kvxopt import matrix, log, mul, div, blas, lapack, normal, uniform
 from math import sqrt
 
 def acent(A,b):

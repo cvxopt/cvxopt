@@ -1,8 +1,8 @@
 # The robust LP example of section 10.5 (Examples).
 
-from cvxopt import normal, uniform  
-from cvxopt.modeling import variable, dot, op, sum  
-from cvxopt.blas import nrm2  
+from kvxopt import normal, uniform  
+from kvxopt.modeling import variable, dot, op, sum  
+from kvxopt.blas import nrm2  
      
 m, n = 500, 100  
 A = normal(m,n)  

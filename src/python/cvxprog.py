@@ -378,8 +378,8 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
     """
 
     import math 
-    from cvxopt import base, blas, misc
-    from cvxopt.base import matrix, spmatrix 
+    from kvxopt import base, blas, misc
+    from kvxopt.base import matrix, spmatrix 
 
     STEP = 0.99
     BETA = 0.5
@@ -1653,8 +1653,8 @@ def cp(F, G = None, h = None, dims = None, A = None, b = None,
     KKTREG = options.get('kktreg',None)
     
     import math 
-    from cvxopt import base, blas, misc
-    from cvxopt.base import matrix, spmatrix 
+    from kvxopt import base, blas, misc
+    from kvxopt.base import matrix, spmatrix 
 
     mnl, x0 = F()
 
@@ -2056,8 +2056,8 @@ def gp(K, F, g, G=None, h=None, A=None, b=None, kktsolver=None, **kwargs):
     options = kwargs.get('options',globals()['options'])
 
     import math 
-    from cvxopt import base, blas, misc
-    from cvxopt.base import matrix, spmatrix 
+    from kvxopt import base, blas, misc
+    from kvxopt.base import matrix, spmatrix 
 
     if type(K) is not list or [ k for k in K if type(k) is not int 
         or k <= 0 ]:

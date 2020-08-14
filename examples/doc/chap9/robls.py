@@ -2,8 +2,8 @@
 # objectives). 
 
 from math import sqrt, ceil, floor
-from cvxopt import solvers, blas, lapack
-from cvxopt import matrix, spmatrix, spdiag, sqrt, mul, div, setseed, normal
+from kvxopt import solvers, blas, lapack
+from kvxopt import matrix, spmatrix, spdiag, sqrt, mul, div, setseed, normal
 
 def robls(A, b, rho): 
 

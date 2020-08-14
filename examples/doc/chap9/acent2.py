@@ -1,8 +1,8 @@
 # The analytic centering with cone constraints example of section 9.1 
 # (Problems with nonlinear objectives).
 
-from cvxopt import matrix, log, div, spdiag 
-from cvxopt import solvers  
+from kvxopt import matrix, log, div, spdiag 
+from kvxopt import solvers  
  
 def F(x = None, z = None):  
      if x is None:  return 0, matrix(0.0, (3,1))  

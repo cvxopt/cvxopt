@@ -1013,7 +1013,7 @@ PyMODINIT_FUNC PyInit_glpk(void)
 {
   if (!(glpk_module = PyModule_Create(&glpk_module_def))) return NULL;
   PyModule_AddObject(glpk_module, "options", PyDict_New());
-  if (import_cvxopt() < 0) return NULL;
+  if (import_kvxopt() < 0) return NULL;
   return glpk_module;
 }
 
@@ -1021,10 +1021,10 @@ PyMODINIT_FUNC PyInit_glpk(void)
 
 PyMODINIT_FUNC initglpk(void)
 {
-    glpk_module = Py_InitModule3("cvxopt.glpk", glpk_functions,
+    glpk_module = Py_InitModule3("kvxopt.glpk", glpk_functions,
         glpk__doc__);
     PyModule_AddObject(glpk_module, "options", PyDict_New());
-    if (import_cvxopt() < 0) return;
+    if (import_kvxopt() < 0) return;
 }
 
 #endif

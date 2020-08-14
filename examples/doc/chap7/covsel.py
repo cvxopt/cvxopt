@@ -1,7 +1,7 @@
 # The covariance selection example at the end of chapter 7 (Sparse linear
 # equations).
 
-from cvxopt import matrix, spmatrix, log, mul, blas, lapack, amd, cholmod
+from kvxopt import matrix, spmatrix, log, mul, blas, lapack, amd, cholmod
 from pickle import load
 
 def covsel(Y):

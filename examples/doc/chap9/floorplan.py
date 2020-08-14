@@ -1,6 +1,6 @@
 # The floor planning example section 9.2 (Problems with linear objectives). 
 
-from cvxopt import solvers, matrix, spmatrix, mul, div  
+from kvxopt import solvers, matrix, spmatrix, mul, div  
 solvers.options['show_progress'] = False
  
 def floorplan(Amin):  

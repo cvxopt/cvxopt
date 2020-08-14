@@ -1241,7 +1241,7 @@ PyMODINIT_FUNC PyInit_fftw(void)
 {
   PyObject *m;
   if (!(m = PyModule_Create(&fftw_module))) return NULL;
-  if (import_cvxopt() < 0) return NULL;
+  if (import_kvxopt() < 0) return NULL;
   return m;
 }
 
@@ -1250,8 +1250,8 @@ PyMODINIT_FUNC PyInit_fftw(void)
 PyMODINIT_FUNC initfftw(void)
 {
   PyObject *m;
-  m = Py_InitModule3("cvxopt.fftw", fftw_functions, fftw__doc__);
-  if (import_cvxopt() < 0) return;
+  m = Py_InitModule3("kvxopt.fftw", fftw_functions, fftw__doc__);
+  if (import_kvxopt() < 0) return;
 }
 
 #endif

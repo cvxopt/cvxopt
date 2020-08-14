@@ -187,7 +187,7 @@ PyMODINIT_FUNC PyInit_gsl(void)
 {
   PyObject *m;
   if (!(m = PyModule_Create(&gsl_module))) return NULL;
-  if (import_cvxopt() < 0) return NULL;
+  if (import_kvxopt() < 0) return NULL;
   return m;
 }
 
@@ -196,8 +196,8 @@ PyMODINIT_FUNC PyInit_gsl(void)
 PyMODINIT_FUNC initgsl(void)
 {
   PyObject *m;
-  m = Py_InitModule3("cvxopt.gsl", gsl_functions, gsl__doc__);
-  if (import_cvxopt() < 0) return;
+  m = Py_InitModule3("kvxopt.gsl", gsl_functions, gsl__doc__);
+  if (import_kvxopt() < 0) return;
 }
 
 #endif

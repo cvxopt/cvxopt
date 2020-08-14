@@ -671,7 +671,7 @@ PyMODINIT_FUNC PyInit_klu(void)
 {
     PyObject *m;
     if (!(m = PyModule_Create(&klu_module))) return NULL;
-    if (import_cvxopt() < 0) return NULL;
+    if (import_kvxopt() < 0) return NULL;
     return m;
 }
 
@@ -680,7 +680,7 @@ PyMODINIT_FUNC PyInit_klu(void)
 PyMODINIT_FUNC initklu(void)
 {
     PyObject *m;
-    m = Py_InitModule3("cvxopt.klu", klu_functions, klu__doc__);
-    if (import_cvxopt() < 0) return;
+    m = Py_InitModule3("kvxopt.klu", klu_functions, klu__doc__);
+    if (import_kvxopt() < 0) return;
 }
 #endif

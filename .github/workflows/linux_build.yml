@@ -9,10 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      CVXOPT_BUILD_GSL: 1
-      CVXOPT_BUILD_FFTW: 1
-      CVXOPT_BUILD_GLPK: 1
-      CVXOPT_BUILD_DSDP: 1
+      KVXOPT_BUILD_GSL: 1
+      KVXOPT_BUILD_FFTW: 1
+      KVXOPT_BUILD_GLPK: 1
+      KVXOPT_BUILD_DSDP: 1
       SUITESPARSE_VERSION: 5.7.2
       SUITESPARSE_SHA256: fe3bc7c3bd1efdfa5cffffb5cebf021ff024c83b5daf0ab445429d3d741bd3ad
 
@@ -47,7 +47,7 @@ jobs:
             wget https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${SUITESPARSE_VERSION}.tar.gz
             echo "${SUITESPARSE_SHA256}  v${SUITESPARSE_VERSION}.tar.gz" > SuiteSparse.sha256
             tar -xf v${SUITESPARSE_VERSION}.tar.gz
-            echo "::set-env name=CVXOPT_SUITESPARSE_SRC_DIR::${{ github.workspace}}/SuiteSparse-${{ env.SUITESPARSE_VERSION }}" 
+            echo "::set-env name=KVXOPT_SUITESPARSE_SRC_DIR::${{ github.workspace}}/SuiteSparse-${{ env.SUITESPARSE_VERSION }}" 
         if: ${{ matrix.suite-sparse == 'src_suitesparse' }}
 
       - name: Install 
@@ -57,6 +57,6 @@ jobs:
 
       - name: Test
         run: |
-          echo ${CVXOPT_SUITESPARSE_SRC_DIR}
-          python -c 'from cvxopt import blas,dsdp,lapack,glpk,fftw,gsl,cholmod,umfpack,klu'
-          py.test --cov=cvxopt tests/
+          echo ${KVXOPT_SUITESPARSE_SRC_DIR}
+          python -c 'from kvxopt import blas,dsdp,lapack,glpk,fftw,gsl,cholmod,umfpack,klu'
+          py.test --cov=kvxopt tests/

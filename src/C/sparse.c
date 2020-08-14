@@ -2751,15 +2751,15 @@ spmatrix_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 
 static PyObject *spmatrix_str(matrix *self) {
 
-  PyObject *cvxopt = PyImport_ImportModule("cvxopt");
+  PyObject *kvxopt = PyImport_ImportModule("kvxopt");
   PyObject *str, *ret;
 
-  if (!(str = PyObject_GetAttrString(cvxopt, "spmatrix_str"))) {
-    Py_DECREF(cvxopt);
-    PY_ERR(PyExc_KeyError, "missing 'spmatrix_str' in 'cvxopt'");
+  if (!(str = PyObject_GetAttrString(kvxopt, "spmatrix_str"))) {
+    Py_DECREF(kvxopt);
+    PY_ERR(PyExc_KeyError, "missing 'spmatrix_str' in 'kvxopt'");
   }
 
-  Py_DECREF(cvxopt);
+  Py_DECREF(kvxopt);
   if (!PyCallable_Check(str)) PY_ERR_TYPE("'spmatrix_str' is not callable");
 
   ret = PyObject_CallFunctionObjArgs(str, (PyObject *)self, NULL);
@@ -2771,15 +2771,15 @@ static PyObject *spmatrix_str(matrix *self) {
 static PyObject *
 spmatrix_repr(matrix *self) {
 
-  PyObject *cvxopt = PyImport_ImportModule("cvxopt");
+  PyObject *kvxopt = PyImport_ImportModule("kvxopt");
   PyObject *repr, *ret;
 
-  if (!(repr = PyObject_GetAttrString(cvxopt, "spmatrix_repr"))) {
-    Py_DECREF(cvxopt);
-    PY_ERR(PyExc_KeyError, "missing 'spmatrix_repr' in 'cvxopt'");
+  if (!(repr = PyObject_GetAttrString(kvxopt, "spmatrix_repr"))) {
+    Py_DECREF(kvxopt);
+    PY_ERR(PyExc_KeyError, "missing 'spmatrix_repr' in 'kvxopt'");
   }
 
-  Py_DECREF(cvxopt);
+  Py_DECREF(kvxopt);
   if (!PyCallable_Check(repr)) PY_ERR_TYPE("'spmatrix_repr' is not callable");
 
   ret = PyObject_CallFunctionObjArgs(repr, (PyObject *)self, NULL);
@@ -4633,7 +4633,7 @@ PyTypeObject spmatrix_tp = {
     PyObject_HEAD_INIT(NULL)
     0,
 #endif
-    "cvxopt.base.spmatrix",
+    "kvxopt.base.spmatrix",
     sizeof(spmatrix),
     0,
     (destructor)spmatrix_dealloc,              /* tp_dealloc */

@@ -1,7 +1,7 @@
 # The norm and penalty approximation problems of section 10.5 (Examples).
 
-from cvxopt import normal, setseed
-from cvxopt.modeling import variable, op, max, sum
+from kvxopt import normal, setseed
+from kvxopt.modeling import variable, op, max, sum
 
 setseed(0)
 m, n = 500, 100

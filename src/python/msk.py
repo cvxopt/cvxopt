@@ -23,7 +23,7 @@ CVXOPT interface for MOSEK 8
 
 
 import mosek
-from cvxopt import matrix, spmatrix, sparse
+from kvxopt import matrix, spmatrix, sparse
 
 import sys
 

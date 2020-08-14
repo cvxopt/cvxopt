@@ -1,6 +1,6 @@
 # The small linear cone program of section 8.1 (Linear cone programs).
 
-from cvxopt import matrix, solvers
+from kvxopt import matrix, solvers
 
 c = matrix([-6., -4., -5.])
 G = matrix([[ 16., 7.,  24.,  -8.,   8.,  -1.,  0., -1.,  0.,  0.,   7.,  

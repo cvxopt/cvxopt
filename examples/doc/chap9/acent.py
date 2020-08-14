@@ -1,8 +1,8 @@
 # The equality constrained analytical centering example of section 9.1 
 # (Problems with nonlinear objectives).
 
-from cvxopt import matrix, spmatrix, spdiag, log, normal, uniform
-from cvxopt import blas, solvers
+from kvxopt import matrix, spmatrix, spdiag, log, normal, uniform
+from kvxopt import blas, solvers
 
 def acent(A, b):
      

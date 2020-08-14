@@ -614,15 +614,15 @@ int * matrix_compare(PyObject *self, PyObject *other) {
 static PyObject *
 matrix_str(matrix *self) {
 
-  PyObject *cvxopt = PyImport_ImportModule("cvxopt");
+  PyObject *kvxopt = PyImport_ImportModule("kvxopt");
   PyObject *str, *ret;
 
-  if (!(str = PyObject_GetAttrString(cvxopt, "matrix_str"))) {
-    Py_DECREF(cvxopt);
-    PY_ERR(PyExc_KeyError, "missing 'matrix_str' in 'cvxopt'");
+  if (!(str = PyObject_GetAttrString(kvxopt, "matrix_str"))) {
+    Py_DECREF(kvxopt);
+    PY_ERR(PyExc_KeyError, "missing 'matrix_str' in 'kvxopt'");
   }
 
-  Py_DECREF(cvxopt);
+  Py_DECREF(kvxopt);
   if (!PyCallable_Check(str)) PY_ERR_TYPE("'matrix_str' is not callable");
 
   ret = PyObject_CallFunctionObjArgs(str, (PyObject *)self, NULL);
@@ -634,15 +634,15 @@ matrix_str(matrix *self) {
 static PyObject *
 matrix_repr(matrix *self) {
 
-  PyObject *cvxopt = PyImport_ImportModule("cvxopt");
+  PyObject *kvxopt = PyImport_ImportModule("kvxopt");
   PyObject *repr, *ret;
 
-  if (!(repr = PyObject_GetAttrString(cvxopt, "matrix_repr"))) {
-    Py_DECREF(cvxopt);
-    PY_ERR(PyExc_KeyError, "missing 'matrix_repr' in 'cvxopt'");
+  if (!(repr = PyObject_GetAttrString(kvxopt, "matrix_repr"))) {
+    Py_DECREF(kvxopt);
+    PY_ERR(PyExc_KeyError, "missing 'matrix_repr' in 'kvxopt'");
   }
 
-  Py_DECREF(cvxopt);
+  Py_DECREF(kvxopt);
   if (!PyCallable_Check(repr)) PY_ERR_TYPE("'matrix_repr' is not callable");
 
   ret = PyObject_CallFunctionObjArgs(repr, (PyObject *)self, NULL);
@@ -1419,7 +1419,7 @@ static PyGetSetDef matrix_getsets[] = {
 
 PyTypeObject matrix_tp = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "cvxopt.base.matrix",
+    "kvxopt.base.matrix",
     sizeof(matrix),
     0,
     (destructor)matrix_dealloc,	 /* tp_dealloc */

@@ -515,7 +515,7 @@ PyMODINIT_FUNC PyInit_umfpack(void)
 {
   PyObject *m;
   if (!(m = PyModule_Create(&umfpack_module))) return NULL;
-  if (import_cvxopt() < 0) return NULL;
+  if (import_kvxopt() < 0) return NULL;
   return m;
 }
 
@@ -524,7 +524,7 @@ PyMODINIT_FUNC PyInit_umfpack(void)
 PyMODINIT_FUNC initumfpack(void)
 {
   PyObject *m;
-  m = Py_InitModule3("cvxopt.umfpack", umfpack_functions, umfpack__doc__);
-  if (import_cvxopt() < 0) return;
+  m = Py_InitModule3("kvxopt.umfpack", umfpack_functions, umfpack__doc__);
+  if (import_kvxopt() < 0) return;
 }
 #endif

@@ -1,8 +1,8 @@
 # The 1-norm support vector classifier of section 10.5 (Examples).
 
-from cvxopt import normal, setseed
-from cvxopt.modeling import variable, op, max, sum
-from cvxopt.blas import nrm2
+from kvxopt import normal, setseed
+from kvxopt.modeling import variable, op, max, sum
+from kvxopt.blas import nrm2
 
 m, n = 500, 100
 A = normal(m,n) 

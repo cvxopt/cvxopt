@@ -1,6 +1,6 @@
 # The small SDP of section 8.6 (Semidefinite programming).  
 
-from cvxopt import matrix, solvers  
+from kvxopt import matrix, solvers  
 c = matrix([1.,-1.,1.])  
 G = [ matrix([[-7., -11., -11., 3.],  
               [ 7., -18., -18., 8.],  

@@ -1,7 +1,7 @@
 # The example of section 9.4 (Exploiting structure).. 
 
-from cvxopt import matrix, spdiag, mul, div, log, setseed, uniform, normal 
-from cvxopt import blas, lapack, solvers 
+from kvxopt import matrix, spdiag, mul, div, log, setseed, uniform, normal 
+from kvxopt import blas, lapack, solvers 
 
 
 def l2ac(A, b):

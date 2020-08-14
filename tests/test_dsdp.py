@@ -4,7 +4,7 @@ class TestDSDP(unittest.TestCase):
 
     def setUp(self):
         try:
-            from cvxopt import dsdp, matrix
+            from kvxopt import dsdp, matrix
             c = matrix([1.,-1.,1.])
             G = [ matrix([[-7., -11., -11., 3.],
                         [ 7., -18., -18., 8.],
@@ -19,7 +19,7 @@ class TestDSDP(unittest.TestCase):
             self.skipTest("DSDP not available")
 
     def test_sdp(self):
-        from cvxopt import solvers, dsdp
+        from kvxopt import solvers, dsdp
         c,Gs,hs = self._prob_data
         sol_ref1 = solvers.sdp(c,None,None,Gs,hs)
         self.assertTrue(sol_ref1['status']=='optimal')
@@ -35,7 +35,7 @@ class TestDSDP(unittest.TestCase):
         self.assertTrue(sol4[0] == 'DSDP_PDFEASIBLE')
 
     def test_options(self):
-        from cvxopt import dsdp
+        from kvxopt import dsdp
         c,Gs,hs = self._prob_data
         dsdp.options = {'DSDP_Monitor':1}
         sol1 = dsdp.sdp(c,Gs=Gs,hs=hs)

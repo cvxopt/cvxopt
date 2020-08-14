@@ -1,5 +1,5 @@
 import unittest
-from cvxopt import matrix, spdiag, mul, div, sqrt, normal, setseed, base, blas, lapack, solvers, sparse, spmatrix
+from kvxopt import matrix, spdiag, mul, div, sqrt, normal, setseed, base, blas, lapack, solvers, sparse, spmatrix
 import math
 
 class TestCustomKKT(unittest.TestCase):

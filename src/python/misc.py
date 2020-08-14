@@ -18,8 +18,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import math
-from cvxopt import base, blas, lapack, cholmod, misc_solvers
-from cvxopt.base import matrix, spmatrix
+from kvxopt import base, blas, lapack, cholmod, misc_solvers
+from kvxopt.base import matrix, spmatrix
 __all__ = []
 
 use_C = True

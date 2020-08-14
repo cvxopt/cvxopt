@@ -1,7 +1,7 @@
 # The small LP of section 10.4 (Optimization problems).  
 
-from cvxopt import matrix
-from cvxopt.modeling import variable, op, dot
+from kvxopt import matrix
+from kvxopt.modeling import variable, op, dot
 
 x = variable()  
 y = variable()  

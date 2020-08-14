@@ -1187,7 +1187,7 @@ PyMODINIT_FUNC PyInit_misc_solvers(void)
 {
   PyObject *m;
   if (!(m = PyModule_Create(&misc_solvers_module))) return NULL;
-  if (import_cvxopt() < 0) return NULL;
+  if (import_kvxopt() < 0) return NULL;
   return m;
 }
 
@@ -1196,9 +1196,9 @@ PyMODINIT_FUNC PyInit_misc_solvers(void)
 PyMODINIT_FUNC initmisc_solvers(void)
 {
   PyObject *m;
-  m = Py_InitModule3("cvxopt.misc_solvers", misc_solvers_functions,
+  m = Py_InitModule3("kvxopt.misc_solvers", misc_solvers_functions,
       misc_solvers__doc__);
-  if (import_cvxopt() < 0) return;
+  if (import_kvxopt() < 0) return;
 }
 
 #endif

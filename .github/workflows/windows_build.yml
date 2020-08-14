@@ -9,10 +9,10 @@ jobs:
   build:
     runs-on: windows-latest
     env:
-      CVXOPT_BUILD_GSL: 1
-      CVXOPT_BUILD_FFTW: 1
-      CVXOPT_BUILD_GLPK: 1
-      CVXOPT_BUILD_DSDP: 0
+      KVXOPT_BUILD_GSL: 1
+      KVXOPT_BUILD_FFTW: 1
+      KVXOPT_BUILD_GLPK: 1
+      KVXOPT_BUILD_DSDP: 0
       SUITESPARSE_VERSION: 5.7.2
       SUITESPARSE_SHA256: fe3bc7c3bd1efdfa5cffffb5cebf021ff024c83b5daf0ab445429d3d741bd3ad
 
@@ -42,21 +42,21 @@ jobs:
         shell: msys2 {0}
         run: |
             pacman -S --noconfirm mingw-w64-x86_64-lapack mingw-w64-x86_64-gsl mingw-w64-x86_64-fftw mingw-w64-x86_64-glpk
-            echo "::set-env name=CVXOPT_GSL_LIB_DIR::$(cygpath -m /mingw64/lib)" 
-            echo "::set-env name=CVXOPT_GSL_INC_DIR::$(cygpath -m /mingw64/include)" 
-            echo "::set-env name=CVXOPT_FFTW_LIB_DIR::$(cygpath -m /mingw64/lib)" 
-            echo "::set-env name=CVXOPT_FFTW_INC_DIR::$(cygpath -m /mingw64/include)" 
-            echo "::set-env name=CVXOPT_GLPK_LIB_DIR::$(cygpath -m /mingw64/lib)" 
-            echo "::set-env name=CVXOPT_GLPK_INC_DIR::$(cygpath -m /mingw64/include)" 
-            echo "::set-env name=CVXOPT_BLAS_LIB_DIR::$(cygpath -m /mingw64/lib)" 
+            echo "::set-env name=KVXOPT_GSL_LIB_DIR::$(cygpath -m /mingw64/lib)" 
+            echo "::set-env name=KVXOPT_GSL_INC_DIR::$(cygpath -m /mingw64/include)" 
+            echo "::set-env name=KVXOPT_FFTW_LIB_DIR::$(cygpath -m /mingw64/lib)" 
+            echo "::set-env name=KVXOPT_FFTW_INC_DIR::$(cygpath -m /mingw64/include)" 
+            echo "::set-env name=KVXOPT_GLPK_LIB_DIR::$(cygpath -m /mingw64/lib)" 
+            echo "::set-env name=KVXOPT_GLPK_INC_DIR::$(cygpath -m /mingw64/include)" 
+            echo "::set-env name=KVXOPT_BLAS_LIB_DIR::$(cygpath -m /mingw64/lib)" 
             echo "::add-path::$(cygpath -m /mingw64/bin)"
 
       - name: Config suite-sparse library windows
         shell: msys2 {0}
         run: |
             pacman -S --noconfirm mingw-w64-x86_64-suitesparse
-            echo "::set-env name=CVXOPT_SUITESPARSE_LIB_DIR::$(cygpath -m /mingw64/lib)" 
-            echo "::set-env name=CVXOPT_SUITESPARSE_INC_DIR::$(cygpath -m /mingw64/include)" 
+            echo "::set-env name=KVXOPT_SUITESPARSE_LIB_DIR::$(cygpath -m /mingw64/lib)" 
+            echo "::set-env name=KVXOPT_SUITESPARSE_INC_DIR::$(cygpath -m /mingw64/include)" 
         if: ${{ matrix.suite-sparse == 'lib_suitesparse' }}
 
       - name: Config suite-sparse source
@@ -65,17 +65,16 @@ jobs:
             wget https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${SUITESPARSE_VERSION}.tar.gz
             echo "${SUITESPARSE_SHA256}  v${SUITESPARSE_VERSION}.tar.gz" > SuiteSparse.sha256
             tar -xf v${SUITESPARSE_VERSION}.tar.gz
-            echo "::set-env name=CVXOPT_SUITESPARSE_SRC_DIR::${{ github.workspace}}/SuiteSparse-${{ env.SUITESPARSE_VERSION }}" 
+            echo "::set-env name=KVXOPT_SUITESPARSE_SRC_DIR::${{ github.workspace}}/SuiteSparse-${{ env.SUITESPARSE_VERSION }}" 
         if: ${{ matrix.suite-sparse == 'src_suitesparse' }}
 
       - name: Install (windows)
         run: |
           python setup.py build --compiler=mingw32
           python setup.py bdist_wheel
-          python -m pip install --no-index --find-links=dist cvxopt
+          python -m pip install --no-index --find-links=dist kvxopt
 
       - name: Test
         run: |
-          echo ${CVXOPT_SUITESPARSE_SRC_DIR}
-          python -c 'from cvxopt import blas,lapack,glpk,fftw,gsl,cholmod,umfpack,klu'
-          py.test --cov=cvxopt tests/
+          python -c 'from kvxopt import blas,lapack,glpk,fftw,gsl,cholmod,umfpack,klu'
+          py.test --cov=kvxopt tests/

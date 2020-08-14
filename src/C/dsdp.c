@@ -508,7 +508,7 @@ PyMODINIT_FUNC PyInit_dsdp(void)
 {
   if (!(dsdp_module = PyModule_Create(&dsdp_module_def))) return NULL;
   PyModule_AddObject(dsdp_module, "options", PyDict_New());
-  if (import_cvxopt() < 0) return NULL;
+  if (import_kvxopt() < 0) return NULL;
   return dsdp_module;
 }
 
@@ -516,10 +516,10 @@ PyMODINIT_FUNC PyInit_dsdp(void)
 
 PyMODINIT_FUNC initdsdp(void)
 {
-    dsdp_module = Py_InitModule3("cvxopt.dsdp", dsdp_functions,
+    dsdp_module = Py_InitModule3("kvxopt.dsdp", dsdp_functions,
         dsdp__doc__);
     PyModule_AddObject(dsdp_module, "options", PyDict_New());
-    if (import_cvxopt() < 0) return;
+    if (import_kvxopt() < 0) return;
 }
 
 #endif

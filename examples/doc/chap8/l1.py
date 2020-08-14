@@ -1,7 +1,7 @@
 # The 1-norm approximation example of section 8.7 (Exploiting structure).  
 
-from cvxopt import blas, lapack, solvers
-from cvxopt import matrix, spdiag, mul, div, setseed, normal
+from kvxopt import blas, lapack, solvers
+from kvxopt import matrix, spdiag, mul, div, setseed, normal
 from math import sqrt
 
 def l1(P, q):

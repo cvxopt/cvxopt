@@ -7417,7 +7417,7 @@ PyMODINIT_FUNC PyInit_lapack(void)
 {
     PyObject *m;
     if (!(m = PyModule_Create(&lapack_module))) return NULL;
-    if (import_cvxopt() < 0) return NULL;
+    if (import_kvxopt() < 0) return NULL;
     return m;
 }
 
@@ -7426,8 +7426,8 @@ PyMODINIT_FUNC PyInit_lapack(void)
 PyMODINIT_FUNC initlapack(void)
 {
     PyObject *m;
-    m = Py_InitModule3("cvxopt.lapack", lapack_functions, lapack__doc__);
-    if (import_cvxopt() < 0) return;
+    m = Py_InitModule3("kvxopt.lapack", lapack_functions, lapack__doc__);
+    if (import_kvxopt() < 0) return;
 }
 
 #endif
