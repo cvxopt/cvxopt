@@ -274,13 +274,14 @@ spmatrix_str  = printing.spmatrix_str_default
 spmatrix_repr = printing.spmatrix_repr_default
 
 from kvxopt.base import matrix, spmatrix, sparse, spdiag, sqrt, sin, cos, \
-    exp, log
+    tan, asin, acos, atan, conj, exp, log
 
 from kvxopt import solvers, blas, lapack
 
 __all__ = [ 'blas', 'lapack', 'amd', 'umfpack', 'klu', 'cholmod', 'solvers',
     'modeling', 'printing', 'info', 'matrix', 'spmatrix', 'sparse', 
-    'spdiag', 'sqrt', 'sin', 'cos', 'exp', 'log', 'min', 'max', 'mul', 
+    'spdiag', 'sqrt', 'sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'conj',
+    'exp', 'log', 'min', 'max', 'mul', 
     'div', 'normal', 'uniform', 'setseed', 'getseed' ]
 
 from ._version import get_versions

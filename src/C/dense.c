@@ -2475,3 +2475,197 @@ PyObject * matrix_sin(matrix *self, PyObject *args, PyObject *kwrds)
   }
   else PY_ERR_TYPE("argument must a be a number or dense matrix");
 }
+
+PyObject * matrix_tan(matrix *self, PyObject *args, PyObject *kwrds)
+{
+  PyObject *A;
+
+  if (!PyArg_ParseTuple(args, "O", &A)) return NULL;
+
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(A) || PyFloat_Check(A))
+#else
+  if (PyInt_Check(A) || PyFloat_Check(A))
+#endif
+    return Py_BuildValue("d",tan(PyFloat_AsDouble(A)));
+
+  else if (PyComplex_Check(A)) {
+    number n;
+    convert_num[COMPLEX](&n, A, 1, 0);
+    n.z = ctan(n.z);
+    return num2PyObject[COMPLEX](&n, 0);
+  }
+
+  else if (Matrix_Check(A)) {
+    matrix *ret = Matrix_New(MAT_NROWS(A),MAT_NCOLS(A),
+        (MAT_ID(A) == COMPLEX ? COMPLEX : DOUBLE));
+    if (!ret) return NULL;
+
+    int_t i;
+    if (MAT_ID(ret) == DOUBLE)
+      for (i=0; i<MAT_LGT(ret); i++)
+        MAT_BUFD(ret)[i] = tan(MAT_ID(A) == DOUBLE ? MAT_BUFD(A)[i] :
+        MAT_BUFI(A)[i]);
+    else
+      for (i=0; i<MAT_LGT(ret); i++)
+        MAT_BUFZ(ret)[i] = ctan(MAT_BUFZ(A)[i]);
+
+    return (PyObject *)ret;
+  }
+  else PY_ERR_TYPE("argument must a be a number or dense matrix");
+}
+
+PyObject * matrix_asin(matrix *self, PyObject *args, PyObject *kwrds)
+{
+  PyObject *A;
+
+  if (!PyArg_ParseTuple(args, "O", &A)) return NULL;
+
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(A) || PyFloat_Check(A))
+#else
+  if (PyInt_Check(A) || PyFloat_Check(A))
+#endif
+    return Py_BuildValue("d",asin(PyFloat_AsDouble(A)));
+
+  else if (PyComplex_Check(A)) {
+    number n;
+    convert_num[COMPLEX](&n, A, 1, 0);
+    n.z = casin(n.z);
+    return num2PyObject[COMPLEX](&n, 0);
+  }
+
+  else if (Matrix_Check(A)) {
+    matrix *ret = Matrix_New(MAT_NROWS(A),MAT_NCOLS(A),
+        (MAT_ID(A) == COMPLEX ? COMPLEX : DOUBLE));
+    if (!ret) return NULL;
+
+    int_t i;
+    if (MAT_ID(ret) == DOUBLE)
+      for (i=0; i<MAT_LGT(ret); i++)
+        MAT_BUFD(ret)[i] = asin(MAT_ID(A) == DOUBLE ? MAT_BUFD(A)[i] :
+        MAT_BUFI(A)[i]);
+    else
+      for (i=0; i<MAT_LGT(ret); i++)
+        MAT_BUFZ(ret)[i] = casin(MAT_BUFZ(A)[i]);
+
+    return (PyObject *)ret;
+  }
+  else PY_ERR_TYPE("argument must a be a number or dense matrix");
+}
+
+PyObject * matrix_acos(matrix *self, PyObject *args, PyObject *kwrds)
+{
+  PyObject *A;
+
+  if (!PyArg_ParseTuple(args, "O", &A)) return NULL;
+
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(A) || PyFloat_Check(A))
+#else
+  if (PyInt_Check(A) || PyFloat_Check(A))
+#endif
+    return Py_BuildValue("d",acos(PyFloat_AsDouble(A)));
+
+  else if (PyComplex_Check(A)) {
+    number n;
+    convert_num[COMPLEX](&n, A, 1, 0);
+    n.z = cacos(n.z);
+    return num2PyObject[COMPLEX](&n, 0);
+  }
+
+  else if (Matrix_Check(A)) {
+    matrix *ret = Matrix_New(MAT_NROWS(A),MAT_NCOLS(A),
+        (MAT_ID(A) == COMPLEX ? COMPLEX : DOUBLE));
+    if (!ret) return NULL;
+
+    int_t i;
+    if (MAT_ID(ret) == DOUBLE)
+      for (i=0; i<MAT_LGT(ret); i++)
+        MAT_BUFD(ret)[i] = acos(MAT_ID(A) == DOUBLE ? MAT_BUFD(A)[i] :
+        MAT_BUFI(A)[i]);
+    else
+      for (i=0; i<MAT_LGT(ret); i++)
+        MAT_BUFZ(ret)[i] = cacos(MAT_BUFZ(A)[i]);
+
+    return (PyObject *)ret;
+  }
+  else PY_ERR_TYPE("argument must a be a number or dense matrix");
+}
+
+PyObject * matrix_atan(matrix *self, PyObject *args, PyObject *kwrds)
+{
+  PyObject *A;
+
+  if (!PyArg_ParseTuple(args, "O", &A)) return NULL;
+
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(A) || PyFloat_Check(A))
+#else
+  if (PyInt_Check(A) || PyFloat_Check(A))
+#endif
+    return Py_BuildValue("d",atan(PyFloat_AsDouble(A)));
+
+  else if (PyComplex_Check(A)) {
+    number n;
+    convert_num[COMPLEX](&n, A, 1, 0);
+    n.z = catan(n.z);
+    return num2PyObject[COMPLEX](&n, 0);
+  }
+
+  else if (Matrix_Check(A)) {
+    matrix *ret = Matrix_New(MAT_NROWS(A),MAT_NCOLS(A),
+        (MAT_ID(A) == COMPLEX ? COMPLEX : DOUBLE));
+    if (!ret) return NULL;
+
+    int_t i;
+    if (MAT_ID(ret) == DOUBLE)
+      for (i=0; i<MAT_LGT(ret); i++)
+        MAT_BUFD(ret)[i] = atan(MAT_ID(A) == DOUBLE ? MAT_BUFD(A)[i] :
+        MAT_BUFI(A)[i]);
+    else
+      for (i=0; i<MAT_LGT(ret); i++)
+        MAT_BUFZ(ret)[i] = catan(MAT_BUFZ(A)[i]);
+
+    return (PyObject *)ret;
+  }
+  else PY_ERR_TYPE("argument must a be a number or dense matrix");
+}
+
+PyObject * matrix_conj(matrix *self, PyObject *args, PyObject *kwrds)
+{
+  PyObject *A;
+
+  if (!PyArg_ParseTuple(args, "O", &A)) return NULL;
+
+#if PY_MAJOR_VERSION >= 3
+  if (PyLong_Check(A) || PyFloat_Check(A))
+#else
+  if (PyInt_Check(A) || PyFloat_Check(A))
+#endif
+    return Py_BuildValue("d", PyFloat_AsDouble(A));
+
+  else if (PyComplex_Check(A)) {
+    number n;
+    convert_num[COMPLEX](&n, A, 1, 0);
+    n.z = conj(n.z);
+    return num2PyObject[COMPLEX](&n, 0);
+  }
+
+  else if (Matrix_Check(A)) {
+    matrix *ret = Matrix_New(MAT_NROWS(A),MAT_NCOLS(A),
+        (MAT_ID(A) == COMPLEX ? COMPLEX : DOUBLE));
+    if (!ret) return NULL;
+
+    int_t i;
+    if (MAT_ID(ret) == DOUBLE)
+      for (i=0; i<MAT_LGT(ret); i++)
+        MAT_BUFD(ret)[i] = MAT_ID(A) == DOUBLE ? MAT_BUFD(A)[i] : MAT_BUFI(A)[i];
+    else
+      for (i=0; i<MAT_LGT(ret); i++)
+        MAT_BUFZ(ret)[i] = conj(MAT_BUFZ(A)[i]);
+
+    return (PyObject *)ret;
+  }
+  else PY_ERR_TYPE("argument must a be a number or dense matrix");
+}

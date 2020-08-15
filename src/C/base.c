@@ -1941,6 +1941,12 @@ extern PyObject * matrix_log(matrix *, PyObject *, PyObject *) ;
 extern PyObject * matrix_sqrt(matrix *, PyObject *, PyObject *) ;
 extern PyObject * matrix_cos(matrix *, PyObject *, PyObject *) ;
 extern PyObject * matrix_sin(matrix *, PyObject *, PyObject *) ;
+extern PyObject * matrix_tan(matrix *, PyObject *, PyObject *) ;
+extern PyObject * matrix_asin(matrix *, PyObject *, PyObject *) ;
+extern PyObject * matrix_acos(matrix *, PyObject *, PyObject *) ;
+extern PyObject * matrix_atan(matrix *, PyObject *, PyObject *) ;
+extern PyObject * matrix_conj(matrix *, PyObject *, PyObject *) ;
+
 
 static PyMethodDef base_functions[] = {
     {"exp", (PyCFunction)matrix_exp, METH_VARARGS|METH_KEYWORDS,
@@ -1953,6 +1959,16 @@ static PyMethodDef base_functions[] = {
         "Computes the element-wise cosine of a matrix"},
     {"sin", (PyCFunction)matrix_sin, METH_VARARGS|METH_KEYWORDS,
         "Computes the element-wise sine of a matrix"},
+    {"tan", (PyCFunction)matrix_tan, METH_VARARGS|METH_KEYWORDS,
+        "Computes the element-wise tangent of a matrix"},
+    {"asin", (PyCFunction)matrix_asin, METH_VARARGS|METH_KEYWORDS,
+        "Computes the element-wise inverse sine of a matrix"},
+    {"acos", (PyCFunction)matrix_acos, METH_VARARGS|METH_KEYWORDS,
+        "Computes the element-wise inverse cosine of a matrix"},
+    {"atan", (PyCFunction)matrix_atan, METH_VARARGS|METH_KEYWORDS,
+        "Computes the element-wise inverse tangent of a matrix"},
+    {"conj", (PyCFunction)matrix_conj, METH_VARARGS|METH_KEYWORDS,
+        "Computes the element-wise conjugate of a matrix"},
     {"axpy", (PyCFunction)base_axpy, METH_VARARGS|METH_KEYWORDS, doc_axpy},
     {"gemm", (PyCFunction)base_gemm, METH_VARARGS|METH_KEYWORDS, doc_gemm},
     {"gemv", (PyCFunction)base_gemv, METH_VARARGS|METH_KEYWORDS, doc_gemv},
