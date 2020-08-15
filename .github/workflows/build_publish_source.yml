@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+        python-version: [3.8]
         suite-sparse: [lib_suitesparse]
 
     steps:
@@ -37,11 +37,11 @@ jobs:
       - name: Build 
         run: |
           python setup.py build
-          python setup.py bdist_wheel
+          python setup.py sdist
 
       - name: Publish wheels to PyPI
         env:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
-          twine upload dist/*.whl
+          twine upload dist/*.tar.gz
