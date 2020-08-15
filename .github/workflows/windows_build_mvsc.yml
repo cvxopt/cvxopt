@@ -73,7 +73,7 @@ jobs:
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars${{ matrix.VC_TARGET }}.bat"
         shell: cmd
 
-      - name: Install (windows)
+      - name: Build
         run: |
           python setup.py build
           copy OpenBLAS-${{ env.OPENBLAS_VERSION }}-${{ matrix.ARCH }}\bin\libopenblas.dll build\lib.${{ matrix.PYTHON_TARGET }}-${{ matrix.python-version }}\kvxopt

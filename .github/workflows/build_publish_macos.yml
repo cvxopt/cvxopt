@@ -1,0 +1,49 @@
+name: Python package build and publish for MacOs
+
+on:
+  release:
+    types: [created]
+
+jobs:    
+  build:
+    runs-on: macos-latest
+    env:
+      KVXOPT_BUILD_GSL: 1
+      KVXOPT_BUILD_FFTW: 1
+      KVXOPT_BUILD_GLPK: 1
+      KVXOPT_BUILD_DSDP: 0
+
+    strategy:
+      matrix:
+        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+        suite-sparse: [lib_suitesparse]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov coveralls wheel twine
+
+      - name: Install libraries
+        run: |
+            brew install openblas glpk gsl fftw suite-sparse
+
+      - name: Build 
+        run: |
+          python setup.py build
+          python setup.py bdist_wheel
+          python setup.py sdist
+
+      - name: Publish wheels to PyPI
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          twine upload dist/*.whl
+          twine upload dist/*.tar.gz

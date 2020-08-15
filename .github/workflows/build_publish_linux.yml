@@ -1,0 +1,47 @@
+name: Python package build and publish for Linux
+
+on:
+  release:
+    types: [created]
+
+jobs:    
+  build:
+    runs-on: ubuntu-latest
+    env:
+      KVXOPT_BUILD_GSL: 1
+      KVXOPT_BUILD_FFTW: 1
+      KVXOPT_BUILD_GLPK: 1
+      KVXOPT_BUILD_DSDP: 1
+
+    strategy:
+      matrix:
+        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+        suite-sparse: [lib_suitesparse]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov coveralls wheel twine
+
+      - name: Install libraries
+        run: |
+            sudo apt-get install libopenblas-dev libfftw3-dev libglpk-dev libdsdp-dev libgsl0-dev libsuitesparse-dev
+
+      - name: Build 
+        run: |
+          python setup.py build
+          python setup.py bdist_wheel
+
+      - name: Publish wheels to PyPI
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          twine upload dist/*.whl
