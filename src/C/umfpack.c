@@ -37,7 +37,7 @@ const int E_SIZE[] = {sizeof(int_t), sizeof(double), sizeof(double complex)};
 const int E_SIZE[] = {sizeof(int_t), sizeof(double), sizeof(_Dcomplex)};
 #endif
 
-static char umfpack_error[20];
+static char umfpack_error[40];
 
 PyDoc_STRVAR(umfpack__doc__,"Interface to the UMFPACK library.\n\n"
     "Routines for symbolic and numeric LU factorization of sparse\n"
@@ -147,7 +147,7 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
         if (info[UMFPACK_STATUS] == UMFPACK_ERROR_out_of_memory)
             return PyErr_NoMemory();
         else {
-            snprintf(umfpack_error,20,"%s %i","UMFPACK ERROR",
+            snprintf(umfpack_error, 40,"%s %i","UMFPACK ERROR",
                 (int) info[UMFPACK_STATUS]);
             PyErr_SetString(PyExc_ValueError, umfpack_error);
             return NULL;
@@ -175,7 +175,7 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
                 PyErr_SetString(PyExc_ArithmeticError, "singular "
                     "matrix");
             else {
-                snprintf(umfpack_error,20,"%s %i","UMFPACK ERROR",
+                snprintf(umfpack_error, 40,"%s %i","UMFPACK ERROR",
                     (int) info[UMFPACK_STATUS]);
                 PyErr_SetString(PyExc_ValueError, umfpack_error);
             }
@@ -221,7 +221,7 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
                 PyErr_SetString(PyExc_ArithmeticError, "singular "
                     "matrix");
             else {
-                snprintf(umfpack_error,20,"%s %i","UMFPACK ERROR",
+                snprintf(umfpack_error, 40,"%s %i","UMFPACK ERROR",
                     (int) info[UMFPACK_STATUS]);
                 PyErr_SetString(PyExc_ValueError, umfpack_error);
             }
@@ -284,7 +284,7 @@ static PyObject* symbolic(PyObject *self, PyObject *args)
     if (info[UMFPACK_STATUS] == UMFPACK_ERROR_out_of_memory)
         return PyErr_NoMemory();
     else {
-        snprintf(umfpack_error,20,"%s %i","UMFPACK ERROR",
+        snprintf(umfpack_error, 40,"%s %i","UMFPACK ERROR",
             (int) info[UMFPACK_STATUS]);
         PyErr_SetString(PyExc_ValueError, umfpack_error);
         return NULL;
@@ -363,7 +363,7 @@ static PyObject* numeric(PyObject *self, PyObject *args)
         if (info[UMFPACK_STATUS] == UMFPACK_WARNING_singular_matrix)
 	    PyErr_SetString(PyExc_ArithmeticError, "singular matrix");
         else {
-	    snprintf(umfpack_error,20,"%s %i","UMFPACK ERROR",
+	    snprintf(umfpack_error, 40,"%s %i","UMFPACK ERROR",
 	        (int) info[UMFPACK_STATUS]);
 	    PyErr_SetString(PyExc_ValueError, umfpack_error);
         }
@@ -371,6 +371,201 @@ static PyObject* numeric(PyObject *self, PyObject *args)
     }
 }
 
+static char doc_get_numeric[] =
+    "This routine copies the LU factors and permutation vectors from the \n"
+    "Numeric object into user-accessible arrays.  This routine is not \n"
+    "needed to solve a linear system..\n\n"
+    "Fn = get_numeric(A, Fn)\n\n"
+    "ARGUMENTS\n"
+    "A         sparse matrix; must be square\n\n"
+    "Fn        numeric factorization, as returned by umfpack.numeric\n\n";
+
+static PyObject* get_numeric(PyObject *self, PyObject *args, PyObject *kwrds)
+{
+    spmatrix *A, *L, *U, *P, *Q, *R;
+    PyObject *F;
+    void *numeric;
+#if PY_MAJOR_VERSION >= 3
+    int trans_ = 'N';
+#endif
+    const char *descrd = "UMFPACK NUM D FACTOR"; 
+    const char *descrz = "UMFPACK NUM Z FACTOR"; 
+    char trans='N';
+    int_t i, n_row, n_col, nn, n_inner, lnz, unz, status, ignore1, ignore2, ignore3, 
+          *Ltp, *Ltj, *Up, *Ui, *Pt, *Qt, *Rp, *Ri, do_recip;
+    double *Ltx, *Ux, *Rs;
+    char *kwlist[] = {"A", "F", "trans", NULL};
+
+
+#if PY_MAJOR_VERSION >= 3
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|C", kwlist,
+        &A, &F, &trans_)) return NULL;
+    trans = (char) trans_;
+#else
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|c", kwlist,
+        &A, &F, &trans)) return NULL;
+#endif
+
+    if (!SpMatrix_Check(A)) PY_ERR_TYPE("A must be a sparse matrix");
+    
+
+    n_row = SP_NROWS(A);
+    n_col = SP_NCOLS(A);
+    nn = MAX(n_row, n_col);
+    n_inner = MIN(n_row, n_col);
+
+    if (!PyCapsule_CheckExact(F)) err_CO("F");
+    if (SP_ID(A) == DOUBLE) {
+        TypeCheck_Capsule(F, descrd, "F is not the UMFPACK numeric factor "
+            "of a 'd' matrix");
+    }
+    else  {
+        TypeCheck_Capsule(F, descrz, "F is not the UMFPACK numeric factor "
+            "of a 'z' matrix");
+    }
+
+    switch (SP_ID(A)) {
+        case DOUBLE:
+            numeric = (void *) PyCapsule_GetPointer(F, descrd);
+            status = UMFD(get_lunz)(&lnz, &unz, &ignore1, &ignore2, &ignore3, 
+                                    numeric);
+            break;
+
+        case COMPLEX:
+            numeric = (void *) PyCapsule_GetPointer(F, descrz);
+            status = UMFZ(get_lunz)(&lnz, &unz, &ignore1, &ignore2, &ignore3, 
+                                    numeric);
+            break;
+
+    }
+
+    if (status < 0){
+        snprintf(umfpack_error, 40,"%s %i","Extracting LUnz factors failed",
+        (int) status);
+        PyErr_SetString(PyExc_ValueError, umfpack_error);
+        return NULL;
+    }
+    Ltp = (int_t *) malloc ((n_row+1) * sizeof (int_t));
+    Ltj = (int_t *) malloc (lnz * sizeof (int_t));
+
+    if (SP_ID(A) == COMPLEX)
+    {
+        Ltx = (double *) malloc (2 * lnz * sizeof (double)) ;
+    }
+    else
+    {
+        Ltx = (double *) malloc (lnz * sizeof (double));
+    }
+
+    /* Matrix U */
+    U = SpMatrix_New(n_inner, n_col, unz, SP_ID(A));
+    Up = SP_COL(U);
+    Ui = SP_ROW(U);
+    Ux = SP_VAL(U);
+
+    /* temporary space for the integer permutation vectors */
+    Pt = (int_t *) malloc(n_row * sizeof(int_t));
+    Qt = (int_t *) malloc(n_col * sizeof(int_t));
+
+    /* create a diagonal sparse matrix for the scale factors R*/
+    R = SpMatrix_New(n_row, n_row, n_row, DOUBLE);
+    Rp = SP_COL(R);
+    Ri = SP_ROW(R);
+    for (i = 0; i < n_row; i++){
+        Rp[i] = i;
+        Ri[i] = i;
+    }
+    Rp[n_row] = n_row;
+    Rs = SP_VALD(R);
+
+    /* get Lt, U, P, Q, and Rs from the numeric object */
+    switch (SP_ID(A)) {
+    case DOUBLE:
+
+        status = UMFD(get_numeric)(Ltp, Ltj, Ltx, Up, Ui, Ux,
+                      Pt, Qt, NULL, &do_recip, Rs, numeric);
+        break;
+
+    case COMPLEX:
+
+        status = UMFZ(get_numeric)(Ltp, Ltj, Ltx, NULL, Up, Ui, Ux, NULL, Pt, 
+                                   Qt, NULL, NULL, &do_recip, Rs, numeric);
+        break;
+    }
+
+    if (status < 0){
+        free(Ltp);
+        free(Ltj);
+        free(Ltx);
+        free(Pt);
+        free(Qt);
+        // TODO: Free R, U??
+        snprintf(umfpack_error, 40,"%s %i","Extracting LU factors failed",
+        (int) status);
+        PyErr_SetString(PyExc_ValueError, umfpack_error);
+        return NULL;
+    }
+
+    /* We do the reciprocal here, instead of passing the flag to user */
+    if (!do_recip){
+        for (i = 0; i < n_row; i++)
+            Rs[i] = 1.0 / Rs[i];
+    }
+
+    /* create sparse permutation matrix for P */
+    P = SpMatrix_New(n_row, n_row, n_row, DOUBLE);
+    for (i = 0; i < n_row; i++){
+        SP_COL(P)[i] = i;
+        SP_ROW(P)[Pt[i]] = i;
+        SP_VALD(P)[i] = 1;
+    }
+    SP_COL(P)[n_row] = n_row;
+
+    /* create sparse permutation matrix for Q */
+    Q = SpMatrix_New(n_col, n_col, n_col, DOUBLE);
+    for (i = 0; i < n_col; i++){
+        SP_COL(Q)[i] = i;
+        SP_ROW(Q)[i] = Qt[i];
+        SP_VALD(Q)[i] = 1;
+    }
+    SP_COL(Q)[n_col] = n_col;
+
+    /* Matrix L */
+    L = SpMatrix_New(n_row, n_inner, lnz, SP_ID(A));
+
+    /* convert L from row form to column form */
+    switch (SP_ID(A)) {
+    case DOUBLE:
+        status = UMFD(transpose)(n_inner, n_row, Ltp, Ltj, Ltx, NULL, NULL, 
+                                 SP_COL(L), SP_ROW(L), SP_VALD(L));
+        break;
+    case COMPLEX:
+        status = UMFZ(transpose)(n_inner, n_row, Ltp, Ltj, Ltx, NULL, NULL, 
+                                 NULL, SP_COL(L), SP_ROW(L), SP_VALD(L), NULL, 0);    
+        break;    
+    }
+
+
+    /* Free workspace */
+    free(Ltp);
+    free(Ltj);
+    free(Ltx);
+    free(Pt);
+    free(Qt);
+
+
+    if (status < 0){
+        // TODO: Free L, U, P, Q, R?
+        snprintf(umfpack_error, 40,"%s %i","Transposing L failed",
+        (int) status);
+        PyErr_SetString(PyExc_ValueError, umfpack_error);
+        return NULL;
+    }
+
+    return Py_BuildValue("OOOOO", L, U, P, Q, R);
+
+      
+}
 
 static char doc_solve[] =
     "Solves a factored set of linear equations.\n\n"
@@ -480,7 +675,7 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
                 PyErr_SetString(PyExc_ArithmeticError,
                     "singular matrix");
             else {
-                snprintf(umfpack_error,20,"%s %i","UMFPACK ERROR",
+                snprintf(umfpack_error, 40,"%s %i","UMFPACK ERROR",
                     (int) info[UMFPACK_STATUS]);
                 PyErr_SetString(PyExc_ValueError, umfpack_error);
             }
@@ -496,6 +691,7 @@ static PyMethodDef umfpack_functions[] = {
         doc_linsolve},
     {"symbolic", (PyCFunction) symbolic, METH_VARARGS, doc_symbolic},
     {"numeric", (PyCFunction) numeric, METH_VARARGS, doc_numeric},
+    {"get_numeric", (PyCFunction) get_numeric, METH_VARARGS, doc_get_numeric},
     {"solve", (PyCFunction) solve, METH_VARARGS|METH_KEYWORDS, doc_solve},
     {NULL}  /* Sentinel */
 };
