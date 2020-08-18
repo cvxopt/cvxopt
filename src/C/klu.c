@@ -1,9 +1,21 @@
 /*
-* @Author: Uriel Sandoval
-* @Date:   2015-04-28 18:56:49
-* @Last Modified by:   Uriel Sandoval
-* @Last Modified time: 2020-08-03 18:19:25
-*/
+ * Copyright 2020 Uriel Sandoval
+ *
+ * This file is part of KVXOPT.
+ *
+ * KVXOPT is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * KVXOPT is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 
 #include "cvxopt.h"
@@ -15,18 +27,17 @@
 #if (SIZEOF_INT < SIZEOF_SIZE_T)
 #define KLUD(name) klu_l_ ## name
 #define KLUZ(name) klu_zl_ ## name
-#define KLUS(name) klu_l_ ## name
+#define KLU(name) klu_l_ ## name
 #else
 #define KLUD(name) klu_ ## name
 #define KLUZ(name) klu_z_ ## name
-#define KLUS(name) klu_ ## name
+#define KLU(name) klu_ ## name
 #endif
 
 const char *descrdFs = "KLU SYM D FACTOR";
 const char *descrzFs = "KLU SYM Z FACTOR";
 const char *descrdF = "KLU NUM D FACTOR";
 const char *descrzF = "KLU NUM Z FACTOR";
-
 
 static char klu_error[20];
 
@@ -38,22 +49,15 @@ PyDoc_STRVAR(klu__doc__, "Interface to the KLU library.\n\n"
              "See also www.suitesparse.com.");
 
 
-static void free_klu_d_symbolic(PyObject *F) {
-    KLUS(common) Common;
+static void free_klu_symbolic(PyObject *F) {
+    KLU(common) Common;
     KLUD(defaults)(&Common);
-    KLUS(symbolic) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
-    KLUD(free_symbolic)(&Fptr, &Common);
-}
-
-static void free_klu_z_symbolic(PyObject *F) {
-    KLUS(common) Common;
-    KLUD(defaults)(&Common);
-    KLUS(symbolic) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
-    KLUZ(free_symbolic)(&Fptr, &Common);
+    KLU(symbolic) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
+    KLU(free_symbolic)(&Fptr, &Common);
 }
 
 static void free_klu_d_numeric(PyObject *F) {
-    KLUS(common) Common;
+    KLU(common) Common;
     KLUD(defaults)(&Common);
     KLUD(numeric) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
     if (Fptr != NULL)
@@ -61,9 +65,9 @@ static void free_klu_d_numeric(PyObject *F) {
 }
 
 static void free_klu_z_numeric(PyObject *F) {
-    KLUS(common) Common;
+    KLU(common) Common;
     KLUD(defaults)(&Common);
-    KLUS(numeric) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
+    KLU(numeric) *Fptr = PyCapsule_GetPointer(F, PyCapsule_GetName(F));
     if (Fptr != NULL)
         KLUZ(free_numeric)(&Fptr, &Common);
 }
@@ -91,9 +95,9 @@ static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds) {
     PyObject *F;
     PyObject *Fs;
 
-    KLUS(common) Common;
-    KLUS(symbolic) *Fsptr;
-    KLUS(numeric) *Fptr;
+    KLU(common) Common;
+    KLU(symbolic) *Fsptr;
+    KLU(numeric) *Fptr;
     KLUD(defaults)(&Common) ;
 
 
@@ -114,10 +118,10 @@ static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds) {
     if (SP_ID(A) == COMPLEX)
         PY_ERR_TYPE("A must be a real sparse matrix");
 
-    if (!(Fptr =  (KLUS(numeric) *) PyCapsule_GetPointer(F, descrdF)))
+    if (!(Fptr =  (KLU(numeric) *) PyCapsule_GetPointer(F, descrdF)))
         err_CO("F");
 
-    if (!(Fsptr =  (KLUS(symbolic) *) PyCapsule_GetPointer(Fs, descrdFs)))
+    if (!(Fsptr =  (KLU(symbolic) *) PyCapsule_GetPointer(Fs, descrdFs)))
         err_CO("Fs");
 
 
@@ -224,9 +228,9 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
 #endif
     char trans = 'N';
     int oB = 0, n, nrhs = -1, ldB = 0;
-    KLUS(common) Common, CommonFree;
-    KLUS(symbolic) *Symbolic;
-    KLUS(numeric) *Numeric;
+    KLU(common) Common, CommonFree;
+    KLU(symbolic) *Symbolic;
+    KLU(numeric) *Numeric;
     char *kwlist[] = {"A", "B", "trans", "nrhs", "ldB", "offsetB",
                       NULL
                      };
@@ -384,21 +388,24 @@ static PyObject* symbolic(PyObject *self, PyObject *args)
                         "row and column");
         return NULL;
     }
-    KLUS(common) Common, CommonFree;
-    KLUS(symbolic) *Symbolic;
+    KLU(common) Common, CommonFree;
+    KLU(symbolic) *Symbolic;
     KLUD(defaults)(&Common);
     KLUD(defaults)(&CommonFree);
 
     Symbolic = KLUD(analyze)(n, SP_COL(A), SP_ROW(A), &Common);
     if (Common.status == KLU_OK) {
+        /* Symbolic is the same for DOUBLE and COMPLEX cases. Only make
+         * difference in the Capsule descriptor to avoid user errors 
+         */
         if (SP_ID(A) == DOUBLE)
             return (PyObject *) PyCapsule_New(
                        (void *) Symbolic, "KLU SYM D FACTOR",
-                       (PyCapsule_Destructor) &free_klu_d_symbolic);
+                       (PyCapsule_Destructor) &free_klu_symbolic);
         else
             return (PyObject *) PyCapsule_New(
                        (void *) Symbolic, "KLU SYM Z FACTOR",
-                       (PyCapsule_Destructor) &free_klu_d_symbolic);
+                       (PyCapsule_Destructor) &free_klu_symbolic);
     }
     else
         KLUD(free_symbolic)(&Symbolic, &CommonFree);
@@ -436,8 +443,7 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     spmatrix *A;
     PyObject *Fs;
-    PyObject *F = NULL;
-    KLUS(symbolic) *Fsptr;
+    KLU(symbolic) *Fsptr;
 
 
 
@@ -448,20 +454,19 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 
 
 
-    KLUS(common) Common, CommonFree;
+    KLU(common) Common, CommonFree;
     KLUD(defaults)(&Common);
     KLUD(defaults)(&CommonFree);
-    KLUS(numeric) *Numeric;
+    KLU(numeric) *Numeric;
 
     switch (SP_ID(A)) {
     case DOUBLE:
         TypeCheck_Capsule(Fs, descrdFs, "Fs is not the KLU symbolic "
                           "factor of a 'd' matrix");
-        if (!(Fsptr = (KLUS(symbolic) *) PyCapsule_GetPointer(Fs, descrdFs)))
+        if (!(Fsptr = (KLU(symbolic) *) PyCapsule_GetPointer(Fs, descrdFs)))
             err_CO("Fs");
 
-        Numeric = KLUD(factor)(SP_COL(A), SP_ROW(A), SP_VAL(A), Fsptr,
-                               &Common);
+        Numeric = KLUD(factor)(SP_COL(A), SP_ROW(A), SP_VAL(A), Fsptr, &Common);
 
         if (Common.status == KLU_OK)
             return (PyObject *) PyCapsule_New(
@@ -475,12 +480,11 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
     case COMPLEX:
         TypeCheck_Capsule(Fs, descrzFs, "Fs is not the KLU symbolic "
                           "factor of a 'z' matrix");
-        if (!(Fsptr = (KLUS(symbolic) *) PyCapsule_GetPointer(Fs, descrzFs)))
+        if (!(Fsptr = (KLU(symbolic) *) PyCapsule_GetPointer(Fs, descrzFs)))
             err_CO("Fs");
 
 
-        Numeric = KLUZ(factor)(SP_COL(A), SP_ROW(A), SP_VAL(A), Fsptr,
-                               &Common);
+        Numeric = KLUZ(factor)(SP_COL(A), SP_ROW(A), SP_VAL(A), Fsptr, &Common);
 
         if (Common.status == KLU_OK)
             return (PyObject *) PyCapsule_New(
@@ -506,6 +510,186 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
     }
 }
 
+
+static char doc_get_numeric[] =
+    "This routine copies the LU factors and permutation vectors from the \n"
+    "Numeric object into user-accessible arrays.  This routine is not \n"
+    "needed to solve a linear system.\n\n"
+    "L, U, P, Q, R, F, r = get_numeric(A, Fs, Fn)\n\n"
+    "ARGUMENTS\n"
+    "A         sparse matrix; must be square\n\n"
+    "Fs        symbolic factorization, as returned by klu.symbolic\n\n"
+    "Fn        numeric factorization, as returned by klu.numeric\n\n";
+
+static PyObject* get_numeric(PyObject *self, PyObject *args, PyObject *kwrds)
+{
+    spmatrix *A, *L, *U, *P, *Q, *R, *F;
+    PyObject *Fn, *Fs, *r;
+    KLU(numeric) *numeric;
+    KLU(symbolic) *symbolic;
+    int_t i, nn, *rt, *Pt, *Qt, lnz, unz, fnz;
+    int status;
+    KLU(common) Common;
+    double *Lx, *Lz, *Ux, *Uz, *Fx, *Fz;
+
+    if (!PyArg_ParseTuple(args, "OOO", &A, &Fs, &Fn)) 
+        return NULL;
+
+
+    if (!SpMatrix_Check(A)) PY_ERR_TYPE("A must be a sparse matrix");
+    
+
+    nn = SP_NROWS(A);
+
+    if (!PyCapsule_CheckExact(Fn)) err_CO("Fn");
+    if (!PyCapsule_CheckExact(Fs)) err_CO("Fs");
+
+    if (SP_ID(A) == DOUBLE) {
+        TypeCheck_Capsule(Fs, descrdFs, "F is not the KLU symbolic factor "
+                          "of a 'd' matrix");
+        TypeCheck_Capsule(Fn, descrdF, "F is not the KLU numeric factor "
+                          "of a 'd' matrix");
+    }
+    else  {
+        TypeCheck_Capsule(Fs, descrzFs, "F is not the KLU symbolic factor "
+                          "of a 'z' matrix");
+        TypeCheck_Capsule(Fn, descrzF, "F is not the KLU numeric factor "
+                          "of a 'z' matrix");
+    }
+
+    KLUD(defaults)(&Common);
+
+
+    switch (SP_ID(A)) {
+        case DOUBLE:
+            symbolic = (KLU(symbolic) *) PyCapsule_GetPointer(Fs, descrdFs);
+            numeric = (KLU(numeric) *) PyCapsule_GetPointer(Fn, descrdF);
+            break;
+
+        case COMPLEX:
+            symbolic = (KLU(symbolic) *) PyCapsule_GetPointer(Fs, descrzFs);
+            numeric = (KLU(numeric) *) PyCapsule_GetPointer(Fn, descrzF);
+            break;
+
+    }
+    lnz = numeric->lnz;
+    unz = numeric->unz;
+    fnz = numeric->nzoff;
+    L = SpMatrix_New(nn, nn, lnz, SP_ID(A));
+    U = SpMatrix_New(nn, nn, unz, SP_ID(A));
+    /* temporary space for the integer permutation vectors */
+    Pt = (int_t *) malloc(nn * sizeof(int_t));
+    Qt = (int_t *) malloc(nn * sizeof(int_t));
+    R = SpMatrix_New(nn, nn, nn, DOUBLE);
+    F = SpMatrix_New(nn, nn, fnz, SP_ID(A));
+    /* We store r blocks as c array, then we can transform it into Python list */
+    rt = malloc((symbolic->nblocks+1) * sizeof(int_t));
+
+    /* KLU_extract does not handle packed complex arrays, thus we create 
+     * two auxiliary arrays for L, U and F
+     */
+    switch (SP_ID(A)) {
+        case DOUBLE:
+            status = KLUD(extract)(numeric, symbolic, 
+                                  SP_COL(L), SP_ROW(L), SP_VALD(L),
+                                  SP_COL(U), SP_ROW(U), SP_VALD(U),
+                                  SP_COL(F), SP_ROW(F), SP_VALD(F),
+                                  Pt, Qt, SP_VALD(R), rt, &Common);
+            break;
+
+        case COMPLEX:
+            /* KLU_extract does not handle packed complex arrays, thus we create 
+             * two auxiliary arrays for L, U and F
+             */
+            Lx = malloc(lnz * sizeof(double));
+            Lz = malloc(lnz * sizeof(double));
+            Ux = malloc(unz * sizeof(double));
+            Uz = malloc(unz * sizeof(double));
+            Fx = malloc(fnz * sizeof(double));
+            Fz = malloc(fnz * sizeof(double));
+
+            status = KLUZ(extract)(numeric, symbolic, 
+                                  SP_COL(L), SP_ROW(L), Lx, Lz,
+                                  SP_COL(U), SP_ROW(U), Ux, Uz,
+                                  SP_COL(F), SP_ROW(F), Fx, Fz,
+                                  Pt, Qt, SP_VALD(R), rt, &Common);
+
+            for(i = 0; i < lnz; i++){
+                SP_VALD(L)[2*i] = Lx[i];
+                SP_VALD(L)[2*i+1] = Lz[i];
+            }
+            for(i = 0; i < unz; i++){
+                SP_VALD(U)[2*i] = Ux[i];
+                SP_VALD(U)[2*i+1] = Uz[i];
+            }
+            for(i = 0; i < fnz; i++){
+                SP_VALD(F)[2*i] = Fx[i];
+                SP_VALD(F)[2*i+1] = Fz[i];
+            }
+            free(Lx);
+            free(Lz);
+            free(Ux);
+            free(Uz);
+            free(Fx);
+            free(Fz);
+
+            break;
+
+    }   
+
+    if (status != 1){
+        snprintf(klu_error, 20, "%s %i", "KLU ERROR",
+                     (int) Common.status);
+        PyErr_SetString(PyExc_ValueError, klu_error);
+        return NULL;
+    }
+
+    /* R is diagonal */
+    for (i = 0; i < nn; i++){
+        SP_COL(R)[i] = i;
+        SP_ROW(R)[i] = i;
+        /* Compute reciprocal to get R*P*A*Q instead of R\P*A*Q */
+        SP_VALD(R)[i] = 1.0 / SP_VALD(R)[i];
+    }
+    SP_COL(R)[nn] = nn;
+
+
+    /* create sparse permutation matrix for P */
+    P = SpMatrix_New(nn, nn, nn, DOUBLE);
+    for (i = 0; i < nn; i++){
+        SP_COL(P)[i] = i;
+        SP_ROW(P)[Pt[i]] = i;
+        SP_VALD(P)[i] = 1;
+    }
+    SP_COL(P)[nn] = nn;
+
+    /* create sparse permutation matrix for Q */
+    Q = SpMatrix_New(nn, nn, nn, DOUBLE);
+    for (i = 0; i < nn; i++){
+        SP_COL(Q)[i] = i;
+        SP_ROW(Q)[i] = Qt[i];
+        SP_VALD(Q)[i] = 1;
+    }
+    SP_COL(Q)[nn] = nn;
+
+    /* Create block list */
+    r = PyList_New(symbolic->nblocks+1);
+    for (i = 0; i < symbolic->nblocks+1; i++){
+        PyList_SetItem(r, i, PyLong_FromLong((long ) rt[i]));
+    }
+
+
+    /* Free workspace */
+    free(rt);
+    free(Pt);
+    free(Qt);
+
+
+
+    return Py_BuildValue("OOOOOOO", L, U, P, Q, R, F, r);
+
+      
+}
 
 
 static char doc_solve[] =
@@ -547,7 +731,7 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
     char *kwlist[] = {"A", "Fs", "F", "B", "trans", "nrhs", "ldB", "offsetB",
                       NULL
                      };
-    KLUS(common) Common, CommonFree;
+    KLU(common) Common, CommonFree;
 
 
 #if PY_MAJOR_VERSION >= 3
@@ -650,6 +834,7 @@ static PyMethodDef klu_functions[] = {
     },
     {"symbolic", (PyCFunction) symbolic, METH_VARARGS, doc_symbolic},
     {"numeric", (PyCFunction) numeric, METH_VARARGS, doc_numeric},
+    {"get_numeric", (PyCFunction) get_numeric, METH_VARARGS, doc_get_numeric},
     {"solve", (PyCFunction) solve, METH_VARARGS | METH_KEYWORDS, doc_solve},
     {"det", (PyCFunction) det, METH_VARARGS | METH_KEYWORDS, doc_det},
     {NULL}  /* Sentinel */

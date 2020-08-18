@@ -375,7 +375,7 @@ static char doc_get_numeric[] =
     "This routine copies the LU factors and permutation vectors from the \n"
     "Numeric object into user-accessible arrays.  This routine is not \n"
     "needed to solve a linear system..\n\n"
-    "Fn = get_numeric(A, Fn)\n\n"
+    "L, U, P, Q, R = get_numeric(A, Fn)\n\n"
     "ARGUMENTS\n"
     "A         sparse matrix; must be square\n\n"
     "Fn        numeric factorization, as returned by umfpack.numeric\n\n";
