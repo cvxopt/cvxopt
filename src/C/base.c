@@ -273,6 +273,11 @@ extern void zsymv_(char *, int *, void *, void *, int *, void *, int *,
 void (*symv[])(char *, int *, void *, void *, int *, void *, int *,
     void *, void *, int *) = { NULL, dsymv_, zsymv_ };
 
+extern double dlange_(char *, int *, int *, void *, int *, void *);
+extern double zlange_(char *, int *, int *, void *, int *, void *);
+double (*lange[])(char *, int *, int *, void *, int *, void *) = 
+{ NULL, dlange_, zlange_ };
+
 static void mtx_iabs(void *src, void *dest, int n) {
   int i;
   for (i=0; i<n; i++)
@@ -378,6 +383,134 @@ static int Matrix_Check_func(void *o) {
 
 static int SpMatrix_Check_func(void *o) {
   return SpMatrix_Check((PyObject *)o);
+}
+
+static char doc_norm[] = 
+  "Matrix or vector norm. ";
+
+PyObject * base_norm(PyObject *self, PyObject *args, PyObject *kwargs) {
+  PyObject *A;
+
+  char *kwlist[] = {"A", "ord", NULL};
+
+#if PY_MAJOR_VERSION >= 3
+  int ord_ = 'M';
+#endif
+  char ord='M';
+  int_t i, k;
+  int m, n, id, lda, lwork;
+  double *work, res, temp, temp1;
+
+
+#if PY_MAJOR_VERSION >= 3
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O|C", kwlist,
+      &A, &ord_)) return NULL;
+  ord = (char) ord_;
+#else
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O|c", kwlist,
+      &A, &ord)) return NULL;
+#endif
+  
+  if (!Matrix_Check(A) && !SpMatrix_Check(A)) err_mtrx("A");
+  if (ord != 'M' && ord != '1' && ord != 'I' && ord != 'F')
+    err_char("ord", "'M', '1', 'I', 'F'");
+
+
+  id = X_ID(A);
+  m = X_NROWS(A);
+  n = X_NCOLS(A);
+
+  lwork = MAX(1, ord == 'I' ? m : 0);
+  work = calloc(lwork, sizeof(double));
+
+  if (Matrix_Check(A)) {
+    lda = MAX(1, m);
+
+
+    res = lange[id](&ord, &m, &n, MAT_BUF(A), &lda, work);
+
+  }
+  else{
+    switch (ord) {
+      case 'M':
+        /* Norm-M = max(abs(A(i,j))) */
+        res = 0;
+        if (SP_ID(A) == DOUBLE){
+          for (i = 0; i < SP_NNZ(A); i++)
+            res = MAX(res, fabs(SP_VALD(A)[i]));
+        }
+        else{
+          for (i = 0; i < SP_NNZ(A); i++)
+            res = MAX(res, cabs(SP_VALZ(A)[i]));
+        }
+        break;
+
+      case '1':
+        /* Norm-1 = maximum column sum */
+        if (SP_ID(A) == DOUBLE){
+          for (i = 0; i < n; i++){
+            for (temp = 0, k = SP_COL(A)[i]; k < SP_COL(A)[i+1]; k++){
+              temp += fabs(SP_VALD(A)[k]);
+            }
+            res = MAX(res, temp);
+          }
+        }
+        else{
+          for (i = 0; i < n; i++){
+            for (temp = 0, k = SP_COL(A)[i]; k < SP_COL(A)[i+1]; k++){
+              temp += cabs(SP_VALZ(A)[k]);
+            }
+            res = MAX(res, temp);
+          }
+        }
+
+        break;
+
+      case 'I':
+        /* Norm-I = maximum row sum */
+        /* First we sum all values for each row */
+        if (SP_ID(A) == DOUBLE){
+          for (i = 0; i < SP_NNZ(A); i++){
+              work[SP_ROW(A)[i]] += fabs(SP_VALD(A)[i]);
+          }
+        }
+        else{
+          for (i = 0; i < SP_NNZ(A); i++){
+              work[SP_ROW(A)[i]] += cabs(SP_VALZ(A)[i]);
+          }
+        }
+        /* Compute max row sum */
+        res = 0;
+        for (i = 0; i < lwork; i++)
+          res = MAX(res, work[i]);
+
+        break;
+
+      case 'F':
+        /* Norm-F (Frobenius norm) = square root of sum of squares */
+        temp = 0;
+        if (SP_ID(A) == DOUBLE){
+          for (i = 0; i < SP_NNZ(A); i++)
+            temp += SP_VALD(A)[i] * SP_VALD(A)[i];
+        }
+        else{
+          for (i = 0; i < SP_NNZ(A); i++){
+            temp1 = cabs(SP_VALZ(A)[i]);
+            temp += temp1 * temp1;
+          }
+        }
+        res = sqrt(temp);
+
+        break;
+
+    }
+
+  }
+
+  free(work);
+
+  return Py_BuildValue("d", res);
+
 }
 
 
@@ -1969,6 +2102,7 @@ static PyMethodDef base_functions[] = {
         "Computes the element-wise inverse tangent of a matrix"},
     {"conj", (PyCFunction)matrix_conj, METH_VARARGS|METH_KEYWORDS,
         "Computes the element-wise conjugate of a matrix"},
+    {"norm", (PyCFunction)base_norm, METH_VARARGS|METH_KEYWORDS, doc_norm},
     {"axpy", (PyCFunction)base_axpy, METH_VARARGS|METH_KEYWORDS, doc_axpy},
     {"gemm", (PyCFunction)base_gemm, METH_VARARGS|METH_KEYWORDS, doc_gemm},
     {"gemv", (PyCFunction)base_gemv, METH_VARARGS|METH_KEYWORDS, doc_gemv},
