@@ -17,6 +17,7 @@ jobs:
       SUITESPARSE_SHA256: fe3bc7c3bd1efdfa5cffffb5cebf021ff024c83b5daf0ab445429d3d741bd3ad
 
     strategy:
+      fail-fast: false
       matrix:
         python-version: [2.7]
         suite-sparse: [lib_suitesparse, src_suitesparse]

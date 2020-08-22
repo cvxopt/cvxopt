@@ -834,7 +834,7 @@ static PyMethodDef klu_functions[] = {
     },
     {"symbolic", (PyCFunction) symbolic, METH_VARARGS, doc_symbolic},
     {"numeric", (PyCFunction) numeric, METH_VARARGS, doc_numeric},
-    {"get_numeric", (PyCFunction) get_numeric, METH_VARARGS, doc_get_numeric},
+    {"get_numeric", (PyCFunction) get_numeric, METH_VARARGS | METH_KEYWORDS, doc_get_numeric},
     {"solve", (PyCFunction) solve, METH_VARARGS | METH_KEYWORDS, doc_solve},
     {"det", (PyCFunction) det, METH_VARARGS | METH_KEYWORDS, doc_det},
     {NULL}  /* Sentinel */

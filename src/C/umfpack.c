@@ -448,12 +448,10 @@ static PyObject* get_numeric(PyObject *self, PyObject *args, PyObject *kwrds)
     Ltp = (int_t *) malloc ((n_row+1) * sizeof (int_t));
     Ltj = (int_t *) malloc (lnz * sizeof (int_t));
 
-    if (SP_ID(A) == COMPLEX)
-    {
+    if (SP_ID(A) == COMPLEX){
         Ltx = (double *) malloc (2 * lnz * sizeof (double)) ;
     }
-    else
-    {
+    else{
         Ltx = (double *) malloc (lnz * sizeof (double));
     }
 
@@ -552,7 +550,6 @@ static PyObject* get_numeric(PyObject *self, PyObject *args, PyObject *kwrds)
     free(Ltx);
     free(Pt);
     free(Qt);
-
 
     if (status < 0){
         // TODO: Free L, U, P, Q, R?
@@ -691,7 +688,7 @@ static PyMethodDef umfpack_functions[] = {
         doc_linsolve},
     {"symbolic", (PyCFunction) symbolic, METH_VARARGS, doc_symbolic},
     {"numeric", (PyCFunction) numeric, METH_VARARGS, doc_numeric},
-    {"get_numeric", (PyCFunction) get_numeric, METH_VARARGS, doc_get_numeric},
+    {"get_numeric", (PyCFunction) get_numeric, METH_VARARGS|METH_KEYWORDS, doc_get_numeric},
     {"solve", (PyCFunction) solve, METH_VARARGS|METH_KEYWORDS, doc_solve},
     {NULL}  /* Sentinel */
 };
