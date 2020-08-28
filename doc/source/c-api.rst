@@ -4,14 +4,14 @@
 C API
 *****
 
-The API can be used to extend CVXOPT with interfaces to external C routines
+The API can be used to extend kvxopt with interfaces to external C routines
 and libraries.  A C program that creates or manipulates the dense or sparse
-matrix objects defined in CVXOPT must include the :const:`cvxopt.h` header 
+matrix objects defined in kvxopt must include the :const:`kvxopt.h` header 
 file in the :const:`src` directory of the distribution.
 
 Before the C API can be used in an extension module it must be initialized 
 by calling the macro :c:macro:`import_cvxopt`.  As an example we show the 
-module initialization from the :mod:`cvxopt.blas` module, which itself uses
+module initialization from the :mod:`kvxopt.blas` module, which itself uses
 the API:
 
 .. highlight:: c
@@ -42,7 +42,7 @@ the API:
     PyMODINIT_FUNC initblas(void)
     {
       PyObject *m;
-      m = Py_InitModule3("cvxopt.blas", blas_functions, blas__doc__);
+      m = Py_InitModule3("kvxopt.blas", blas_functions, blas__doc__);
       if (import_cvxopt() < 0) return ;
     }
     
@@ -53,7 +53,7 @@ the API:
 Dense Matrices
 ==============
 
-As can be seen from the header file :const:`cvxopt.h`, a :class:`matrix` is
+As can be seen from the header file :const:`kvxopt.h`, a :class:`matrix` is
 essentially a  structure with four fields.  The fields :c:member:`nrows` and 
 :c:member:`ncols` are two integers that specify the dimensions.  The 
 :c:member:`id` field controls the type of the matrix and can have values 
@@ -85,7 +85,7 @@ The following C functions can be used to create matrices.
 
 
 To illustrate the creation and manipulation of dense matrices (as well as 
-the Python C API), we show the code for the :func:`cvxopt.uniform` function 
+the Python C API), we show the code for the :func:`kvxopt.uniform` function 
 described in the section :ref:`s-random`.
 
 ::

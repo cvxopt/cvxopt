@@ -36,8 +36,8 @@
 
 const char *descrdFs = "KLU SYM D FACTOR";
 const char *descrzFs = "KLU SYM Z FACTOR";
-const char *descrdF = "KLU NUM D FACTOR";
-const char *descrzF = "KLU NUM Z FACTOR";
+const char *descrdFn = "KLU NUM D FACTOR";
+const char *descrzFn = "KLU NUM Z FACTOR";
 
 static char klu_error[20];
 
@@ -72,132 +72,6 @@ static void free_klu_z_numeric(PyObject *F) {
         KLUZ(free_numeric)(&Fptr, &Common);
 }
 
-
-
-
-
-static char doc_det[] = "Determinant of a KLU numeric object\n"
-                        "d = det(A, F, N)\n\n"
-                        "PURPOSE\n"
-                        "A is a real sparse n by n matrix, F and N its symbolic and numeric \n"
-                        "factorizations respectively.\n"
-                        "On exit a float is returned with the value of the determinant.\n\n"
-                        "ARGUMENTS\n"
-                        "A         square sparse matrix\n\n"
-                        "F         the symbolic factorization as an opaque C object\n\n"
-                        "N         the numeric factorization as an opaque C object\n\n"
-                        "d         the determinant value of the matrix\n\n";
-
-
-static PyObject* det(PyObject *self, PyObject *args, PyObject *kwrds) {
-    spmatrix *A;
-
-    PyObject *F;
-    PyObject *Fs;
-
-    KLU(common) Common;
-    KLU(symbolic) *Fsptr;
-    KLU(numeric) *Fptr;
-    KLUD(defaults)(&Common) ;
-
-
-    const char *descrdF = "KLU NUM D FACTOR";
-
-    double *Udiag, *Rs;
-    SuiteSparse_long *P, *Q, *Wi;
-    double det = 1, d_sign;
-    int n, npiv, itmp;
-
-    if (!PyArg_ParseTuple(args, "OOO", &A, &Fs, &F))
-        return NULL;
-
-    if (!SpMatrix_Check(A)) PY_ERR_TYPE("A must be a sparse matrix");
-    if (!PyCapsule_CheckExact(F)) err_CO("F");
-    if (!PyCapsule_CheckExact(Fs)) err_CO("Fs");
-
-    if (SP_ID(A) == COMPLEX)
-        PY_ERR_TYPE("A must be a real sparse matrix");
-
-    if (!(Fptr =  (KLU(numeric) *) PyCapsule_GetPointer(F, descrdF)))
-        err_CO("F");
-
-    if (!(Fsptr =  (KLU(symbolic) *) PyCapsule_GetPointer(Fs, descrdFs)))
-        err_CO("Fs");
-
-
-    /* This code is very similar to umfpack_get_determinan.c */
-
-    Udiag = Fptr->Udiag;
-    n =  Fptr->n;
-    P = Fptr->Pnum;
-    Q = Fsptr->Q;
-    Rs =  Fptr->Rs;
-
-
-
-    int i, k;
-    for (k = 0; k < n; k++)
-        det *= Udiag[k];
-
-
-    for (k = 0; k < n; k++)
-        det *= Rs[k];
-
-
-
-    Wi = malloc(n * sizeof(SuiteSparse_long));
-
-    /* ---------------------------------------------------------------------- */
-    /* determine if P and Q are odd or even permutations */
-    /* ---------------------------------------------------------------------- */
-
-    npiv = 0 ;
-
-    for (i = 0 ; i < n ; i++)
-    {
-        Wi [i] = P [i] ;
-    }
-
-    for (i = 0 ; i < n ; i++)
-    {
-        while (Wi [i] != i)
-        {
-            itmp = Wi [Wi [i]] ;
-            Wi [Wi [i]] = Wi [i] ;
-            Wi [i] = itmp ;
-            npiv++ ;
-        }
-    }
-
-
-    for (i = 0 ; i < n ; i++)
-    {
-        Wi [i] = Q [i] ;
-    }
-
-    for (i = 0 ; i < n ; i++)
-    {
-        while (Wi [i] != i)
-        {
-            itmp = Wi [Wi [i]] ;
-            Wi [Wi [i]] = Wi [i] ;
-            Wi [i] = itmp ;
-            npiv++ ;
-        }
-    }
-
-    /* if npiv is odd, the sign is -1.  if it is even, the sign is +1 */
-    d_sign = (npiv % 2) ? -1. : 1. ;
-
-
-    KLUD(free)(Wi, n, sizeof (SuiteSparse_long), &Common);
-
-    return Py_BuildValue("d", det * d_sign);
-
-
-}
-
-
 static char doc_linsolve[] =
     "Solves a sparse set of linear equations.\n\n"
     "linsolve(A, B, trans='N', nrhs=B.size[1], ldB=max(1,B.size[0]),\n"
@@ -227,7 +101,8 @@ static PyObject* linsolve(PyObject *self, PyObject *args,
     int trans_ = 'N';
 #endif
     char trans = 'N';
-    int oB = 0, n, nrhs = -1, ldB = 0;
+    int oB = 0, nrhs = -1, ldB = 0;
+    int_t n;
     KLU(common) Common, CommonFree;
     KLU(symbolic) *Symbolic;
     KLU(numeric) *Numeric;
@@ -374,7 +249,7 @@ static char doc_symbolic[] =
 static PyObject* symbolic(PyObject *self, PyObject *args)
 {
     spmatrix *A;
-    int n;
+    int_t n;
 
     if (!PyArg_ParseTuple(args, "O", &A)) return NULL;
 
@@ -470,7 +345,7 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 
         if (Common.status == KLU_OK)
             return (PyObject *) PyCapsule_New(
-                       (void *)Numeric, descrdF,
+                       (void *)Numeric, descrdFn,
                        (PyCapsule_Destructor) &free_klu_d_numeric);
 
         else
@@ -488,7 +363,7 @@ static PyObject* numeric(PyObject *self, PyObject *args, PyObject *kwrds)
 
         if (Common.status == KLU_OK)
             return (PyObject *) PyCapsule_New(
-                       (void *) Numeric, descrzF,
+                       (void *) Numeric, descrzFn,
                        (PyCapsule_Destructor) &free_klu_z_numeric);
 
         else
@@ -547,13 +422,13 @@ static PyObject* get_numeric(PyObject *self, PyObject *args, PyObject *kwrds)
     if (SP_ID(A) == DOUBLE) {
         TypeCheck_Capsule(Fs, descrdFs, "F is not the KLU symbolic factor "
                           "of a 'd' matrix");
-        TypeCheck_Capsule(Fn, descrdF, "F is not the KLU numeric factor "
+        TypeCheck_Capsule(Fn, descrdFn, "F is not the KLU numeric factor "
                           "of a 'd' matrix");
     }
     else  {
         TypeCheck_Capsule(Fs, descrzFs, "F is not the KLU symbolic factor "
                           "of a 'z' matrix");
-        TypeCheck_Capsule(Fn, descrzF, "F is not the KLU numeric factor "
+        TypeCheck_Capsule(Fn, descrzFn, "F is not the KLU numeric factor "
                           "of a 'z' matrix");
     }
 
@@ -563,12 +438,12 @@ static PyObject* get_numeric(PyObject *self, PyObject *args, PyObject *kwrds)
     switch (SP_ID(A)) {
         case DOUBLE:
             symbolic = (KLU(symbolic) *) PyCapsule_GetPointer(Fs, descrdFs);
-            numeric = (KLU(numeric) *) PyCapsule_GetPointer(Fn, descrdF);
+            numeric = (KLU(numeric) *) PyCapsule_GetPointer(Fn, descrdFn);
             break;
 
         case COMPLEX:
             symbolic = (KLU(symbolic) *) PyCapsule_GetPointer(Fs, descrzFs);
-            numeric = (KLU(numeric) *) PyCapsule_GetPointer(Fn, descrzF);
+            numeric = (KLU(numeric) *) PyCapsule_GetPointer(Fn, descrzFn);
             break;
 
     }
@@ -753,13 +628,13 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
     if (SP_ID(A) == DOUBLE) {
         TypeCheck_Capsule(Fs, descrdFs, "F is not the KLU symbolic factor "
                           "of a 'd' matrix");
-        TypeCheck_Capsule(F, descrdF, "F is not the KLU numeric factor "
+        TypeCheck_Capsule(F, descrdFn, "F is not the KLU numeric factor "
                           "of a 'd' matrix");
     }
     else  {
         TypeCheck_Capsule(Fs, descrzFs, "F is not the KLU symbolic factor "
                           "of a 'z' matrix");
-        TypeCheck_Capsule(F, descrzF, "F is not the KLU numeric factor "
+        TypeCheck_Capsule(F, descrzFn, "F is not the KLU numeric factor "
                           "of a 'z' matrix");
     }
 
@@ -783,21 +658,21 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
     if (SP_ID(A) == DOUBLE) {
         if (trans == 'N')
             KLUD(solve)(PyCapsule_GetPointer(Fs, descrdFs),
-                        PyCapsule_GetPointer(F, descrdF)
+                        PyCapsule_GetPointer(F, descrdFn)
                         , n, nrhs, MAT_BUFD(B), &Common);
         else
             KLUD(tsolve)(PyCapsule_GetPointer(Fs, descrdFs),
-                         PyCapsule_GetPointer(F, descrdF)
+                         PyCapsule_GetPointer(F, descrdFn)
                          , n, nrhs, MAT_BUFD(B), &Common);
     }
     else {
         if (trans == 'N')
             KLUZ(solve)(PyCapsule_GetPointer(Fs, descrzFs),
-                        PyCapsule_GetPointer(F, descrzF)
+                        PyCapsule_GetPointer(F, descrzFn)
                         , n, nrhs, (double *) MAT_BUFZ(B), &Common);
         else
             KLUZ(tsolve)(PyCapsule_GetPointer(Fs, descrzFs),
-                         PyCapsule_GetPointer(F, descrzF)
+                         PyCapsule_GetPointer(F, descrzFn)
                          , n, nrhs, (double *) MAT_BUFZ(B),  trans == 'C' ? 1 : 0,
                          &Common);
     }
@@ -824,19 +699,152 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
 }
 
 
+static char doc_get_det[] = 
+    "Returns determinant of a KLU symbolic/numeric object\n"
+    "d = get_det(A, Fs, Fn)\n\n"
+    "PURPOSE\n"
+    "A is a real sparse n by n matrix, F and N its symbolic and numeric \n"
+    "factorizations respectively.\n"
+    "On exit a double/complex is returned with the value of the determinant.\n\n"
+    "ARGUMENTS\n"
+    "A         square sparse matrix\n\n"
+    "Fs        the symbolic factorization as an opaque C object\n\n"
+    "Fn        the numeric factorization as an opaque C object\n\n"
+    "d         the determinant value of the matrix\n\n";
 
 
+static PyObject* get_det(PyObject *self, PyObject *args, PyObject *kwrds) {
+    spmatrix *A;
+    PyObject *Fn, *Fs;
 
+    KLU(common) Common;
+    KLU(symbolic) *Fsptr;
+    KLU(numeric) *Fptr;
+    KLUD(defaults)(&Common) ;
+
+    double *Udiag, *Rs;
+
+    SuiteSparse_long *P, *Q, *Wi;
+    double det = 1, d_sign;
+#ifndef _MSC_VER
+    double complex det_c = 1.0;
+    double complex *Uzdiag;
+#else
+    _Dcomplex det_c = _Cbuild(1.0, 0.0);
+    _Dcomplex *Uzdiag;
+#endif
+
+    int_t i, k, n, npiv, itmp;
+
+    if (!PyArg_ParseTuple(args, "OOO", &A, &Fs, &Fn))
+        return NULL;
+
+    if (!SpMatrix_Check(A)) PY_ERR_TYPE("A must be a sparse matrix");
+    if (!PyCapsule_CheckExact(Fn)) err_CO("F");
+    if (!PyCapsule_CheckExact(Fs)) err_CO("Fs");
+
+
+    if (SP_ID(A) == DOUBLE){
+        TypeCheck_Capsule(Fs, descrdFs, "F is not the UMFPACK symbolic factor "
+                          "of a 'd' matrix");
+        TypeCheck_Capsule(Fn, descrdFn, "F is not the UMFPACK numeric factor "
+                          "of a 'd' matrix");
+        if (!(Fptr =  (KLU(numeric) *) PyCapsule_GetPointer(Fn, descrdFn)))
+            err_CO("F");
+
+        if (!(Fsptr =  (KLU(symbolic) *) PyCapsule_GetPointer(Fs, descrdFs)))
+            err_CO("Fs");
+        Udiag = Fptr->Udiag;
+    }
+    else{
+        TypeCheck_Capsule(Fs, descrzFs, "F is not the UMFPACK symbolic factor "
+                          "of a 'z' matrix");
+        TypeCheck_Capsule(Fn, descrzFn, "F is not the UMFPACK numeric factor "
+                          "of a 'z' matrix");
+        if (!(Fptr =  (KLU(numeric) *) PyCapsule_GetPointer(Fn, descrzFn)))
+            err_CO("F");
+
+        if (!(Fsptr =  (KLU(symbolic) *) PyCapsule_GetPointer(Fs, descrzFs)))
+            err_CO("Fs");
+        Uzdiag = Fptr->Udiag;
+    }
+
+    /* This code is based on umfpack_get_determinant.c */
+
+    n =  Fptr->n;
+    P = Fptr->Pnum;
+    Q = Fsptr->Q;
+    Rs =  Fptr->Rs;
+
+    if (SP_ID(A) == DOUBLE)    
+        for (k = 0; k < n; k++)
+            det *= (Udiag[k]*Rs[k]);
+    else
+        for (k = 0; k < n; k++)
+#ifndef _MSC_VER
+            det_c *= (Uzdiag[k]*Rs[k]);
+#else
+            det_c =  _Cmulcc(det_c, _Cmulcr(Uzdiag[k], Rs[k]));
+#endif
+
+    Wi = malloc(n * sizeof(int_t));
+
+    /* ---------------------------------------------------------------------- */
+    /* determine if P and Q are odd or even permutations */
+    /* ---------------------------------------------------------------------- */
+
+    npiv = 0 ;
+
+    for (i = 0 ; i < n ; i++)
+    {
+        Wi [i] = P [i] ;
+    }
+
+    for (i = 0 ; i < n ; i++)
+        while (Wi [i] != i){
+            itmp = Wi [Wi [i]] ;
+            Wi [Wi [i]] = Wi [i] ;
+            Wi [i] = itmp ;
+            npiv++ ;
+        }
+
+    for (i = 0 ; i < n ; i++)
+        Wi [i] = Q [i] ;
+
+    for (i = 0 ; i < n ; i++)
+        while (Wi [i] != i){
+            itmp = Wi [Wi [i]] ;
+            Wi [Wi [i]] = Wi [i] ;
+            Wi [i] = itmp ;
+            npiv++ ;
+        }
+
+    /* if npiv is odd, the sign is -1.  if it is even, the sign is +1 */
+    d_sign = (npiv % 2) ? -1. : 1. ;
+
+
+    free(Wi);
+
+    if (SP_ID(A) == DOUBLE)
+        return Py_BuildValue("d", det * d_sign);
+    else{
+#ifndef _MSC_VER
+        det_c *= d_sign;
+#else
+        det_c = _Cmulcr(det_c, d_sign);
+#endif
+        return PyComplex_FromDoubles(creal(det_c), cimag(det_c));
+    }
+}
 
 static PyMethodDef klu_functions[] = {
     {"linsolve", (PyCFunction) linsolve, METH_VARARGS | METH_KEYWORDS,
-        doc_linsolve
-    },
+        doc_linsolve},
     {"symbolic", (PyCFunction) symbolic, METH_VARARGS, doc_symbolic},
     {"numeric", (PyCFunction) numeric, METH_VARARGS, doc_numeric},
     {"get_numeric", (PyCFunction) get_numeric, METH_VARARGS | METH_KEYWORDS, doc_get_numeric},
     {"solve", (PyCFunction) solve, METH_VARARGS | METH_KEYWORDS, doc_solve},
-    {"det", (PyCFunction) det, METH_VARARGS | METH_KEYWORDS, doc_det},
+    {"get_det", (PyCFunction) get_det, METH_VARARGS, doc_get_det},
     {NULL}  /* Sentinel */
 };
 

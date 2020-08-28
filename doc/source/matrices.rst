@@ -4,9 +4,9 @@
 Dense and Sparse Matrices
 *************************
 
-This chapter describes the two CVXOPT matrix types: 
-:class:`matrix <cvxopt.matrix>` objects, used for dense matrix 
-computations, and :class:`spmatrix <cvxopt.spmatrix>` objects, used for 
+This chapter describes the two kvxopt matrix types: 
+:class:`matrix <kvxopt.matrix>` objects, used for dense matrix 
+computations, and :class:`spmatrix <kvxopt.spmatrix>` objects, used for 
 sparse matrix computations.
 
 
@@ -19,7 +19,7 @@ A dense matrix is created by calling the function :func:`matrix`.  The
 arguments specify the values of the coefficients, the dimensions, and the 
 type (integer, double, or complex) of the matrix.
 
-.. function:: cvxopt.matrix(x[, size[, tc]])
+.. function:: kvxopt.matrix(x[, size[, tc]])
 
    ``size``  is a tuple of length two with the matrix dimensions.
    The number of rows and/or the number of columns can be zero.
@@ -41,7 +41,7 @@ type (integer, double, or complex) of the matrix.
      when used to create a matrix of type :const:`'d'`, and from integer or
      double to complex when used to create a matrix of type :const:`'z'`).
 
-     >>> from cvxopt import matrix
+     >>> from kvxopt import matrix
      >>> A = matrix(1, (1,4))   
      >>> print(A)
      [ 1  1  1  1]
@@ -164,7 +164,7 @@ type (integer, double, or complex) of the matrix.
 Sparse Matrices
 ===============
 
-A general :class:`spmatrix <cvxopt.spmatrix>` object can be thought of as 
+A general :class:`spmatrix <kvxopt.spmatrix>` object can be thought of as 
 a *triplet description* of a sparse matrix, i.e., a list of entries of the
 matrix, with for each entry the value, row index, and column index.  
 Entries that are not included in the list are assumed to be zero.  
@@ -204,11 +204,11 @@ Three functions are provided to create sparse matrices.
 The first, :func:`spmatrix`, 
 constructs a sparse matrix from a triplet description. 
 
-.. function:: cvxopt.spmatrix(x, I, J[, size[, tc]])
+.. function:: kvxopt.spmatrix(x, I, J[, size[, tc]])
 
     ``I`` and ``J`` are sequences of integers (lists, tuples, 
     :mod:`array` arrays, ...) or integer matrices 
-    (:class:`matrix <cvxopt.matrix>` objects with typecode :const:`'i'`),  
+    (:class:`matrix <kvxopt.matrix>` objects with typecode :const:`'i'`),  
     containing the row and column indices of the nonzero entries.  
     The lengths of ``I`` and ``J`` must be  equal.  If they are matrices, 
     they are treated as lists of indices stored in column-major order, 
@@ -239,7 +239,7 @@ constructs a sparse matrix from a triplet description.
       
       The following code creates a 4 by 4 sparse identity matrix.
         
-      >>> from cvxopt import spmatrix
+      >>> from kvxopt import spmatrix
       >>> A = spmatrix(1.0, range(4), range(4))
       >>> print(A) 
          [ 1.00e+00     0         0         0    ]
@@ -278,7 +278,7 @@ constructs a sparse matrix from a triplet description.
 The function :func:`sparse` constructs a sparse matrix 
 from a block-matrix description.
    
-.. function:: cvxopt.sparse(x[, tc])
+.. function:: kvxopt.sparse(x[, tc])
 
     ``tc`` is the typecode, :const:`'d'` or :const:`'z'`, for double and 
     complex matrices, respectively.
@@ -297,11 +297,11 @@ from a block-matrix description.
       complex) then each element of ``x`` is interpreted as a 
       (block-)column matrix stored in colum-major order, and a
       block-matrix is constructed by juxtaposing the ``len(x)``
-      block-columns (as in :func:`matrix <cvxopt.matrix>`).
+      block-columns (as in :func:`matrix <kvxopt.matrix>`).
       Numerical zeros are removed from the triplet description of the new 
       matrix.  
     
-    >>> from cvxopt import matrix, spmatrix, sparse
+    >>> from kvxopt import matrix, spmatrix, sparse
     >>> A = matrix([[1., 2., 0.], [2., 1., 2.], [0., 2., 1.]])
     >>> print(A)
     [ 1.00e+00  2.00e+00  0.00e+00]
@@ -342,7 +342,7 @@ from a block-matrix description.
 The function :func:`spdiag` constructs a block-diagonal 
 sparse matrix from a list of matrices.
 
-.. function:: cvxopt.spdiag(x)
+.. function:: kvxopt.spdiag(x)
 
     ``x`` is a dense or sparse matrix with a single row or column, or a 
     list of square dense or sparse matrices or scalars.  
@@ -351,7 +351,7 @@ sparse matrix from a list of matrices.
     If ``x`` is list, a sparse block-diagonal matrix is returned with
     the elements in the list as its diagonal blocks.
       
-    >>> from cvxopt import matrix, spmatrix, spdiag
+    >>> from kvxopt import matrix, spmatrix, spdiag
     >>> A = 3.0
     >>> B = matrix([[1,-2],[-2,1]])
     >>> C = spmatrix([1,1,1,1,1],[0,1,2,0,0,],[0,0,0,1,2])
@@ -545,7 +545,7 @@ than indexing with lists.
 
 The following example illustrates one-argument indexing.
 
->>> from cvxopt import matrix, spmatrix
+>>> from kvxopt import matrix, spmatrix
 >>> A = matrix(range(16), (4,4), 'd')
 >>> print(A)
 [ 0.00e+00  4.00e+00  8.00e+00  1.20e+01]
@@ -760,7 +760,7 @@ In addition, sparse matrices have the following attributes.
 
 The next example below illustrates assignments to :attr:`V`.
 
->>> from cvxopt import spmatrix, matrix
+>>> from kvxopt import spmatrix, matrix
 >>> A = spmatrix(range(5), [0,1,1,2,2], [0,0,1,1,2])
 >>> print(A)
 [ 0.00e+00     0         0    ]
@@ -793,7 +793,7 @@ The following attributes and methods are defined for dense matrices.
 
 The last two methods are illustrated in the following examples.
 
->>> from cvxopt import matrix, spmatrix
+>>> from kvxopt import matrix, spmatrix
 >>> A = matrix([[1.,2.,3.], [4.,5.,6.]])  
 >>> print(A)
 [ 1.00e+00  4.00e+00]
@@ -879,7 +879,7 @@ of the nonzero elements of ``A`` if ``A`` is sparse.
 ``list(zip(A, B, ...))`` returns a list of tuples, with the i-th tuple 
 containing the i-th elements (or nonzero elements) of ``A``, ``B``, ....   
 
->>> from cvxopt import matrix
+>>> from kvxopt import matrix
 >>> A = matrix([[-11., -5., -20.], [-6., 0., 7.]])
 >>> B = matrix(range(6), (3,2))
 >>> list(A)
@@ -944,9 +944,9 @@ is equal to ``x`` and :const:`False` otherwise.
 Other Matrix Functions
 ======================
 
-The following functions can be imported from CVXOPT.
+The following functions can be imported from kvxopt.
 
-.. function:: cvxopt.sqrt(x)
+.. function:: kvxopt.sqrt(x)
 
     The elementwise square root of a dense matrix ``x``.  The result is 
     returned as a real matrix if ``x`` is an integer or real matrix and 
@@ -963,7 +963,7 @@ The following functions can be imported from CVXOPT.
             1 & 2 & 0 & 4 & 0 \\
             0 & 0 & 1 & 0 & 0 \end{array} \right]
 
-    >>> from cvxopt import spmatrix, sqrt
+    >>> from kvxopt import spmatrix, sqrt
     >>> A = spmatrix([2,1,2,2,1,3,4], [1,2,0,2,3,0,2], [0,0,1,1,2,3,3]) 
     >>> B = spmatrix(sqrt(A.V), A.I, A.J)
     >>> print(B)
@@ -973,25 +973,25 @@ The following functions can be imported from CVXOPT.
     [    0         0      1.00e+00     0    ]
 
 
-.. function:: cvxopt.sin(x)
+.. function:: kvxopt.sin(x)
 
     The sine function applied elementwise to a dense matrix ``x``.  
     The result is returned as a real matrix if ``x`` is an integer
     or real matrix and as a complex matrix otherwise.  
 
-.. function:: cvxopt.cos(x)
+.. function:: kvxopt.cos(x)
 
     The cosine function applied elementwise to a dense matrix ``x``.  
     The result is returned as a real matrix if ``x`` is an integer
     or real matrix and as a complex matrix otherwise.  
 
-.. function:: cvxopt.exp(x)
+.. function:: kvxopt.exp(x)
 
     The exponential function applied elementwise to a dense matrix ``x``.  
     The result is returned as a real matrix if ``x`` is an integer 
     or real matrix and as a complex matrix otherwise.  
 
-.. function:: cvxopt.log(x)
+.. function:: kvxopt.log(x)
 
     The natural logarithm applied elementwise to a dense matrix ``x``.  
     The result is returned as a real matrix if ``x`` is an integer
@@ -999,7 +999,7 @@ The following functions can be imported from CVXOPT.
     Raises an exception when ``x`` is an integer or real matrix with 
     nonpositive elements, or a complex matrix with zero elements.
 
-.. function:: cvxopt.mul(x0, [, x1 [, x2 ...]])
+.. function:: kvxopt.mul(x0, [, x1 [, x2 ...]])
 
     If the arguments are dense or sparse matrices of the same size, returns
     the elementwise product of its arguments.  The result is a sparse
@@ -1015,7 +1015,7 @@ The following functions can be imported from CVXOPT.
     if the iterable generates a list of dense or sparse matrices or 
     scalars.
 
-    >>> from cvxopt import matrix, spmatrix, mul
+    >>> from kvxopt import matrix, spmatrix, mul
     >>> A = matrix([[1.0, 2.0], [3.0, 4.0]])
     >>> B = spmatrix([2.0, 3.0], [0, 1], [0, 1])
     >>> print(mul(A, B, -1.0))
@@ -1025,13 +1025,13 @@ The following functions can be imported from CVXOPT.
     [  6]
     [ 24]
 
-.. function:: cvxopt.div(x, y)
+.. function:: kvxopt.div(x, y)
 
     Returns the elementwise division of ``x`` by ``y``.  ``x`` is a dense 
     or sparse matrix, or a scalar (Python number of 1 by 1 dense matrix).
     ``y`` is a dense matrix or a scalar.
 
-.. function:: cvxopt.max(x0[, x1[, x2 ...]])
+.. function:: kvxopt.max(x0[, x1[, x2 ...]])
 
     When called with a single matrix argument, returns the maximum of the 
     elements of the matrix (including the zero entries, if the matrix is 
@@ -1048,22 +1048,22 @@ The following functions can be imported from CVXOPT.
     The result is a number if all its arguments are numbers.  The result 
     is a dense matrix if at least one of the arguments is a dense matrix.
     
-    :func:`max <cvxopt.max>` can also be called with an iterable 
+    :func:`max <kvxopt.max>` can also be called with an iterable 
     (list, tuple, range object, or generator) as its single argument, 
     if the iterable generates a list of dense or sparse matrices or 
     scalars.  
 
-    >>> from cvxopt import matrix, spmatrix, max
+    >>> from kvxopt import matrix, spmatrix, max
     >>> A = spmatrix([2, -3], [0, 1], [0, 1])
     >>> print(max(A, -A, 1))
     [ 2.00e+00  1.00e+00]
     [ 1.00e+00  3.00e+00]
     
     It is important to note the difference between this 
-    :func:`max <cvxopt.max>`
+    :func:`max <kvxopt.max>`
     and the built-in :func:`max`, explained in the previous section.
     
-    >>> from cvxopt import spmatrix
+    >>> from kvxopt import spmatrix
     >>> A = spmatrix([-1.0, -2.0], [0,1], [0,1])
     >>> max(A)          # built-in max of a sparse matrix takes maximum over nonzero elements
     -1.0
@@ -1071,15 +1071,15 @@ The following functions can be imported from CVXOPT.
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
     NotImplementedError: matrix comparison not implemented
-    >>> from cvxopt import max
-    >>> max(A)          # cvxopt.max takes maximum over all the  elements
+    >>> from kvxopt import max
+    >>> max(A)          # kvxopt.max takes maximum over all the  elements
     0.0
     >>> print(max(A, -1.5))
     [-1.00e+00  0.00e+00]
     [ 0.00e+00 -1.50e+00]
     
 
-.. function:: cvxopt.min(x0[, x1[, x2 ...]])
+.. function:: kvxopt.min(x0[, x1[, x2 ...]])
 
     When called with a single matrix argument, returns the minimum of the 
     elements of the matrix (including the zero entries, if the matrix is 
@@ -1092,7 +1092,7 @@ The following functions can be imported from CVXOPT.
     arguments are not all 1 by 1, then the scalar argument is interpreted 
     as a dense matrix with all its entries equal to the scalar.
     
-    :func:`min <cvxopt.min>` can also be called with an iterable 
+    :func:`min <kvxopt.min>` can also be called with an iterable 
     (list, tuple, range object, or generator) as its single argument, 
     if the iterable generates a list of dense or sparse matrices or 
     scalars.
@@ -1103,38 +1103,38 @@ The following functions can be imported from CVXOPT.
 Randomly Generated Matrices 
 ===========================
 
-The CVXOPT package provides two functions 
-:func:`normal <cvxopt.normal>` and 
-:func:`uniform <cvxopt.uniform>` for generating randomly distributed 
+The kvxopt package provides two functions 
+:func:`normal <kvxopt.normal>` and 
+:func:`uniform <kvxopt.uniform>` for generating randomly distributed 
 matrices.  
 The default installation relies on the pseudo-random number generators in 
 the Python standard library :mod:`random`.  Alternatively, the random 
 number generators in the 
 `GNU Scientific Library (GSL) <http://www.gnu.org/software/gsl>`_ 
-can be used, if this option is selected during the installation of CVXOPT.
+can be used, if this option is selected during the installation of kvxopt.
 The random matrix functions based on GSL are faster than the default 
 functions based on the :mod:`random` module.
 
-.. function:: cvxopt.normal(nrows[, ncols = 1[, mean = 0.0[, std = 1.0]]])
+.. function:: kvxopt.normal(nrows[, ncols = 1[, mean = 0.0[, std = 1.0]]])
 
     Returns a type :const:`'d'` dense matrix of size ``nrows``  by 
     ``ncols`` with elements chosen from a normal distribution 
     with mean ``mean`` and standard deviation ``std``.
 
-.. function:: cvxopt.uniform(nrows[, ncols = 1[, a = 0.0[, b = 1.0]]])
+.. function:: kvxopt.uniform(nrows[, ncols = 1[, a = 0.0[, b = 1.0]]])
 
     Returns a type :const:`'d'` dense matrix of size ``nrows`` by 
     ``ncols`` matrix with elements uniformly distributed between ``a`` and 
     ``b``.
 
-.. function:: cvxopt.setseed([value])
+.. function:: kvxopt.setseed([value])
 
     Sets the state of the random number generator.  ``value`` must be an 
     integer.  If ``value`` is absent or equal to zero, the value is taken 
     from the system clock.  If the Python random number generators are 
     used, this is equivalent to :samp:`random.seed(value)`.
 
-.. function:: cvxopt.getseed()
+.. function:: kvxopt.getseed()
 
     Returns the current state of the random number generator.  This 
     function is only available if the GSL random number generators are 

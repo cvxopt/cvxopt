@@ -37,7 +37,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pytest-cov coveralls wheel
+          pip install pytest pytest-cov coveralls wheel numpy
 
       - name: Install libraries
         shell: msys2 {0}

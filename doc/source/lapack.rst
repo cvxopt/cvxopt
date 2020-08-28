@@ -7,7 +7,7 @@
 The LAPACK Interface
 ********************
 
-The module :mod:`cvxopt.lapack` includes functions for solving dense sets 
+The module :mod:`kvxopt.lapack` includes functions for solving dense sets 
 of linear equations, for the corresponding matrix factorizations (LU, 
 Cholesky, :raw-html:`LDL<sup><small>T</small></sup>`),
 for solving least-squares and least-norm problems, for 
@@ -32,7 +32,7 @@ complete definitions are documented in the docstrings in the source code.
 General Linear Equations
 ========================
 
-.. function:: cvxopt.lapack.gesv(A, B[, ipiv = None])
+.. function:: kvxopt.lapack.gesv(A, B[, ipiv = None])
 
     Solves
     
@@ -56,7 +56,7 @@ General Linear Equations
     Raises an :exc:`ArithmeticError` if the matrix is singular.
 
 
-.. function:: cvxopt.lapack.getrf(A, ipiv)
+.. function:: kvxopt.lapack.getrf(A, ipiv)
 
     LU factorization of a general, possibly rectangular, real or
     complex matrix,  
@@ -75,7 +75,7 @@ General Linear Equations
     Raises an :exc:`ArithmeticError` if the matrix is not full rank.
 
 
-.. function:: cvxopt.lapack.getrs(A, ipiv, B[, trans = 'N'])
+.. function:: kvxopt.lapack.getrs(A, ipiv, B[, trans = 'N'])
 
     Solves a general set of linear equations
 
@@ -86,8 +86,8 @@ General Linear Equations
         A^HX & = B \quad (\mathrm{trans} = \mathrm{'C'}), 
     
     given the LU factorization computed by 
-    :func:`gesv <cvxopt.lapack.gesv>` or 
-    :func:`getrf <cvxopt.lapack.getrf>`.
+    :func:`gesv <kvxopt.lapack.gesv>` or 
+    :func:`getrf <kvxopt.lapack.getrf>`.
 
     On entry, ``A`` and ``ipiv`` must contain the factorization as computed
     by :func:`gesv` or :func:`getrf`.  On entry, ``B`` contains the 
@@ -95,13 +95,13 @@ General Linear Equations
     ``B`` must have the same type as ``A``.
 
 
-.. function:: cvxopt.lapack.getri(A, ipiv)
+.. function:: kvxopt.lapack.getri(A, ipiv)
 
     Computes the inverse of a matrix.  
 
     On entry, ``A`` and ``ipiv`` must contain the factorization as computed
-    by :func:`gesv <cvxopt.lapack.gesv>` or 
-    :func:`getrf <cvxopt.lapack.getrf>`.  On exit, ``A`` contains the 
+    by :func:`gesv <kvxopt.lapack.gesv>` or 
+    :func:`getrf <kvxopt.lapack.getrf>`.  On exit, ``A`` contains the 
     matrix inverse.
 
 
@@ -113,8 +113,8 @@ In the following example we compute
 
 for randomly generated problem data, factoring the coefficient matrix once.
 
->>> from cvxopt import matrix, normal
->>> from cvxopt.lapack import gesv, getrs
+>>> from kvxopt import matrix, normal
+>>> from kvxopt.lapack import gesv, getrs
 >>> n = 10
 >>> A = normal(n,n)
 >>> b = normal(n)
@@ -128,7 +128,7 @@ for randomly generated problem data, factoring the coefficient matrix once.
 
 Separate functions are provided for equations with band matrices.
 
-.. function:: cvxopt.lapack.gbsv(A, kl, B[, ipiv = None])
+.. function:: kvxopt.lapack.gbsv(A, kl, B[, ipiv = None])
 
     Solves
 
@@ -158,7 +158,7 @@ Separate functions are provided for equations with band matrices.
     Raises an :exc:`ArithmeticError` if the matrix is singular.
 
 
-.. function:: cvxopt.lapack.gbtrf(A, m, kl, ipiv)
+.. function:: kvxopt.lapack.gbtrf(A, m, kl, ipiv)
 
     LU factorization of a general :math:`m` by :math:`n` real or complex 
     band matrix with :math:`k_l` subdiagonals.
@@ -174,7 +174,7 @@ Separate functions are provided for equations with band matrices.
     Raises an :exc:`ArithmeticError` if the matrix is not full rank.
 
 
-.. function:: cvxopt.lapack.gbtrs({A, kl, ipiv, B[, trans = 'N'])
+.. function:: kvxopt.lapack.gbtrs({A, kl, ipiv, B[, trans = 'N'])
 
     Solves a set of linear equations 
    
@@ -186,8 +186,8 @@ Separate functions are provided for equations with band matrices.
 
     with :math:`A` a general band matrix with :math:`k_l` subdiagonals, 
     given the LU factorization computed by 
-    :func:`gbsv <cvxopt.lapack.gbsv>` or 
-    :func:`gbtrf <cvxopt.lapack.gbtrf>`.
+    :func:`gbsv <kvxopt.lapack.gbsv>` or 
+    :func:`gbtrf <kvxopt.lapack.gbtrf>`.
 
     On entry, ``A`` and ``ipiv`` must contain the factorization as computed
     by :func:`gbsv` or :func:`gbtrf`.  On entry, ``B`` contains the 
@@ -207,8 +207,8 @@ As an example, we solve a linear equation with
         \end{array}\right], \qquad  
     B = \left[\begin{array}{c} 1 \\ 1 \\ 1 \\ 1 \end{array}\right].
 
->>> from cvxopt import matrix
->>> from cvxopt.lapack import gbsv, gbtrf, gbtrs
+>>> from kvxopt import matrix
+>>> from kvxopt.lapack import gbsv, gbtrf, gbtrs
 >>> n, kl, ku = 4, 2, 1
 >>> A = matrix([[0., 1., 3., 6.], [2., 4., 7., 10.], [5., 8., 11., 0.], [9., 12., 0., 0.]])
 >>> x = matrix(1.0, (n,1))
@@ -220,7 +220,7 @@ As an example, we solve a linear equation with
 [-1.07e-01]
 
 The code below illustrates how one can reuse the factorization returned
-by :func:`gbsv <cvxopt.lapack.gbsv>`. 
+by :func:`gbsv <kvxopt.lapack.gbsv>`. 
 
 >>> Ac = matrix(0.0, (2*kl+ku+1,n))
 >>> Ac[kl:,:] = A
@@ -240,7 +240,7 @@ by :func:`gbsv <cvxopt.lapack.gbsv>`.
 [ 1.43e-01]
 [-2.38e-02]
 
-An alternative method uses :func:`gbtrf <cvxopt.lapack.gbtrf>` for the 
+An alternative method uses :func:`gbtrf <kvxopt.lapack.gbtrf>` for the 
 factorization.
 
 >>> Ac[kl:,:] = A
@@ -264,7 +264,7 @@ factorization.
 The following functions can be used for tridiagonal matrices. They use a 
 simpler matrix format, with the diagonals stored in three separate vectors.
 
-.. function:: cvxopt.lapack.gtsv(dl, d, du, B))
+.. function:: kvxopt.lapack.gtsv(dl, d, du, B))
 
     Solves
 
@@ -286,7 +286,7 @@ simpler matrix format, with the diagonals stored in three separate vectors.
     Raises an :exc:`ArithmeticError` if the matrix is singular.
 
 
-.. function:: cvxopt.lapack.gttrf(dl, d, du, du2, ipiv)
+.. function:: kvxopt.lapack.gttrf(dl, d, du, du2, ipiv)
 
     LU factorization of an :math:`n` by :math:`n` tridiagonal matrix.
 
@@ -301,7 +301,7 @@ simpler matrix format, with the diagonals stored in three separate vectors.
     Raises an :exc:`ArithmeticError` if the matrix is singular.
 
 
-.. function:: cvxopt.lapack.gttrs(dl, d, du, du2, ipiv, B[, trans = 'N'])
+.. function:: kvxopt.lapack.gttrs(dl, d, du, du2, ipiv, B[, trans = 'N'])
 
     Solves a set of linear equations 
 
@@ -315,7 +315,7 @@ simpler matrix format, with the diagonals stored in three separate vectors.
 
     The arguments ``dl``, ``d``, ``du``, ``du2``, and ``ipiv`` contain 
     the details of the LU factorization as returned by 
-    :func:`gttrf <cvxopt.lapack.gttrf>`.
+    :func:`gttrf <kvxopt.lapack.gttrf>`.
     On entry, ``B`` contains the right-hand side :math:`B`; on exit it 
     contains the solution :math:`X`.  ``B`` must have the same type as 
     the other arguments.
@@ -324,7 +324,7 @@ simpler matrix format, with the diagonals stored in three separate vectors.
 Positive Definite Linear Equations
 ==================================
 
-.. function:: cvxopt.lapack.posv(A, B[, uplo = 'L'])
+.. function:: kvxopt.lapack.posv(A, B[, uplo = 'L'])
 
     Solves
 
@@ -343,7 +343,7 @@ Positive Definite Linear Equations
     definite.
 
 
-.. function:: cvxopt.lapack.potrf(A[, uplo = 'L'])
+.. function:: kvxopt.lapack.potrf(A[, uplo = 'L'])
 
     Cholesky factorization 
 
@@ -363,7 +363,7 @@ Positive Definite Linear Equations
     definite.
 
 
-.. function:: cvxopt.lapack.potrs(A, B[, uplo = 'L'])
+.. function:: kvxopt.lapack.potrs(A, B[, uplo = 'L'])
 
     Solves a set of linear equations
 
@@ -373,25 +373,25 @@ Positive Definite Linear Equations
 
     with a positive definite real symmetric or complex Hermitian matrix,
     given the Cholesky factorization computed by 
-    :func:`posv <cvxopt.lapack.posv>` or 
-    :func:`potrf <cvxopt.lapack.potrf>`.
+    :func:`posv <kvxopt.lapack.posv>` or 
+    :func:`potrf <kvxopt.lapack.potrf>`.
 
     On entry, ``A`` contains the triangular factor, as computed by 
     :func:`posv` or :func:`potrf`.  On exit, ``B`` is replaced by the 
     solution.  ``B`` must have the same type as ``A``.
 
 
-.. function:: cvxopt.lapack.potri(A[, uplo = 'L']) 
+.. function:: kvxopt.lapack.potri(A[, uplo = 'L']) 
 
     Computes the inverse of a positive definite matrix.
 
     On entry, ``A`` contains the Cholesky factorization computed by 
-    :func:`potrf <cvxopt.lapack.potri>` or 
-    :func:`posv <cvxopt.lapack.posv>`.  On exit, it contains the matrix 
+    :func:`potrf <kvxopt.lapack.potri>` or 
+    :func:`posv <kvxopt.lapack.posv>`.  On exit, it contains the matrix 
     inverse.
 
 
-As an example, we use :func:`posv <cvxopt.lapack.posv>` to solve the 
+As an example, we use :func:`posv <kvxopt.lapack.posv>` to solve the 
 linear system
 
 .. math:: 
@@ -407,9 +407,9 @@ linear system
 
 by block-elimination.  We first pick a random problem.
 
->>> from cvxopt import matrix, div, normal, uniform
->>> from cvxopt.blas import syrk, gemv
->>> from cvxopt.lapack import posv
+>>> from kvxopt import matrix, div, normal, uniform
+>>> from kvxopt.blas import syrk, gemv
+>>> from kvxopt.lapack import posv
 >>> m, n = 100, 50  
 >>> A = normal(m,n)
 >>> b1, b2 = normal(m), normal(n)
@@ -440,7 +440,7 @@ We then solve the equations
 There are separate routines for equations with positive definite band 
 matrices.
 
-.. function:: cvxopt.lapack.pbsv(A, B[, uplo='L'])
+.. function:: kvxopt.lapack.pbsv(A, B[, uplo='L'])
 
     Solves
 
@@ -462,7 +462,7 @@ matrices.
     definite.
 
 
-.. function:: cvxopt.lapack.pbtrf(A[, uplo = 'L'])
+.. function:: kvxopt.lapack.pbtrf(A[, uplo = 'L'])
 
     Cholesky factorization 
 
@@ -482,7 +482,7 @@ matrices.
     definite.
 
 
-.. function:: cvxopt.lapack.pbtrs(A, B[, uplo = 'L'])
+.. function:: kvxopt.lapack.pbtrs(A, B[, uplo = 'L'])
 
     Solves a set of linear equations
 
@@ -492,8 +492,8 @@ matrices.
 
     with a positive definite real symmetric or complex Hermitian band 
     matrix, given the Cholesky factorization computed by 
-    :func:`pbsv <cvxopt.lapack.pbsv>` or 
-    :func:`pbtrf <cvxopt.lapack.pbtrf>`.  
+    :func:`pbsv <kvxopt.lapack.pbsv>` or 
+    :func:`pbtrf <kvxopt.lapack.pbtrf>`.  
 
     On entry, ``A`` contains the triangular factor, as computed by
     :func:`pbsv` or :func:`pbtrf`.  On exit, ``B`` is replaced by the 
@@ -502,7 +502,7 @@ matrices.
 
 The following functions are useful for tridiagonal systems.
 
-.. function:: cvxopt.lapack.ptsv(d, e, B)
+.. function:: kvxopt.lapack.ptsv(d, e, B)
 
     Solves
     
@@ -527,7 +527,7 @@ The following functions are useful for tridiagonal systems.
     Raises an :exc:`ArithmeticError` if the matrix is singular.
 
 
-.. function:: cvxopt.lapack.pttrf(d, e)
+.. function:: kvxopt.lapack.pttrf(d, e)
 
     :raw-html:`LDL<sup><small>T</small></sup>`
     or
@@ -545,7 +545,7 @@ The following functions are useful for tridiagonal systems.
     Raises an :exc:`ArithmeticError` if the matrix is singular.
 
 
-.. function:: cvxopt.lapack.pttrs(d, e, B[, uplo = 'L'])
+.. function:: kvxopt.lapack.pttrs(d, e, B[, uplo = 'L'])
 
     Solves a set of linear equations 
 
@@ -572,7 +572,7 @@ The following functions are useful for tridiagonal systems.
 Symmetric and Hermitian Linear Equations
 ========================================
 
-.. function:: cvxopt.lapack.sysv(A, B[, ipiv = None, uplo = 'L'])
+.. function:: kvxopt.lapack.sysv(A, B[, ipiv = None, uplo = 'L'])
 
     Solves
 
@@ -594,7 +594,7 @@ Symmetric and Hermitian Linear Equations
     Raises an :exc:`ArithmeticError` if the matrix is singular.
 
 
-.. function:: cvxopt.lapack.sytrf(A, ipiv[, uplo = 'L'])
+.. function:: kvxopt.lapack.sytrf(A, ipiv[, uplo = 'L'])
 
     :raw-html:`LDL<sup><small>T</small></sup>`
     factorization 
@@ -611,7 +611,7 @@ Symmetric and Hermitian Linear Equations
     Raises an :exc:`ArithmeticError` if the matrix is singular.
 
 
-.. function:: cvxopt.lapack.sytrs(A, ipiv, B[, uplo = 'L'])
+.. function:: kvxopt.lapack.sytrs(A, ipiv, B[, uplo = 'L'])
 
     Solves 
 
@@ -622,23 +622,23 @@ Symmetric and Hermitian Linear Equations
     given the 
     :raw-html:`LDL<sup><small>T</small></sup>`
     factorization computed by 
-    :func:`sytrf <cvxopt.lapack.sytrf>` or 
-    :func:`sysv <cvxopt.lapack.sysv>`. ``B`` must have the same type as 
+    :func:`sytrf <kvxopt.lapack.sytrf>` or 
+    :func:`sysv <kvxopt.lapack.sysv>`. ``B`` must have the same type as 
     ``A``.
 
 
-.. function:: cvxopt.lapack.sytri(A, ipiv[, uplo = 'L'])
+.. function:: kvxopt.lapack.sytri(A, ipiv[, uplo = 'L'])
 
     Computes the inverse of a real or complex symmetric matrix.
 
     On entry, ``A`` and ``ipiv`` contain the 
     :raw-html:`LDL<sup><small>T</small></sup>`
-    factorization computed by :func:`sytrf <cvxopt.lapack.sytrf>` or 
-    :func:`sysv <cvxopt.lapack.sysv>`.  
+    factorization computed by :func:`sytrf <kvxopt.lapack.sytrf>` or 
+    :func:`sysv <kvxopt.lapack.sysv>`.  
     On exit, ``A`` contains the inverse.
 
 
-.. function:: cvxopt.lapack.hesv(A, B[, ipiv = None, uplo = 'L'])
+.. function:: kvxopt.lapack.hesv(A, B[, ipiv = None, uplo = 'L'])
 
     Solves
 
@@ -660,7 +660,7 @@ Symmetric and Hermitian Linear Equations
     Raises an :exc:`ArithmeticError` if the matrix is singular.
 
 
-.. function:: cvxopt.lapack.hetrf(A, ipiv[, uplo = 'L'])
+.. function:: kvxopt.lapack.hetrf(A, ipiv[, uplo = 'L'])
 
     :raw-html:`LDL<sup><small>H</small></sup>`
     factorization 
@@ -676,7 +676,7 @@ Symmetric and Hermitian Linear Equations
     Raises an :exc:`ArithmeticError` if the matrix is singular.
 
 
-.. function:: cvxopt.lapack.hetrs(A, ipiv, B[, uplo = 'L'])
+.. function:: kvxopt.lapack.hetrs(A, ipiv, B[, uplo = 'L'])
 
     Solves 
 
@@ -687,25 +687,25 @@ Symmetric and Hermitian Linear Equations
     given the 
     :raw-html:`LDL<sup><small>H</small></sup>`
     factorization computed by 
-    :func:`hetrf <cvxopt.lapack.hetrf>` or 
-    :func:`hesv <cvxopt.lapack.hesv>`.
+    :func:`hetrf <kvxopt.lapack.hetrf>` or 
+    :func:`hesv <kvxopt.lapack.hesv>`.
 
 
-.. function:: cvxopt.lapack.hetri(A, ipiv[, uplo = 'L'])
+.. function:: kvxopt.lapack.hetri(A, ipiv[, uplo = 'L'])
 
     Computes the inverse of a real symmetric or complex Hermitian  matrix.
 
     On entry, ``A`` and ``ipiv`` contain the 
     :raw-html:`LDL<sup><small>H</small></sup>`
     factorization computed 
-    by :func:`hetrf <cvxopt.lapack.hetrf>` or 
-    :func:`hesv <cvxopt.lapack.hesv>`.  On exit, ``A`` contains the 
+    by :func:`hetrf <kvxopt.lapack.hetrf>` or 
+    :func:`hesv <kvxopt.lapack.hesv>`.  On exit, ``A`` contains the 
     inverse.
 
 
 As an example we solve the KKT system :eq:`e-kkt-example`.
 
->>> from cvxopt.lapack import sysv
+>>> from kvxopt.lapack import sysv
 >>> K = matrix(0.0, (m+n,m+n))
 >>> K[: (m+n)*m : m+n+1] = -d**2
 >>> K[:m, m:] = A
@@ -717,7 +717,7 @@ As an example we solve the KKT system :eq:`e-kkt-example`.
 Triangular Linear Equations
 ===========================
 
-.. function:: cvxopt.lapack.trtrs(A, B[, uplo = 'L', trans = 'N', diag = 'N'])
+.. function:: kvxopt.lapack.trtrs(A, B[, uplo = 'L', trans = 'N', diag = 'N'])
 
     Solves a triangular set of equations
 
@@ -732,18 +732,18 @@ Triangular Linear Equations
 
     ``A`` and ``B`` are matrices with the same type (:const:`'d'` or 
     :const:`'z'`).  :func:`trtrs` is similar to 
-    :func:`blas.trsm <cvxopt.blas.trsm>`, except 
+    :func:`blas.trsm <kvxopt.blas.trsm>`, except 
     that it raises an :exc:`ArithmeticError` if a diagonal element of ``A``
     is zero (whereas :func:`blas.trsm` returns :const:`inf` values).
 
 
-.. function:: cvxopt.lapack.trtri(A[, uplo = 'L', diag = 'N'])
+.. function:: kvxopt.lapack.trtri(A[, uplo = 'L', diag = 'N'])
 
     Computes the inverse of a real or complex triangular matrix :math:`A`.  
     On exit, ``A`` contains the inverse.
 
 
-.. function:: cvxopt.lapack.tbtrs(A, B[, uplo = 'L', trans = 'T', diag = 'N'])
+.. function:: kvxopt.lapack.tbtrs(A, B[, uplo = 'L', trans = 'T', diag = 'N'])
 
     Solves a triangular set of equations
 
@@ -765,7 +765,7 @@ Triangular Linear Equations
 Least-Squares and Least-Norm Problems
 =====================================
 
-.. function:: cvxopt.lapack.gels(A, B[, trans = 'N'])
+.. function:: kvxopt.lapack.gels(A, B[, trans = 'N'])
 
     Solves least-squares and least-norm problems with a full rank :math:`m`
     by :math:`n` matrix :math:`A`.
@@ -841,7 +841,7 @@ Least-Squares and Least-Norm Problems
 
 The following functions compute QR and LQ factorizations. 
 
-.. function:: cvxopt.lapack.geqrf(A, tau)
+.. function:: kvxopt.lapack.geqrf(A, tau)
 
     QR factorization of a real or complex matrix ``A``:
 
@@ -862,7 +862,7 @@ The following functions compute QR and LQ factorizations.
     the first min{:math:`m`, :math:`n`} columns of ``A`` and in ``tau``.
 
 
-.. function:: cvxopt.lapack.gelqf(A, tau)
+.. function:: kvxopt.lapack.gelqf(A, tau)
 
     LQ factorization of a real or complex matrix ``A``:
   
@@ -883,7 +883,7 @@ The following functions compute QR and LQ factorizations.
     first min{:math:`m`, :math:`n`} rows of ``A`` and in ``tau``.
 
 
-.. function:: cvxopt.lapack.geqp3(A, jpvt, tau)
+.. function:: kvxopt.lapack.geqp3(A, jpvt, tau)
 
     QR factorization with column pivoting of a real or complex matrix 
     :math:`A`:
@@ -914,12 +914,12 @@ The following functions compute QR and LQ factorizations.
 
 In most applications, the matrix :math:`Q` is not needed explicitly, and
 it is sufficient to be able to make products with :math:`Q` or its 
-transpose.  The functions :func:`unmqr <cvxopt.lapack.unmqr>` and 
-:func:`ormqr <cvxopt.lapack.ormqr>` multiply a matrix
+transpose.  The functions :func:`unmqr <kvxopt.lapack.unmqr>` and 
+:func:`ormqr <kvxopt.lapack.ormqr>` multiply a matrix
 with the orthogonal matrix computed by 
-:func:`geqrf <cvxopt.lapack.geqrf>`.
+:func:`geqrf <kvxopt.lapack.geqrf>`.
 
-.. function:: cvxopt.lapack.unmqr(A, tau, C[, side = 'L', trans = 'N'])
+.. function:: kvxopt.lapack.unmqr(A, tau, C[, side = 'L', trans = 'N'])
 
     Product with a real orthogonal or complex unitary matrix:
 
@@ -946,26 +946,26 @@ with the orthogonal matrix computed by
     :math:`m` and orthogonal or unitary.  :math:`Q` is stored in the first
     min{:math:`m`, :math:`n`} columns of ``A`` and in ``tau`` as a 
     product of min{:math:`m`, :math:`n`} elementary reflectors, as 
-    computed by :func:`geqrf <cvxopt.lapack.geqrf>`.  
+    computed by :func:`geqrf <kvxopt.lapack.geqrf>`.  
     The matrices ``A``, ``tau``, and ``C`` 
     must have the same type.  ``trans`` = :const:`'T'` is only allowed if 
     the typecode is :const:`'d'`.
 
 
-.. function:: cvxopt.lapack.ormqr(A, tau, C[, side = 'L', trans = 'N'])
+.. function:: kvxopt.lapack.ormqr(A, tau, C[, side = 'L', trans = 'N'])
 
-    Identical to :func:`unmqr <cvxopt.lapack.unmqr>` but works only for 
+    Identical to :func:`unmqr <kvxopt.lapack.unmqr>` but works only for 
     real matrices, and the 
     possible values of ``trans`` are :const:`'N'` and :const:`'T'`.
 
 
 As an example, we solve a least-squares problem by a direct call to 
-:func:`gels <cvxopt.lapack.gels>`, and by separate calls to 
-:func:`geqrf <cvxopt.lapack.geqrf>`, 
-:func:`ormqr <cvxopt.lapack.ormqr>`, and 
-:func:`trtrs <cvxopt.lapack.trtrs>`.
+:func:`gels <kvxopt.lapack.gels>`, and by separate calls to 
+:func:`geqrf <kvxopt.lapack.geqrf>`, 
+:func:`ormqr <kvxopt.lapack.ormqr>`, and 
+:func:`trtrs <kvxopt.lapack.trtrs>`.
 
->>> from cvxopt import blas, lapack, matrix, normal
+>>> from kvxopt import blas, lapack, matrix, normal
 >>> m, n = 10, 5
 >>> A, b = normal(m,n), normal(m,1)
 >>> x1 = +b
@@ -980,9 +980,9 @@ As an example, we solve a least-squares problem by a direct call to
 
 
 The next two functions make products with the orthogonal matrix computed 
-by :func:`gelqf <cvxopt.lapack.gelqf>`.
+by :func:`gelqf <kvxopt.lapack.gelqf>`.
 
-.. function:: cvxopt.lapack.unmlq(A, tau, C[, side = 'L', trans = 'N'])
+.. function:: kvxopt.lapack.unmlq(A, tau, C[, side = 'L', trans = 'N'])
 
     Product with a real orthogonal or complex unitary matrix:
 
@@ -1008,26 +1008,26 @@ by :func:`gelqf <cvxopt.lapack.gelqf>`.
     :math:`n` and orthogonal or unitary.  :math:`Q` is stored in the first
     min{:math:`m`, :math:`n`} rows of ``A`` and in ``tau`` as a product of
     min{:math:`m`, :math:`n`} elementary reflectors, as computed by  
-    :func:`gelqf <cvxopt.lapack.gelqf>`.  
+    :func:`gelqf <kvxopt.lapack.gelqf>`.  
     The matrices ``A``, ``tau``, and ``C`` must have the 
     same type.  ``trans`` = :const:`'T'` is only allowed if the typecode 
     is :const:`'d'`.
 
 
-.. function:: cvxopt.lapack.ormlq(A, tau, C[, side = 'L', trans = 'N'])
+.. function:: kvxopt.lapack.ormlq(A, tau, C[, side = 'L', trans = 'N'])
 
-    Identical to :func:`unmlq <cvxopt.lapack.unmlq>` but works only for 
+    Identical to :func:`unmlq <kvxopt.lapack.unmlq>` but works only for 
     real matrices, and the 
     possible values of ``trans`` or :const:`'N'` and :const:`'T'`.
 
 
 As an example, we solve a least-norm problem by a direct call to 
-:func:`gels <cvxopt.lapack.gels>`, and by separate calls to 
-:func:`gelqf <cvxopt.lapack.gelqf>`, 
-:func:`ormlq <cvxopt.lapack.ormlq>`, 
-and :func:`trtrs <cvxopt.lapack.trtrs>`.
+:func:`gels <kvxopt.lapack.gels>`, and by separate calls to 
+:func:`gelqf <kvxopt.lapack.gelqf>`, 
+:func:`ormlq <kvxopt.lapack.ormlq>`, 
+and :func:`trtrs <kvxopt.lapack.trtrs>`.
 
->>> from cvxopt import blas, lapack, matrix, normal
+>>> from kvxopt import blas, lapack, matrix, normal
 >>> m, n = 5, 10
 >>> A, b = normal(m,n), normal(m,1)
 >>> x1 = matrix(0.0, (n,1))
@@ -1044,40 +1044,40 @@ and :func:`trtrs <cvxopt.lapack.trtrs>`.
 
 
 Finally, if the matrix :math:`Q` is needed explicitly, it can be generated
-from the output of :func:`geqrf <cvxopt.lapack.geqrf>` and 
-:func:`gelqf <cvxopt.lapack.gelqf>` using one of the following functions.
+from the output of :func:`geqrf <kvxopt.lapack.geqrf>` and 
+:func:`gelqf <kvxopt.lapack.gelqf>` using one of the following functions.
 
-.. function:: cvxopt.lapack.ungqr(A, tau)
+.. function:: kvxopt.lapack.ungqr(A, tau)
 
     If ``A`` has size :math:`m` by :math:`n`, and ``tau`` has length 
     :math:`k`, then, on entry, the first ``k`` columns of the matrix ``A`` 
     and the entries of ``tau`` contai an unitary or orthogonal matrix
     :math:`Q` of order :math:`m`, as computed by 
-    :func:`geqrf <cvxopt.lapack.geqrf>`.  On exit, 
+    :func:`geqrf <kvxopt.lapack.geqrf>`.  On exit, 
     the first min{:math:`m`, :math:`n`} columns of :math:`Q` are contained
     in the leading columns of ``A``.
 
 
-.. function:: cvxopt.lapack.orgqr(A, tau)
+.. function:: kvxopt.lapack.orgqr(A, tau)
 
-    Identical to :func:`ungqr <cvxopt.lapack.ungqr>` but works only for 
+    Identical to :func:`ungqr <kvxopt.lapack.ungqr>` but works only for 
     real matrices.
 
 
-.. function:: cvxopt.lapack.unglq(A, tau)
+.. function:: kvxopt.lapack.unglq(A, tau)
 
     If ``A`` has size :math:`m` by :math:`n`, and ``tau`` has length 
     :math:`k`, then, on entry, the first ``k`` rows of the matrix ``A`` 
     and the entries of ``tau`` contain a unitary or orthogonal matrix
     :math:`Q` of order :math:`n`, as computed by 
-    :func:`gelqf <cvxopt.lapack.gelqf>`.  
+    :func:`gelqf <kvxopt.lapack.gelqf>`.  
     On exit, the first min{:math:`m`, :math:`n`} rows of :math:`Q` are 
     contained in the leading rows of ``A``.
 
 
-.. function:: cvxopt.lapack.orglq(A, tau)
+.. function:: kvxopt.lapack.orglq(A, tau)
 
-    Identical to :func:`unglq <cvxopt.lapack.unglq>` but works only for 
+    Identical to :func:`unglq <kvxopt.lapack.unglq>` but works only for 
     real matrices.
 
 
@@ -1091,7 +1091,7 @@ We illustrate this with the QR factorization of the matrix
         Q_1 & Q_2 \end{array}\right]
         \left[\begin{array}{c} R \\ 0 \end{array}\right]. 
 
->>> from cvxopt import matrix, lapack
+>>> from kvxopt import matrix, lapack
 >>> A = matrix([ [6., 6., 19., 6.], [-5., 3., -2., -10.], [4., -4., 7., -5] ])
 >>> m, n = A.size
 >>> tau = matrix(0.0, (n,1))
@@ -1157,7 +1157,7 @@ eigenvectors of a real symmetric matrix :math:`A`:
     \newcommand{\diag}{\mathop{\bf diag}}
     A = V\diag(\lambda)V^T,\qquad  V^TV = I.
 
-.. function:: cvxopt.lapack.syev(A, W[, jobz = 'N', uplo = 'L'])
+.. function:: kvxopt.lapack.syev(A, W[, jobz = 'N', uplo = 'L'])
 
     Eigenvalue decomposition of a real symmetric matrix of order :math:`n`.
 
@@ -1170,14 +1170,14 @@ eigenvectors of a real symmetric matrix :math:`A`:
     Raises an :exc:`ArithmeticError` if the eigenvalue decomposition fails.
 
 
-.. function:: cvxopt.lapack.syevd(A, W[, jobz = 'N', uplo = 'L'])
+.. function:: kvxopt.lapack.syevd(A, W[, jobz = 'N', uplo = 'L'])
 
-    This is an alternative to :func:`syev <cvxopt.lapack.syev>`, based 
+    This is an alternative to :func:`syev <kvxopt.lapack.syev>`, based 
     on a different
     algorithm.  It is faster on large problems, but also uses more memory.
 
 
-.. function:: cvxopt.lapack.syevx(A, W[, jobz = 'N', range = 'A', uplo = 'L', vl = 0.0, vu = 0.0, il = 1, iu = 1, Z = None])
+.. function:: kvxopt.lapack.syevx(A, W[, jobz = 'N', range = 'A', uplo = 'L', vl = 0.0, vu = 0.0, il = 1, iu = 1, Z = None])
 
     Computes selected eigenvalues and eigenvectors of a real symmetric 
     matrix of order :math:`n`.
@@ -1203,9 +1203,9 @@ eigenvectors of a real symmetric matrix :math:`A`:
     :func:`syevx` returns the number of computed eigenvalues.
 
 
-.. function:: cvxopt.lapack.syevr(A, W[, jobz = 'N', range = 'A', uplo = 'L', vl = 0.0, vu = 0.0, il = 1, iu = n, Z =  None])
+.. function:: kvxopt.lapack.syevr(A, W[, jobz = 'N', range = 'A', uplo = 'L', vl = 0.0, vu = 0.0, il = 1, iu = n, Z =  None])
 
-    This is an alternative to :func:`syevx <cvxopt.lapack.syevr>`.  
+    This is an alternative to :func:`syevx <kvxopt.lapack.syevr>`.  
     :func:`syevr` is the most 
     recent LAPACK routine for symmetric eigenvalue problems, and expected 
     to supersede the three other routines in future releases.
@@ -1222,34 +1222,34 @@ for complex Hermitian matrices:
 For real symmetric matrices they are identical to the corresponding
 :func:`syev*` routines.
 
-.. function:: cvxopt.lapack.heev(A, W[, jobz = 'N', uplo = 'L'])
+.. function:: kvxopt.lapack.heev(A, W[, jobz = 'N', uplo = 'L'])
 
     Eigenvalue decomposition of a real symmetric or complex Hermitian
     matrix of order :math:`n`.
 
     The calling sequence is identical to 
-    :func:`syev <cvxopt.lapack.syev>`,
+    :func:`syev <kvxopt.lapack.syev>`,
     except that ``A`` can be real or complex.
 
 
-.. function:: cvxopt.lapack.heevd(A, W[, jobz = 'N'[, uplo = 'L']])
+.. function:: kvxopt.lapack.heevd(A, W[, jobz = 'N'[, uplo = 'L']])
 
-    This is an alternative to :func:`heev <cvxopt.lapack.heevd>`. 
+    This is an alternative to :func:`heev <kvxopt.lapack.heevd>`. 
 
 
-.. function:: cvxopt.lapack.heevx(A, W[, jobz = 'N', range = 'A', uplo = 'L', vl = 0.0, vu = 0.0, il = 1, iu = n, Z = None])
+.. function:: kvxopt.lapack.heevx(A, W[, jobz = 'N', range = 'A', uplo = 'L', vl = 0.0, vu = 0.0, il = 1, iu = n, Z = None])
 
     Computes selected eigenvalues and eigenvectors of a real symmetric 
     or complex Hermitian matrix.
 
     The calling sequence is identical to 
-    :func:`syevx <cvxopt.lapack.syevx>`, except that ``A`` 
+    :func:`syevx <kvxopt.lapack.syevx>`, except that ``A`` 
     can be real or complex.  ``Z`` must have the same type as ``A``.
 
 
-.. function:: cvxopt.lapack.heevr(A, W[, jobz = 'N', range = 'A', uplo = 'L', vl = 0.0, vu = 0.0, il = 1, iu = n, Z = None])
+.. function:: kvxopt.lapack.heevr(A, W[, jobz = 'N', range = 'A', uplo = 'L', vl = 0.0, vu = 0.0, il = 1, iu = n, Z = None])
 
-    This is an alternative to :func:`heevx <cvxopt.lapack.heevx>`. 
+    This is an alternative to :func:`heevx <kvxopt.lapack.heevx>`. 
 
 
 Generalized Symmetric Definite Eigenproblems
@@ -1276,7 +1276,7 @@ as follows:
     Z^H BZ = I \quad \mbox{(types 1 and 2)}, \qquad 
     Z^H B^{-1}Z = I \quad \mbox{(type 3)}.
 
-.. function:: cvxopt.lapack.sygv(A, B, W[, itype = 1, jobz = 'N', uplo = 'L'])
+.. function:: kvxopt.lapack.sygv(A, B, W[, itype = 1, jobz = 'N', uplo = 'L'])
 
     Solves the generalized eigenproblem :eq:`e-gevd` for real symmetric 
     matrices of order :math:`n`, stored in real matrices ``A`` and ``B``.
@@ -1289,11 +1289,11 @@ as follows:
     contents of ``A`` are destroyed.
 
 
-.. function:: cvxopt.lapack.hegv(A, B, W[, itype = 1, jobz = 'N', uplo = 'L'])
+.. function:: kvxopt.lapack.hegv(A, B, W[, itype = 1, jobz = 'N', uplo = 'L'])
 
     Generalized eigenvalue problem :eq:`e-gevd` of real symmetric or 
     complex Hermitian matrix of order :math:`n`.  The calling sequence is 
-    identical to :func:`sygv <cvxopt.lapack.sygv>`, except that 
+    identical to :func:`sygv <kvxopt.lapack.sygv>`, except that 
     ``A`` and ``B`` can be real or complex.
 
 
@@ -1301,7 +1301,7 @@ as follows:
 Singular Value Decomposition
 ============================
 
-.. function:: cvxopt.lapack.gesvd(A, S[, jobu = 'N', jobvt = 'N', U = None, Vt = None])
+.. function:: kvxopt.lapack.gesvd(A, S[, jobu = 'N', jobvt = 'N', U = None, Vt = None])
 
     Singular value decomposition 
     
@@ -1345,11 +1345,11 @@ Singular Value Decomposition
     On exit, the contents of ``A`` are destroyed.
 
 
-.. function:: cvxopt.lapack.gesdd(A, S[, jobz = 'N', U = None, Vt = None])
+.. function:: kvxopt.lapack.gesdd(A, S[, jobz = 'N', U = None, Vt = None])
 
     Singular value decomposition of a real or complex :math:`m` by 
     :math:`n` matrix..  This function is based on a divide-and-conquer 
-    algorithm and is faster than :func:`gesvd <cvxopt.lapack.gesdd>`.
+    algorithm and is faster than :func:`gesvd <kvxopt.lapack.gesdd>`.
 
     ``S`` is a real matrix of length at least min{:math:`m`, :math:`n`}.
     On exit, its first min{:math:`m`, :math:`n`} elements are the 
@@ -1386,7 +1386,7 @@ Singular Value Decomposition
 Schur and Generalized Schur Factorization
 =========================================
 
-.. function:: cvxopt.lapack.gees(A[, w = None, V = None, select = None])
+.. function:: kvxopt.lapack.gees(A[, w = None, V = None, select = None])
 
     Computes the Schur factorization 
 
@@ -1479,7 +1479,7 @@ the complex plane ordered first, can be computed as follows.
 [ 1.27e+01+j3.43e-17]
 
 
-.. function:: cvxopt.lapack.gges(A, B[, a = None, b = None, Vl = None, Vr = None, select = None])
+.. function:: kvxopt.lapack.gges(A, B[, a = None, b = None, Vl = None, Vr = None, select = None])
      
     Computes the generalized Schur factorization 
 
@@ -1605,16 +1605,16 @@ set of linear equations
 (where :math:`A` has rows :math:`a_i^T`), and a suitable step size is 
 determined by a backtracking line search.
 
-We use the level-3 BLAS function :func:`blas.syrk <cvxopt.blas.syrk>` to 
+We use the level-3 BLAS function :func:`blas.syrk <kvxopt.blas.syrk>` to 
 form the Hessian 
-matrix and the LAPACK function :func:`posv <cvxopt.lapack.posv>` to 
+matrix and the LAPACK function :func:`posv <kvxopt.lapack.posv>` to 
 solve the Newton system.  
 The code can be further optimized by replacing the matrix-vector products 
-with the level-2 BLAS function :func:`blas.gemv <cvxopt.blas.gemv>`.
+with the level-2 BLAS function :func:`blas.gemv <kvxopt.blas.gemv>`.
 
 ::
 
-    from cvxopt import matrix, log, mul, div, blas, lapack 
+    from kvxopt import matrix, log, mul, div, blas, lapack 
     from math import sqrt
 
     def acent(A,b):

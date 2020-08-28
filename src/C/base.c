@@ -425,16 +425,13 @@ PyObject * base_norm(PyObject *self, PyObject *args, PyObject *kwargs) {
 
   if (Matrix_Check(A)) {
     lda = MAX(1, m);
-
-
     res = lange[id](&ord, &m, &n, MAT_BUF(A), &lda, work);
-
   }
   else{
+    res = 0;
     switch (ord) {
       case 'M':
         /* Norm-M = max(abs(A(i,j))) */
-        res = 0;
         if (SP_ID(A) == DOUBLE){
           for (i = 0; i < SP_NNZ(A); i++)
             res = MAX(res, fabs(SP_VALD(A)[i]));

@@ -4,17 +4,17 @@
 Modeling
 ********
 
-The module :mod:`cvxopt.modeling`  can be used to specify and solve 
+The module :mod:`kvxopt.modeling`  can be used to specify and solve 
 optimization problems  with convex piecewise-linear objective and 
 constraint functions.  Using this modeling tool, one can specify an 
 optimization problem by first defining the optimization variables (see the 
 section :ref:`s-variables`), and then specifying the objective and 
 constraint functions using linear operations (vector addition and 
 subtraction, matrix-vector multiplication, indexing and slicing)
-and nested evaluations of :func:`max <cvxopt.modeling.max>`, 
-:func:`min <cvxopt.modeling.min>`, 
-:func:`abs <cvxopt.modeling.abs>` and 
-:func:`sum <cvxopt.modeling.sum>` (see the section :ref:`s-functions`).
+and nested evaluations of :func:`max <kvxopt.modeling.max>`, 
+:func:`min <kvxopt.modeling.min>`, 
+:func:`abs <kvxopt.modeling.abs>` and 
+:func:`sum <kvxopt.modeling.sum>` (see the section :ref:`s-functions`).
 
 A more general Python convex modeling package is 
 `CVXPY <http://cvxpy.org>`_.
@@ -26,7 +26,7 @@ Variables
 
 Optimization variables are represented by :class:`variable` objects.
 
-.. function:: cvxopt.modeling.variable([size[, name]])
+.. function:: kvxopt.modeling.variable([size[, name]])
 
     A vector variable.  The first argument is the dimension of the vector
     (a positive integer with default value 1).  The second argument is a 
@@ -60,8 +60,8 @@ A :class:`variable` ``x`` has two attributes.
 
 
 
->>> from cvxopt import matrix
->>> from cvxopt.modeling import variable
+>>> from kvxopt import matrix
+>>> from kvxopt.modeling import variable
 >>> x = variable(3,'a')
 >>> len(x)
 3
@@ -160,13 +160,13 @@ Affine functions result from the following operations.
     as inner products of a constant vector with  a variable or affine
     function.
 
-    .. function:: cvxopt.modeling.sum(v)
+    .. function:: kvxopt.modeling.sum(v)
 
         The argument is an affine function or a variable.  The result is an
         affine function of length 1, with the sum of the components of the
         argument ``v``.  
 
-    .. function:: cvxopt.modeling.dot(u, v)
+    .. function:: kvxopt.modeling.dot(u, v)
 
         If ``v`` is a variable or affine function and ``u`` is a 
         :const:`'d'` matrix of size ``(len(v), 1)``, then 
@@ -174,7 +174,7 @@ Affine functions result from the following operations.
         ``u.trans() * v``.
 
         If ``u`` and ``v`` are dense matrices, then :func:`dot` 
-        is equivalent to the function :func:`blas.dot <cvxopt.blas.dot>`,
+        is equivalent to the function :func:`blas.dot <kvxopt.blas.dot>`,
         i.e., it returns the inner product of the two matrices.
 
 
@@ -194,7 +194,7 @@ length 2.  The functions ``f`` and ``g`` are given by
        \left[ \begin{array}{c} 13 \\ 17\end{array}\right].
 
 
->>> from cvxopt.modeling import variable
+>>> from kvxopt.modeling import variable
 >>> x = variable(1,'x')
 >>> y = variable(2,'y')
 >>> f = 2*x + y + 3  
@@ -345,7 +345,7 @@ length 10, ``g`` is its infinity-norm, and ``h`` is the function
     \end{array}\right.
 
 
->>> from cvxopt.modeling import variable, max
+>>> from kvxopt.modeling import variable, max
 >>> x = variable(10, 'x')
 >>> f = sum(abs(x))    
 >>> g = max(abs(x))   
@@ -450,7 +450,7 @@ Optimization Problems
 Optimization problems are be constructed by calling the following
 function.
 
-.. function:: cvxopt.modeling.op([objective[, constraints[, name]]])
+.. function:: kvxopt.modeling.op([objective[, constraints[, name]]])
 
     The first argument specifies the objective function to be minimized.
     It can be an affine or convex piecewise-linear function with length 1, 
@@ -566,7 +566,7 @@ As an example we solve the LP
      \end{array}
 
 
->>> from cvxopt.modeling import op
+>>> from kvxopt.modeling import op
 >>> x = variable()
 >>> y = variable()
 >>> c1 = ( 2*x+y <= 3 ) 
@@ -595,7 +595,7 @@ As an example we solve the LP
 
 We can solve the same LP in  matrix form as follows.
 
->>> from cvxopt.modeling import op, dot
+>>> from kvxopt.modeling import op, dot
 >>> x = variable(2)
 >>> A = matrix([[2.,1.,-1.,0.], [1.,2.,0.,-1.]])
 >>> b = matrix([3.,3.,0.,0.])
@@ -674,8 +674,8 @@ Examples
 
     :: 
 
-        from cvxopt import normal
-        from cvxopt.modeling import variable, op, max, sum
+        from kvxopt import normal
+        from kvxopt.modeling import variable, op, max, sum
         import pylab
 
         m, n = 500, 100
@@ -760,8 +760,8 @@ Examples
 
     :: 
 
-        from cvxopt import normal, uniform
-        from cvxopt.modeling import variable, dot, op, sum 
+        from kvxopt import normal, uniform
+        from kvxopt.modeling import variable, dot, op, sum 
 
         m, n = 500, 100
         A = normal(m,n)

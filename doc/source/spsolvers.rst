@@ -12,7 +12,7 @@ In this section we describe routines for solving sparse sets of linear
 equations.
 
 A real symmetric or complex Hermitian sparse matrix is stored as an 
-:class:`spmatrix <cvxopt.spmatrix>` object ``X``  of size 
+:class:`spmatrix <kvxopt.spmatrix>` object ``X``  of size 
 (:math:`n`, :math:`n`) and an 
 additional character argument ``uplo`` with possible values :const:`'L'` 
 and :const:`'U'`.  If ``uplo`` is :const:`'L'`, the lower triangular part
@@ -34,7 +34,7 @@ stored using the same conventions as in the BLAS and LAPACK modules.
 Matrix Orderings
 ****************
 
-CVXOPT includes an interface to the AMD library for computing approximate 
+kvxopt includes an interface to the AMD library for computing approximate 
 minimum degree orderings of sparse matrices.
 
 .. seealso::
@@ -44,7 +44,7 @@ minimum degree orderings of sparse matrices.
       Mathematical Software, 30(3), 381-388, 2004.
 
 
-.. function:: cvxopt.amd.order(A[, uplo = 'L'])
+.. function:: kvxopt.amd.order(A[, uplo = 'L'])
 
     Computes the approximate mimimum degree ordering of a symmetric  sparse
     matrix :math:`A`.  The ordering is returned as an integer dense matrix 
@@ -66,7 +66,7 @@ As an example we consider the matrix
     \end{array}\right].
 
 
->>> from cvxopt import spmatrix, amd 
+>>> from kvxopt import spmatrix, amd 
 >>> A = spmatrix([10,3,5,-2,5,2], [0,2,1,2,2,3], [0,0,1,1,2,3])
 >>> P = amd.order(A)
 >>> print(P)
@@ -81,7 +81,7 @@ As an example we consider the matrix
 General Linear Equations
 ************************
 
-The module :mod:`cvxopt.umfpack` includes four functions for solving 
+The module :mod:`kvxopt.umfpack` includes four functions for solving 
 sparse non-symmetric sets of linear equations.  They call routines from 
 the UMFPACK library, with all control options set to the default values 
 described in the UMFPACK user guide.  
@@ -93,7 +93,7 @@ described in the UMFPACK user guide.
       Transactions on Mathematical Software, 30(2), 196-199, 2004. 
 
 
-.. function:: cvxopt.umfpack.linsolve(A, B[, trans = 'N'])
+.. function:: kvxopt.umfpack.linsolve(A, B[, trans = 'N'])
 
     Solves a sparse set of linear equations 
     
@@ -123,7 +123,7 @@ In the following example we solve an equation with coefficient matrix
         \end{array}\right].
 
 
->>> from cvxopt import spmatrix, matrix, umfpack 
+>>> from kvxopt import spmatrix, matrix, umfpack 
 >>> V = [2, 3, 3, -1, 4, 4, -3, 1, 2, 2, 6, 1]
 >>> I = [0, 1, 0,  2, 4, 1,  2, 3, 4, 2, 1, 4]
 >>> J = [0, 0, 1,  1, 1, 2,  2, 2, 2, 3, 4, 4]
@@ -137,31 +137,31 @@ In the following example we solve an equation with coefficient matrix
 [ 1.97e+00]
 [-7.89e-01]
 
-The function :func:`linsolve <cvxopt.umfpack.linsolve>`  is 
+The function :func:`linsolve <kvxopt.umfpack.linsolve>`  is 
 equivalent to the following three functions called in sequence.  
 
-.. function:: cvxopt.umfpack.symbolic(A)
+.. function:: kvxopt.umfpack.symbolic(A)
 
     Reorders the columns of ``A`` to reduce fill-in and performs a symbolic 
     LU factorization.  ``A`` is a sparse, possibly rectangular, matrix.
     Returns the symbolic factorization as an opaque C object that can be 
-    passed on to :func:`numeric <cvxopt.umfpack.numeric>`.
+    passed on to :func:`numeric <kvxopt.umfpack.numeric>`.
 
 
-.. function:: cvxopt.umfpack.numeric(A, F)
+.. function:: kvxopt.umfpack.numeric(A, F)
 
     Performs a numeric LU factorization of a sparse, possibly rectangular,
     matrix ``A``.   The argument ``F`` is the symbolic factorization
-    computed by :func:`symbolic <cvxopt.umfpack.symbolic>` 
+    computed by :func:`symbolic <kvxopt.umfpack.symbolic>` 
     applied to the matrix ``A``,
     or another sparse matrix with the same sparsity pattern, dimensions,
     and type.  The numeric factorization is returned as an opaque C object 
     that that can be passed on to 
-    :func:`solve <cvxopt.umfpack.solve>`.  Raises an
+    :func:`solve <kvxopt.umfpack.solve>`.  Raises an
     :exc:`ArithmeticError` if the matrix is singular.
 
 
-.. function:: cvxopt.umfpack.solve(A, F, B[, trans = 'N'])
+.. function:: kvxopt.umfpack.solve(A, F, B[, trans = 'N'])
 
     Solves a set of linear equations
 
@@ -174,7 +174,7 @@ equivalent to the following three functions called in sequence.
     where :math:`A` is a sparse matrix and :math:`B` is a dense matrix.
     The arguments ``A`` and ``B`` must have the same type.  The argument  
     ``F`` is a numeric factorization computed 
-    by :func:`numeric <cvxopt.umfpack.numeric>`.  
+    by :func:`numeric <kvxopt.umfpack.numeric>`.  
     On exit ``B`` is overwritten by the 
     solution.
 
@@ -208,7 +208,7 @@ code computes
     x = A^{-T}B^{-1}A^{-1}\ones.
 
 
->>> from cvxopt import spmatrix, matrix, umfpack
+>>> from kvxopt import spmatrix, matrix, umfpack
 >>> VA = [2, 3, 3, -1, 4, 4, -3, 1, 2, 2, 6, 1]
 >>> VB = [4, 3, 3, -1, 4, 4, -3, 1, 2, 2, 6, 2]
 >>> I =  [0, 1, 0,  2, 4, 1,  2, 3, 4, 2, 1, 4]
@@ -229,13 +229,62 @@ code computes
 [ 8.07e+00]
 [-1.31e-01]
 
+.. function:: kvxopt.umfpack.get_numeric(A, Fs, Fn)
+
+    This routine copies the LU factors and permutation vectors from the Numeric
+    object into user-accessible sparse matrices. This routine is not needed 
+    to solve a linear system. Arguments ``Fs`` and ``Fn`` are the symbolic 
+    and numeric factorizations of matrix ``A``, respectively. Factorization of 
+    KLU is as follows
+
+    .. math:: 
+        PRAQ = LU 
+
+    Returns a tuple with following matrices:
+
+    - L: Sparse matrix containing :math:`L`.
+    - U: Sparse matrix containing :math:`U`.
+    - P: Sparse row permutation matrix.
+    - Q: Sparse column permutation matrix. 
+    - R: Sparse diagonal matrix containing the row scale vectors.
+
+>>> from kvxopt.umfpack import symbolic, numeric, get_numeric
+>>> from kvxopt import spmatrix, matrix, norm
+>>> V = [2,3, 3,-1,4, 4,-3,1,2, 2, 6,1]
+>>> I = [0,1, 0, 2,4, 1, 2,3,4, 2, 1, 4]
+>>> J = [0,0, 1, 1,1, 2, 2,2,2, 3, 4,4]
+>>> A = spmatrix(V,I,J)
+>>> Fs =  symbolic(A)
+>>> Fn = numeric(A, Fs)
+>>> L, U, P, Q, R = get_numeric(A, Fn)
+>>> print(P*R*A*Q)
+[ 3.33e-01 -5.00e-01     0         0     -1.67e-01]
+[    0      1.00e+00     0         0         0    ]
+[    0         0      4.00e-01     0      6.00e-01]
+[    0      2.86e-01     0      1.43e-01  5.71e-01]
+[    0      3.08e-01  2.31e-01  4.62e-01     0    ]
+>>> print(L*U)
+[ 3.33e-01 -5.00e-01     0         0     -1.67e-01]
+[    0      1.00e+00     0         0         0    ]
+[    0         0      4.00e-01     0      6.00e-01]
+[    0      2.86e-01     0      1.43e-01  5.71e-01]
+[    0      3.08e-01  2.31e-01  4.62e-01  0.00e+00]
+>>> norm(P*R*A*Q - L*U, '1')
+2.7755575615628914e-17
+
+.. function:: kvxopt.umfpack.det(A, F, N)
+
+    Computes the determinant value of matrix ``A``. On exit a float or complex
+    number is returned with the value of the determinant. 
+    The arguments ``F`` and ``N`` are the symbolic and numeric factorizations 
+    of matrix ``A``, respectively.
 
 .. _s-klu:
 
 Linear Equations Arising from Circuit Simulations
 *************************************************
 
-The module :mod:`cvxopt.klu` includes five functions for solving and computing
+The module :mod:`kvxopt.klu` includes five functions for solving and computing
 the determinant of sparse square non-symmetric linear equations. These functions
 call routines from the KLU library which is well-suited for solving matrices
 arising in SPICE-like circuits and power systems analysis simulations. 
@@ -251,7 +300,7 @@ arising in SPICE-like circuits and power systems analysis simulations.
 
 
 
-.. function:: cvxopt.klu.linsolve(A, B[, trans = 'N'])
+.. function:: kvxopt.klu.linsolve(A, B[, trans = 'N'])
 
     Solves a sparse set of linear equations 
     
@@ -281,7 +330,7 @@ In the following example we solve an equation with coefficient matrix
         \end{array}\right].
 
 
->>> from cvxopt import spmatrix, matrix, klu
+>>> from kvxopt import spmatrix, matrix, klu
 >>> V = [2, 3, 3, -1, 4, 4, -3, 1, 2, 2, 6, 1]
 >>> I = [0, 1, 0,  2, 4, 1,  2, 3, 4, 2, 1, 4]
 >>> J = [0, 0, 1,  1, 1, 2,  2, 2, 2, 3, 4, 4]
@@ -295,33 +344,33 @@ In the following example we solve an equation with coefficient matrix
 [ 5.48e+00]
 [-1.86e+00]
 
-The function :func:`linsolve <cvxopt.klu.linsolve>`  is 
+The function :func:`linsolve <kvxopt.klu.linsolve>`  is 
 equivalent to the following three functions called in sequence.  
 
-.. function:: cvxopt.klu.symbolic(A)
+.. function:: kvxopt.klu.symbolic(A)
 
     Returns the fill-reducing ordering needed to factorize the matrix A. 
     This symbolic factorization is returned as an opaque C object that can be 
-    passed on to :func:`numeric <cvxopt.klu.numeric>`.
+    passed on to :func:`numeric <kvxopt.klu.numeric>`.
 
 
-.. function:: cvxopt.klu.numeric(A, F[, N = None])
+.. function:: kvxopt.klu.numeric(A, F[, N = None])
 
     Performs a numeric LU factorization by using a sparse left-looking method with
     threshold partial pivoting of matrix ''A''.   
     The argument ``F`` is the symbolic factorization
-    computed by :func:`symbolic <cvxopt.klu.symbolic>` 
+    computed by :func:`symbolic <kvxopt.klu.symbolic>` 
     applied to the matrix ``A``,
     or another sparse matrix with the same sparsity pattern, dimensions,
     and type.  The numeric factorization is returned as an opaque C object 
     that that can be passed on to 
-    :func:`solve <cvxopt.klu.solve>`. In case a previous ``N`` numeric
+    :func:`solve <kvxopt.klu.solve>`. In case a previous ``N`` numeric
     factorization is provided a refactorization is performed which need the
     same nonzero pattern as that given to call the symbolic function.  Raises an
     :exc:`ArithmeticError` if the matrix is singular.
 
 
-.. function:: cvxopt.klu.solve(A, F, N, B[, trans = 'N'])
+.. function:: kvxopt.klu.solve(A, F, N, B[, trans = 'N'])
 
     Solves a set of linear equations
 
@@ -334,8 +383,8 @@ equivalent to the following three functions called in sequence.
     where :math:`A` is a sparse matrix and :math:`B` is a dense matrix.
     The arguments ``A`` and ``B`` must have the same type.  The argument  
     ``N`` is a numeric factorization computed 
-    by :func:`numeric <cvxopt.klu.numeric>`, and ``F`` is the symbolic 
-    factorization computed by :func:`numeric <cvxopt.klu.symbolic>`.  
+    by :func:`numeric <kvxopt.klu.numeric>`, and ``F`` is the symbolic 
+    factorization computed by :func:`numeric <kvxopt.klu.symbolic>`.  
     On exit ``B`` is overwritten by the solution.
 
 
@@ -368,7 +417,7 @@ code computes
     x = A^{-T}B^{-1}A^{-1}\ones.
 
 
->>> from cvxopt import spmatrix, matrix, klu
+>>> from kvxopt import spmatrix, matrix, klu
 >>> VA = [2, 3, 3, -1, 4, 4, -3, 1, 2, 2, 6, 1]
 >>> VB = [4, 3, 3, -1, 4, 4, -3, 1, 2, 2, 6, 2]
 >>> I =  [0, 1, 0,  2, 4, 1,  2, 3, 4, 2, 1, 4]
@@ -389,14 +438,57 @@ code computes
 [ 8.07e+00]
 [-1.31e-01]
 
+.. function:: kvxopt.klu.get_numeric(A, Fs, Fn)
 
-Additionally, this module includes a function for computing the determinant of a sparse matrix.
+    This routine copies the LU factors and permutation vectors from the Numeric
+    object into user-accessible sparse matrices. This routine is not needed 
+    to solve a linear system. Arguments ``Fs`` and ``Fn`` are the symbolic 
+    and numeric factorizations of matrix ``A``, respectively. Factorization of 
+    KLU is as follows
 
-.. function:: cvxopt.klu.det(A, F, N)
+    .. math:: 
+        RPAQ = LU + F 
 
-    Computes the determinant value of matrix ``A``. On exit a float number
-    is returned with the value of the determinant. The arguments ``F`` and ``N``
-    are the symbolic and numeric factorizations of matrix ``A``, respectively.
+    Returns a tuple with following matrices:
+
+    - L: Sparse matrix containing :math:`L`.
+    - U: Sparse matrix containing :math:`U`.
+    - P: Sparse row permutation matrix.
+    - Q: Sparse column permutation matrix. 
+    - R: Sparse diagonal matrix containing the row scale vectors.
+    - F: Sparse matrix containing :math:`F`.
+    - r: Python list containing the kth block consisting of rows and columns r(k) to r(k+1)-1 in the permuted matrix :math:`PAQ`.
+
+>>> from kvxopt.klu import symbolic, numeric, get_numeric
+>>> from kvxopt import spmatrix, matrix, norm
+>>> V = [2,3, 3,-1,4, 4,-3,1,2, 2, 6,1]
+>>> I = [0,1, 0, 2,4, 1, 2,3,4, 2, 1, 4]
+>>> J = [0,0, 1, 1,1, 2, 2,2,2, 3, 4,4]
+>>> A = spmatrix(V,I,J)
+>>> Fs =  symbolic(A)
+>>> Fn = numeric(A, Fs)
+>>> L, U, P, Q, R, F, r = get_numeric(A, Fs, Fn)
+>>> print(R*P*A*Q)
+[ 6.67e-01     0         0     -3.33e-01 -1.00e+00]
+[    0      6.67e-01     0      1.00e+00     0    ]
+[    0      5.00e-01  1.00e+00     0      6.67e-01]
+[    0         0      2.50e-01  1.00e+00  5.00e-01]
+[    0         0         0         0      1.00e+00]
+>>> print(L*U + F)
+[ 6.67e-01     0         0     -3.33e-01 -1.00e+00]
+[    0      6.67e-01     0      1.00e+00     0    ]
+[    0      5.00e-01  1.00e+00  0.00e+00  6.67e-01]
+[    0         0      2.50e-01  1.00e+00  5.00e-01]
+[    0         0         0         0      1.00e+00]
+>>> norm(R*P*A*Q - (L*U + F), '1')
+0.0
+
+.. function:: kvxopt.klu.det(A, F, N)
+
+    Computes the determinant value of matrix ``A``. On exit a float or complex
+    number is returned with the value of the determinant. 
+    The arguments ``F`` and ``N`` are the symbolic and numeric factorizations 
+    of matrix ``A``, respectively.
 
     
 .. _s-cholmod:
@@ -404,7 +496,7 @@ Additionally, this module includes a function for computing the determinant of a
 Positive Definite Linear Equations
 **********************************
 
-:mod:`cvxopt.cholmod` is an interface to the Cholesky factorization routines
+:mod:`kvxopt.cholmod` is an interface to the Cholesky factorization routines
 of the CHOLMOD package.  It includes functions for Cholesky factorization 
 of sparse positive definite matrices, and for solving sparse sets of linear
 equations with positive definite matrices. 
@@ -423,7 +515,7 @@ of symmetric indefinite matrices (with :math:`L` unit lower-triangular and
       and Update/Downdate, ACM Transactions on Mathematical Software, 
       35(3), 22:1-22:14, 2008.
 
-.. function:: cvxopt.cholmod.linsolve(A, B[, p = None, uplo = 'L'])
+.. function:: kvxopt.cholmod.linsolve(A, B[, p = None, uplo = 'L'])
 
     Solves
 
@@ -460,7 +552,7 @@ As an  example, we solve
         \end{array} \right].
 
 
->>> from cvxopt import matrix, spmatrix, cholmod
+>>> from kvxopt import matrix, spmatrix, cholmod
 >>> A = spmatrix([10, 3, 5, -2, 5, 2], [0, 2, 1, 3, 2, 3], [0, 0, 1, 1, 2, 3])
 >>> X = matrix(range(8), (4,2), 'd')
 >>> cholmod.linsolve(A,X)
@@ -471,10 +563,10 @@ As an  example, we solve
 [ 2.83e+00  7.50e+00]
 
 
-.. function:: cvxopt.cholmod.splinsolve(A, B[, p = None, uplo = 'L'])
+.. function:: kvxopt.cholmod.splinsolve(A, B[, p = None, uplo = 'L'])
 
-    Similar to :func:`linsolve <cvxopt.cholmod.linsolve>` except that 
-    ``B`` is an :class:`spmatrix <cvxopt.spmatrix>` and 
+    Similar to :func:`linsolve <kvxopt.cholmod.linsolve>` except that 
+    ``B`` is an :class:`spmatrix <kvxopt.spmatrix>` and 
     that the solution is returned as an output argument (as a new 
     :class:`spmatrix`).  ``B`` is not modified.
     See the comment on 
@@ -493,14 +585,14 @@ in :eq:`e-A-pd` as a sparse matrix.
 [    0      3.33e-01     0      8.33e-01]
 
 
-The functions :func:`linsolve <cvxopt.cholmod.linsolve>` and 
-:func:`splinsolve <cvxopt.cholmod.splinsolve>` are equivalent to 
-:func:`symbolic <cvxopt.cholmod.symbolic>` and 
-:func:`numeric <cvxopt.cholmod.numeric>` called in sequence, followed by 
-:func:`solve <cvxopt.cholmod.solve>`, respectively, 
-:func:`spsolve <cvxopt.cholmod.spsolve>`.
+The functions :func:`linsolve <kvxopt.cholmod.linsolve>` and 
+:func:`splinsolve <kvxopt.cholmod.splinsolve>` are equivalent to 
+:func:`symbolic <kvxopt.cholmod.symbolic>` and 
+:func:`numeric <kvxopt.cholmod.numeric>` called in sequence, followed by 
+:func:`solve <kvxopt.cholmod.solve>`, respectively, 
+:func:`spsolve <kvxopt.cholmod.spsolve>`.
 
-.. function:: cvxopt.cholmod.symbolic(A[, p = None, uplo = 'L'])
+.. function:: kvxopt.cholmod.symbolic(A[, p = None, uplo = 'L'])
 
     Performs a symbolic analysis of a sparse real symmetric or
     complex Hermitian matrix :math:`A` for one of the two factorizations:
@@ -528,26 +620,26 @@ The functions :func:`linsolve <cvxopt.cholmod.linsolve>` and
     is accessed and the lower triangular part is ignored.
 
     The symbolic factorization is returned as an opaque C object that 
-    can be passed to :func:`numeric <cvxopt.cholmod.numeric>`.
+    can be passed to :func:`numeric <kvxopt.cholmod.numeric>`.
 
     See the comment on 
     :attr:`options['nmethods']` for details on which ordering is used
     by CHOLMOD.
 
 
-.. function:: cvxopt.cholmod.numeric(A, F)
+.. function:: kvxopt.cholmod.numeric(A, F)
 
     Performs a numeric factorization of a sparse symmetric matrix 
     as :eq:`e-chol-ll` or :eq:`e-chol-ldl`.  The argument ``F`` is the 
     symbolic factorization computed by 
-    :func:`symbolic <cvxopt.cholmod.symbolic>` applied to 
+    :func:`symbolic <kvxopt.cholmod.symbolic>` applied to 
     the matrix ``A``, or to another sparse  matrix with the same sparsity 
     pattern and typecode, or by 
-    :func:`numeric <cvxopt.cholmod.numeric>` applied to a matrix
+    :func:`numeric <kvxopt.cholmod.numeric>` applied to a matrix
     with the same sparsity pattern and typecode as ``A``.
 
     If ``F`` was created by a 
-    :func:`symbolic <cvxopt.cholmod.symbolic>` with ``uplo`` 
+    :func:`symbolic <kvxopt.cholmod.symbolic>` with ``uplo`` 
     equal 
     to :const:`'L'`, then only the lower triangular part of ``A`` is 
     accessed and the upper triangular part is ignored.  If it was created 
@@ -558,12 +650,12 @@ The functions :func:`linsolve <cvxopt.cholmod.linsolve>` and
     Raises an :exc:`ArithmeticError` if the factorization does not exist.
 
 
-.. function:: cvxopt.cholmod.solve(F, B[, sys = 0])
+.. function:: kvxopt.cholmod.solve(F, B[, sys = 0])
 
     Solves one of the following linear equations where ``B`` is a dense 
     matrix and ``F`` is the numeric factorization :eq:`e-chol-ll` 
     or :eq:`e-chol-ldl` computed by 
-    :func:`numeric <cvxopt.cholmod.numeric>`.  
+    :func:`numeric <kvxopt.cholmod.numeric>`.  
     ``sys`` is an integer with values between 0 and 8. 
 
     +---------+--------------------+ 
@@ -596,9 +688,9 @@ The functions :func:`linsolve <cvxopt.cholmod.linsolve>` and
     the same type as ``A``.  On exit it is overwritten by the solution.
 
 
-.. function:: cvxopt.cholmod.spsolve(F, B[, sys = 0])
+.. function:: kvxopt.cholmod.spsolve(F, B[, sys = 0])
 
-    Similar to :func:`solve <cvxopt.cholmod.solve>`, except that ``B`` is 
+    Similar to :func:`solve <kvxopt.cholmod.solve>`, except that ``B`` is 
     a class:`spmatrix`, and the solution is returned as an output argument 
     (as an :class:`spmatrix`).  ``B`` must have the same typecode as ``A``.
 
@@ -616,13 +708,13 @@ For the same example as above:
 [ 2.83e+00  7.50e+00]
 
 
-.. function:: cvxopt.cholmod.diag(F)
+.. function:: kvxopt.cholmod.diag(F)
 
     Returns the diagonal elements of the Cholesky factor :math:`L` 
     in :eq:`e-chol-ll`, as a dense matrix of the same type as ``A``.
     Note that this only applies to Cholesky factorizations.  The matrix 
     :math:`D` in an :raw-html:`LDL<sup><small>T</small></sup>`
-    factorization can be retrieved via :func:`solve <cvxopt.cholmod.solve>`
+    factorization can be retrieved via :func:`solve <kvxopt.cholmod.solve>`
     with ``sys`` equal to 6.
 
 
@@ -659,14 +751,14 @@ in detail in the CHOLMOD user guide).
     orderings if they are installed during the CHOLMOD installation.
     Default: 0.
 
-As an example that illustrates :func:`diag  <cvxopt.cholmod.diag>` and the 
+As an example that illustrates :func:`diag  <kvxopt.cholmod.diag>` and the 
 use of :attr:`cholmod.options`, we compute the logarithm of the determinant 
 of the coefficient matrix in :eq:`e-A-pd` by two methods.
 
 
 >>> import math
->>> from cvxopt.cholmod import options
->>> from cvxopt import log
+>>> from kvxopt.cholmod import options
+>>> from kvxopt import log
 >>> F = cholmod.symbolic(A)
 >>> cholmod.numeric(A, F)
 >>> print(2.0 * sum(log(cholmod.diag(F))))
@@ -754,7 +846,7 @@ where :math:`\circ` denotes Hadamard product.
 
 ::
 
-    from cvxopt import matrix, spmatrix, log, mul, blas, lapack, amd, cholmod
+    from kvxopt import matrix, spmatrix, log, mul, blas, lapack, amd, cholmod
 
     def covsel(Y):
         """

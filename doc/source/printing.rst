@@ -4,7 +4,7 @@
 Matrix Formatting
 *****************
 
-This appendix describes ways to customize the formatting of CVXOPT matrices.
+This appendix describes ways to customize the formatting of kvxopt matrices.
 
 As with other Python objects, the functions :func:`repr` and :func:`str` 
 return strings with printable representations of matrices.  The command 
@@ -12,7 +12,7 @@ return strings with printable representations of matrices.  The command
 calls '``repr(A)``'.  The following example illustrates the default 
 formatting of dense matrices.
 
->>> from cvxopt import matrix 
+>>> from kvxopt import matrix 
 >>> A = matrix(range(50), (5,10), 'd')
 >>> A  
 <5x10 matrix, tc='d'>
@@ -24,7 +24,7 @@ formatting of dense matrices.
 [ 4.00e+00  9.00e+00  1.40e+01  1.90e+01  2.40e+01  2.90e+01  3.40e+01 ... ]
 
 The format is parameterized by the dictionary :data:`options` in the 
-module :mod:`cvxopt.printing`.  The parameters :attr:`options['iformat']` 
+module :mod:`kvxopt.printing`.  The parameters :attr:`options['iformat']` 
 and :attr:`options['dformat']` determine, respectively, how integer and 
 double/complex numbers are printed.  The entries are Python format strings 
 with default values :const:`'\% .2e'` for :const:`'d'` and :const:`'z'` 
@@ -36,7 +36,7 @@ set to a negative value, all columns are displayed.  If
 displayed.  The default values of :attr:`options['width']` and 
 :attr:`options['height']` are 7 and -1, respectively.
 
->>> from cvxopt import printing
+>>> from kvxopt import printing
 >>> printing.options
 {'width': 7, 'dformat': '% .2e', 'iformat': '% i', 'height': -1}
 >>> printing.options['dformat'] = '%.1f'
@@ -51,36 +51,36 @@ displayed.  The default values of :attr:`options['width']` and
 
 In order to make the built-in Python functions :func:`repr` and :func:`str`
 accessible for further customization, two functions are provided in 
-CVXOPT.  The function :func:`cvxopt.matrix_repr` is used when 
+kvxopt.  The function :func:`kvxopt.matrix_repr` is used when 
 :func:`repr` is called with a matrix argument; and 
-:func:`cvxopt.matrix_str` is used when :func:`str` is called with a matrix 
+:func:`kvxopt.matrix_str` is used when :func:`str` is called with a matrix 
 argument.  By default, the functions are set to 
 :func:`printing.matrix_repr_default` and
 :func:`printing.matrix_str_default`, respectively, but they can be 
 redefined to any other Python functions.  For example, if we prefer 
 ``A`` to return the same output as ``print A``, we can simply 
-redefine :func:`cvxopt.matrix_repr` as shown below.
+redefine :func:`kvxopt.matrix_repr` as shown below.
 
->>> import cvxopt
->>> from cvxopt import matrix, printing
+>>> import kvxopt
+>>> from kvxopt import matrix, printing
 >>> A = matrix(range(4), (2,2), 'd')
 >>> A
 <2x2 matrix, tc='d'>
->>> cvxopt.matrix_repr = printing.matrix_str_default
+>>> kvxopt.matrix_repr = printing.matrix_str_default
 >>> A
 [ 0.00e+00  2.00e+00]
 [ 1.00e+00  3.00e+00]
 
 
 The formatting for sparse matrices is similar.  The functions :func:`repr` 
-and :func:`str` for sparse matrices are :func:`cvxopt.spmatrix_repr` 
-and :func:`cvxopt.spmatrix_str`, respectively.  By default, they are set to
+and :func:`str` for sparse matrices are :func:`kvxopt.spmatrix_repr` 
+and :func:`kvxopt.spmatrix_str`, respectively.  By default, they are set to
 :func:`printing.spmatrix_repr_default` and 
 :func:`printing.spmatrix_repr_str`.
 
 
->>> import cvxopt
->>> from cvxopt import printing, spmatrix 
+>>> import kvxopt
+>>> from kvxopt import printing, spmatrix 
 >>> A = spmatrix(range(5), range(5), range(5), (5,10))
 >>> A
 <5x10 sparse matrix, tc='d', nnz=5>
@@ -91,7 +91,7 @@ and :func:`cvxopt.spmatrix_str`, respectively.  By default, they are set to
 [    0         0         0      3.00e+00     0         0         0     ... ]
 [    0         0         0         0      4.00e+00     0         0     ... ]
 
->>> cvxopt.spmatrix_repr = printing.spmatrix_str_default
+>>> kvxopt.spmatrix_repr = printing.spmatrix_str_default
 >>> A
 [ 0.00e+00     0         0         0         0         0         0     ... ]
 [    0      1.00e+00     0         0         0         0         0     ... ]
@@ -104,7 +104,7 @@ As can be seen from the example, the default behaviour is to print the
 entire matrix including structural zeros. An alternative triplet printing 
 style is defined in :func:`printing.spmatrix_str_triplet`. 
 
->>> cvxopt.spmatrix_str = printing.spmatrix_str_triplet
+>>> kvxopt.spmatrix_str = printing.spmatrix_str_triplet
 >>> print(A)
 (0,0)  0.00e+00
 (1,1)  1.00e+00

@@ -1,7 +1,7 @@
 .. title:: Table of Contents
 
 ####################
-CVXOPT User's Guide
+kvxopt User's Guide
 ####################
 
 **Release 1.2.5 -- April 16, 2020**
@@ -22,4 +22,4 @@ CVXOPT User's Guide
     modeling.rst
     c-api.rst
     printing.rst
-    cvxopt.org <http://cvxopt.org>
+    kvxopt.org <http://kvxopt.org>

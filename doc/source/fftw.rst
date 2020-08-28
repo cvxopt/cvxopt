@@ -4,10 +4,10 @@
 Discrete Transforms
 *******************
 
-The :mod:`cvxopt.fftw` module is an interface to the FFTW library and 
+The :mod:`kvxopt.fftw` module is an interface to the FFTW library and 
 contains routines for discrete Fourier, cosine, and sine transforms.  
 This module is optional, and only installed when the FFTW library is made 
-available during the CVXOPT installation.
+available during the kvxopt installation.
 
 .. seealso:: 
 
@@ -18,7 +18,7 @@ available during the CVXOPT installation.
 Discrete Fourier Transform 
 ==========================
 
-.. function:: cvxopt.fftw.dft(X)
+.. function:: kvxopt.fftw.dft(X)
 
     Replaces the columns of a dense complex matrix with their discrete 
     Fourier transforms:  if ``X`` has :math:`n` rows,
@@ -28,7 +28,7 @@ Discrete Fourier Transform
         X[k,:] := \sum_{j=0}^{n-1} e^{-2\pi j k \sqrt{-1}/n} X[j,:],
             \qquad k=0,\ldots,n-1.
 
-.. function:: cvxopt.fftw.idft(X)
+.. function:: kvxopt.fftw.idft(X)
 
     Replaces the columns of a dense complex matrix with their inverse 
     discrete Fourier transforms: if ``X`` has :math:`n` rows,
@@ -48,7 +48,7 @@ For example, the two-dimensional transform applies a one-dimensional
 transform to all the columns of the matrix, followed by a one-dimensional 
 transform to all the rows of the matrix. 
 
-.. function:: cvxopt.fftw.dftn(X[, dims = X.size])
+.. function:: kvxopt.fftw.dftn(X[, dims = X.size])
 
     Replaces a dense complex matrix with its *N*-dimensional discrete
     Fourier transform.  The dimensions of the *N*-dimensional matrix 
@@ -56,7 +56,7 @@ transform to all the rows of the matrix.
     computed as ``dftn(X, X.size)``. 
 
 
-.. function:: cvxopt.fftw.idftn(X[, dims = X.size])
+.. function:: kvxopt.fftw.idftn(X[, dims = X.size])
 
     Replaces a dense complex *N*-dimensional matrix with its inverse 
     *N*-dimensional discrete Fourier transform.  The dimensions of the 
@@ -67,7 +67,7 @@ transform to all the rows of the matrix.
 Discrete Cosine Transform
 =========================
 
-.. function:: cvxopt.fftw.dct(X[, type = 2])
+.. function:: kvxopt.fftw.dct(X[, type = 2])
 
     Replaces the columns of a dense real matrix with their discrete
     cosine transforms.  The second argument, an integer between 1 and 4,
@@ -95,7 +95,7 @@ Discrete Cosine Transform
                 \qquad k=0,\ldots,n-1.
 
 
-.. function:: cvxopt.fftw.idct(X[, type = 2])
+.. function:: kvxopt.fftw.idct(X[, type = 2])
 
     Replaces the columns of a dense real matrix with the inverses
     of the discrete cosine transforms defined above.  
@@ -110,7 +110,7 @@ transform to all the rows of the matrix, followed by a one-dimensional
 transform to all the columns of the matrix. 
 
 
-.. function:: cvxopt.fftw.dctn(X[, dims = X.size, type = 2])
+.. function:: kvxopt.fftw.dctn(X[, dims = X.size, type = 2])
 
     Replaces a dense real matrix with its *N*-dimensional discrete cosine 
     transform. The dimensions of the *N*-dimensional matrix are given by  
@@ -118,7 +118,7 @@ transform to all the columns of the matrix.
     ``dctn(X, X.size)``. 
 
 
-.. function:: cvxopt.fftw.idctn(X[, dims = X.size, type = 2])
+.. function:: kvxopt.fftw.idctn(X[, dims = X.size, type = 2])
 
     Replaces a dense real *N*-dimensional matrix with its inverse 
     *N*-dimensional discrete cosine transform. The dimensions of the 
@@ -129,7 +129,7 @@ transform to all the columns of the matrix.
 Discrete Sine Transform 
 =======================
 
-.. function:: cvxopt.fftw.dst(X, dims[, type = 1])
+.. function:: kvxopt.fftw.dst(X, dims[, type = 1])
 
     Replaces the columns of a dense real matrix with their discrete
     sine transforms.  The second argument, an integer between 1 and 4,
@@ -155,7 +155,7 @@ Discrete Sine Transform
                 \qquad k=0,\ldots,n-1.
 
 
-.. function:: cvxopt.fftw.idst(X, dims[, type = 1])
+.. function:: kvxopt.fftw.idst(X, dims[, type = 1])
 
     Replaces the columns of a dense real matrix with the inverses of the 
     discrete sine transforms defined above.  
@@ -169,7 +169,7 @@ example, the two-dimensional transform applies a one-dimensional
 transform to all the rows of the matrix, followed by a one-dimensional 
 transform to all the columns of the matrix. 
 
-.. function:: cvxopt.fftw.dstn(X[, dims = X.size, type = 2])
+.. function:: kvxopt.fftw.dstn(X[, dims = X.size, type = 2])
 
     Replaces a dense real matrix with its *N*-dimensional discrete sine 
     transform. The dimensions of the *N*-dimensional matrix are given by 
@@ -177,7 +177,7 @@ transform to all the columns of the matrix.
     ``dstn(X, X.size)``. 
 
 
-.. function:: cvxopt.fftw.idstn(X[, dims = X.size, type = 2])
+.. function:: kvxopt.fftw.idstn(X[, dims = X.size, type = 2])
 
     Replaces a dense real *N*-dimensional matrix with its inverse 
     *N*-dimensional discrete sine transform.  The dimensions of the 

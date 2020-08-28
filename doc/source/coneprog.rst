@@ -18,8 +18,8 @@ The linear inequality is a generalized inequality with respect to a
 proper convex cone.  It may include componentwise vector inequalities, 
 second-order cone inequalities, and linear matrix inequalities.  
 
-The main solvers are :func:`conelp <cvxopt.solvers.conelp>` and 
-:func:`coneqp <cvxopt.solvers.coneqp>`, described in the
+The main solvers are :func:`conelp <kvxopt.solvers.conelp>` and 
+:func:`coneqp <kvxopt.solvers.coneqp>`, described in the
 sections :ref:`s-conelp` and :ref:`s-coneqp`.  The function 
 :func:`conelp` is restricted to problems with linear cost functions, and 
 can detect primal and dual infeasibility.  The function :func:`coneqp` 
@@ -40,7 +40,7 @@ algorithm parameters that control the cone programming solvers.
 Linear Cone Programs 
 ====================
 
-.. function:: cvxopt.solvers.conelp(c, G, h[, dims[, A, b[, primalstart[, dualstart[, kktsolver]]]]])
+.. function:: kvxopt.solvers.conelp(c, G, h[, dims[, A, b[, primalstart[, dualstart[, kktsolver]]]]])
 
     Solves a pair of primal and dual cone programs
 
@@ -315,7 +315,7 @@ As an example we solve the problem
     \end{array} 
 
 
->>> from cvxopt import matrix, solvers
+>>> from kvxopt import matrix, solvers
 >>> c = matrix([-6., -4., -5.])
 >>> G = matrix([[ 16., 7.,  24.,  -8.,   8.,  -1.,  0., -1.,  0.,  0.,   
                    7.,  -5.,   1.,  -5.,   1.,  -7.,   1.,   -7.,  -4.], 
@@ -375,7 +375,7 @@ obtain the same result if we define ``G`` and ``h`` as below.
 Quadratic Cone Programs 
 =======================
 
-.. function:: cvxopt.solvers.coneqp(P, q[, G, h[, dims[, A, b[, initvals[, kktsolver]]]]])
+.. function:: kvxopt.solvers.coneqp(P, q[, G, h[, dims[, A, b[, initvals[, kktsolver]]]]])
 
     Solves a pair of primal and dual quadratic cone programs
 
@@ -581,7 +581,7 @@ with
     b = \left[ \begin{array}{r} 1.5 \\ 0.0 \\ -1.2 \\ -0.7 \\ 0.0 
         \end{array} \right]. 
 
->>> from cvxopt import matrix, solvers
+>>> from kvxopt import matrix, solvers
 >>> A = matrix([ [ .3, -.4,  -.2,  -.4,  1.3 ], 
                  [ .6, 1.2, -1.7,   .3,  -.3 ],
                  [-.3,  .0,   .6, -1.2, -2.0 ] ])
@@ -604,12 +604,12 @@ with
 Linear Programming
 ==================
 
-The function :func:`lp <cvxopt.solvers.lp>` is an interface to 
-:func:`conelp <cvxopt.solvers.conelp>` for linear 
+The function :func:`lp <kvxopt.solvers.lp>` is an interface to 
+:func:`conelp <kvxopt.solvers.conelp>` for linear 
 programs.  It also provides the option of using the linear programming 
 solvers from GLPK or MOSEK.
 
-.. function:: cvxopt.solvers.lp(c, G, h[, A, b[, solver[, primalstart[, dualstart]]]])
+.. function:: kvxopt.solvers.lp(c, G, h[, A, b[, solver[, primalstart[, dualstart]]]])
 
     Solves the pair of primal and dual linear programs
 
@@ -631,8 +631,8 @@ solvers from GLPK or MOSEK.
     The inequalities are componentwise vector inequalities.
 
     The ``solver`` argument is used to choose among three solvers.  When 
-    it is omitted or :const:`None`, the CVXOPT function 
-    :func:`conelp <cvxopt.solvers.conelp>` is 
+    it is omitted or :const:`None`, the kvxopt function 
+    :func:`conelp <kvxopt.solvers.conelp>` is 
     used.  The external solvers GLPK and MOSEK (if installed) can be 
     selected by setting ``solver`` to :const:`'glpk'` or :const:`'mosek'`; 
     see the section :ref:`s-external`.  The meaning of the other 
@@ -660,7 +660,7 @@ As a simple example we solve the LP
     \end{array} 
 
 
->>> from cvxopt import matrix, solvers
+>>> from kvxopt import matrix, solvers
 >>> c = matrix([-4., -5.])
 >>> G = matrix([[2., 1., -1., 0.], [1., 2., 0., -1.]])
 >>> h = matrix([3., 3., 0., 0.])
@@ -675,12 +675,12 @@ As a simple example we solve the LP
 Quadratic Programming
 =====================
 
-The function :func:`qp <cvxopt.solvers.qp>` is an interface to 
-:func:`coneqp <cvxopt.solvers.coneqp>` for quadratic 
+The function :func:`qp <kvxopt.solvers.qp>` is an interface to 
+:func:`coneqp <kvxopt.solvers.coneqp>` for quadratic 
 programs.  It also provides the option of using the quadratic programming 
 solver from MOSEK.
 
-.. function:: cvxopt.solvers.qp(P, q[, G, h[, A, b[, solver[, initvals]]]])
+.. function:: kvxopt.solvers.qp(P, q[, G, h[, A, b[, solver[, initvals]]]])
 
     Solves the pair of primal and dual convex quadratic programs 
 
@@ -705,12 +705,12 @@ solver from MOSEK.
   
     The inequalities are componentwise vector inequalities.
 
-    The default CVXOPT solver is used when the ``solver`` argument is 
+    The default kvxopt solver is used when the ``solver`` argument is 
     absent or :const:`None`.  The MOSEK solver (if installed) can be 
     selected by setting ``solver`` to :const:`'mosek'`; see the 
     section :ref:`s-external`.  The meaning of the other arguments and the
     return value is the same as for 
-    :func:`coneqp <cvxopt.solvers.coneqp>` called with `dims` 
+    :func:`coneqp <kvxopt.solvers.coneqp>` called with `dims` 
     equal to ``{'l': G.size[0], 'q': [], 's': []}``.
 
     When ``solver`` is :const:`'mosek'`, the initial values are ignored,
@@ -766,9 +766,9 @@ the trade-off curve and produces two figures using the
 ::
 
     from math import sqrt
-    from cvxopt import matrix
-    from cvxopt.blas import dot 
-    from cvxopt.solvers import qp
+    from kvxopt import matrix
+    from kvxopt.blas import dot 
+    from kvxopt.solvers import qp
     import pylab
 
     # Problem data.
@@ -826,11 +826,11 @@ the trade-off curve and produces two figures using the
 Second-Order Cone Programming
 =============================
 
-The function :func:`socp <cvxopt.solvers.socp>` is a simpler interface to 
-:func:`conelp <cvxopt.solvers.conelp>` for 
+The function :func:`socp <kvxopt.solvers.socp>` is a simpler interface to 
+:func:`conelp <kvxopt.solvers.conelp>` for 
 cone programs with no linear matrix inequality constraints.
 
-.. function:: cvxopt.solvers.socp(c[, Gl, hl[, Gq, hq[, A, b[, solver[, primalstart[, dualstart]]]]]])
+.. function:: kvxopt.solvers.socp(c[, Gl, hl[, Gq, hq[, A, b[, solver[, primalstart[, dualstart]]]]]])
 
     Solves the pair of primal and dual second-order cone programs
     
@@ -889,7 +889,7 @@ cone programs with no linear matrix inequality constraints.
     zero rows. 
 
     The ``solver`` argument is used to choose between two solvers: the 
-    CVXOPT :func:`conelp <cvxopt.solvers.conelp>` solver (used when 
+    kvxopt :func:`conelp <kvxopt.solvers.conelp>` solver (used when 
     ``solver`` is absent or equal 
     to :const:`None` and the external solver MOSEK (``solver`` is 
     :const:`'mosek'`); see the section :ref:`s-external`.  With the 
@@ -926,7 +926,7 @@ cone programs with no linear matrix inequality constraints.
     slacks and dual variables associated with the second-order cone 
     inequalities.  The other entries in the output dictionary have the 
     same meaning as in the output of 
-    :func:`conelp <cvxopt.solvers.conelp>`.
+    :func:`conelp <kvxopt.solvers.conelp>`.
 
 
 As an example, we solve  the second-order cone program
@@ -946,7 +946,7 @@ As an example, we solve  the second-order cone program
     \end{array}
 
 
->>> from cvxopt import matrix, solvers
+>>> from kvxopt import matrix, solvers
 >>> c = matrix([-2., 1., 5.])
 >>> G = [ matrix( [[12., 13., 12.], [6., -3., -12.], [-5., -5., 6.]] ) ]
 >>> G += [ matrix( [[3., 3., -1., 1.], [-6., -6., -9., 19.], [10., -2., -2., -3.]] ) ]
@@ -974,12 +974,12 @@ optimal
 Semidefinite Programming
 ========================
 
-The function :func:`sdp <cvxopt.solvers.sdp>` is a simple interface to 
-:func:`conelp <cvxopt.solvers.conelp>` for cone 
+The function :func:`sdp <kvxopt.solvers.sdp>` is a simple interface to 
+:func:`conelp <kvxopt.solvers.conelp>` for cone 
 programs with no second-order cone constraints.  It also provides the 
 option of using the DSDP semidefinite programming solver.
 
-.. function:: cvxopt.solvers.sdp(c[, Gl, hl[, Gs, hs[, A, b[, solver[, primalstart[, dualstart]]]]]])
+.. function:: kvxopt.solvers.sdp(c[, Gl, hl[, Gs, hs[, A, b[, solver[, primalstart[, dualstart]]]]]])
 
     Solves the pair of primal and dual semidefinite programs
 
@@ -1045,7 +1045,7 @@ option of using the DSDP semidefinite programming solver.
     rows. 
 
     The ``solver`` argument is used to choose between two solvers: the 
-    CVXOPT :func:`conelp <cvxopt.solvers.conelp>` solver 
+    kvxopt :func:`conelp <kvxopt.solvers.conelp>` solver 
     (used when ``solver`` is absent or equal 
     to :const:`None`) and the external solver DSDP5 (``solver`` is 
     :const:`'dsdp'`); see the section :ref:`s-external`.  With the 
@@ -1083,7 +1083,7 @@ option of using the DSDP semidefinite programming solver.
     slacks and dual variables associated with the second-order cone 
     inequalities.  The other entries in the output dictionary have the 
     same meaning as in the output of 
-    :func:`conelp <cvxopt.solvers.conelp>`.
+    :func:`conelp <kvxopt.solvers.conelp>`.
 
 We illustrate the calling sequence with a small example.
 
@@ -1126,7 +1126,7 @@ We illustrate the calling sequence with a small example.
                   \end{array} \right] 
         \end{array}
 
->>> from cvxopt import matrix, solvers
+>>> from kvxopt import matrix, solvers
 >>> c = matrix([1.,-1.,1.])
 >>> G = [ matrix([[-7., -11., -11., 3.], 
                   [ 7., -18., -18., 8.], 
@@ -1169,8 +1169,8 @@ Exploiting Structure
 ====================
 
 By default, the functions 
-:func:`conelp <cvxopt.solvers.conelp>` and 
-:func:`coneqp <cvxopt.solvers.coneqp>` exploit no 
+:func:`conelp <kvxopt.solvers.conelp>` and 
+:func:`coneqp <kvxopt.solvers.coneqp>` exploit no 
 problem structure except (to some limited extent) sparsity.  Two mechanisms
 are provided for implementing customized solvers that take advantage of 
 problem structure.
@@ -1178,8 +1178,8 @@ problem structure.
 
 **Providing a function for solving KKT equations**
     The most expensive step of each iteration of 
-    :func:`conelp <cvxopt.solvers.conelp>` or 
-    :func:`coneqp <cvxopt.solvers.coneqp>` is the solution of a set of  
+    :func:`conelp <kvxopt.solvers.conelp>` or 
+    :func:`coneqp <kvxopt.solvers.coneqp>` is the solution of a set of  
     linear equations (*KKT equations*) of the form
 
     .. math::
@@ -1286,8 +1286,8 @@ problem structure.
 
     It is often possible to exploit problem structure to solve 
     :eq:`e-conelp-kkt` faster than by standard methods.  The last argument
-    ``kktsolver`` of :func:`conelp <cvxopt.solvers.conelp>` and 
-    :func:`coneqp <cvxopt.solvers.coneqp>` allows the user to 
+    ``kktsolver`` of :func:`conelp <kvxopt.solvers.conelp>` and 
+    :func:`coneqp <kvxopt.solvers.coneqp>` allows the user to 
     supply a Python  function for solving the KKT equations.  This 
     function will be called as ``f = kktsolver(W)``, where ``W`` is a 
     dictionary that contains the parameters of the scaling:
@@ -1333,10 +1333,10 @@ problem structure.
 
 
 **Specifying constraints via Python functions**
-    In the default use of :func:`conelp <cvxopt.solvers.conelp>` and 
-    :func:`coneqp <cvxopt.solvers.coneqp>`, the linear 
+    In the default use of :func:`conelp <kvxopt.solvers.conelp>` and 
+    :func:`coneqp <kvxopt.solvers.coneqp>`, the linear 
     constraints and the quadratic term in the objective are parameterized 
-    by CVXOPT matrices ``G``, ``A``, ``P``.  It is possible to specify 
+    by kvxopt matrices ``G``, ``A``, ``P``.  It is possible to specify 
     these parameters via Python functions that evaluate the corresponding 
     matrix-vector products and their adjoints.
 
@@ -1406,7 +1406,7 @@ We illustrate these features with three applications.
 
     :: 
 
-        from cvxopt import blas, lapack, solvers, matrix, spmatrix, mul, div
+        from kvxopt import blas, lapack, solvers, matrix, spmatrix, mul, div
 
         def l1(P, q):
             """
@@ -1522,7 +1522,7 @@ We illustrate these features with three applications.
 
     :: 
 
-        from cvxopt import blas, lapack, solvers, matrix
+        from kvxopt import blas, lapack, solvers, matrix
 
         def mcsdp(w):
             """
@@ -1775,7 +1775,7 @@ We illustrate these features with three applications.
 
 **Example: 1-norm regularized least-squares** 
     As an example that illustrates how structure can be exploited in 
-    :func:`coneqp <cvxopt.solvers.coneqp>`, we consider the 1-norm 
+    :func:`coneqp <kvxopt.solvers.coneqp>`, we consider the 1-norm 
     regularized least-squares problem
 
     .. math::
@@ -1800,7 +1800,7 @@ We illustrate these features with three applications.
 
     ::
 
-        from cvxopt import matrix, spdiag, mul, div, blas, lapack, solvers, sqrt
+        from kvxopt import matrix, spdiag, mul, div, blas, lapack, solvers, sqrt
         import math
 
         def l1regls(A, y):
@@ -1939,27 +1939,27 @@ We illustrate these features with three applications.
 Optional Solvers
 ================
 
-CVXOPT includes optional interfaces to several other optimization 
+kvxopt includes optional interfaces to several other optimization 
 libraries.
 
 **GLPK** 
-    :func:`lp <cvxopt.solvers.lp>` with the ``solver`` option set to 
+    :func:`lp <kvxopt.solvers.lp>` with the ``solver`` option set to 
     :const:`'glpk'` uses the 
     simplex algorithm in `GLPK (GNU Linear Programming Kit) 
     <http://www.gnu.org/software/glpk/glpk.html>`_.
 
 **MOSEK** 
-    :func:`lp <cvxopt.solvers.lp>`, :func:`socp <cvxopt.solvers.socp>`,
-    and :func:`qp <cvxopt.solvers.qp>` with the ``solver`` option
+    :func:`lp <kvxopt.solvers.lp>`, :func:`socp <kvxopt.solvers.socp>`,
+    and :func:`qp <kvxopt.solvers.qp>` with the ``solver`` option
     set to :const:`'mosek'` option use `MOSEK <http://www.mosek.com>`_
     version 5.
 
 **DSDP** 
-    :func:`sdp <cvxopt.solvers.sdp>` with the ``solver`` option set to 
+    :func:`sdp <kvxopt.solvers.sdp>` with the ``solver`` option set to 
     :const:`'dsdp'` uses 
     the `DSDP5.8 <http://www-unix.mcs.anl.gov/DSDP>`_.  
 
-GLPK, MOSEK and DSDP are not included in the CVXOPT distribution and 
+GLPK, MOSEK and DSDP are not included in the kvxopt distribution and 
 need to be installed separately.  
 
 
@@ -2000,13 +2000,13 @@ adding entries with the following key values.
 
 For example the command
 
->>> from cvxopt import solvers
+>>> from kvxopt import solvers
 >>> solvers.options['show_progress'] = False
 
 turns off the screen output during calls to the solvers.
 
 The tolerances :const:`'abstol'`, :const:`'reltol'` and :const:`'feastol'` 
-have the following meaning.  :func:`conelp <cvxopt.solvers.conelp>` 
+have the following meaning.  :func:`conelp <kvxopt.solvers.conelp>` 
 terminates with status :const:`'optimal'` if
 
 .. math::
@@ -2054,12 +2054,12 @@ It returns with status :const:`'dual infeasible'` if
     \frac{\|Ax\|_2}{\max\{1, \|b\|_2\}} \leq \epsilon_\mathrm{feas}, 
     \qquad c^Tx = -1.
 
-The functions :func:`lp <cvxopt.solvers.lp`, 
-:func:`socp <cvxopt.solvers.socp>` and 
-:func:`sdp <cvxopt.solvers.sdp>` call :func:`conelp` 
+The functions :func:`lp <kvxopt.solvers.lp`, 
+:func:`socp <kvxopt.solvers.socp>` and 
+:func:`sdp <kvxopt.solvers.sdp>` call :func:`conelp` 
 and hence use the same stopping criteria.
 
-The function :func:`coneqp <cvxopt.solvers.coneqp>` terminates with 
+The function :func:`coneqp <kvxopt.solvers.coneqp>` terminates with 
 status :const:`'optimal'` if
 
 .. math::
@@ -2102,7 +2102,7 @@ Here
 
     L(x,y,z) = \frac{1}{2}x^TPx + q^Tx  + z^T (Gx-h) + y^T(Ax-b).
 
-The function :func:`qp <cvxopt.solvers.qp>` calls 
+The function :func:`qp <kvxopt.solvers.qp>` calls 
 :func:`coneqp` and hence uses the same 
 stopping criteria.
 
@@ -2112,11 +2112,11 @@ in :attr:`solvers.options['glpk']`.  The entry must be a
 dictionary in which the key/value pairs are GLPK parameter names 
 and values.  For example, the command 
 
->>> from cvxopt import solvers 
+>>> from kvxopt import solvers 
 >>> solvers.options['glpk'] = {'msg_lev' : 'GLP_MSG_OFF'}
 
 turns off the screen output in subsequent 
-:func:`lp <cvxopt.solvers.lp>` calls with the :const:`'glpk'` option.
+:func:`lp <kvxopt.solvers.lp>` calls with the :const:`'glpk'` option.
 
 The MOSEK interior-point algorithm parameters are set to their default 
 values.  They can be modified by adding an entry 
@@ -2126,7 +2126,7 @@ MOSEK parameter/value pairs, with the parameter names imported from
 
 For example, the commands
 
->>> from cvxopt import solvers 
+>>> from kvxopt import solvers 
 >>> import mosek
 >>> solvers.options['mosek'] = {mosek.iparam.log: 0}
 
@@ -2151,7 +2151,7 @@ It is also possible to override the options specified in the
 dictionary :attr:`solvers.options` by passing a dictionary with
 options as a keyword argument. For example, the commands
 
->>> from cvxopt import solvers
+>>> from kvxopt import solvers
 >>> opts = {'maxiters' : 50}
 >>> solvers.conelp(c, G, h, options = opts)
 

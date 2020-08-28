@@ -21,8 +21,8 @@ linear inequalities are generalized inequalities with respect to a proper
 convex cone, defined as a product of a nonnegative orthant, second-order
 cones, and positive semidefinite cones.
 
-The basic functions are :func:`cp <cvxopt.solvers.cp>` and
-:func:`cpl <cvxopt.solvers.cpl>`, described in the sections
+The basic functions are :func:`cp <kvxopt.solvers.cp>` and
+:func:`cpl <kvxopt.solvers.cpl>`, described in the sections
 :ref:`s-cp` and :ref:`s-cpl`.   A simpler interface for geometric
 programming problems is discussed in the section :ref:`s-gp`.
 In the section :ref:`s-nlcp` we explain how custom solvers can be
@@ -36,7 +36,7 @@ describes the algorithm parameters that control the solvers.
 Problems with Nonlinear Objectives
 ==================================
 
-.. function:: cvxopt.solvers.cp(F[, G, h[, dims[, A, b[, kktsolver]]]])
+.. function:: kvxopt.solvers.cp(F[, G, h[, dims[, A, b[, kktsolver]]]])
 
     Solves a convex optimization problem
 
@@ -203,7 +203,7 @@ Problems with Nonlinear Objectives
         entries contain the iterates when the algorithm terminated.
 
     :func:`cp` solves the problem by applying
-    :func:`cpl <cvxopt.solvers.cpl>` to the epigraph
+    :func:`cpl <kvxopt.solvers.cpl>` to the epigraph
     form problem
 
     .. math::
@@ -217,7 +217,7 @@ Problems with Nonlinear Objectives
 
     The other entries in the output dictionary of :func:`cp` describe
     the accuracy of the solution and are copied from the output of
-    :func:`cpl <cvxopt.solvers.cpl>` applied to this epigraph form
+    :func:`cpl <kvxopt.solvers.cpl>` applied to this epigraph form
     problem.
 
     :func:`cp` requires that the problem is strictly primal and dual
@@ -250,7 +250,7 @@ Problems with Nonlinear Objectives
 
     ::
 
-        from cvxopt import solvers, matrix, spdiag, log
+        from kvxopt import solvers, matrix, spdiag, log
 
         def acent(A, b):
             m, n = A.size
@@ -280,7 +280,7 @@ Problems with Nonlinear Objectives
 
     ::
 
-        from cvxopt import solvers, matrix, spdiag, sqrt, div
+        from kvxopt import solvers, matrix, spdiag, sqrt, div
 
         def robls(A, b, rho):
             m, n = A.size
@@ -321,7 +321,7 @@ Problems with Nonlinear Objectives
 
     ::
 
-        from cvxopt import matrix, log, div, spdiag, solvers
+        from kvxopt import matrix, log, div, spdiag, solvers
 
         def F(x = None, z = None):
              if x is None:  return 0, matrix(0.0, (3,1))
@@ -350,7 +350,7 @@ Problems with Nonlinear Objectives
 Problems with Linear Objectives
 ===============================
 
-.. function:: cvxopt.solvers.cpl(c, F[, G, h[, dims[, A, b[, kktsolver]]]])
+.. function:: kvxopt.solvers.cpl(c, F[, G, h[, dims[, A, b[, kktsolver]]]])
 
     Solves a convex optimization problem with a linear objective
 
@@ -605,7 +605,7 @@ Problems with Linear Objectives
     ::
 
         import pylab
-        from cvxopt import solvers, matrix, spmatrix, mul, div
+        from kvxopt import solvers, matrix, spmatrix, mul, div
 
         def floorplan(Amin):
 
@@ -741,7 +741,7 @@ Problems with Linear Objectives
 Geometric Programming
 =====================
 
-.. function:: cvxopt.solvers.gp(K, F, g[, G, h[, A, b]])
+.. function:: kvxopt.solvers.gp(K, F, g[, G, h[, A, b]])
 
     Solves a geometric program in convex form
 
@@ -817,7 +817,7 @@ Geometric Programming
 
     The other entries in the output dictionary describe the accuracy
     of the solution, and are taken from the output of
-    :func:`cp <cvxopt.solvers.cp>`.
+    :func:`cp <kvxopt.solvers.cp>`.
 
     :func:`gp` requires that the problem is strictly primal and dual
     feasible and that
@@ -856,7 +856,7 @@ with variables :math:`h`, :math:`w`, :math:`d`.
 
 ::
 
-    from cvxopt import matrix, log, exp, solvers
+    from kvxopt import matrix, log, exp, solvers
 
     Aflr  = 1000.0
     Awall = 100.0
@@ -879,14 +879,14 @@ with variables :math:`h`, :math:`w`, :math:`d`.
 Exploiting Structure
 ====================
 
-By default, the functions :func:`cp <cvxopt.solvers.cp>` and
-:func:`cpl <cvxopt.solvers.cpl>` do not exploit problem
+By default, the functions :func:`cp <kvxopt.solvers.cp>` and
+:func:`cpl <kvxopt.solvers.cpl>` do not exploit problem
 structure.  Two mechanisms are provided for implementing customized solvers
 that take advantage of problem structure.
 
 **Providing a function for solving KKT equations**
     The most expensive step of each iteration of
-    :func:`cp <cvxopt.solvers.cp>` is the
+    :func:`cp <kvxopt.solvers.cp>` is the
     solution of a set of linear equations (*KKT equations*) of the form
 
     .. math::
@@ -1025,7 +1025,7 @@ that take advantage of problem structure.
 
     It is often possible to exploit problem structure to solve
     :eq:`e-cp-kkt` faster than by standard methods.  The last argument
-    ``kktsolver`` of :func:`cp <cvxopt.solvers.cp>` allows the user to
+    ``kktsolver`` of :func:`cp <kvxopt.solvers.cp>` allows the user to
     supply a Python function
     for solving the KKT equations.  This function will be called as
     ``f = kktsolver(x, z, W)``.  The argument ``x`` is the point at
@@ -1060,7 +1060,7 @@ that take advantage of problem structure.
         b_x := u_x, \qquad b_y := u_y, \qquad b_z := W u_z.
 
     The role of the argument ``kktsolver`` in the function
-    :func:`cpl <cvxopt.solvers.cpl>` is similar, except that in
+    :func:`cpl <kvxopt.solvers.cpl>` is similar, except that in
     :eq:`e-cp-kkt`,
 
     .. math::
@@ -1071,7 +1071,7 @@ that take advantage of problem structure.
 
 
 **Specifying constraints via Python functions**
-    In the default use of :func:`cp <cvxopt.solvers.cp>`, the arguments
+    In the default use of :func:`cp <kvxopt.solvers.cp>`, the arguments
     ``G`` and ``A`` are the
     coefficient matrices in the constraints of :eq:`e-cp-kkt`.  It is also
     possible to specify these matrices by providing Python functions that
@@ -1101,7 +1101,7 @@ that take advantage of problem structure.
                (\mathrm{trans} = \mathrm{'T'}).
 
     * In a similar way, when the first argument ``F`` of
-      :func:`cp <cvxopt.solvers.cp>` returns matrices of first
+      :func:`cp <kvxopt.solvers.cp>` returns matrices of first
       derivatives or second derivatives ``Df``, ``H``, these matrices can
       be specified as Python functions.  If ``Df`` is a Python function,
       then ``Df(u, v[, alpha = 1.0, beta = 0.0, trans = 'N'])`` should
@@ -1162,7 +1162,7 @@ for matrix-matrix and matrix-vector products.
 
 ::
 
-    from cvxopt import matrix, spdiag, mul, div, log, blas, lapack, solvers, base
+    from kvxopt import matrix, spdiag, mul, div, log, blas, lapack, solvers, base
 
     def l2ac(A, b):
         """
@@ -1263,12 +1263,12 @@ adding entries with the following key values.
 
 For example the command
 
->>> from cvxopt import solvers
+>>> from kvxopt import solvers
 >>> solvers.options['show_progress'] = False
 
 turns off the screen output during calls to the solvers.  The tolerances
 :const:`abstol`, :const:`reltol` and :const:`feastol` have the
-following meaning in :func:`cpl <cvxopt.solvers.cpl>`.
+following meaning in :func:`cpl <kvxopt.solvers.cpl>`.
 
 :func:`cpl` returns with status :const:`'optimal'` if
 
@@ -1307,6 +1307,6 @@ where
     L(x,y,z) = c^Tx + z_\mathrm{nl}^T f(x) +
         z_\mathrm{l}^T (Gx-h) + y^T(Ax-b).
 
-The functions :func:`cp <cvxopt.solvers.cp>` and
-:func:`gp <cvxopt.solvers.gp>` call :func:`cpl` and hence use the
+The functions :func:`cp <kvxopt.solvers.cp>` and
+:func:`gp <kvxopt.solvers.gp>` call :func:`cpl` and hence use the
 same stopping criteria (with :math:`x_0 = 0` for :func:`gp`).

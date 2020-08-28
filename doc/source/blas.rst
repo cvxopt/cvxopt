@@ -4,7 +4,7 @@
 The BLAS Interface
 ******************
 
-The :mod:`cvxopt.blas` module provides an interface to the double-precision
+The :mod:`kvxopt.blas` module provides an interface to the double-precision
 real and complex Basic Linear Algebra Subprograms (BLAS).  The names and 
 calling sequences of the Python functions in the interface closely match 
 the corresponding Fortran BLAS routines (described in the references below)
@@ -48,7 +48,7 @@ Matrix Classes
 
 The BLAS exploit several types of matrix structure: symmetric, Hermitian, 
 triangular, and banded.   We represent all these matrix classes by dense 
-real or complex :class:`matrix <cvxopt.matrix>` objects, with additional 
+real or complex :class:`matrix <kvxopt.matrix>` objects, with additional 
 arguments that specify the structure.
 
 
@@ -349,7 +349,7 @@ Level 1 BLAS
 
 The level 1 functions implement vector operations.  
 
-.. function:: cvxopt.blas.scal(alpha, x)
+.. function:: kvxopt.blas.scal(alpha, x)
 
     Scales a vector by a constant: 
 
@@ -362,7 +362,7 @@ The level 1 functions implement vector operations.
     integer, float, or complex.
 
 
-.. function:: cvxopt.blas.nrm2(x)
+.. function:: kvxopt.blas.nrm2(x)
 
     Euclidean norm of a vector:  returns 
 
@@ -371,7 +371,7 @@ The level 1 functions implement vector operations.
         \|x\|_2.
 
 
-.. function:: cvxopt.blas.asum(x)
+.. function:: kvxopt.blas.asum(x)
 
     1-Norm of a vector: returns 
 
@@ -381,7 +381,7 @@ The level 1 functions implement vector operations.
         \|\Re x\|_1 + \|\Im x\|_1 \quad \mbox{($x$ complex)}.
 
 
-.. function:: cvxopt.blas.iamax(x)
+.. function:: kvxopt.blas.iamax(x)
 
     Returns 
 
@@ -397,7 +397,7 @@ The level 1 functions implement vector operations.
     first :math:`k` is returned.  
 
 
-.. function:: cvxopt.blas.swap(x, y)
+.. function:: kvxopt.blas.swap(x, y)
 
     Interchanges two vectors:
 
@@ -409,7 +409,7 @@ The level 1 functions implement vector operations.
     :const:`'z'`).
     
 
-.. function:: cvxopt.blas.copy(x, y)
+.. function:: kvxopt.blas.copy(x, y)
 
     Copies a vector to another vector:
 
@@ -421,7 +421,7 @@ The level 1 functions implement vector operations.
     :const:`'z'`).
 
 
-.. function:: cvxopt.blas.axpy(x, y[, alpha = 1.0])
+.. function:: kvxopt.blas.axpy(x, y[, alpha = 1.0])
 
     Constant times a vector plus a vector:  
 
@@ -435,7 +435,7 @@ The level 1 functions implement vector operations.
     integer, float, or complex.  
 
 
-.. function:: cvxopt.blas.dot(x, y)
+.. function:: kvxopt.blas.dot(x, y)
 
     Returns 
 
@@ -447,7 +447,7 @@ The level 1 functions implement vector operations.
     :const:`'z'`).  
 
 
-.. function:: cvxopt.blas.dotu(x, y)
+.. function:: kvxopt.blas.dotu(x, y)
 
     Returns 
 
@@ -469,7 +469,7 @@ The level 2 functions implement matrix-vector products and rank-1 and
 rank-2 matrix updates.  Different types of matrix structure can be exploited
 using the conventions of the section :ref:`s-conventions`. 
 
-.. function:: cvxopt.blas.gemv(A, x, y[, trans = 'N', alpha = 1.0, beta = 0.0])
+.. function:: kvxopt.blas.gemv(A, x, y[, trans = 'N', alpha = 1.0, beta = 0.0])
 
     Matrix-vector product with a general matrix:  
 
@@ -487,7 +487,7 @@ using the conventions of the section :ref:`s-conventions`.
     ``beta`` are only allowed if ``A`` is complex. 
 
 
-.. function:: cvxopt.blas.symv(A, x, y[, uplo = 'L', alpha = 1.0, beta = 0.0])
+.. function:: kvxopt.blas.symv(A, x, y[, uplo = 'L', alpha = 1.0, beta = 0.0])
 
     Matrix-vector  product with a real symmetric matrix:  
 
@@ -500,7 +500,7 @@ using the conventions of the section :ref:`s-conventions`.
     ``beta`` must be real.
 
 
-.. function:: cvxopt.blas.hemv(A, x, y[, uplo = 'L', alpha = 1.0, beta = 0.0])
+.. function:: kvxopt.blas.hemv(A, x, y[, uplo = 'L', alpha = 1.0, beta = 0.0])
 
     Matrix-vector  product with a real symmetric or complex Hermitian 
     matrix: 
@@ -515,7 +515,7 @@ using the conventions of the section :ref:`s-conventions`.
     allowed if ``A``  is complex. 
 
 
-.. function:: cvxopt.blas.trmv(A, x[, uplo = 'L', trans = 'N', diag = 'N'])
+.. function:: kvxopt.blas.trmv(A, x[, uplo = 'L', trans = 'N', diag = 'N'])
 
     Matrix-vector  product with a triangular matrix: 
 
@@ -529,7 +529,7 @@ using the conventions of the section :ref:`s-conventions`.
     ``x`` must have the same type (:const:`'d'` or :const:`'z'`).
 
 
-.. function:: cvxopt.blas.trsv(A, x[, uplo = 'L', trans = 'N', diag = 'N'])
+.. function:: kvxopt.blas.trsv(A, x[, uplo = 'L', trans = 'N', diag = 'N'])
 
     Solution of a nonsingular triangular set of linear equations:
 
@@ -544,7 +544,7 @@ using the conventions of the section :ref:`s-conventions`.
     :const:`'z'`).
 
 
-.. function:: cvxopt.blas.gbmv(A, m, kl, x, y[, trans = 'N', alpha = 1.0, beta = 0.0])
+.. function:: kvxopt.blas.gbmv(A, m, kl, x, y[, trans = 'N', alpha = 1.0, beta = 0.0])
     
     Matrix-vector product with a general band matrix:
 
@@ -563,7 +563,7 @@ using the conventions of the section :ref:`s-conventions`.
     ``alpha``  and ``beta``  are only allowed if ``A`` is complex.
 
 
-.. function:: cvxopt.blas.sbmv(A, x, y[, uplo = 'L', alpha = 1.0, beta = 0.0])
+.. function:: kvxopt.blas.sbmv(A, x, y[, uplo = 'L', alpha = 1.0, beta = 0.0])
 
     Matrix-vector  product with a real symmetric band matrix:
 
@@ -576,7 +576,7 @@ using the conventions of the section :ref:`s-conventions`.
     ``beta`` must be real.
 
 
-.. function:: cvxopt.blas.hbmv(A, x, y[, uplo = 'L', alpha = 1.0, beta = 0.0])
+.. function:: kvxopt.blas.hbmv(A, x, y[, uplo = 'L', alpha = 1.0, beta = 0.0])
 
     Matrix-vector  product with a real symmetric or complex Hermitian band 
     matrix:
@@ -591,7 +591,7 @@ using the conventions of the section :ref:`s-conventions`.
     ``beta``  are only allowed if ``A``  is complex. 
 
 
-.. function:: cvxopt.blas.tbmv(A, x[, uplo = 'L', trans = 'N',  diag = 'N'])
+.. function:: kvxopt.blas.tbmv(A, x[, uplo = 'L', trans = 'N',  diag = 'N'])
 
     Matrix-vector  product with a triangular band matrix:
 
@@ -605,7 +605,7 @@ using the conventions of the section :ref:`s-conventions`.
     :const:`'z'`).
 
 
-.. function:: cvxopt.blas.tbsv(A, x[, uplo = 'L', trans = 'N', diag = 'N'])
+.. function:: kvxopt.blas.tbsv(A, x[, uplo = 'L', trans = 'N', diag = 'N'])
 
     Solution of a triangular banded set of linear equations:
 
@@ -620,7 +620,7 @@ using the conventions of the section :ref:`s-conventions`.
     (:const:`'d'` or :const:`'z'`).
 
 
-.. function:: cvxopt.blas.ger(x, y, A[, alpha = 1.0])
+.. function:: kvxopt.blas.ger(x, y, A[, alpha = 1.0])
 
     General rank-1 update:
 
@@ -633,7 +633,7 @@ using the conventions of the section :ref:`s-conventions`.
     values of ``alpha``  are only allowed if ``A``  is complex.
 
 
-.. function:: cvxopt.blas.geru(x, y, A[, alpha = 1.0])
+.. function:: kvxopt.blas.geru(x, y, A[, alpha = 1.0])
 
     General rank-1 update:
 
@@ -646,7 +646,7 @@ using the conventions of the section :ref:`s-conventions`.
     values of ``alpha``  are only allowed if ``A``  is complex.
 
 
-.. function:: cvxopt.blas.syr(x, A[, uplo = 'L', alpha = 1.0])
+.. function:: kvxopt.blas.syr(x, A[, uplo = 'L', alpha = 1.0])
 
     Symmetric rank-1 update:
 
@@ -658,7 +658,7 @@ using the conventions of the section :ref:`s-conventions`.
     ``x``  must have type :const:`'d'`.  ``alpha``  must be a real number.
 
 
-.. function:: cvxopt.blas.her(x, A[, uplo = 'L', alpha = 1.0])
+.. function:: kvxopt.blas.her(x, A[, uplo = 'L', alpha = 1.0])
 
     Hermitian rank-1 update:
 
@@ -671,7 +671,7 @@ using the conventions of the section :ref:`s-conventions`.
     :const:`'z'`).  ``alpha``  must be a real number.
 
 
-.. function:: cvxopt.blas.syr2(x, y, A[, uplo = 'L', alpha = 1.0])
+.. function:: kvxopt.blas.syr2(x, y, A[, uplo = 'L', alpha = 1.0])
 
     Symmetric rank-2  update:
 
@@ -683,7 +683,7 @@ using the conventions of the section :ref:`s-conventions`.
     and ``y`` must have type :const:`'d'`.  ``alpha``  must be real.
 
 
-.. function:: cvxopt.blas.her2(x, y, A[, uplo = 'L', alpha = 1.0])
+.. function:: kvxopt.blas.her2(x, y, A[, uplo = 'L', alpha = 1.0])
 
     Symmetric rank-2  update:
 
@@ -709,8 +709,8 @@ As an example, the following code multiplies the tridiagonal matrix
 
 with the vector :math:`x = (1,-1,2,-2)`.
 
->>> from cvxopt import matrix
->>> from cvxopt.blas import gbmv
+>>> from kvxopt import matrix
+>>> from kvxopt.blas import gbmv
 >>> A = matrix([[0., 1., 2.],  [6., -4., -3.],  [3., -1., 0.],  [1., 0., 0.]])
 >>> x = matrix([1., -1., 2., -2.])
 >>> y = matrix(0., (3,1))
@@ -722,10 +722,10 @@ with the vector :math:`x = (1,-1,2,-2)`.
 
 
 The following example illustrates the use of 
-:func:`tbsv <cvxopt.blas.tbsv>`.
+:func:`tbsv <kvxopt.blas.tbsv>`.
 
->>> from cvxopt import matrix
->>> from cvxopt.blas import tbsv
+>>> from kvxopt import matrix
+>>> from kvxopt.blas import tbsv
 >>> A = matrix([-6., 5., -1., 2.], (1,4))
 >>> x = matrix(1.0, (4,1))
 >>> tbsv(A, x)  # x := diag(A)^{-1}*x
@@ -743,7 +743,7 @@ Level 3 BLAS
 
 The level 3 BLAS include functions for matrix-matrix multiplication.
 
-.. function:: cvxopt.blas.gemm(A, B, C[, transA = 'N', transB = 'N', alpha = 1.0, beta = 0.0])
+.. function:: kvxopt.blas.gemm(A, B, C[, transA = 'N', transB = 'N', alpha = 1.0, beta = 0.0])
 
     Matrix-matrix product of two general matrices:  
 
@@ -772,7 +772,7 @@ The level 3 BLAS include functions for matrix-matrix multiplication.
     ``beta`` are only allowed if ``A`` is complex.
 
 
-.. function:: cvxopt.blas.symm(A, B, C[, side = 'L', uplo = 'L', alpha =1.0,  beta = 0.0])
+.. function:: kvxopt.blas.symm(A, B, C[, side = 'L', uplo = 'L', alpha =1.0,  beta = 0.0])
 
     Product of a real or complex symmetric matrix :math:`A` and a general 
     matrix :math:`B`:
@@ -787,7 +787,7 @@ The level 3 BLAS include functions for matrix-matrix multiplication.
     ``beta`` are only allowed if ``A`` is complex.
 
 
-.. function:: cvxopt.blas.hemm(A, B, C[, side = 'L', uplo = 'L', alpha = 1.0,  beta = 0.0])
+.. function:: kvxopt.blas.hemm(A, B, C[, side = 'L', uplo = 'L', alpha = 1.0,  beta = 0.0])
 
     Product of a real symmetric or complex Hermitian matrix :math:`A` and a 
     general matrix :math:`B`:
@@ -802,7 +802,7 @@ The level 3 BLAS include functions for matrix-matrix multiplication.
     ``beta``  are only allowed if ``A`` is complex.
 
 
-.. function:: cvxopt.blas.trmm(A, B[, side = 'L', uplo = 'L', transA = 'N', diag = 'N', alpha = 1.0])
+.. function:: kvxopt.blas.trmm(A, B[, side = 'L', uplo = 'L', transA = 'N', diag = 'N', alpha = 1.0])
 
     Product of a triangular matrix :math:`A` and a general matrix :math:`B`:
 
@@ -829,7 +829,7 @@ The level 3 BLAS include functions for matrix-matrix multiplication.
     is complex.
 
 
-.. function:: cvxopt.blas.trsm(A, B[, side = 'L', uplo = 'L', transA = 'N', diag = 'N', alpha = 1.0])
+.. function:: kvxopt.blas.trsm(A, B[, side = 'L', uplo = 'L', transA = 'N', diag = 'N', alpha = 1.0])
 
     Solution of a nonsingular triangular system of equations:
 
@@ -857,7 +857,7 @@ The level 3 BLAS include functions for matrix-matrix multiplication.
     is complex.
 
 
-.. function:: cvxopt.blas.syrk(A, C[, uplo = 'L', trans = 'N', alpha = 1.0, beta = 0.0])
+.. function:: kvxopt.blas.syrk(A, C[, uplo = 'L', trans = 'N', alpha = 1.0, beta = 0.0])
 
     Rank-:math:`k` update of a real or complex symmetric matrix :math:`C`:
 
@@ -873,7 +873,7 @@ The level 3 BLAS include functions for matrix-matrix multiplication.
     of ``alpha``  and ``beta`` are only allowed if ``A`` is complex.
 
 
-.. function:: cvxopt.blas.herk(A, C[, uplo = 'L', trans = 'N', alpha = 1.0, beta = 0.0])
+.. function:: kvxopt.blas.herk(A, C[, uplo = 'L', trans = 'N', alpha = 1.0, beta = 0.0])
 
     Rank-:math:`k` update of a real symmetric or complex Hermitian matrix 
     :math:`C`:
@@ -890,7 +890,7 @@ The level 3 BLAS include functions for matrix-matrix multiplication.
     ``beta`` must be real.
 
 
-.. function:: cvxopt.blas.syr2k(A, B, C[, uplo = 'L', trans = 'N', alpha = 1.0, beta = 0.0])
+.. function:: kvxopt.blas.syr2k(A, B, C[, uplo = 'L', trans = 'N', alpha = 1.0, beta = 0.0])
 
     Rank-:math:`2k` update of a real or complex symmetric matrix :math:`C`:
 
@@ -906,7 +906,7 @@ The level 3 BLAS include functions for matrix-matrix multiplication.
     values of ``alpha``  and ``beta`` are only allowed if ``A`` is complex.
 
 
-.. function:: cvxopt.blas.her2k(A, B, C[, uplo = 'L', trans = 'N', alpha = 1.0, beta = 0.0])
+.. function:: kvxopt.blas.her2k(A, B, C[, uplo = 'L', trans = 'N', alpha = 1.0, beta = 0.0])
 
     Rank-:math:`2k` update of a real symmetric or complex Hermitian matrix 
     :math:`C`:
