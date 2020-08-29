@@ -1,9 +1,9 @@
-name: Python package build and publish for MacOs
+name: Publish source
 
 on:
   release:
     types: [created]
-
+    
 jobs:    
   build:
     runs-on: macos-latest
@@ -39,9 +39,9 @@ jobs:
           python setup.py build
           python setup.py sdist
 
-      - name: Publish wheels to PyPI
-        env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        run: |
-          twine upload dist/*.tar.gz
+      #- name: Publish wheels to PyPI
+      #  env:
+      #    TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+      #    TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      #  run: |
+      #    twine upload dist/*.tar.gz

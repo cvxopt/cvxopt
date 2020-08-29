@@ -1,4 +1,4 @@
-name: Python package build and publish for MacOs
+name: Publish MacOS
 
 on:
   release:
@@ -39,9 +39,14 @@ jobs:
           python setup.py build
           python setup.py bdist_wheel
 
-      - name: Publish wheels to PyPI
-        env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        run: |
-          twine upload dist/*.whl
+      - uses: actions/upload-artifact@v2
+        with:
+          name: macos-wheels
+          path: dist/*.whl
+
+      #- name: Publish wheels to PyPI
+      #  env:
+      #    TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+      #    TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      #  run: |
+      #    twine upload dist/*.whl

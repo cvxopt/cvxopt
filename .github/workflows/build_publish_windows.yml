@@ -1,4 +1,4 @@
-name: Python package build and publish for windows
+name: Publish Windows
 
 on:
   release:
@@ -54,6 +54,7 @@ jobs:
       - name: Download openblas
         run: |
             Invoke-WebRequest  https://github.com/xianyi/OpenBLAS/releases/download/v${{ env.OPENBLAS_VERSION }}/OpenBLAS-${{ env.OPENBLAS_VERSION }}-${{ matrix.ARCH }}.zip -OutFile OpenBLAS-${{ env.OPENBLAS_VERSION }}-${{ matrix.ARCH }}.zip
+            Invoke-WebRequest https://raw.githubusercontent.com/xianyi/OpenBLAS/v${{ env.OPENBLAS_VERSION }}/LICENSE -OutFile OpenBLAS_LINCENSE
             Expand-Archive OpenBLAS-${{ env.OPENBLAS_VERSION }}-${{ matrix.ARCH }}.zip
             echo "::set-env name=KVXOPT_BLAS_LIB_DIR::${{ github.workspace}}/OpenBLAS-${{ env.OPENBLAS_VERSION }}-${{ matrix.ARCH }}/lib" 
             echo "::set-env name=KVXOPT_LAPACK_LIB::libopenblas" 
@@ -77,12 +78,18 @@ jobs:
         run: |
           python setup.py build
           copy OpenBLAS-${{ env.OPENBLAS_VERSION }}-${{ matrix.ARCH }}\bin\libopenblas.dll build\lib.${{ matrix.PYTHON_TARGET }}-${{ matrix.python-version }}\kvxopt
+          copy OpenBLAS_LINCENSE build\lib.${{ matrix.PYTHON_TARGET }}-${{ matrix.python-version }}\kvxopt
           python setup.py bdist_wheel
         shell: cmd
 
-      - name: Publish wheels to PyPI
-        env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        run: |
-          twine upload dist/*.whl
+      - uses: actions/upload-artifact@v2
+        with:
+          name: windows-wheels
+          path: dist/*.whl
+
+      #- name: Publish wheels to PyPI
+      #  env:
+      #    TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+      #    TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      #  run: |
+      #    twine upload dist/*.whl

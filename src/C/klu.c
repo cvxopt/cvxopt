@@ -724,7 +724,6 @@ static PyObject* get_det(PyObject *self, PyObject *args, PyObject *kwrds) {
 
     double *Udiag, *Rs;
 
-    SuiteSparse_long *P, *Q, *Wi;
     double det = 1, d_sign;
 #ifndef _MSC_VER
     double complex det_c = 1.0;
@@ -734,7 +733,7 @@ static PyObject* get_det(PyObject *self, PyObject *args, PyObject *kwrds) {
     _Dcomplex *Uzdiag;
 #endif
 
-    int_t i, k, n, npiv, itmp;
+    int_t i, k, n, npiv, itmp, *P, *Q, *Wi;
 
     if (!PyArg_ParseTuple(args, "OOO", &A, &Fs, &Fn))
         return NULL;

@@ -1,8 +1,9 @@
-name: Python package build and publish for Linux
+name: Publish Manylinux
 
 on:
   release:
     types: [created]
+
 
 jobs:    
   build:
@@ -11,12 +12,16 @@ jobs:
       KVXOPT_BUILD_GSL: 1
       KVXOPT_BUILD_FFTW: 1
       KVXOPT_BUILD_GLPK: 1
-      KVXOPT_BUILD_DSDP: 1
+      KVXOPT_BUILD_DSDP: 0
+      KVXOPT_LAPACK_LIB: openblas
+      KVXOPT_BLAS_LIB: openblas
+      KVXOPT_GLPK_INC_DIR: /usr/include/glpk
+      KVXOPT_SUITESPARSE_INC_DIR: /usr/include/suitesparse
+      KVXOPT_SUITESPARSE_CONFIG: 0
 
     strategy:
       matrix:
-        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
-        suite-sparse: [lib_suitesparse]
+        python-version: [3.8]
 
     steps:
       - uses: actions/checkout@v2
@@ -28,20 +33,23 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pytest-cov coveralls wheel twine
+          pip install wheel twine
 
-      - name: Install libraries
-        run: |
-            sudo apt-get install libopenblas-dev libfftw3-dev libglpk-dev libdsdp-dev libgsl0-dev libsuitesparse-dev
+      - name: Build manylinux Python wheels
+        uses: RalfG/python-wheels-manylinux-build@v0.3.1-manylinux2010_x86_64
+        with:
+          python-versions: 'cp27-cp27m cp27-cp27mu cp35-cp35m cp36-cp36m cp37-cp37m cp38-cp38'
+          build-requirements: ''
+          system-packages: 'openblas-devel fftw-devel glpk-devel gsl-devel suitesparse-devel'
 
-      - name: Build 
-        run: |
-          python setup.py build
-          python setup.py bdist_wheel
+      - uses: actions/upload-artifact@v2
+        with:
+          name: linux-wheels
+          path: dist/*-manylinux*.whl
 
-      - name: Publish wheels to PyPI
-        env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        run: |
-          twine upload dist/*.whl
+      #- name: Publish wheels to PyPI
+      #  env:
+      #    TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+      #    TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      #  run: |
+      #    twine upload dist/*-manylinux*.whl

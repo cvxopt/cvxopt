@@ -84,6 +84,10 @@ else:
 # Directory containing SuiteSparse source
 SUITESPARSE_SRC_DIR = ''
 
+# For SuiteSparse Versions before to 4.0.0 SuiteSparse_config does not exist
+# We can avoid the search and link with this flag
+SUITESPARSE_CONFIG = 1
+
 # Set to 1 if compiling with MSVC 14 or later
 MSVC=0
 
@@ -112,6 +116,7 @@ DSDP_INC_DIR = os.environ.get("KVXOPT_DSDP_INC_DIR",DSDP_INC_DIR)
 SUITESPARSE_LIB_DIR = os.environ.get("KVXOPT_SUITESPARSE_LIB_DIR",SUITESPARSE_LIB_DIR)
 SUITESPARSE_INC_DIR = os.environ.get("KVXOPT_SUITESPARSE_INC_DIR",SUITESPARSE_INC_DIR)
 SUITESPARSE_SRC_DIR = os.environ.get("KVXOPT_SUITESPARSE_SRC_DIR",SUITESPARSE_SRC_DIR)
+SUITESPARSE_CONFIG = os.environ.get("KVXOPT_SUITESPARSE_CONFIG",SUITESPARSE_CONFIG) == True
 MSVC = int(os.environ.get("KVXOPT_MSVC",MSVC)) == True
 INSTALL_REQUIRES = os.environ.get("KVXOPT_INSTALL_REQUIRES",[])
 if type(INSTALL_REQUIRES) is str: INSTALL_REQUIRES = INSTALL_REQUIRES.strip().split(';')
@@ -121,6 +126,9 @@ M_LIB = ["m"] if not MSVC else []
 UMFPACK_EXTRA_COMPILE_ARGS = ["-Wno-unknown-pragmas"] if not MSVC else []
 
 extmods = []
+
+
+SUITESPARSE_CONF_LIB = ([], ['suitesparseconfig'])[SUITESPARSE_CONFIG]
 
 
 # Macros
@@ -189,7 +197,7 @@ lapack = Extension('lapack', libraries = LAPACK_LIB + BLAS_LIB,
 
 if not SUITESPARSE_SRC_DIR:
     umfpack = Extension('umfpack',
-        libraries = ['umfpack','cholmod','amd','colamd','suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
+        libraries = ['umfpack','cholmod','amd','colamd'] + SUITESPARSE_CONF_LIB + LAPACK_LIB + BLAS_LIB + RT_LIB,
         include_dirs = [SUITESPARSE_INC_DIR],
         define_macros = MACROS,
         library_dirs = [SUITESPARSE_LIB_DIR, BLAS_LIB_DIR],
@@ -213,7 +221,7 @@ else:
 
 if not SUITESPARSE_SRC_DIR:
     klu = Extension('klu',
-    libraries=['klu', 'amd', 'colamd', 'btf', 'suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
+    libraries=['klu', 'amd', 'colamd', 'btf',] + SUITESPARSE_CONF_LIB + LAPACK_LIB + BLAS_LIB + RT_LIB,
     include_dirs = [SUITESPARSE_INC_DIR],
     define_macros = MACROS,
     library_dirs = [SUITESPARSE_LIB_DIR, BLAS_LIB_DIR],
@@ -242,7 +250,7 @@ if sys.maxsize > 2**31: MACROS += [('DLONG',None)]
 
 if not SUITESPARSE_SRC_DIR:
     cholmod = Extension('cholmod',
-        libraries = ['cholmod','colamd','amd','suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
+        libraries = ['cholmod','colamd','amd'] + SUITESPARSE_CONF_LIB + LAPACK_LIB + BLAS_LIB + RT_LIB,
         include_dirs = [SUITESPARSE_INC_DIR],
         define_macros = MACROS,
         library_dirs = [SUITESPARSE_LIB_DIR, BLAS_LIB_DIR],
@@ -269,7 +277,7 @@ else:
 
 if not SUITESPARSE_SRC_DIR:
     amd = Extension('amd',
-        libraries = ['amd','suitesparseconfig'] + RT_LIB,
+        libraries = ['amd'] + SUITESPARSE_CONF_LIB + RT_LIB,
         include_dirs = [SUITESPARSE_INC_DIR],
         define_macros = MACROS,
         library_dirs = [SUITESPARSE_LIB_DIR],
@@ -316,7 +324,7 @@ language.
     ext_package = "kvxopt",
     ext_modules = extmods,
     package_dir = {"kvxopt": "src/python"},
-    package_data = {'': ['*.dll']},
+    package_data = {'': ['*.dll', '*LICENSE']},
     packages = ["kvxopt"],
     install_requires = INSTALL_REQUIRES,
     classifiers=[
