@@ -47,9 +47,9 @@ jobs:
           name: linux-wheels
           path: dist/*-manylinux*.whl
 
-      #- name: Publish wheels to PyPI
-      #  env:
-      #    TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-      #    TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-      #  run: |
-      #    twine upload dist/*-manylinux*.whl
+      - name: Publish wheels to PyPI
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          twine upload dist/*-manylinux*.whl

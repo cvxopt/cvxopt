@@ -39,9 +39,15 @@ jobs:
           python setup.py build
           python setup.py sdist
 
-      #- name: Publish wheels to PyPI
-      #  env:
-      #    TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-      #    TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-      #  run: |
-      #    twine upload dist/*.tar.gz
+      - uses: actions/upload-artifact@v2
+        with:
+          name: kvxopt-source
+          path: dist/*.tar.gz
+
+
+      - name: Publish wheels to PyPI
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          twine upload dist/*.tar.gz
