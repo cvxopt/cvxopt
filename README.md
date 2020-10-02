@@ -29,4 +29,5 @@ Related projects
 Build status
 ------------
 
-[![Actions Status](https://github.com/cvxopt/cvxopt/workflows/linux_build/badge.svg)](https://github.com/cvxopt/cvxopt/actions)
+[![linux-build Actions Status](https://github.com/cvxopt/cvxopt/workflows/linux-build/badge.svg)](https://github.com/cvxopt/cvxopt/actions)
+ [![macos-build Actions Status](https://github.com/cvxopt/cvxopt/workflows/macos-build/badge.svg)](https://github.com/cvxopt/cvxopt/actions)

@@ -1,4 +1,4 @@
-name: macOS build
+name: macos-build
 
 on: [push, pull_request]
 
@@ -13,6 +13,9 @@ jobs:
       DSDP_SHA256: 26aa624525a636de272c0b329e2dfd01a0d5b7827f1c1c76f393d71e37dead70
       CVXOPT_DSDP_LIB_DIR: /usr/local/lib
       CVXOPT_DSDP_INC_DIR: /usr/local/include
+      CVXOPT_BLAS_LIB_DIR: /usr/local/opt/openblas/lib
+      CVXOPT_BLAS_LIB: openblas
+      CVXOPT_LAPACK_LIB: openblas
       CVXOPT_BUILD_DSDP: 1
       CVXOPT_BUILD_FFTW: 1
       CVXOPT_BUILD_GLPK: 1
@@ -33,7 +36,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        brew install glpk gsl fftw
+        brew install openblas suite-sparse glpk gsl fftw
         python -m pip install --upgrade pip
         pip install pytest pytest-cov coveralls
 
@@ -54,7 +57,7 @@ jobs:
         tar -xf DSDP${DSDP_VERSION}.tar.gz
         cd DSDP${DSDP_VERSION}
         patch -p1 < ${{github.workspace}}/.github/workflows/dsdp.patch
-        make PREFIX=/usr/local IS_OSX=1 DSDPROOT=`pwd` install
+        make PREFIX=/usr/local LAPACKBLAS="-L${CVXOPT_BLAS_LIB_DIR} -l${CVXOPT_LAPACK_LIB} -l${CVXOPT_BLAS_LIB}" IS_OSX=1 DSDPROOT=`pwd` install
       if: ${{ env.CVXOPT_BUILD_DSDP == 1 }}
 
     - name: Build/install CVXOPT

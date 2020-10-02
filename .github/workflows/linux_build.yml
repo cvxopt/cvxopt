@@ -1,4 +1,4 @@
-name: Linux build
+name: linux-build
 
 on: [push, pull_request]
 
@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         python-version: [2.7, 3.7, 3.8]
-        suitesparse: [lib, src]
+        suitesparse: [lib]
 
     steps:
     - uses: actions/checkout@v2
