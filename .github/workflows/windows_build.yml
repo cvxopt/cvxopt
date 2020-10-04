@@ -1,0 +1,85 @@
+name: Windows build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    env:
+      SUITESPARSE_VERSION: 5.8.1
+      SUITESPARSE_SHA256: 06726e471fbaa55f792578f9b4ab282ea9d008cf39ddcc3b42b73400acddef40
+      OPENBLAS_VERSION: 0.3.10
+      OPENBLAS_SHA256: a307629479260ebfed057a3fc466d2be83a2bb594739a99c06ec830173273135
+      CVXOPT_MSVC: 1
+      CVXOPT_BLAS_LIB: libopenblas
+      CVXOPT_LAPACK_LIB: libopenblas
+      CVXOPT_BUILD_DSDP: 0
+      CVXOPT_BUILD_FFTW: 0
+      CVXOPT_BUILD_GLPK: 0
+      CVXOPT_BUILD_GSL: 0
+
+    strategy:
+      matrix:
+        python-version: [3.7,3.8]
+        suitesparse: [src]
+        ARCH: [x64]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+        architecture: ${{ matrix.ARCH}}
+
+    - name: Setup msys2
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW64
+        install: coreutils unzip
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov coveralls wheel
+
+    - name: Get OpenBLAS
+      shell: msys2 {0}
+      run: |
+          wget https://github.com/xianyi/OpenBLAS/releases/download/v${OPENBLAS_VERSION}/OpenBLAS-${OPENBLAS_VERSION}-${{matrix.ARCH}}.zip
+          wget https://raw.githubusercontent.com/xianyi/OpenBLAS/v${OPENBLAS_VERSION}/LICENSE -O LICENSE_OpenBLAS-${OPENBLAS_VERSION}
+          echo "${OPENBLAS_SHA256}  OpenBLAS-${OPENBLAS_VERSION}-${{matrix.ARCH}}.zip" > OpenBLAS.sha256
+          sha256sum -c OpenBLAS.sha256
+          mkdir OpenBLAS
+          unzip OpenBLAS-${OPENBLAS_VERSION}-${{matrix.ARCH}}.zip -d OpenBLAS/
+          echo "::set-env name=CVXOPT_BLAS_LIB_DIR::${{github.workspace}}\OpenBLAS\lib"
+
+    - name: Get SuiteSparse source
+      shell: msys2 {0}
+      if: ${{ matrix.suitesparse == 'src' }}
+      run: |
+        wget https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${SUITESPARSE_VERSION}.tar.gz
+        echo "${SUITESPARSE_SHA256}  v${SUITESPARSE_VERSION}.tar.gz" > SuiteSparse.sha256
+        sha256sum -c SuiteSparse.sha256
+        tar -xf v${SUITESPARSE_VERSION}.tar.gz
+        echo "::set-env name=CVXOPT_SUITESPARSE_SRC_DIR::${{github.workspace}}/SuiteSparse-${{env.SUITESPARSE_VERSION}}"
+
+    - name: Configure MSVC
+      shell: cmd
+      run: |
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+
+    - name: Build
+      shell: cmd
+      run: |
+        python setup.py build
+        copy OpenBLAS\bin\libopenblas.dll build\lib.win-amd64-${{matrix.python-version}}\cvxopt
+        copy LICENSE_OpenBLAS-${OPENBLAS_VERSION} build\lib.win-amd64-${{matrix.python-version}}\cvxopt
+        python setup.py bdist_wheel
+        pip install .
+
+    - name: Test with pytest
+      shell: cmd
+      run: |
+        pytest

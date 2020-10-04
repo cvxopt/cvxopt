@@ -1,4 +1,4 @@
-name: macos-build
+name: macOS build
 
 on: [push, pull_request]
 
@@ -16,7 +16,7 @@ jobs:
       CVXOPT_BLAS_LIB_DIR: /usr/local/opt/openblas/lib
       CVXOPT_BLAS_LIB: openblas
       CVXOPT_LAPACK_LIB: openblas
-      CVXOPT_BUILD_DSDP: 1
+      CVXOPT_BUILD_DSDP: 0
       CVXOPT_BUILD_FFTW: 1
       CVXOPT_BUILD_GLPK: 1
       CVXOPT_BUILD_GSL: 1
@@ -24,7 +24,8 @@ jobs:
     strategy:
       matrix:
         python-version: [2.7, 3.7, 3.8]
-        suitesparse: [lib, src]
+        # suitesparse: [src, lib]
+        suitesparse: [lib]
 
     steps:
     - uses: actions/checkout@v2
@@ -38,18 +39,19 @@ jobs:
       run: |
         brew install openblas suite-sparse glpk gsl fftw
         python -m pip install --upgrade pip
-        pip install pytest pytest-cov coveralls
+        pip install pytest pytest-cov coveralls wheel
 
     - name: Get SuiteSparse source
+      if: ${{ matrix.suitesparse == 'src' }}
       run: |
         wget https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${SUITESPARSE_VERSION}.tar.gz
         echo "${SUITESPARSE_SHA256}  v${SUITESPARSE_VERSION}.tar.gz" > SuiteSparse.sha256
         shasum -a 256 -c SuiteSparse.sha256
         tar -xf v${SUITESPARSE_VERSION}.tar.gz
         echo "CVXOPT_SUITESPARSE_SRC_DIR=${{github.workspace}}/SuiteSparse-${SUITESPARSE_VERSION}" >> $GITHUB_ENV
-      if: ${{ matrix.suitesparse == 'src' }}
 
     - name: Build DSDP
+      if: ${{ env.CVXOPT_BUILD_DSDP == 1 }}
       run: |
         wget http://www.mcs.anl.gov/hs/software/DSDP/DSDP${DSDP_VERSION}.tar.gz
         echo "${DSDP_SHA256}  DSDP${DSDP_VERSION}.tar.gz" > DSDP.sha256
@@ -58,7 +60,6 @@ jobs:
         cd DSDP${DSDP_VERSION}
         patch -p1 < ${{github.workspace}}/.github/workflows/dsdp.patch
         make PREFIX=/usr/local LAPACKBLAS="-L${CVXOPT_BLAS_LIB_DIR} -l${CVXOPT_LAPACK_LIB} -l${CVXOPT_BLAS_LIB}" IS_OSX=1 DSDPROOT=`pwd` install
-      if: ${{ env.CVXOPT_BUILD_DSDP == 1 }}
 
     - name: Build/install CVXOPT
       run: |
