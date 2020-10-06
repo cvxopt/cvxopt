@@ -10,7 +10,6 @@ jobs:
       SUITESPARSE_VERSION: 5.8.1
       SUITESPARSE_SHA256: 06726e471fbaa55f792578f9b4ab282ea9d008cf39ddcc3b42b73400acddef40
       OPENBLAS_VERSION: 0.3.10
-      OPENBLAS_SHA256: a307629479260ebfed057a3fc466d2be83a2bb594739a99c06ec830173273135
       CVXOPT_MSVC: 1
       CVXOPT_BLAS_LIB: libopenblas
       CVXOPT_LAPACK_LIB: libopenblas
@@ -21,9 +20,18 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.7,3.8]
+        python-version: [3.7,3.8,3.9]
         suitesparse: [src]
-        ARCH: [x64]
+        architecture: [x64, x86]
+        include:
+        - architecture: x64
+          msvc_target: 64
+          plat-name: win-amd64
+          OPENBLAS_SHA256: a307629479260ebfed057a3fc466d2be83a2bb594739a99c06ec830173273135
+        - architecture: x86
+          msvc_target: 32
+          plat-name: win32
+          OPENBLAS_SHA256: 7eab2be38e4c79f0ce496e7cb3ae28be457aef1b21e70eb7e32147b479b7bb57
 
     steps:
     - uses: actions/checkout@v2
@@ -31,7 +39,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-        architecture: ${{ matrix.ARCH}}
+        architecture: ${{ matrix.architecture}}
 
     - name: Setup msys2
       uses: msys2/setup-msys2@v2
@@ -47,12 +55,12 @@ jobs:
     - name: Get OpenBLAS
       shell: msys2 {0}
       run: |
-          wget https://github.com/xianyi/OpenBLAS/releases/download/v${OPENBLAS_VERSION}/OpenBLAS-${OPENBLAS_VERSION}-${{matrix.ARCH}}.zip
+          wget https://github.com/xianyi/OpenBLAS/releases/download/v${OPENBLAS_VERSION}/OpenBLAS-${OPENBLAS_VERSION}-${{matrix.architecture}}.zip
           wget https://raw.githubusercontent.com/xianyi/OpenBLAS/v${OPENBLAS_VERSION}/LICENSE -O LICENSE_OpenBLAS-${OPENBLAS_VERSION}
-          echo "${OPENBLAS_SHA256}  OpenBLAS-${OPENBLAS_VERSION}-${{matrix.ARCH}}.zip" > OpenBLAS.sha256
+          echo "${{matrix.OPENBLAS_SHA256}}  OpenBLAS-${OPENBLAS_VERSION}-${{matrix.architecture}}.zip" > OpenBLAS.sha256
           sha256sum -c OpenBLAS.sha256
           mkdir OpenBLAS
-          unzip OpenBLAS-${OPENBLAS_VERSION}-${{matrix.ARCH}}.zip -d OpenBLAS/
+          unzip OpenBLAS-${OPENBLAS_VERSION}-${{matrix.architecture}}.zip -d OpenBLAS/
           echo "::set-env name=CVXOPT_BLAS_LIB_DIR::${{github.workspace}}\OpenBLAS\lib"
 
     - name: Get SuiteSparse source
@@ -68,14 +76,17 @@ jobs:
     - name: Configure MSVC
       shell: cmd
       run: |
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars${{matrix.msvc_target}}.bat"
 
-    - name: Build
+    - name: Build/install CVXOPT
       shell: cmd
       run: |
         python setup.py build
-        copy OpenBLAS\bin\libopenblas.dll build\lib.win-amd64-${{matrix.python-version}}\cvxopt
-        copy LICENSE_OpenBLAS-${OPENBLAS_VERSION} build\lib.win-amd64-${{matrix.python-version}}\cvxopt
+        SET build_dir=${{github.workspace}}\build\lib.${{matrix.plat-name}}-${{matrix.python-version}}\cvxopt
+        copy LICENSE_OpenBLAS-${OPENBLAS_VERSION} %build_dir%
+        mkdir %build_dir%\.lib
+        copy ${{github.workspace}}\OpenBLAS\bin\libopenblas.dll %build_dir%\.lib
+        python ${{github.workspace}}\.github\workflows\_add_bootstrap.py %build_dir%  
         python setup.py bdist_wheel
         pip install .
 

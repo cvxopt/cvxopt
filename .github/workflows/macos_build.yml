@@ -5,6 +5,8 @@ on: [push, pull_request]
 jobs:
   build:
 
+    if: false
+
     runs-on: macos-latest
     env:
       SUITESPARSE_VERSION: 5.8.1
@@ -23,7 +25,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [2.7, 3.7, 3.8]
+        python-version: [2.7, 3.8, 3.9]
         # suitesparse: [src, lib]
         suitesparse: [lib]
 
