@@ -1031,7 +1031,7 @@ option of using the DSDP semidefinite programming solver.
 
     ``Gs`` and ``hs`` are lists of length :math:`N` that specify the 
     linear matrix inequality constraints.  ``Gs`` is a list of :math:`N` 
-    dense or sparse real matrices :math:`G_1`, \ldots, :math:`G_M`.  The 
+    dense or sparse real matrices :math:`G_1`, :math:`\ldots`, :math:`G_M`.  The 
     columns of these matrices can be interpreted as symmetric matrices 
     stored in column major order, using the BLAS :const:`'L'`-type storage
     (i.e., only the entries corresponding to lower triangular positions
