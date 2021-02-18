@@ -61,7 +61,7 @@ jobs:
           sha256sum -c OpenBLAS.sha256
           mkdir OpenBLAS
           unzip OpenBLAS-${OPENBLAS_VERSION}-${{matrix.architecture}}.zip -d OpenBLAS/
-          echo "::set-env name=CVXOPT_BLAS_LIB_DIR::${{github.workspace}}\OpenBLAS\lib"
+          echo "CVXOPT_BLAS_LIB_DIR=${{github.workspace}}\OpenBLAS\lib" >> $GITHUB_ENV
 
     - name: Get SuiteSparse source
       shell: msys2 {0}
@@ -71,7 +71,7 @@ jobs:
         echo "${SUITESPARSE_SHA256}  v${SUITESPARSE_VERSION}.tar.gz" > SuiteSparse.sha256
         sha256sum -c SuiteSparse.sha256
         tar -xf v${SUITESPARSE_VERSION}.tar.gz
-        echo "::set-env name=CVXOPT_SUITESPARSE_SRC_DIR::${{github.workspace}}/SuiteSparse-${{env.SUITESPARSE_VERSION}}"
+        echo "CVXOPT_SUITESPARSE_SRC_DIR=${{github.workspace}}/SuiteSparse-${{env.SUITESPARSE_VERSION}}" >> $GITHUB_ENV
 
     - name: Configure MSVC
       shell: cmd
