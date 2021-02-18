@@ -7188,7 +7188,7 @@ static char doc_larfg[] =
     "alpha     'd' or 'z' matrix.  On exit, contains beta.\n\n"
     "x         'd' or 'z' matrix.  Must have the same type as alpha.\n"
     "          On exit, contains v. \n\n"
-    "n         postive integer.  The dimension of the vector [alpha; x].\n"
+    "n         positive integer.  The dimension of the vector [alpha; x].\n"
     "          If n <= 0, the default value is used, which is equal to\n"
     "          1 + ( (len(x) - offsetx >= 1) ? len(x) - ox : 0 ).\n\n"
     "offseta   nonnegative integer \n\n"
