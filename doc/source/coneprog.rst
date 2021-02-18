@@ -880,8 +880,8 @@ cone programs with no linear matrix inequality constraints.
 
     The argument ``Gq`` is a list of :math:`M` dense or sparse matrices 
     :math:`G_1`, ..., :math:`G_M`.  The argument ``hq`` is a list of 
-    :math:`M` dense single-column matrices :math:`h_1`, \ldots, 
-    :math:`h_M`.  The elements of ``Gq`` and ``hq`` must have at least one
+    :math:`M` dense single-column matrices :math:`h_1, \ldots, h_M`.
+    The elements of ``Gq`` and ``hq`` must have at least one
     row.  The default values of ``Gq`` and ``hq`` are empty lists.
 
     ``A`` is dense or sparse matrix and ``b`` is a single-column dense 
@@ -902,7 +902,7 @@ cone programs with no linear matrix inequality constraints.
     ``primalstart['x']`` and ``primalstart['sl']`` are 
     single-column dense matrices with the initial values of :math:`x` and 
     :math:`s_0`;  ``primalstart['sq']`` is a list of single-column 
-    matrices with the initial values of :math:`s_1`, \ldots, :math:`s_M`.
+    matrices with the initial values of :math:`s_1, \ldots, s_M`.
     The initial values must satisfy the inequalities in the primal problem 
     strictly, but not necessarily the equality constraints.
 
@@ -910,7 +910,7 @@ cone programs with no linear matrix inequality constraints.
     ``dualstart['y']`` and ``dualstart['zl']`` are single-column 
     dense matrices with the initial values of :math:`y` and :math:`z_0`.
     ``dualstart['zq']`` is a list of single-column matrices with the 
-    initial values of :math:`z_1`, \ldots, :math:`z_M`.  These values must
+    initial values of :math:`z_1, \ldots, z_M`.  These values must
     satisfy the dual inequalities strictly, but not necessarily the 
     equality constraint.
 
@@ -1031,12 +1031,12 @@ option of using the DSDP semidefinite programming solver.
 
     ``Gs`` and ``hs`` are lists of length :math:`N` that specify the 
     linear matrix inequality constraints.  ``Gs`` is a list of :math:`N` 
-    dense or sparse real matrices :math:`G_1`, \ldots, :math:`G_M`.  The 
+    dense or sparse real matrices :math:`G_1, \ldots, G_M`.  The 
     columns of these matrices can be interpreted as symmetric matrices 
     stored in column major order, using the BLAS :const:`'L'`-type storage
     (i.e., only the entries corresponding to lower triangular positions
     are accessed).  ``hs`` is a list of :math:`N` dense symmetric matrices
-    :math:`h_1`, \ldots, :math:`h_N`.  Only the lower triangular elements 
+    :math:`h_1, \ldots, h_N`.  Only the lower triangular elements 
     of these matrices are accessed.  The default values for ``Gs`` and 
     ``hs`` are empty lists.
 
@@ -1058,7 +1058,7 @@ option of using the DSDP semidefinite programming solver.
     ``primalstart['sl']`` are single-column dense matrices with the 
     initial values of :math:`x` and :math:`s_0`; 
     ``primalstart['ss']`` is a list of square matrices with the initial
-    values of :math:`s_1`, \ldots, :math:`s_N`.  The initial values must 
+    values of :math:`s_1, \ldots, s_N`.  The initial values must 
     satisfy the inequalities in the primal problem strictly, but not 
     necessarily the equality constraints.
 
@@ -1067,7 +1067,7 @@ option of using the DSDP semidefinite programming solver.
     ``dualstart['y']`` and ``dualstart['zl']`` are single-column 
     dense matrices with the initial values of :math:`y` and :math:`z_0`.
     ``dualstart['zs']`` is a list of square matrices with the initial 
-    values of :math:`z_1`, \ldots, :math:`z_N`.  These values must satisfy
+    values of :math:`z_1, \ldots, z_N`.  These values must satisfy
     the dual inequalities strictly, but not necessarily the equality 
     constraint.
 

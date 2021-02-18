@@ -885,8 +885,8 @@ dense matrix.  The default values for <code class="docutils literal notranslate"
 with zero rows.</p>
 <p>The argument <code class="docutils literal notranslate"><span class="pre">Gq</span></code> is a list of <img class="math" src="_images/math/4abba779877abb276b98ccb2b4ba9bf2e41947ab.png" alt="M"/> dense or sparse matrices
 <img class="math" src="_images/math/cbb49321318d94ba656d1ce115187d55c90322b4.png" alt="G_1"/>, …, <img class="math" src="_images/math/1e45a7a687f92b2a29b62ce1dddb23a8eefeedca.png" alt="G_M"/>.  The argument <code class="docutils literal notranslate"><span class="pre">hq</span></code> is a list of
-<img class="math" src="_images/math/4abba779877abb276b98ccb2b4ba9bf2e41947ab.png" alt="M"/> dense single-column matrices <img class="math" src="_images/math/1e3c4fd71e54eca8ee4a7928ebfd8e6c0bc70d31.png" alt="h_1"/>, ldots,
-<img class="math" src="_images/math/b9114cc1138ec152eae394b47fa104b1ee1ee4b9.png" alt="h_M"/>.  The elements of <code class="docutils literal notranslate"><span class="pre">Gq</span></code> and <code class="docutils literal notranslate"><span class="pre">hq</span></code> must have at least one
+<img class="math" src="_images/math/4abba779877abb276b98ccb2b4ba9bf2e41947ab.png" alt="M"/> dense single-column matrices <img class="math" src="_images/math/7e3e2e4f92024433a9ad4d75422c991d86d1ec57.png" alt="h_1, \ldots, h_M"/>.
+The elements of <code class="docutils literal notranslate"><span class="pre">Gq</span></code> and <code class="docutils literal notranslate"><span class="pre">hq</span></code> must have at least one
 row.  The default values of <code class="docutils literal notranslate"><span class="pre">Gq</span></code> and <code class="docutils literal notranslate"><span class="pre">hq</span></code> are empty lists.</p>
 <p><code class="docutils literal notranslate"><span class="pre">A</span></code> is dense or sparse matrix and <code class="docutils literal notranslate"><span class="pre">b</span></code> is a single-column dense
 matrix.  The default values for <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> are matrices with
@@ -904,14 +904,14 @@ elements <code class="xref py py-const docutils literal notranslate"><span class
 <code class="docutils literal notranslate"><span class="pre">primalstart['x']</span></code> and <code class="docutils literal notranslate"><span class="pre">primalstart['sl']</span></code> are
 single-column dense matrices with the initial values of <img class="math" src="_images/math/888f7c323ac0341871e867220ae2d76467d74d6e.png" alt="x"/> and
 <img class="math" src="_images/math/8fb1fc12384d9c1b73b81b87315f7654511a2c0e.png" alt="s_0"/>;  <code class="docutils literal notranslate"><span class="pre">primalstart['sq']</span></code> is a list of single-column
-matrices with the initial values of <img class="math" src="_images/math/41088e732877c4491fed8b82e3b2b39c8638ee16.png" alt="s_1"/>, ldots, <img class="math" src="_images/math/ddefb5b246529cd9459225d23c9a2444a37f26fa.png" alt="s_M"/>.
+matrices with the initial values of <img class="math" src="_images/math/06fa9ba19a3d38408ac220954e05a6105bec867c.png" alt="s_1, \ldots, s_M"/>.
 The initial values must satisfy the inequalities in the primal problem
 strictly, but not necessarily the equality constraints.</p>
 <p><code class="docutils literal notranslate"><span class="pre">dualstart</span></code> has elements <code class="xref py py-const docutils literal notranslate"><span class="pre">'y'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'zl'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'zq'</span></code>.
 <code class="docutils literal notranslate"><span class="pre">dualstart['y']</span></code> and <code class="docutils literal notranslate"><span class="pre">dualstart['zl']</span></code> are single-column
 dense matrices with the initial values of <img class="math" src="_images/math/1b5e577d6216dca3af7d87aa122a0b9b360d6cb3.png" alt="y"/> and <img class="math" src="_images/math/b7dd8acc0d0af36b58c42bc14eeeca05c6286fba.png" alt="z_0"/>.
 <code class="docutils literal notranslate"><span class="pre">dualstart['zq']</span></code> is a list of single-column matrices with the
-initial values of <img class="math" src="_images/math/25e1d0f27471fc48a5066ec25b700df2e725728e.png" alt="z_1"/>, ldots, <img class="math" src="_images/math/264ee9c3c31874f04bd683e78a3a7777f20cb88b.png" alt="z_M"/>.  These values must
+initial values of <img class="math" src="_images/math/cb92702d2163f15e2bf7e6a34b182302ae65f3b7.png" alt="z_1, \ldots, z_M"/>.  These values must
 satisfy the dual inequalities strictly, but not necessarily the
 equality constraint.</p>
 <p>The arguments <code class="docutils literal notranslate"><span class="pre">primalstart</span></code> and <code class="docutils literal notranslate"><span class="pre">dualstart</span></code> are ignored when the
@@ -1014,12 +1014,12 @@ single-column dense matrix.   The default values for <code class="docutils liter
 are matrices with zero rows.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Gs</span></code> and <code class="docutils literal notranslate"><span class="pre">hs</span></code> are lists of length <img class="math" src="_images/math/3bfb3a64189a14b2704f4610827762d5e3145114.png" alt="N"/> that specify the
 linear matrix inequality constraints.  <code class="docutils literal notranslate"><span class="pre">Gs</span></code> is a list of <img class="math" src="_images/math/3bfb3a64189a14b2704f4610827762d5e3145114.png" alt="N"/>
-dense or sparse real matrices <img class="math" src="_images/math/cbb49321318d94ba656d1ce115187d55c90322b4.png" alt="G_1"/>, ldots, <img class="math" src="_images/math/1e45a7a687f92b2a29b62ce1dddb23a8eefeedca.png" alt="G_M"/>.  The
+dense or sparse real matrices <img class="math" src="_images/math/1b1815f8a1dcb49152792554f110261420c96b3c.png" alt="G_1, \ldots, G_M"/>.  The
 columns of these matrices can be interpreted as symmetric matrices
 stored in column major order, using the BLAS <code class="xref py py-const docutils literal notranslate"><span class="pre">'L'</span></code>-type storage
 (i.e., only the entries corresponding to lower triangular positions
 are accessed).  <code class="docutils literal notranslate"><span class="pre">hs</span></code> is a list of <img class="math" src="_images/math/3bfb3a64189a14b2704f4610827762d5e3145114.png" alt="N"/> dense symmetric matrices
-<img class="math" src="_images/math/1e3c4fd71e54eca8ee4a7928ebfd8e6c0bc70d31.png" alt="h_1"/>, ldots, <img class="math" src="_images/math/1cdcc96e18c62f3865d8d43ada0619823c8bcb33.png" alt="h_N"/>.  Only the lower triangular elements
+<img class="math" src="_images/math/8d7aeb80b08f9d220de852b224d6a4693f6ddff9.png" alt="h_1, \ldots, h_N"/>.  Only the lower triangular elements
 of these matrices are accessed.  The default values for <code class="docutils literal notranslate"><span class="pre">Gs</span></code> and
 <code class="docutils literal notranslate"><span class="pre">hs</span></code> are empty lists.</p>
 <p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a dense or sparse matrix and <code class="docutils literal notranslate"><span class="pre">b</span></code> is a single-column dense
@@ -1038,7 +1038,7 @@ primal starting point.  <code class="docutils literal notranslate"><span class="
 <code class="docutils literal notranslate"><span class="pre">primalstart['sl']</span></code> are single-column dense matrices with the
 initial values of <img class="math" src="_images/math/888f7c323ac0341871e867220ae2d76467d74d6e.png" alt="x"/> and <img class="math" src="_images/math/8fb1fc12384d9c1b73b81b87315f7654511a2c0e.png" alt="s_0"/>;
 <code class="docutils literal notranslate"><span class="pre">primalstart['ss']</span></code> is a list of square matrices with the initial
-values of <img class="math" src="_images/math/41088e732877c4491fed8b82e3b2b39c8638ee16.png" alt="s_1"/>, ldots, <img class="math" src="_images/math/581060bbfd7546835e4dd199b1cfe83a2401e636.png" alt="s_N"/>.  The initial values must
+values of <img class="math" src="_images/math/317f05bfc503c0f2967f94d5108fa418a7e4578e.png" alt="s_1, \ldots, s_N"/>.  The initial values must
 satisfy the inequalities in the primal problem strictly, but not
 necessarily the equality constraints.</p>
 <p><code class="docutils literal notranslate"><span class="pre">dualstart</span></code> is a dictionary with keys <code class="xref py py-const docutils literal notranslate"><span class="pre">'y'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'zl'</span></code>,
@@ -1046,7 +1046,7 @@ necessarily the equality constraints.</p>
 <code class="docutils literal notranslate"><span class="pre">dualstart['y']</span></code> and <code class="docutils literal notranslate"><span class="pre">dualstart['zl']</span></code> are single-column
 dense matrices with the initial values of <img class="math" src="_images/math/1b5e577d6216dca3af7d87aa122a0b9b360d6cb3.png" alt="y"/> and <img class="math" src="_images/math/b7dd8acc0d0af36b58c42bc14eeeca05c6286fba.png" alt="z_0"/>.
 <code class="docutils literal notranslate"><span class="pre">dualstart['zs']</span></code> is a list of square matrices with the initial
-values of <img class="math" src="_images/math/25e1d0f27471fc48a5066ec25b700df2e725728e.png" alt="z_1"/>, ldots, <img class="math" src="_images/math/ecd00043b2c4fdc2473d664cbbe67fee8dd18c80.png" alt="z_N"/>.  These values must satisfy
+values of <img class="math" src="_images/math/8d1638c06d78232d12c1df1eac99cc20f863d50e.png" alt="z_1, \ldots, z_N"/>.  These values must satisfy
 the dual inequalities strictly, but not necessarily the equality
 constraint.</p>
 <p>The arguments <code class="docutils literal notranslate"><span class="pre">primalstart</span></code> and <code class="docutils literal notranslate"><span class="pre">dualstart</span></code> are ignored when the
