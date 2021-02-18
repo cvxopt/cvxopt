@@ -629,7 +629,7 @@ Problems with Linear Objectives
             #
             # W, H:  scalars; bounding box width and height
             # x, y:  5-vectors; coordinates of bottom left corners of blocks
-            # w, h:  5-vectors; widths and heigths of the 5 blocks
+            # w, h:  5-vectors; widths and heights of the 5 blocks
 
             rho, gamma = 1.0, 5.0   # min spacing, min aspect ratio
 
