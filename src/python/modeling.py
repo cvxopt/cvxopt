@@ -5,7 +5,7 @@ Routines for specifying and solving convex optimization problems with
 piecewise-linear objective and constraint functions.
 """
 
-# Copyright 2012-2020 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2021 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
@@ -1390,11 +1390,9 @@ class _lin(object):
                 f._coeff[v] = matrix(c, tc='d')
 
             elif c.size == (1,1) and len(v) > 1:
-                # create a sparse matrix with 1.0 element in 
+                # create a sparse matrix with c[0] element in 
                 # position (k,l[k]) for k in range(len(l)) 
-                f._coeff[v] = spmatrix([], [], [], (len(l),len(v)), 'd')
-                f._coeff[v][[l[k]*len(l)+k for k in range(len(l))]] \
-                    = c[0]
+                f._coeff[v] = spmatrix(c[0], range(len(l)), l, (len(l),len(v)), 'd')
 
             else:  # c is 1 by len(v)
                 f._coeff[v] = c[len(l)*[0],:]

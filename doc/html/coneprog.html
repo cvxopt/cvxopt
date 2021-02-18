@@ -1,38 +1,41 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Cone Programming &mdash; CVXOPT User&#39;s Guide</title>
   
 
   
-  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
     <link rel="next" title="Nonlinear Convex Optimization" href="solvers.html" />
@@ -60,7 +63,7 @@
             
             
               <div class="version">
-                1.2.5
+                1.2.6
               </div>
             
           
@@ -77,6 +80,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -114,6 +118,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -148,18 +153,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Cone Programming</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -202,7 +209,7 @@ algorithm parameters that control the cone programming solvers.</p>
 <span id="s-conelp"></span><h2>Linear Cone Programs<a class="headerlink" href="#linear-cone-programs" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="cvxopt.solvers.conelp">
-<code class="sig-prename descclassname">cvxopt.solvers.</code><code class="sig-name descname">conelp</code><span class="sig-paren">(</span><em class="sig-param">c</em>, <em class="sig-param">G</em>, <em class="sig-param">h</em><span class="optional">[</span>, <em class="sig-param">dims</em><span class="optional">[</span>, <em class="sig-param">A</em>, <em class="sig-param">b</em><span class="optional">[</span>, <em class="sig-param">primalstart</em><span class="optional">[</span>, <em class="sig-param">dualstart</em><span class="optional">[</span>, <em class="sig-param">kktsolver</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.conelp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></code><code class="sig-name descname"><span class="pre">conelp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">c</span></em>, <em class="sig-param"><span class="pre">G</span></em>, <em class="sig-param"><span class="pre">h</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">primalstart</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dualstart</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">kktsolver</span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.conelp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a pair of primal and dual cone programs</p>
 <div class="math">
 <p><img src="_images/math/9f18ba54fa478c728e3a3536166f874c17aa7c04.png" alt="\begin{array}[t]{ll}
@@ -473,7 +480,7 @@ obtain the same result if we define <code class="docutils literal notranslate"><
 <span id="s-coneqp"></span><h2>Quadratic Cone Programs<a class="headerlink" href="#quadratic-cone-programs" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="cvxopt.solvers.coneqp">
-<code class="sig-prename descclassname">cvxopt.solvers.</code><code class="sig-name descname">coneqp</code><span class="sig-paren">(</span><em class="sig-param">P</em>, <em class="sig-param">q</em><span class="optional">[</span>, <em class="sig-param">G</em>, <em class="sig-param">h</em><span class="optional">[</span>, <em class="sig-param">dims</em><span class="optional">[</span>, <em class="sig-param">A</em>, <em class="sig-param">b</em><span class="optional">[</span>, <em class="sig-param">initvals</em><span class="optional">[</span>, <em class="sig-param">kktsolver</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.coneqp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></code><code class="sig-name descname"><span class="pre">coneqp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">P</span></em>, <em class="sig-param"><span class="pre">q</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">G</span></em>, <em class="sig-param"><span class="pre">h</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">initvals</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">kktsolver</span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.coneqp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves a pair of primal and dual quadratic cone programs</p>
 <div class="math">
 <p><img src="_images/math/6d9473d4787aece2804514f0796e6abeb2ce4dda.png" alt="\begin{array}[t]{ll}
@@ -657,7 +664,7 @@ programs.  It also provides the option of using the linear programming
 solvers from GLPK or MOSEK.</p>
 <dl class="py function">
 <dt id="cvxopt.solvers.lp">
-<code class="sig-prename descclassname">cvxopt.solvers.</code><code class="sig-name descname">lp</code><span class="sig-paren">(</span><em class="sig-param">c</em>, <em class="sig-param">G</em>, <em class="sig-param">h</em><span class="optional">[</span>, <em class="sig-param">A</em>, <em class="sig-param">b</em><span class="optional">[</span>, <em class="sig-param">solver</em><span class="optional">[</span>, <em class="sig-param">primalstart</em><span class="optional">[</span>, <em class="sig-param">dualstart</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.lp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></code><code class="sig-name descname"><span class="pre">lp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">c</span></em>, <em class="sig-param"><span class="pre">G</span></em>, <em class="sig-param"><span class="pre">h</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">solver</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">primalstart</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dualstart</span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.lp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the pair of primal and dual linear programs</p>
 <div class="math">
 <p><img src="_images/math/9f18ba54fa478c728e3a3536166f874c17aa7c04.png" alt="\begin{array}[t]{ll}
@@ -718,7 +725,7 @@ programs.  It also provides the option of using the quadratic programming
 solver from MOSEK.</p>
 <dl class="py function">
 <dt id="cvxopt.solvers.qp">
-<code class="sig-prename descclassname">cvxopt.solvers.</code><code class="sig-name descname">qp</code><span class="sig-paren">(</span><em class="sig-param">P</em>, <em class="sig-param">q</em><span class="optional">[</span>, <em class="sig-param">G</em>, <em class="sig-param">h</em><span class="optional">[</span>, <em class="sig-param">A</em>, <em class="sig-param">b</em><span class="optional">[</span>, <em class="sig-param">solver</em><span class="optional">[</span>, <em class="sig-param">initvals</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.qp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></code><code class="sig-name descname"><span class="pre">qp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">P</span></em>, <em class="sig-param"><span class="pre">q</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">G</span></em>, <em class="sig-param"><span class="pre">h</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">solver</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">initvals</span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.qp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the pair of primal and dual convex quadratic programs</p>
 <div class="math">
 <p><img src="_images/math/ac5ad3214d3caf44e5cc4e9514908ba2a7bb48dc.png" alt="\begin{array}[t]{ll}
@@ -842,7 +849,7 @@ the trade-off curve and produces two figures using the
 cone programs with no linear matrix inequality constraints.</p>
 <dl class="py function">
 <dt id="cvxopt.solvers.socp">
-<code class="sig-prename descclassname">cvxopt.solvers.</code><code class="sig-name descname">socp</code><span class="sig-paren">(</span><em class="sig-param">c</em><span class="optional">[</span>, <em class="sig-param">Gl</em>, <em class="sig-param">hl</em><span class="optional">[</span>, <em class="sig-param">Gq</em>, <em class="sig-param">hq</em><span class="optional">[</span>, <em class="sig-param">A</em>, <em class="sig-param">b</em><span class="optional">[</span>, <em class="sig-param">solver</em><span class="optional">[</span>, <em class="sig-param">primalstart</em><span class="optional">[</span>, <em class="sig-param">dualstart</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.socp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></code><code class="sig-name descname"><span class="pre">socp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">c</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">Gl</span></em>, <em class="sig-param"><span class="pre">hl</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">Gq</span></em>, <em class="sig-param"><span class="pre">hq</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">solver</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">primalstart</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dualstart</span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.socp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the pair of primal and dual second-order cone programs</p>
 <div class="math">
 <p><img src="_images/math/32cab048b453581f0ca59dc31e33e56b7c8b3a0e.png" alt="\begin{array}[t]{ll}
@@ -878,8 +885,8 @@ dense matrix.  The default values for <code class="docutils literal notranslate"
 with zero rows.</p>
 <p>The argument <code class="docutils literal notranslate"><span class="pre">Gq</span></code> is a list of <img class="math" src="_images/math/4abba779877abb276b98ccb2b4ba9bf2e41947ab.png" alt="M"/> dense or sparse matrices
 <img class="math" src="_images/math/cbb49321318d94ba656d1ce115187d55c90322b4.png" alt="G_1"/>, …, <img class="math" src="_images/math/1e45a7a687f92b2a29b62ce1dddb23a8eefeedca.png" alt="G_M"/>.  The argument <code class="docutils literal notranslate"><span class="pre">hq</span></code> is a list of
-<img class="math" src="_images/math/4abba779877abb276b98ccb2b4ba9bf2e41947ab.png" alt="M"/> dense single-column matrices <img class="math" src="_images/math/1e3c4fd71e54eca8ee4a7928ebfd8e6c0bc70d31.png" alt="h_1"/>, ldots,
-<img class="math" src="_images/math/b9114cc1138ec152eae394b47fa104b1ee1ee4b9.png" alt="h_M"/>.  The elements of <code class="docutils literal notranslate"><span class="pre">Gq</span></code> and <code class="docutils literal notranslate"><span class="pre">hq</span></code> must have at least one
+<img class="math" src="_images/math/4abba779877abb276b98ccb2b4ba9bf2e41947ab.png" alt="M"/> dense single-column matrices <img class="math" src="_images/math/7e3e2e4f92024433a9ad4d75422c991d86d1ec57.png" alt="h_1, \ldots, h_M"/>.
+The elements of <code class="docutils literal notranslate"><span class="pre">Gq</span></code> and <code class="docutils literal notranslate"><span class="pre">hq</span></code> must have at least one
 row.  The default values of <code class="docutils literal notranslate"><span class="pre">Gq</span></code> and <code class="docutils literal notranslate"><span class="pre">hq</span></code> are empty lists.</p>
 <p><code class="docutils literal notranslate"><span class="pre">A</span></code> is dense or sparse matrix and <code class="docutils literal notranslate"><span class="pre">b</span></code> is a single-column dense
 matrix.  The default values for <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code> are matrices with
@@ -897,14 +904,14 @@ elements <code class="xref py py-const docutils literal notranslate"><span class
 <code class="docutils literal notranslate"><span class="pre">primalstart['x']</span></code> and <code class="docutils literal notranslate"><span class="pre">primalstart['sl']</span></code> are
 single-column dense matrices with the initial values of <img class="math" src="_images/math/888f7c323ac0341871e867220ae2d76467d74d6e.png" alt="x"/> and
 <img class="math" src="_images/math/8fb1fc12384d9c1b73b81b87315f7654511a2c0e.png" alt="s_0"/>;  <code class="docutils literal notranslate"><span class="pre">primalstart['sq']</span></code> is a list of single-column
-matrices with the initial values of <img class="math" src="_images/math/41088e732877c4491fed8b82e3b2b39c8638ee16.png" alt="s_1"/>, ldots, <img class="math" src="_images/math/ddefb5b246529cd9459225d23c9a2444a37f26fa.png" alt="s_M"/>.
+matrices with the initial values of <img class="math" src="_images/math/06fa9ba19a3d38408ac220954e05a6105bec867c.png" alt="s_1, \ldots, s_M"/>.
 The initial values must satisfy the inequalities in the primal problem
 strictly, but not necessarily the equality constraints.</p>
 <p><code class="docutils literal notranslate"><span class="pre">dualstart</span></code> has elements <code class="xref py py-const docutils literal notranslate"><span class="pre">'y'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'zl'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'zq'</span></code>.
 <code class="docutils literal notranslate"><span class="pre">dualstart['y']</span></code> and <code class="docutils literal notranslate"><span class="pre">dualstart['zl']</span></code> are single-column
 dense matrices with the initial values of <img class="math" src="_images/math/1b5e577d6216dca3af7d87aa122a0b9b360d6cb3.png" alt="y"/> and <img class="math" src="_images/math/b7dd8acc0d0af36b58c42bc14eeeca05c6286fba.png" alt="z_0"/>.
 <code class="docutils literal notranslate"><span class="pre">dualstart['zq']</span></code> is a list of single-column matrices with the
-initial values of <img class="math" src="_images/math/25e1d0f27471fc48a5066ec25b700df2e725728e.png" alt="z_1"/>, ldots, <img class="math" src="_images/math/264ee9c3c31874f04bd683e78a3a7777f20cb88b.png" alt="z_M"/>.  These values must
+initial values of <img class="math" src="_images/math/cb92702d2163f15e2bf7e6a34b182302ae65f3b7.png" alt="z_1, \ldots, z_M"/>.  These values must
 satisfy the dual inequalities strictly, but not necessarily the
 equality constraint.</p>
 <p>The arguments <code class="docutils literal notranslate"><span class="pre">primalstart</span></code> and <code class="docutils literal notranslate"><span class="pre">dualstart</span></code> are ignored when the
@@ -967,7 +974,7 @@ programs with no second-order cone constraints.  It also provides the
 option of using the DSDP semidefinite programming solver.</p>
 <dl class="py function">
 <dt id="cvxopt.solvers.sdp">
-<code class="sig-prename descclassname">cvxopt.solvers.</code><code class="sig-name descname">sdp</code><span class="sig-paren">(</span><em class="sig-param">c</em><span class="optional">[</span>, <em class="sig-param">Gl</em>, <em class="sig-param">hl</em><span class="optional">[</span>, <em class="sig-param">Gs</em>, <em class="sig-param">hs</em><span class="optional">[</span>, <em class="sig-param">A</em>, <em class="sig-param">b</em><span class="optional">[</span>, <em class="sig-param">solver</em><span class="optional">[</span>, <em class="sig-param">primalstart</em><span class="optional">[</span>, <em class="sig-param">dualstart</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.sdp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></code><code class="sig-name descname"><span class="pre">sdp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">c</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">Gl</span></em>, <em class="sig-param"><span class="pre">hl</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">Gs</span></em>, <em class="sig-param"><span class="pre">hs</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">solver</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">primalstart</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dualstart</span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.sdp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the pair of primal and dual semidefinite programs</p>
 <div class="math">
 <p><img src="_images/math/191bc203fa207a53847c892bc9bc56a69a1c60c1.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
@@ -1007,12 +1014,12 @@ single-column dense matrix.   The default values for <code class="docutils liter
 are matrices with zero rows.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Gs</span></code> and <code class="docutils literal notranslate"><span class="pre">hs</span></code> are lists of length <img class="math" src="_images/math/3bfb3a64189a14b2704f4610827762d5e3145114.png" alt="N"/> that specify the
 linear matrix inequality constraints.  <code class="docutils literal notranslate"><span class="pre">Gs</span></code> is a list of <img class="math" src="_images/math/3bfb3a64189a14b2704f4610827762d5e3145114.png" alt="N"/>
-dense or sparse real matrices <img class="math" src="_images/math/cbb49321318d94ba656d1ce115187d55c90322b4.png" alt="G_1"/>, ldots, <img class="math" src="_images/math/1e45a7a687f92b2a29b62ce1dddb23a8eefeedca.png" alt="G_M"/>.  The
+dense or sparse real matrices <img class="math" src="_images/math/1b1815f8a1dcb49152792554f110261420c96b3c.png" alt="G_1, \ldots, G_M"/>.  The
 columns of these matrices can be interpreted as symmetric matrices
 stored in column major order, using the BLAS <code class="xref py py-const docutils literal notranslate"><span class="pre">'L'</span></code>-type storage
 (i.e., only the entries corresponding to lower triangular positions
 are accessed).  <code class="docutils literal notranslate"><span class="pre">hs</span></code> is a list of <img class="math" src="_images/math/3bfb3a64189a14b2704f4610827762d5e3145114.png" alt="N"/> dense symmetric matrices
-<img class="math" src="_images/math/1e3c4fd71e54eca8ee4a7928ebfd8e6c0bc70d31.png" alt="h_1"/>, ldots, <img class="math" src="_images/math/1cdcc96e18c62f3865d8d43ada0619823c8bcb33.png" alt="h_N"/>.  Only the lower triangular elements
+<img class="math" src="_images/math/8d7aeb80b08f9d220de852b224d6a4693f6ddff9.png" alt="h_1, \ldots, h_N"/>.  Only the lower triangular elements
 of these matrices are accessed.  The default values for <code class="docutils literal notranslate"><span class="pre">Gs</span></code> and
 <code class="docutils literal notranslate"><span class="pre">hs</span></code> are empty lists.</p>
 <p><code class="docutils literal notranslate"><span class="pre">A</span></code> is a dense or sparse matrix and <code class="docutils literal notranslate"><span class="pre">b</span></code> is a single-column dense
@@ -1031,7 +1038,7 @@ primal starting point.  <code class="docutils literal notranslate"><span class="
 <code class="docutils literal notranslate"><span class="pre">primalstart['sl']</span></code> are single-column dense matrices with the
 initial values of <img class="math" src="_images/math/888f7c323ac0341871e867220ae2d76467d74d6e.png" alt="x"/> and <img class="math" src="_images/math/8fb1fc12384d9c1b73b81b87315f7654511a2c0e.png" alt="s_0"/>;
 <code class="docutils literal notranslate"><span class="pre">primalstart['ss']</span></code> is a list of square matrices with the initial
-values of <img class="math" src="_images/math/41088e732877c4491fed8b82e3b2b39c8638ee16.png" alt="s_1"/>, ldots, <img class="math" src="_images/math/581060bbfd7546835e4dd199b1cfe83a2401e636.png" alt="s_N"/>.  The initial values must
+values of <img class="math" src="_images/math/317f05bfc503c0f2967f94d5108fa418a7e4578e.png" alt="s_1, \ldots, s_N"/>.  The initial values must
 satisfy the inequalities in the primal problem strictly, but not
 necessarily the equality constraints.</p>
 <p><code class="docutils literal notranslate"><span class="pre">dualstart</span></code> is a dictionary with keys <code class="xref py py-const docutils literal notranslate"><span class="pre">'y'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'zl'</span></code>,
@@ -1039,7 +1046,7 @@ necessarily the equality constraints.</p>
 <code class="docutils literal notranslate"><span class="pre">dualstart['y']</span></code> and <code class="docutils literal notranslate"><span class="pre">dualstart['zl']</span></code> are single-column
 dense matrices with the initial values of <img class="math" src="_images/math/1b5e577d6216dca3af7d87aa122a0b9b360d6cb3.png" alt="y"/> and <img class="math" src="_images/math/b7dd8acc0d0af36b58c42bc14eeeca05c6286fba.png" alt="z_0"/>.
 <code class="docutils literal notranslate"><span class="pre">dualstart['zs']</span></code> is a list of square matrices with the initial
-values of <img class="math" src="_images/math/25e1d0f27471fc48a5066ec25b700df2e725728e.png" alt="z_1"/>, ldots, <img class="math" src="_images/math/ecd00043b2c4fdc2473d664cbbe67fee8dd18c80.png" alt="z_N"/>.  These values must satisfy
+values of <img class="math" src="_images/math/8d1638c06d78232d12c1df1eac99cc20f863d50e.png" alt="z_1, \ldots, z_N"/>.  These values must satisfy
 the dual inequalities strictly, but not necessarily the equality
 constraint.</p>
 <p>The arguments <code class="docutils literal notranslate"><span class="pre">primalstart</span></code> and <code class="docutils literal notranslate"><span class="pre">dualstart</span></code> are ignored when the
@@ -2017,32 +2024,32 @@ instances should be solved in parallel, but using different options.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="solvers.html" class="btn btn-neutral float-right" title="Nonlinear Convex Optimization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="spsolvers.html" class="btn btn-neutral float-left" title="Sparse Linear Equations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="solvers.html" class="btn btn-neutral float-right" title="Nonlinear Convex Optimization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="spsolvers.html" class="btn btn-neutral float-left" title="Sparse Linear Equations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="copyright.html">Copyright</a> 2004-2020, M.S. Andersen, J. Dahl, L. Vandenberghe
+        &#169; <a href="copyright.html">Copyright</a> 2004-2021, M.S. Andersen, J. Dahl, L. Vandenberghe.
       <span class="lastupdated">
-        Last updated on Apr 16, 2020.
+        Last updated on Feb 18, 2021.
       </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -2050,7 +2057,6 @@ instances should be solved in parallel, but using different options.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
@@ -2063,7 +2069,7 @@ instances should be solved in parallel, but using different options.</p>
     
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.0.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.5.1.
     </div>
 
 </body>

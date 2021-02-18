@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2020 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2021 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -49,7 +49,7 @@ extern matrix * Matrix_NewFromMatrix(matrix *, int) ;
 extern matrix * Matrix_NewFromSequence(PyObject *, int) ;
 extern matrix * Matrix_NewFromPyBuffer(PyObject *, int, int *) ;
 extern matrix * Matrix_NewFromNumber(int , int , int , void *, int ) ;
-extern matrix * create_indexlist(int, PyObject *) ;
+extern matrix * create_indexlist(int_t, PyObject *) ;
 extern matrix * Matrix_New(int, int, int) ;
 extern matrix * dense(spmatrix *) ;
 extern PyObject * matrix_add(PyObject *, PyObject *) ;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2020 M. Andersen and L. Vandenberghe.
+ * Copyright 2012-2021 M. Andersen and L. Vandenberghe.
  * Copyright 2010-2011 L. Vandenberghe.
  * Copyright 2004-2009 J. Dahl and L. Vandenberghe.
  *
@@ -1383,7 +1383,7 @@ static char doc_sbmv[] =
     "k         integer.  If negative, the default value is used.\n"
     "          The default value is k = max(0,A.size[0]-1).\n\n"
     "ldA       nonnegative integer.  ldA >= k+1.\n"
-    "          If zero, the default vaule is used.\n\n"
+    "          If zero, the default value is used.\n\n"
     "incx      nonzero integer\n\n"
     "incy      nonzero integer\n\n"
     "offsetA   nonnegative integer\n\n"
@@ -1486,7 +1486,7 @@ static char doc_hbmv[] =
     "k         integer.  If negative, the default value is used.\n"
     "          The default value is k = max(0,A.size[0]-1).\n\n"
     "ldA       nonnegative integer.  ldA >= k+1.\n"
-    "          If zero, the default vaule is used.\n\n"
+    "          If zero, the default value is used.\n\n"
     "incx      nonzero integer\n\n"
     "incy      nonzero integer\n\n"
     "offsetA   nonnegative integer.\n\n"
@@ -1688,7 +1688,7 @@ static char doc_tbmv[] =
     "If trans is 'N', computes x := A*x.\n"
     "If trans is 'T', computes x := A^T*x.\n"
     "If trans is 'C', computes x := A^H*x.\n"
-    "A is banded triangular of order n and with bandwith k.\n\n"
+    "A is banded triangular of order n and with bandwidth k.\n\n"
     "ARGUMENTS\n"
     "A         'd' or 'z' matrix\n\n"
     "x         'd' or 'z' matrix.  Must have the same type as A.\n\n"
