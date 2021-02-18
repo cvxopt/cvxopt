@@ -1,38 +1,41 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Installation instructions &mdash; CVXOPT</title>
   
 
   
-  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
   
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="copyright" title="Copyright" href="../copyright.html" />
     <link rel="next" title="Documentation" href="../documentation/index.html" />
@@ -60,7 +63,7 @@
             
             
               <div class="version">
-                1.2.5
+                1.2.6
               </div>
             
           
@@ -77,6 +80,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -104,6 +108,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -138,18 +143,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Installation instructions</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
         
       </li>
     
@@ -180,23 +187,17 @@ using <a class="reference external" href="https://pip.pypa.io">pip</a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cvxopt</span>
 </pre></div>
 </div>
-<p>Wheels for Linux:</p>
+<p>Wheels for Linux and macOS:</p>
 <ul class="simple">
-<li><p>are available for Python 2.7, 3.5, 3.6, 3.7, and 3.8 (32 and 64 bit)</p></li>
+<li><p>are available for Python 2.7, 3.5, 3.6, 3.7, 3.8, and 3.9 (32 and 64 bit)</p></li>
 <li><p>are linked against OpenBLAS</p></li>
-<li><p>include all optional extensions (DSDP, GLPK, GSL, and FFTW)</p></li>
-</ul>
-<p>Wheels for macOS:</p>
-<ul class="simple">
-<li><p>are available for Python 2.7, 3.5, 3.6, 3.7, and 3.8 (universal binaries)</p></li>
-<li><p>are linked against BLAS/LAPACK from the Accelerate framework</p></li>
 <li><p>include all optional extensions (DSDP, GLPK, GSL, and FFTW)</p></li>
 </ul>
 <p>Wheels for Windows:</p>
 <ul class="simple">
-<li><p>are available for Python 27, 3.5, 3.6, and 3.7 (64 bit only)</p></li>
-<li><p>are linked against MKL</p></li>
-<li><p>Python 3.5+ wheels include the optional extension GLPK (the wheel for Python 2.7 does no include any of the optional extensions)</p></li>
+<li><p>are available for Python 3.5, 3.6, 3.7, 3.8, and 3.9 (32 and 64 bit)</p></li>
+<li><p>are linked against OpenBLAS</p></li>
+<li><p>include the optional extension GLPK</p></li>
 </ul>
 </div>
 <div class="section" id="building-and-installing-from-source">
@@ -463,51 +464,24 @@ if it is not, it can now be installed with <code class="docutils literal notrans
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">PYTHON</span><span class="o">%</span>\<span class="n">Scripts</span>\<span class="n">easy_install</span> <span class="n">pip</span>
 </pre></div>
 </div>
-<p class="rubric">Python 2.7, Python 3.4</p>
-<p>CVXOPT can be built for Windows (64 bit) with the
-<a class="reference external" href="https://mingwpy.github.io">Mingwpy</a> toolchain and MKL. Note that
-Mingwpy currently only supports Python version 2.7 through 3.4.</p>
-<p>Open the Command Prompt and execute the following commands:</p>
-<div class="highlight-batch notranslate"><div class="highlight"><pre><span></span><span class="c1">rem Download SuiteSparse source</span>
-git clone https://github.com/DrTimothyAldenDavis/SuiteSparse.git
-<span class="k">cd</span> SuiteSparse
-git checkout v5.6.0
-<span class="k">cd</span> ..
-<span class="k">set</span> <span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="p">=</span><span class="nv">%CD%</span>\SuiteSparse
-
-<span class="c1">rem Install MKL</span>
-pip install mkl
-<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB_DIR</span><span class="p">=</span><span class="nv">%PYTHON%</span>\Library\lib
-<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB</span><span class="p">=</span>mkl_rt
-<span class="k">set</span> <span class="nv">CVXOPT_LAPACK_LIB</span><span class="p">=</span>mkl_rt
-
-<span class="c1">rem Install mingwpy Python extension using pip</span>
-pip install -i https://pypi.anaconda.org/carlkl/simple mingwpy
-
-<span class="c1">rem Clone CVXOPT repository, compile, install, and run tests</span>
-git clone https://github.com/cvxopt/cvxopt.git
-<span class="k">cd</span> cvxopt
-<span class="k">for</span> <span class="k">/f</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;git describe --abbrev^=0 --tags&#39;</span><span class="p">)</span> <span class="k">do</span> git checkout <span class="se">%%</span>a
-python setup.py build --compiler=mingw32
-python setup.py install
-python -m unittest discover -s tests
-</pre></div>
-</div>
 <p class="rubric">Python 3.5+</p>
-<p>CVXOPT 1.2.0+ can be built for Windows (64 bit) with MSVC14 and MKL.</p>
-<p>Open the Command Prompt and execute the following commands:</p>
+<p>CVXOPT 1.2.0+ can be built for Windows (64 bit) with MSVC14 and OpenBLAS.</p>
+<p>The following example shows how to build/install CVXOPT for x64:</p>
 <div class="highlight-batch notranslate"><div class="highlight"><pre><span></span><span class="c1">rem Download SuiteSparse source</span>
 git clone https://github.com/DrTimothyAldenDavis/SuiteSparse.git
 <span class="k">cd</span> SuiteSparse
-git checkout v5.6.0
+git checkout v5.8.1
 <span class="k">cd</span> ..
-<span class="k">set</span> <span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="p">=</span><span class="nv">%CD%</span>\SuiteSparse
+<span class="k">set</span> <span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="p">=</span><span class="s2">&quot;</span><span class="nv">%cd%</span><span class="s2">\SuiteSparse&quot;</span>
 
-<span class="c1">rem Install MKL</span>
-pip install mkl
-<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB_DIR</span><span class="p">=</span><span class="nv">%PYTHON%</span>\Library\lib
-<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB</span><span class="p">=</span>mkl_rt
-<span class="k">set</span> <span class="nv">CVXOPT_LAPACK_LIB</span><span class="p">=</span>mkl_rt
+<span class="c1">rem Download OpenBLAS</span>
+wget https://github.com/xianyi/OpenBLAS/releases/download/v0.3.10/OpenBLAS-0.3.10-x64.zip
+wget https://raw.githubusercontent.com/xianyi/OpenBLAS/v0.3.10/LICENSE -O LICENSE_OpenBLAS-0.3.10
+<span class="k">mkdir</span> OpenBLAS
+unzip OpenBLAS-0.3.10-x64.zip -d OpenBLAS
+<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB_DIR</span><span class="p">=</span><span class="s2">&quot;</span><span class="nv">%cd%</span><span class="s2">\OpenBLAS\lib&quot;</span>
+<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB</span><span class="p">=</span>openblas
+<span class="k">set</span> <span class="nv">CVXOPT_LAPACK_LIB</span><span class="p">=</span>openblas
 
 <span class="c1">rem Clone CVXOPT repository, compile, install, and run tests</span>
 git clone https://github.com/cvxopt/cvxopt.git
@@ -527,32 +501,32 @@ python -m unittest discover -s tests
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../documentation/index.html" class="btn btn-neutral float-right" title="Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../download/index.html" class="btn btn-neutral float-left" title="Download" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="../documentation/index.html" class="btn btn-neutral float-right" title="Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../download/index.html" class="btn btn-neutral float-left" title="Download" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; <a href="../copyright.html">Copyright</a> 2004-2020, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe.
+        &#169; <a href="../copyright.html">Copyright</a> 2004-2021, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
       <span class="lastupdated">
-        Last updated on Apr 17, 2020.
+        Last updated on Feb 18, 2021.
       </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -560,7 +534,6 @@ python -m unittest discover -s tests
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
@@ -573,7 +546,7 @@ python -m unittest discover -s tests
     
   
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.0.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.5.1.
     </div>
 
 <script>
