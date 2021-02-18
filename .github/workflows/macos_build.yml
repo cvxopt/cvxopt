@@ -1,0 +1,73 @@
+name: macOS build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+#    if: false
+
+    runs-on: macos-latest
+    env:
+      SUITESPARSE_VERSION: 5.8.1
+      SUITESPARSE_SHA256: 06726e471fbaa55f792578f9b4ab282ea9d008cf39ddcc3b42b73400acddef40
+      DSDP_VERSION: 5.8
+      DSDP_SHA256: 26aa624525a636de272c0b329e2dfd01a0d5b7827f1c1c76f393d71e37dead70
+      CVXOPT_DSDP_LIB_DIR: /usr/local/lib
+      CVXOPT_DSDP_INC_DIR: /usr/local/include
+      CVXOPT_BLAS_LIB_DIR: /usr/local/opt/openblas/lib
+      CVXOPT_BLAS_LIB: openblas
+      CVXOPT_LAPACK_LIB: openblas
+      CVXOPT_BUILD_DSDP: 0
+      CVXOPT_BUILD_FFTW: 1
+      CVXOPT_BUILD_GLPK: 1
+      CVXOPT_BUILD_GSL: 1
+
+    strategy:
+      matrix:
+        python-version: [2.7, 3.8, 3.9]
+        # suitesparse: [src, lib]
+        suitesparse: [lib]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        brew install openblas suite-sparse glpk gsl fftw
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov coveralls wheel
+
+    - name: Get SuiteSparse source
+      if: ${{ matrix.suitesparse == 'src' }}
+      run: |
+        wget https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${SUITESPARSE_VERSION}.tar.gz
+        echo "${SUITESPARSE_SHA256}  v${SUITESPARSE_VERSION}.tar.gz" > SuiteSparse.sha256
+        shasum -a 256 -c SuiteSparse.sha256
+        tar -xf v${SUITESPARSE_VERSION}.tar.gz
+        echo "CVXOPT_SUITESPARSE_SRC_DIR=${{github.workspace}}/SuiteSparse-${SUITESPARSE_VERSION}" >> $GITHUB_ENV
+
+    - name: Build DSDP
+      if: ${{ env.CVXOPT_BUILD_DSDP == 1 }}
+      run: |
+        wget http://www.mcs.anl.gov/hs/software/DSDP/DSDP${DSDP_VERSION}.tar.gz
+        echo "${DSDP_SHA256}  DSDP${DSDP_VERSION}.tar.gz" > DSDP.sha256
+        shasum -a 256 -c DSDP.sha256
+        tar -xf DSDP${DSDP_VERSION}.tar.gz
+        cd DSDP${DSDP_VERSION}
+        patch -p1 < ${{github.workspace}}/.github/workflows/dsdp.patch
+        make PREFIX=/usr/local LAPACKBLAS="-L${CVXOPT_BLAS_LIB_DIR} -l${CVXOPT_LAPACK_LIB} -l${CVXOPT_BLAS_LIB}" IS_OSX=1 DSDPROOT=`pwd` install
+
+    - name: Build/install CVXOPT
+      run: |
+        python setup.py build
+        pip install .
+
+    - name: Test with pytest
+      run: |
+        pytest
