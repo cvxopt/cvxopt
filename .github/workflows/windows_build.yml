@@ -5,6 +5,8 @@ on: [push, pull_request]
 jobs:
   build:
 
+#    if: false
+    
     runs-on: windows-latest
     env:
       SUITESPARSE_VERSION: 5.8.1

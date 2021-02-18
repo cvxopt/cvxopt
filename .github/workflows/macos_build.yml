@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   build:
 
-    if: false
+#    if: false
 
     runs-on: macos-latest
     env:
