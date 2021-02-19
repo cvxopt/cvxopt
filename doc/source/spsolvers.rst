@@ -459,8 +459,8 @@ For the same example as above:
 
 In the functions listed above, the default values of the control 
 parameters described in the CHOLMOD user guide are used, except for 
-:c:data:`Common->print` which is set to 0 instead of 3 and 
-:c:data:`Common->supernodal` which is set to 2 instead of 1.
+:c:data:`Common.print` which is set to 0 instead of 3 and
+:c:data:`Common.supernodal` which is set to 2 instead of 1.
 These parameters (and a few others) can be modified by making an 
 entry in the dictionary :attr:`cholmod.options`. 
 The meaning of the options :attr:`options['supernodal']`  and
