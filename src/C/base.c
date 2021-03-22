@@ -353,7 +353,7 @@ int (*mtx_rem[])(void *, number, int) = { mtx_irem, mtx_drem };
 /* val_type = 0: (sp)matrix if type = 0, PY_NUMBER if type = 1 */
 int get_id(void *val, int val_type) {
   if (!val_type) {
-    if Matrix_Check((PyObject *)val)
+    if (Matrix_Check((PyObject *)val))
     return MAT_ID((matrix *)val);
     else
       return SP_ID((spmatrix *)val);

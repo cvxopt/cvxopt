@@ -426,7 +426,7 @@ if (!A) return NULL;
                 SP_COL(A)[nk+1]++;
               }
             }
-          } else if SpMatrix_Check(Lij) {
+          } else if (SpMatrix_Check(Lij)) {
 
             int_t ik;
             for (ik=SP_COL(Lij)[jk]; ik<SP_COL(Lij)[jk+1]; ik++) {
