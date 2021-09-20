@@ -499,13 +499,13 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
 #if PY_MAJOR_VERSION >= 3
     if (!PyCapsule_CheckExact(F) || !(descr = PyCapsule_GetName(F)))
         err_CO("F");
-    if (!(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU_U) == 0))
+    if (!(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     cholmod_factor *L = (cholmod_factor *) PyCapsule_GetPointer(F, descr);
 #else
     if (!PyCObject_Check(F)) err_CO("F");
     descr = PyCObject_GetDesc(F);
-    if (!descr || !(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU_U) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU_U) == 0))
+    if (!descr || !(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     cholmod_factor *L = (cholmod_factor *) PyCObject_AsVoidPtr(F);
 #endif
@@ -605,13 +605,13 @@ static PyObject* spsolve(PyObject *self, PyObject *args,
 #if PY_MAJOR_VERSION >= 3
     if (!PyCapsule_CheckExact(F) || !(descr = PyCapsule_GetName(F)))
         err_CO("F");
-    if (!(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU_U) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU_U) == 0))
+    if (!(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     L = (cholmod_factor *) PyCapsule_GetPointer(F, descr);
 #else
     if (!PyCObject_Check(F)) err_CO("F");
     descr = PyCObject_GetDesc(F);
-    if (!descr || !(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU_U) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU_U) == 0))
+    if (!descr || !(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     L = (cholmod_factor *) PyCObject_AsVoidPtr(F);
 #endif
@@ -983,13 +983,13 @@ static PyObject* diag(PyObject *self, PyObject *args)
 #if PY_MAJOR_VERSION >= 3
     if (!PyCapsule_CheckExact(F) || !(descr = PyCapsule_GetName(F)))
         err_CO("F");
-    if (!(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU_U) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU_U) == 0))
+    if (!(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     L = (cholmod_factor *) PyCapsule_GetPointer(F, descr);
 #else
     if (!PyCObject_Check(F)) err_CO("F");
     descr = PyCObject_GetDesc(F);
-    if (!descr || !(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU_U) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU_U) == 0))
+    if (!descr || !(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     L = (cholmod_factor *) PyCObject_AsVoidPtr(F);
 #endif
@@ -1041,13 +1041,13 @@ static PyObject* getfactor(PyObject *self, PyObject *args)
 #if PY_MAJOR_VERSION >= 3
     if (!PyCapsule_CheckExact(F) || !(descr = PyCapsule_GetName(F)))
         err_CO("F");
-    if (!(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU_U) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU_U) == 0))
+    if (!(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     Lf = (cholmod_factor *) PyCapsule_GetPointer(F, descr);
 #else
     if (!PyCObject_Check(F)) err_CO("F");
     descr = PyCObject_GetDesc(F);
-    if (!descr || !(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU_U) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU_U) == 0))
+    if (!descr || !(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     Lf = (cholmod_factor *) PyCObject_AsVoidPtr(F);
 #endif
