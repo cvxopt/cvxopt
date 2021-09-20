@@ -963,7 +963,7 @@ if use_C:
   sinv = misc_solvers.sinv
 else:
   def sinv(x, y, dims, mnl = 0):   
-    """
+    r"""
     The inverse product x := (y o\ x), when the 's' components of y are 
     diagonal.
     """
