@@ -807,7 +807,7 @@ static PyObject* iamax(PyObject *self, PyObject *args, PyObject *kwrds)
     if (len(x) < ox + 1+(n-1)*ix) err_buf_len("x");
 
 #if PY_MAJOR_VERSION >= 3
-    double val;
+    int val;
 #endif
     switch (MAT_ID(x)){
         case DOUBLE:
