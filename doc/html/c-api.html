@@ -1,74 +1,37 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>C API &mdash; CVXOPT User&#39;s Guide</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
     <link rel="next" title="Matrix Formatting" href="printing.html" />
     <link rel="prev" title="Modeling" href="modeling.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
-                1.2.6
+                1.2.7
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -76,18 +39,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
@@ -108,71 +60,31 @@
 <li class="toctree-l1"><a class="reference external" href="http://cvxopt.org">cvxopt.org</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">CVXOPT User's Guide</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>C API</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="c-api">
-<span id="c-capi"></span><h1>C API<a class="headerlink" href="#c-api" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="c-api">
+<span id="c-capi"></span><h1>C API<a class="headerlink" href="#c-api" title="Permalink to this headline"></a></h1>
 <p>The API can be used to extend CVXOPT with interfaces to external C routines
 and libraries.  A C program that creates or manipulates the dense or sparse
 matrix objects defined in CVXOPT must include the <code class="xref py py-const docutils literal notranslate"><span class="pre">cvxopt.h</span></code> header
@@ -187,7 +99,7 @@ the API:</p>
     <span class="n">PyModuleDef_HEAD_INIT</span><span class="p">,</span>
     <span class="s">&quot;blas&quot;</span><span class="p">,</span>
     <span class="n">blas__doc__</span><span class="p">,</span>
-    <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="mi">-1</span><span class="p">,</span>
     <span class="n">blas_functions</span><span class="p">,</span>
     <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span>
 <span class="p">};</span>
@@ -212,8 +124,8 @@ the API:</p>
 <span class="cp">#endif</span>
 </pre></div>
 </div>
-<div class="section" id="dense-matrices">
-<h2>Dense Matrices<a class="headerlink" href="#dense-matrices" title="Permalink to this headline">¶</a></h2>
+<section id="dense-matrices">
+<h2>Dense Matrices<a class="headerlink" href="#dense-matrices" title="Permalink to this headline"></a></h2>
 <p>As can be seen from the header file <code class="xref py py-const docutils literal notranslate"><span class="pre">cvxopt.h</span></code>, a <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> is
 essentially a  structure with four fields.  The fields <code class="xref c c-member docutils literal notranslate"><span class="pre">nrows</span></code> and
 <code class="xref c c-member docutils literal notranslate"><span class="pre">ncols</span></code> are two integers that specify the dimensions.  The
@@ -223,23 +135,23 @@ field is an array that contains the matrix elements stored contiguously in
 column-major order.</p>
 <p>The following C functions can be used to create matrices.</p>
 <dl class="c function">
-<dt id="c.Matrix_New">
-<span class="pre">matrix</span> <span class="pre">*</span><code class="sig-name descname"><span class="pre">Matrix_New</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">nrows</span></em>, <span class="pre">int</span> <em><span class="pre">ncols</span></em>, <span class="pre">int</span> <em><span class="pre">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_New" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.Matrix_New">
+<span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">Matrix_New</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nrows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">ncols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_New" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> object of type <cite>id</cite> with <cite>nrows</cite> rows and
 <cite>ncols</cite> columns.  The elements of the matrix are uninitialized.</p>
 </dd></dl>
 
 <dl class="c function">
-<dt id="c.Matrix_NewFromMatrix">
-<span class="pre">matrix</span> <span class="pre">*</span><code class="sig-name descname"><span class="pre">Matrix_NewFromMatrix</span></code><span class="sig-paren">(</span><span class="pre">matrix</span> <span class="pre">*</span><em><span class="pre">src</span></em>, <span class="pre">int</span> <em><span class="pre">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_NewFromMatrix" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.Matrix_NewFromMatrix">
+<span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">Matrix_NewFromMatrix</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_NewFromMatrix" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Returns a copy of the matrix <cite>src</cite> converted to type <cite>id</cite>.  The
 following type conversions are allowed:  <code class="xref py py-const docutils literal notranslate"><span class="pre">'i'</span></code> to <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code>,
 <code class="xref py py-const docutils literal notranslate"><span class="pre">'i'</span></code> to <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>, and <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code>  to <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>.</p>
 </dd></dl>
 
 <dl class="c function">
-<dt id="c.Matrix_NewFromSequence">
-<span class="pre">matrix</span> <span class="pre">*</span><code class="sig-name descname"><span class="pre">Matrix_NewFromSequence</span></code><span class="sig-paren">(</span><span class="pre">PyListObject</span> <span class="pre">*</span><em><span class="pre">x</span></em>, <span class="pre">int</span> <em><span class="pre">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_NewFromSequence" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.Matrix_NewFromSequence">
+<span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">Matrix_NewFromSequence</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">PyListObject</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_NewFromSequence" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Creates a matrix of type <cite>id</cite> from the Python sequence type <cite>x</cite>. The
 returned matrix has size <code class="docutils literal notranslate"><span class="pre">(len(x),</span> <span class="pre">1)</span></code>.  The size can be changed
 by modifying the <code class="xref c c-member docutils literal notranslate"><span class="pre">nrows</span></code> and <code class="xref c c-member docutils literal notranslate"><span class="pre">ncols</span></code> fields of the
@@ -274,9 +186,9 @@ described in the section <a class="reference internal" href="matrices.html#s-ran
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="sparse-matrices">
-<h2>Sparse Matrices<a class="headerlink" href="#sparse-matrices" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="sparse-matrices">
+<h2>Sparse Matrices<a class="headerlink" href="#sparse-matrices" title="Permalink to this headline"></a></h2>
 <p>Sparse matrices are stored in compressed column storage (CCS) format.  For
 a general <cite>nrows</cite> by <cite>ncols</cite> sparse matrix with <cite>nnz</cite> nonzero entries this
 means the following.  The sparsity pattern and the nonzero values are
@@ -338,22 +250,22 @@ automatically as the number of non-zero elements grows.</p>
 values <code class="xref py py-const docutils literal notranslate"><span class="pre">DOUBLE</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">COMPLEX</span></code>.</p>
 <p>Sparse matrices are created using the following functions from the API.</p>
 <dl class="c function">
-<dt id="c.SpMatrix_New">
-<span class="pre">spmatrix</span> <span class="pre">*</span><code class="sig-name descname"><span class="pre">SpMatrix_New</span></code><span class="sig-paren">(</span><span class="pre">int_t</span> <em><span class="pre">nrows</span></em>, <span class="pre">int_t</span> <em><span class="pre">ncols</span></em>, <span class="pre">int_t</span> <em><span class="pre">nzmax</span></em>, <span class="pre">int</span> <em><span class="pre">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_New" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.SpMatrix_New">
+<span class="n"><span class="pre">spmatrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">SpMatrix_New</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int_t</span></span><span class="w"> </span><span class="n"><span class="pre">nrows</span></span>, <span class="n"><span class="pre">int_t</span></span><span class="w"> </span><span class="n"><span class="pre">ncols</span></span>, <span class="n"><span class="pre">int_t</span></span><span class="w"> </span><span class="n"><span class="pre">nzmax</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_New" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Returns a sparse zero matrix with <cite>nrows</cite> rows and <cite>ncols</cite> columns.
 <cite>nzmax</cite> is the number of elements that will be allocated (the length of
 the <code class="xref c c-member docutils literal notranslate"><span class="pre">values</span></code> and <code class="xref c c-member docutils literal notranslate"><span class="pre">rowind</span></code> fields).</p>
 </dd></dl>
 
 <dl class="c function">
-<dt id="c.SpMatrix_NewFromMatrix">
-<span class="pre">spmatrix</span> <span class="pre">*</span><code class="sig-name descname"><span class="pre">SpMatrix_NewFromMatrix</span></code><span class="sig-paren">(</span><span class="pre">spmatrix</span> <span class="pre">*</span><em><span class="pre">src</span></em>, <span class="pre">int</span> <em><span class="pre">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromMatrix" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.SpMatrix_NewFromMatrix">
+<span class="n"><span class="pre">spmatrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">SpMatrix_NewFromMatrix</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">spmatrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromMatrix" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Returns a copy the sparse matrix var{src}.</p>
 </dd></dl>
 
 <dl class="c function">
-<dt id="c.SpMatrix_NewFromIJV">
-<span class="pre">spmatrix</span> <span class="pre">*</span><code class="sig-name descname"><span class="pre">SpMatrix_NewFromIJV</span></code><span class="sig-paren">(</span><span class="pre">matrix</span> <span class="pre">*</span><em><span class="pre">I</span></em>, <span class="pre">matrix</span> <span class="pre">*</span><em><span class="pre">J</span></em>, <span class="pre">matrix</span> <span class="pre">*</span><em><span class="pre">V</span></em>, <span class="pre">int_t</span> <em><span class="pre">nrows</span></em>, <span class="pre">int_t</span> <em><span class="pre">ncols</span></em>, <span class="pre">int</span> <em><span class="pre">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromIJV" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.SpMatrix_NewFromIJV">
+<span class="n"><span class="pre">spmatrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">SpMatrix_NewFromIJV</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">I</span></span>, <span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">J</span></span>, <span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">V</span></span>, <span class="n"><span class="pre">int_t</span></span><span class="w"> </span><span class="n"><span class="pre">nrows</span></span>, <span class="n"><span class="pre">int_t</span></span><span class="w"> </span><span class="n"><span class="pre">ncols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromIJV" title="Permalink to this definition"></a><br /></dt>
 <dd><p>Creates a sparse matrix with <cite>nrows</cite> rows and <cite>ncols</cite> columns from a
 triplet description.  <cite>I</cite> and <cite>J</cite> must be integer matrices and <cite>V</cite>
 either a double or complex matrix, or <code class="xref py py-const docutils literal notranslate"><span class="pre">NULL</span></code>. If <cite>V</cite> is
@@ -385,60 +297,42 @@ a sparse matrix:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="printing.html" class="btn btn-neutral float-right" title="Matrix Formatting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="modeling.html" class="btn btn-neutral float-left" title="Modeling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="printing.html" class="btn btn-neutral float-right" title="Matrix Formatting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; <a href="copyright.html">Copyright</a> 2004-2021, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">
-        Last updated on Feb 18, 2021.
-      </span>
-
-    </p>
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2021, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on Sep 20, 2021.
+      </span></p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
-
-  
-  
-    
-  
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.5.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.1.2.
     </div>
 
 </body>
