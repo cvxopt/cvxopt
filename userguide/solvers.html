@@ -1,74 +1,37 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Nonlinear Convex Optimization &mdash; CVXOPT User&#39;s Guide</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
     <link rel="next" title="Modeling" href="modeling.html" />
     <link rel="prev" title="Cone Programming" href="coneprog.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
-                1.2.6
+                1.2.7
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -76,18 +39,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
@@ -111,71 +63,31 @@
 <li class="toctree-l1"><a class="reference external" href="http://cvxopt.org">cvxopt.org</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">CVXOPT User's Guide</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Nonlinear Convex Optimization</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="nonlinear-convex-optimization">
-<span id="c-solvers"></span><h1>Nonlinear Convex Optimization<a class="headerlink" href="#nonlinear-convex-optimization" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="nonlinear-convex-optimization">
+<span id="c-solvers"></span><h1>Nonlinear Convex Optimization<a class="headerlink" href="#nonlinear-convex-optimization" title="Permalink to this headline"></a></h1>
 <p>In this chapter we consider nonlinear convex optimization problems of the
 form</p>
 <div class="math">
@@ -197,14 +109,14 @@ In the section <a class="reference internal" href="#s-nlcp"><span class="std std
 implemented that exploit structure in specific classes of problems.
 The last section
 describes the algorithm parameters that control the solvers.</p>
-<div class="section" id="problems-with-nonlinear-objectives">
-<span id="s-cp"></span><h2>Problems with Nonlinear Objectives<a class="headerlink" href="#problems-with-nonlinear-objectives" title="Permalink to this headline">¶</a></h2>
+<section id="problems-with-nonlinear-objectives">
+<span id="s-cp"></span><h2>Problems with Nonlinear Objectives<a class="headerlink" href="#problems-with-nonlinear-objectives" title="Permalink to this headline"></a></h2>
 <dl class="py function">
-<dt id="cvxopt.solvers.cp">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></code><code class="sig-name descname"><span class="pre">cp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">F</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">G</span></em>, <em class="sig-param"><span class="pre">h</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">kktsolver</span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cp" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.solvers.cp">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">cp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">F</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">G</span></em>, <em class="sig-param"><span class="pre">h</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">kktsolver</span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cp" title="Permalink to this definition"></a></dt>
 <dd><p>Solves a convex optimization problem</p>
 <div class="math" id="equation-e-nlcp">
-<p><span class="eqno">(1)<a class="headerlink" href="#equation-e-nlcp" title="Permalink to this equation">¶</a></span><img src="_images/math/8d26408b917ad631b6ae90f7650b19b691fe2bb6.png" alt="\begin{array}{ll}
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-e-nlcp" title="Permalink to this equation"></a></span><img src="_images/math/8d26408b917ad631b6ae90f7650b19b691fe2bb6.png" alt="\begin{array}{ll}
     \mbox{minimize}   &amp; f_0(x) \\
     \mbox{subject to} &amp; f_k(x) \leq 0, \quad k=1,\ldots,m \\
                       &amp; G x \preceq h  \\
@@ -457,12 +369,12 @@ problem</p>
 </pre></div>
 </div>
 </div></blockquote>
-</div>
-<div class="section" id="problems-with-linear-objectives">
-<span id="s-cpl"></span><h2>Problems with Linear Objectives<a class="headerlink" href="#problems-with-linear-objectives" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="problems-with-linear-objectives">
+<span id="s-cpl"></span><h2>Problems with Linear Objectives<a class="headerlink" href="#problems-with-linear-objectives" title="Permalink to this headline"></a></h2>
 <dl class="py function">
-<dt id="cvxopt.solvers.cpl">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></code><code class="sig-name descname"><span class="pre">cpl</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">c</span></em>, <em class="sig-param"><span class="pre">F</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">G</span></em>, <em class="sig-param"><span class="pre">h</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">kktsolver</span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cpl" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.solvers.cpl">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">cpl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">c</span></em>, <em class="sig-param"><span class="pre">F</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">G</span></em>, <em class="sig-param"><span class="pre">h</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">kktsolver</span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cpl" title="Permalink to this definition"></a></dt>
 <dd><p>Solves a convex optimization problem with a linear objective</p>
 <div class="math">
 <p><img src="_images/math/86cec286c2bbedaa7760445bc5a1a242cb84d2c2.png" alt="\begin{array}{ll}
@@ -746,7 +658,7 @@ that solves the problem by calling <code class="xref py py-func docutils literal
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
                <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s1">&#39;#D0D0D0&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="mf">.5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="mf">.5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
@@ -757,7 +669,7 @@ that solves the problem by calling <code class="xref py py-func docutils literal
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
                <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span> <span class="s1">&#39;facecolor = #D0D0D0&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="mf">.5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="mf">.5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
@@ -768,7 +680,7 @@ that solves the problem by calling <code class="xref py py-func docutils literal
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
                <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span> <span class="s1">&#39;facecolor = #D0D0D0&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="mf">.5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="mf">.5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
@@ -779,7 +691,7 @@ that solves the problem by calling <code class="xref py py-func docutils literal
 <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">fill</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span>
                <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]],</span> <span class="s1">&#39;facecolor = #D0D0D0&#39;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+.</span><span class="mi">5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="mf">.5</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="mf">.5</span><span class="o">*</span><span class="n">h</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">26</span><span class="p">])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
@@ -790,12 +702,12 @@ that solves the problem by calling <code class="xref py py-func docutils literal
 <a class="reference internal image-reference" href="_images/floorplan.png"><img alt="_images/floorplan.png" src="_images/floorplan.png" style="width: 600px;" /></a>
 </dd>
 </dl>
-</div>
-<div class="section" id="geometric-programming">
-<span id="s-gp"></span><h2>Geometric Programming<a class="headerlink" href="#geometric-programming" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="geometric-programming">
+<span id="s-gp"></span><h2>Geometric Programming<a class="headerlink" href="#geometric-programming" title="Permalink to this headline"></a></h2>
 <dl class="py function">
-<dt id="cvxopt.solvers.gp">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></code><code class="sig-name descname"><span class="pre">gp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">F</span></em>, <em class="sig-param"><span class="pre">g</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">G</span></em>, <em class="sig-param"><span class="pre">h</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.gp" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.solvers.gp">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">gp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">F</span></em>, <em class="sig-param"><span class="pre">g</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">G</span></em>, <em class="sig-param"><span class="pre">h</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.gp" title="Permalink to this definition"></a></dt>
 <dd><p>Solves a geometric program in convex form</p>
 <div class="math">
 <p><img src="_images/math/6dd83f47897e8af1a287a2cb577906b4c142c166.png" alt="\newcommand{\lse}{\mathop{\mathbf{lse}}}
@@ -905,9 +817,9 @@ The  posynomial form of the problem is</p>
 <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span> <span class="n">solvers</span><span class="o">.</span><span class="n">gp</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">g</span><span class="p">)[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="exploiting-structure">
-<span id="s-nlcp"></span><h2>Exploiting Structure<a class="headerlink" href="#exploiting-structure" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="exploiting-structure">
+<span id="s-nlcp"></span><h2>Exploiting Structure<a class="headerlink" href="#exploiting-structure" title="Permalink to this headline"></a></h2>
 <p>By default, the functions <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> and
 <a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal notranslate"><span class="pre">cpl</span></code></a> do not exploit problem
 structure.  Two mechanisms are provided for implementing customized solvers
@@ -917,7 +829,7 @@ that take advantage of problem structure.</p>
 <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> is the
 solution of a set of linear equations (<em>KKT equations</em>) of the form</p>
 <div class="math" id="equation-e-cp-kkt">
-<p><span class="eqno">(2)<a class="headerlink" href="#equation-e-cp-kkt" title="Permalink to this equation">¶</a></span><img src="_images/math/7eac6332e16c5424a4b290d2b9f9445c5214a1d1.png" alt="\left[\begin{array}{ccc}
+<p><span class="eqno">(2)<a class="headerlink" href="#equation-e-cp-kkt" title="Permalink to this equation"></a></span><img src="_images/math/7eac6332e16c5424a4b290d2b9f9445c5214a1d1.png" alt="\left[\begin{array}{ccc}
     H        &amp; A^T &amp; \tilde G^T \\
     A        &amp; 0   &amp; 0  \\
     \tilde G &amp; 0   &amp; -W^T W
@@ -1194,9 +1106,9 @@ for matrix-matrix and matrix-vector products.</p>
     <span class="k">return</span> <span class="n">solvers</span><span class="o">.</span><span class="n">cp</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">kktsolver</span> <span class="o">=</span> <span class="n">Fkkt</span><span class="p">)[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="algorithm-parameters">
-<span id="s-parameters2"></span><h2>Algorithm Parameters<a class="headerlink" href="#algorithm-parameters" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="algorithm-parameters">
+<span id="s-parameters2"></span><h2>Algorithm Parameters<a class="headerlink" href="#algorithm-parameters" title="Permalink to this headline"></a></h2>
 <p>The following algorithm control parameters are accessible via the
 dictionary <code class="xref py py-attr docutils literal notranslate"><span class="pre">solvers.options</span></code>.  By default the dictionary
 is empty and the default values of the parameters are used.</p>
@@ -1257,60 +1169,42 @@ L(x,y,z) = c^Tx + z_\mathrm{nl}^T f(x) +
 </div><p>The functions <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> and
 <a class="reference internal" href="#cvxopt.solvers.gp" title="cvxopt.solvers.gp"><code class="xref py py-func docutils literal notranslate"><span class="pre">gp</span></code></a> call <code class="xref py py-func docutils literal notranslate"><span class="pre">cpl</span></code> and hence use the
 same stopping criteria (with <img class="math" src="_images/math/459f00b80184047c37413367f1bc32570987f2c1.png" alt="x_0 = 0"/> for <code class="xref py py-func docutils literal notranslate"><span class="pre">gp</span></code>).</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="modeling.html" class="btn btn-neutral float-right" title="Modeling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="coneprog.html" class="btn btn-neutral float-left" title="Cone Programming" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modeling.html" class="btn btn-neutral float-right" title="Modeling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; <a href="copyright.html">Copyright</a> 2004-2021, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">
-        Last updated on Feb 18, 2021.
-      </span>
-
-    </p>
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2021, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on Sep 20, 2021.
+      </span></p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
-
-  
-  
-    
-  
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.5.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.1.2.
     </div>
 
 </body>

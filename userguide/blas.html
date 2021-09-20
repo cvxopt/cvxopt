@@ -1,74 +1,37 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>The BLAS Interface &mdash; CVXOPT User&#39;s Guide</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
     <link rel="next" title="The LAPACK Interface" href="lapack.html" />
     <link rel="prev" title="Dense and Sparse Matrices" href="matrices.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
-                1.2.6
+                1.2.7
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -76,18 +39,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
@@ -110,71 +62,31 @@
 <li class="toctree-l1"><a class="reference external" href="http://cvxopt.org">cvxopt.org</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">CVXOPT User's Guide</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>The BLAS Interface</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="the-blas-interface">
-<span id="c-blas"></span><h1>The BLAS Interface<a class="headerlink" href="#the-blas-interface" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="the-blas-interface">
+<span id="c-blas"></span><h1>The BLAS Interface<a class="headerlink" href="#the-blas-interface" title="Permalink to this headline"></a></h1>
 <p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">cvxopt.blas</span></code> module provides an interface to the double-precision
 real and complex Basic Linear Algebra Subprograms (BLAS).  The names and
 calling sequences of the Python functions in the interface closely match
@@ -210,8 +122,8 @@ A Set of Level 3 Basic Linear Algebra Subprograms,
 ACM Transactions on Mathematical Software, 16(1), 1-17, 1990.</p></li>
 </ul>
 </div>
-<div class="section" id="matrix-classes">
-<span id="s-conventions"></span><h2>Matrix Classes<a class="headerlink" href="#matrix-classes" title="Permalink to this headline">¶</a></h2>
+<section id="matrix-classes">
+<span id="s-conventions"></span><h2>Matrix Classes<a class="headerlink" href="#matrix-classes" title="Permalink to this headline"></a></h2>
 <p>The BLAS exploit several types of matrix structure: symmetric, Hermitian,
 triangular, and banded.   We represent all these matrix classes by dense
 real or complex <a class="reference internal" href="matrices.html#cvxopt.matrix" title="cvxopt.matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a> objects, with additional
@@ -474,13 +386,13 @@ several less important optional arguments that can be used to select
 submatrices for in-place operations.  The complete specification is
 documented in the docstrings of the source code, and can be viewed with the
 <strong class="program">pydoc</strong> help program.</p>
-</div>
-<div class="section" id="level-1-blas">
-<span id="s-blas-1"></span><h2>Level 1 BLAS<a class="headerlink" href="#level-1-blas" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="level-1-blas">
+<span id="s-blas-1"></span><h2>Level 1 BLAS<a class="headerlink" href="#level-1-blas" title="Permalink to this headline"></a></h2>
 <p>The level 1 functions implement vector operations.</p>
 <dl class="py function">
-<dt id="cvxopt.blas.scal">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">scal</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.scal" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.scal">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">scal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.scal" title="Permalink to this definition"></a></dt>
 <dd><p>Scales a vector by a constant:</p>
 <div class="math">
 <p><img src="_images/math/5052552450b786edab8e0415c96dfa848bc40be1.png" alt="x := \alpha x."/></p>
@@ -490,16 +402,16 @@ integer, float, or complex.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.nrm2">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">nrm2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.nrm2" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.nrm2">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">nrm2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.nrm2" title="Permalink to this definition"></a></dt>
 <dd><p>Euclidean norm of a vector:  returns</p>
 <div class="math">
 <p><img src="_images/math/161320f045cc4315c31907ec05fe170909e3c274.png" alt="\|x\|_2."/></p>
 </div></dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.asum">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">asum</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.asum" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.asum">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">asum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.asum" title="Permalink to this definition"></a></dt>
 <dd><p>1-Norm of a vector: returns</p>
 <div class="math">
 <p><img src="_images/math/42e6ff06c5afcf7438f6b7bd0027c3c738feceb6.png" alt="\|x\|_1 \quad \mbox{($x$ real)}, \qquad
@@ -507,8 +419,8 @@ integer, float, or complex.</p>
 </div></dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.iamax">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">iamax</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.iamax" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.iamax">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">iamax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.iamax" title="Permalink to this definition"></a></dt>
 <dd><p>Returns</p>
 <div class="math">
 <p><img src="_images/math/56ac83c03464e42463c625f1f9ef1833a2927d2e.png" alt="\mathop{\rm argmax}_{k=0,\ldots,n-1} |x_k| \quad \mbox{($x$ real)},
@@ -520,8 +432,8 @@ first <img class="math" src="_images/math/9630132210b904754c9ab272b61cb527d12263
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.swap">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">swap</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.swap" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.swap">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">swap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.swap" title="Permalink to this definition"></a></dt>
 <dd><p>Interchanges two vectors:</p>
 <div class="math">
 <p><img src="_images/math/146bec31bf294e89657786d59d21f9c4307ed72f.png" alt="x \leftrightarrow y."/></p>
@@ -530,8 +442,8 @@ first <img class="math" src="_images/math/9630132210b904754c9ab272b61cb527d12263
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.copy">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">copy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.copy" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.copy">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.copy" title="Permalink to this definition"></a></dt>
 <dd><p>Copies a vector to another vector:</p>
 <div class="math">
 <p><img src="_images/math/ac0d697baa79826d5fa42ee6fb1be506ff2ac3f8.png" alt="y := x."/></p>
@@ -540,8 +452,8 @@ first <img class="math" src="_images/math/9630132210b904754c9ab272b61cb527d12263
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.axpy">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">axpy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.axpy" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.axpy">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">axpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.axpy" title="Permalink to this definition"></a></dt>
 <dd><p>Constant times a vector plus a vector:</p>
 <div class="math">
 <p><img src="_images/math/4f58d165825711e6619115afb28c246c00440fa2.png" alt="y := \alpha x + y."/></p>
@@ -552,8 +464,8 @@ integer, float, or complex.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.dot">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">dot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.dot" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.dot">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.dot" title="Permalink to this definition"></a></dt>
 <dd><p>Returns</p>
 <div class="math">
 <p><img src="_images/math/bd466edf158386c56b457fb6aeb74b97766afdc6.png" alt="x^Hy."/></p>
@@ -562,8 +474,8 @@ integer, float, or complex.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.dotu">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">dotu</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.dotu" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.dotu">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">dotu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.dotu" title="Permalink to this definition"></a></dt>
 <dd><p>Returns</p>
 <div class="math">
 <p><img src="_images/math/1e913e459d7bcb538986828dad39d548fa73228f.png" alt="x^Ty."/></p>
@@ -571,15 +483,15 @@ integer, float, or complex.</p>
 <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).</p>
 </dd></dl>
 
-</div>
-<div class="section" id="level-2-blas">
-<span id="s-blas-2"></span><h2>Level 2 BLAS<a class="headerlink" href="#level-2-blas" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="level-2-blas">
+<span id="s-blas-2"></span><h2>Level 2 BLAS<a class="headerlink" href="#level-2-blas" title="Permalink to this headline"></a></h2>
 <p>The level 2 functions implement matrix-vector products and rank-1 and
 rank-2 matrix updates.  Different types of matrix structure can be exploited
 using the conventions of the section <a class="reference internal" href="#s-conventions"><span class="std std-ref">Matrix Classes</span></a>.</p>
 <dl class="py function">
-<dt id="cvxopt.blas.gemv">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">gemv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.gemv" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.gemv">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">gemv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.gemv" title="Permalink to this definition"></a></dt>
 <dd><p>Matrix-vector product with a general matrix:</p>
 <div class="math">
 <p><img src="_images/math/a810215e77878dec996b87e0d3007d8a6ded6b3c.png" alt="y &amp; := \alpha Ax + \beta y \quad
@@ -594,8 +506,8 @@ y &amp; := \alpha A^H x + \beta y \quad
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.symv">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">symv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.symv" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.symv">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">symv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.symv" title="Permalink to this definition"></a></dt>
 <dd><p>Matrix-vector  product with a real symmetric matrix:</p>
 <div class="math">
 <p><img src="_images/math/3f7c5e248ea93d509e428921ea91f68e03f1b029.png" alt="y := \alpha A x + \beta y,"/></p>
@@ -605,8 +517,8 @@ y &amp; := \alpha A^H x + \beta y \quad
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.hemv">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">hemv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.hemv" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.hemv">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">hemv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.hemv" title="Permalink to this definition"></a></dt>
 <dd><p>Matrix-vector  product with a real symmetric or complex Hermitian
 matrix:</p>
 <div class="math">
@@ -618,8 +530,8 @@ allowed if <code class="docutils literal notranslate"><span class="pre">A</span>
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.trmv">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">trmv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.trmv" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.trmv">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">trmv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.trmv" title="Permalink to this definition"></a></dt>
 <dd><p>Matrix-vector  product with a triangular matrix:</p>
 <div class="math">
 <p><img src="_images/math/0e95b3c9bb477c1d27aa253d83fe2d3e1922b3ef.png" alt="x &amp; := Ax \quad (\mathrm{trans} = \mathrm{'N'}), \\
@@ -630,8 +542,8 @@ x &amp; := A^H x \quad (\mathrm{trans} = \mathrm{'C'}),"/></p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.trsv">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">trsv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.trsv" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.trsv">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">trsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.trsv" title="Permalink to this definition"></a></dt>
 <dd><p>Solution of a nonsingular triangular set of linear equations:</p>
 <div class="math">
 <p><img src="_images/math/11969d386f3f62d281586721cb47b9bc640ea082.png" alt="x &amp; := A^{-1}x \quad (\mathrm{trans} = \mathrm{'N'}), \\
@@ -643,8 +555,8 @@ The arguments <code class="docutils literal notranslate"><span class="pre">A</sp
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.gbmv">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">gbmv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">m</span></em>, <em class="sig-param"><span class="pre">kl</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.gbmv" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.gbmv">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">gbmv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">m</span></em>, <em class="sig-param"><span class="pre">kl</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.gbmv" title="Permalink to this definition"></a></dt>
 <dd><p>Matrix-vector product with a general band matrix:</p>
 <div class="math">
 <p><img src="_images/math/eb873a106ad1868e288ae26783dd930d360fdef5.png" alt="y &amp; := \alpha Ax + \beta y \quad
@@ -660,8 +572,8 @@ the same type (<code class="xref py py-const docutils literal notranslate"><span
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.sbmv">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">sbmv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.sbmv" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.sbmv">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">sbmv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.sbmv" title="Permalink to this definition"></a></dt>
 <dd><p>Matrix-vector  product with a real symmetric band matrix:</p>
 <div class="math">
 <p><img src="_images/math/5dacf40fdb001db01bc47f5b86fcb7ce6dc4a0e2.png" alt="y := \alpha Ax + \beta y,"/></p>
@@ -671,8 +583,8 @@ the same type (<code class="xref py py-const docutils literal notranslate"><span
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.hbmv">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">hbmv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.hbmv" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.hbmv">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">hbmv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.hbmv" title="Permalink to this definition"></a></dt>
 <dd><p>Matrix-vector  product with a real symmetric or complex Hermitian band
 matrix:</p>
 <div class="math">
@@ -684,8 +596,8 @@ The arguments <code class="docutils literal notranslate"><span class="pre">A</sp
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.tbmv">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">tbmv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.tbmv" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.tbmv">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">tbmv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.tbmv" title="Permalink to this definition"></a></dt>
 <dd><p>Matrix-vector  product with a triangular band matrix:</p>
 <div class="math">
 <p><img src="_images/math/81787f23988417db8fee122d8cc6141a1985c4b7.png" alt="x &amp; := Ax \quad (\mathrm{trans} = \mathrm{'N'}), \\
@@ -696,8 +608,8 @@ x &amp; := A^H x \quad (\mathrm{trans} = \mathrm{'C'})."/></p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.tbsv">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">tbsv</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.tbsv" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.tbsv">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">tbsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">x</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.tbsv" title="Permalink to this definition"></a></dt>
 <dd><p>Solution of a triangular banded set of linear equations:</p>
 <div class="math">
 <p><img src="_images/math/d5a4cdcdf8e599dc8e0d8a8c1301f02f9e8b4fb3.png" alt="x &amp; := A^{-1}x \quad (\mathrm{trans} = \mathrm{'N'}), \\
@@ -709,8 +621,8 @@ elements.  The arguments <code class="docutils literal notranslate"><span class=
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.ger">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">ger</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em>, <em class="sig-param"><span class="pre">A</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.ger" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.ger">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">ger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em>, <em class="sig-param"><span class="pre">A</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.ger" title="Permalink to this definition"></a></dt>
 <dd><p>General rank-1 update:</p>
 <div class="math">
 <p><img src="_images/math/81868e29eaf33185bcc60e1d6ff7b0e307f2f892.png" alt="A := A + \alpha x y^H,"/></p>
@@ -720,8 +632,8 @@ values of <code class="docutils literal notranslate"><span class="pre">alpha</sp
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.geru">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">geru</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em>, <em class="sig-param"><span class="pre">A</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.geru" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.geru">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">geru</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em>, <em class="sig-param"><span class="pre">A</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.geru" title="Permalink to this definition"></a></dt>
 <dd><p>General rank-1 update:</p>
 <div class="math">
 <p><img src="_images/math/05c3b434aba8ec5e2ac1cdfcc3e3bb7ca8a69775.png" alt="A := A + \alpha x y^T,"/></p>
@@ -731,8 +643,8 @@ values of <code class="docutils literal notranslate"><span class="pre">alpha</sp
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.syr">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">syr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">A</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.syr" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.syr">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">syr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">A</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.syr" title="Permalink to this definition"></a></dt>
 <dd><p>Symmetric rank-1 update:</p>
 <div class="math">
 <p><img src="_images/math/8cb2d6eb037326c227a257ebad6eae725bd40148.png" alt="A := A + \alpha xx^T,"/></p>
@@ -741,8 +653,8 @@ values of <code class="docutils literal notranslate"><span class="pre">alpha</sp
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.her">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">her</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">A</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.her" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.her">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">her</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">A</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.her" title="Permalink to this definition"></a></dt>
 <dd><p>Hermitian rank-1 update:</p>
 <div class="math">
 <p><img src="_images/math/26e45da42a12ddc160256fb6cbbb944eeba0dee8.png" alt="A := A + \alpha xx^H,"/></p>
@@ -752,8 +664,8 @@ arguments <code class="docutils literal notranslate"><span class="pre">A</span><
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.syr2">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">syr2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em>, <em class="sig-param"><span class="pre">A</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.syr2" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.syr2">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">syr2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em>, <em class="sig-param"><span class="pre">A</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.syr2" title="Permalink to this definition"></a></dt>
 <dd><p>Symmetric rank-2  update:</p>
 <div class="math">
 <p><img src="_images/math/73e26546f3f051d6cc494fa37072d2eac9856ac1.png" alt="A := A + \alpha (xy^T + yx^T),"/></p>
@@ -762,8 +674,8 @@ and <code class="docutils literal notranslate"><span class="pre">y</span></code>
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.her2">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">her2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em>, <em class="sig-param"><span class="pre">A</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.her2" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.her2">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">her2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">x</span></em>, <em class="sig-param"><span class="pre">y</span></em>, <em class="sig-param"><span class="pre">A</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.her2" title="Permalink to this definition"></a></dt>
 <dd><p>Symmetric rank-2  update:</p>
 <div class="math">
 <p><img src="_images/math/d2241f81f782d8593f9390f06af621fd3be21ab8.png" alt="A := A + \alpha xy^H + \bar \alpha yx^H,"/></p>
@@ -807,13 +719,13 @@ allowed if <code class="docutils literal notranslate"><span class="pre">A</span>
 <span class="go">[ 5.00e-01]</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="level-3-blas">
-<span id="s-blas-3"></span><h2>Level 3 BLAS<a class="headerlink" href="#level-3-blas" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="level-3-blas">
+<span id="s-blas-3"></span><h2>Level 3 BLAS<a class="headerlink" href="#level-3-blas" title="Permalink to this headline"></a></h2>
 <p>The level 3 BLAS include functions for matrix-matrix multiplication.</p>
 <dl class="py function">
-<dt id="cvxopt.blas.gemm">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">gemm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">C</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">transA</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">transB</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.gemm" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.gemm">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">gemm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">C</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">transA</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">transB</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.gemm" title="Permalink to this definition"></a></dt>
 <dd><p>Matrix-matrix product of two general matrices:</p>
 <div class="math">
 <p><img src="_images/math/bc28eed8cb92072618037ffe78d36cdf031045b0.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
@@ -836,8 +748,8 @@ C := \alpha \op(A) \op(B) + \beta C"/></p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.symm">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">symm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">C</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.symm" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.symm">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">symm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">C</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.symm" title="Permalink to this definition"></a></dt>
 <dd><p>Product of a real or complex symmetric matrix <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> and a general
 matrix <img class="math" src="_images/math/4bc3e94a67870b41b7c20179693e889251e2c136.png" alt="B"/>:</p>
 <div class="math">
@@ -849,8 +761,8 @@ C &amp; := \alpha BA + \beta C \quad (\mathrm{side} = \mathrm{'R'})."/></p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.hemm">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">hemm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">C</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.hemm" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.hemm">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">hemm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">C</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.hemm" title="Permalink to this definition"></a></dt>
 <dd><p>Product of a real symmetric or complex Hermitian matrix <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> and a
 general matrix <img class="math" src="_images/math/4bc3e94a67870b41b7c20179693e889251e2c136.png" alt="B"/>:</p>
 <div class="math">
@@ -862,8 +774,8 @@ C &amp; := \alpha BA + \beta C \quad (\mathrm{side} = \mathrm{'R'})."/></p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.trmm">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">trmm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">transA</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.trmm" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.trmm">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">trmm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">transA</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.trmm" title="Permalink to this definition"></a></dt>
 <dd><p>Product of a triangular matrix <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> and a general matrix <img class="math" src="_images/math/4bc3e94a67870b41b7c20179693e889251e2c136.png" alt="B"/>:</p>
 <div class="math">
 <p><img src="_images/math/7056acd535c8f98331e8dd89e48cc0e927d42b12.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
@@ -884,8 +796,8 @@ is complex.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.trsm">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">trsm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">transA</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.trsm" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.trsm">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">trsm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">transA</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.trsm" title="Permalink to this definition"></a></dt>
 <dd><p>Solution of a nonsingular triangular system of equations:</p>
 <div class="math">
 <p><img src="_images/math/c20519763e75b58870bd25238b358057e2da4b86.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
@@ -907,8 +819,8 @@ is complex.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.syrk">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">syrk</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">C</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.syrk" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.syrk">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">syrk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">C</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.syrk" title="Permalink to this definition"></a></dt>
 <dd><p>Rank-<img class="math" src="_images/math/9630132210b904754c9ab272b61cb527d12263ca.png" alt="k"/> update of a real or complex symmetric matrix <img class="math" src="_images/math/4db5b6e16e06f929ce3f675c5e535d06ffb02ff7.png" alt="C"/>:</p>
 <div class="math">
 <p><img src="_images/math/081eab67b8ad47c824c773f9ce571fe5883895bf.png" alt="C &amp; := \alpha AA^T + \beta C \quad
@@ -921,8 +833,8 @@ of <code class="docutils literal notranslate"><span class="pre">alpha</span></co
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.herk">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">herk</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">C</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.herk" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.herk">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">herk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">C</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.herk" title="Permalink to this definition"></a></dt>
 <dd><p>Rank-<img class="math" src="_images/math/9630132210b904754c9ab272b61cb527d12263ca.png" alt="k"/> update of a real symmetric or complex Hermitian matrix
 <img class="math" src="_images/math/4db5b6e16e06f929ce3f675c5e535d06ffb02ff7.png" alt="C"/>:</p>
 <div class="math">
@@ -936,8 +848,8 @@ must have the same type (<code class="xref py py-const docutils literal notransl
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.syr2k">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">syr2k</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">C</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.syr2k" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.syr2k">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">syr2k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">C</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.syr2k" title="Permalink to this definition"></a></dt>
 <dd><p>Rank-<img class="math" src="_images/math/1cfcab44d097a385b6e2fb16cfefc2f062ab999f.png" alt="2k"/> update of a real or complex symmetric matrix <img class="math" src="_images/math/4db5b6e16e06f929ce3f675c5e535d06ffb02ff7.png" alt="C"/>:</p>
 <div class="math">
 <p><img src="_images/math/0b75ca09d0ef9d47484865bd353fc1e234d0ffae.png" alt="C &amp; := \alpha (AB^T + BA^T) + \beta C \quad
@@ -950,8 +862,8 @@ values of <code class="docutils literal notranslate"><span class="pre">alpha</sp
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.blas.her2k">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></code><code class="sig-name descname"><span class="pre">her2k</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">C</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.her2k" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.blas.her2k">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.blas.</span></span><span class="sig-name descname"><span class="pre">her2k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em>, <em class="sig-param"><span class="pre">C</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em>, <em class="sig-param"><span class="pre">alpha</span> <span class="pre">=</span> <span class="pre">1.0</span></em>, <em class="sig-param"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">0.0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.blas.her2k" title="Permalink to this definition"></a></dt>
 <dd><p>Rank-<img class="math" src="_images/math/1cfcab44d097a385b6e2fb16cfefc2f062ab999f.png" alt="2k"/> update of a real symmetric or complex Hermitian matrix
 <img class="math" src="_images/math/4db5b6e16e06f929ce3f675c5e535d06ffb02ff7.png" alt="C"/>:</p>
 <div class="math">
@@ -965,60 +877,42 @@ C &amp; := \alpha A^HB + \bar\alpha B^HA + \beta C \quad
 is complex.  <code class="docutils literal notranslate"><span class="pre">beta</span></code> must be real.</p>
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="lapack.html" class="btn btn-neutral float-right" title="The LAPACK Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="matrices.html" class="btn btn-neutral float-left" title="Dense and Sparse Matrices" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="lapack.html" class="btn btn-neutral float-right" title="The LAPACK Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; <a href="copyright.html">Copyright</a> 2004-2021, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">
-        Last updated on Feb 18, 2021.
-      </span>
-
-    </p>
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2021, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on Sep 20, 2021.
+      </span></p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
-
-  
-  
-    
-  
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.5.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.1.2.
     </div>
 
 </body>
