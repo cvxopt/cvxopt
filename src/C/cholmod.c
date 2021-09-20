@@ -26,6 +26,11 @@
 #include "cholmod.h"
 #include "complex.h"
 
+const char strCFDL[] = "CHOLMOD FACTOR D L";
+const char strCFDU[] = "CHOLMOD FACTOR D U";
+const char strCFZL[] = "CHOLMOD FACTOR Z L";
+const char strCFZU[] = "CHOLMOD FACTOR Z U";
+
 #ifndef _MSC_VER
 typedef double complex complex_t;
 #else
@@ -315,14 +320,14 @@ static PyObject* symbolic(PyObject *self, PyObject *args,
     }
 #if PY_MAJOR_VERSION >= 3
     return (PyObject *) PyCapsule_New((void *) L, SP_ID(A)==DOUBLE ?
-        (uplo == 'L' ?  "CHOLMOD FACTOR D L" : "CHOLMOD FACTOR D U") :
-        (uplo == 'L' ?  "CHOLMOD FACTOR Z L" : "CHOLMOD FACTOR Z U"),
+        (uplo == 'L' ?  strCFDL : strCFDU) :
+        (uplo == 'L' ?  strCFZL : strCFZU),
         (PyCapsule_Destructor) &cvxopt_free_cholmod_factor);
 #else
     return (PyObject *) PyCObject_FromVoidPtrAndDesc((void *) L,
         SP_ID(A)==DOUBLE ?
-        (uplo == 'L' ?  "CHOLMOD FACTOR D L" : "CHOLMOD FACTOR D U") :
-        (uplo == 'L' ?  "CHOLMOD FACTOR Z L" : "CHOLMOD FACTOR Z U"),
+        (uplo == 'L' ?  strCFDL : strCFDU) :
+        (uplo == 'L' ?  strCFZL : strCFZU),
 	cvxopt_free_cholmod_factor);
 #endif
 }
@@ -385,16 +390,16 @@ static PyObject* numeric(PyObject *self, PyObject *args)
     if (!descr) PY_ERR_TYPE("F is not a CHOLMOD factor");
 #endif
     if (SP_ID(A) == DOUBLE){
-        if (!strcmp(descr, "CHOLMOD FACTOR D L"))
+        if (!strcmp(descr, strCFDL))
 	    uplo = 'L';
-	else if (!strcmp(descr, "CHOLMOD FACTOR D U"))
+	else if (!strcmp(descr, strCFDU))
 	    uplo = 'U';
         else
 	    PY_ERR_TYPE("F is not the CHOLMOD factor of a 'd' matrix");
     } else {
-        if (!strcmp(descr, "CHOLMOD FACTOR Z L"))
+        if (!strcmp(descr, strCFZL))
 	    uplo = 'L';
-	else if (!strcmp(descr, "CHOLMOD FACTOR Z U"))
+	else if (!strcmp(descr, strCFZU))
 	    uplo = 'U';
         else
 	    PY_ERR_TYPE("F is not the CHOLMOD factor of a 'z' matrix");
@@ -494,13 +499,13 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
 #if PY_MAJOR_VERSION >= 3
     if (!PyCapsule_CheckExact(F) || !(descr = PyCapsule_GetName(F)))
         err_CO("F");
-    if (strncmp(descr, "CHOLMOD FACTOR", 14))
+    if (!(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     cholmod_factor *L = (cholmod_factor *) PyCapsule_GetPointer(F, descr);
 #else
     if (!PyCObject_Check(F)) err_CO("F");
     descr = PyCObject_GetDesc(F);
-    if (!descr || strncmp(descr, "CHOLMOD FACTOR", 14))
+    if (!descr || !(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     cholmod_factor *L = (cholmod_factor *) PyCObject_AsVoidPtr(F);
 #endif
@@ -600,13 +605,13 @@ static PyObject* spsolve(PyObject *self, PyObject *args,
 #if PY_MAJOR_VERSION >= 3
     if (!PyCapsule_CheckExact(F) || !(descr = PyCapsule_GetName(F)))
         err_CO("F");
-    if (strncmp(descr, "CHOLMOD FACTOR", 14))
+    if (!(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     L = (cholmod_factor *) PyCapsule_GetPointer(F, descr);
 #else
     if (!PyCObject_Check(F)) err_CO("F");
     descr = PyCObject_GetDesc(F);
-    if (!descr || strncmp(descr, "CHOLMOD FACTOR", 14))
+    if (!descr || !(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     L = (cholmod_factor *) PyCObject_AsVoidPtr(F);
 #endif
@@ -978,13 +983,13 @@ static PyObject* diag(PyObject *self, PyObject *args)
 #if PY_MAJOR_VERSION >= 3
     if (!PyCapsule_CheckExact(F) || !(descr = PyCapsule_GetName(F)))
         err_CO("F");
-    if (strncmp(descr, "CHOLMOD FACTOR", 14))
+    if (!(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     L = (cholmod_factor *) PyCapsule_GetPointer(F, descr);
 #else
     if (!PyCObject_Check(F)) err_CO("F");
     descr = PyCObject_GetDesc(F);
-    if (!descr || strncmp(descr, "CHOLMOD FACTOR", 14))
+    if (!descr || !(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     L = (cholmod_factor *) PyCObject_AsVoidPtr(F);
 #endif
@@ -1036,13 +1041,13 @@ static PyObject* getfactor(PyObject *self, PyObject *args)
 #if PY_MAJOR_VERSION >= 3
     if (!PyCapsule_CheckExact(F) || !(descr = PyCapsule_GetName(F)))
         err_CO("F");
-    if (strncmp(descr, "CHOLMOD FACTOR", 14))
+    if (!(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     Lf = (cholmod_factor *) PyCapsule_GetPointer(F, descr);
 #else
     if (!PyCObject_Check(F)) err_CO("F");
     descr = PyCObject_GetDesc(F);
-    if (!descr || strncmp(descr, "CHOLMOD FACTOR", 14))
+    if (!descr || !(strcmp(descr, strCFDL) == 0 || strcmp(descr, strCFDU) == 0 || strcmp(descr, strCFZL) == 0 || strcmp(descr, strCFZU) == 0))
         PY_ERR_TYPE("F is not a CHOLMOD factor");
     Lf = (cholmod_factor *) PyCObject_AsVoidPtr(F);
 #endif

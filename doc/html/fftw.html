@@ -1,74 +1,37 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Discrete Transforms &mdash; CVXOPT User&#39;s Guide</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
     <link rel="next" title="Sparse Linear Equations" href="spsolvers.html" />
     <link rel="prev" title="The LAPACK Interface" href="lapack.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
-                1.2.6
+                1.2.7
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -76,18 +39,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
@@ -109,71 +61,31 @@
 <li class="toctree-l1"><a class="reference external" href="http://cvxopt.org">cvxopt.org</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">CVXOPT User's Guide</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Discrete Transforms</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="discrete-transforms">
-<span id="c-fftw"></span><h1>Discrete Transforms<a class="headerlink" href="#discrete-transforms" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="discrete-transforms">
+<span id="c-fftw"></span><h1>Discrete Transforms<a class="headerlink" href="#discrete-transforms" title="Permalink to this headline"></a></h1>
 <p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">cvxopt.fftw</span></code> module is an interface to the FFTW library and
 contains routines for discrete Fourier, cosine, and sine transforms.
 This module is optional, and only installed when the FFTW library is made
@@ -182,11 +94,11 @@ available during the CVXOPT installation.</p>
 <p class="admonition-title">See also</p>
 <p><a class="reference external" href="http://www.fftw.org">FFTW3 code, documentation, copyright and license</a></p>
 </div>
-<div class="section" id="discrete-fourier-transform">
-<h2>Discrete Fourier Transform<a class="headerlink" href="#discrete-fourier-transform" title="Permalink to this headline">¶</a></h2>
+<section id="discrete-fourier-transform">
+<h2>Discrete Fourier Transform<a class="headerlink" href="#discrete-fourier-transform" title="Permalink to this headline"></a></h2>
 <dl class="py function">
-<dt id="cvxopt.fftw.dft">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></code><code class="sig-name descname"><span class="pre">dft</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dft" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.fftw.dft">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dft</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dft" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces the columns of a dense complex matrix with their discrete
 Fourier transforms:  if <code class="docutils literal notranslate"><span class="pre">X</span></code> has <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/> rows,</p>
 <div class="math">
@@ -195,8 +107,8 @@ Fourier transforms:  if <code class="docutils literal notranslate"><span class="
 </div></dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.fftw.idft">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></code><code class="sig-name descname"><span class="pre">idft</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idft" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.fftw.idft">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idft</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idft" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces the columns of a dense complex matrix with their inverse
 discrete Fourier transforms: if <code class="docutils literal notranslate"><span class="pre">X</span></code> has <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/> rows,</p>
 <div class="math">
@@ -213,8 +125,8 @@ For example, the two-dimensional transform applies a one-dimensional
 transform to all the columns of the matrix, followed by a one-dimensional
 transform to all the rows of the matrix.</p>
 <dl class="py function">
-<dt id="cvxopt.fftw.dftn">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></code><code class="sig-name descname"><span class="pre">dftn</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dftn" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.fftw.dftn">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dftn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dftn" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces a dense complex matrix with its <em>N</em>-dimensional discrete
 Fourier transform.  The dimensions of the <em>N</em>-dimensional matrix
 are given by the <em>N</em>-tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>.  The two-dimensional transform is
@@ -222,20 +134,20 @@ computed as <code class="docutils literal notranslate"><span class="pre">dftn(X,
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.fftw.idftn">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></code><code class="sig-name descname"><span class="pre">idftn</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idftn" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.fftw.idftn">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idftn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idftn" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces a dense complex <em>N</em>-dimensional matrix with its inverse
 <em>N</em>-dimensional discrete Fourier transform.  The dimensions of the
 matrix are given by the tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>. The two-dimensional inverse
 transform is computed as <code class="docutils literal notranslate"><span class="pre">idftn(X,</span> <span class="pre">X.size)</span></code>.</p>
 </dd></dl>
 
-</div>
-<div class="section" id="discrete-cosine-transform">
-<h2>Discrete Cosine Transform<a class="headerlink" href="#discrete-cosine-transform" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="discrete-cosine-transform">
+<h2>Discrete Cosine Transform<a class="headerlink" href="#discrete-cosine-transform" title="Permalink to this headline"></a></h2>
 <dl class="py function">
-<dt id="cvxopt.fftw.dct">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></code><code class="sig-name descname"><span class="pre">dct</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dct" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.fftw.dct">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dct" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces the columns of a dense real matrix with their discrete
 cosine transforms.  The second argument, an integer between 1 and 4,
 denotes the type of transform (DCT-I, DCT-II, DCT-III, DCT-IV).
@@ -261,8 +173,8 @@ least 2.  These transforms are defined as follows (for a matrix with
 </div></dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.fftw.idct">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></code><code class="sig-name descname"><span class="pre">idct</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idct" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.fftw.idct">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idct" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces the columns of a dense real matrix with the inverses
 of the discrete cosine transforms defined above.</p>
 </dd></dl>
@@ -275,8 +187,8 @@ For example, the two-dimensional transform applies a one-dimensional
 transform to all the rows of the matrix, followed by a one-dimensional
 transform to all the columns of the matrix.</p>
 <dl class="py function">
-<dt id="cvxopt.fftw.dctn">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></code><code class="sig-name descname"><span class="pre">dctn</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dctn" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.fftw.dctn">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dctn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dctn" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces a dense real matrix with its <em>N</em>-dimensional discrete cosine
 transform. The dimensions of the <em>N</em>-dimensional matrix are given by
 the <em>N</em>-tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>.  The two-dimensional transform is computed as
@@ -284,20 +196,20 @@ the <em>N</em>-tuple <code class="docutils literal notranslate"><span class="pre
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.fftw.idctn">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></code><code class="sig-name descname"><span class="pre">idctn</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idctn" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.fftw.idctn">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idctn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idctn" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces a dense real <em>N</em>-dimensional matrix with its inverse
 <em>N</em>-dimensional discrete cosine transform. The dimensions of the
 matrix are given by the tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>.  The two-dimensional inverse
 transform is computed as <code class="docutils literal notranslate"><span class="pre">idctn(X,</span> <span class="pre">X.size)</span></code>.</p>
 </dd></dl>
 
-</div>
-<div class="section" id="discrete-sine-transform">
-<h2>Discrete Sine Transform<a class="headerlink" href="#discrete-sine-transform" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="discrete-sine-transform">
+<h2>Discrete Sine Transform<a class="headerlink" href="#discrete-sine-transform" title="Permalink to this headline"></a></h2>
 <dl class="py function">
-<dt id="cvxopt.fftw.dst">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></code><code class="sig-name descname"><span class="pre">dst</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em>, <em class="sig-param"><span class="pre">dims</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">1</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dst" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.fftw.dst">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em>, <em class="sig-param"><span class="pre">dims</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">1</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dst" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces the columns of a dense real matrix with their discrete
 sine transforms.  The second argument, an integer between 1 and 4,
 denotes the type of transform (DST-I, DST-II, DST-III, DST-IV).
@@ -321,8 +233,8 @@ rows).</p>
 </div></dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.fftw.idst">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></code><code class="sig-name descname"><span class="pre">idst</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em>, <em class="sig-param"><span class="pre">dims</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">1</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idst" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.fftw.idst">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em>, <em class="sig-param"><span class="pre">dims</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">1</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idst" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces the columns of a dense real matrix with the inverses of the
 discrete sine transforms defined above.</p>
 </dd></dl>
@@ -335,8 +247,8 @@ example, the two-dimensional transform applies a one-dimensional
 transform to all the rows of the matrix, followed by a one-dimensional
 transform to all the columns of the matrix.</p>
 <dl class="py function">
-<dt id="cvxopt.fftw.dstn">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></code><code class="sig-name descname"><span class="pre">dstn</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dstn" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.fftw.dstn">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dstn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dstn" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces a dense real matrix with its <em>N</em>-dimensional discrete sine
 transform. The dimensions of the <em>N</em>-dimensional matrix are given by
 the <em>N</em>-tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>.  The two-dimensional transform is computed as
@@ -344,68 +256,50 @@ the <em>N</em>-tuple <code class="docutils literal notranslate"><span class="pre
 </dd></dl>
 
 <dl class="py function">
-<dt id="cvxopt.fftw.idstn">
-<code class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></code><code class="sig-name descname"><span class="pre">idstn</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idstn" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cvxopt.fftw.idstn">
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idstn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idstn" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces a dense real <em>N</em>-dimensional matrix with its inverse
 <em>N</em>-dimensional discrete sine transform.  The dimensions of the
 matrix are given by the tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>.  The two-dimensional inverse
 transform is computed as <code class="docutils literal notranslate"><span class="pre">idstn(X,</span> <span class="pre">X.size)</span></code>.</p>
 </dd></dl>
 
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="spsolvers.html" class="btn btn-neutral float-right" title="Sparse Linear Equations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="lapack.html" class="btn btn-neutral float-left" title="The LAPACK Interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="spsolvers.html" class="btn btn-neutral float-right" title="Sparse Linear Equations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; <a href="copyright.html">Copyright</a> 2004-2021, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">
-        Last updated on Feb 18, 2021.
-      </span>
-
-    </p>
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2021, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on Sep 20, 2021.
+      </span></p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
-
-  
-  
-    
-  
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.5.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.1.2.
     </div>
 
 </body>
