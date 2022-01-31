@@ -4155,7 +4155,7 @@ spmatrix_add_helper(PyObject *self, PyObject *other, int add)
   if (!(y = (Matrix_Check(other) ?
       (void *)Matrix_NewFromMatrix((matrix *)other, id) :
         (void *)convert_ccs(((spmatrix *)other)->obj, id)))) {
-    if (x->id != id) free_ccs(x);
+    if (SP_ID(self) != id) free_ccs(x);
     return NULL;
   }
 
@@ -4163,18 +4163,18 @@ spmatrix_add_helper(PyObject *self, PyObject *other, int add)
       (Matrix_Check(other) ? MAT_BUF(y) : y),
       1, SpMatrix_Check(other), 0, (void *)&z))
     {
-    if (x->id != id) free_ccs(x);
+    if (SP_ID(self) != id) free_ccs(x);
     if (Matrix_Check(other))
       Py_DECREF((PyObject *)y);
     else
-      if (((ccs *)y)->id != id) free_ccs(y);
+      if (SP_ID(other) != id) free_ccs(y);
 
     return PyErr_NoMemory();
     }
 
-  if (x->id != id) free_ccs(x);
+  if (SP_ID(self) != id) free_ccs(x);
   if (SpMatrix_Check(other)) {
-    if (((ccs *)y)->id != id) free_ccs(y);
+    if (SP_ID(other) != id) free_ccs(y);
     spmatrix *ret = SpMatrix_New(SP_NROWS(other), SP_NCOLS(other), 0, id);
     if (!ret) return NULL;
     free_ccs(ret->obj);
@@ -4226,12 +4226,12 @@ spmatrix_iadd(PyObject *self, PyObject *other)
 
   if (sp_axpy[id](One[id], x, y, 1, 1, 0, &z))
     {
-    if (y->id != id) free_ccs(y);
+    if (SP_ID(other) != id) free_ccs(y);
     return PyErr_NoMemory();
     }
 
   free_ccs(x); ((spmatrix *)self)->obj = z;
-  if (y->id != id) free_ccs(y);
+  if (SP_ID(other) != id) free_ccs(y);
 
   Py_INCREF(self);
   return self;
@@ -4296,12 +4296,12 @@ spmatrix_isub(PyObject *self, PyObject *other)
 
   if (sp_axpy[id](MinusOne[id], y, x, 1, 1, 0, &z))
     {
-    if (y->id != id) free_ccs(y);
+    if (SP_ID(other) != id) free_ccs(y);
     return PyErr_NoMemory();
     }
 
   free_ccs(x); ((spmatrix *)self)->obj = z;
-  if (y->id != id) free_ccs(y);
+  if (SP_ID(other) != id) free_ccs(y);
 
   Py_INCREF(self);
   return self;
@@ -4377,12 +4377,12 @@ spmatrix_mul(PyObject *self, PyObject *other)
 
     cleanup:
     if (SpMatrix_Check(self)) {
-      if (((ccs *)x)->id != id) free_ccs(x);
+      if (SP_ID(self) != id) free_ccs(x);
     }
     else if (MAT_ID(self) != id) free(x);
 
     if (SpMatrix_Check(other)) {
-      if (((ccs *)y)->id != id) free_ccs(y);
+      if (SP_ID(other) != id) free_ccs(y);
     }
     else if (MAT_ID(other) != id) free(y);
 
