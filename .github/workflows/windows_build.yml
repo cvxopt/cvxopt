@@ -22,7 +22,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.9,3.10]
+        python-version: ['3.9','3.10']
         suitesparse: [src]
         architecture: [x64, x86]
         include:
