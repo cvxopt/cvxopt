@@ -11,7 +11,7 @@ library and on the strengths of Python as a high-level programming
 language.
 """ 
 
-# Copyright 2012-2021 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2022 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
@@ -30,7 +30,7 @@ language.
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-__copyright__ = """Copyright (c) 2012-2021 M. Andersen and L. Vandenberghe.
+__copyright__ = """Copyright (c) 2012-2022 M. Andersen and L. Vandenberghe.
 Copyright (c) 2010-2011 L. Vandenberghe.
 Copyright (c) 2004-2009 J. Dahl and L. Vandenberghe."""
 
@@ -283,8 +283,7 @@ __all__ = [ 'blas', 'lapack', 'amd', 'umfpack', 'cholmod', 'solvers',
     'spdiag', 'sqrt', 'sin', 'cos', 'exp', 'log', 'min', 'max', 'mul', 
     'div', 'normal', 'uniform', 'setseed', 'getseed' ]
 
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
+from . import _version
+__version__ = _version.get_versions()['version']
 
 
