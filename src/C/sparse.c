@@ -789,7 +789,7 @@ _Dcomplex spa_zdot (ccs *X, int col, spa *y, char conjx, char conjy) {
   tmp = _Cbuild(0.0,0.0);
 #endif
   for (i=X->colptr[col]; i<X->colptr[col+1]; i++)
-    if (y->nz[X->rowind[i]])
+    if (y->nz[X->rowind[i]]) {
 #ifndef _MSC_VER
       a += CONJ(conjx, ((double complex *)X->values)[i])*
       CONJ(conjy,((double complex *)y->val)[X->rowind[i]]);
@@ -797,6 +797,7 @@ _Dcomplex spa_zdot (ccs *X, int col, spa *y, char conjx, char conjy) {
   tmp = _Cmulcc(CONJ(conjx,((_Dcomplex *)X->values)[i]),CONJ(conjy,((_Dcomplex *)y->val)[X->rowind[i]]));
       a = _Cbuild(creal(a)+creal(tmp),cimag(a)+cimag(tmp));
 #endif
+    }
   return a;
 }
 
@@ -942,13 +943,14 @@ static int sp_zaxpy(number a, void *x, void *y, int sp_x, int sp_y,
 #endif
 
     for (j=0; j<X->ncols; j++) {
-      for (k=X->colptr[j]; k<X->colptr[j+1]; k++)
+      for (k=X->colptr[j]; k<X->colptr[j+1]; k++) {
 #ifndef _MSC_VER
         Y[X->rowind[k] + j*X->nrows] += a.z*(((double complex *)X->values)[k]);
 #else
         tmp = _Cmulcc(a.z, ((_Dcomplex *)X->values)[k]);
         Y[X->rowind[k] + j*X->nrows] = _Cbuild(creal(tmp)+creal(Y[X->rowind[k] + j*X->nrows]),cimag(tmp)+cimag(Y[X->rowind[k] + j*X->nrows])); 
 #endif
+      }
     }
   }
   else if (sp_x && sp_y && partial) {
@@ -1002,8 +1004,7 @@ static int sp_zaxpy(number a, void *x, void *y, int sp_x, int sp_y,
     if (!(*z)) return -1;
 
   }
-  else if (!sp_x && sp_y && partial)
-    {
+  else if (!sp_x && sp_y && partial) {
 #ifndef _MSC_VER
     double complex *X = x;
 #else
@@ -1014,15 +1015,16 @@ static int sp_zaxpy(number a, void *x, void *y, int sp_x, int sp_y,
     int kY, jY;
 
     for (jY=0; jY<Y->ncols; jY++) {
-      for (kY=Y->colptr[jY]; kY<Y->colptr[jY+1]; kY++)
+      for (kY=Y->colptr[jY]; kY<Y->colptr[jY+1]; kY++) {
 #ifndef _MSC_VER
         ((double complex *)Y->values)[kY] += a.z*X[jY*Y->nrows + Y->rowind[kY]];
 #else
         tmp = _Cmulcc(a.z,X[jY*Y->nrows + Y->rowind[kY]]);
         ((_Dcomplex *)Y->values)[kY] = _Cbuild(creal(tmp)+creal(((_Dcomplex *)Y->values)[kY]),cimag(tmp)+cimag(((_Dcomplex *)Y->values)[kY]));
 #endif
+      }
     }
-    }
+  }
   else { // if (!p_x && !sp_y) {
 
 #ifndef _MSC_VER
@@ -1053,7 +1055,7 @@ static int sp_zaxpy(number a, void *x, void *y, int sp_x, int sp_y,
       for (k=0; k<Y->nrows; k++)
         Z->rowind[j*Y->nrows+k] = k;
 
-      for (k=Y->colptr[j]; k<Y->colptr[j+1]; k++) 
+      for (k=Y->colptr[j]; k<Y->colptr[j+1]; k++) { 
 #ifndef _MSC_VER
         ((double complex *)Z->values)[j*Y->nrows + Y->rowind[k]] +=
             ((double complex *)Y->values)[k];
@@ -1061,6 +1063,7 @@ static int sp_zaxpy(number a, void *x, void *y, int sp_x, int sp_y,
         ((_Dcomplex *)Z->values)[j*Y->nrows + Y->rowind[k]] =
 	  _Cbuild(creal(((_Dcomplex *)Z->values)[j*Y->nrows + Y->rowind[k]])+creal(((_Dcomplex *)Y->values)[k]),cimag(((_Dcomplex *)Z->values)[j*Y->nrows + Y->rowind[k]])+cimag(((_Dcomplex *)Y->values)[k]));
 #endif
+      }
     }
     *z = Z;
   }
@@ -1749,20 +1752,22 @@ static int sp_zgemm(char tA, char tB, number alpha, void *a, void *b,
     for (j=0; j<n; j++) {
       init_spa(s, NULL, 0);
 
-      for (l=B->colptr[j]; l<B->colptr[j+1]; l++)
+      for (l=B->colptr[j]; l<B->colptr[j+1]; l++) {
 #ifndef _MSC_VER
         spa_zaxpy (CONJ(tB,((double complex *)B->values)[l]), A, tA, B->rowind[l], s);
 #else
         spa_zaxpy (CONJ(tB,((_Dcomplex *)B->values)[l]), A, tA, B->rowind[l], s);
 #endif
+      }
 
-      for (l=0; l<s->nnz; l++)
+      for (l=0; l<s->nnz; l++) {
 #ifndef _MSC_VER
         C[j*A->nrows + s->idx[l]] += alpha.z*((double complex *)s->val)[s->idx[l]];
 #else
         tmp = _Cmulcc(alpha.z,((_Dcomplex *)s->val)[s->idx[l]]);
         C[j*A->nrows + s->idx[l]] = _Cbuild(creal(tmp)+creal(C[j*A->nrows + s->idx[l]]),cimag(tmp)+cimag(C[j*A->nrows + s->idx[l]])); 
 #endif
+      }
     }
     free_spa(s);
 
