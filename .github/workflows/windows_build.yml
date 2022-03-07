@@ -7,7 +7,7 @@ jobs:
 
 #    if: false
     
-    runs-on: windows-latest
+    runs-on: windows-2019
     env:
       SUITESPARSE_VERSION: 5.10.1
       SUITESPARSE_SHA256: acb4d1045f48a237e70294b950153e48dce5b5f9ca8190e86c2b8c54ce00a7ee
@@ -79,7 +79,6 @@ jobs:
       shell: cmd
       run: |
         call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars${{matrix.msvc_target}}.bat"
-
     - name: Build/install CVXOPT
       shell: cmd
       run: |
