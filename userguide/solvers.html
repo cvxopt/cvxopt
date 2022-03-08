@@ -30,7 +30,7 @@
             <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
           </a>
               <div class="version">
-                1.2.7
+                1.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -113,7 +113,7 @@ describes the algorithm parameters that control the solvers.</p>
 <span id="s-cp"></span><h2>Problems with Nonlinear Objectives<a class="headerlink" href="#problems-with-nonlinear-objectives" title="Permalink to this headline"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.solvers.cp">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">cp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">F</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">G</span></em>, <em class="sig-param"><span class="pre">h</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">kktsolver</span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cp" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">cp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">kktsolver</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cp" title="Permalink to this definition"></a></dt>
 <dd><p>Solves a convex optimization problem</p>
 <div class="math" id="equation-e-nlcp">
 <p><span class="eqno">(1)<a class="headerlink" href="#equation-e-nlcp" title="Permalink to this equation"></a></span><img src="_images/math/8d26408b917ad631b6ae90f7650b19b691fe2bb6.png" alt="\begin{array}{ll}
@@ -374,7 +374,7 @@ problem</p>
 <span id="s-cpl"></span><h2>Problems with Linear Objectives<a class="headerlink" href="#problems-with-linear-objectives" title="Permalink to this headline"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.solvers.cpl">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">cpl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">c</span></em>, <em class="sig-param"><span class="pre">F</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">G</span></em>, <em class="sig-param"><span class="pre">h</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">kktsolver</span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cpl" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">cpl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">kktsolver</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cpl" title="Permalink to this definition"></a></dt>
 <dd><p>Solves a convex optimization problem with a linear objective</p>
 <div class="math">
 <p><img src="_images/math/86cec286c2bbedaa7760445bc5a1a242cb84d2c2.png" alt="\begin{array}{ll}
@@ -707,7 +707,7 @@ that solves the problem by calling <code class="xref py py-func docutils literal
 <span id="s-gp"></span><h2>Geometric Programming<a class="headerlink" href="#geometric-programming" title="Permalink to this headline"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.solvers.gp">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">gp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">K</span></em>, <em class="sig-param"><span class="pre">F</span></em>, <em class="sig-param"><span class="pre">g</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">G</span></em>, <em class="sig-param"><span class="pre">h</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">b</span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.gp" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">gp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.gp" title="Permalink to this definition"></a></dt>
 <dd><p>Solves a geometric program in convex form</p>
 <div class="math">
 <p><img src="_images/math/6dd83f47897e8af1a287a2cb577906b4c142c166.png" alt="\newcommand{\lse}{\mathop{\mathbf{lse}}}
@@ -1183,8 +1183,8 @@ same stopping criteria (with <img class="math" src="_images/math/459f00b80184047
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2021, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on Sep 20, 2021.
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2022, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on Mar 07, 2022.
       </span></p>
   </div>
 
@@ -1204,7 +1204,7 @@ same stopping criteria (with <img class="math" src="_images/math/459f00b80184047
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.1.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
     </div>
 
 </body>

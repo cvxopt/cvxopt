@@ -1,73 +1,36 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Support Vector Machines &mdash; CVXOPT</title>
-  
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
-    
+    <script src="../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="copyright" title="Copyright" href="../../copyright.html" />
     <link rel="prev" title="Nuclear norm approximation" href="../nucnrm/index.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../../index.html" class="icon icon-home"> CVXOPT
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
-                1.2.7
+                1.3.0
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -75,18 +38,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../copyright.html">Copyright and license</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../download/index.html">Download</a></li>
@@ -107,73 +59,32 @@
 </li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">CVXOPT</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../index.html">Applications and extensions</a> &raquo;</li>
-        
       <li>Support Vector Machines</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="support-vector-machines">
-<h1>Support Vector Machines<a class="headerlink" href="#support-vector-machines" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="support-vector-machines">
+<h1>Support Vector Machines<a class="headerlink" href="#support-vector-machines" title="Permalink to this headline"></a></h1>
 <p>This software accompanies the paper <a class="reference external" href="http://www.ee.ucla.edu/~vandenbe/publications/svmcmpl.pdf">Support vector machine training
 using matrix completion techniques</a> by
 Martin Andersen and Lieven Vandenberghe. The code can be downloaded as
@@ -181,8 +92,8 @@ a <a class="reference download internal" download="" href="../../_downloads/7d64
 requires the Python extensions <a class="reference external" href="http://cvxopt.org">CVXOPT</a> and <a class="reference external" href="http://cvxopt.github.io/chompack">CHOMPACK 2.3.1</a> or later.</p>
 <h4> Feedback and bug reports </h4><p>We welcome feedback, and bug reports are much appreciated. Please
 email bug reports to <span class="raw-html"><kbd>martin.skovgaard.andersen@gmail.com</kbd></span>.</p>
-<div class="section" id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
 <p>This software provides two routines for soft-margin support vector
 machine training. Both routines use the CVXOPT QP solver which
 implements an interior-point method.</p>
@@ -197,12 +108,12 @@ sparse. This can be exploited in interior-point methods, and the
 technique is implemented as a custom KKT solver for the CVXOPT QP
 solver. As a consequence, <a class="reference internal" href="#softmargin_appr" title="softmargin_appr"><code class="xref py py-func docutils literal notranslate"><span class="pre">softmargin_appr()</span></code></a> can handle much
 larger problems than <a class="reference internal" href="#softmargin" title="softmargin"><code class="xref py py-func docutils literal notranslate"><span class="pre">softmargin()</span></code></a>.</p>
-</div>
-<div class="section" id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline"></a></h2>
 <dl class="py function">
-<dt id="softmargin">
-<code class="sig-name descname"><span class="pre">softmargin</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#softmargin" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="softmargin">
+<span class="sig-name descname"><span class="pre">softmargin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#softmargin" title="Permalink to this definition"></a></dt>
 <dd><p>Solves the ‘soft-margin’ SVM problem</p>
 <div class="math">
 <p><img src="../../_images/math/6dbebaec54b0eab0d603e3bde85c5fde0fd2dd78.png" alt="\begin{array}{ll}
@@ -263,8 +174,8 @@ class 2</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="softmargin_appr">
-<code class="sig-name descname"><span class="pre">softmargin_appr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#softmargin_appr" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="softmargin_appr">
+<span class="sig-name descname"><span class="pre">softmargin_appr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#softmargin_appr" title="Permalink to this definition"></a></dt>
 <dd><p>Solves the ‘soft-margin’ SVM problem</p>
 <div class="math">
 <p><img src="../../_images/math/d84459f679b89e55aa0e68c401c260a14fd95bd9.png" alt="\begin{array}{ll}
@@ -301,9 +212,9 @@ and returns a vector with labels</p>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="example-1">
-<h2>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example-1">
+<h2>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline"></a></h2>
 <p>As a toy example, consider the following classification problem with
 two (nonlinearly) separable classes.  We use as training set <img class="math" src="../../_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/>
 points in <img class="math" src="../../_images/math/478bd8a2efc77c193122886ea1ca5431f483393b.png" alt="\mathbf{R}^2"/> generated according to a uniform
@@ -349,9 +260,9 @@ standard SVM QP.</p>
 <p>Solving the dense SVM QP required 7.0 seconds whereas the approximation
 QPs required 0.3 seconds and 0.7 seconds for <img class="math" src="../../_images/math/b159dc0ea383f2dae5f0acedeff57ac307e394bb.png" alt="w = 10"/> and <img class="math" src="../../_images/math/6acfe50089ded7722d1689d845091f38d0fdb37a.png" alt="w =
 20"/>, respectively.</p>
-</div>
-<div class="section" id="example-2">
-<h2>Example 2<a class="headerlink" href="#example-2" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="example-2">
+<h2>Example 2<a class="headerlink" href="#example-2" title="Permalink to this headline"></a></h2>
 <p>The following example demonstrates the approximate SVM method on the
 <a class="reference external" href="http://yann.lecun.com/exdb/mnist/">MNIST database</a> of handwritten
 digits. In the example we use the Python module <a class="reference download internal" download="" href="../../_downloads/c9a4adc5110201728860de8bd126fcb1/mnist.py"><code class="xref download docutils literal notranslate"><span class="pre">mnist.py</span></code></a> to read the database files. The following code trains
@@ -386,59 +297,41 @@ a binary classifier using as training set 4,000 examples of the digit
 </div>
 <p>In this example, both the standard kernel classifier and the completion kernel classifier misclassified 8 out of 2,115 test examples (digits ‘0’ and ‘1’ from the MNIST test set):</p>
 <a class="reference internal image-reference" href="../../_images/mnist_miscls.png"><img alt="../../_images/mnist_miscls.png" src="../../_images/mnist_miscls.png" style="width: 450px;" /></a>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../nucnrm/index.html" class="btn btn-neutral float-left" title="Nuclear norm approximation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; <a href="../../copyright.html">Copyright</a> 2004-2021, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
-      <span class="lastupdated">
-        Last updated on Sep 20, 2021.
-      </span>
-
-    </p>
+    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2022, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
+      <span class="lastupdated">Last updated on Mar 08, 2022.
+      </span></p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
-
-  
-  
-    
-  
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.5.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
     </div>
 
 <script>

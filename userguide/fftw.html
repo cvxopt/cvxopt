@@ -30,7 +30,7 @@
             <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
           </a>
               <div class="version">
-                1.2.7
+                1.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -126,7 +126,7 @@ transform to all the columns of the matrix, followed by a one-dimensional
 transform to all the rows of the matrix.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.fftw.dftn">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dftn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dftn" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dftn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dftn" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces a dense complex matrix with its <em>N</em>-dimensional discrete
 Fourier transform.  The dimensions of the <em>N</em>-dimensional matrix
 are given by the <em>N</em>-tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>.  The two-dimensional transform is
@@ -135,7 +135,7 @@ computed as <code class="docutils literal notranslate"><span class="pre">dftn(X,
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.fftw.idftn">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idftn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idftn" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idftn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idftn" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces a dense complex <em>N</em>-dimensional matrix with its inverse
 <em>N</em>-dimensional discrete Fourier transform.  The dimensions of the
 matrix are given by the tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>. The two-dimensional inverse
@@ -147,7 +147,7 @@ transform is computed as <code class="docutils literal notranslate"><span class=
 <h2>Discrete Cosine Transform<a class="headerlink" href="#discrete-cosine-transform" title="Permalink to this headline"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.fftw.dct">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dct" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dct" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces the columns of a dense real matrix with their discrete
 cosine transforms.  The second argument, an integer between 1 and 4,
 denotes the type of transform (DCT-I, DCT-II, DCT-III, DCT-IV).
@@ -174,7 +174,7 @@ least 2.  These transforms are defined as follows (for a matrix with
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.fftw.idct">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idct" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idct" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces the columns of a dense real matrix with the inverses
 of the discrete cosine transforms defined above.</p>
 </dd></dl>
@@ -188,7 +188,7 @@ transform to all the rows of the matrix, followed by a one-dimensional
 transform to all the columns of the matrix.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.fftw.dctn">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dctn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dctn" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dctn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dctn" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces a dense real matrix with its <em>N</em>-dimensional discrete cosine
 transform. The dimensions of the <em>N</em>-dimensional matrix are given by
 the <em>N</em>-tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>.  The two-dimensional transform is computed as
@@ -197,7 +197,7 @@ the <em>N</em>-tuple <code class="docutils literal notranslate"><span class="pre
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.fftw.idctn">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idctn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idctn" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idctn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idctn" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces a dense real <em>N</em>-dimensional matrix with its inverse
 <em>N</em>-dimensional discrete cosine transform. The dimensions of the
 matrix are given by the tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>.  The two-dimensional inverse
@@ -209,7 +209,7 @@ transform is computed as <code class="docutils literal notranslate"><span class=
 <h2>Discrete Sine Transform<a class="headerlink" href="#discrete-sine-transform" title="Permalink to this headline"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.fftw.dst">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em>, <em class="sig-param"><span class="pre">dims</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">1</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dst" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">1</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dst" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces the columns of a dense real matrix with their discrete
 sine transforms.  The second argument, an integer between 1 and 4,
 denotes the type of transform (DST-I, DST-II, DST-III, DST-IV).
@@ -234,7 +234,7 @@ rows).</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.fftw.idst">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em>, <em class="sig-param"><span class="pre">dims</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">1</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idst" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">1</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idst" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces the columns of a dense real matrix with the inverses of the
 discrete sine transforms defined above.</p>
 </dd></dl>
@@ -248,7 +248,7 @@ transform to all the rows of the matrix, followed by a one-dimensional
 transform to all the columns of the matrix.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.fftw.dstn">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dstn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dstn" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dstn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dstn" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces a dense real matrix with its <em>N</em>-dimensional discrete sine
 transform. The dimensions of the <em>N</em>-dimensional matrix are given by
 the <em>N</em>-tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>.  The two-dimensional transform is computed as
@@ -257,7 +257,7 @@ the <em>N</em>-tuple <code class="docutils literal notranslate"><span class="pre
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.fftw.idstn">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idstn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">X</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></em>, <em class="sig-param"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idstn" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">idstn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span> <span class="pre">=</span> <span class="pre">X.size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.idstn" title="Permalink to this definition"></a></dt>
 <dd><p>Replaces a dense real <em>N</em>-dimensional matrix with its inverse
 <em>N</em>-dimensional discrete sine transform.  The dimensions of the
 matrix are given by the tuple <code class="docutils literal notranslate"><span class="pre">dims</span></code>.  The two-dimensional inverse
@@ -278,8 +278,8 @@ transform is computed as <code class="docutils literal notranslate"><span class=
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2021, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on Sep 20, 2021.
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2022, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on Mar 07, 2022.
       </span></p>
   </div>
 
@@ -299,7 +299,7 @@ transform is computed as <code class="docutils literal notranslate"><span class=
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.1.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
     </div>
 
 </body>

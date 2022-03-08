@@ -30,7 +30,7 @@
             <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
           </a>
               <div class="version">
-                1.2.7
+                1.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -117,7 +117,7 @@ Mathematical Software, 30(3), 381-388, 2004.</p></li>
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.amd.order">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.amd.</span></span><span class="sig-name descname"><span class="pre">order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.amd.order" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.amd.</span></span><span class="sig-name descname"><span class="pre">order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.amd.order" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the approximate mimimum degree ordering of a symmetric  sparse
 matrix <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/>.  The ordering is returned as an integer dense matrix
 with length equal to the order of <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/>.  Its entries specify a
@@ -161,7 +161,7 @@ Transactions on Mathematical Software, 30(2), 196-199, 2004.</p></li>
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.umfpack.linsolve">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.umfpack.</span></span><span class="sig-name descname"><span class="pre">linsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.linsolve" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.umfpack.</span></span><span class="sig-name descname"><span class="pre">linsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.linsolve" title="Permalink to this definition"></a></dt>
 <dd><p>Solves a sparse set of linear equations</p>
 <div class="math">
 <p><img src="_images/math/908a083a0806ab219190adac99ec60da04c65f48.png" alt="AX &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
@@ -225,7 +225,7 @@ that that can be passed on to
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.umfpack.solve">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.umfpack.</span></span><span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">F</span></em>, <em class="sig-param"><span class="pre">B</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.solve" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.umfpack.</span></span><span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.solve" title="Permalink to this definition"></a></dt>
 <dd><p>Solves a set of linear equations</p>
 <div class="math">
 <p><img src="_images/math/908a083a0806ab219190adac99ec60da04c65f48.png" alt="AX &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
@@ -307,7 +307,7 @@ and Update/Downdate, ACM Transactions on Mathematical Software,
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.cholmod.linsolve">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">linsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.linsolve" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">linsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.linsolve" title="Permalink to this definition"></a></dt>
 <dd><p>Solves</p>
 <div class="math">
 <p><img src="_images/math/e44d29f0cbcc5fa7a0f3f83d3bddc988f9b022ea.png" alt="AX = B"/></p>
@@ -346,7 +346,7 @@ by CHOLMOD.</p>
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.cholmod.splinsolve">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">splinsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em>, <em class="sig-param"><span class="pre">B</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.splinsolve" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">splinsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.splinsolve" title="Permalink to this definition"></a></dt>
 <dd><p>Similar to <a class="reference internal" href="#cvxopt.cholmod.linsolve" title="cvxopt.cholmod.linsolve"><code class="xref py py-func docutils literal notranslate"><span class="pre">linsolve</span></code></a> except that
 <code class="docutils literal notranslate"><span class="pre">B</span></code> is an <a class="reference internal" href="matrices.html#cvxopt.spmatrix" title="cvxopt.spmatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">spmatrix</span></code></a> and
 that the solution is returned as an output argument (as a new
@@ -374,7 +374,7 @@ in <a class="reference internal" href="#equation-e-a-pd">(2)</a> as a sparse mat
 <a class="reference internal" href="#cvxopt.cholmod.spsolve" title="cvxopt.cholmod.spsolve"><code class="xref py py-func docutils literal notranslate"><span class="pre">spsolve</span></code></a>.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.cholmod.symbolic">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">symbolic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">A</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">None</span></em>, <em class="sig-param"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.symbolic" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">symbolic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.symbolic" title="Permalink to this definition"></a></dt>
 <dd><p>Performs a symbolic analysis of a sparse real symmetric or
 complex Hermitian matrix <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> for one of the two factorizations:</p>
 <div class="math" id="equation-e-chol-ll">
@@ -421,7 +421,7 @@ Raises an <code class="xref py py-exc docutils literal notranslate"><span class=
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.cholmod.solve">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">F</span></em>, <em class="sig-param"><span class="pre">B</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">sys</span> <span class="pre">=</span> <span class="pre">0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.solve" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">sys</span> <span class="pre">=</span> <span class="pre">0</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.solve" title="Permalink to this definition"></a></dt>
 <dd><p>Solves one of the following linear equations where <code class="docutils literal notranslate"><span class="pre">B</span></code> is a dense
 matrix and <code class="docutils literal notranslate"><span class="pre">F</span></code> is the numeric factorization <a class="reference internal" href="#equation-e-chol-ll">(3)</a>
 or <a class="reference internal" href="#equation-e-chol-ldl">(4)</a> computed by
@@ -474,7 +474,7 @@ the same type as <code class="docutils literal notranslate"><span class="pre">A<
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.cholmod.spsolve">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">spsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">F</span></em>, <em class="sig-param"><span class="pre">B</span></em><span class="optional">[</span>, <em class="sig-param"><span class="pre">sys</span> <span class="pre">=</span> <span class="pre">0</span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.spsolve" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">spsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">sys</span> <span class="pre">=</span> <span class="pre">0</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.spsolve" title="Permalink to this definition"></a></dt>
 <dd><p>Similar to <a class="reference internal" href="#cvxopt.cholmod.solve" title="cvxopt.cholmod.solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">solve</span></code></a>, except that <code class="docutils literal notranslate"><span class="pre">B</span></code> is
 a class:<cite>spmatrix</cite>, and the solution is returned as an output argument
 (as an <code class="xref py py-class docutils literal notranslate"><span class="pre">spmatrix</span></code>).  <code class="docutils literal notranslate"><span class="pre">B</span></code> must have the same typecode as <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
@@ -699,8 +699,8 @@ The gradient and Hessian of the objective function are given by</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2021, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on Sep 20, 2021.
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2022, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on Mar 07, 2022.
       </span></p>
   </div>
 
@@ -720,7 +720,7 @@ The gradient and Hessian of the objective function are given by</p>
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.1.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
     </div>
 
 </body>
