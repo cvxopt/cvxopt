@@ -153,7 +153,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         - 'primal infeasibility': the residual in the primal constraints,
           defined as the maximum of the residual in the inequalities
 
-              || G*x + s + h || / max(1, ||h||)
+              || G*x + s - h || / max(1, ||h||)
 
           and the residual in the equalities
 
@@ -237,7 +237,7 @@ def conelp(c, G, h, dims = None, A = None, b = None, primalstart = None,
         - 'primal infeasibility ': the residual in the primal constraints,
           defined as the maximum of the residual in the inequalities
 
-              || G*x + s + h || / max(1, ||h||)
+              || G*x + s - h || / max(1, ||h||)
 
           and the residual in the equalities
 
@@ -1580,7 +1580,7 @@ def coneqp(P, q, G = None, h = None, dims = None, A = None, b = None,
         - 'primal infeasibility': the residual in the primal constraints,
           defined as the maximum of the residual in the inequalities
 
-              || G*x + s + h || / max(1, ||h||)
+              || G*x + s - h || / max(1, ||h||)
 
           and the residual in the equalities
 
@@ -2620,7 +2620,7 @@ def lp(c, G, h, A = None, b = None, kktsolver = None, solver = None, primalstart
         - 'primal infeasibility': the residual in the primal constraints,
           defined as the maximum of the residual in the inequalities
 
-              || G*x + s + h || / max(1, ||h||)
+              || G*x + s - h || / max(1, ||h||)
 
           and the residual in the equalities
 
@@ -2709,7 +2709,7 @@ def lp(c, G, h, A = None, b = None, kktsolver = None, solver = None, primalstart
         - 'primal infeasibility ': the residual in the primal constraints,
           defined as the maximum of the residual in the inequalities
 
-              || G*x + s + h || / max(1, ||h||)
+              || G*x + s - h || / max(1, ||h||)
 
           and the residual in the equalities
 
@@ -3108,7 +3108,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
         - 'primal infeasibility': the residual in the primal constraints,
           defined as the maximum of the residual in the inequalities
 
-              || G*x + s + h || / max(1, ||h||)
+              || G*x + s - h || / max(1, ||h||)
 
           and the residual in the equalities
 
@@ -3206,7 +3206,7 @@ def socp(c, Gl = None, hl = None, Gq = None, hq = None, A = None, b = None,
         - 'primal infeasibility ': the residual in the primal constraints,
           defined as the maximum of the residual in the inequalities
 
-              || G*x + s + h || / max(1, ||h||)
+              || G*x + s - h || / max(1, ||h||)
 
           and the residual in the equalities
 
@@ -3668,7 +3668,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
         - 'primal infeasibility': the residual in the primal constraints,
           defined as the maximum of the residual in the inequalities
 
-              || G*x + s + h || / max(1, ||h||)
+              || G*x + s - h || / max(1, ||h||)
 
           and the residual in the equalities
 
@@ -3766,7 +3766,7 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
         - 'primal infeasibility ': the residual in the primal constraints,
           defined as the maximum of the residual in the inequalities
 
-              || G*x + s + h || / max(1, ||h||)
+              || G*x + s - h || / max(1, ||h||)
 
           and the residual in the equalities
 
@@ -4229,7 +4229,7 @@ def qp(P, q, G = None, h = None, A = None, b = None, solver = None,
         - 'primal infeasibility': the residual in the primal constraints,
           defined as the maximum of the residual in the inequalities
 
-              || G*x + s + h || / max(1, ||h||)
+              || G*x + s - h || / max(1, ||h||)
 
           and the residual in the equalities
 
