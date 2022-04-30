@@ -111,7 +111,7 @@ SUITESPARSE_INC_DIR = os.environ.get("CVXOPT_SUITESPARSE_INC_DIR",SUITESPARSE_IN
 SUITESPARSE_SRC_DIR = os.environ.get("CVXOPT_SUITESPARSE_SRC_DIR",SUITESPARSE_SRC_DIR)
 MSVC = int(os.environ.get("CVXOPT_MSVC",MSVC)) == True
 PYTHON_REQUIRES = (
-    '>=2.7, !=3.0.*, !=3.1.*, '
+    '!=3.0.*, !=3.1.*, '
     '!=3.2.*, !=3.3.*, !=3.4.*')
 INSTALL_REQUIRES = os.environ.get("CVXOPT_INSTALL_REQUIRES",[])
 if type(INSTALL_REQUIRES) is str: INSTALL_REQUIRES = INSTALL_REQUIRES.strip().split(';')

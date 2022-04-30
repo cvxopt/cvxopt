@@ -28,21 +28,21 @@ using `pip <https://pip.pypa.io>`_::
 
 Wheels for Linux:
 
-* are available for Python 2.7, 3.3, 3.4, 3.5, and 3.6 (32 and 64 bit)
+* are available for Python 3.3, 3.4, 3.5, and 3.6 (32 and 64 bit)
 * are linked against OpenBLAS
 * include all optional extensions (DSDP, GLPK, GSL, and FFTW)
 
 Wheels for macOS:
 
-* are available for Python 2.7, 3.4, 3.5, and 3.6 (universal binaries)
+* are available for Python 3.4, 3.5, and 3.6 (universal binaries)
 * are linked against OpenBLAS
 * include all optional extensions (DSDP, GLPK, GSL, and FFTW)
 
 Wheels for Windows:
 
-* are available for Python 2.7, 3.4, 3.5, and 3.6 (64 bit only)
+* are available for Python 3.4, 3.5, and 3.6 (64 bit only)
 * are linked against MKL
-* Python 3.5+ wheels include the optional extension GLPK (wheels for Python 2.7 and 3.4 include none of the optional extensions)
+* Python 3.5+ wheels include the optional extension GLPK (wheels for Python 3.4 include none of the optional extensions)
 
 
 Building and installing from source
@@ -51,7 +51,7 @@ Building and installing from source
 Required and optional software
 ------------------------------
 
-The package requires version 2.7 or 3.x of Python, and building from
+The package requires version 3.x of Python, and building from
 source requires core binaries and header files and libraries for Python.
 
 The installation requires BLAS and LAPACK. Using an architecture
