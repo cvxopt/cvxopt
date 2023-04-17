@@ -1,7 +1,6 @@
-Binary files DSDP5.8/.DS_Store and DSDP5.8_patched/.DS_Store differ
-diff -ruN DSDP5.8/Makefile DSDP5.8_patched/Makefile
---- DSDP5.8/Makefile	2005-10-21 21:31:14.000000000 +0200
-+++ DSDP5.8_patched/Makefile	2017-02-13 10:57:50.000000000 +0100
+diff --color -ruN DSDP5.8/Makefile DSDP5.8_patched/Makefile
+--- DSDP5.8/Makefile	2005-10-21 21:31:14
++++ DSDP5.8_patched/Makefile	2023-04-10 15:13:26
 @@ -1,5 +1,5 @@
  
 -default: 
@@ -9,16 +8,31 @@ diff -ruN DSDP5.8/Makefile DSDP5.8_patched/Makefile
  	make all
  
  D1       =  src
-@@ -10,33 +10,22 @@
+@@ -10,51 +10,27 @@
  include make.include
  
  dsdplibrary: chkroot info
 -	cd ${D1}; make all
 -	${RANLIB} ${DSDPLIB}
--
++	cd src; make all
++	mkdir -p objs
++	find src -name '*.o' -exec mv {} objs/ \;
+ 
 -example:
 -	cd ${D2}; make most
--
++install: dsdplibrary
++ifdef IS_OSX
++	${CC} $(ARCH_FLAGS) -dynamiclib -install_name $(PREFIX)/lib/libdsdp.dylib \
++		    -current_version 5.8 -compatibility_version 5.8 \
++				-o $(PREFIX)/lib/libdsdp.dylib \
++				objs/*.o ${LAPACKBLAS}
++else
++	${CC} -shared -Wl,-soname,libdsdp.so \
++	 	    -o ${PREFIX}/lib/libdsdp.so \
++				objs/*.o ${LAPACKBLAS}
++endif
++	${CP} include/*.h ${PREFIX}/include
+ 
 -test:
 -	cd ${D4}; make all
 -
@@ -40,26 +54,10 @@ diff -ruN DSDP5.8/Makefile DSDP5.8_patched/Makefile
 -
 -all:
 -	make install
-+	cd src; make all
-+	mkdir -p objs
-+	find src -name '*.o' -exec mv {} objs/ \;
-+
-+install: dsdplibrary
-+ifdef IS_OSX
-+	libtool -dynamic -install_name ${PREFIX}/lib/libdsdp.dylib \
-+		    -current_version 5.8 -compatibility_version 5.8 \
-+				-o ${PREFIX}/lib/libdsdp.dylib \
-+				objs/*.o ${LAPACKBLAS} -lSystem
-+else
-+	${CC} -shared -Wl,-soname,libdsdp.so \
-+	 	    -o ${PREFIX}/lib/libdsdp.so \
-+				objs/*.o ${LAPACKBLAS}
-+endif
-+	${CP} include/*.h ${PREFIX}/include
- 
+-
  clean:
  	cd ${D1}; make clean
-@@ -44,17 +33,4 @@
+ 	cd ${D2}; make clean
  	cd ${D4}; make clean
  	${RM} lib/lib* matlab/dsdp.mex*
  	${RM} *~ */*~ */*/*~
@@ -78,9 +76,9 @@ diff -ruN DSDP5.8/Makefile DSDP5.8_patched/Makefile
 -	cd ../ ; \
 -	${RM} tmp
 +	${RM} objs/*.o
-diff -ruN DSDP5.8/make.include DSDP5.8_patched/make.include
---- DSDP5.8/make.include	2005-10-21 21:31:14.000000000 +0200
-+++ DSDP5.8_patched/make.include	2017-02-13 10:39:45.000000000 +0100
+diff --color -ruN DSDP5.8/make.include DSDP5.8_patched/make.include
+--- DSDP5.8/make.include	2005-10-21 21:31:14
++++ DSDP5.8_patched/make.include	2023-04-10 14:39:54
 @@ -1,87 +1,10 @@
 -# STEP 1: Set DSDPROOT in this file or comment out and make it an environment variable
 -#DSDPROOT	= /home/benson/dsdp/DSDP5.8
@@ -135,9 +133,9 @@ diff -ruN DSDP5.8/make.include DSDP5.8_patched/make.include
  CLINKER	= ${CC} ${OPTFLAGS}
 -#CLINKER	= ${CXX} ${OPTFLAGS} -static
 -#CLINKER	= link /out:dsdp5.exe
--
--#SH_LD = ${CC} -shared -W1,-soname,
  
+-#SH_LD = ${CC} -shared -W1,-soname,
+-
 -# STEP 5:
 -# Location of BLAS AND LAPACK libraries. 
 -# Not needed to compile library or matlab executable
@@ -205,10 +203,9 @@ diff -ruN DSDP5.8/make.include DSDP5.8_patched/make.include
  	@if [ ${DSDPROOT}foo = foo ] ; then \
  	  echo "*********************** ERROR **********************" ; \
  	  echo "Set the variable DSDPROOT " ; \
-Binary files DSDP5.8/src/.DS_Store and DSDP5.8_patched/src/.DS_Store differ
-diff -ruN DSDP5.8/src/sys/dsdploginfo.c DSDP5.8_patched/src/sys/dsdploginfo.c
---- DSDP5.8/src/sys/dsdploginfo.c	2005-10-21 21:31:15.000000000 +0200
-+++ DSDP5.8_patched/src/sys/dsdploginfo.c	2017-02-13 10:28:52.000000000 +0100
+diff --color -ruN DSDP5.8/src/sys/dsdploginfo.c DSDP5.8_patched/src/sys/dsdploginfo.c
+--- DSDP5.8/src/sys/dsdploginfo.c	2005-10-21 21:31:15
++++ DSDP5.8_patched/src/sys/dsdploginfo.c	2023-04-10 14:39:54
 @@ -6,7 +6,9 @@
  #include <stdarg.h>
  #include <sys/types.h>

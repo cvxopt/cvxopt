@@ -47,6 +47,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>."""
 
+import sys
+if sys.platform == 'win32':
+    import os
+    extra_dll_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.libs')  
+    if os.path.isdir(extra_dll_dir):  
+        os.add_dll_directory(extra_dll_dir)
+
 import cvxopt.base
 
 def copyright():
@@ -283,7 +290,10 @@ __all__ = [ 'blas', 'lapack', 'amd', 'umfpack', 'cholmod', 'solvers',
     'spdiag', 'sqrt', 'sin', 'cos', 'exp', 'log', 'min', 'max', 'mul', 
     'div', 'normal', 'uniform', 'setseed', 'getseed' ]
 
-from . import _version
-__version__ = _version.get_versions()['version']
-
+try:
+    from ._version import version as __version__
+    from ._version import version_tuple
+except ImportError:
+    __version__ = "unknown version"
+    version_tuple = (0, 0, "unknown version")
 

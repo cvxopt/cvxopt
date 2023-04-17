@@ -1,7 +1,6 @@
 from setuptools import setup, Extension
 from glob import glob
 import os, sys
-import versioneer
 
 # Modifiy this if BLAS and LAPACK libraries are not in /usr/lib.
 BLAS_LIB_DIR = '/usr/lib'
@@ -258,8 +257,6 @@ extmods += [base, blas, lapack, umfpack, cholmod, amd, misc_solvers]
 
 setup (name = 'cvxopt',
     description = 'Convex optimization package',
-    version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass(),
     long_description = '''
 CVXOPT is a free software package for convex optimization based on the
 Python programming language. It can be used with the interactive Python
@@ -271,12 +268,13 @@ library and on the strengths of Python as a high-level programming
 language.''',
     author = 'M. Andersen, J. Dahl, and L. Vandenberghe',
     author_email = 'martin.skovgaard.andersen@gmail.com, dahl.joachim@gmail.com, vandenbe@ee.ucla.edu',
-    url = 'http://cvxopt.org',
+    url = 'https://cvxopt.org',
     project_urls = {'Source': 'https://github.com/cvxopt/cvxopt'},
     license = 'GNU GPL version 3',
     ext_package = "cvxopt",
     ext_modules = extmods,
     package_dir = {"cvxopt": "src/python"},
+    package_data = {'': [".libs/*.dll", "LICENSE*"]},
     packages = ["cvxopt"],
     python_requires=PYTHON_REQUIRES,
     install_requires = INSTALL_REQUIRES,
