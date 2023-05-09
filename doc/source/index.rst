@@ -4,12 +4,13 @@
 CVXOPT User's Guide
 ####################
 
-**Release 1.3.0 -- March 7, 2022**
+**Release 1.3.1 -- May 9, 2023**
 
 **Martin Andersen, Joachim Dahl, and Lieven Vandenberghe**
 
 .. toctree::
-
+    :maxdepth: 2
+    
     copyright.rst
     intro.rst
     matrices.rst

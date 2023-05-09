@@ -72,7 +72,6 @@ jobs:
     - name: Build/install CVXOPT
       run: |
         python -m build --wheel
-        ls -la ${{github.workspace}}/dist
         python -m pip install --no-index --find-links=${{github.workspace}}/dist cvxopt
 
     - name: Test with pytest
