@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Robust SVM &mdash; CVXOPT</title>
@@ -12,9 +12,9 @@
   <![endif]-->
   
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="copyright" title="Copyright" href="../../copyright.html" />
@@ -27,14 +27,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> CVXOPT
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CVXOPT
           </a>
               <div class="version">
-                1.3.0
+                1.3.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -52,7 +56,10 @@
 <li class="toctree-l3"><a class="reference internal" href="l1.html">L1-norm approximation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="l1regls.html">L1-norm regularized least-squares</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mcsvm.html">Multiclass SVM</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Robust SVM</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Robust SVM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#robsvm"><code class="docutils literal notranslate"><span class="pre">robsvm()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="ubsdp.html">SDPs with upper bounds</a></li>
 </ul>
 </li>
@@ -76,9 +83,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Examples</a> &raquo;</li>
-      <li>Robust SVM</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Examples</a></li>
+      <li class="breadcrumb-item active">Robust SVM</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -88,48 +95,48 @@
            <div itemprop="articleBody">
              
   <section id="robust-svm">
-<h1>Robust SVM<a class="headerlink" href="#robust-svm" title="Permalink to this headline"></a></h1>
+<h1>Robust SVM<a class="headerlink" href="#robust-svm" title="Permalink to this heading"></a></h1>
 <p>The robust SVM training problem can be expressed as a cone QP with second-order cone constraints:</p>
-<div class="math">
-<p><img src="../../_images/math/d14189fc59a994b5ef87fa9796de7f5be45d6007.png" alt="\begin{array}{ll}
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{ll}
 \mbox{minimize}   &amp; (1/2) w^Tw + \gamma \mathbf{1}^Tv \\
 \mbox{subject to} &amp; \mathbf{diag}(d)(Xw + b \mathbf{1} )
                     \succeq 1 - v + Eu \\
                   &amp; v \succeq 0 \\
                   &amp; \| S_j w\|_2 \leq u_j, \quad j =1,\ldots,t.
-\end{array}"/></p>
-</div><p>The variables are <img class="math" src="../../_images/math/e7f5387e305e6d07380d2e62aa1aff8591dcebd2.png" alt="w \in \mathbf{R}^n"/>, <img class="math" src="../../_images/math/74a73fd3851f0bd1320049f325d6234ff785d271.png" alt="b \in
-\mathbf{R}"/>, <img class="math" src="../../_images/math/ac43ee26f2594c0cd021d17b97abc636bd8c8798.png" alt="v \in \mathbf{R}^N"/>, and <img class="math" src="../../_images/math/43b8cebe05ca12179305b2d314aa34c3f38bdefe.png" alt="u \in
-\mathbf{R}^t"/>. The matrix <img class="math" src="../../_images/math/4a87574db1e5b9ead512bbd4e2018161aad44003.png" alt="X \in \mathbf{R}^{N\times n}"/> has as its
-rows the training examples <img class="math" src="../../_images/math/06730f4f3bf13771999a92a984f6fd2556131603.png" alt="x_i^T"/> and the vector <img class="math" src="../../_images/math/c167cd06858471952370ea9a920c4835aefe25ae.png" alt="d \in
-\{-1, 1\}^N"/> contains the training labels. The matrices <img class="math" src="../../_images/math/3f0caa176732b3d0f771a8eed43c4f4a6b24ca8c.png" alt="S_j"/> define the shape and the size of the uncertainty ellipsoids, and the matrix <img class="math" src="../../_images/math/1815f600df7845409443aed470eac2d449e4ddb0.png" alt="E"/> is a selector matrix with zeros and one ‘1’ per
-row.  <img class="math" src="../../_images/math/77b5a47990d6ef02716f2d46746a8c53ecf45aaa.png" alt="E_{ij} = 1"/> means that the i’th training vector is
-associated with the j’th uncertainty ellipsoid. For <img class="math" src="../../_images/math/5acac9b3df0b015ff738cfad84e0647c1ef8e31d.png" alt="t = 0"/>, the
-term <img class="math" src="../../_images/math/d8a6593db8681bdbec3c96f4b7b3f8cbee4faa01.png" alt="Eu"/> and the norm constraints are absent, and the problem
+\end{array}\end{split}\]</div>
+<p>The variables are <span class="math notranslate nohighlight">\(w \in \mathbf{R}^n\)</span>, <span class="math notranslate nohighlight">\(b \in
+\mathbf{R}\)</span>, <span class="math notranslate nohighlight">\(v \in \mathbf{R}^N\)</span>, and <span class="math notranslate nohighlight">\(u \in
+\mathbf{R}^t\)</span>. The matrix <span class="math notranslate nohighlight">\(X \in \mathbf{R}^{N\times n}\)</span> has as its
+rows the training examples <span class="math notranslate nohighlight">\(x_i^T\)</span> and the vector <span class="math notranslate nohighlight">\(d \in
+\{-1, 1\}^N\)</span> contains the training labels. The matrices <span class="math notranslate nohighlight">\(S_j\)</span> define the shape and the size of the uncertainty ellipsoids, and the matrix <span class="math notranslate nohighlight">\(E\)</span> is a selector matrix with zeros and one ‘1’ per
+row.  <span class="math notranslate nohighlight">\(E_{ij} = 1\)</span> means that the i’th training vector is
+associated with the j’th uncertainty ellipsoid. For <span class="math notranslate nohighlight">\(t = 0\)</span>, the
+term <span class="math notranslate nohighlight">\(Eu\)</span> and the norm constraints are absent, and the problem
 reduces to the standard linear SVM</p>
-<div class="math">
-<p><img src="../../_images/math/be457f5331d4f0b45e69f80f2675d1bc7a7292c9.png" alt="\begin{array}{ll}
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{ll}
 \mbox{minimize}   &amp; (1/2) w^Tw + \gamma \mathbf{1}^Tv \\
 \mbox{subject to} &amp; \mathbf{diag}(d)(Xw + b \mathbf{1} )
                     \succeq 1 - v  \\
                   &amp; v \succeq 0.
-\end{array}"/></p>
-</div><h3> Documentation </h3><p>A custom solver for the robust SVM problem is available as a Python
+\end{array}\end{split}\]</div>
+<h3> Documentation </h3><p>A custom solver for the robust SVM problem is available as a Python
 module <a class="reference download internal" download="" href="../../_downloads/fd708a3a40e64669980b60a9e33aeb54/robsvm.py"><code class="xref download docutils literal notranslate"><span class="pre">robsvm.py</span></code></a>. The  module implements the following function:</p>
 <blockquote>
 <div><dl class="py function">
 <dt class="sig sig-object py" id="robsvm">
 <span class="sig-name descname"><span class="pre">robsvm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#robsvm" title="Permalink to this definition"></a></dt>
 <dd><p>Solves the ‘soft-margin’ robust SVM problem.</p>
-<p>The first three input arguments are the data matrix <img class="math" src="../../_images/math/ed38fa24f1c94891bd312012aab3f6673be3eb83.png" alt="X"/>
-(with the <img class="math" src="../../_images/math/3bfb3a64189a14b2704f4610827762d5e3145114.png" alt="N"/> training examples <img class="math" src="../../_images/math/06730f4f3bf13771999a92a984f6fd2556131603.png" alt="x_i^T"/> as rows),
-the label vector <img class="math" src="../../_images/math/badad346f6fbe2e237af99bfbd9a93a4da53a3da.png" alt="d"/>, and the positive parameter
-<img class="math" src="../../_images/math/34d137cf01c787ecda732761c3f95b0f65a6c3e9.png" alt="\gamma"/>. The fourth input argument <cite>P</cite> must be a Python
-list of <img class="math" src="../../_images/math/907a4add6d5db5b7f197f7924f1371b8ac404fe6.png" alt="t"/> matrices <img class="math" src="../../_images/math/66f9a6115ec4a8b1f2fef015f28ade5baa914839.png" alt="S_1,\ldots,S_t"/>. The last
-argument <cite>e</cite> is an <img class="math" src="../../_images/math/3bfb3a64189a14b2704f4610827762d5e3145114.png" alt="N"/>-vector where the i’th element
-<img class="math" src="../../_images/math/be8d57050b57e27bb0b9d53c0855e4ec023d662d.png" alt="e_i \in \{0,..,t-1\}"/> is the index of the uncertainty
+<p>The first three input arguments are the data matrix <span class="math notranslate nohighlight">\(X\)</span>
+(with the <span class="math notranslate nohighlight">\(N\)</span> training examples <span class="math notranslate nohighlight">\(x_i^T\)</span> as rows),
+the label vector <span class="math notranslate nohighlight">\(d\)</span>, and the positive parameter
+<span class="math notranslate nohighlight">\(\gamma\)</span>. The fourth input argument <cite>P</cite> must be a Python
+list of <span class="math notranslate nohighlight">\(t\)</span> matrices <span class="math notranslate nohighlight">\(S_1,\ldots,S_t\)</span>. The last
+argument <cite>e</cite> is an <span class="math notranslate nohighlight">\(N\)</span>-vector where the i’th element
+<span class="math notranslate nohighlight">\(e_i \in \{0,..,t-1\}\)</span> is the index of the uncertainty
 ellipsoid associated with the i’th training vector.</p>
-<p>The function returns <img class="math" src="../../_images/math/cc87ee665749db882f94e0d3707eb23e39638650.png" alt="w"/>, <img class="math" src="../../_images/math/68c7c8c65602677ab56cf7fd88002023f0edc575.png" alt="b"/>, <img class="math" src="../../_images/math/9b444cf6329a14140aee8ff5a06ff30772cc1c2f.png" alt="u"/>, <img class="math" src="../../_images/math/02d98909b5d6acd6a7ff927d4d42790bdd407d58.png" alt="v"/>,
+<p>The function returns <span class="math notranslate nohighlight">\(w\)</span>, <span class="math notranslate nohighlight">\(b\)</span>, <span class="math notranslate nohighlight">\(u\)</span>, <span class="math notranslate nohighlight">\(v\)</span>,
 and the number of iterations (an integer).</p>
 </dd></dl>
 
@@ -177,8 +184,8 @@ and the number of iterations (an integer).</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2022, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
-      <span class="lastupdated">Last updated on Mar 08, 2022.
+    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2023, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
+      <span class="lastupdated">Last updated on May 10, 2023.
       </span></p>
   </div>
 
@@ -198,7 +205,7 @@ and the number of iterations (an integer).</p>
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 6.2.1.
     </div>
 
 <script>

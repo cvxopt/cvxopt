@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Modeling &mdash; CVXOPT User&#39;s Guide</title>
@@ -12,9 +12,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
@@ -27,14 +26,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CVXOPT User's Guide
           </a>
               <div class="version">
-                1.3.0
+                1.3.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -51,10 +54,38 @@
 <li class="toctree-l1"><a class="reference internal" href="coneprog.html">Cone Programming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="solvers.html">Nonlinear Convex Optimization</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Modeling</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#variables">Variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#constraints">Constraints</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#optimization-problems">Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#variables">Variables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.modeling.variable"><code class="docutils literal notranslate"><span class="pre">cvxopt.modeling.variable</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#variable.name"><code class="docutils literal notranslate"><span class="pre">variable.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#variable.value"><code class="docutils literal notranslate"><span class="pre">variable.value</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">variables</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#value"><code class="docutils literal notranslate"><span class="pre">value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.modeling.sum"><code class="docutils literal notranslate"><span class="pre">cvxopt.modeling.sum</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.modeling.dot"><code class="docutils literal notranslate"><span class="pre">cvxopt.modeling.dot</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#constraints">Constraints</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#constraint.type"><code class="docutils literal notranslate"><span class="pre">constraint.type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constraint.value"><code class="docutils literal notranslate"><span class="pre">constraint.value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constraint.multiplier"><code class="docutils literal notranslate"><span class="pre">constraint.multiplier</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constraint.name"><code class="docutils literal notranslate"><span class="pre">constraint.name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#optimization-problems">Optimization Problems</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.modeling.op"><code class="docutils literal notranslate"><span class="pre">cvxopt.modeling.op</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.objective"><code class="docutils literal notranslate"><span class="pre">op.objective</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.variables"><code class="docutils literal notranslate"><span class="pre">op.variables</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.constraints"><code class="docutils literal notranslate"><span class="pre">op.constraints</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.inequalities"><code class="docutils literal notranslate"><span class="pre">op.inequalities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.equalities"><code class="docutils literal notranslate"><span class="pre">op.equalities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.delconstraint"><code class="docutils literal notranslate"><span class="pre">op.delconstraint</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.addconstraint"><code class="docutils literal notranslate"><span class="pre">op.addconstraint</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.solve"><code class="docutils literal notranslate"><span class="pre">op.solve</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>
@@ -76,8 +107,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Modeling</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Modeling</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -87,7 +118,7 @@
            <div itemprop="articleBody">
              
   <section id="modeling">
-<span id="c-modeling"></span><h1>Modeling<a class="headerlink" href="#modeling" title="Permalink to this headline"></a></h1>
+<span id="c-modeling"></span><h1>Modeling<a class="headerlink" href="#modeling" title="Permalink to this heading"></a></h1>
 <p>The module <code class="xref py py-mod docutils literal notranslate"><span class="pre">cvxopt.modeling</span></code>  can be used to specify and solve
 optimization problems  with convex piecewise-linear objective and
 constraint functions.  Using this modeling tool, one can specify an
@@ -102,7 +133,7 @@ and nested evaluations of <code class="xref py py-func docutils literal notransl
 <p>A more general Python convex modeling package is
 <a class="reference external" href="http://cvxpy.org">CVXPY</a>.</p>
 <section id="variables">
-<span id="s-variables"></span><h2>Variables<a class="headerlink" href="#variables" title="Permalink to this headline"></a></h2>
+<span id="s-variables"></span><h2>Variables<a class="headerlink" href="#variables" title="Permalink to this heading"></a></h2>
 <p>Optimization variables are represented by <code class="xref py py-class docutils literal notranslate"><span class="pre">variable</span></code> objects.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.modeling.variable">
@@ -162,7 +193,7 @@ elements of <code class="docutils literal notranslate"><span class="pre">x.value
 </div>
 </section>
 <section id="functions">
-<span id="s-functions"></span><h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline"></a></h2>
+<span id="s-functions"></span><h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h2>
 <p>Objective and constraint functions can be defined via overloaded operations
 on variables and other functions.  A function <code class="docutils literal notranslate"><span class="pre">f</span></code> is interpreted as a
 column vector, with length <code class="docutils literal notranslate"><span class="pre">len(f)</span></code> and with a value that depends on
@@ -407,7 +438,7 @@ and if they do not change the length of <code class="docutils literal notranslat
 </dl>
 </section>
 <section id="constraints">
-<span id="s-constraints"></span><h2>Constraints<a class="headerlink" href="#constraints" title="Permalink to this headline"></a></h2>
+<span id="s-constraints"></span><h2>Constraints<a class="headerlink" href="#constraints" title="Permalink to this heading"></a></h2>
 <p>Linear equality and inequality constraints of the form</p>
 <div class="math">
 <p><img src="_images/math/12354e7e046bba1f8384eebcc70a2d9a09930e8e.png" alt="f(x_1,\ldots,x_n) = 0, \qquad f(x_1,\ldots,x_n) \preceq  0,"/></p>
@@ -476,7 +507,7 @@ changes the name of the multiplier of <code class="docutils literal notranslate"
 
 </section>
 <section id="optimization-problems">
-<span id="s-lp"></span><h2>Optimization Problems<a class="headerlink" href="#optimization-problems" title="Permalink to this headline"></a></h2>
+<span id="s-lp"></span><h2>Optimization Problems<a class="headerlink" href="#optimization-problems" title="Permalink to this heading"></a></h2>
 <p>Optimization problems are be constructed by calling the following
 function.</p>
 <dl class="py function">
@@ -663,7 +694,7 @@ vectors.</p>
 
 </section>
 <section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
 <p><strong>Norm and Penalty Approximation</strong></p>
 <blockquote>
 <div><p>In the first example we solve the norm approximation problems</p>
@@ -810,8 +841,8 @@ equivalent LP</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2022, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on Mar 07, 2022.
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on May 09, 2023.
       </span></p>
   </div>
 
@@ -831,7 +862,7 @@ equivalent LP</p>
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 6.2.1.
     </div>
 
 </body>

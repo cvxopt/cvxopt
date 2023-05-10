@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Multiclass SVM &mdash; CVXOPT</title>
@@ -12,9 +12,9 @@
   <![endif]-->
   
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="copyright" title="Copyright" href="../../copyright.html" />
@@ -27,14 +27,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> CVXOPT
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CVXOPT
           </a>
               <div class="version">
-                1.3.0
+                1.3.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -51,7 +55,10 @@
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#custom-interior-point-solvers">Custom interior-point solvers</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="l1.html">L1-norm approximation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="l1regls.html">L1-norm regularized least-squares</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Multiclass SVM</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Multiclass SVM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mcsvm"><code class="docutils literal notranslate"><span class="pre">mcsvm()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="robsvm.html">Robust SVM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ubsdp.html">SDPs with upper bounds</a></li>
 </ul>
@@ -76,9 +83,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Examples</a> &raquo;</li>
-      <li>Multiclass SVM</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Examples</a></li>
+      <li class="breadcrumb-item active">Multiclass SVM</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -88,23 +95,23 @@
            <div itemprop="articleBody">
              
   <section id="multiclass-svm">
-<h1>Multiclass SVM<a class="headerlink" href="#multiclass-svm" title="Permalink to this headline"></a></h1>
+<h1>Multiclass SVM<a class="headerlink" href="#multiclass-svm" title="Permalink to this heading"></a></h1>
 <p>Crammer and Singer (2001) have extended the binary SVM classifier to
 classification problems with more than two classes. The training
 problem of the Crammer-Singer multiclass SVM can be expressed as a QP</p>
-<div class="math" id="equation-multiclass-svm">
-<p><span class="eqno">(1)<a class="headerlink" href="#equation-multiclass-svm" title="Permalink to this equation"></a></span><img src="../../_images/math/0f1543c5bb51753ffc6ea23b53cab65ee121c6ea.png" alt="\begin{array}{ll}
+<div class="math notranslate nohighlight" id="equation-multiclass-svm">
+<span class="eqno">(1)<a class="headerlink" href="#equation-multiclass-svm" title="Permalink to this equation"></a></span>\[\begin{split}\begin{array}{ll}
 \mbox{maximize}   &amp;  -(1/2)  \mathbf{Tr}(U^TQU)  + \mathbf{Tr}(E^TU) \\
 \mbox{subject to} &amp; U \preceq \gamma E \\
                   &amp; U \mathbf{1}_m = 0
-\end{array}"/></p>
-</div><p>with variable <img class="math" src="../../_images/math/a3c03125cd1e7a260eeb8a7b0947858e27600889.png" alt="U \in \mathbf{R}^{N \times m}"/> where <img class="math" src="../../_images/math/3bfb3a64189a14b2704f4610827762d5e3145114.png" alt="N"/> is
-the number of training examples and <img class="math" src="../../_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/> the number of
-classes. The <img class="math" src="../../_images/math/411def6dca82a11b875076e8880848afb5881a71.png" alt="N \times N"/> kernel matrix <img class="math" src="../../_images/math/90cab5ae70bdb6e45756490226ba488f522c4c4e.png" alt="Q"/> is given by
-<img class="math" src="../../_images/math/a180346a11b7f7f255bc32784063c61089fd9c63.png" alt="Q_{ij} = K(x_i, x_j)"/> where <img class="math" src="../../_images/math/52ddc0cde6d632f631533173562fe3ca375b1f32.png" alt="K"/> is a kernel function and
-<img class="math" src="../../_images/math/06730f4f3bf13771999a92a984f6fd2556131603.png" alt="x_i^T"/> is the i’th row of the <img class="math" src="../../_images/math/e98cd0cc373f51f6b938863fbab752f758c58709.png" alt="N \times n"/> data matrix
-<img class="math" src="../../_images/math/ed38fa24f1c94891bd312012aab3f6673be3eb83.png" alt="X"/>, and <img class="math" src="../../_images/math/badad346f6fbe2e237af99bfbd9a93a4da53a3da.png" alt="d"/> is an <img class="math" src="../../_images/math/3bfb3a64189a14b2704f4610827762d5e3145114.png" alt="N"/>-vector with labels (<em>i.e.</em>
-<img class="math" src="../../_images/math/673e072926ce298ba6a1aa8d121912b165a344bc.png" alt="d_i \in \{ 0,1,\ldots,m-1 \}"/>).</p>
+\end{array}\end{split}\]</div>
+<p>with variable <span class="math notranslate nohighlight">\(U \in \mathbf{R}^{N \times m}\)</span> where <span class="math notranslate nohighlight">\(N\)</span> is
+the number of training examples and <span class="math notranslate nohighlight">\(m\)</span> the number of
+classes. The <span class="math notranslate nohighlight">\(N \times N\)</span> kernel matrix <span class="math notranslate nohighlight">\(Q\)</span> is given by
+<span class="math notranslate nohighlight">\(Q_{ij} = K(x_i, x_j)\)</span> where <span class="math notranslate nohighlight">\(K\)</span> is a kernel function and
+<span class="math notranslate nohighlight">\(x_i^T\)</span> is the i’th row of the <span class="math notranslate nohighlight">\(N \times n\)</span> data matrix
+<span class="math notranslate nohighlight">\(X\)</span>, and <span class="math notranslate nohighlight">\(d\)</span> is an <span class="math notranslate nohighlight">\(N\)</span>-vector with labels (<em>i.e.</em>
+<span class="math notranslate nohighlight">\(d_i \in \{ 0,1,\ldots,m-1 \}\)</span>).</p>
 <h3> Documentation </h3><p>A custom solver for the multiclass support vector machine training
 problem is available as a Python module <a class="reference download internal" download="" href="../../_downloads/959985f7a274f2f29998baf5f3de67f7/mcsvm.py"><code class="xref download docutils literal notranslate"><span class="pre">mcsvm</span></code></a>. The module
 implements the following function:</p>
@@ -113,25 +120,25 @@ implements the following function:</p>
 <dt class="sig sig-object py" id="mcsvm">
 <span class="sig-name descname"><span class="pre">mcsvm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mcsvm" title="Permalink to this definition"></a></dt>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-multiclass-svm">(1)</a> using a custom KKT solver.</p>
-<p>The input arguments are the data matrix <img class="math" src="../../_images/math/ed38fa24f1c94891bd312012aab3f6673be3eb83.png" alt="X"/> (with the
-<img class="math" src="../../_images/math/3bfb3a64189a14b2704f4610827762d5e3145114.png" alt="N"/> training examples <img class="math" src="../../_images/math/06730f4f3bf13771999a92a984f6fd2556131603.png" alt="x_i^T"/> as rows), the label
-vector <img class="math" src="../../_images/math/badad346f6fbe2e237af99bfbd9a93a4da53a3da.png" alt="d"/>, and the positive parameter <img class="math" src="../../_images/math/34d137cf01c787ecda732761c3f95b0f65a6c3e9.png" alt="\gamma"/>.</p>
+<p>The input arguments are the data matrix <span class="math notranslate nohighlight">\(X\)</span> (with the
+<span class="math notranslate nohighlight">\(N\)</span> training examples <span class="math notranslate nohighlight">\(x_i^T\)</span> as rows), the label
+vector <span class="math notranslate nohighlight">\(d\)</span>, and the positive parameter <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
 <p>Valid kernel functions are:</p>
 <dl class="simple">
-<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'linear'</span></code></dt><dd><p>the linear kernel: <img class="math" src="../../_images/math/40f25650da41bb2d97e5f40681a0cbe3bc8b8d40.png" alt="K(x_i,x_j) = x_i^Tx_j"/></p>
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'linear'</span></code></dt><dd><p>the linear kernel: <span class="math notranslate nohighlight">\(K(x_i,x_j) = x_i^Tx_j\)</span></p>
 </dd>
-<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'poly'</span></code></dt><dd><p>the polynomial kernel: <img class="math" src="../../_images/math/cd2920e9d82b9af6139a07de8a01c6d855849ff3.png" alt="K(x_i,x_j) = (x_i^Tx_j/\sigma)^d"/></p>
+<dt><code class="xref py py-const docutils literal notranslate"><span class="pre">'poly'</span></code></dt><dd><p>the polynomial kernel: <span class="math notranslate nohighlight">\(K(x_i,x_j) = (x_i^Tx_j/\sigma)^d\)</span></p>
 </dd>
 </dl>
-<p>The kernel parameters <img class="math" src="../../_images/math/b52df27bfb0b1e3af0c2c68a7b9da459178c2a7d.png" alt="\sigma"/> and <img class="math" src="../../_images/math/badad346f6fbe2e237af99bfbd9a93a4da53a3da.png" alt="d"/> are specified
+<p>The kernel parameters <span class="math notranslate nohighlight">\(\sigma\)</span> and <span class="math notranslate nohighlight">\(d\)</span> are specified
 using the input arguments <cite>sigma</cite> and <cite>degree</cite>, respectively.</p>
-<p>Returns the function <code class="xref py py-func docutils literal notranslate"><span class="pre">classifier()</span></code>.  If <img class="math" src="../../_images/math/7daf0d4815e763eb90f0d5f1dc406f668c1e21db.png" alt="Y"/> is
-<img class="math" src="../../_images/math/10ebd647a98508a8c26ad33af4021dd5b40080dc.png" alt="M \times n"/> then <cite>classifier(Y)</cite> returns a list with as
+<p>Returns the function <code class="xref py py-func docutils literal notranslate"><span class="pre">classifier()</span></code>.  If <span class="math notranslate nohighlight">\(Y\)</span> is
+<span class="math notranslate nohighlight">\(M \times n\)</span> then <cite>classifier(Y)</cite> returns a list with as
 its k’th element</p>
-<div class="math">
-<p><img src="../../_images/math/ae9e435fe0c634d5d864cde939571777b948df4b.png" alt="\operatorname*{arg\,max}_{j=0,\ldots,m-1}  \sum_{i=1}^N U_{ij} K(x_i, y_k)"/></p>
-</div><p>where <img class="math" src="../../_images/math/ffe5eab54b1d4bcbe41c2562c7a06684a82bec3c.png" alt="y_k^T"/> is row <img class="math" src="../../_images/math/9630132210b904754c9ab272b61cb527d12263ca.png" alt="k"/> of <img class="math" src="../../_images/math/7daf0d4815e763eb90f0d5f1dc406f668c1e21db.png" alt="Y"/>, <img class="math" src="../../_images/math/06730f4f3bf13771999a92a984f6fd2556131603.png" alt="x_i^T"/>
-is row <img class="math" src="../../_images/math/9630132210b904754c9ab272b61cb527d12263ca.png" alt="k"/> of <img class="math" src="../../_images/math/ed38fa24f1c94891bd312012aab3f6673be3eb83.png" alt="X"/>, and <img class="math" src="../../_images/math/9098c1c4618d7a0f321cee441aabee7f1b57a19b.png" alt="U"/> is the optimal
+<div class="math notranslate nohighlight">
+\[\operatorname*{arg\,max}_{j=0,\ldots,m-1}  \sum_{i=1}^N U_{ij} K(x_i, y_k)\]</div>
+<p>where <span class="math notranslate nohighlight">\(y_k^T\)</span> is row <span class="math notranslate nohighlight">\(k\)</span> of <span class="math notranslate nohighlight">\(Y\)</span>, <span class="math notranslate nohighlight">\(x_i^T\)</span>
+is row <span class="math notranslate nohighlight">\(k\)</span> of <span class="math notranslate nohighlight">\(X\)</span>, and <span class="math notranslate nohighlight">\(U\)</span> is the optimal
 solution of the QP <a class="reference internal" href="#equation-multiclass-svm">(1)</a>.</p>
 </dd></dl>
 
@@ -149,8 +156,8 @@ solution of the QP <a class="reference internal" href="#equation-multiclass-svm"
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2022, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
-      <span class="lastupdated">Last updated on Mar 08, 2022.
+    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2023, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
+      <span class="lastupdated">Last updated on May 10, 2023.
       </span></p>
   </div>
 
@@ -170,7 +177,7 @@ solution of the QP <a class="reference internal" href="#equation-multiclass-svm"
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 6.2.1.
     </div>
 
 <script>

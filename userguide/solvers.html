@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nonlinear Convex Optimization &mdash; CVXOPT User&#39;s Guide</title>
@@ -12,9 +12,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
@@ -27,14 +26,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CVXOPT User's Guide
           </a>
               <div class="version">
-                1.3.0
+                1.3.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -50,9 +53,18 @@
 <li class="toctree-l1"><a class="reference internal" href="spsolvers.html">Sparse Linear Equations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="coneprog.html">Cone Programming</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Nonlinear Convex Optimization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#problems-with-nonlinear-objectives">Problems with Nonlinear Objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#problems-with-linear-objectives">Problems with Linear Objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#geometric-programming">Geometric Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#problems-with-nonlinear-objectives">Problems with Nonlinear Objectives</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.cp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.cp</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#problems-with-linear-objectives">Problems with Linear Objectives</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.cpl"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.cpl</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#geometric-programming">Geometric Programming</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.gp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.gp</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#exploiting-structure">Exploiting Structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#algorithm-parameters">Algorithm Parameters</a></li>
 </ul>
@@ -76,8 +88,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Nonlinear Convex Optimization</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Nonlinear Convex Optimization</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -87,7 +99,7 @@
            <div itemprop="articleBody">
              
   <section id="nonlinear-convex-optimization">
-<span id="c-solvers"></span><h1>Nonlinear Convex Optimization<a class="headerlink" href="#nonlinear-convex-optimization" title="Permalink to this headline"></a></h1>
+<span id="c-solvers"></span><h1>Nonlinear Convex Optimization<a class="headerlink" href="#nonlinear-convex-optimization" title="Permalink to this heading"></a></h1>
 <p>In this chapter we consider nonlinear convex optimization problems of the
 form</p>
 <div class="math">
@@ -110,7 +122,7 @@ implemented that exploit structure in specific classes of problems.
 The last section
 describes the algorithm parameters that control the solvers.</p>
 <section id="problems-with-nonlinear-objectives">
-<span id="s-cp"></span><h2>Problems with Nonlinear Objectives<a class="headerlink" href="#problems-with-nonlinear-objectives" title="Permalink to this headline"></a></h2>
+<span id="s-cp"></span><h2>Problems with Nonlinear Objectives<a class="headerlink" href="#problems-with-nonlinear-objectives" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.solvers.cp">
 <span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">cp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">kktsolver</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cp" title="Permalink to this definition"></a></dt>
@@ -371,7 +383,7 @@ problem</p>
 </div></blockquote>
 </section>
 <section id="problems-with-linear-objectives">
-<span id="s-cpl"></span><h2>Problems with Linear Objectives<a class="headerlink" href="#problems-with-linear-objectives" title="Permalink to this headline"></a></h2>
+<span id="s-cpl"></span><h2>Problems with Linear Objectives<a class="headerlink" href="#problems-with-linear-objectives" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.solvers.cpl">
 <span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">cpl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">kktsolver</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cpl" title="Permalink to this definition"></a></dt>
@@ -704,7 +716,7 @@ that solves the problem by calling <code class="xref py py-func docutils literal
 </dl>
 </section>
 <section id="geometric-programming">
-<span id="s-gp"></span><h2>Geometric Programming<a class="headerlink" href="#geometric-programming" title="Permalink to this headline"></a></h2>
+<span id="s-gp"></span><h2>Geometric Programming<a class="headerlink" href="#geometric-programming" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.solvers.gp">
 <span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">gp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.gp" title="Permalink to this definition"></a></dt>
@@ -819,7 +831,7 @@ The  posynomial form of the problem is</p>
 </div>
 </section>
 <section id="exploiting-structure">
-<span id="s-nlcp"></span><h2>Exploiting Structure<a class="headerlink" href="#exploiting-structure" title="Permalink to this headline"></a></h2>
+<span id="s-nlcp"></span><h2>Exploiting Structure<a class="headerlink" href="#exploiting-structure" title="Permalink to this heading"></a></h2>
 <p>By default, the functions <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> and
 <a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal notranslate"><span class="pre">cpl</span></code></a> do not exploit problem
 structure.  Two mechanisms are provided for implementing customized solvers
@@ -1042,7 +1054,7 @@ for matrix-matrix and matrix-vector products.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">base</span>
 
 <span class="k">def</span> <span class="nf">l2ac</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Solves</span>
 
 <span class="sd">        minimize  (1/2) * ||A*x-b||_2^2 - sum log (1-xi^2)</span>
@@ -1108,7 +1120,7 @@ for matrix-matrix and matrix-vector products.</p>
 </div>
 </section>
 <section id="algorithm-parameters">
-<span id="s-parameters2"></span><h2>Algorithm Parameters<a class="headerlink" href="#algorithm-parameters" title="Permalink to this headline"></a></h2>
+<span id="s-parameters2"></span><h2>Algorithm Parameters<a class="headerlink" href="#algorithm-parameters" title="Permalink to this heading"></a></h2>
 <p>The following algorithm control parameters are accessible via the
 dictionary <code class="xref py py-attr docutils literal notranslate"><span class="pre">solvers.options</span></code>.  By default the dictionary
 is empty and the default values of the parameters are used.</p>
@@ -1183,8 +1195,8 @@ same stopping criteria (with <img class="math" src="_images/math/459f00b80184047
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2022, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on Mar 07, 2022.
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on May 09, 2023.
       </span></p>
   </div>
 
@@ -1204,7 +1216,7 @@ same stopping criteria (with <img class="math" src="_images/math/459f00b80184047
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 6.2.1.
     </div>
 
 </body>

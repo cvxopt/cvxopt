@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OpenOffice plugin &mdash; CVXOPT</title>
@@ -12,9 +12,9 @@
   <![endif]-->
   
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="copyright" title="Copyright" href="../../copyright.html" />
@@ -27,14 +27,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> CVXOPT
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CVXOPT
           </a>
               <div class="version">
-                1.3.0
+                1.3.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -67,9 +71,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Applications and extensions</a> &raquo;</li>
-      <li>OpenOffice plugin</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Applications and extensions</a></li>
+      <li class="breadcrumb-item active">OpenOffice plugin</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -79,7 +83,7 @@
            <div itemprop="articleBody">
              
   <section id="openoffice-plugin">
-<h1>OpenOffice plugin<a class="headerlink" href="#openoffice-plugin" title="Permalink to this headline"></a></h1>
+<h1>OpenOffice plugin<a class="headerlink" href="#openoffice-plugin" title="Permalink to this heading"></a></h1>
 <p>The OpenOfficece.org plugin provides a spreadsheet interface to the basic
 optimization solvers in CVXOPT.</p>
 <ul class="simple">
@@ -87,14 +91,14 @@ optimization solvers in CVXOPT.</p>
 <li><p>User’s guide: <a class="reference download internal" download="" href="../../_downloads/f5f0e6273bbc562515e4772b436e6808/userguide.pdf"><code class="xref download docutils literal notranslate"><span class="pre">userguide.pdf</span></code></a></p></li>
 </ul>
 <p>As a simple example, the following linear programming problem,</p>
-<div class="math">
-<p><img src="../../_images/math/d69916626416ff532d3dfa308d15bb44e0810ab1.png" alt="\begin{array}[t]{ll}
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}[t]{ll}
 \mbox{minimize} &amp; -4x_1 - 5x_2 \\
 \mbox{subject to} &amp;  2x_1 + x_2 \leq 3 \\
         &amp; x_1 + 2x_2 \leq 3 \\
         &amp; x_1 \geq 0, \quad x_2 \geq 0.
-\end{array}"/></p>
-</div><p>can be solved using a spreadsheet as shown in the figure below,</p>
+\end{array}\end{split}\]</div>
+<p>can be solved using a spreadsheet as shown in the figure below,</p>
 <img alt="../../_images/lp_screenshot.png" src="../../_images/lp_screenshot.png" />
 </section>
 
@@ -109,8 +113,8 @@ optimization solvers in CVXOPT.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2022, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
-      <span class="lastupdated">Last updated on Mar 08, 2022.
+    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2023, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
+      <span class="lastupdated">Last updated on May 10, 2023.
       </span></p>
   </div>
 
@@ -130,7 +134,7 @@ optimization solvers in CVXOPT.</p>
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 6.2.1.
     </div>
 
 <script>

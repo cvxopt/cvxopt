@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Total variation reconstruction (fig. 6.11-6.14) &mdash; CVXOPT</title>
@@ -12,9 +12,8 @@
   <![endif]-->
   
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="copyright" title="Copyright" href="../../copyright.html" />
@@ -27,14 +26,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> CVXOPT
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CVXOPT
           </a>
               <div class="version">
-                1.3.0
+                1.3.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -94,9 +97,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Examples</a> &raquo;</li>
-      <li>Total variation reconstruction (fig. 6.11-6.14)</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Examples</a></li>
+      <li class="breadcrumb-item active">Total variation reconstruction (fig. 6.11-6.14)</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -106,7 +109,7 @@
            <div itemprop="articleBody">
              
   <section id="total-variation-reconstruction-fig-6-11-6-14">
-<h1>Total variation reconstruction (fig. 6.11-6.14)<a class="headerlink" href="#total-variation-reconstruction-fig-6-11-6-14" title="Permalink to this headline"></a></h1>
+<h1>Total variation reconstruction (fig. 6.11-6.14)<a class="headerlink" href="#total-variation-reconstruction-fig-6-11-6-14" title="Permalink to this heading"></a></h1>
 <img alt="../../_images/fig-6-11.png" src="../../_images/fig-6-11.png" />
 <img alt="../../_images/fig-6-12.png" src="../../_images/fig-6-12.png" />
 <img alt="../../_images/fig-6-13.png" src="../../_images/fig-6-13.png" />
@@ -215,7 +218,7 @@
 <span class="c1"># Variables x (n), y (n-1).</span>
 
 <span class="k">def</span> <span class="nf">tv</span><span class="p">(</span><span class="n">delta</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        minimize    (1/2) * ||x-corr||_2^2 + delta * sum(y)</span>
 <span class="sd">        subject to  -y &lt;= D*x &lt;= y</span>
 
@@ -227,7 +230,7 @@
     <span class="n">q</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span> <span class="o">=</span> <span class="n">delta</span>
 
     <span class="k">def</span> <span class="nf">P</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            v := alpha*u + beta*v</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -236,7 +239,7 @@
 
 
     <span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s1">&#39;N&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">           v := alpha*[D, -I;  -D, -I] * u + beta * v  (trans = &#39;N&#39;)</span>
 <span class="sd">           v := alpha*[D, -I;  -D, -I]&#39; * u + beta * v  (trans = &#39;T&#39;)</span>
 
@@ -270,7 +273,7 @@
     <span class="n">Se</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">Fkkt</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Factor the tridiagonal matrix</span>
 
 <span class="sd">             S = I + 4.0 * D&#39; * diag( d1.*d2./(d1+d2) ) * D</span>
@@ -290,7 +293,7 @@
 
         <span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 
-            <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Solve</span>
 
 <span class="sd">                [  I   0   D&#39;  -D&#39; ] [x[:n]   ]    [bx[:n]   ]</span>
@@ -414,8 +417,8 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2022, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
-      <span class="lastupdated">Last updated on Mar 08, 2022.
+    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2023, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
+      <span class="lastupdated">Last updated on May 10, 2023.
       </span></p>
   </div>
 
@@ -435,7 +438,7 @@
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 6.2.1.
     </div>
 
 <script>

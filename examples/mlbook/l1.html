@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>L1-norm approximation &mdash; CVXOPT</title>
@@ -12,9 +12,9 @@
   <![endif]-->
   
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="copyright" title="Copyright" href="../../copyright.html" />
@@ -27,14 +27,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> CVXOPT
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CVXOPT
           </a>
               <div class="version">
-                1.3.0
+                1.3.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -49,7 +53,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#tutorial-examples">Tutorial examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#book-examples">Book examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#custom-interior-point-solvers">Custom interior-point solvers</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">L1-norm approximation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">L1-norm approximation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#l1"><code class="docutils literal notranslate"><span class="pre">l1()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#l1blas"><code class="docutils literal notranslate"><span class="pre">l1blas()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#l1mosek"><code class="docutils literal notranslate"><span class="pre">l1mosek()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#l1mosek2"><code class="docutils literal notranslate"><span class="pre">l1mosek2()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="l1regls.html">L1-norm regularized least-squares</a></li>
 <li class="toctree-l3"><a class="reference internal" href="mcsvm.html">Multiclass SVM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="robsvm.html">Robust SVM</a></li>
@@ -76,9 +86,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Examples</a> &raquo;</li>
-      <li>L1-norm approximation</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Examples</a></li>
+      <li class="breadcrumb-item active">L1-norm approximation</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -88,32 +98,32 @@
            <div itemprop="articleBody">
              
   <section id="l1-norm-approximation">
-<h1>L1-norm approximation<a class="headerlink" href="#l1-norm-approximation" title="Permalink to this headline"></a></h1>
-<p>The <img class="math" src="../../_images/math/f2b8d38e08000500cc6e5e308c0ca84b2b47c349.png" alt="\ell_1"/>-norm approximation problem is given by</p>
-<div class="math" id="equation-l1approx">
-<p><span class="eqno">(1)<a class="headerlink" href="#equation-l1approx" title="Permalink to this equation"></a></span><img src="../../_images/math/b490fd1f7d2a88a31aa3c441c8d12c6c6b6860fb.png" alt="\begin{array}{ll}
+<h1>L1-norm approximation<a class="headerlink" href="#l1-norm-approximation" title="Permalink to this heading"></a></h1>
+<p>The <span class="math notranslate nohighlight">\(\ell_1\)</span>-norm approximation problem is given by</p>
+<div class="math notranslate nohighlight" id="equation-l1approx">
+<span class="eqno">(1)<a class="headerlink" href="#equation-l1approx" title="Permalink to this equation"></a></span>\[\begin{array}{ll}
 \mbox{minimize}   &amp;  \| Pu - q \|_1
-\end{array}"/></p>
-</div><p>with variable <img class="math" src="../../_images/math/3873b0f2596b5470c195cde0b03ad5ad8e6aa63d.png" alt="u \in \mathbf{R}^n"/> and problem data <img class="math" src="../../_images/math/af4e515fdcfe2a7eecd7cb1b8c14a2447abe0a5a.png" alt="P \in \mathbf{R}^{m \times n}"/> and <img class="math" src="../../_images/math/c351f7f7b7f69036821d452a62275345de98bb67.png" alt="q \in
-\mathbf{R}^m"/>. The problem is equivalent to an LP</p>
-<div class="math" id="equation-l1approx-lp">
-<p><span class="eqno">(2)<a class="headerlink" href="#equation-l1approx-lp" title="Permalink to this equation"></a></span><img src="../../_images/math/bc887d7c0e21be894a966ac01d72c7a8adcf8376.png" alt="\begin{array}{ll}
+\end{array}\]</div>
+<p>with variable <span class="math notranslate nohighlight">\(u \in \mathbf{R}^n\)</span> and problem data <span class="math notranslate nohighlight">\(P \in \mathbf{R}^{m \times n}\)</span> and <span class="math notranslate nohighlight">\(q \in
+\mathbf{R}^m\)</span>. The problem is equivalent to an LP</p>
+<div class="math notranslate nohighlight" id="equation-l1approx-lp">
+<span class="eqno">(2)<a class="headerlink" href="#equation-l1approx-lp" title="Permalink to this equation"></a></span>\[\begin{split}\begin{array}{ll}
 \mbox{minimize}   &amp; \mathbf{1}^Tv \\
 \mbox{subject to} &amp;  \begin{bmatrix} P &amp; -I\\ -P &amp; - I \end{bmatrix}
                     \begin{bmatrix} u \\ v \end{bmatrix}
                     \preceq
                     \begin{bmatrix} q \\ -q \end{bmatrix}
-\end{array}"/></p>
-</div><p>with <img class="math" src="../../_images/math/c5513997d74a544426dbca35eb9d917e75b2bc35.png" alt="m + n"/> variables and <img class="math" src="../../_images/math/dfb6a7448689332faf9dd4120d7e928003736a4e.png" alt="2m"/> constraints. Yet another
+\end{array}\end{split}\]</div>
+<p>with <span class="math notranslate nohighlight">\(m + n\)</span> variables and <span class="math notranslate nohighlight">\(2m\)</span> constraints. Yet another
 equivalent formulation is the problem</p>
-<div class="math" id="equation-l1approx-lp2">
-<p><span class="eqno">(3)<a class="headerlink" href="#equation-l1approx-lp2" title="Permalink to this equation"></a></span><img src="../../_images/math/b4549d421257ebc78116c35e6b55015fe7e9300d.png" alt="\begin{array}{ll}
+<div class="math notranslate nohighlight" id="equation-l1approx-lp2">
+<span class="eqno">(3)<a class="headerlink" href="#equation-l1approx-lp2" title="Permalink to this equation"></a></span>\[\begin{split}\begin{array}{ll}
 \mbox{minimize}   &amp; e^Ts + e^Tt \\
 \mbox{subject to} &amp;  Pu - q = s - t \\
                   &amp; s, t \geq 0
-\end{array}"/></p>
-</div><p>with variables <img class="math" src="../../_images/math/3873b0f2596b5470c195cde0b03ad5ad8e6aa63d.png" alt="u \in \mathbf{R}^n"/>, <img class="math" src="../../_images/math/3c55b97d12cab891a1811b87ca22118fcc8e5829.png" alt="s \in \mathbf{R}^m"/>, and <img class="math" src="../../_images/math/97a767714970a5e07916766d3e70c33d480b66f1.png" alt="t \in \mathbf{R}^m"/>.</p>
-<h3> Documentation </h3><p>A custom solver for the <img class="math" src="../../_images/math/f2b8d38e08000500cc6e5e308c0ca84b2b47c349.png" alt="\ell_1"/>-norm approximation problem is
+\end{array}\end{split}\]</div>
+<p>with variables <span class="math notranslate nohighlight">\(u \in \mathbf{R}^n\)</span>, <span class="math notranslate nohighlight">\(s \in \mathbf{R}^m\)</span>, and <span class="math notranslate nohighlight">\(t \in \mathbf{R}^m\)</span>.</p>
+<h3> Documentation </h3><p>A custom solver for the <span class="math notranslate nohighlight">\(\ell_1\)</span>-norm approximation problem is
 available as a Python module <a class="reference download internal" download="" href="../../_downloads/de89203bab11257e9f768c78f3752397/l1.py"><code class="xref download docutils literal notranslate"><span class="pre">l1.py</span></code></a> (or <a class="reference download internal" download="" href="../../_downloads/df757e92918f4c404691a3e36d7ff3af/l1_mosek6.py"><code class="xref download docutils literal notranslate"><span class="pre">l1_mosek6.py</span></code></a> or <a class="reference download internal" download="" href="../../_downloads/eafde324d6802fa87c2400901d5382ba/l1_mosek7.py"><code class="xref download docutils literal notranslate"><span class="pre">l1_mosek7.py</span></code></a> for earlier
 versions of CVXOPT that use either MOSEK 6 or 7). The module implements
 the following four functions:</p>
@@ -122,7 +132,7 @@ the following four functions:</p>
 <dt class="sig sig-object py" id="l1">
 <span class="sig-name descname"><span class="pre">l1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#l1" title="Permalink to this definition"></a></dt>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-l1approx-lp">(2)</a> using a custom KKT solver.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/9b444cf6329a14140aee8ff5a06ff30772cc1c2f.png" alt="u"/>.</p>
+<p>Returns the solution <span class="math notranslate nohighlight">\(u\)</span>.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -131,7 +141,7 @@ the following four functions:</p>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-l1approx-lp">(2)</a> using a custom KKT solver. This
 function implements the same custom KKT solver as <a class="reference internal" href="#l1" title="l1"><code class="xref py py-func docutils literal notranslate"><span class="pre">l1()</span></code></a>, but it
 uses BLAS routines instead of overloaded arithmetic.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/9b444cf6329a14140aee8ff5a06ff30772cc1c2f.png" alt="u"/>.</p>
+<p>Returns the solution <span class="math notranslate nohighlight">\(u\)</span>.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -139,7 +149,7 @@ uses BLAS routines instead of overloaded arithmetic.</p>
 <span class="sig-name descname"><span class="pre">l1mosek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#l1mosek" title="Permalink to this definition"></a></dt>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-l1approx-lp">(2)</a> using MOSEK. This function
 is only available if MOSEK is installed.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/9b444cf6329a14140aee8ff5a06ff30772cc1c2f.png" alt="u"/>.</p>
+<p>Returns the solution <span class="math notranslate nohighlight">\(u\)</span>.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -147,7 +157,7 @@ is only available if MOSEK is installed.</p>
 <span class="sig-name descname"><span class="pre">l1mosek2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#l1mosek2" title="Permalink to this definition"></a></dt>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-l1approx-lp2">(3)</a> using MOSEK. This function
 is only available if MOSEK is installed.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/9b444cf6329a14140aee8ff5a06ff30772cc1c2f.png" alt="u"/>.</p>
+<p>Returns the solution <span class="math notranslate nohighlight">\(u\)</span>.</p>
 </dd></dl>
 
 </div></blockquote>
@@ -172,8 +182,8 @@ is only available if MOSEK is installed.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2022, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
-      <span class="lastupdated">Last updated on Mar 08, 2022.
+    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2023, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
+      <span class="lastupdated">Last updated on May 10, 2023.
       </span></p>
   </div>
 
@@ -193,7 +203,7 @@ is only available if MOSEK is installed.</p>
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 6.2.1.
     </div>
 
 <script>

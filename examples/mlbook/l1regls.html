@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>L1-norm regularized least-squares &mdash; CVXOPT</title>
@@ -12,9 +12,9 @@
   <![endif]-->
   
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="copyright" title="Copyright" href="../../copyright.html" />
@@ -27,14 +27,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> CVXOPT
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CVXOPT
           </a>
               <div class="version">
-                1.3.0
+                1.3.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -50,7 +54,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#book-examples">Book examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#custom-interior-point-solvers">Custom interior-point solvers</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="l1.html">L1-norm approximation</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">L1-norm regularized least-squares</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">L1-norm regularized least-squares</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#l1regls"><code class="docutils literal notranslate"><span class="pre">l1regls()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#l1regls_mosek"><code class="docutils literal notranslate"><span class="pre">l1regls_mosek()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#l1regls_mosek2"><code class="docutils literal notranslate"><span class="pre">l1regls_mosek2()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="mcsvm.html">Multiclass SVM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="robsvm.html">Robust SVM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ubsdp.html">SDPs with upper bounds</a></li>
@@ -76,9 +85,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Examples</a> &raquo;</li>
-      <li>L1-norm regularized least-squares</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Examples</a></li>
+      <li class="breadcrumb-item active">L1-norm regularized least-squares</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -88,29 +97,29 @@
            <div itemprop="articleBody">
              
   <section id="l1-norm-regularized-least-squares">
-<h1>L1-norm regularized least-squares<a class="headerlink" href="#l1-norm-regularized-least-squares" title="Permalink to this headline"></a></h1>
-<p>We consider a least-squares problem with <img class="math" src="../../_images/math/f2b8d38e08000500cc6e5e308c0ca84b2b47c349.png" alt="\ell_1"/>-norm
+<h1>L1-norm regularized least-squares<a class="headerlink" href="#l1-norm-regularized-least-squares" title="Permalink to this heading"></a></h1>
+<p>We consider a least-squares problem with <span class="math notranslate nohighlight">\(\ell_1\)</span>-norm
 regularization</p>
-<div class="math" id="equation-regls">
-<p><span class="eqno">(1)<a class="headerlink" href="#equation-regls" title="Permalink to this equation"></a></span><img src="../../_images/math/fde3e7749b4996b392a93e573f0c63d4c16b5c30.png" alt="\begin{array}{ll}
+<div class="math notranslate nohighlight" id="equation-regls">
+<span class="eqno">(1)<a class="headerlink" href="#equation-regls" title="Permalink to this equation"></a></span>\[\begin{array}{ll}
 \mbox{minimize}   &amp;  \| Ax - b \|_2^2  + \| x \|_1
-\end{array}"/></p>
-</div><p>with variable <img class="math" src="../../_images/math/4c339889519d7dc4a6b75e132b6def0ec579e43b.png" alt="x \in \mathbf{R}^n"/> and problem data <img class="math" src="../../_images/math/80ca29856fc8f358a313b5b2123f2530d27e9cfa.png" alt="A \in \mathbf{R}^{m \times n}"/> and <img class="math" src="../../_images/math/7792814eb4aa4c480f04e74a96073db13adf3685.png" alt="b \in
-\mathbf{R}^m"/>. The problem is equivalent to a QP</p>
-<div class="math" id="equation-regls-qp">
-<p><span class="eqno">(2)<a class="headerlink" href="#equation-regls-qp" title="Permalink to this equation"></a></span><img src="../../_images/math/f2aa29c990916e302b638b5c353dcff899a525e3.png" alt="\begin{array}{ll}
+\end{array}\]</div>
+<p>with variable <span class="math notranslate nohighlight">\(x \in \mathbf{R}^n\)</span> and problem data <span class="math notranslate nohighlight">\(A \in \mathbf{R}^{m \times n}\)</span> and <span class="math notranslate nohighlight">\(b \in
+\mathbf{R}^m\)</span>. The problem is equivalent to a QP</p>
+<div class="math notranslate nohighlight" id="equation-regls-qp">
+<span class="eqno">(2)<a class="headerlink" href="#equation-regls-qp" title="Permalink to this equation"></a></span>\[\begin{split}\begin{array}{ll}
 \mbox{minimize}   &amp; \| Ax - b \|_2^2  +  \mathbf{1}^Tv\\
 \mbox{subject to} &amp; -v \preceq x \preceq v
-\end{array}"/></p>
-</div><p>with <img class="math" src="../../_images/math/229cf04e5888a4b7150a66bf161da88895a2635b.png" alt="2n"/> variables and <img class="math" src="../../_images/math/229cf04e5888a4b7150a66bf161da88895a2635b.png" alt="2n"/> constraints. The problem can
+\end{array}\end{split}\]</div>
+<p>with <span class="math notranslate nohighlight">\(2n\)</span> variables and <span class="math notranslate nohighlight">\(2n\)</span> constraints. The problem can
 also be written as a separable QP</p>
-<div class="math" id="equation-regls-qp2">
-<p><span class="eqno">(3)<a class="headerlink" href="#equation-regls-qp2" title="Permalink to this equation"></a></span><img src="../../_images/math/39bb7168bc46e81784a9c4d9dba410360f9a8f2a.png" alt="\begin{array}{ll}
+<div class="math notranslate nohighlight" id="equation-regls-qp2">
+<span class="eqno">(3)<a class="headerlink" href="#equation-regls-qp2" title="Permalink to this equation"></a></span>\[\begin{split}\begin{array}{ll}
 \mbox{minimize}   &amp; w^Tw + e^Tu\\
 \mbox{subject to} &amp; -u \preceq x \preceq u \\
                   &amp; Ax - w = b.
-\end{array}"/></p>
-</div><h3> Documentation </h3><p>Solvers for the <img class="math" src="../../_images/math/f2b8d38e08000500cc6e5e308c0ca84b2b47c349.png" alt="\ell_1"/>-norm regularized least-squares problem are
+\end{array}\end{split}\]</div>
+<h3> Documentation </h3><p>Solvers for the <span class="math notranslate nohighlight">\(\ell_1\)</span>-norm regularized least-squares problem are
 available as a Python module <a class="reference download internal" download="" href="../../_downloads/d5ed902eb903c26fc18bd73731b5e67d/l1regls.py"><code class="xref download docutils literal notranslate"><span class="pre">l1regls.py</span></code></a>
 (or <a class="reference download internal" download="" href="../../_downloads/c85481ca9c63e8f47fc000a08da93766/l1regls_mosek6.py"><code class="xref download docutils literal notranslate"><span class="pre">l1regls_mosek6.py</span></code></a> or <a class="reference download internal" download="" href="../../_downloads/0d06b964e77b8ad03bfe2d8aeba79b79/l1regls_mosek7.py"><code class="xref download docutils literal notranslate"><span class="pre">l1regls_mosek7.py</span></code></a> for earlier versions of CVXOPT that use MOSEK 6 or 7). The module implements the following three functions:</p>
 <blockquote>
@@ -118,7 +127,7 @@ available as a Python module <a class="reference download internal" download="" 
 <dt class="sig sig-object py" id="l1regls">
 <span class="sig-name descname"><span class="pre">l1regls</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#l1regls" title="Permalink to this definition"></a></dt>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-regls-qp">(2)</a> using a custom KKT solver.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/888f7c323ac0341871e867220ae2d76467d74d6e.png" alt="x"/>.</p>
+<p>Returns the solution <span class="math notranslate nohighlight">\(x\)</span>.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -126,7 +135,7 @@ available as a Python module <a class="reference download internal" download="" 
 <span class="sig-name descname"><span class="pre">l1regls_mosek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#l1regls_mosek" title="Permalink to this definition"></a></dt>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-regls-qp">(2)</a> using MOSEK. This function is
 only available if MOSEK is installed.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/888f7c323ac0341871e867220ae2d76467d74d6e.png" alt="x"/>.</p>
+<p>Returns the solution <span class="math notranslate nohighlight">\(x\)</span>.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -134,7 +143,7 @@ only available if MOSEK is installed.</p>
 <span class="sig-name descname"><span class="pre">l1regls_mosek2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#l1regls_mosek2" title="Permalink to this definition"></a></dt>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-regls-qp2">(3)</a> using MOSEK. This function is
 only available if MOSEK is installed.</p>
-<p>Returns the solution <img class="math" src="../../_images/math/888f7c323ac0341871e867220ae2d76467d74d6e.png" alt="x"/>.</p>
+<p>Returns the solution <span class="math notranslate nohighlight">\(x\)</span>.</p>
 </dd></dl>
 
 </div></blockquote>
@@ -159,8 +168,8 @@ only available if MOSEK is installed.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2022, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
-      <span class="lastupdated">Last updated on Mar 08, 2022.
+    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2023, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
+      <span class="lastupdated">Last updated on May 10, 2023.
       </span></p>
   </div>
 
@@ -180,7 +189,7 @@ only available if MOSEK is installed.</p>
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 6.2.1.
     </div>
 
 <script>

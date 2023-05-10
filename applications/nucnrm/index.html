@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nuclear norm approximation &mdash; CVXOPT</title>
@@ -12,9 +12,9 @@
   <![endif]-->
   
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="copyright" title="Copyright" href="../../copyright.html" />
@@ -27,14 +27,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> CVXOPT
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CVXOPT
           </a>
               <div class="version">
-                1.3.0
+                1.3.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -67,9 +71,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Applications and extensions</a> &raquo;</li>
-      <li>Nuclear norm approximation</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Applications and extensions</a></li>
+      <li class="breadcrumb-item active">Nuclear norm approximation</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -79,7 +83,7 @@
            <div itemprop="articleBody">
              
   <section id="nuclear-norm-approximation">
-<h1>Nuclear norm approximation<a class="headerlink" href="#nuclear-norm-approximation" title="Permalink to this headline"></a></h1>
+<h1>Nuclear norm approximation<a class="headerlink" href="#nuclear-norm-approximation" title="Permalink to this heading"></a></h1>
 <p>This software accompanies the paper
 <a class="reference external" href="http://www.ee.ucla.edu/~vandenbe/publications/nucnrm.pdf">Interior-point method for nuclear norm approximation with application
 to system identification</a> (pdf)
@@ -89,51 +93,51 @@ and requires CVXOPT version 1.1.1 or higher and Python 2.7.</p>
 <h2> Purpose </h2><p>A function is provided to solve a linear matrix approximation problem
 in the nuclear norm, possibly with quadratic regularization.
 The general optimization problem  is</p>
-<div class="math">
-<p><img src="../../_images/math/45bf7f822ca521fcbef92b3e48d3780d0bb46ec4.png" alt="\begin{array}[t]{ll}
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}[t]{ll}
 \mbox{minimize} &amp; \|A(x) - B\|_* + (1/2) x^T C x + d^T x \\
 \mbox{subject to} &amp;  Gx \preceq  h
-\end{array}"/></p>
-</div><p>where</p>
-<div class="math">
-<p><img src="../../_images/math/dc72f582d78f9887488044c29b3225ccc05a5ede.png" alt="A(x) = x_1 A_1 + x_2 A_2 + \cdots + x_n A_n"/></p>
-</div><p>is a linear matrix valued function.  The norm in the first term of the
+\end{array}\end{split}\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[A(x) = x_1 A_1 + x_2 A_2 + \cdots + x_n A_n\]</div>
+<p>is a linear matrix valued function.  The norm in the first term of the
 objective is the <em>nuclear norm</em> (sum of singular values).  The second term
 is a general convex quadratic function.  The constraints are componentwise
 linear inequalities.</p>
 <p>This problem is of interest as a convex heuristic for a regularized
 rank minimization problem</p>
-<div class="math">
-<p><img src="../../_images/math/c32b0a5e9bec51a1ba68d4f64ecf6d589069c6ad.png" alt="\newcommand{\Rank}{\mathop{\bf rank}}
+<div class="math notranslate nohighlight">
+\[\begin{split}\newcommand{\Rank}{\mathop{\bf rank}}
 \begin{array}[t]{ll}
 \mbox{minimize} &amp; \Rank(A(x) - B) + (1/2) x^T C x + d^T x \\
 \mbox{subject to} &amp;  Gx \preceq  h
-\end{array}"/></p>
-</div><p>which in general is very difficult.</p>
+\end{array}\end{split}\]</div>
+<p>which in general is very difficult.</p>
 <h2>  System identification example </h2><p>The package contains several examples, including a system identification
 problem.  In this example, we fit a linear state space model to measured
 inputs and outputs of a dynamical system.  The model is constructed from
 the solution of a regularized nuclear norm minimization problem</p>
-<div class="math">
-<p><img src="../../_images/math/2dc3d3964d114c912f18fa456c4c747f8e35d522.png" alt="\begin{array}{ll}
+<div class="math notranslate nohighlight">
+\[\begin{array}{ll}
 \mbox{minimize} &amp; \displaystyle \| Y U^\perp \|_* +
      \gamma \sum_{t=1}^N \|y(t) - y_\mathrm{meas}(t)\|_2^2.
-\end{array}"/></p>
-</div><p>The optimization variables <img class="math" src="../../_images/math/9d6e964bef461182515a91eec6e4d57918744a2b.png" alt="y(t)"/> in the problem are the model
-outputs.  The vectors <img class="math" src="../../_images/math/fce6e5b1880536f4a8c178495f56c9fc960ec430.png" alt="y_\mathrm{meas}(t)"/> are given, measured,
-outputs.  The matrix <img class="math" src="../../_images/math/7daf0d4815e763eb90f0d5f1dc406f668c1e21db.png" alt="Y"/> is a block Hankel matrix constructed from
-the variables <img class="math" src="../../_images/math/9d6e964bef461182515a91eec6e4d57918744a2b.png" alt="y(t)"/>.   The matrix <img class="math" src="../../_images/math/d1b20f5d721b281a6897c6f6526a76e94f5f821e.png" alt="U^\perp"/> is a matrix whose
-columns span the nullspace of a block Hankel matrix <img class="math" src="../../_images/math/9098c1c4618d7a0f321cee441aabee7f1b57a19b.png" alt="U"/> constructed
-from measured inputs <img class="math" src="../../_images/math/766ba0bbf85924fd93c8fa86d6ca3be8d2bad7ae.png" alt="u_\mathrm{meas}(t)"/>.
-At the optimum the matrix <img class="math" src="../../_images/math/6118edfc3a8a4f7b8a73044339eebb0e8ce95ad0.png" alt="Y U^\perp"/> is low rank, and its rank is
+\end{array}\]</div>
+<p>The optimization variables <span class="math notranslate nohighlight">\(y(t)\)</span> in the problem are the model
+outputs.  The vectors <span class="math notranslate nohighlight">\(y_\mathrm{meas}(t)\)</span> are given, measured,
+outputs.  The matrix <span class="math notranslate nohighlight">\(Y\)</span> is a block Hankel matrix constructed from
+the variables <span class="math notranslate nohighlight">\(y(t)\)</span>.   The matrix <span class="math notranslate nohighlight">\(U^\perp\)</span> is a matrix whose
+columns span the nullspace of a block Hankel matrix <span class="math notranslate nohighlight">\(U\)</span> constructed
+from measured inputs <span class="math notranslate nohighlight">\(u_\mathrm{meas}(t)\)</span>.
+At the optimum the matrix <span class="math notranslate nohighlight">\(Y U^\perp\)</span> is low rank, and its rank is
 equal to the order of a linear model that maps the measured inputs to
 the corrected outputs.</p>
 <p>The figures illustrate the results for the compact disc arm data
 of the <a class="reference external" href="http://homes.esat.kuleuven.be/~smc/daisy">Daisy</a>
 collection.
 The first figure shows the singular values of the matrix
-<img class="math" src="../../_images/math/215c00e7871aa837f6f01ee6d92f8823c5461aaf.png" alt="YU^\perp"/> constructed from the optimized outputs, and the matrix
-<img class="math" src="../../_images/math/58690457319c5fbeede799c9bb6d701edf6119fb.png" alt="Y_\mathrm{meas}U^\perp"/> constructed from the measured outputs.
+<span class="math notranslate nohighlight">\(YU^\perp\)</span> constructed from the optimized outputs, and the matrix
+<span class="math notranslate nohighlight">\(Y_\mathrm{meas}U^\perp\)</span> constructed from the measured outputs.
 The plot suggests a model of order three.
 The second figure compares the actual outputs with the outputs of the
 identified model.</p>
@@ -141,19 +145,19 @@ identified model.</p>
 <a class="reference internal image-reference" href="../../_images/outputs.png"><img alt="../../_images/outputs.png" src="../../_images/outputs.png" style="width: 500px;" /></a>
 <h2> Trade-off curve envelope </h2><p>In this example we compute bounds on the trade-off curve of the
 bicriterion problem</p>
-<div class="math">
-<p><img src="../../_images/math/c2da6071e7487484fba114f9815270c13318666b.png" alt="\newcommand{\reals}{\mbox{\bf R}}
+<div class="math notranslate nohighlight">
+\[\newcommand{\reals}{\mbox{\bf R}}
 \begin{array}{ll}
 \mbox{minimize (w.r.t. $\reals_2^+$)} &amp;
   (\|A(x) - B\|_*, \;\;  \| x-x_0\|_2^2)
-\end{array}"/></p>
-</div><p>for a randomly generated problem.  Points on the trade-off curve can be
+\end{array}\]</div>
+<p>for a randomly generated problem.  Points on the trade-off curve can be
 computed by solving the scalarized problem</p>
-<div class="math">
-<p><img src="../../_images/math/687013f9c13d689bd94b2c6f07725589bbe7b309.png" alt="\begin{array}{ll}
+<div class="math notranslate nohighlight">
+\[\begin{array}{ll}
 \mbox{minimize} &amp; \|A(x) - B\|_* + \gamma \| x-x_0\|_2^2
-\end{array}"/></p>
-</div><p>for different weights.  Since the trade-off curve is convex, we can also
+\end{array}\]</div>
+<p>for different weights.  Since the trade-off curve is convex, we can also
 derive upper and lower bounds from the solutions of the scalarized problems.
 The figures show the bounds after the computation of 3, 5, and 10
 scalarized problems.   The trade-off curve is in the union of
@@ -174,8 +178,8 @@ the triangular areas enclosed by the solid and dashed lines.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2022, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
-      <span class="lastupdated">Last updated on Mar 08, 2022.
+    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2023, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
+      <span class="lastupdated">Last updated on May 10, 2023.
       </span></p>
   </div>
 
@@ -195,7 +199,7 @@ the triangular areas enclosed by the solid and dashed lines.</p>
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 6.2.1.
     </div>
 
 <script>

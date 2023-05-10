@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The LAPACK Interface &mdash; CVXOPT User&#39;s Guide</title>
@@ -12,9 +12,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
@@ -27,14 +26,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CVXOPT User's Guide
           </a>
               <div class="version">
-                1.3.0
+                1.3.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -46,15 +49,90 @@
 <li class="toctree-l1"><a class="reference internal" href="matrices.html">Dense and Sparse Matrices</a></li>
 <li class="toctree-l1"><a class="reference internal" href="blas.html">The BLAS Interface</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">The LAPACK Interface</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#general-linear-equations">General Linear Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#positive-definite-linear-equations">Positive Definite Linear Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#symmetric-and-hermitian-linear-equations">Symmetric and Hermitian Linear Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#triangular-linear-equations">Triangular Linear Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#least-squares-and-least-norm-problems">Least-Squares and Least-Norm Problems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#symmetric-and-hermitian-eigenvalue-decomposition">Symmetric and Hermitian Eigenvalue Decomposition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#generalized-symmetric-definite-eigenproblems">Generalized Symmetric Definite Eigenproblems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#singular-value-decomposition">Singular Value Decomposition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#schur-and-generalized-schur-factorization">Schur and Generalized Schur Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#general-linear-equations">General Linear Equations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gesv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gesv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.getrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.getrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.getrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.getrs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.getri"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.getri</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gbsv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gbsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gbtrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gbtrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gbtrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gbtrs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gtsv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gtsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gttrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gttrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gttrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gttrs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#positive-definite-linear-equations">Positive Definite Linear Equations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.posv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.posv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.potrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.potrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.potrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.potrs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.potri"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.potri</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.pbsv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.pbsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.pbtrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.pbtrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.pbtrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.pbtrs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.ptsv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.ptsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.pttrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.pttrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.pttrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.pttrs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#symmetric-and-hermitian-linear-equations">Symmetric and Hermitian Linear Equations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.sysv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.sysv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.sytrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.sytrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.sytrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.sytrs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.sytri"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.sytri</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.hesv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.hesv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.hetrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.hetrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.hetrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.hetrs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.hetri"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.hetri</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#triangular-linear-equations">Triangular Linear Equations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.trtrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.trtrs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.trtri"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.trtri</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.tbtrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.tbtrs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#least-squares-and-least-norm-problems">Least-Squares and Least-Norm Problems</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gels"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gels</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.geqrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.geqrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gelqf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gelqf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.geqp3"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.geqp3</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.unmqr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.unmqr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.ormqr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.ormqr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.unmlq"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.unmlq</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.ormlq"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.ormlq</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.ungqr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.ungqr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.orgqr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.orgqr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.unglq"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.unglq</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.orglq"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.orglq</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#symmetric-and-hermitian-eigenvalue-decomposition">Symmetric and Hermitian Eigenvalue Decomposition</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.syev"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.syev</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.syevd"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.syevd</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.syevx"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.syevx</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.syevr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.syevr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.heev"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.heev</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.heevd"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.heevd</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.heevx"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.heevx</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.heevr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.heevr</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#generalized-symmetric-definite-eigenproblems">Generalized Symmetric Definite Eigenproblems</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.sygv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.sygv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.hegv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.hegv</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#singular-value-decomposition">Singular Value Decomposition</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gesvd"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gesvd</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gesdd"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gesdd</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#schur-and-generalized-schur-factorization">Schur and Generalized Schur Factorization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gees"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gees</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gges"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gges</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#example-analytic-centering">Example: Analytic Centering</a></li>
 </ul>
 </li>
@@ -81,8 +159,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>The LAPACK Interface</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">The LAPACK Interface</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -92,7 +170,7 @@
            <div itemprop="articleBody">
              
   <section id="the-lapack-interface">
-<span id="c-lapack"></span><h1>The LAPACK Interface<a class="headerlink" href="#the-lapack-interface" title="Permalink to this headline"></a></h1>
+<span id="c-lapack"></span><h1>The LAPACK Interface<a class="headerlink" href="#the-lapack-interface" title="Permalink to this heading"></a></h1>
 <p>The module <code class="xref py py-mod docutils literal notranslate"><span class="pre">cvxopt.lapack</span></code> includes functions for solving dense sets
 of linear equations, for the corresponding matrix factorizations (LU,
 Cholesky, <span class="raw-html">LDL<sup><small>T</small></sup></span>),
@@ -111,7 +189,7 @@ complete definitions are documented in the docstrings in the source code.</p>
 <p><a class="reference external" href="http://www.netlib.org/lapack/lug/lapack_lug.html">LAPACK Users’ Guide, Third Edition, SIAM, 1999</a></p>
 </div>
 <section id="general-linear-equations">
-<h2>General Linear Equations<a class="headerlink" href="#general-linear-equations" title="Permalink to this headline"></a></h2>
+<h2>General Linear Equations<a class="headerlink" href="#general-linear-equations" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gesv">
 <span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gesv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gesv" title="Permalink to this definition"></a></dt>
@@ -367,7 +445,7 @@ the other arguments.</p>
 
 </section>
 <section id="positive-definite-linear-equations">
-<h2>Positive Definite Linear Equations<a class="headerlink" href="#positive-definite-linear-equations" title="Permalink to this headline"></a></h2>
+<h2>Positive Definite Linear Equations<a class="headerlink" href="#positive-definite-linear-equations" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.posv">
 <span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">posv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.posv" title="Permalink to this definition"></a></dt>
@@ -576,7 +654,7 @@ solution <img class="math" src="_images/math/ed38fa24f1c94891bd312012aab3f6673be
 
 </section>
 <section id="symmetric-and-hermitian-linear-equations">
-<h2>Symmetric and Hermitian Linear Equations<a class="headerlink" href="#symmetric-and-hermitian-linear-equations" title="Permalink to this headline"></a></h2>
+<h2>Symmetric and Hermitian Linear Equations<a class="headerlink" href="#symmetric-and-hermitian-linear-equations" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.sysv">
 <span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">sysv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.sysv" title="Permalink to this definition"></a></dt>
@@ -701,7 +779,7 @@ inverse.</p>
 </div>
 </section>
 <section id="triangular-linear-equations">
-<h2>Triangular Linear Equations<a class="headerlink" href="#triangular-linear-equations" title="Permalink to this headline"></a></h2>
+<h2>Triangular Linear Equations<a class="headerlink" href="#triangular-linear-equations" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.trtrs">
 <span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">trtrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.trtrs" title="Permalink to this definition"></a></dt>
@@ -744,7 +822,7 @@ matrices with the same type (<code class="xref py py-const docutils literal notr
 
 </section>
 <section id="least-squares-and-least-norm-problems">
-<h2>Least-Squares and Least-Norm Problems<a class="headerlink" href="#least-squares-and-least-norm-problems" title="Permalink to this headline"></a></h2>
+<h2>Least-Squares and Least-Norm Problems<a class="headerlink" href="#least-squares-and-least-norm-problems" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gels">
 <span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gels" title="Permalink to this definition"></a></dt>
@@ -1088,7 +1166,7 @@ real matrices.</p>
 </div>
 </section>
 <section id="symmetric-and-hermitian-eigenvalue-decomposition">
-<h2>Symmetric and Hermitian Eigenvalue Decomposition<a class="headerlink" href="#symmetric-and-hermitian-eigenvalue-decomposition" title="Permalink to this headline"></a></h2>
+<h2>Symmetric and Hermitian Eigenvalue Decomposition<a class="headerlink" href="#symmetric-and-hermitian-eigenvalue-decomposition" title="Permalink to this heading"></a></h2>
 <p>The first four routines compute all or selected  eigenvalues and
 eigenvectors of a real symmetric matrix <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/>:</p>
 <div class="math">
@@ -1187,7 +1265,7 @@ can be real or complex.  <code class="docutils literal notranslate"><span class=
 
 </section>
 <section id="generalized-symmetric-definite-eigenproblems">
-<h2>Generalized Symmetric Definite Eigenproblems<a class="headerlink" href="#generalized-symmetric-definite-eigenproblems" title="Permalink to this headline"></a></h2>
+<h2>Generalized Symmetric Definite Eigenproblems<a class="headerlink" href="#generalized-symmetric-definite-eigenproblems" title="Permalink to this heading"></a></h2>
 <p>Three types of generalized eigenvalue problems can be solved:</p>
 <div class="math" id="equation-e-gevd">
 <p><span class="eqno">(2)<a class="headerlink" href="#equation-e-gevd" title="Permalink to this equation"></a></span><img src="_images/math/385dad5a2df2ddd65900bef4c4ab58d4a4a0829d.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
@@ -1227,7 +1305,7 @@ identical to <a class="reference internal" href="#cvxopt.lapack.sygv" title="cvx
 
 </section>
 <section id="singular-value-decomposition">
-<h2>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this headline"></a></h2>
+<h2>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gesvd">
 <span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gesvd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobu</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jobvt</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vt</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gesvd" title="Permalink to this definition"></a></dt>
@@ -1303,7 +1381,7 @@ or <code class="xref py py-const docutils literal notranslate"><span class="pre"
 
 </section>
 <section id="schur-and-generalized-schur-factorization">
-<h2>Schur and Generalized Schur Factorization<a class="headerlink" href="#schur-and-generalized-schur-factorization" title="Permalink to this headline"></a></h2>
+<h2>Schur and Generalized Schur Factorization<a class="headerlink" href="#schur-and-generalized-schur-factorization" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gees">
 <span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gees</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">w</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gees" title="Permalink to this definition"></a></dt>
@@ -1479,7 +1557,7 @@ matrix <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3d
 </div>
 </section>
 <section id="example-analytic-centering">
-<h2>Example: Analytic Centering<a class="headerlink" href="#example-analytic-centering" title="Permalink to this headline"></a></h2>
+<h2>Example: Analytic Centering<a class="headerlink" href="#example-analytic-centering" title="Permalink to this heading"></a></h2>
 <p>The analytic centering problem is defined as</p>
 <div class="math">
 <p><img src="_images/math/82d7fac4e1442a73c02aa8bd6fedab161db0f758.png" alt="\begin{array}{ll}
@@ -1504,7 +1582,7 @@ with the level-2 BLAS function <a class="reference internal" href="blas.html#cvx
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
 
 <span class="k">def</span> <span class="nf">acent</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the analytic center of A*x &lt;= b.</span>
 <span class="sd">    We assume that b &gt; 0 and the feasible set is bounded.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1560,8 +1638,8 @@ with the level-2 BLAS function <a class="reference internal" href="blas.html#cvx
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2022, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on Mar 07, 2022.
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on May 09, 2023.
       </span></p>
   </div>
 
@@ -1581,7 +1659,7 @@ with the level-2 BLAS function <a class="reference internal" href="blas.html#cvx
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 6.2.1.
     </div>
 
 </body>
