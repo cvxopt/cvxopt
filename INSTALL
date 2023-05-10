@@ -9,13 +9,13 @@ Installing via conda
 --------------------
 
 The `conda-forge <http://anaconda.org/conda-forge/cvxopt>`_ channel
-provides pre-built CVXOPT packages for Linux and macOS that can be
-installed using `conda <https://conda.io/docs/>`_::
+provides pre-built CVXOPT packages for Linux, macOS, and Windows that
+can be installed using `conda <https://conda.io/docs/>`_::
 
 	conda install -c conda-forge cvxopt
 
-These pre-built packages are linked against OpenBLAS and include the optional extensions
-GLPK, GSL, and FFTW.
+These pre-built packages are linked against OpenBLAS and include all  
+optional extensions (DSDP, FFTW, GLPK, and GSL).
 
 
 Installing via pip
@@ -28,129 +28,25 @@ using `pip <https://pip.pypa.io>`_::
 
 Wheels for Linux:
 
-* are available for Python 2.7, 3.3, 3.4, 3.5, and 3.6 (32 and 64 bit)
+* are available for Python 3.6+ (x86_64)
 * are linked against OpenBLAS
-* include all optional extensions (DSDP, GLPK, GSL, and FFTW)
+* include all optional extensions (DSDP, FFTW, GLPK, and GSL)
 
 Wheels for macOS:
 
-* are available for Python 2.7, 3.4, 3.5, and 3.6 (universal binaries)
+* are available for Python 3.6+ (x86_64 and arm64)
 * are linked against OpenBLAS
-* include all optional extensions (DSDP, GLPK, GSL, and FFTW)
+* include all optional extensions (DSDP, FFTW, GLPK, and GSL)
 
 Wheels for Windows:
 
-* are available for Python 2.7, 3.4, 3.5, and 3.6 (64 bit only)
-* are linked against MKL
-* Python 3.5+ wheels include the optional extension GLPK (wheels for Python 2.7 and 3.4 include none of the optional extensions)
+* are available for Python 3.8+ (x86_64)
+* are linked against OpenBLAS
+* include the optional extension GLPK 
 
 
 Building and installing from source
 ===================================
 
-Required and optional software
-------------------------------
-
-The package requires version 2.7 or 3.x of Python, and building from
-source requires core binaries and header files and libraries for Python.
-
-The installation requires BLAS and LAPACK. Using an architecture
-optimized implementation such as ATLAS, OpenBLAS, or MKL is recommended
-and gives a large performance improvement over reference implementations
-of the BLAS and LAPACK libraries.
-
-The installation also requires SuiteSparse. We recommend linking against
-a shared SuiteSparse library. It is also possible to build the required
-components of SuiteSparse when building CVXOPT, but this requires the
-SuiteSparse source which is no longer included with CVXOPT.
-
-The following software libraries are optional.
-
-* The GNU Scientific Library GSL <www.gnu.org/software/gsl>.
-
-* FFTW <www.fftw.org> is a C library for discrete Fourier transforms.
-
-* GLPK <www.gnu.org/software/glpk/glpk.html> is a linear programming
-  package.
-
-* MOSEK version 8 <www.mosek.com> is a commercial library of convex
-  optimization solvers.
-
-* DSDP5.8 <www-unix.mcs.anl.gov/DSDP> is a semidefinite programming solver.
-
-
-Customizing the setup script
-----------------------------
-
-If needed, the default compilation can be customized by editing setup.py or
-by defining some environment variables. The following variables in the setup
-script can be modified:
-
-* BLAS_LIB_DIR: the directory containing the LAPACK and BLAS libraries.
-
-* BUILD_GSL: set this variable to 1 if you would like to use the GSL
-  random number generators for constructing random matrices in CVXOPT.
-  If BULD_GSL is 0, the Python random number generators will be used
-  instead.
-* GSL_LIB_DIR: the directory containing libgsl.
-* GSL_INC_DIR: the directory containing the GSL header files.
-
-* BUILD_FFTW: set this variable to 1 to install the cvxopt.fftw module,
-  which is an interface to FFTW.
-* FFTW_LIB_DIR: the directory containing libfftw3.
-* FFTW_INC_DIR: the directory containing fftw.h.
-
-* BUILD_GLPK: set this variable to 1 to enable support for the linear
-  programming solver GLPK.
-* GLPK_LIB_DIR: the directory containing libglpk.
-* GLPK_INC_DIR: the directory containing glpk.h.
-
-* BUILD_DSDP: set this variable to 1 to enable support for the semidefinite
-  programming solver DSDP.
-* DSDP_LIB_DIR: the directory containing libdsdp.
-* DSDP_INC_DIR: the directory containing dsdp5.h.
-
-* SUITESPARSE_LIB_DIR: the directory containing SuiteSparse libraries.
-* SUITESPARSE_INC_DIR: the directory containing SuiteSparse header files.
-* SUITESPARSE_SRC_DIR: the directory containing SuiteSparse source. The
-  variables SUITESPARSE_LIB_DIR and SUITESPARSE_INC_DIR are ignored and
-  relevant parts of SuiteSparse are built from source when
-  SUITESPARSE_SRC_DIR is specified.
-
-* MSVC: set this variable to 1 if compiling with MSVC 14 or later
-
-Each of the variables can be overridden by specifying an environment variable
-with the prefix "CVXOPT_". For example, the following command installs CVXOPT
-locally with BUILD_FFTW=1:
-
-     CVXOPT_BUILD_FFTW=1 python setup.py install --user
-
-Support for the linear, second-order cone, and quadratic programming
-solvers in MOSEK is automatically enabled if both MOSEK and the MOSEK
-Python interface are installed.
-
-
-Installation
-------------
-
-CVXOPT can be installed globally (for all users on a UNIX system) using
-the command:
-
-    python setup.py install
-
-It can also be installed locally (for a single user) using the command:
-
-    python setup.py install --user
-
-To test that the installation was successful, run the included tests using
-
-     python -m unittest discover -s tests
-
-or alternatively, if `nose` is installed,
-
-     nosetests
-
-If Python does not issue an error message, installation was successful.
-
-Additional information can be found in the
-Python documentation <http://docs.python.org/install/index.html>.
+Please consult the CVXOPT website for information about how to build 
+and install CVXOPT from source <https://cvxopt.org/install/index.html>.

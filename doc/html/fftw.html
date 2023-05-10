@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Discrete Transforms &mdash; CVXOPT User&#39;s Guide</title>
@@ -12,9 +12,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
@@ -27,14 +26,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CVXOPT User's Guide
           </a>
               <div class="version">
-                1.3.0
+                1.3.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -47,9 +50,27 @@
 <li class="toctree-l1"><a class="reference internal" href="blas.html">The BLAS Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lapack.html">The LAPACK Interface</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Discrete Transforms</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#discrete-fourier-transform">Discrete Fourier Transform</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#discrete-cosine-transform">Discrete Cosine Transform</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#discrete-sine-transform">Discrete Sine Transform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#discrete-fourier-transform">Discrete Fourier Transform</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.fftw.dft"><code class="docutils literal notranslate"><span class="pre">cvxopt.fftw.dft</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.fftw.idft"><code class="docutils literal notranslate"><span class="pre">cvxopt.fftw.idft</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.fftw.dftn"><code class="docutils literal notranslate"><span class="pre">cvxopt.fftw.dftn</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.fftw.idftn"><code class="docutils literal notranslate"><span class="pre">cvxopt.fftw.idftn</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#discrete-cosine-transform">Discrete Cosine Transform</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.fftw.dct"><code class="docutils literal notranslate"><span class="pre">cvxopt.fftw.dct</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.fftw.idct"><code class="docutils literal notranslate"><span class="pre">cvxopt.fftw.idct</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.fftw.dctn"><code class="docutils literal notranslate"><span class="pre">cvxopt.fftw.dctn</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.fftw.idctn"><code class="docutils literal notranslate"><span class="pre">cvxopt.fftw.idctn</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#discrete-sine-transform">Discrete Sine Transform</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.fftw.dst"><code class="docutils literal notranslate"><span class="pre">cvxopt.fftw.dst</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.fftw.idst"><code class="docutils literal notranslate"><span class="pre">cvxopt.fftw.idst</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.fftw.dstn"><code class="docutils literal notranslate"><span class="pre">cvxopt.fftw.dstn</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.fftw.idstn"><code class="docutils literal notranslate"><span class="pre">cvxopt.fftw.idstn</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="spsolvers.html">Sparse Linear Equations</a></li>
@@ -74,8 +95,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Discrete Transforms</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Discrete Transforms</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -85,7 +106,7 @@
            <div itemprop="articleBody">
              
   <section id="discrete-transforms">
-<span id="c-fftw"></span><h1>Discrete Transforms<a class="headerlink" href="#discrete-transforms" title="Permalink to this headline"></a></h1>
+<span id="c-fftw"></span><h1>Discrete Transforms<a class="headerlink" href="#discrete-transforms" title="Permalink to this heading"></a></h1>
 <p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">cvxopt.fftw</span></code> module is an interface to the FFTW library and
 contains routines for discrete Fourier, cosine, and sine transforms.
 This module is optional, and only installed when the FFTW library is made
@@ -95,7 +116,7 @@ available during the CVXOPT installation.</p>
 <p><a class="reference external" href="http://www.fftw.org">FFTW3 code, documentation, copyright and license</a></p>
 </div>
 <section id="discrete-fourier-transform">
-<h2>Discrete Fourier Transform<a class="headerlink" href="#discrete-fourier-transform" title="Permalink to this headline"></a></h2>
+<h2>Discrete Fourier Transform<a class="headerlink" href="#discrete-fourier-transform" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.fftw.dft">
 <span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dft</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dft" title="Permalink to this definition"></a></dt>
@@ -144,7 +165,7 @@ transform is computed as <code class="docutils literal notranslate"><span class=
 
 </section>
 <section id="discrete-cosine-transform">
-<h2>Discrete Cosine Transform<a class="headerlink" href="#discrete-cosine-transform" title="Permalink to this headline"></a></h2>
+<h2>Discrete Cosine Transform<a class="headerlink" href="#discrete-cosine-transform" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.fftw.dct">
 <span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">2</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dct" title="Permalink to this definition"></a></dt>
@@ -206,7 +227,7 @@ transform is computed as <code class="docutils literal notranslate"><span class=
 
 </section>
 <section id="discrete-sine-transform">
-<h2>Discrete Sine Transform<a class="headerlink" href="#discrete-sine-transform" title="Permalink to this headline"></a></h2>
+<h2>Discrete Sine Transform<a class="headerlink" href="#discrete-sine-transform" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.fftw.dst">
 <span class="sig-prename descclassname"><span class="pre">cvxopt.fftw.</span></span><span class="sig-name descname"><span class="pre">dst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">type</span> <span class="pre">=</span> <span class="pre">1</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.fftw.dst" title="Permalink to this definition"></a></dt>
@@ -278,8 +299,8 @@ transform is computed as <code class="docutils literal notranslate"><span class=
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2022, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on Mar 07, 2022.
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on May 09, 2023.
       </span></p>
   </div>
 
@@ -299,7 +320,7 @@ transform is computed as <code class="docutils literal notranslate"><span class=
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 6.2.1.
     </div>
 
 </body>

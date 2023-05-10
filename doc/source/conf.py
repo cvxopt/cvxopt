@@ -40,15 +40,15 @@ master_doc = 'index'
 
 # General substitutions.
 project = "CVXOPT User's Guide"
-copyright = '2004-2022, M.S. Andersen, J. Dahl, L. Vandenberghe'
+copyright = '2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe'
 
 # The default replacements for |version| and |release|, also used in various
 # other places throughout the built documents.
 #
 # The short X.Y version.
-version = '1.3.0'
+version = '1.3.1'
 # The full version, including alpha/beta/rc tags.
-release = '1.3.0'
+release = '1.3.1'
 
 
 # There are two options for replacing |today|: either, you set today to some

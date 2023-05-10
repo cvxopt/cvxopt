@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sparse Linear Equations &mdash; CVXOPT User&#39;s Guide</title>
@@ -12,9 +12,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
@@ -27,14 +26,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CVXOPT User's Guide
           </a>
               <div class="version">
-                1.3.0
+                1.3.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -48,9 +51,27 @@
 <li class="toctree-l1"><a class="reference internal" href="lapack.html">The LAPACK Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fftw.html">Discrete Transforms</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Sparse Linear Equations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#matrix-orderings">Matrix Orderings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#general-linear-equations">General Linear Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#positive-definite-linear-equations">Positive Definite Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#matrix-orderings">Matrix Orderings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.amd.order"><code class="docutils literal notranslate"><span class="pre">cvxopt.amd.order</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#general-linear-equations">General Linear Equations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.umfpack.linsolve"><code class="docutils literal notranslate"><span class="pre">cvxopt.umfpack.linsolve</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.umfpack.symbolic"><code class="docutils literal notranslate"><span class="pre">cvxopt.umfpack.symbolic</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.umfpack.numeric"><code class="docutils literal notranslate"><span class="pre">cvxopt.umfpack.numeric</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.umfpack.solve"><code class="docutils literal notranslate"><span class="pre">cvxopt.umfpack.solve</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#positive-definite-linear-equations">Positive Definite Linear Equations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.cholmod.linsolve"><code class="docutils literal notranslate"><span class="pre">cvxopt.cholmod.linsolve</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.cholmod.splinsolve"><code class="docutils literal notranslate"><span class="pre">cvxopt.cholmod.splinsolve</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.cholmod.symbolic"><code class="docutils literal notranslate"><span class="pre">cvxopt.cholmod.symbolic</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.cholmod.numeric"><code class="docutils literal notranslate"><span class="pre">cvxopt.cholmod.numeric</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.cholmod.solve"><code class="docutils literal notranslate"><span class="pre">cvxopt.cholmod.solve</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.cholmod.spsolve"><code class="docutils literal notranslate"><span class="pre">cvxopt.cholmod.spsolve</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.cholmod.diag"><code class="docutils literal notranslate"><span class="pre">cvxopt.cholmod.diag</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#example-covariance-selection">Example: Covariance Selection</a></li>
 </ul>
 </li>
@@ -75,8 +96,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Sparse Linear Equations</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Sparse Linear Equations</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -86,7 +107,7 @@
            <div itemprop="articleBody">
              
   <section id="sparse-linear-equations">
-<span id="c-spsolvers"></span><h1>Sparse Linear Equations<a class="headerlink" href="#sparse-linear-equations" title="Permalink to this headline"></a></h1>
+<span id="c-spsolvers"></span><h1>Sparse Linear Equations<a class="headerlink" href="#sparse-linear-equations" title="Permalink to this heading"></a></h1>
 <p>In this section we describe routines for solving sparse sets of linear
 equations.</p>
 <p>A real symmetric or complex Hermitian sparse matrix is stored as an
@@ -104,7 +125,7 @@ ignored.</p>
 <p>Dense matrices, which appear as right-hand sides of equations, are
 stored using the same conventions as in the BLAS and LAPACK modules.</p>
 <section id="matrix-orderings">
-<span id="s-orderings"></span><h2>Matrix Orderings<a class="headerlink" href="#matrix-orderings" title="Permalink to this headline"></a></h2>
+<span id="s-orderings"></span><h2>Matrix Orderings<a class="headerlink" href="#matrix-orderings" title="Permalink to this heading"></a></h2>
 <p>CVXOPT includes an interface to the AMD library for computing approximate
 minimum degree orderings of sparse matrices.</p>
 <div class="admonition seealso">
@@ -146,7 +167,7 @@ sparser Cholesky factors than <code class="docutils literal notranslate"><span c
 </div>
 </section>
 <section id="general-linear-equations">
-<span id="s-umfpack"></span><h2>General Linear Equations<a class="headerlink" href="#general-linear-equations" title="Permalink to this headline"></a></h2>
+<span id="s-umfpack"></span><h2>General Linear Equations<a class="headerlink" href="#general-linear-equations" title="Permalink to this heading"></a></h2>
 <p>The module <code class="xref py py-mod docutils literal notranslate"><span class="pre">cvxopt.umfpack</span></code> includes four functions for solving
 sparse non-symmetric sets of linear equations.  They call routines from
 the UMFPACK library, with all control options set to the default values
@@ -284,7 +305,7 @@ x = A^{-T}B^{-1}A^{-1}\ones."/></p>
 </div>
 </section>
 <section id="positive-definite-linear-equations">
-<span id="s-cholmod"></span><h2>Positive Definite Linear Equations<a class="headerlink" href="#positive-definite-linear-equations" title="Permalink to this headline"></a></h2>
+<span id="s-cholmod"></span><h2>Positive Definite Linear Equations<a class="headerlink" href="#positive-definite-linear-equations" title="Permalink to this heading"></a></h2>
 <p><code class="xref py py-mod docutils literal notranslate"><span class="pre">cvxopt.cholmod</span></code> is an interface to the Cholesky factorization routines
 of the CHOLMOD package.  It includes functions for Cholesky factorization
 of sparse positive definite matrices, and for solving sparse sets of linear
@@ -428,10 +449,6 @@ or <a class="reference internal" href="#equation-e-chol-ldl">(4)</a> computed by
 <a class="reference internal" href="#cvxopt.cholmod.numeric" title="cvxopt.cholmod.numeric"><code class="xref py py-func docutils literal notranslate"><span class="pre">numeric</span></code></a>.
 <code class="docutils literal notranslate"><span class="pre">sys</span></code> is an integer with values between 0 and 8.</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 31%" />
-<col style="width: 69%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sys</span></code></p></td>
 <td><p>equation</p></td>
@@ -556,7 +573,7 @@ of the coefficient matrix in <a class="reference internal" href="#equation-e-a-p
 </div>
 </section>
 <section id="example-covariance-selection">
-<h2>Example: Covariance Selection<a class="headerlink" href="#example-covariance-selection" title="Permalink to this headline"></a></h2>
+<h2>Example: Covariance Selection<a class="headerlink" href="#example-covariance-selection" title="Permalink to this heading"></a></h2>
 <p>This example illustrates the use of the routines for sparse Cholesky
 factorization.  We consider the problem</p>
 <div class="math" id="equation-e-covsel">
@@ -610,7 +627,7 @@ The gradient and Hessian of the objective function are given by</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">amd</span><span class="p">,</span> <span class="n">cholmod</span>
 
 <span class="k">def</span> <span class="nf">covsel</span><span class="p">(</span><span class="n">Y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the solution of</span>
 
 <span class="sd">         minimize    -log det K + Tr(KY)</span>
@@ -699,8 +716,8 @@ The gradient and Hessian of the objective function are given by</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2022, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on Mar 07, 2022.
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on May 09, 2023.
       </span></p>
   </div>
 
@@ -720,7 +737,7 @@ The gradient and Hessian of the objective function are given by</p>
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 4.4.0.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 6.2.1.
     </div>
 
 </body>
