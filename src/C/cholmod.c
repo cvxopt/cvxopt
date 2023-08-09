@@ -40,7 +40,7 @@ typedef _Dcomplex complex_t;
 const int E_SIZE[] = {sizeof(int_t), sizeof(double), sizeof(complex_t)};
 
 /* defined in pyconfig.h */
-#ifdef DLONG
+#if (SIZEOF_INT < SIZEOF_SIZE_T)
 #define CHOL(name) cholmod_l_ ## name
 #else
 #define CHOL(name) cholmod_ ## name

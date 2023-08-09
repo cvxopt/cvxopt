@@ -12,8 +12,10 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
@@ -26,18 +28,14 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="index.html" class="icon icon-home">
-            CVXOPT User's Guide
+            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
           </a>
               <div class="version">
-                1.3.1
+                1.3.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -53,18 +51,9 @@
 <li class="toctree-l1"><a class="reference internal" href="spsolvers.html">Sparse Linear Equations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="coneprog.html">Cone Programming</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Nonlinear Convex Optimization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#problems-with-nonlinear-objectives">Problems with Nonlinear Objectives</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.cp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.cp</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#problems-with-linear-objectives">Problems with Linear Objectives</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.cpl"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.cpl</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#geometric-programming">Geometric Programming</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.gp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.gp</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#problems-with-nonlinear-objectives">Problems with Nonlinear Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#problems-with-linear-objectives">Problems with Linear Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#geometric-programming">Geometric Programming</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#exploiting-structure">Exploiting Structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#algorithm-parameters">Algorithm Parameters</a></li>
 </ul>
@@ -88,8 +77,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Nonlinear Convex Optimization</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Nonlinear Convex Optimization</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -1054,7 +1043,7 @@ for matrix-matrix and matrix-vector products.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">base</span>
 
 <span class="k">def</span> <span class="nf">l2ac</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Solves</span>
 
 <span class="sd">        minimize  (1/2) * ||A*x-b||_2^2 - sum log (1-xi^2)</span>
@@ -1196,7 +1185,7 @@ same stopping criteria (with <img class="math" src="_images/math/459f00b80184047
 
   <div role="contentinfo">
     <p>&#169; <a href="copyright.html">Copyright</a> 2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on May 09, 2023.
+      <span class="lastupdated">Last updated on Aug 09, 2023.
       </span></p>
   </div>
 
@@ -1216,7 +1205,7 @@ same stopping criteria (with <img class="math" src="_images/math/459f00b80184047
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 6.2.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 5.0.1.
     </div>
 
 </body>

@@ -24,7 +24,7 @@
 #include "misc.h"
 
 /* defined in pyconfig.h */
-#ifdef DLONG
+#ifdef (SIZEOF_INT < SIZEOF_SIZE_T)
 #define amd_order amd_l_order
 #define amd_defaults amd_l_defaults
 #endif

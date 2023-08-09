@@ -12,8 +12,10 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
@@ -26,18 +28,14 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="index.html" class="icon icon-home">
-            CVXOPT User's Guide
+            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
           </a>
               <div class="version">
-                1.3.1
+                1.3.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -52,30 +50,12 @@
 <li class="toctree-l1"><a class="reference internal" href="fftw.html">Discrete Transforms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spsolvers.html">Sparse Linear Equations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Cone Programming</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#linear-cone-programs">Linear Cone Programs</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.conelp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.conelp</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#quadratic-cone-programs">Quadratic Cone Programs</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.coneqp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.coneqp</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#linear-programming">Linear Programming</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.lp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.lp</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#quadratic-programming">Quadratic Programming</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.qp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.qp</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#second-order-cone-programming">Second-Order Cone Programming</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.socp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.socp</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#semidefinite-programming">Semidefinite Programming</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.sdp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.sdp</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#linear-cone-programs">Linear Cone Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quadratic-cone-programs">Quadratic Cone Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linear-programming">Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quadratic-programming">Quadratic Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#second-order-cone-programming">Second-Order Cone Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#semidefinite-programming">Semidefinite Programming</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#exploiting-structure">Exploiting Structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#optional-solvers">Optional Solvers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#algorithm-parameters">Algorithm Parameters</a></li>
@@ -101,8 +81,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Cone Programming</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Cone Programming</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -1270,7 +1250,7 @@ The code below takes advantage of this fact.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span>
 
 <span class="k">def</span> <span class="nf">l1</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Returns the solution u, w of the l1 approximation problem</span>
 
@@ -1313,7 +1293,7 @@ The code below takes advantage of this fact.</p>
 
     <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
 
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a function f(x, y, z) that solves</span>
 
 <span class="sd">            [ 0  0  P&#39;      -P&#39;      ] [ x[:n] ]   [ bx[:n] ]</span>
@@ -1335,7 +1315,7 @@ The code below takes advantage of this fact.</p>
 
         <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+            <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            On entry bx, bz are stored in x, z.  On exit x, z contain the solution,</span>
 <span class="sd">            with z scaled: z./di is returned instead of z.</span>
 <span class="sd">            &quot;&quot;&quot;</span><span class="s2">&quot;</span>
@@ -1381,7 +1361,7 @@ operator.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span>
 
 <span class="k">def</span> <span class="nf">mcsdp</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns solution x, z to</span>
 
 <span class="sd">        (primal)  minimize    sum(x)</span>
@@ -1396,7 +1376,7 @@ operator.</p>
     <span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s1">&#39;N&#39;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            y := alpha*(-diag(x)) + beta*y.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -1412,7 +1392,7 @@ operator.</p>
 
 
     <span class="k">def</span> <span class="nf">cngrnc</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Congruence transformation</span>
 
 <span class="sd">            x := alpha * r&#39;*x*r.</span>
@@ -1435,7 +1415,7 @@ operator.</p>
     <span class="n">dims</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">n</span><span class="p">]}</span>
 
     <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a function f(x, y, z) that solves</span>
 
 <span class="sd">                      -diag(z)     = bx</span>
@@ -1455,7 +1435,7 @@ operator.</p>
         <span class="n">lapack</span><span class="o">.</span><span class="n">potrf</span><span class="p">(</span><span class="n">tsq</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+            <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            On entry, x contains bx, y is empty, and z contains bz stored</span>
 <span class="sd">            in column major order.</span>
 <span class="sd">            On exit, they contain the solution, with z scaled</span>
@@ -1502,7 +1482,7 @@ operator.</p>
 </div><p>The code below is efficient, if we assume that the number of rows in
 <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> is greater than or equal to the number of columns.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">qcl1</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the solution u, z of</span>
 
 <span class="sd">        (primal)  minimize    || u ||_1</span>
@@ -1549,7 +1529,7 @@ operator.</p>
 
 
     <span class="k">def</span> <span class="nf">Fkkt</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a function f(x, y, z) that solves</span>
 
 <span class="sd">            [ 0   G&#39;   ] [ x ] = [ bx ]</span>
@@ -1646,7 +1626,7 @@ efficient when <img class="math" src="_images/math/211284f68205c3e66773eaf026f32
 <span class="kn">import</span> <span class="nn">math</span>
 
 <span class="k">def</span> <span class="nf">l1regls</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Returns the solution of l1-norm regularized least-squares problem</span>
 
@@ -1659,7 +1639,7 @@ efficient when <img class="math" src="_images/math/211284f68205c3e66773eaf026f32
     <span class="n">q</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">y</span>
 
     <span class="k">def</span> <span class="nf">P</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            v := alpha * 2.0 * [ A&#39;*A, 0; 0, 0 ] * u + beta * v</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">v</span> <span class="o">*=</span> <span class="n">beta</span>
@@ -1667,7 +1647,7 @@ efficient when <img class="math" src="_images/math/211284f68205c3e66773eaf026f32
 
 
     <span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s1">&#39;N&#39;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            v := alpha*[I, -I; -I, -I] * u + beta * v  (trans = &#39;N&#39; or &#39;T&#39;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -1964,7 +1944,7 @@ instances should be solved in parallel, but using different options.</p>
 
   <div role="contentinfo">
     <p>&#169; <a href="copyright.html">Copyright</a> 2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on May 09, 2023.
+      <span class="lastupdated">Last updated on Aug 09, 2023.
       </span></p>
   </div>
 
@@ -1984,7 +1964,7 @@ instances should be solved in parallel, but using different options.</p>
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 6.2.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 5.0.1.
     </div>
 
 </body>
