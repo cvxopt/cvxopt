@@ -12,8 +12,10 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
@@ -26,18 +28,14 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="index.html" class="icon icon-home">
-            CVXOPT User's Guide
+            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
           </a>
               <div class="version">
-                1.3.1
+                1.3.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -49,90 +47,15 @@
 <li class="toctree-l1"><a class="reference internal" href="matrices.html">Dense and Sparse Matrices</a></li>
 <li class="toctree-l1"><a class="reference internal" href="blas.html">The BLAS Interface</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">The LAPACK Interface</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#general-linear-equations">General Linear Equations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gesv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gesv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.getrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.getrf</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.getrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.getrs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.getri"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.getri</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gbsv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gbsv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gbtrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gbtrf</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gbtrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gbtrs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gtsv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gtsv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gttrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gttrf</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gttrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gttrs</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#positive-definite-linear-equations">Positive Definite Linear Equations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.posv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.posv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.potrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.potrf</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.potrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.potrs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.potri"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.potri</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.pbsv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.pbsv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.pbtrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.pbtrf</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.pbtrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.pbtrs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.ptsv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.ptsv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.pttrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.pttrf</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.pttrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.pttrs</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#symmetric-and-hermitian-linear-equations">Symmetric and Hermitian Linear Equations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.sysv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.sysv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.sytrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.sytrf</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.sytrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.sytrs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.sytri"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.sytri</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.hesv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.hesv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.hetrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.hetrf</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.hetrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.hetrs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.hetri"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.hetri</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#triangular-linear-equations">Triangular Linear Equations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.trtrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.trtrs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.trtri"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.trtri</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.tbtrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.tbtrs</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#least-squares-and-least-norm-problems">Least-Squares and Least-Norm Problems</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gels"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gels</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.geqrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.geqrf</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gelqf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gelqf</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.geqp3"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.geqp3</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.unmqr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.unmqr</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.ormqr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.ormqr</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.unmlq"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.unmlq</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.ormlq"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.ormlq</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.ungqr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.ungqr</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.orgqr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.orgqr</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.unglq"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.unglq</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.orglq"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.orglq</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#symmetric-and-hermitian-eigenvalue-decomposition">Symmetric and Hermitian Eigenvalue Decomposition</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.syev"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.syev</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.syevd"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.syevd</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.syevx"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.syevx</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.syevr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.syevr</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.heev"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.heev</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.heevd"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.heevd</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.heevx"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.heevx</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.heevr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.heevr</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#generalized-symmetric-definite-eigenproblems">Generalized Symmetric Definite Eigenproblems</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.sygv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.sygv</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.hegv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.hegv</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#singular-value-decomposition">Singular Value Decomposition</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gesvd"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gesvd</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gesdd"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gesdd</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#schur-and-generalized-schur-factorization">Schur and Generalized Schur Factorization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gees"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gees</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gges"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gges</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#general-linear-equations">General Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#positive-definite-linear-equations">Positive Definite Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#symmetric-and-hermitian-linear-equations">Symmetric and Hermitian Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#triangular-linear-equations">Triangular Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#least-squares-and-least-norm-problems">Least-Squares and Least-Norm Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#symmetric-and-hermitian-eigenvalue-decomposition">Symmetric and Hermitian Eigenvalue Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generalized-symmetric-definite-eigenproblems">Generalized Symmetric Definite Eigenproblems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#singular-value-decomposition">Singular Value Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#schur-and-generalized-schur-factorization">Schur and Generalized Schur Factorization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#example-analytic-centering">Example: Analytic Centering</a></li>
 </ul>
 </li>
@@ -159,8 +82,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">The LAPACK Interface</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>The LAPACK Interface</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -1582,7 +1505,7 @@ with the level-2 BLAS function <a class="reference internal" href="blas.html#cvx
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
 
 <span class="k">def</span> <span class="nf">acent</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the analytic center of A*x &lt;= b.</span>
 <span class="sd">    We assume that b &gt; 0 and the feasible set is bounded.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1639,7 +1562,7 @@ with the level-2 BLAS function <a class="reference internal" href="blas.html#cvx
 
   <div role="contentinfo">
     <p>&#169; <a href="copyright.html">Copyright</a> 2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on May 09, 2023.
+      <span class="lastupdated">Last updated on Aug 09, 2023.
       </span></p>
   </div>
 
@@ -1659,7 +1582,7 @@ with the level-2 BLAS function <a class="reference internal" href="blas.html#cvx
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 6.2.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 5.0.1.
     </div>
 
 </body>

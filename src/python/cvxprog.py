@@ -1234,7 +1234,7 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
                             backtrack = False
                             relaxed_iters = 0
 
-                        elif newphi >= phi0:
+                        else:
                             # Resume last saved line search.
                             phi, dphi, gap = phi0, dphi0, gap0
                             step = step0
@@ -1258,12 +1258,6 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
                             blas.copy(lmbda0, lmbda)
                             dsdz = dsdz0
                             sigma, eta = sigma0, eta0
-                            relaxed_iters = -1
-
-                        elif newphi <= phi + ALPHA * step * dphi:
-                            # Series of relaxed line searches ends with
-                            # with insufficient decrease w.r.t. phi0" 
-                            backtrack = False
                             relaxed_iters = -1
 
 
