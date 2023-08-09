@@ -480,7 +480,8 @@ static PyObject* solve(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *B;
     PyObject *F;
-    int i, n, oB=0, ldB=0, nrhs=-1, sys=0;
+    size_t n;
+    int i, oB=0, ldB=0, nrhs=-1, sys=0;
 #if PY_MAJOR_VERSION >= 3
     const char *descr;
 #else
@@ -838,7 +839,7 @@ static PyObject* splinsolve(PyObject *self, PyObject *args,
 {
     spmatrix *A, *B, *X;
     matrix *P=NULL;
-    int n;
+    size_t n;
     cholmod_sparse *Ac=NULL, *Bc=NULL, *Xc=NULL;
     cholmod_factor *L=NULL;
 #if PY_MAJOR_VERSION >= 3
@@ -975,7 +976,7 @@ static PyObject* diag(PyObject *self, PyObject *args)
 #else
     char *descr;
 #endif
-    int k, strt, incx=1, incy, nrows, ncols;
+    int strt, incx=1, incy, nrows, ncols;
 
     if (!set_options()) return NULL;
     if (!PyArg_ParseTuple(args, "O", &F)) return NULL;
@@ -1003,7 +1004,7 @@ static PyObject* diag(PyObject *self, PyObject *args)
 			 COMPLEX))) return NULL;
 
     strt = 0;
-    for (k=0; k<L->nsuper; k++){
+    for (size_t k=0; k<L->nsuper; k++){
 	/* x[L->px[k], .... ,L->px[k+1]-1] is a dense lower-triangular
 	 * nrowx times ncols matrix.  We copy its diagonal to
 	 * d[strt, ..., strt+ncols-1] */
