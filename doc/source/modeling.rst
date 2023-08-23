@@ -805,4 +805,3 @@ Examples
 
         x = variable(A.size[1],'x')
         op(sum(abs(x)) + sum(max(0,1-A*x))).solve()
-

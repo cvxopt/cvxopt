@@ -16,7 +16,7 @@ Dense Matrices
 ==============
 
 A dense matrix is created by calling the function :func:`matrix`.  The 
-arguments specify the values of the coefficients, the dimensions, and the 
+arguments specify the values of the elements, the dimensions, and the 
 type (integer, double, or complex) of the matrix.
 
 .. function:: cvxopt.matrix(x[, size[, tc]])
@@ -34,7 +34,7 @@ type (integer, double, or complex) of the matrix.
 
    * If ``x`` is a number (Python integer, float, or complex number), 
      a matrix is created with the dimensions specified by ``size`` and 
-     with all the coefficients equal to ``x``.  
+     with all the elements equal to ``x``.  
      The default value of ``size``  is ``(1,1)``, and the default value
      of ``tc`` is the type of ``x``.
      If necessary, the type of ``x`` is converted (from integer to double
@@ -54,7 +54,7 @@ type (integer, double, or complex) of the matrix.
 
    * If ``x`` is a sequence of numbers (list, tuple, array, 
      :mod:`array` array, ...), then the numbers are interpreted as the 
-     coefficients of a matrix in column-major order.     
+     elements of a matrix in column-major order.     
      The length of ``x``  must be equal to the product of 
      ``size[0]`` and ``size[1]``.
      If ``size``  is not specified, a matrix with one column is created. 
@@ -79,7 +79,7 @@ type (integer, double, or complex) of the matrix.
 
      >>> A = matrix(xrange(4), (2,2))   
 
-   * If ``x``  is a dense or sparse matrix, then the coefficients of 
+   * If ``x``  is a dense or sparse matrix, then the elements of 
      ``x``  are copied, in column-major order, to a new matrix of the 
      given size.  
      The total number of elements in the new matrix (the product of 
@@ -483,7 +483,7 @@ The following rules apply.
   [ 1.00e+00  3.00e+00]
   [ 2.00e+00  4.00e+00]
   
-* The in-place operations directly modify the coefficients of the 
+* The in-place operations directly modify the elements of the 
   existing matrix object and do not create a new object. 
   
   >>> B = matrix([[1.,2.], [3.,4.]])  
@@ -506,7 +506,7 @@ Indexing and Slicing
 Matrices can be indexed using one or two arguments.  In single-argument
 indexing of a matrix ``A``, the index runs from ``-len(A)`` to 
 ``len(A)-1``, and is interpreted as an index in the one-dimensional 
-array of coefficients of ``A`` in column-major order.   Negative indices 
+array of elements of ``A`` in column-major order.   Negative indices 
 have the standard Python interpretation: for negative ``k``, 
 ``A[k]`` is the same element as ``A[len(A) + k]``.
 
@@ -614,7 +614,7 @@ interpreted as a dense matrix with identical entries and the dimensions of
 the left-hand side.  If the right-hand side is a sequence of numbers 
 (list, tuple, :mod:`array` array, range object, ...) its values are 
 interpreted 
-as the coefficients of a dense matrix in column-major order.  If the 
+as the elements of a dense matrix in column-major order.  If the 
 right-hand side is a matrix (:class:`matrix` or 
 :class:`spmatrix`), it must 
 have the same size as the left-hand side.  Sparse matrices are 
@@ -1141,4 +1141,3 @@ functions based on the :mod:`random` module.
     installed.   (The state of the random number generators in the Python 
     :mod:`random` module can be managed via the functions 
     :func:`random.getstate` and :func:`random.setstate`.)
-
