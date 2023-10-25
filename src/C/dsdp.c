@@ -189,7 +189,7 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
     while (PyDict_Next(param, &pos, &key, &value))
 #if PY_MAJOR_VERSION >= 3
 	if (PyUnicode_Check(key)) {
-	    keystr = _PyUnicode_AsString(key);
+	    keystr = PyUnicode_AsUTF8(key);
 #else
         if ((keystr = PyString_AsString(key))){
 #endif
