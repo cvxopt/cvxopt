@@ -1,6 +1,6 @@
 from setuptools import setup, Extension
 from glob import glob
-import os, sys
+import os, sys, platform
 
 # Modifiy this if BLAS and LAPACK libraries are not in /usr/lib.
 BLAS_LIB_DIR = '/usr/lib'
@@ -52,14 +52,23 @@ DSDP_LIB_DIR = '/usr/lib'
 DSDP_INC_DIR = '/usr/include/dsdp'
 
 # Guess SUITESPARSE_LIB_DIR and SUITESPARSE_INC_DIR
-if sys.platform.startswith("darwin"):
+if platform.system() == "Darwin":
     # macOS
-    SUITESPARSE_LIB_DIR = '/usr/local/lib'
-    SUITESPARSE_INC_DIR = '/usr/local/include'
+    if platform.processor() == "arm":
+        SUITESPARSE_LIB_DIR = '/opt/homebrew/lib'
+        SUITESPARSE_INC_DIR = '/opt/homebrew/include'
+    else:
+        SUITESPARSE_LIB_DIR = '/usr/local/lib'
+        SUITESPARSE_INC_DIR = '/usr/local/include'
 else:
+    SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
     if glob("/usr/lib/x86_64-linux-gnu/libsuitesparse*"):
         # Ubuntu/Debian
         SUITESPARSE_LIB_DIR = "/usr/lib/x86_64-linux-gnu"
+        SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
+    elif glob("/usr/lib/aarch64-linux-gnu/libsuitesparse*"):
+        # Ubuntu/Debian
+        SUITESPARSE_LIB_DIR = "/usr/lib/aarch64-linux-gnu"
         SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
     elif glob("/usr/lib64/libsuitesparse*"):
         # CentOS/Fedora/RedHat
