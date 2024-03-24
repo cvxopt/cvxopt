@@ -16,6 +16,8 @@ jobs:
       SUITESPARSE_SHA256: 59c6ca2959623f0c69226cf9afb9a018d12a37fab3a8869db5f6d7f83b6b147d
       DSDP_VERSION: 5.8
       DSDP_SHA256: 26aa624525a636de272c0b329e2dfd01a0d5b7827f1c1c76f393d71e37dead70
+      CVXOPT_SUITESPARSE_LIB_DIR: /usr/local/lib
+      CVXOPT_SUITESPARSE_INC_DIR: /usr/local/include/suitesparse
       CVXOPT_DSDP_LIB_DIR: /usr/local/lib
       CVXOPT_DSDP_INC_DIR: /usr/local/include
       CVXOPT_BLAS_LIB_DIR: /usr/local/opt/openblas/lib
@@ -34,7 +36,7 @@ jobs:
 
     steps:
     - name: Checkout source    
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
@@ -45,6 +47,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        brew --prefix
         brew install openblas suite-sparse glpk gsl fftw
         python -m pip install --upgrade pip
         python -m pip install --upgrade setuptools setuptools_scm build wheel pytest pytest-cov coveralls 
