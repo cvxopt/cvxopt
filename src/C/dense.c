@@ -253,25 +253,27 @@ matrix *Matrix_NewFromPyBuffer(PyObject *obj, int id, int *ndim)
    for (i=0; i< (int)view->shape[0]; i++, cnt++) {
      
      number n;
+     const Py_ssize_t stride0 = view->strides[0];
+     const Py_ssize_t stride1 = view->ndim == 2 ? view->strides[1] : 0;
      switch (id) {
      case INT :
        if (int_to_int_t)
 	 MAT_BUFI(a)[cnt] =
-	   *(int *)((unsigned char*)view->buf+i*view->strides[0]+j*view->strides[1]);
+	   *(int *)((unsigned char*)view->buf+i*stride0+j*stride1);
        else
 	 MAT_BUFI(a)[cnt] =
-	   *(int_t *)((unsigned char*)view->buf+i*view->strides[0]+j*view->strides[1]);
+	   *(int_t *)((unsigned char*)view->buf+i*stride0+j*stride1);
        break;
      case DOUBLE:
        switch (src_id) {
        case INT:
 	 if (int_to_int_t)
-	   n.d = *(int *)((unsigned char*)view->buf + i*view->strides[0]+j*view->strides[1]);
+	   n.d = *(int *)((unsigned char*)view->buf + i*stride0+j*stride1);
 	 else
-	   n.d = *(int_t *)((unsigned char*)view->buf + i*view->strides[0]+j*view->strides[1]);
+	   n.d = *(int_t *)((unsigned char*)view->buf + i*stride0+j*stride1);
 	 break;
        case DOUBLE:
-	 n.d = *(double *)((unsigned char*)view->buf + i*view->strides[0]+j*view->strides[1]);
+	 n.d = *(double *)((unsigned char*)view->buf + i*stride0+j*stride1);
 	 break;
        }
        MAT_BUFD(a)[cnt] = n.d;
@@ -281,28 +283,28 @@ matrix *Matrix_NewFromPyBuffer(PyObject *obj, int id, int *ndim)
        case INT:
 #ifndef _MSC_VER
 	 if (int_to_int_t)
-	   n.z = *(int *)((unsigned char*)view->buf + i*view->strides[0]+j*view->strides[1]);
+	   n.z = *(int *)((unsigned char*)view->buf + i*stride0+j*stride1);
 	 else
-	   n.z = *(int_t *)((unsigned char*)view->buf + i*view->strides[0]+j*view->strides[1]);
+	   n.z = *(int_t *)((unsigned char*)view->buf + i*stride0+j*stride1);
 #else
 	 if (int_to_int_t)
-	   n.z = _Cbuild((double) *(int *)((unsigned char*)view->buf + i*view->strides[0]+j*view->strides[1]),0.0);
+	   n.z = _Cbuild((double) *(int *)((unsigned char*)view->buf + i*stride0+j*stride1),0.0);
 	 else
-	   n.z = _Cbuild((double) *(int_t *)((unsigned char*)view->buf + i*view->strides[0]+j*view->strides[1]),0.0);
+	   n.z = _Cbuild((double) *(int_t *)((unsigned char*)view->buf + i*stride0+j*stride1),0.0);
 #endif
     	 break;
        case DOUBLE:
 #ifndef _MSC_VER
-	 n.z = *(double *)((unsigned char*)view->buf+i*view->strides[0]+j*view->strides[1]);
+	 n.z = *(double *)((unsigned char*)view->buf+i*stride0+j*stride1);
 #else
-	 n.z = _Cbuild(*(double *)((unsigned char*)view->buf+i*view->strides[0]+j*view->strides[1]),0.0);
+	 n.z = _Cbuild(*(double *)((unsigned char*)view->buf+i*stride0+j*stride1),0.0);
 #endif
 	 break;
        case COMPLEX:
 #ifndef _MSC_VER
-	 n.z = *(double complex *)((unsigned char*)view->buf+i*view->strides[0]+j*view->strides[1]);
+	 n.z = *(double complex *)((unsigned char*)view->buf+i*stride0+j*stride1);
 #else
-	 n.z = *(_Dcomplex *)((unsigned char*)view->buf+i*view->strides[0]+j*view->strides[1]);
+	 n.z = *(_Dcomplex *)((unsigned char*)view->buf+i*stride0+j*stride1);
 #endif
 	 break;
        }
