@@ -105,7 +105,7 @@ static int set_options(void)
     while (PyDict_Next(param, &pos, &key, &value))
 #if PY_MAJOR_VERSION >= 3
         if (PyUnicode_Check(key)) {
-            const char *keystr = _PyUnicode_AsString(key);
+            const char *keystr = PyUnicode_AsUTF8(key);
             if (!strcmp("supernodal", keystr) && PyLong_Check(value))
                 Common.supernodal = (int) PyLong_AsLong(value);
             else if (!strcmp("print", keystr) && PyLong_Check(value))
