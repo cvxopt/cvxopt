@@ -65,6 +65,10 @@ else:
         # CentOS/Fedora/RedHat
         SUITESPARSE_LIB_DIR = "/usr/lib64"
         SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
+    elif glob("/usr/lib/libsuitesparse*"):
+        # Arch Linux
+        SUITESPARSE_LIB_DIR = "/usr/lib"
+        SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
     else:
         # Default
         SUITESPARSE_LIB_DIR = '/usr/lib'
