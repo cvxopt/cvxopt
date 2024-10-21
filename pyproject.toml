@@ -8,9 +8,21 @@ write_to = "src/python/_version.py"
 [cvxopt]
 dynamic = ["version"]
 
+[tool.cibuildwheel]
+test-requires = "pytest"
+test-command = "pytest {project}/tests"
+
 [tool.cibuildwheel.linux]
-manylinux-x86_64-image = "manylinux2014"
-before-all = "yum install -y suitesparse-devel fftw-devel glpk-devel gsl-devel"
+archs = "x86_64 aarch64"
+manylinux-x86_64-image = "manylinux_2_28"
+manylinux-aarch64-image = "manylinux_2_28"
+environment = {CVXOPT_BUILD_DSDP="1", CVXOPT_BUILD_FFTW="1", CVXOPT_BUILD_GLPK="1", CVXOPT_BUILD_GSL="1", CVXOPT_BLAS_LIB="openblas", CVXOPT_LAPACK_LIB="openblas", CVXOPT_DSDP_LIB_DIR="/usr/local/lib"}
+before-all = "./.ci-support/before_all_linux.sh"
 
 [tool.cibuildwheel.macos]
-before-all = "brew install suitesparse fftw glpk gsl"
+environment = {CVXOPT_BUILD_DSDP="1", CVXOPT_BUILD_FFTW="1", CVXOPT_BUILD_GLPK="1", CVXOPT_BUILD_GSL="1", CVXOPT_DSDP_LIB_DIR="/usr/local/lib"}
+before-all = "./.ci-support/before_all_macos.sh"
+
+[tool.cibuildwheel.windows]
+environment = {CVXOPT_BUILD_DSDP="0", CVXOPT_BUILD_FFTW="0", CVXOPT_BUILD_GLPK="1", CVXOPT_BUILD_GSL="1", CVXOPT_MSVC="1"}
+before-all = ".ci-support\before_all_windows.bat"

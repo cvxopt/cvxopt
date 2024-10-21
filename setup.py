@@ -2,9 +2,6 @@ from setuptools import setup, Extension
 from glob import glob
 import os, sys, platform
 
-# Modifiy this if BLAS and LAPACK libraries are not in /usr/lib.
-BLAS_LIB_DIR = '/usr/lib'
-
 # Default names of BLAS and LAPACK libraries
 BLAS_LIB = ['blas']
 LAPACK_LIB = ['lapack']
@@ -18,66 +15,64 @@ BLAS_NOUNDERSCORES = False
 # Scientific Library.
 BUILD_GSL = 0
 
-# Directory containing libgsl (used only when BUILD_GSL = 1).
-GSL_LIB_DIR = '/usr/lib'
-
-# Directory containing the GSL header files (used only when BUILD_GSL = 1).
-GSL_INC_DIR = '/usr/include/gsl'
-
 # Set to 1 if you are installing the fftw module.
 BUILD_FFTW = 0
-
-# Directory containing libfftw3 (used only when BUILD_FFTW = 1).
-FFTW_LIB_DIR = '/usr/lib'
-
-# Directory containing fftw.h (used only when BUILD_FFTW = 1).
-FFTW_INC_DIR = '/usr/include'
 
 # Set to 1 if you are installing the glpk module.
 BUILD_GLPK = 0
 
-# Directory containing libglpk (used only when BUILD_GLPK = 1).
-GLPK_LIB_DIR = '/usr/lib'
-
-# Directory containing glpk.h (used only when BUILD_GLPK = 1).
-GLPK_INC_DIR = '/usr/include'
-
 # Set to 1 if you are installing the DSDP module.
 BUILD_DSDP = 0
 
-# Directory containing libdsdp (used only when BUILD_DSDP = 1).
-DSDP_LIB_DIR = '/usr/lib'
-
-# Directory containing dsdp5.h (used only when BUILD_DSDP = 1).
-DSDP_INC_DIR = '/usr/include/dsdp'
-
-# Guess SUITESPARSE_LIB_DIR and SUITESPARSE_INC_DIR
+# Guess prefix and library directories
 if platform.system() == "Darwin":
     # macOS
     if platform.processor() == "arm":
-        SUITESPARSE_LIB_DIR = '/opt/homebrew/lib'
-        SUITESPARSE_INC_DIR = '/opt/homebrew/include'
+        # Apple Silicon
+        PREFIX = '/opt/homebrew'
     else:
-        SUITESPARSE_LIB_DIR = '/usr/local/lib'
-        SUITESPARSE_INC_DIR = '/usr/local/include'
+        # Intel
+        PREFIX = '/usr/local'
+    BLAS_LIB_DIR = PREFIX + '/opt/openblas/lib'
+    SUITESPARSE_LIB_DIR = PREFIX + '/lib'
+    SUITESPARSE_INC_DIR = PREFIX + '/include/suitesparse'
+    DSDP_INC_DIR = PREFIX + '/include/dsdp'
+    DSDP_LIB_DIR = PREFIX + '/lib'
+    FFTW_INC_DIR = PREFIX + '/include'
+    FFTW_LIB_DIR = PREFIX + '/lib'
+    GSL_INC_DIR = PREFIX + '/include'
+    GSL_LIB_DIR = PREFIX + '/lib'
+    GLPK_INC_DIR = PREFIX + '/include'
+    GLPK_LIB_DIR = PREFIX + '/lib'
 else:
     SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
+    PREFIX= '/usr'
     if glob("/usr/lib/x86_64-linux-gnu/libsuitesparse*"):
         # Ubuntu/Debian
-        SUITESPARSE_LIB_DIR = "/usr/lib/x86_64-linux-gnu"
-        SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
+        BLAS_LIB_DIR = PREFIX + "/lib/x86_64-linux-gnu"
+        SUITESPARSE_LIB_DIR = PREFIX + "/lib/x86_64-linux-gnu"
     elif glob("/usr/lib/aarch64-linux-gnu/libsuitesparse*"):
         # Ubuntu/Debian
-        SUITESPARSE_LIB_DIR = "/usr/lib/aarch64-linux-gnu"
-        SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
+        BLAS_LIB_DIR = PREFIX + "/lib/aarch64-linux-gnu"
+        SUITESPARSE_LIB_DIR = PREFIX + "/lib/aarch64-linux-gnu"
     elif glob("/usr/lib64/libsuitesparse*"):
-        # CentOS/Fedora/RedHat
-        SUITESPARSE_LIB_DIR = "/usr/lib64"
-        SUITESPARSE_INC_DIR = "/usr/include/suitesparse"
+        # CentOS/Fedora/RedHat/AlmaLinux x86_64
+        BLAS_LIB_DIR = PREFIX + "/lib64"
+        SUITESPARSE_LIB_DIR = PREFIX + "/lib64"
     else:
         # Default
-        SUITESPARSE_LIB_DIR = '/usr/lib'
-        SUITESPARSE_INC_DIR = '/usr/include'
+        BLAS_LIB_DIR = PREFIX + "/lib"
+        SUITESPARSE_LIB_DIR = PREFIX + "/lib"
+
+    DSDP_INC_DIR = PREFIX + "/include/dsdp"
+    DSDP_LIB_DIR = PREFIX + "/lib"
+    FFTW_INC_DIR = PREFIX + "/include"
+    FFTW_LIB_DIR = PREFIX + "/lib"
+    GLPK_INC_DIR = PREFIX + "/include"
+    GLPK_LIB_DIR = PREFIX + "/lib"
+    GSL_INC_DIR = PREFIX + "/include/gsl"
+    GSL_LIB_DIR = PREFIX + "/lib"
+
 
 if sys.platform.startswith("win"):
     GSL_MACROS = [('GSL_DLL',''),('WIN32','')]
@@ -93,7 +88,6 @@ SUITESPARSE_SRC_DIR = ''
 MSVC=0
 
 # No modifications should be needed below this line.
-
 BLAS_NOUNDERSCORES = int(os.environ.get("CVXOPT_BLAS_NOUNDERSCORES",BLAS_NOUNDERSCORES)) == True
 BLAS_LIB = os.environ.get("CVXOPT_BLAS_LIB",BLAS_LIB)
 LAPACK_LIB = os.environ.get("CVXOPT_LAPACK_LIB",LAPACK_LIB)
@@ -212,6 +206,20 @@ else:
             SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
             glob('src/C/SuiteSparse_cvxopt_extra/umfpack/*'))
 
+if not SUITESPARSE_SRC_DIR:
+    amd = Extension('amd',
+        libraries = ['amd','suitesparseconfig'] + RT_LIB,
+        include_dirs = [SUITESPARSE_INC_DIR],
+        library_dirs = [SUITESPARSE_LIB_DIR],
+        sources = ['src/C/amd.c'])
+else:
+    amd = Extension('amd',
+        include_dirs = [SUITESPARSE_SRC_DIR + '/AMD/Include',
+            SUITESPARSE_SRC_DIR + '/SuiteSparse_config' ],
+        define_macros = MACROS + [('NTIMER', '1')],
+        sources = [ 'src/C/amd.c', SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
+        glob(SUITESPARSE_SRC_DIR + '/AMD/Source/*.c') )
+
 # Build for int or long?
 if sys.maxsize > 2**31: MACROS += [('DLONG',None)]
 
@@ -241,19 +249,6 @@ else:
             [SUITESPARSE_SRC_DIR + '/CHOLMOD/Check/cholmod_check.c'] +
             glob(SUITESPARSE_SRC_DIR + '/CHOLMOD/Supernodal/c*.c') )
 
-if not SUITESPARSE_SRC_DIR:
-    amd = Extension('amd',
-        libraries = ['amd','suitesparseconfig'] + RT_LIB,
-        include_dirs = [SUITESPARSE_INC_DIR],
-        library_dirs = [SUITESPARSE_LIB_DIR],
-        sources = ['src/C/amd.c'])
-else:
-    amd = Extension('amd',
-        include_dirs = [SUITESPARSE_SRC_DIR + '/AMD/Include',
-            SUITESPARSE_SRC_DIR + '/SuiteSparse_config' ],
-        define_macros = MACROS + [('NTIMER', '1')],
-        sources = [ 'src/C/amd.c', SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
-        glob(SUITESPARSE_SRC_DIR + '/AMD/Source/*.c') )
 
 misc_solvers = Extension('misc_solvers',
     libraries = LAPACK_LIB + BLAS_LIB,
