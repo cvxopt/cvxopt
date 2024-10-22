@@ -9,8 +9,8 @@ jobs:
     
     runs-on: windows-2019
     env:
-      SUITESPARSE_VERSION: 5.13.0
-      SUITESPARSE_SHA256: dad2d035136b927dead2427205c956f8e857825cec4e419e9a6eaa600aca730a
+      SUITESPARSE_VERSION: 7.8.2
+      SUITESPARSE_SHA256: 996c48c87baaeb5fc04bd85c7e66d3651a56fe749c531c60926d75b4db5d2181
       OPENBLAS_VERSION: 0.3.22
       CVXOPT_MSVC: 1
       CVXOPT_BUILD_DSDP: 0
@@ -22,7 +22,7 @@ jobs:
       matrix:
         suitesparse: [src]
         ARCH: [x64]
-        python-version: ['3.8','3.11'] 
+        python-version: ['3.9','3.13'] 
         include:
         - ARCH: x64
           MSVC_TARGET: 64

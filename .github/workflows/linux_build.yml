@@ -9,8 +9,8 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      SUITESPARSE_VERSION: 5.13.0
-      SUITESPARSE_SHA256: 59c6ca2959623f0c69226cf9afb9a018d12a37fab3a8869db5f6d7f83b6b147d
+      SUITESPARSE_VERSION: 7.8.2
+      SUITESPARSE_SHA256: 996c48c87baaeb5fc04bd85c7e66d3651a56fe749c531c60926d75b4db5d2181
       CVXOPT_BUILD_DSDP: 1
       CVXOPT_BUILD_FFTW: 1
       CVXOPT_BUILD_GLPK: 1
@@ -18,7 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ['3.7','3.11']
+        python-version: ['3.9','3.13']
         suitesparse: [src, lib]
         #suitesparse: [lib]
 
