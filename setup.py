@@ -221,7 +221,7 @@ else:
         glob(SUITESPARSE_SRC_DIR + '/AMD/Source/*.c') )
 
 # Build for int or long?
-if sys.maxsize > 2**31: MACROS += [('DLONG',None)]
+#if sys.maxsize > 2**31: MACROS += [('DLONG',None)]
 
 if not SUITESPARSE_SRC_DIR:
     cholmod = Extension('cholmod',
@@ -241,14 +241,14 @@ else:
         define_macros = MACROS + [('NPARTITION', '1'), ('NTIMER', '1')],
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = [ 'src/C/cholmod.c' ] +
-            [SUITESPARSE_SRC_DIR + '/AMD/Source/' + s for s in ['amd_postorder.c', 'amd_post_tree.c', 'amd_2.c']] +
-            [SUITESPARSE_SRC_DIR + '/COLAMD/Source/colamd.c'] +
+            [SUITESPARSE_SRC_DIR + '/AMD/Source/' + s for s in ['amd_postorder.c', 'amd_l_postorder.c', 'amd_post_tree.c', 'amd_l_post_tree.c', 'amd_2.c', 'amd_l2.c']] +
+            [SUITESPARSE_SRC_DIR + '/COLAMD/Source/' + s for s in ['colamd.c', 'colamd_l.c']] + 
             [SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
             glob(SUITESPARSE_SRC_DIR + '/CHOLMOD/Core/c*.c') +
             glob(SUITESPARSE_SRC_DIR + '/CHOLMOD/Cholesky/c*.c') +
-            [SUITESPARSE_SRC_DIR + '/CHOLMOD/Check/cholmod_check.c'] +
+            glob(SUITESPARSE_SRC_DIR + '/CHOLMOD/Utility/c*.c') +
+            [SUITESPARSE_SRC_DIR + '/CHOLMOD/Check/' + s for s in ['cholmod_check.c', 'cholmod_l_check.c']] +
             glob(SUITESPARSE_SRC_DIR + '/CHOLMOD/Supernodal/c*.c') )
-
 
 misc_solvers = Extension('misc_solvers',
     libraries = LAPACK_LIB + BLAS_LIB,
