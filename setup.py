@@ -220,9 +220,6 @@ else:
         sources = [ 'src/C/amd.c', SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
         glob(SUITESPARSE_SRC_DIR + '/AMD/Source/*.c') )
 
-# Build for int or long?
-#if sys.maxsize > 2**31: MACROS += [('DLONG',None)]
-
 if not SUITESPARSE_SRC_DIR:
     cholmod = Extension('cholmod',
         libraries = ['cholmod','colamd','amd','suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,

@@ -31,8 +31,8 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.9','3.13']
-        # suitesparse: [src, lib]
-        suitesparse: [lib]
+        suitesparse: [src, lib]
+        #suitesparse: [lib]
 
     steps:
     - name: Checkout source    
