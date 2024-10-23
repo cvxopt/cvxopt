@@ -9,8 +9,8 @@ jobs:
     
     runs-on: windows-2019
     env:
-      SUITESPARSE_VERSION: 5.13.0
-      SUITESPARSE_SHA256: dad2d035136b927dead2427205c956f8e857825cec4e419e9a6eaa600aca730a
+      SUITESPARSE_VERSION: 7.8.2
+      SUITESPARSE_SHA256: e88077d6df43bc09755d06505f8a5145975eb0d9010fca9e8f68072574274fb1
       OPENBLAS_VERSION: 0.3.22
       CVXOPT_MSVC: 1
       CVXOPT_BUILD_DSDP: 0
@@ -22,7 +22,7 @@ jobs:
       matrix:
         suitesparse: [src]
         ARCH: [x64]
-        python-version: ['3.8','3.11'] 
+        python-version: ['3.9','3.13'] 
         include:
         - ARCH: x64
           MSVC_TARGET: 64
@@ -42,7 +42,7 @@ jobs:
         fetch-depth: 0
 
     - name: Setup Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
         architecture: ${{ matrix.ARCH}}
