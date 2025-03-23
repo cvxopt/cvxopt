@@ -29,6 +29,7 @@ jobs:
           mkdir -p dist/linux
           echo "Tag: ${{ needs.tagging.outputs.new_tag }}" 
           echo "Tag: ${{ needs.tagging.outputs.new_tag }}" > dist/linux/maffay.txt
+          ls -R dist
           # publish more sophisticated stuff, e.g. wheels etc.
 
       - name: Create GitHub release with artifacts
@@ -36,5 +37,5 @@ jobs:
         with:
           tag_name: ${{ needs.tagging.outputs.new_tag }}
           generate_release_notes: true
-          files: dist/*
+          files: dist/linux/*
 
