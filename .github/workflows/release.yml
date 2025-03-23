@@ -26,9 +26,10 @@ jobs:
       # write some files into a dist folder
       - name: Write
         run: |
-          mkdir -p dist
+          mkdir -p dist/linux
           echo "Tag: ${{ needs.tagging.outputs.new_tag }}" 
-          touch dist/maffay.txt
+          echo "Tag: ${{ needs.tagging.outputs.new_tag }}" > dist/linux/maffay.txt
+          # publish more sophisticated stuff, e.g. wheels etc.
 
       - name: Create GitHub release with artifacts
         uses: softprops/action-gh-release@v2
