@@ -27,13 +27,13 @@ jobs:
       - name: Write
         run: |
           mkdir -p dist
-          echo "Tag: ${{ needs.tagging.output.new_tag }}" 
+          echo "Tag: ${{ needs.tagging.outputs.new_tag }}" 
           touch dist/maffay.txt
 
       - name: Create GitHub release with artifacts
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ needs.tagging.output.new_tag }}
+          tag_name: ${{ needs.tagging.outputs.new_tag }}
           generate_release_notes: true
           files: dist/*
 
