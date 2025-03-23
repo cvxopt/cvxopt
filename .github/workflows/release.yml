@@ -27,6 +27,7 @@ jobs:
       - name: Write
         run: |
           mkdir -p dist
+          echo "Tag: ${{ needs.tagging.output.new_tag }}" 
           touch dist/maffay.txt
 
       - name: Create GitHub release with artifacts
