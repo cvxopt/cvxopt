@@ -26,16 +26,35 @@ jobs:
       # write some files into a dist folder
       - name: Write
         run: |
-          mkdir -p dist/linux
+          mkdir -p dist
           echo "Tag: ${{ needs.tagging.outputs.new_tag }}" 
-          echo "Tag: ${{ needs.tagging.outputs.new_tag }}" > dist/linux/maffay.txt
+          echo "Tag: ${{ needs.tagging.outputs.new_tag }}" > dist/maffay.txt
           ls -R dist
-          # publish more sophisticated stuff, e.g. wheels etc.
+          # todo: build wheels etc.
 
       - name: Create GitHub release with artifacts
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.tagging.outputs.new_tag }}
           generate_release_notes: true
-          files: dist/linux/*
+          files: dist/*
 
+  # this will be publication to PyPI
+  #publish:
+  #  needs: tag
+  #  runs-on: ubuntu-latest
+  #  environment: release
+
+  #  permissions:
+  #    contents: read
+  #    # This permission is required for trusted publishing.
+  #    id-token: write
+
+  #  steps:
+  #    - name: Checkout [${{ github.repository }}]
+  #      uses: actions/checkout@v4
+
+  #    - uses: actions/download-artifact@v4
+  #      with:
+  #        name: dist
+  #        path: dist
