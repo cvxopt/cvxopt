@@ -176,14 +176,17 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
         goto done;
     }
 
-    if (opts && PyDict_Check(opts))
+    if (opts && PyDict_Check(opts)) {
+        Py_INCREF(opts);
         param = opts;
+    }
     else
         param = PyObject_GetAttrString(dsdp_module, "options");
     if (!param || !PyDict_Check(param)){
         PyErr_SetString(PyExc_AttributeError, "missing dsdp.options "
             " dictionary");
         t = NULL;
+        Py_XDECREF(param);
         goto done;
     }
     while (PyDict_Next(param, &pos, &key, &value))
