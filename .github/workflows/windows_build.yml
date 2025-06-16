@@ -22,7 +22,7 @@ jobs:
       matrix:
         suitesparse: [src]
         ARCH: [x64]
-        python-version: ['3.9','3.13.5']
+        python-version: ['3.12']
         include:
         - ARCH: x64
           MSVC_TARGET: 64
