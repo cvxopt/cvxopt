@@ -7,7 +7,7 @@ jobs:
 
 #    if: false
     
-    runs-on: windows-2019
+    runs-on: windows-2022
     env:
       SUITESPARSE_VERSION: 7.8.2
       SUITESPARSE_SHA256: e88077d6df43bc09755d06505f8a5145975eb0d9010fca9e8f68072574274fb1
@@ -22,7 +22,7 @@ jobs:
       matrix:
         suitesparse: [src]
         ARCH: [x64]
-        python-version: ['3.9','3.13'] 
+        python-version: ['3.12']
         include:
         - ARCH: x64
           MSVC_TARGET: 64
@@ -83,12 +83,12 @@ jobs:
         echo "${SUITESPARSE_SHA256}  v${SUITESPARSE_VERSION}.zip" > SuiteSparse.sha256
         sha256sum -c SuiteSparse.sha256
         unzip v${SUITESPARSE_VERSION}.zip
-        echo "CVXOPT_SUITESPARSE_SRC_DIR=${{github.workspace}}/SuiteSparse-${{env.SUITESPARSE_VERSION}}" >> $GITHUB_ENV
+        echo "CVXOPT_SUITESPARSE_SRC_DIR=SuiteSparse-${{env.SUITESPARSE_VERSION}}" >> $GITHUB_ENV
 
     - name: Build/install CVXOPT
       shell: cmd
       run: |
-        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars${{matrix.MSVC_TARGET}}.bat"
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars${{matrix.MSVC_TARGET}}.bat"
         python -m build --wheel
         pip install --no-index --find-links=${{github.workspace}}\dist cvxopt
 

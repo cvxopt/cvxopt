@@ -1,12 +1,33 @@
-[build-system]
-requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
-build-backend = "setuptools.build_meta"
-
-[tool.setuptools_scm]
-write_to = "src/python/_version.py"
-
-[cvxopt]
+[project]
+name = "cvxopt"
 dynamic = ["version"]
+description = "Convex optimization package"
+authors = [
+    {name = "M. Andersen", email = "martin.skovgaard.andersen@gmail.com"},
+    {name = "J. Dahl", email = "dahl.joachim@gmail.com"},
+    {name = "L. Vandenberghe", email = "vandenbe@ee.ucla.edu"}
+]
+dependencies = []
+requires-python = ">=3.5"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: C",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering",
+]
+
+[project.urls]
+Homepage = "https://cvxopt.org"
+Source = "https://github.com/cvxopt/cvxopt"
+
+[build-system]
+requires = ["setuptools>=64", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
 test-requires = "pytest"
@@ -26,3 +47,6 @@ before-all = "./.ci-support/before_all_macos.sh"
 [tool.cibuildwheel.windows]
 environment = {CVXOPT_BUILD_DSDP="0", CVXOPT_BUILD_FFTW="0", CVXOPT_BUILD_GLPK="1", CVXOPT_BUILD_GSL="1", CVXOPT_MSVC="1"}
 before-all = ".ci-support\before_all_windows.bat"
+
+[tool.setuptools_scm]
+write_to = "src/python/_version.py"
