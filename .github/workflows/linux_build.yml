@@ -46,7 +46,7 @@ jobs:
         echo "${SUITESPARSE_SHA256}  v${SUITESPARSE_VERSION}.tar.gz" > SuiteSparse.sha256
         sha256sum -c SuiteSparse.sha256
         tar -xf v${SUITESPARSE_VERSION}.tar.gz
-        echo "CVXOPT_SUITESPARSE_SRC_DIR=${{github.workspace}}/SuiteSparse-${SUITESPARSE_VERSION}" >> $GITHUB_ENV
+        echo "CVXOPT_SUITESPARSE_SRC_DIR=SuiteSparse-${SUITESPARSE_VERSION}" >> $GITHUB_ENV
 
     - name: Build/install CVXOPT
       run: |
