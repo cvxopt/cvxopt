@@ -4072,6 +4072,10 @@ def sdp(c, Gl = None, hl = None, Gs = None, hs = None, A = None, b = None,
                     ind += ms[k]**2
                 dims = {'l': ml, 's': ms, 'q': []}
                 dinfres = misc.snrm2(rz, dims) / resz0  / -pcost
+        
+        for k in range(len(ms)):
+            zs[k] = zs[k] + zs[k].T
+            blas.axpy(zs[k], zs[k], alpha=-0.5, incx=zs[k].size[0]+1, incy=zs[k].size[0]+1)
 
         return {'status': status, 'x': x, 'sl': sl, 'ss': ss, 'y': y,
             'zl': zl, 'zs': zs, 'primal objective': pcost,
