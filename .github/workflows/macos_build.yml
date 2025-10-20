@@ -12,17 +12,17 @@ jobs:
       CFLAGS: -target arm64-apple-macos14.0
       ARCHFLAGS: -arch arm64
       _PYTHON_HOST_PLATFORM: macosx-14.0-arm64
-      SUITESPARSE_VERSION: 7.8.2
-      SUITESPARSE_SHA256: 996c48c87baaeb5fc04bd85c7e66d3651a56fe749c531c60926d75b4db5d2181
+      SUITESPARSE_VERSION: 7.11.0
+      SUITESPARSE_SHA256: 93ed4c4e546a49fc75884c3a8b807d5af4a91e39d191fbbc60a07380b12a35d1
       DSDP_VERSION: 5.8
       DSDP_SHA256: 26aa624525a636de272c0b329e2dfd01a0d5b7827f1c1c76f393d71e37dead70
       CVXOPT_SUITESPARSE_LIB_DIR: /opt/homebrew/lib
       CVXOPT_SUITESPARSE_INC_DIR: /opt/homebrew/include/suitesparse
       CVXOPT_DSDP_LIB_DIR: /usr/local/lib
       CVXOPT_DSDP_INC_DIR: /usr/local/include
-      CVXOPT_BLAS_LIB_DIR: /opt/homebrew/opt/openblas/lib
-      CVXOPT_BLAS_LIB: openblas
-      CVXOPT_LAPACK_LIB: openblas
+      CVXOPT_BLAS_LIB_DIR: /usr/lib
+      CVXOPT_BLAS_LIB: blas
+      CVXOPT_LAPACK_LIB: lapack
       CVXOPT_BUILD_DSDP: 0
       CVXOPT_BUILD_FFTW: 1
       CVXOPT_BUILD_GLPK: 1
@@ -30,7 +30,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ['3.9','3.13']
+        python-version: ['3.14']
         suitesparse: [src, lib]
         #suitesparse: [lib]
 
@@ -48,7 +48,7 @@ jobs:
     - name: Install dependencies
       run: |
         brew --prefix
-        brew install openblas suite-sparse glpk gsl fftw
+        brew install suite-sparse glpk gsl fftw
         python -m pip install --upgrade pip
         python -m pip install --upgrade setuptools setuptools_scm build wheel pytest pytest-cov coveralls 
 
@@ -70,7 +70,7 @@ jobs:
         tar -xf DSDP${DSDP_VERSION}.tar.gz
         cd DSDP${DSDP_VERSION}
         patch -p1 < ${{github.workspace}}/.github/workflows/dsdp.patch
-        make PREFIX=/usr/local ARCH_FLAGS="$ARCHFLAGS" LAPACKBLAS="-L${CVXOPT_BLAS_LIB_DIR} -l${CVXOPT_LAPACK_LIB} -l${CVXOPT_BLAS_LIB}" IS_OSX=1 DSDPROOT=`pwd` install
+        make PREFIX=/usr/local ARCH_FLAGS="$ARCHFLAGS" LAPACKBLAS="-DACCELERATE_NEW_LAPACK -framework Accelerate -L${CVXOPT_BLAS_LIB_DIR} -l${CVXOPT_LAPACK_LIB} -l${CVXOPT_BLAS_LIB}" IS_OSX=1 DSDPROOT=`pwd` install
 
     - name: Build/install CVXOPT
       run: |

@@ -26,6 +26,7 @@ BUILD_DSDP = 0
 
 # Guess prefix and library directories
 if platform.system() == "Darwin":
+    BLAS_LIB_DIR = '/usr/lib'
     # macOS
     if platform.processor() == "arm":
         # Apple Silicon
@@ -33,7 +34,7 @@ if platform.system() == "Darwin":
     else:
         # Intel
         PREFIX = '/usr/local'
-    BLAS_LIB_DIR = PREFIX + '/opt/openblas/lib'
+    #BLAS_LIB_DIR = PREFIX + '/opt/openblas/lib'  # Example for OpenBLAS via Homebrew
     SUITESPARSE_LIB_DIR = PREFIX + '/lib'
     SUITESPARSE_INC_DIR = PREFIX + '/include/suitesparse'
     DSDP_INC_DIR = PREFIX + '/include/dsdp'
