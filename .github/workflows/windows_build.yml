@@ -9,9 +9,9 @@ jobs:
     
     runs-on: windows-2022
     env:
-      SUITESPARSE_VERSION: 7.8.2
-      SUITESPARSE_SHA256: e88077d6df43bc09755d06505f8a5145975eb0d9010fca9e8f68072574274fb1
-      OPENBLAS_VERSION: 0.3.22
+      SUITESPARSE_VERSION: 7.11.0
+      SUITESPARSE_SHA256: decfcd86b7129b7a2f9624ed7cafb2e1215ef4858a610320a24a8987e310fb76
+      OPENBLAS_VERSION: 0.3.30
       CVXOPT_MSVC: 1
       CVXOPT_BUILD_DSDP: 0
       CVXOPT_BUILD_FFTW: 0
@@ -21,13 +21,12 @@ jobs:
     strategy:
       matrix:
         suitesparse: [src]
-        ARCH: [x64]
-        python-version: ['3.12']
+        python-version: ['3.14']
         include:
         - ARCH: x64
           MSVC_TARGET: 64
           PLAT_NAME: win-amd64
-          OPENBLAS_SHA256: ff08774f0d33077c46b501abffc8ddf90a246c1d714ec8aedccd1de45286d566
+          OPENBLAS_SHA256: 8b04387766efc05c627e26d24797ec0d4ed4c105ec14fa7400aa84a02db22b66
 
         # - ARCH: x86
         #   MSVC_TARGET: 32
@@ -61,8 +60,8 @@ jobs:
     - name: Get OpenBLAS and copy to workspace
       shell: msys2 {0}
       run: |
-          wget https://github.com/xianyi/OpenBLAS/releases/download/v${OPENBLAS_VERSION}/OpenBLAS-${OPENBLAS_VERSION}-${{matrix.ARCH}}.zip
-          wget https://raw.githubusercontent.com/xianyi/OpenBLAS/v${OPENBLAS_VERSION}/LICENSE -O LICENSE_OpenBLAS-${OPENBLAS_VERSION}
+          wget https://github.com/OpenMathLib/OpenBLAS/releases/download/v${OPENBLAS_VERSION}/OpenBLAS-${OPENBLAS_VERSION}-${{matrix.ARCH}}.zip
+          wget https://raw.githubusercontent.com/OpenMathLib/OpenBLAS/v${OPENBLAS_VERSION}/LICENSE -O LICENSE_OpenBLAS-${OPENBLAS_VERSION}
           echo "${{matrix.OPENBLAS_SHA256}}  OpenBLAS-${OPENBLAS_VERSION}-${{matrix.ARCH}}.zip" > OpenBLAS.sha256
           sha256sum -c OpenBLAS.sha256
           mkdir src/python/.libs
