@@ -5,7 +5,7 @@ Routines for specifying and solving convex optimization problems with
 piecewise-linear objective and constraint functions.
 """
 
-# Copyright 2012-2023 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2026 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 

@@ -1,21 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nonlinear Convex Optimization &mdash; CVXOPT User&#39;s Guide</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=3b3401d5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
@@ -28,14 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CVXOPT User's Guide
           </a>
-              <div class="version">
-                1.3.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -51,9 +52,18 @@
 <li class="toctree-l1"><a class="reference internal" href="spsolvers.html">Sparse Linear Equations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="coneprog.html">Cone Programming</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Nonlinear Convex Optimization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#problems-with-nonlinear-objectives">Problems with Nonlinear Objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#problems-with-linear-objectives">Problems with Linear Objectives</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#geometric-programming">Geometric Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#problems-with-nonlinear-objectives">Problems with Nonlinear Objectives</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.cp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.cp</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#problems-with-linear-objectives">Problems with Linear Objectives</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.cpl"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.cpl</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#geometric-programming">Geometric Programming</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.gp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.gp</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#exploiting-structure">Exploiting Structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#algorithm-parameters">Algorithm Parameters</a></li>
 </ul>
@@ -77,8 +87,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Nonlinear Convex Optimization</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Nonlinear Convex Optimization</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -88,7 +98,7 @@
            <div itemprop="articleBody">
              
   <section id="nonlinear-convex-optimization">
-<span id="c-solvers"></span><h1>Nonlinear Convex Optimization<a class="headerlink" href="#nonlinear-convex-optimization" title="Permalink to this heading"></a></h1>
+<span id="c-solvers"></span><h1>Nonlinear Convex Optimization<a class="headerlink" href="#nonlinear-convex-optimization" title="Link to this heading"></a></h1>
 <p>In this chapter we consider nonlinear convex optimization problems of the
 form</p>
 <div class="math">
@@ -111,13 +121,13 @@ implemented that exploit structure in specific classes of problems.
 The last section
 describes the algorithm parameters that control the solvers.</p>
 <section id="problems-with-nonlinear-objectives">
-<span id="s-cp"></span><h2>Problems with Nonlinear Objectives<a class="headerlink" href="#problems-with-nonlinear-objectives" title="Permalink to this heading"></a></h2>
+<span id="s-cp"></span><h2>Problems with Nonlinear Objectives<a class="headerlink" href="#problems-with-nonlinear-objectives" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.solvers.cp">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">cp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">kktsolver</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cp" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">cp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">kktsolver</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cp" title="Link to this definition"></a></dt>
 <dd><p>Solves a convex optimization problem</p>
 <div class="math" id="equation-e-nlcp">
-<p><span class="eqno">(1)<a class="headerlink" href="#equation-e-nlcp" title="Permalink to this equation"></a></span><img src="_images/math/8d26408b917ad631b6ae90f7650b19b691fe2bb6.png" alt="\begin{array}{ll}
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-e-nlcp" title="Link to this equation"></a></span><img src="_images/math/8d26408b917ad631b6ae90f7650b19b691fe2bb6.png" alt="\begin{array}{ll}
     \mbox{minimize}   &amp; f_0(x) \\
     \mbox{subject to} &amp; f_k(x) \leq 0, \quad k=1,\ldots,m \\
                       &amp; G x \preceq h  \\
@@ -282,11 +292,11 @@ feasible and that</p>
 \end{array}"/></p>
 </div><p>The function <code class="xref py py-func docutils literal notranslate"><span class="pre">acent</span></code> defined  below solves the problem, assuming
 it is solvable.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">log</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">log</span>
 
-<span class="k">def</span> <span class="nf">acent</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">acent</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span>
-    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
         <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span> <span class="k">return</span> <span class="kc">None</span>
         <span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="nb">sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
@@ -306,11 +316,11 @@ problem</p>
 \end{array}
 \qquad \phi(u) = \sqrt{\rho + u^2},"/></p>
 </div><p>where <img class="math" src="_images/math/4357a4e29a351ac6ae90924cc00e06184fbd8412.png" alt="A \in\mathbf{R}^{m\times n}"/>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">div</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">div</span>
 
-<span class="k">def</span> <span class="nf">robls</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">rho</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">robls</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">rho</span><span class="p">):</span>
     <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span>
-    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">A</span><span class="o">*</span><span class="n">x</span><span class="o">-</span><span class="n">b</span>
         <span class="n">w</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">rho</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
@@ -345,9 +355,9 @@ problem</p>
           20 &amp; 10 &amp; 40 \\ 10 &amp; 80 &amp; 10 \\ 40 &amp; 10 &amp; 15
           \end{array}\right].
 \end{array}"/></p>
-</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">solvers</span>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">solvers</span>
 
-<span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">F</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
      <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
      <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>  <span class="k">return</span> <span class="kc">None</span>
      <span class="n">u</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
@@ -372,10 +382,10 @@ problem</p>
 </div></blockquote>
 </section>
 <section id="problems-with-linear-objectives">
-<span id="s-cpl"></span><h2>Problems with Linear Objectives<a class="headerlink" href="#problems-with-linear-objectives" title="Permalink to this heading"></a></h2>
+<span id="s-cpl"></span><h2>Problems with Linear Objectives<a class="headerlink" href="#problems-with-linear-objectives" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.solvers.cpl">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">cpl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">kktsolver</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cpl" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">cpl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">kktsolver</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.cpl" title="Link to this definition"></a></dt>
 <dd><p>Solves a convex optimization problem with a linear objective</p>
 <div class="math">
 <p><img src="_images/math/86cec286c2bbedaa7760445bc5a1a242cb84d2c2.png" alt="\begin{array}{ll}
@@ -572,10 +582,10 @@ w\in\reals^5, \qquad h\in\reals^5,"/></p>
 constraints.  The code belows defines a function <code class="xref py py-func docutils literal notranslate"><span class="pre">floorplan</span></code>
 that solves the problem by calling <code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code>, then applies it to
 4 instances, and creates a figure.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pylab</span>
-<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span>
 
-<span class="k">def</span> <span class="nf">floorplan</span><span class="p">(</span><span class="n">Amin</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">floorplan</span><span class="p">(</span><span class="n">Amin</span><span class="p">):</span>
 
     <span class="c1">#     minimize    W+H</span>
     <span class="c1">#     subject to  Amink / hk &lt;= wk, k = 1,..., 5</span>
@@ -608,7 +618,7 @@ that solves the problem by calling <code class="xref py py-func docutils literal
 
     <span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">20</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">])</span>
 
-    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="k">return</span> <span class="mi">5</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mi">17</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="p">[</span><span class="mf">1.0</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">17</span><span class="p">:])</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>  <span class="k">return</span> <span class="kc">None</span>
         <span class="n">f</span> <span class="o">=</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">12</span><span class="p">:</span><span class="mi">17</span><span class="p">]</span> <span class="o">+</span> <span class="n">div</span><span class="p">(</span><span class="n">Amin</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">17</span><span class="p">:])</span>
@@ -700,15 +710,16 @@ that solves the problem by calling <code class="xref py py-func docutils literal
 <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/floorplan.png"><img alt="_images/floorplan.png" src="_images/floorplan.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/floorplan.png"><img alt="_images/floorplan.png" src="_images/floorplan.png" style="width: 600px;" />
+</a>
 </dd>
 </dl>
 </section>
 <section id="geometric-programming">
-<span id="s-gp"></span><h2>Geometric Programming<a class="headerlink" href="#geometric-programming" title="Permalink to this heading"></a></h2>
+<span id="s-gp"></span><h2>Geometric Programming<a class="headerlink" href="#geometric-programming" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.solvers.gp">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">gp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.gp" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">gp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.gp" title="Link to this definition"></a></dt>
 <dd><p>Solves a geometric program in convex form</p>
 <div class="math">
 <p><img src="_images/math/6dd83f47897e8af1a287a2cb577906b4c142c166.png" alt="\newcommand{\lse}{\mathop{\mathbf{lse}}}
@@ -801,7 +812,7 @@ The  posynomial form of the problem is</p>
     &amp;   (1/\delta)dw^{-1} \leq 1
  \end{array}"/></p>
 </div><p>with variables <img class="math" src="_images/math/4c120f773ab4e1c59ad2bd44aae969ce24dd190a.png" alt="h"/>, <img class="math" src="_images/math/cc87ee665749db882f94e0d3707eb23e39638650.png" alt="w"/>, <img class="math" src="_images/math/badad346f6fbe2e237af99bfbd9a93a4da53a3da.png" alt="d"/>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">solvers</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">solvers</span>
 
 <span class="n">Aflr</span>  <span class="o">=</span> <span class="mf">1000.0</span>
 <span class="n">Awall</span> <span class="o">=</span> <span class="mf">100.0</span>
@@ -820,7 +831,7 @@ The  posynomial form of the problem is</p>
 </div>
 </section>
 <section id="exploiting-structure">
-<span id="s-nlcp"></span><h2>Exploiting Structure<a class="headerlink" href="#exploiting-structure" title="Permalink to this heading"></a></h2>
+<span id="s-nlcp"></span><h2>Exploiting Structure<a class="headerlink" href="#exploiting-structure" title="Link to this heading"></a></h2>
 <p>By default, the functions <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> and
 <a class="reference internal" href="#cvxopt.solvers.cpl" title="cvxopt.solvers.cpl"><code class="xref py py-func docutils literal notranslate"><span class="pre">cpl</span></code></a> do not exploit problem
 structure.  Two mechanisms are provided for implementing customized solvers
@@ -830,7 +841,7 @@ that take advantage of problem structure.</p>
 <a class="reference internal" href="#cvxopt.solvers.cp" title="cvxopt.solvers.cp"><code class="xref py py-func docutils literal notranslate"><span class="pre">cp</span></code></a> is the
 solution of a set of linear equations (<em>KKT equations</em>) of the form</p>
 <div class="math" id="equation-e-cp-kkt">
-<p><span class="eqno">(2)<a class="headerlink" href="#equation-e-cp-kkt" title="Permalink to this equation"></a></span><img src="_images/math/7eac6332e16c5424a4b290d2b9f9445c5214a1d1.png" alt="\left[\begin{array}{ccc}
+<p><span class="eqno">(2)<a class="headerlink" href="#equation-e-cp-kkt" title="Link to this equation"></a></span><img src="_images/math/7eac6332e16c5424a4b290d2b9f9445c5214a1d1.png" alt="\left[\begin{array}{ccc}
     H        &amp; A^T &amp; \tilde G^T \\
     A        &amp; 0   &amp; 0  \\
     \tilde G &amp; 0   &amp; -W^T W
@@ -1040,10 +1051,10 @@ the matrix inversion lemma. We first solve</p>
 u_x = \diag(d)^{-1}(b_x/z_0 - A^T v)."/></p>
 </div><p>The following code follows this method.  It also uses BLAS functions
 for matrix-matrix and matrix-vector products.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">base</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">base</span>
 
-<span class="k">def</span> <span class="nf">l2ac</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">l2ac</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Solves</span>
 
 <span class="sd">        minimize  (1/2) * ||A*x-b||_2^2 - sum log (1-xi^2)</span>
@@ -1052,7 +1063,7 @@ for matrix-matrix and matrix-vector products.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span>
-    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">F</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
         <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
@@ -1068,7 +1079,7 @@ for matrix-matrix and matrix-vector products.</p>
         <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">gradf</span><span class="o">.</span><span class="n">T</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">def</span> <span class="nf">Hf</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">Hf</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">):</span>
                <span class="c1"># v := alpha * (A&#39;*A*u + 2*((1+w)./(1-w)).*u + beta *v</span>
                <span class="n">v</span> <span class="o">*=</span> <span class="n">beta</span>
                <span class="n">v</span> <span class="o">+=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">mul</span><span class="p">(</span><span class="n">div</span><span class="p">(</span><span class="mf">1.0</span><span class="o">+</span><span class="n">w</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">w</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span> <span class="n">u</span><span class="p">)</span>
@@ -1089,14 +1100,14 @@ for matrix-matrix and matrix-vector products.</p>
 
     <span class="n">S</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">m</span><span class="p">))</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-    <span class="k">def</span> <span class="nf">Fkkt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Fkkt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">div</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">**-</span><span class="mf">0.5</span>
         <span class="n">Asc</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">spdiag</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
         <span class="n">blas</span><span class="o">.</span><span class="n">syrk</span><span class="p">(</span><span class="n">Asc</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
         <span class="n">S</span><span class="p">[::</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">1.0</span>
         <span class="n">lapack</span><span class="o">.</span><span class="n">potrf</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
             <span class="n">x</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">mul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ds</span><span class="p">)</span> <span class="o">/</span> <span class="n">a</span>
             <span class="n">blas</span><span class="o">.</span><span class="n">gemv</span><span class="p">(</span><span class="n">Asc</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
             <span class="n">lapack</span><span class="o">.</span><span class="n">potrs</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
@@ -1109,7 +1120,7 @@ for matrix-matrix and matrix-vector products.</p>
 </div>
 </section>
 <section id="algorithm-parameters">
-<span id="s-parameters2"></span><h2>Algorithm Parameters<a class="headerlink" href="#algorithm-parameters" title="Permalink to this heading"></a></h2>
+<span id="s-parameters2"></span><h2>Algorithm Parameters<a class="headerlink" href="#algorithm-parameters" title="Link to this heading"></a></h2>
 <p>The following algorithm control parameters are accessible via the
 dictionary <code class="xref py py-attr docutils literal notranslate"><span class="pre">solvers.options</span></code>.  By default the dictionary
 is empty and the default values of the parameters are used.</p>
@@ -1132,7 +1143,7 @@ off (default: <code class="xref py py-const docutils literal notranslate"><span 
 </dd>
 </dl>
 <p>For example the command</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">solvers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 </pre></div>
 </div>
@@ -1184,8 +1195,8 @@ same stopping criteria (with <img class="math" src="_images/math/459f00b80184047
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on Aug 09, 2023.
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2026, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on Feb 07, 2026.
       </span></p>
   </div>
 
@@ -1205,7 +1216,7 @@ same stopping criteria (with <img class="math" src="_images/math/459f00b80184047
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 5.0.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 8.2.3.
     </div>
 
 </body>

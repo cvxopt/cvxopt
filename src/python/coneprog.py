@@ -2,7 +2,7 @@
 Solver for linear and quadratic cone programs.
 """
 
-# Copyright 2012-2023 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2026 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 #

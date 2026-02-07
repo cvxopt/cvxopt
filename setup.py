@@ -112,10 +112,12 @@ DSDP_INC_DIR = os.environ.get("CVXOPT_DSDP_INC_DIR",DSDP_INC_DIR)
 SUITESPARSE_LIB_DIR = os.environ.get("CVXOPT_SUITESPARSE_LIB_DIR",SUITESPARSE_LIB_DIR)
 SUITESPARSE_INC_DIR = os.environ.get("CVXOPT_SUITESPARSE_INC_DIR",SUITESPARSE_INC_DIR)
 SUITESPARSE_SRC_DIR = os.environ.get("CVXOPT_SUITESPARSE_SRC_DIR",SUITESPARSE_SRC_DIR)
+if type(SUITESPARSE_INC_DIR) is str: SUITESPARSE_INC_DIR = SUITESPARSE_INC_DIR.strip().split(';')
 MSVC = int(os.environ.get("CVXOPT_MSVC",MSVC)) == True
 PYTHON_REQUIRES = (
     '>=3, !=3.0.*, !=3.1.*, '
-    '!=3.2.*, !=3.3.*, !=3.4.*')
+    '!=3.2.*, !=3.3.*, !=3.4.*, '
+    '!=3.5.*, !=3.6.*, !=3.7.*')
 INSTALL_REQUIRES = os.environ.get("CVXOPT_INSTALL_REQUIRES",[])
 if type(INSTALL_REQUIRES) is str: INSTALL_REQUIRES = INSTALL_REQUIRES.strip().split(';')
 
@@ -187,7 +189,7 @@ lapack = Extension('lapack', libraries = LAPACK_LIB + BLAS_LIB,
 if not SUITESPARSE_SRC_DIR:
     umfpack = Extension('umfpack',
         libraries = ['umfpack','cholmod','amd','colamd','suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
-        include_dirs = [SUITESPARSE_INC_DIR],
+        include_dirs = SUITESPARSE_INC_DIR,
         library_dirs = [SUITESPARSE_LIB_DIR, BLAS_LIB_DIR],
         sources = ['src/C/umfpack.c'])
 else:
@@ -210,7 +212,7 @@ else:
 if not SUITESPARSE_SRC_DIR:
     amd = Extension('amd',
         libraries = ['amd','suitesparseconfig'] + RT_LIB,
-        include_dirs = [SUITESPARSE_INC_DIR],
+        include_dirs = SUITESPARSE_INC_DIR,
         library_dirs = [SUITESPARSE_LIB_DIR],
         sources = ['src/C/amd.c'])
 else:
@@ -224,7 +226,7 @@ else:
 if not SUITESPARSE_SRC_DIR:
     cholmod = Extension('cholmod',
         libraries = ['cholmod','colamd','amd','suitesparseconfig'] + LAPACK_LIB + BLAS_LIB + RT_LIB,
-        include_dirs = [SUITESPARSE_INC_DIR],
+        include_dirs = SUITESPARSE_INC_DIR,
         library_dirs = [SUITESPARSE_LIB_DIR, BLAS_LIB_DIR],
         sources = [ 'src/C/cholmod.c' ])
 else:

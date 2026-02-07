@@ -8,9 +8,9 @@ authors = [
     {name = "L. Vandenberghe", email = "vandenbe@ee.ucla.edu"}
 ]
 dependencies = []
-requires-python = ">=3.5"
+requires-python = ">=3.8"
 readme = "README.md"
-license = "GPL-3.0-or-later"
+license = { file = "LICENSE" }
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Science/Research",
@@ -37,11 +37,14 @@ test-command = "pytest {project}/tests"
 archs = "x86_64 aarch64"
 manylinux-x86_64-image = "manylinux_2_28"
 manylinux-aarch64-image = "manylinux_2_28"
-environment = {CVXOPT_BUILD_DSDP="1", CVXOPT_BUILD_FFTW="1", CVXOPT_BUILD_GLPK="1", CVXOPT_BUILD_GSL="1", CVXOPT_BLAS_LIB="openblas", CVXOPT_LAPACK_LIB="openblas", CVXOPT_DSDP_LIB_DIR="/usr/local/lib"}
+musllinux-x86_64-image = "musllinux_1_2"
+musllinux-aarch64-image = "musllinux_1_2"
+environment = {CVXOPT_BUILD_DSDP="1", CVXOPT_BUILD_FFTW="1", CVXOPT_BUILD_GLPK="1", CVXOPT_BUILD_GSL="1", CVXOPT_BLAS_LIB="openblas", CVXOPT_LAPACK_LIB="openblas", CVXOPT_SUITESPARSE_INC_DIR="/usr/include/suitesparse;/usr/include/suitesparse/suitesparse"}
 before-all = "./.ci-support/before_all_linux.sh"
 
 [tool.cibuildwheel.macos]
-environment = {CVXOPT_BUILD_DSDP="1", CVXOPT_BUILD_FFTW="1", CVXOPT_BUILD_GLPK="1", CVXOPT_BUILD_GSL="1", CVXOPT_DSDP_LIB_DIR="/usr/local/lib"}
+archs = "x86_64 arm64"
+environment = {CVXOPT_BUILD_DSDP="1", CVXOPT_BUILD_FFTW="1", CVXOPT_BUILD_GLPK="1", CVXOPT_BUILD_GSL="1", CVXOPT_DSDP_LIB_DIR=".local/lib", CVXOPT_DSDP_INC_DIR=".local/include"}
 before-all = "./.ci-support/before_all_macos.sh"
 
 [tool.cibuildwheel.windows]

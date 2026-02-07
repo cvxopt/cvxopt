@@ -1,21 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>C API &mdash; CVXOPT User&#39;s Guide</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=3b3401d5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
@@ -28,14 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CVXOPT User's Guide
           </a>
-              <div class="version">
-                1.3.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -74,8 +75,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>C API</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">C API</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -85,7 +86,7 @@
            <div itemprop="articleBody">
              
   <section id="c-api">
-<span id="c-capi"></span><h1>C API<a class="headerlink" href="#c-api" title="Permalink to this heading"></a></h1>
+<span id="c-capi"></span><h1>C API<a class="headerlink" href="#c-api" title="Link to this heading"></a></h1>
 <p>The API can be used to extend CVXOPT with interfaces to external C routines
 and libraries.  A C program that creates or manipulates the dense or sparse
 matrix objects defined in CVXOPT must include the <code class="xref py py-const docutils literal notranslate"><span class="pre">cvxopt.h</span></code> header
@@ -96,37 +97,37 @@ module initialization from the <code class="xref py py-mod docutils literal notr
 the API:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#if PY_MAJOR_VERSION &gt;= 3</span>
 
-<span class="k">static</span><span class="w"> </span><span class="n">PyModuleDef</span><span class="w"> </span><span class="n">blas_module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">PyModuleDef_HEAD_INIT</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s">&quot;blas&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">blas__doc__</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="mi">-1</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">blas_functions</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+<span class="k">static</span><span class="w"> </span><span class="n">PyModuleDef</span><span class="w"> </span><span class="n">blas_module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">PyModuleDef_HEAD_INIT</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;blas&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">blas__doc__</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">-1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">blas_functions</span><span class="p">,</span>
+<span class="w">    </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span>
+<span class="p">};</span>
 
-<span class="n">PyMODINIT_FUNC</span><span class="w"> </span><span class="nf">PyInit_blas</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">m</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PyModule_Create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">blas_module</span><span class="p">)))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">import_cvxopt</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">m</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="n">PyMODINIT_FUNC</span><span class="w"> </span><span class="nf">PyInit_blas</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">m</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PyModule_Create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">blas_module</span><span class="p">)))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">import_cvxopt</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">m</span><span class="p">;</span>
+<span class="p">}</span>
 
 <span class="cp">#else</span>
 
-<span class="n">PyMODINIT_FUNC</span><span class="w"> </span><span class="nf">initblas</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">m</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Py_InitModule3</span><span class="p">(</span><span class="s">&quot;cvxopt.blas&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">blas_functions</span><span class="p">,</span><span class="w"> </span><span class="n">blas__doc__</span><span class="p">);</span><span class="w"></span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">import_cvxopt</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="n">PyMODINIT_FUNC</span><span class="w"> </span><span class="nf">initblas</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">m</span><span class="p">;</span>
+<span class="w">  </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Py_InitModule3</span><span class="p">(</span><span class="s">&quot;cvxopt.blas&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">blas_functions</span><span class="p">,</span><span class="w"> </span><span class="n">blas__doc__</span><span class="p">);</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">import_cvxopt</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">;</span>
+<span class="p">}</span>
 
 <span class="cp">#endif</span>
 </pre></div>
 </div>
 <section id="dense-matrices">
-<h2>Dense Matrices<a class="headerlink" href="#dense-matrices" title="Permalink to this heading"></a></h2>
+<h2>Dense Matrices<a class="headerlink" href="#dense-matrices" title="Link to this heading"></a></h2>
 <p>As can be seen from the header file <code class="xref py py-const docutils literal notranslate"><span class="pre">cvxopt.h</span></code>, a <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> is
 essentially a  structure with four fields.  The fields <code class="xref c c-member docutils literal notranslate"><span class="pre">nrows</span></code> and
 <code class="xref c c-member docutils literal notranslate"><span class="pre">ncols</span></code> are two integers that specify the dimensions.  The
@@ -137,14 +138,14 @@ column-major order.</p>
 <p>The following C functions can be used to create matrices.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.Matrix_New">
-<span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">Matrix_New</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nrows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">ncols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_New" title="Permalink to this definition"></a><br /></dt>
+<span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">Matrix_New</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">nrows</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">ncols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_New" title="Link to this definition"></a><br /></dt>
 <dd><p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code> object of type <cite>id</cite> with <cite>nrows</cite> rows and
 <cite>ncols</cite> columns.  The elements of the matrix are uninitialized.</p>
 </dd></dl>
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.Matrix_NewFromMatrix">
-<span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">Matrix_NewFromMatrix</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_NewFromMatrix" title="Permalink to this definition"></a><br /></dt>
+<span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">Matrix_NewFromMatrix</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_NewFromMatrix" title="Link to this definition"></a><br /></dt>
 <dd><p>Returns a copy of the matrix <cite>src</cite> converted to type <cite>id</cite>.  The
 following type conversions are allowed:  <code class="xref py py-const docutils literal notranslate"><span class="pre">'i'</span></code> to <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code>,
 <code class="xref py py-const docutils literal notranslate"><span class="pre">'i'</span></code> to <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>, and <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code>  to <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>.</p>
@@ -152,7 +153,7 @@ following type conversions are allowed:  <code class="xref py py-const docutils 
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.Matrix_NewFromSequence">
-<span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">Matrix_NewFromSequence</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">PyListObject</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_NewFromSequence" title="Permalink to this definition"></a><br /></dt>
+<span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">Matrix_NewFromSequence</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">PyListObject</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.Matrix_NewFromSequence" title="Link to this definition"></a><br /></dt>
 <dd><p>Creates a matrix of type <cite>id</cite> from the Python sequence type <cite>x</cite>. The
 returned matrix has size <code class="docutils literal notranslate"><span class="pre">(len(x),</span> <span class="pre">1)</span></code>.  The size can be changed
 by modifying the <code class="xref c c-member docutils literal notranslate"><span class="pre">nrows</span></code> and <code class="xref c c-member docutils literal notranslate"><span class="pre">ncols</span></code> fields of the
@@ -162,34 +163,34 @@ returned matrix.</p>
 <p>To illustrate the creation and manipulation of dense matrices (as well as
 the Python C API), we show the code for the <a class="reference internal" href="matrices.html#cvxopt.uniform" title="cvxopt.uniform"><code class="xref py py-func docutils literal notranslate"><span class="pre">cvxopt.uniform</span></code></a> function
 described in the section <a class="reference internal" href="matrices.html#s-random"><span class="std std-ref">Randomly Generated Matrices</span></a>.</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">uniform</span><span class="p">(</span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">kwrds</span><span class="p">)</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="n">matrix</span><span class="w"> </span><span class="o">*</span><span class="n">obj</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">nrows</span><span class="p">,</span><span class="w"> </span><span class="n">ncols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">kwlist</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;nrows&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ncols&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;b&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">};</span><span class="w"></span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">uniform</span><span class="p">(</span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">kwrds</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">matrix</span><span class="w"> </span><span class="o">*</span><span class="n">obj</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">nrows</span><span class="p">,</span><span class="w"> </span><span class="n">ncols</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">kwlist</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;nrows&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ncols&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;b&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">};</span>
 
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTupleAndKeywords</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">kwrds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;i|idd&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">kwlist</span><span class="p">,</span><span class="w"></span>
-<span class="w">          </span><span class="o">&amp;</span><span class="n">nrows</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">ncols</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">b</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTupleAndKeywords</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="n">kwrds</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;i|idd&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">kwlist</span><span class="p">,</span>
+<span class="w">          </span><span class="o">&amp;</span><span class="n">nrows</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">ncols</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">b</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
 
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">nrows</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">ncols</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">PyExc_TypeError</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;dimensions must be non-negative&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">nrows</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">ncols</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">PyErr_SetString</span><span class="p">(</span><span class="n">PyExc_TypeError</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;dimensions must be non-negative&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
 
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Matrix_New</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span><span class="w"> </span><span class="n">ncols</span><span class="p">,</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">)))</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">PyErr_NoMemory</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Matrix_New</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span><span class="w"> </span><span class="n">ncols</span><span class="p">,</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">)))</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">PyErr_NoMemory</span><span class="p">();</span>
 
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nrows</span><span class="o">*</span><span class="n">ncols</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">MAT_BUFD</span><span class="p">(</span><span class="n">obj</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Uniform</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nrows</span><span class="o">*</span><span class="n">ncols</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">MAT_BUFD</span><span class="p">(</span><span class="n">obj</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Uniform</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
 
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">obj</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">obj</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </section>
 <section id="sparse-matrices">
-<h2>Sparse Matrices<a class="headerlink" href="#sparse-matrices" title="Permalink to this heading"></a></h2>
+<h2>Sparse Matrices<a class="headerlink" href="#sparse-matrices" title="Link to this heading"></a></h2>
 <p>Sparse matrices are stored in compressed column storage (CCS) format.  For
 a general <cite>nrows</cite> by <cite>ncols</cite> sparse matrix with <cite>nnz</cite> nonzero entries this
 means the following.  The sparsity pattern and the nonzero values are
@@ -252,7 +253,7 @@ values <code class="xref py py-const docutils literal notranslate"><span class="
 <p>Sparse matrices are created using the following functions from the API.</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.SpMatrix_New">
-<span class="n"><span class="pre">spmatrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">SpMatrix_New</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int_t</span></span><span class="w"> </span><span class="n"><span class="pre">nrows</span></span>, <span class="n"><span class="pre">int_t</span></span><span class="w"> </span><span class="n"><span class="pre">ncols</span></span>, <span class="n"><span class="pre">int_t</span></span><span class="w"> </span><span class="n"><span class="pre">nzmax</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_New" title="Permalink to this definition"></a><br /></dt>
+<span class="n"><span class="pre">spmatrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">SpMatrix_New</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int_t</span></span><span class="w"> </span><span class="n"><span class="pre">nrows</span></span>, <span class="n"><span class="pre">int_t</span></span><span class="w"> </span><span class="n"><span class="pre">ncols</span></span>, <span class="n"><span class="pre">int_t</span></span><span class="w"> </span><span class="n"><span class="pre">nzmax</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_New" title="Link to this definition"></a><br /></dt>
 <dd><p>Returns a sparse zero matrix with <cite>nrows</cite> rows and <cite>ncols</cite> columns.
 <cite>nzmax</cite> is the number of elements that will be allocated (the length of
 the <code class="xref c c-member docutils literal notranslate"><span class="pre">values</span></code> and <code class="xref c c-member docutils literal notranslate"><span class="pre">rowind</span></code> fields).</p>
@@ -260,13 +261,13 @@ the <code class="xref c c-member docutils literal notranslate"><span class="pre"
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.SpMatrix_NewFromMatrix">
-<span class="n"><span class="pre">spmatrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">SpMatrix_NewFromMatrix</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">spmatrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromMatrix" title="Permalink to this definition"></a><br /></dt>
+<span class="n"><span class="pre">spmatrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">SpMatrix_NewFromMatrix</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">spmatrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">src</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromMatrix" title="Link to this definition"></a><br /></dt>
 <dd><p>Returns a copy the sparse matrix var{src}.</p>
 </dd></dl>
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.SpMatrix_NewFromIJV">
-<span class="n"><span class="pre">spmatrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">SpMatrix_NewFromIJV</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">I</span></span>, <span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">J</span></span>, <span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">V</span></span>, <span class="n"><span class="pre">int_t</span></span><span class="w"> </span><span class="n"><span class="pre">nrows</span></span>, <span class="n"><span class="pre">int_t</span></span><span class="w"> </span><span class="n"><span class="pre">ncols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromIJV" title="Permalink to this definition"></a><br /></dt>
+<span class="n"><span class="pre">spmatrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">SpMatrix_NewFromIJV</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">I</span></span>, <span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">J</span></span>, <span class="n"><span class="pre">matrix</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">V</span></span>, <span class="n"><span class="pre">int_t</span></span><span class="w"> </span><span class="n"><span class="pre">nrows</span></span>, <span class="n"><span class="pre">int_t</span></span><span class="w"> </span><span class="n"><span class="pre">ncols</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.SpMatrix_NewFromIJV" title="Link to this definition"></a><br /></dt>
 <dd><p>Creates a sparse matrix with <cite>nrows</cite> rows and <cite>ncols</cite> columns from a
 triplet description.  <cite>I</cite> and <cite>J</cite> must be integer matrices and <cite>V</cite>
 either a double or complex matrix, or <code class="xref py py-const docutils literal notranslate"><span class="pre">NULL</span></code>. If <cite>V</cite> is
@@ -279,23 +280,23 @@ adjusted if it is smaller than the required amount.</p>
 <p>We illustrate use of the sparse matrix class by listing the source
 code for the <a class="reference internal" href="matrices.html#real" title="real"><code class="xref py py-attr docutils literal notranslate"><span class="pre">real</span></code></a> method, which returns the real part of
 a sparse matrix:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">spmatrix_real</span><span class="p">(</span><span class="n">spmatrix</span><span class="w"> </span><span class="o">*</span><span class="n">self</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">spmatrix_real</span><span class="p">(</span><span class="n">spmatrix</span><span class="w"> </span><span class="o">*</span><span class="n">self</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SP_ID</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">COMPLEX</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">SpMatrix_NewFromMatrix</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">SP_ID</span><span class="p">(</span><span class="n">self</span><span class="p">));</span><span class="w"></span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">SP_ID</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">COMPLEX</span><span class="p">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">SpMatrix_NewFromMatrix</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">SP_ID</span><span class="p">(</span><span class="n">self</span><span class="p">));</span>
 
-<span class="w">  </span><span class="n">spmatrix</span><span class="w"> </span><span class="o">*</span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SpMatrix_New</span><span class="p">(</span><span class="n">SP_NROWS</span><span class="p">(</span><span class="n">self</span><span class="p">),</span><span class="w"> </span><span class="n">SP_NCOLS</span><span class="p">(</span><span class="n">self</span><span class="p">),</span><span class="w"></span>
-<span class="w">      </span><span class="n">SP_NNZ</span><span class="p">(</span><span class="n">self</span><span class="p">),</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">);</span><span class="w"></span>
-<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ret</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">PyErr_NoMemory</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="n">spmatrix</span><span class="w"> </span><span class="o">*</span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SpMatrix_New</span><span class="p">(</span><span class="n">SP_NROWS</span><span class="p">(</span><span class="n">self</span><span class="p">),</span><span class="w"> </span><span class="n">SP_NCOLS</span><span class="p">(</span><span class="n">self</span><span class="p">),</span>
+<span class="w">      </span><span class="n">SP_NNZ</span><span class="p">(</span><span class="n">self</span><span class="p">),</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">);</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ret</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">PyErr_NoMemory</span><span class="p">();</span>
 
-<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">SP_NNZ</span><span class="p">(</span><span class="n">self</span><span class="p">);</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">SP_VALD</span><span class="p">(</span><span class="n">ret</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">creal</span><span class="p">(</span><span class="n">SP_VALZ</span><span class="p">(</span><span class="n">self</span><span class="p">)[</span><span class="n">i</span><span class="p">]);</span><span class="w"></span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">SP_NNZ</span><span class="p">(</span><span class="n">self</span><span class="p">);</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">    </span><span class="n">SP_VALD</span><span class="p">(</span><span class="n">ret</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">creal</span><span class="p">(</span><span class="n">SP_VALZ</span><span class="p">(</span><span class="n">self</span><span class="p">)[</span><span class="n">i</span><span class="p">]);</span>
 
-<span class="w">  </span><span class="n">memcpy</span><span class="p">(</span><span class="n">SP_COL</span><span class="p">(</span><span class="n">ret</span><span class="p">),</span><span class="w"> </span><span class="n">SP_COL</span><span class="p">(</span><span class="n">self</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">SP_NCOLS</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">int_t</span><span class="p">));</span><span class="w"></span>
-<span class="w">  </span><span class="n">memcpy</span><span class="p">(</span><span class="n">SP_ROW</span><span class="p">(</span><span class="n">ret</span><span class="p">),</span><span class="w"> </span><span class="n">SP_ROW</span><span class="p">(</span><span class="n">self</span><span class="p">),</span><span class="w"> </span><span class="n">SP_NNZ</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">int_t</span><span class="p">));</span><span class="w"></span>
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">ret</span><span class="p">;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="n">memcpy</span><span class="p">(</span><span class="n">SP_COL</span><span class="p">(</span><span class="n">ret</span><span class="p">),</span><span class="w"> </span><span class="n">SP_COL</span><span class="p">(</span><span class="n">self</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">SP_NCOLS</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">int_t</span><span class="p">));</span>
+<span class="w">  </span><span class="n">memcpy</span><span class="p">(</span><span class="n">SP_ROW</span><span class="p">(</span><span class="n">ret</span><span class="p">),</span><span class="w"> </span><span class="n">SP_ROW</span><span class="p">(</span><span class="n">self</span><span class="p">),</span><span class="w"> </span><span class="n">SP_NNZ</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="o">*</span><span class="k">sizeof</span><span class="p">(</span><span class="n">int_t</span><span class="p">));</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -312,8 +313,8 @@ a sparse matrix:</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on Aug 09, 2023.
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2026, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on Feb 07, 2026.
       </span></p>
   </div>
 
@@ -333,7 +334,7 @@ a sparse matrix:</p>
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 5.0.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 8.2.3.
     </div>
 
 </body>

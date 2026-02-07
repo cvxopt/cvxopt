@@ -27,6 +27,7 @@ on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 if on_rtd:
     extensions = ['sphinx.ext.mathjax']
 else:
+#    extensions = ['sphinx.ext.mathjax']
     extensions = ['sphinx.ext.imgmath']
 
 # Add any paths that contain templates here, relative to this directory.
@@ -40,15 +41,15 @@ master_doc = 'index'
 
 # General substitutions.
 project = "CVXOPT User's Guide"
-copyright = '2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe'
+copyright = '2004-2026, M.S. Andersen, J. Dahl, L. Vandenberghe'
 
 # The default replacements for |version| and |release|, also used in various
 # other places throughout the built documents.
 #
 # The short X.Y version.
-version = '1.3.2'
+version = '1.3.3'
 # The full version, including alpha/beta/rc tags.
-release = '1.3.2'
+release = '1.3.3'
 
 
 # There are two options for replacing |today|: either, you set today to some

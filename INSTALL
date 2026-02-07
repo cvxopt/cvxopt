@@ -28,14 +28,14 @@ using `pip <https://pip.pypa.io>`_::
 
 Wheels for Linux:
 
-* are available for Python 3.6+ (x86_64)
+* are available for Python 3.8+ (x86_64, aarch64)
 * are linked against OpenBLAS
 * include all optional extensions (DSDP, FFTW, GLPK, and GSL)
 
 Wheels for macOS:
 
-* are available for Python 3.6+ (x86_64 and arm64)
-* are linked against OpenBLAS
+* are available for Python 3.8+ (x86_64, arm64)
+* are linked against Accelerate (macOS 11+) 
 * include all optional extensions (DSDP, FFTW, GLPK, and GSL)
 
 Wheels for Windows:

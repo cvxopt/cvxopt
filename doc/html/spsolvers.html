@@ -1,21 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sparse Linear Equations &mdash; CVXOPT User&#39;s Guide</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=3b3401d5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
@@ -28,14 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CVXOPT User's Guide
           </a>
-              <div class="version">
-                1.3.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -49,9 +50,27 @@
 <li class="toctree-l1"><a class="reference internal" href="lapack.html">The LAPACK Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fftw.html">Discrete Transforms</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Sparse Linear Equations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#matrix-orderings">Matrix Orderings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#general-linear-equations">General Linear Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#positive-definite-linear-equations">Positive Definite Linear Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#matrix-orderings">Matrix Orderings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.amd.order"><code class="docutils literal notranslate"><span class="pre">cvxopt.amd.order</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#general-linear-equations">General Linear Equations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.umfpack.linsolve"><code class="docutils literal notranslate"><span class="pre">cvxopt.umfpack.linsolve</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.umfpack.symbolic"><code class="docutils literal notranslate"><span class="pre">cvxopt.umfpack.symbolic</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.umfpack.numeric"><code class="docutils literal notranslate"><span class="pre">cvxopt.umfpack.numeric</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.umfpack.solve"><code class="docutils literal notranslate"><span class="pre">cvxopt.umfpack.solve</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#positive-definite-linear-equations">Positive Definite Linear Equations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.cholmod.linsolve"><code class="docutils literal notranslate"><span class="pre">cvxopt.cholmod.linsolve</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.cholmod.splinsolve"><code class="docutils literal notranslate"><span class="pre">cvxopt.cholmod.splinsolve</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.cholmod.symbolic"><code class="docutils literal notranslate"><span class="pre">cvxopt.cholmod.symbolic</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.cholmod.numeric"><code class="docutils literal notranslate"><span class="pre">cvxopt.cholmod.numeric</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.cholmod.solve"><code class="docutils literal notranslate"><span class="pre">cvxopt.cholmod.solve</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.cholmod.spsolve"><code class="docutils literal notranslate"><span class="pre">cvxopt.cholmod.spsolve</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.cholmod.diag"><code class="docutils literal notranslate"><span class="pre">cvxopt.cholmod.diag</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#example-covariance-selection">Example: Covariance Selection</a></li>
 </ul>
 </li>
@@ -76,8 +95,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Sparse Linear Equations</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Sparse Linear Equations</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -87,7 +106,7 @@
            <div itemprop="articleBody">
              
   <section id="sparse-linear-equations">
-<span id="c-spsolvers"></span><h1>Sparse Linear Equations<a class="headerlink" href="#sparse-linear-equations" title="Permalink to this heading"></a></h1>
+<span id="c-spsolvers"></span><h1>Sparse Linear Equations<a class="headerlink" href="#sparse-linear-equations" title="Link to this heading"></a></h1>
 <p>In this section we describe routines for solving sparse sets of linear
 equations.</p>
 <p>A real symmetric or complex Hermitian sparse matrix is stored as an
@@ -105,7 +124,7 @@ ignored.</p>
 <p>Dense matrices, which appear as right-hand sides of equations, are
 stored using the same conventions as in the BLAS and LAPACK modules.</p>
 <section id="matrix-orderings">
-<span id="s-orderings"></span><h2>Matrix Orderings<a class="headerlink" href="#matrix-orderings" title="Permalink to this heading"></a></h2>
+<span id="s-orderings"></span><h2>Matrix Orderings<a class="headerlink" href="#matrix-orderings" title="Link to this heading"></a></h2>
 <p>CVXOPT includes an interface to the AMD library for computing approximate
 minimum degree orderings of sparse matrices.</p>
 <div class="admonition seealso">
@@ -118,7 +137,7 @@ Mathematical Software, 30(3), 381-388, 2004.</p></li>
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.amd.order">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.amd.</span></span><span class="sig-name descname"><span class="pre">order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.amd.order" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.amd.</span></span><span class="sig-name descname"><span class="pre">order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.amd.order" title="Link to this definition"></a></dt>
 <dd><p>Computes the approximate mimimum degree ordering of a symmetric  sparse
 matrix <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/>.  The ordering is returned as an integer dense matrix
 with length equal to the order of <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/>.  Its entries specify a
@@ -135,7 +154,7 @@ sparser Cholesky factors than <code class="docutils literal notranslate"><span c
   3 &amp;  0 &amp; 5 &amp;  0 \\
   0 &amp; -2 &amp; 0 &amp;  2
 \end{array}\right]."/></p>
-</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">amd</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">amd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">P</span> <span class="o">=</span> <span class="n">amd</span><span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
@@ -147,7 +166,7 @@ sparser Cholesky factors than <code class="docutils literal notranslate"><span c
 </div>
 </section>
 <section id="general-linear-equations">
-<span id="s-umfpack"></span><h2>General Linear Equations<a class="headerlink" href="#general-linear-equations" title="Permalink to this heading"></a></h2>
+<span id="s-umfpack"></span><h2>General Linear Equations<a class="headerlink" href="#general-linear-equations" title="Link to this heading"></a></h2>
 <p>The module <code class="xref py py-mod docutils literal notranslate"><span class="pre">cvxopt.umfpack</span></code> includes four functions for solving
 sparse non-symmetric sets of linear equations.  They call routines from
 the UMFPACK library, with all control options set to the default values
@@ -162,7 +181,7 @@ Transactions on Mathematical Software, 30(2), 196-199, 2004.</p></li>
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.umfpack.linsolve">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.umfpack.</span></span><span class="sig-name descname"><span class="pre">linsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.linsolve" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.umfpack.</span></span><span class="sig-name descname"><span class="pre">linsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.linsolve" title="Link to this definition"></a></dt>
 <dd><p>Solves a sparse set of linear equations</p>
 <div class="math">
 <p><img src="_images/math/908a083a0806ab219190adac99ec60da04c65f48.png" alt="AX &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
@@ -177,14 +196,14 @@ matrix is singular.</p>
 
 <p>In the following example we solve an equation with coefficient matrix</p>
 <div class="math" id="equation-e-sp-adef">
-<p><span class="eqno">(1)<a class="headerlink" href="#equation-e-sp-adef" title="Permalink to this equation"></a></span><img src="_images/math/5046b770f82749051a01f8f102c8e5ff69c4a3e4.png" alt="A = \left[\begin{array}{rrrrr}
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-e-sp-adef" title="Link to this equation"></a></span><img src="_images/math/5046b770f82749051a01f8f102c8e5ff69c4a3e4.png" alt="A = \left[\begin{array}{rrrrr}
     2 &amp; 3 &amp; 0 &amp; 0 &amp; 0 \\
     3 &amp; 0 &amp; 4 &amp; 0 &amp; 6 \\
     0 &amp;-1 &amp;-3 &amp; 2 &amp; 0 \\
     0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
     0 &amp; 4 &amp; 2 &amp; 0 &amp; 1
     \end{array}\right]."/></p>
-</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">umfpack</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">umfpack</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">V</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">I</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">J</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
@@ -203,7 +222,7 @@ matrix is singular.</p>
 equivalent to the following three functions called in sequence.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.umfpack.symbolic">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.umfpack.</span></span><span class="sig-name descname"><span class="pre">symbolic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.symbolic" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.umfpack.</span></span><span class="sig-name descname"><span class="pre">symbolic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.symbolic" title="Link to this definition"></a></dt>
 <dd><p>Reorders the columns of <code class="docutils literal notranslate"><span class="pre">A</span></code> to reduce fill-in and performs a symbolic
 LU factorization.  <code class="docutils literal notranslate"><span class="pre">A</span></code> is a sparse, possibly rectangular, matrix.
 Returns the symbolic factorization as an opaque C object that can be
@@ -212,7 +231,7 @@ passed on to <a class="reference internal" href="#cvxopt.umfpack.numeric" title=
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.umfpack.numeric">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.umfpack.</span></span><span class="sig-name descname"><span class="pre">numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.numeric" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.umfpack.</span></span><span class="sig-name descname"><span class="pre">numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.numeric" title="Link to this definition"></a></dt>
 <dd><p>Performs a numeric LU factorization of a sparse, possibly rectangular,
 matrix <code class="docutils literal notranslate"><span class="pre">A</span></code>.   The argument <code class="docutils literal notranslate"><span class="pre">F</span></code> is the symbolic factorization
 computed by <a class="reference internal" href="#cvxopt.umfpack.symbolic" title="cvxopt.umfpack.symbolic"><code class="xref py py-func docutils literal notranslate"><span class="pre">symbolic</span></code></a>
@@ -226,7 +245,7 @@ that that can be passed on to
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.umfpack.solve">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.umfpack.</span></span><span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.solve" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.umfpack.</span></span><span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.umfpack.solve" title="Link to this definition"></a></dt>
 <dd><p>Solves a set of linear equations</p>
 <div class="math">
 <p><img src="_images/math/908a083a0806ab219190adac99ec60da04c65f48.png" alt="AX &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
@@ -261,7 +280,7 @@ code computes</p>
 <div class="math">
 <p><img src="_images/math/2e7d885be2f8d9a7556b4e6dded7b42315803547.png" alt="\newcommand{\ones}{\mathbf 1}
 x = A^{-T}B^{-1}A^{-1}\ones."/></p>
-</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">umfpack</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">umfpack</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">VA</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">VB</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">I</span> <span class="o">=</span>  <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
@@ -285,7 +304,7 @@ x = A^{-T}B^{-1}A^{-1}\ones."/></p>
 </div>
 </section>
 <section id="positive-definite-linear-equations">
-<span id="s-cholmod"></span><h2>Positive Definite Linear Equations<a class="headerlink" href="#positive-definite-linear-equations" title="Permalink to this heading"></a></h2>
+<span id="s-cholmod"></span><h2>Positive Definite Linear Equations<a class="headerlink" href="#positive-definite-linear-equations" title="Link to this heading"></a></h2>
 <p><code class="xref py py-mod docutils literal notranslate"><span class="pre">cvxopt.cholmod</span></code> is an interface to the Cholesky factorization routines
 of the CHOLMOD package.  It includes functions for Cholesky factorization
 of sparse positive definite matrices, and for solving sparse sets of linear
@@ -308,7 +327,7 @@ and Update/Downdate, ACM Transactions on Mathematical Software,
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.cholmod.linsolve">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">linsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.linsolve" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">linsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.linsolve" title="Link to this definition"></a></dt>
 <dd><p>Solves</p>
 <div class="math">
 <p><img src="_images/math/e44d29f0cbcc5fa7a0f3f83d3bddc988f9b022ea.png" alt="AX = B"/></p>
@@ -325,7 +344,7 @@ by CHOLMOD.</p>
 
 <p>As an  example, we solve</p>
 <div class="math" id="equation-e-a-pd">
-<p><span class="eqno">(2)<a class="headerlink" href="#equation-e-a-pd" title="Permalink to this equation"></a></span><img src="_images/math/aaf2039a0ca644d308dc578303aa096fd3775907.png" alt="\left[ \begin{array}{rrrr}
+<p><span class="eqno">(2)<a class="headerlink" href="#equation-e-a-pd" title="Link to this equation"></a></span><img src="_images/math/aaf2039a0ca644d308dc578303aa096fd3775907.png" alt="\left[ \begin{array}{rrrr}
         10 &amp;  0 &amp; 3 &amp;  0 \\
          0 &amp;  5 &amp; 0 &amp; -2 \\
          3 &amp;  0 &amp; 5 &amp;  0 \\
@@ -334,7 +353,7 @@ by CHOLMOD.</p>
     \left[ \begin{array}{cc}
          0 &amp; 4 \\ 1 &amp; 5 \\ 2 &amp; 6 \\ 3 &amp; 7
     \end{array} \right]."/></p>
-</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">cholmod</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">cholmod</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;d&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cholmod</span><span class="o">.</span><span class="n">linsolve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">X</span><span class="p">)</span>
@@ -347,7 +366,7 @@ by CHOLMOD.</p>
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.cholmod.splinsolve">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">splinsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.splinsolve" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">splinsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.splinsolve" title="Link to this definition"></a></dt>
 <dd><p>Similar to <a class="reference internal" href="#cvxopt.cholmod.linsolve" title="cvxopt.cholmod.linsolve"><code class="xref py py-func docutils literal notranslate"><span class="pre">linsolve</span></code></a> except that
 <code class="docutils literal notranslate"><span class="pre">B</span></code> is an <a class="reference internal" href="matrices.html#cvxopt.spmatrix" title="cvxopt.spmatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">spmatrix</span></code></a> and
 that the solution is returned as an output argument (as a new
@@ -375,14 +394,14 @@ in <a class="reference internal" href="#equation-e-a-pd">(2)</a> as a sparse mat
 <a class="reference internal" href="#cvxopt.cholmod.spsolve" title="cvxopt.cholmod.spsolve"><code class="xref py py-func docutils literal notranslate"><span class="pre">spsolve</span></code></a>.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.cholmod.symbolic">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">symbolic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.symbolic" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">symbolic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">p</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.symbolic" title="Link to this definition"></a></dt>
 <dd><p>Performs a symbolic analysis of a sparse real symmetric or
 complex Hermitian matrix <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> for one of the two factorizations:</p>
 <div class="math" id="equation-e-chol-ll">
-<p><span class="eqno">(3)<a class="headerlink" href="#equation-e-chol-ll" title="Permalink to this equation"></a></span><img src="_images/math/c9a3af023076f58fe1ee0b35f88cad484ba194fa.png" alt="PAP^T = LL^T, \qquad PAP^T = LL^H,"/></p>
+<p><span class="eqno">(3)<a class="headerlink" href="#equation-e-chol-ll" title="Link to this equation"></a></span><img src="_images/math/c9a3af023076f58fe1ee0b35f88cad484ba194fa.png" alt="PAP^T = LL^T, \qquad PAP^T = LL^H,"/></p>
 </div><p>and</p>
 <div class="math" id="equation-e-chol-ldl">
-<p><span class="eqno">(4)<a class="headerlink" href="#equation-e-chol-ldl" title="Permalink to this equation"></a></span><img src="_images/math/340c54d7b4f301eb582e5ce306364e1cc4fe20b1.png" alt="PAP^T = LDL^T, \qquad PAP^T = LDL^H,"/></p>
+<p><span class="eqno">(4)<a class="headerlink" href="#equation-e-chol-ldl" title="Link to this equation"></a></span><img src="_images/math/340c54d7b4f301eb582e5ce306364e1cc4fe20b1.png" alt="PAP^T = LDL^T, \qquad PAP^T = LDL^H,"/></p>
 </div><p>where <img class="math" src="_images/math/c2aa3dff9bffb099e9dff196fd36aed56ec16baf.png" alt="P"/> is a permutation matrix, <img class="math" src="_images/math/19eef1966f7c545af3ac8c0fa486974d873e3c65.png" alt="L"/> is lower triangular
 (unit lower triangular in the second factorization), and <img class="math" src="_images/math/0fcab9067b50b87e868c4fd70f213a086addb964.png" alt="D"/> is
 nonsingular diagonal.  The type of factorization depends on the value
@@ -400,7 +419,7 @@ by CHOLMOD.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.cholmod.numeric">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.numeric" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">numeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.numeric" title="Link to this definition"></a></dt>
 <dd><p>Performs a numeric factorization of a sparse symmetric matrix
 as <a class="reference internal" href="#equation-e-chol-ll">(3)</a> or <a class="reference internal" href="#equation-e-chol-ldl">(4)</a>.  The argument <code class="docutils literal notranslate"><span class="pre">F</span></code> is the
 symbolic factorization computed by
@@ -422,7 +441,7 @@ Raises an <code class="xref py py-exc docutils literal notranslate"><span class=
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.cholmod.solve">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">sys</span> <span class="pre">=</span> <span class="pre">0</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.solve" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">sys</span> <span class="pre">=</span> <span class="pre">0</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.solve" title="Link to this definition"></a></dt>
 <dd><p>Solves one of the following linear equations where <code class="docutils literal notranslate"><span class="pre">B</span></code> is a dense
 matrix and <code class="docutils literal notranslate"><span class="pre">F</span></code> is the numeric factorization <a class="reference internal" href="#equation-e-chol-ll">(3)</a>
 or <a class="reference internal" href="#equation-e-chol-ldl">(4)</a> computed by
@@ -471,7 +490,7 @@ the same type as <code class="docutils literal notranslate"><span class="pre">A<
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.cholmod.spsolve">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">spsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">sys</span> <span class="pre">=</span> <span class="pre">0</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.spsolve" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">spsolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">sys</span> <span class="pre">=</span> <span class="pre">0</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.spsolve" title="Link to this definition"></a></dt>
 <dd><p>Similar to <a class="reference internal" href="#cvxopt.cholmod.solve" title="cvxopt.cholmod.solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">solve</span></code></a>, except that <code class="docutils literal notranslate"><span class="pre">B</span></code> is
 a class:<cite>spmatrix</cite>, and the solution is returned as an output argument
 (as an <code class="xref py py-class docutils literal notranslate"><span class="pre">spmatrix</span></code>).  <code class="docutils literal notranslate"><span class="pre">B</span></code> must have the same typecode as <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
@@ -491,7 +510,7 @@ a class:<cite>spmatrix</cite>, and the solution is returned as an output argumen
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.cholmod.diag">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">diag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.diag" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.cholmod.</span></span><span class="sig-name descname"><span class="pre">diag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cholmod.diag" title="Link to this definition"></a></dt>
 <dd><p>Returns the diagonal elements of the Cholesky factor <img class="math" src="_images/math/19eef1966f7c545af3ac8c0fa486974d873e3c65.png" alt="L"/>
 in <a class="reference internal" href="#equation-e-chol-ll">(3)</a>, as a dense matrix of the same type as <code class="docutils literal notranslate"><span class="pre">A</span></code>.
 Note that this only applies to Cholesky factorizations.  The matrix
@@ -535,9 +554,9 @@ Default: 0.</p>
 <p>As an example that illustrates <a class="reference internal" href="#cvxopt.cholmod.diag" title="cvxopt.cholmod.diag"><code class="xref py py-func docutils literal notranslate"><span class="pre">diag</span></code></a> and the
 use of <code class="xref py py-attr docutils literal notranslate"><span class="pre">cholmod.options</span></code>, we compute the logarithm of the determinant
 of the coefficient matrix in <a class="reference internal" href="#equation-e-a-pd">(2)</a> by two methods.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.cholmod</span> <span class="kn">import</span> <span class="n">options</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">log</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt.cholmod</span><span class="w"> </span><span class="kn">import</span> <span class="n">options</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">F</span> <span class="o">=</span> <span class="n">cholmod</span><span class="o">.</span><span class="n">symbolic</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cholmod</span><span class="o">.</span><span class="n">numeric</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">log</span><span class="p">(</span><span class="n">cholmod</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">F</span><span class="p">))))</span>
@@ -553,11 +572,11 @@ of the coefficient matrix in <a class="reference internal" href="#equation-e-a-p
 </div>
 </section>
 <section id="example-covariance-selection">
-<h2>Example: Covariance Selection<a class="headerlink" href="#example-covariance-selection" title="Permalink to this heading"></a></h2>
+<h2>Example: Covariance Selection<a class="headerlink" href="#example-covariance-selection" title="Link to this heading"></a></h2>
 <p>This example illustrates the use of the routines for sparse Cholesky
 factorization.  We consider the problem</p>
 <div class="math" id="equation-e-covsel">
-<p><span class="eqno">(5)<a class="headerlink" href="#equation-e-covsel" title="Permalink to this equation"></a></span><img src="_images/math/4e317307fb34d4308336c7711497db123b7d9def.png" alt="\newcommand{\Tr}{\mathop{\bf tr}}
+<p><span class="eqno">(5)<a class="headerlink" href="#equation-e-covsel" title="Link to this equation"></a></span><img src="_images/math/4e317307fb34d4308336c7711497db123b7d9def.png" alt="\newcommand{\Tr}{\mathop{\bf tr}}
 \begin{array}{ll}
     \mbox{minimize} &amp; -\log\det K + \Tr(KY) \\
     \mbox{subject to} &amp; K_{ij}=0,\quad (i,j) \not \in S.
@@ -604,10 +623,10 @@ The gradient and Hessian of the objective function are given by</p>
         \left(K(x)^{-1}\right)_{JI},
 \end{split}"/></p>
 </div><p>where <img class="math" src="_images/math/ecdff306b10b7e2991a2c20df2fccba0f947155b.png" alt="\circ"/> denotes Hadamard product.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">amd</span><span class="p">,</span> <span class="n">cholmod</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">amd</span><span class="p">,</span> <span class="n">cholmod</span>
 
-<span class="k">def</span> <span class="nf">covsel</span><span class="p">(</span><span class="n">Y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">covsel</span><span class="p">(</span><span class="n">Y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the solution of</span>
 
 <span class="sd">         minimize    -log det K + Tr(KY)</span>
@@ -696,8 +715,8 @@ The gradient and Hessian of the objective function are given by</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on Aug 09, 2023.
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2026, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on Feb 07, 2026.
       </span></p>
   </div>
 
@@ -717,7 +736,7 @@ The gradient and Hessian of the objective function are given by</p>
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 5.0.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 8.2.3.
     </div>
 
 </body>

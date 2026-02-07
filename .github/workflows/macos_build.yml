@@ -18,12 +18,12 @@ jobs:
       DSDP_SHA256: 26aa624525a636de272c0b329e2dfd01a0d5b7827f1c1c76f393d71e37dead70
       CVXOPT_SUITESPARSE_LIB_DIR: /opt/homebrew/lib
       CVXOPT_SUITESPARSE_INC_DIR: /opt/homebrew/include/suitesparse
-      CVXOPT_DSDP_LIB_DIR: /usr/local/lib
-      CVXOPT_DSDP_INC_DIR: /usr/local/include
+      CVXOPT_DSDP_LIB_DIR: ${{github.workspace}}/.local/lib
+      CVXOPT_DSDP_INC_DIR: ${{github.workspace}}/.local/include
       CVXOPT_BLAS_LIB_DIR: /usr/lib
       CVXOPT_BLAS_LIB: blas
       CVXOPT_LAPACK_LIB: lapack
-      CVXOPT_BUILD_DSDP: 0
+      CVXOPT_BUILD_DSDP: 1
       CVXOPT_BUILD_FFTW: 1
       CVXOPT_BUILD_GLPK: 1
       CVXOPT_BUILD_GSL: 1
@@ -32,7 +32,6 @@ jobs:
       matrix:
         python-version: ['3.14']
         suitesparse: [src, lib]
-        #suitesparse: [lib]
 
     steps:
     - name: Checkout source    
@@ -68,9 +67,10 @@ jobs:
         echo "${DSDP_SHA256}  DSDP${DSDP_VERSION}.tar.gz" > DSDP.sha256
         shasum -a 256 -c DSDP.sha256
         tar -xf DSDP${DSDP_VERSION}.tar.gz
+        mkdir -p .local/lib .local/include
         cd DSDP${DSDP_VERSION}
         patch -p1 < ${{github.workspace}}/.github/workflows/dsdp.patch
-        make PREFIX=/usr/local ARCH_FLAGS="$ARCHFLAGS" LAPACKBLAS="-DACCELERATE_NEW_LAPACK -framework Accelerate -L${CVXOPT_BLAS_LIB_DIR} -l${CVXOPT_LAPACK_LIB} -l${CVXOPT_BLAS_LIB}" IS_OSX=1 DSDPROOT=`pwd` install
+        make PREFIX=${{github.workspace}}/.local ARCH_FLAGS="$ARCHFLAGS" LAPACKBLAS="-DACCELERATE_NEW_LAPACK -framework Accelerate -L${CVXOPT_BLAS_LIB_DIR} -l${CVXOPT_LAPACK_LIB} -l${CVXOPT_BLAS_LIB}" IS_OSX=1 DSDPROOT=`pwd` install
 
     - name: Build/install CVXOPT
       run: |

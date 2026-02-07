@@ -1,21 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Modeling &mdash; CVXOPT User&#39;s Guide</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=3b3401d5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
@@ -28,14 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CVXOPT User's Guide
           </a>
-              <div class="version">
-                1.3.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -52,10 +53,38 @@
 <li class="toctree-l1"><a class="reference internal" href="coneprog.html">Cone Programming</a></li>
 <li class="toctree-l1"><a class="reference internal" href="solvers.html">Nonlinear Convex Optimization</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Modeling</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#variables">Variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#constraints">Constraints</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#optimization-problems">Optimization Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#variables">Variables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.modeling.variable"><code class="docutils literal notranslate"><span class="pre">cvxopt.modeling.variable</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#variable.name"><code class="docutils literal notranslate"><span class="pre">variable.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#variable.value"><code class="docutils literal notranslate"><span class="pre">variable.value</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">variables</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#value"><code class="docutils literal notranslate"><span class="pre">value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.modeling.sum"><code class="docutils literal notranslate"><span class="pre">cvxopt.modeling.sum</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.modeling.dot"><code class="docutils literal notranslate"><span class="pre">cvxopt.modeling.dot</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#constraints">Constraints</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#constraint.type"><code class="docutils literal notranslate"><span class="pre">constraint.type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constraint.value"><code class="docutils literal notranslate"><span class="pre">constraint.value</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constraint.multiplier"><code class="docutils literal notranslate"><span class="pre">constraint.multiplier</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#constraint.name"><code class="docutils literal notranslate"><span class="pre">constraint.name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#optimization-problems">Optimization Problems</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.modeling.op"><code class="docutils literal notranslate"><span class="pre">cvxopt.modeling.op</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.objective"><code class="docutils literal notranslate"><span class="pre">op.objective</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.variables"><code class="docutils literal notranslate"><span class="pre">op.variables</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.constraints"><code class="docutils literal notranslate"><span class="pre">op.constraints</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.inequalities"><code class="docutils literal notranslate"><span class="pre">op.inequalities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.equalities"><code class="docutils literal notranslate"><span class="pre">op.equalities</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.delconstraint"><code class="docutils literal notranslate"><span class="pre">op.delconstraint</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.addconstraint"><code class="docutils literal notranslate"><span class="pre">op.addconstraint</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#op.solve"><code class="docutils literal notranslate"><span class="pre">op.solve</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>
@@ -77,8 +106,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Modeling</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Modeling</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -88,7 +117,7 @@
            <div itemprop="articleBody">
              
   <section id="modeling">
-<span id="c-modeling"></span><h1>Modeling<a class="headerlink" href="#modeling" title="Permalink to this heading"></a></h1>
+<span id="c-modeling"></span><h1>Modeling<a class="headerlink" href="#modeling" title="Link to this heading"></a></h1>
 <p>The module <code class="xref py py-mod docutils literal notranslate"><span class="pre">cvxopt.modeling</span></code>  can be used to specify and solve
 optimization problems  with convex piecewise-linear objective and
 constraint functions.  Using this modeling tool, one can specify an
@@ -103,11 +132,11 @@ and nested evaluations of <code class="xref py py-func docutils literal notransl
 <p>A more general Python convex modeling package is
 <a class="reference external" href="http://cvxpy.org">CVXPY</a>.</p>
 <section id="variables">
-<span id="s-variables"></span><h2>Variables<a class="headerlink" href="#variables" title="Permalink to this heading"></a></h2>
+<span id="s-variables"></span><h2>Variables<a class="headerlink" href="#variables" title="Link to this heading"></a></h2>
 <p>Optimization variables are represented by <code class="xref py py-class docutils literal notranslate"><span class="pre">variable</span></code> objects.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.modeling.variable">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.modeling.</span></span><span class="sig-name descname"><span class="pre">variable</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.variable" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.modeling.</span></span><span class="sig-name descname"><span class="pre">variable</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.variable" title="Link to this definition"></a></dt>
 <dd><p>A vector variable.  The first argument is the dimension of the vector
 (a positive integer with default value 1).  The second argument is a
 string with a name for the variable.  The name is optional and has
@@ -122,13 +151,13 @@ files.</p>
 A <code class="xref py py-class docutils literal notranslate"><span class="pre">variable</span></code> <code class="docutils literal notranslate"><span class="pre">x</span></code> has two attributes.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="variable.name">
-<span class="sig-prename descclassname"><span class="pre">variable.</span></span><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#variable.name" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">variable.</span></span><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#variable.name" title="Link to this definition"></a></dt>
 <dd><p>The name of the variable.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="variable.value">
-<span class="sig-prename descclassname"><span class="pre">variable.</span></span><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#variable.value" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">variable.</span></span><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#variable.value" title="Link to this definition"></a></dt>
 <dd><p>Either <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> or a dense <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> matrix of size
 <code class="docutils literal notranslate"><span class="pre">len(x)</span></code> by 1.</p>
 <p>The attribute <code class="docutils literal notranslate"><span class="pre">x.value</span></code> is set to <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code> when the variable
@@ -140,8 +169,8 @@ size <code class="docutils literal notranslate"><span class="pre">(len(x),</span
 elements of <code class="docutils literal notranslate"><span class="pre">x.value</span></code> are set to the value of <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
 </dd></dl>
 
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt.modeling</span><span class="w"> </span><span class="kn">import</span> <span class="n">variable</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="go">3</span>
@@ -163,20 +192,20 @@ elements of <code class="docutils literal notranslate"><span class="pre">x.value
 </div>
 </section>
 <section id="functions">
-<span id="s-functions"></span><h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h2>
+<span id="s-functions"></span><h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <p>Objective and constraint functions can be defined via overloaded operations
 on variables and other functions.  A function <code class="docutils literal notranslate"><span class="pre">f</span></code> is interpreted as a
 column vector, with length <code class="docutils literal notranslate"><span class="pre">len(f)</span></code> and with a value that depends on
 the values of its variables.  Functions have two public attributes.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">variables</span></span><a class="headerlink" href="#id0" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">variables</span></span><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
 <dd><p>Returns a copy of the list of variables of the function.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="value">
-<span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#value" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#value" title="Link to this definition"></a></dt>
 <dd><p>The function value.  If any of the variables of <code class="docutils literal notranslate"><span class="pre">f</span></code> has value
 <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>, then <code class="docutils literal notranslate"><span class="pre">f.value()</span></code> returns <code class="xref py py-const docutils literal notranslate"><span class="pre">None</span></code>.  Otherwise,
 it returns a dense <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> matrix of size <code class="docutils literal notranslate"><span class="pre">(len(f),1)</span></code> with
@@ -231,7 +260,7 @@ as inner products of a constant vector with  a variable or affine
 function.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.modeling.sum">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.modeling.</span></span><span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.sum" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.modeling.</span></span><span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.sum" title="Link to this definition"></a></dt>
 <dd><p>The argument is an affine function or a variable.  The result is an
 affine function of length 1, with the sum of the components of the
 argument <code class="docutils literal notranslate"><span class="pre">v</span></code>.</p>
@@ -239,7 +268,7 @@ argument <code class="docutils literal notranslate"><span class="pre">v</span></
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.modeling.dot">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.modeling.</span></span><span class="sig-name descname"><span class="pre">dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.dot" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.modeling.</span></span><span class="sig-name descname"><span class="pre">dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.dot" title="Link to this definition"></a></dt>
 <dd><p>If <code class="docutils literal notranslate"><span class="pre">v</span></code> is a variable or affine function and <code class="docutils literal notranslate"><span class="pre">u</span></code> is a
 <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> matrix of size <code class="docutils literal notranslate"><span class="pre">(len(v),</span> <span class="pre">1)</span></code>, then
 <code class="docutils literal notranslate"><span class="pre">dot(u,</span> <span class="pre">v)</span></code> and <code class="docutils literal notranslate"><span class="pre">dot(v,</span> <span class="pre">u)</span></code> are equivalent to
@@ -263,7 +292,7 @@ g(x,y) &amp;=
        &amp;= \left[ \begin{array}{c} 8 \\ 12 \end{array}\right] x +
    \left[ \begin{array}{cc} 2 &amp; 4 \\ 3 &amp; 5 \end{array}\right] y +
    \left[ \begin{array}{c} 13 \\ 17\end{array}\right]."/></p>
-</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt.modeling</span><span class="w"> </span><span class="kn">import</span> <span class="n">variable</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">3</span>
@@ -391,7 +420,7 @@ length 10, <code class="docutils literal notranslate"><span class="pre">g</span>
     |u|-1   &amp; 1 \leq |u| \leq 2 \\
     2|u|-3  &amp; |u| \geq 2.
 \end{array}\right."/></p>
-</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span><span class="p">,</span> <span class="nb">max</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt.modeling</span><span class="w"> </span><span class="kn">import</span> <span class="n">variable</span><span class="p">,</span> <span class="nb">max</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
@@ -408,7 +437,7 @@ and if they do not change the length of <code class="docutils literal notranslat
 </dl>
 </section>
 <section id="constraints">
-<span id="s-constraints"></span><h2>Constraints<a class="headerlink" href="#constraints" title="Permalink to this heading"></a></h2>
+<span id="s-constraints"></span><h2>Constraints<a class="headerlink" href="#constraints" title="Link to this heading"></a></h2>
 <p>Linear equality and inequality constraints of the form</p>
 <div class="math">
 <p><img src="_images/math/12354e7e046bba1f8384eebcc70a2d9a09930e8e.png" alt="f(x_1,\ldots,x_n) = 0, \qquad f(x_1,\ldots,x_n) \preceq  0,"/></p>
@@ -445,20 +474,20 @@ constraint function.</p>
 <p>Constraints have four public attributes.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="constraint.type">
-<span class="sig-prename descclassname"><span class="pre">constraint.</span></span><span class="sig-name descname"><span class="pre">type</span></span><a class="headerlink" href="#constraint.type" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">constraint.</span></span><span class="sig-name descname"><span class="pre">type</span></span><a class="headerlink" href="#constraint.type" title="Link to this definition"></a></dt>
 <dd><p>Returns <code class="xref py py-const docutils literal notranslate"><span class="pre">'='</span></code> if the constraint is an equality constraint, and
 <strong>‘&lt;’</strong> if the constraint is an inequality constraint.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="constraint.value">
-<span class="sig-prename descclassname"><span class="pre">constraint.</span></span><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#constraint.value" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">constraint.</span></span><span class="sig-name descname"><span class="pre">value</span></span><a class="headerlink" href="#constraint.value" title="Link to this definition"></a></dt>
 <dd><p>Returns the value of the constraint function.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="constraint.multiplier">
-<span class="sig-prename descclassname"><span class="pre">constraint.</span></span><span class="sig-name descname"><span class="pre">multiplier</span></span><a class="headerlink" href="#constraint.multiplier" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">constraint.</span></span><span class="sig-name descname"><span class="pre">multiplier</span></span><a class="headerlink" href="#constraint.multiplier" title="Link to this definition"></a></dt>
 <dd><p>For a constraint <code class="docutils literal notranslate"><span class="pre">c</span></code>, <code class="docutils literal notranslate"><span class="pre">c.multiplier</span></code> is a <code class="xref py py-class docutils literal notranslate"><span class="pre">variable</span></code>
 object of dimension <code class="docutils literal notranslate"><span class="pre">len(c)</span></code>.  It is used to represent the
 Lagrange multiplier or dual variable associated with the constraint.
@@ -468,7 +497,7 @@ an assignment to <code class="docutils literal notranslate"><span class="pre">c.
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="constraint.name">
-<span class="sig-prename descclassname"><span class="pre">constraint.</span></span><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#constraint.name" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">constraint.</span></span><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#constraint.name" title="Link to this definition"></a></dt>
 <dd><p>The name of the constraint.  Changing the name of a constraint also
 changes the name of the multiplier of <code class="docutils literal notranslate"><span class="pre">c</span></code>.  For example, the command
 <code class="docutils literal notranslate"><span class="pre">c.name</span> <span class="pre">=</span> <span class="pre">'newname'</span></code> also changes
@@ -477,12 +506,12 @@ changes the name of the multiplier of <code class="docutils literal notranslate"
 
 </section>
 <section id="optimization-problems">
-<span id="s-lp"></span><h2>Optimization Problems<a class="headerlink" href="#optimization-problems" title="Permalink to this heading"></a></h2>
+<span id="s-lp"></span><h2>Optimization Problems<a class="headerlink" href="#optimization-problems" title="Link to this heading"></a></h2>
 <p>Optimization problems are be constructed by calling the following
 function.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.modeling.op">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.modeling.</span></span><span class="sig-name descname"><span class="pre">op</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">objective</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">constraints</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.op" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.modeling.</span></span><span class="sig-name descname"><span class="pre">op</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">objective</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">constraints</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.modeling.op" title="Link to this definition"></a></dt>
 <dd><p>The first argument specifies the objective function to be minimized.
 It can be an affine or convex piecewise-linear function with length 1,
 a <a class="reference internal" href="#cvxopt.modeling.variable" title="cvxopt.modeling.variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">variable</span></code></a> with length 1, or a scalar constant (integer, float,
@@ -497,44 +526,44 @@ The default value is the empty string.</p>
 and modifying optimization problems.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="op.objective">
-<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">objective</span></span><a class="headerlink" href="#op.objective" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">objective</span></span><a class="headerlink" href="#op.objective" title="Link to this definition"></a></dt>
 <dd><p>The objective or cost function.  One can write to this attribute to
 change the objective of an existing problem.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="op.variables">
-<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#op.variables" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#op.variables" title="Link to this definition"></a></dt>
 <dd><p>Returns a list of the variables of the problem.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="op.constraints">
-<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">constraints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#op.constraints" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">constraints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#op.constraints" title="Link to this definition"></a></dt>
 <dd><p>Returns a list of the constraints.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="op.inequalities">
-<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">inequalities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#op.inequalities" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">inequalities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#op.inequalities" title="Link to this definition"></a></dt>
 <dd><p>Returns a list of the inequality constraints.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="op.equalities">
-<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">equalities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#op.equalities" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">equalities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#op.equalities" title="Link to this definition"></a></dt>
 <dd><p>Returns a list of the equality constraints.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="op.delconstraint">
-<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">delconstraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#op.delconstraint" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">delconstraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#op.delconstraint" title="Link to this definition"></a></dt>
 <dd><p>Deletes constraint <code class="docutils literal notranslate"><span class="pre">c</span></code> from the problem.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="op.addconstraint">
-<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">addconstraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#op.addconstraint" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">addconstraint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#op.addconstraint" title="Link to this definition"></a></dt>
 <dd><p>Adds constraint <code class="docutils literal notranslate"><span class="pre">c</span></code> to the problem.</p>
 </dd></dl>
 
@@ -542,7 +571,7 @@ change the objective of an existing problem.</p>
 constraints can be solved by calling the method <code class="xref py py-func docutils literal notranslate"><span class="pre">solve</span></code>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="op.solve">
-<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">format</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#op.solve" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">op.</span></span><span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">format</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#op.solve" title="Link to this definition"></a></dt>
 <dd><p>This function converts the optimization problem to a linear program in
 matrix form and then solves it using the solver described in
 the section <a class="reference internal" href="coneprog.html#s-lpsolver"><span class="std std-ref">Linear Programming</span></a>.</p>
@@ -593,7 +622,7 @@ the different solver options.</p>
                   &amp;  x +2y \leq 3 \\
                   &amp; x \geq 0, \quad y \geq 0.
 \end{array}"/></p>
-</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">op</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt.modeling</span><span class="w"> </span><span class="kn">import</span> <span class="n">op</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">variable</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c1</span> <span class="o">=</span> <span class="p">(</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="mi">3</span> <span class="p">)</span>
@@ -621,7 +650,7 @@ the different solver options.</p>
 </pre></div>
 </div>
 <p>We can solve the same LP in  matrix form as follows.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">op</span><span class="p">,</span> <span class="n">dot</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt.modeling</span><span class="w"> </span><span class="kn">import</span> <span class="n">op</span><span class="p">,</span> <span class="n">dot</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">2.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span><span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">3.</span><span class="p">,</span><span class="mf">3.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">])</span>
@@ -664,7 +693,7 @@ vectors.</p>
 
 </section>
 <section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
 <p><strong>Norm and Penalty Approximation</strong></p>
 <blockquote>
 <div><p>In the first example we solve the norm approximation problems</p>
@@ -690,9 +719,9 @@ vectors.</p>
 <p>The code uses the <a class="reference external" href="http://matplotlib.sourceforge.net">Matplotlib</a>
 package for plotting the histograms of the residual vectors for the
 two solutions.  It generates the figure shown below.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">normal</span>
-<span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="nb">sum</span>
-<span class="kn">import</span> <span class="nn">pylab</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">normal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt.modeling</span><span class="w"> </span><span class="kn">import</span> <span class="n">variable</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="nb">sum</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span>
 
 <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">100</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
@@ -716,7 +745,8 @@ two solutions.  It generates the figure shown below.</p>
 <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/normappr.png"><img alt="_images/normappr.png" src="_images/normappr.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/normappr.png"><img alt="_images/normappr.png" src="_images/normappr.png" style="width: 600px;" />
+</a>
 <p>Equivalently, we can formulate and solve the problems as LPs.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">variable</span><span class="p">()</span>
 <span class="n">x1</span> <span class="o">=</span> <span class="n">variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
@@ -758,8 +788,8 @@ equivalent LP</p>
                   &amp; -y \preceq x \preceq y
 \end{array}"/></p>
 </div><p>for randomly generated data.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">normal</span><span class="p">,</span> <span class="n">uniform</span>
-<span class="kn">from</span> <span class="nn">cvxopt.modeling</span> <span class="kn">import</span> <span class="n">variable</span><span class="p">,</span> <span class="n">dot</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="nb">sum</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">normal</span><span class="p">,</span> <span class="n">uniform</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt.modeling</span><span class="w"> </span><span class="kn">import</span> <span class="n">variable</span><span class="p">,</span> <span class="n">dot</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="nb">sum</span>
 
 <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">100</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
@@ -811,8 +841,8 @@ equivalent LP</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on Aug 09, 2023.
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2026, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on Feb 07, 2026.
       </span></p>
   </div>
 
@@ -832,7 +862,7 @@ equivalent LP</p>
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 5.0.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 8.2.3.
     </div>
 
 </body>

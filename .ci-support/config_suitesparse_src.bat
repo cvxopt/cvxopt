@@ -1,5 +1,5 @@
-set SUITESPARSE_VERSION=7.8.2
-set SUITESPARSE_SHA256=996c48c87baaeb5fc04bd85c7e66d3651a56fe749c531c60926d75b4db5d2181
+set SUITESPARSE_VERSION=7.12.1
+set SUITESPARSE_SHA256=794ae22f7e38e2ac9f5cbb673be9dd80cdaff2cdf858f5104e082694f743b0ba
 
 wget -nv https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v%SUITESPARSE_VERSION%.tar.gz -O SuiteSparse-%SUITESPARSE_VERSION%.tar.gz
 checksum -t sha256 -c %SUITESPARSE_SHA256% SuiteSparse-%SUITESPARSE_VERSION%.tar.gz

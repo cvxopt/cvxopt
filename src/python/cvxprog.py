@@ -6,7 +6,7 @@ for quadratic and geometric programming.  Also includes an interface
 to the quadratic programming solver from MOSEK.
 """
 
-# Copyright 2012-2023 M. Andersen and L. Vandenberghe.
+# Copyright 2012-2026 M. Andersen and L. Vandenberghe.
 # Copyright 2010-2011 L. Vandenberghe.
 # Copyright 2004-2009 J. Dahl and L. Vandenberghe.
 # 
