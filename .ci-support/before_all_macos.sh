@@ -20,7 +20,8 @@ else
     export ARCH_FLAGS="-target arm64-apple-macos11"
     export LAPACKBLAS="-framework Accelerate"
     mkdir -p .local/lib .local/include
+    PREFIX="$(pwd)/.local"
     (cd DSDP${DSDP_VERSION} \
         && patch -p1 < ../.github/workflows/dsdp.patch \
-        && make CC=gcc LAPACKBLAS="${LAPACKBLAS}" PREFIX="../.local" IS_OSX=1 DSDPROOT=`pwd` install)
+        && make CC=gcc LAPACKBLAS="${LAPACKBLAS}" PREFIX=$PREFIX IS_OSX=1 DSDPROOT=`pwd` install)
 fi
