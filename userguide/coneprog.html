@@ -1,21 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cone Programming &mdash; CVXOPT User&#39;s Guide</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=3b3401d5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
@@ -28,14 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CVXOPT User's Guide
           </a>
-              <div class="version">
-                1.3.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -50,12 +51,30 @@
 <li class="toctree-l1"><a class="reference internal" href="fftw.html">Discrete Transforms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spsolvers.html">Sparse Linear Equations</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Cone Programming</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#linear-cone-programs">Linear Cone Programs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#quadratic-cone-programs">Quadratic Cone Programs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#linear-programming">Linear Programming</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#quadratic-programming">Quadratic Programming</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#second-order-cone-programming">Second-Order Cone Programming</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#semidefinite-programming">Semidefinite Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linear-cone-programs">Linear Cone Programs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.conelp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.conelp</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#quadratic-cone-programs">Quadratic Cone Programs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.coneqp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.coneqp</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#linear-programming">Linear Programming</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.lp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.lp</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#quadratic-programming">Quadratic Programming</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.qp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.qp</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#second-order-cone-programming">Second-Order Cone Programming</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.socp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.socp</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#semidefinite-programming">Semidefinite Programming</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.solvers.sdp"><code class="docutils literal notranslate"><span class="pre">cvxopt.solvers.sdp</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#exploiting-structure">Exploiting Structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#optional-solvers">Optional Solvers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#algorithm-parameters">Algorithm Parameters</a></li>
@@ -81,8 +100,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Cone Programming</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Cone Programming</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -92,7 +111,7 @@
            <div itemprop="articleBody">
              
   <section id="cone-programming">
-<span id="c-coneprog"></span><h1>Cone Programming<a class="headerlink" href="#cone-programming" title="Permalink to this heading"></a></h1>
+<span id="c-coneprog"></span><h1>Cone Programming<a class="headerlink" href="#cone-programming" title="Link to this heading"></a></h1>
 <p>In this chapter we consider convex optimization problems of the form</p>
 <div class="math">
 <p><img src="_images/math/bcfcc32ea50d37180cedf362db80a4901cbc05bd.png" alt="\begin{array}{ll}
@@ -119,10 +138,10 @@ be implemented that exploit structure in cone programs.  The last two
 sections describe optional interfaces to external solvers, and the
 algorithm parameters that control the cone programming solvers.</p>
 <section id="linear-cone-programs">
-<span id="s-conelp"></span><h2>Linear Cone Programs<a class="headerlink" href="#linear-cone-programs" title="Permalink to this heading"></a></h2>
+<span id="s-conelp"></span><h2>Linear Cone Programs<a class="headerlink" href="#linear-cone-programs" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.solvers.conelp">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">conelp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">primalstart</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dualstart</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">kktsolver</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.conelp" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">conelp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">primalstart</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dualstart</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">kktsolver</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.conelp" title="Link to this definition"></a></dt>
 <dd><p>Solves a pair of primal and dual cone programs</p>
 <div class="math">
 <p><img src="_images/math/9f18ba54fa478c728e3a3536166f874c17aa7c04.png" alt="\begin{array}[t]{ll}
@@ -335,7 +354,7 @@ the number of columns of <img class="math" src="_images/math/89878909dbb648acdc4
    -30 &amp; 99  &amp;  23 \\
    -19 &amp; 23  &amp; 10 \end{array}\right].
 \end{array}"/></p>
-</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="o">-</span><span class="mf">6.</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span> <span class="mf">16.</span><span class="p">,</span> <span class="mf">7.</span><span class="p">,</span>  <span class="mf">24.</span><span class="p">,</span>  <span class="o">-</span><span class="mf">8.</span><span class="p">,</span>   <span class="mf">8.</span><span class="p">,</span>  <span class="o">-</span><span class="mf">1.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>
 <span class="go">                   7.,  -5.,   1.,  -5.,   1.,  -7.,   1.,   -7.,  -4.],</span>
@@ -390,10 +409,10 @@ obtain the same result if we define <code class="docutils literal notranslate"><
 </div>
 </section>
 <section id="quadratic-cone-programs">
-<span id="s-coneqp"></span><h2>Quadratic Cone Programs<a class="headerlink" href="#quadratic-cone-programs" title="Permalink to this heading"></a></h2>
+<span id="s-coneqp"></span><h2>Quadratic Cone Programs<a class="headerlink" href="#quadratic-cone-programs" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.solvers.coneqp">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">coneqp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">initvals</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">kktsolver</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.coneqp" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">coneqp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">initvals</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">kktsolver</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.coneqp" title="Link to this definition"></a></dt>
 <dd><p>Solves a pair of primal and dual quadratic cone programs</p>
 <div class="math">
 <p><img src="_images/math/6d9473d4787aece2804514f0796e6abeb2ce4dda.png" alt="\begin{array}[t]{ll}
@@ -550,7 +569,7 @@ number of columns of <img class="math" src="_images/math/89878909dbb648acdc4a44d
    \end{array} \right], \qquad
 b = \left[ \begin{array}{r} 1.5 \\ 0.0 \\ -1.2 \\ -0.7 \\ 0.0
     \end{array} \right]."/></p>
-</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span> <span class="p">[</span> <span class="mf">.3</span><span class="p">,</span> <span class="o">-</span><span class="mf">.4</span><span class="p">,</span>  <span class="o">-</span><span class="mf">.2</span><span class="p">,</span>  <span class="o">-</span><span class="mf">.4</span><span class="p">,</span>  <span class="mf">1.3</span> <span class="p">],</span>
 <span class="go">                 [ .6, 1.2, -1.7,   .3,  -.3 ],</span>
 <span class="go">                 [-.3,  .0,   .6, -1.2, -2.0 ] ])</span>
@@ -570,14 +589,14 @@ b = \left[ \begin{array}{r} 1.5 \\ 0.0 \\ -1.2 \\ -0.7 \\ 0.0
 </div>
 </section>
 <section id="linear-programming">
-<span id="s-lpsolver"></span><h2>Linear Programming<a class="headerlink" href="#linear-programming" title="Permalink to this heading"></a></h2>
+<span id="s-lpsolver"></span><h2>Linear Programming<a class="headerlink" href="#linear-programming" title="Link to this heading"></a></h2>
 <p>The function <a class="reference internal" href="#cvxopt.solvers.lp" title="cvxopt.solvers.lp"><code class="xref py py-func docutils literal notranslate"><span class="pre">lp</span></code></a> is an interface to
 <a class="reference internal" href="#cvxopt.solvers.conelp" title="cvxopt.solvers.conelp"><code class="xref py py-func docutils literal notranslate"><span class="pre">conelp</span></code></a> for linear
 programs.  It also provides the option of using the linear programming
 solvers from GLPK or MOSEK.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.solvers.lp">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">lp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">primalstart</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dualstart</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.lp" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">lp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">primalstart</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dualstart</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.lp" title="Link to this definition"></a></dt>
 <dd><p>Solves the pair of primal and dual linear programs</p>
 <div class="math">
 <p><img src="_images/math/9f18ba54fa478c728e3a3536166f874c17aa7c04.png" alt="\begin{array}[t]{ll}
@@ -619,7 +638,7 @@ all the other fields in the output dictionary are <code class="xref py py-const 
                   &amp; x_1 + 2x_2 \leq 3 \\
                   &amp; x_1 \geq 0, \quad x_2 \geq 0.
 \end{array}"/></p>
-</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="o">-</span><span class="mf">4.</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">])</span>
@@ -631,14 +650,14 @@ all the other fields in the output dictionary are <code class="xref py py-const 
 </div>
 </section>
 <section id="quadratic-programming">
-<span id="s-qp"></span><h2>Quadratic Programming<a class="headerlink" href="#quadratic-programming" title="Permalink to this heading"></a></h2>
+<span id="s-qp"></span><h2>Quadratic Programming<a class="headerlink" href="#quadratic-programming" title="Link to this heading"></a></h2>
 <p>The function <a class="reference internal" href="#cvxopt.solvers.qp" title="cvxopt.solvers.qp"><code class="xref py py-func docutils literal notranslate"><span class="pre">qp</span></code></a> is an interface to
 <a class="reference internal" href="#cvxopt.solvers.coneqp" title="cvxopt.solvers.coneqp"><code class="xref py py-func docutils literal notranslate"><span class="pre">coneqp</span></code></a> for quadratic
 programs.  It also provides the option of using the quadratic programming
 solver from MOSEK.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.solvers.qp">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">qp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">initvals</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.qp" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">qp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">initvals</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.qp" title="Link to this definition"></a></dt>
 <dd><p>Solves the pair of primal and dual convex quadratic programs</p>
 <div class="math">
 <p><img src="_images/math/ac5ad3214d3caf44e5cc4e9514908ba2a7bb48dc.png" alt="\begin{array}[t]{ll}
@@ -697,13 +716,15 @@ by solving the quadratic program</p>
 </div><p>for a sequence of positive values of <img class="math" src="_images/math/4a3598141469c2555591e66606a1b86d4ec6dca9.png" alt="\mu"/>.  The code below computes
 the trade-off curve and produces two figures using the
 <a class="reference external" href="http://matplotlib.sourceforge.net">Matplotlib</a> package.</p>
-<a class="reference internal image-reference" href="_images/portfolio2.png"><img alt="_images/portfolio2.png" src="_images/portfolio2.png" style="width: 400px;" /></a>
-<a class="reference internal image-reference" href="_images/portfolio1.png"><img alt="_images/portfolio1.png" src="_images/portfolio1.png" style="width: 400px;" /></a>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
-<span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
-<span class="kn">from</span> <span class="nn">cvxopt.blas</span> <span class="kn">import</span> <span class="n">dot</span>
-<span class="kn">from</span> <span class="nn">cvxopt.solvers</span> <span class="kn">import</span> <span class="n">qp</span>
-<span class="kn">import</span> <span class="nn">pylab</span>
+<a class="reference internal image-reference" href="_images/portfolio2.png"><img alt="_images/portfolio2.png" src="_images/portfolio2.png" style="width: 400px;" />
+</a>
+<a class="reference internal image-reference" href="_images/portfolio1.png"><img alt="_images/portfolio1.png" src="_images/portfolio1.png" style="width: 400px;" />
+</a>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sqrt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt.blas</span><span class="w"> </span><span class="kn">import</span> <span class="n">dot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt.solvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">qp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span>
 
 <span class="c1"># Problem data.</span>
 <span class="n">n</span> <span class="o">=</span> <span class="mi">4</span>
@@ -756,13 +777,13 @@ the trade-off curve and produces two figures using the
 </div>
 </section>
 <section id="second-order-cone-programming">
-<span id="s-socpsolver"></span><h2>Second-Order Cone Programming<a class="headerlink" href="#second-order-cone-programming" title="Permalink to this heading"></a></h2>
+<span id="s-socpsolver"></span><h2>Second-Order Cone Programming<a class="headerlink" href="#second-order-cone-programming" title="Link to this heading"></a></h2>
 <p>The function <a class="reference internal" href="#cvxopt.solvers.socp" title="cvxopt.solvers.socp"><code class="xref py py-func docutils literal notranslate"><span class="pre">socp</span></code></a> is a simpler interface to
 <a class="reference internal" href="#cvxopt.solvers.conelp" title="cvxopt.solvers.conelp"><code class="xref py py-func docutils literal notranslate"><span class="pre">conelp</span></code></a> for
 cone programs with no linear matrix inequality constraints.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.solvers.socp">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">socp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">Gl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hl</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">Gq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hq</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">primalstart</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dualstart</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.socp" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">socp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">Gl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hl</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">Gq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hq</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">primalstart</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dualstart</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.socp" title="Link to this definition"></a></dt>
 <dd><p>Solves the pair of primal and dual second-order cone programs</p>
 <div class="math">
 <p><img src="_images/math/32cab048b453581f0ca59dc31e33e56b7c8b3a0e.png" alt="\begin{array}[t]{ll}
@@ -855,7 +876,7 @@ same meaning as in the output of
        -x_1 - 19 x_2 + 3 x_3 - 42 \end{array}\right] \right\|_2
      \leq -3x_1 + 6x_2 - 10x_3 + 27.
 \end{array}"/></p>
-</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="p">[</span> <span class="n">matrix</span><span class="p">(</span> <span class="p">[[</span><span class="mf">12.</span><span class="p">,</span> <span class="mf">13.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">],</span> <span class="p">[</span><span class="mf">6.</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]]</span> <span class="p">)</span> <span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">+=</span> <span class="p">[</span> <span class="n">matrix</span><span class="p">(</span> <span class="p">[[</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">6.</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.</span><span class="p">,</span> <span class="mf">19.</span><span class="p">],</span> <span class="p">[</span><span class="mf">10.</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.</span><span class="p">]]</span> <span class="p">)</span> <span class="p">]</span>
@@ -880,14 +901,14 @@ same meaning as in the output of
 </div>
 </section>
 <section id="semidefinite-programming">
-<span id="s-sdpsolver"></span><h2>Semidefinite Programming<a class="headerlink" href="#semidefinite-programming" title="Permalink to this heading"></a></h2>
+<span id="s-sdpsolver"></span><h2>Semidefinite Programming<a class="headerlink" href="#semidefinite-programming" title="Link to this heading"></a></h2>
 <p>The function <a class="reference internal" href="#cvxopt.solvers.sdp" title="cvxopt.solvers.sdp"><code class="xref py py-func docutils literal notranslate"><span class="pre">sdp</span></code></a> is a simple interface to
 <a class="reference internal" href="#cvxopt.solvers.conelp" title="cvxopt.solvers.conelp"><code class="xref py py-func docutils literal notranslate"><span class="pre">conelp</span></code></a> for cone
 programs with no second-order cone constraints.  It also provides the
 option of using the DSDP semidefinite programming solver.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.solvers.sdp">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">sdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">Gl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hl</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">Gs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hs</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">primalstart</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dualstart</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.sdp" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.solvers.</span></span><span class="sig-name descname"><span class="pre">sdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">Gl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hl</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">Gs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hs</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">primalstart</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">dualstart</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.solvers.sdp" title="Link to this definition"></a></dt>
 <dd><p>Solves the pair of primal and dual semidefinite programs</p>
 <div class="math">
 <p><img src="_images/math/191bc203fa207a53847c892bc9bc56a69a1c60c1.png" alt="\newcommand{\svec}{\mathop{\mathbf{vec}}}
@@ -1016,7 +1037,7 @@ same meaning as in the output of
           \end{array} \right]
 \end{array}"/></p>
 </div></div></blockquote>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">solvers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="p">[</span> <span class="n">matrix</span><span class="p">([[</span><span class="o">-</span><span class="mf">7.</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span>
 <span class="go">                  [ 7., -18., -18., 8.],</span>
@@ -1055,7 +1076,7 @@ defined as follows.</p>
 </div>
 </section>
 <section id="exploiting-structure">
-<span id="s-conelp-struct"></span><h2>Exploiting Structure<a class="headerlink" href="#exploiting-structure" title="Permalink to this heading"></a></h2>
+<span id="s-conelp-struct"></span><h2>Exploiting Structure<a class="headerlink" href="#exploiting-structure" title="Link to this heading"></a></h2>
 <p>By default, the functions
 <a class="reference internal" href="#cvxopt.solvers.conelp" title="cvxopt.solvers.conelp"><code class="xref py py-func docutils literal notranslate"><span class="pre">conelp</span></code></a> and
 <a class="reference internal" href="#cvxopt.solvers.coneqp" title="cvxopt.solvers.coneqp"><code class="xref py py-func docutils literal notranslate"><span class="pre">coneqp</span></code></a> exploit no
@@ -1068,7 +1089,7 @@ problem structure.</p>
 <a class="reference internal" href="#cvxopt.solvers.coneqp" title="cvxopt.solvers.coneqp"><code class="xref py py-func docutils literal notranslate"><span class="pre">coneqp</span></code></a> is the solution of a set of
 linear equations (<em>KKT equations</em>) of the form</p>
 <div class="math" id="equation-e-conelp-kkt">
-<p><span class="eqno">(1)<a class="headerlink" href="#equation-e-conelp-kkt" title="Permalink to this equation"></a></span><img src="_images/math/3157de5f84013f57240cf058275c3ae9deb3287a.png" alt="\left[\begin{array}{ccc}
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-e-conelp-kkt" title="Link to this equation"></a></span><img src="_images/math/3157de5f84013f57240cf058275c3ae9deb3287a.png" alt="\left[\begin{array}{ccc}
     P &amp; A^T &amp; G^T \\
     A &amp; 0   &amp; 0  \\
     G &amp; 0   &amp; -W^T W
@@ -1247,10 +1268,10 @@ least-squares problem of the same dimensions.  (See section 11.8.2 in
 the book
 <a class="reference external" href="http://www.stanford.edu/~boyd/cvxbook">Convex Optimization</a>.)
 The code below takes advantage of this fact.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span>
 
-<span class="k">def</span> <span class="nf">l1</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">l1</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Returns the solution u, w of the l1 approximation problem</span>
 
@@ -1275,7 +1296,7 @@ The code below takes advantage of this fact.</p>
 
     <span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="p">[</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="o">*</span><span class="p">[</span><span class="mf">1.0</span><span class="p">])</span>
 
-    <span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s1">&#39;N&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">G</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s1">&#39;N&#39;</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">trans</span><span class="o">==</span><span class="s1">&#39;N&#39;</span><span class="p">:</span>
             <span class="c1"># y := alpha * [P, -I; -P, -I] * x + beta*y</span>
@@ -1291,9 +1312,9 @@ The code below takes advantage of this fact.</p>
     <span class="n">h</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="n">q</span><span class="p">,</span> <span class="o">-</span><span class="n">q</span><span class="p">])</span>
     <span class="n">dims</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="p">[]}</span>
 
-    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">F</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a function f(x, y, z) that solves</span>
 
 <span class="sd">            [ 0  0  P&#39;      -P&#39;      ] [ x[:n] ]   [ bx[:n] ]</span>
@@ -1313,9 +1334,9 @@ The code below takes advantage of this fact.</p>
         <span class="n">A</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">spmatrix</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">D</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">))</span> <span class="o">*</span> <span class="n">P</span>
         <span class="n">lapack</span><span class="o">.</span><span class="n">potrf</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 
-            <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            On entry bx, bz are stored in x, z.  On exit x, z contain the solution,</span>
 <span class="sd">            with z scaled: z./di is returned instead of z.</span>
 <span class="sd">            &quot;&quot;&quot;</span><span class="s2">&quot;</span>
@@ -1358,10 +1379,10 @@ The code below takes advantage of this fact.</p>
 \end{array}"/></p>
 </div><p>can be solved efficiently by exploiting properties of the diag
 operator.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">matrix</span>
 
-<span class="k">def</span> <span class="nf">mcsdp</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mcsdp</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns solution x, z to</span>
 
 <span class="sd">        (primal)  minimize    sum(x)</span>
@@ -1375,8 +1396,8 @@ operator.</p>
     <span class="n">n</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s1">&#39;N&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">G</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s1">&#39;N&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            y := alpha*(-diag(x)) + beta*y.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -1391,8 +1412,8 @@ operator.</p>
             <span class="n">y</span> <span class="o">-=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">x</span><span class="p">[::</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
 
 
-    <span class="k">def</span> <span class="nf">cngrnc</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cngrnc</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Congruence transformation</span>
 
 <span class="sd">            x := alpha * r&#39;*x*r.</span>
@@ -1414,8 +1435,8 @@ operator.</p>
 
     <span class="n">dims</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;q&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">n</span><span class="p">]}</span>
 
-    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">F</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a function f(x, y, z) that solves</span>
 
 <span class="sd">                      -diag(z)     = bx</span>
@@ -1434,8 +1455,8 @@ operator.</p>
         <span class="n">tsq</span> <span class="o">=</span> <span class="n">t</span><span class="o">**</span><span class="mi">2</span>
         <span class="n">lapack</span><span class="o">.</span><span class="n">potrf</span><span class="p">(</span><span class="n">tsq</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            On entry, x contains bx, y is empty, and z contains bz stored</span>
 <span class="sd">            in column major order.</span>
 <span class="sd">            On exit, they contain the solution, with z scaled</span>
@@ -1481,8 +1502,8 @@ operator.</p>
 \end{array}"/></p>
 </div><p>The code below is efficient, if we assume that the number of rows in
 <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> is greater than or equal to the number of columns.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">qcl1</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">qcl1</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the solution u, z of</span>
 
 <span class="sd">        (primal)  minimize    || u ||_1</span>
@@ -1514,7 +1535,7 @@ operator.</p>
     <span class="n">h</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
     <span class="n">h</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="o">-</span><span class="n">b</span>
 
-    <span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s1">&#39;N&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">G</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">trans</span> <span class="o">=</span> <span class="s1">&#39;N&#39;</span><span class="p">):</span>
         <span class="n">y</span> <span class="o">*=</span> <span class="n">beta</span>
         <span class="k">if</span> <span class="n">trans</span><span class="o">==</span><span class="s1">&#39;N&#39;</span><span class="p">:</span>
             <span class="c1"># y += alpha * G * x</span>
@@ -1528,8 +1549,8 @@ operator.</p>
             <span class="n">y</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span> <span class="o">-=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">])</span>
 
 
-    <span class="k">def</span> <span class="nf">Fkkt</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Fkkt</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a function f(x, y, z) that solves</span>
 
 <span class="sd">            [ 0   G&#39;   ] [ x ] = [ bx ]</span>
@@ -1562,7 +1583,7 @@ operator.</p>
         <span class="n">S</span><span class="p">[::</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">d</span>
         <span class="n">lapack</span><span class="o">.</span><span class="n">potrf</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 
             <span class="c1"># z := - W**-T * z</span>
             <span class="n">z</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">div</span><span class="p">(</span> <span class="n">z</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">d1</span> <span class="p">)</span>
@@ -1622,11 +1643,11 @@ program</p>
 \end{array}"/></p>
 </div><p>with variables <img class="math" src="_images/math/888f7c323ac0341871e867220ae2d76467d74d6e.png" alt="x"/> and <img class="math" src="_images/math/9b444cf6329a14140aee8ff5a06ff30772cc1c2f.png" alt="u"/>.  The implementation below is
 efficient when <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> has many more columns than rows.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">sqrt</span>
-<span class="kn">import</span> <span class="nn">math</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">sqrt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
-<span class="k">def</span> <span class="nf">l1regls</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">l1regls</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    Returns the solution of l1-norm regularized least-squares problem</span>
 
@@ -1638,16 +1659,16 @@ efficient when <img class="math" src="_images/math/211284f68205c3e66773eaf026f32
     <span class="n">q</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
     <span class="n">q</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">y</span>
 
-    <span class="k">def</span> <span class="nf">P</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">P</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            v := alpha * 2.0 * [ A&#39;*A, 0; 0, 0 ] * u + beta * v</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">v</span> <span class="o">*=</span> <span class="n">beta</span>
         <span class="n">v</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">+=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="p">(</span><span class="n">A</span> <span class="o">*</span> <span class="n">u</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span>
 
 
-    <span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s1">&#39;N&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">G</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">trans</span><span class="o">=</span><span class="s1">&#39;N&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            v := alpha*[I, -I; -I, -I] * u + beta * v  (trans = &#39;N&#39; or &#39;T&#39;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -1698,7 +1719,7 @@ efficient when <img class="math" src="_images/math/211284f68205c3e66773eaf026f32
     <span class="n">Asc</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">Fkkt</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Fkkt</span><span class="p">(</span><span class="n">W</span><span class="p">):</span>
 
         <span class="c1"># Factor</span>
         <span class="c1">#</span>
@@ -1720,7 +1741,7 @@ efficient when <img class="math" src="_images/math/211284f68205c3e66773eaf026f32
         <span class="n">S</span><span class="p">[::</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">1.0</span>
         <span class="n">lapack</span><span class="o">.</span><span class="n">potrf</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 
             <span class="n">x</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span> <span class="n">x</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">mul</span><span class="p">(</span><span class="n">d3</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">:])</span> <span class="o">+</span>
                 <span class="n">mul</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">z</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="n">mul</span><span class="p">(</span><span class="n">d3</span><span class="p">,</span> <span class="n">z</span><span class="p">[:</span><span class="n">n</span><span class="p">]))</span> <span class="o">-</span> <span class="n">mul</span><span class="p">(</span><span class="n">d2</span><span class="p">,</span> <span class="n">z</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span> <span class="o">-</span>
@@ -1760,7 +1781,7 @@ efficient when <img class="math" src="_images/math/211284f68205c3e66773eaf026f32
 </dl>
 </section>
 <section id="optional-solvers">
-<span id="s-external"></span><h2>Optional Solvers<a class="headerlink" href="#optional-solvers" title="Permalink to this heading"></a></h2>
+<span id="s-external"></span><h2>Optional Solvers<a class="headerlink" href="#optional-solvers" title="Link to this heading"></a></h2>
 <p>CVXOPT includes optional interfaces to several other optimization
 libraries.</p>
 <dl class="simple">
@@ -1782,7 +1803,7 @@ the <a class="reference external" href="http://www-unix.mcs.anl.gov/DSDP">DSDP5.
 need to be installed separately.</p>
 </section>
 <section id="algorithm-parameters">
-<span id="s-parameters"></span><h2>Algorithm Parameters<a class="headerlink" href="#algorithm-parameters" title="Permalink to this heading"></a></h2>
+<span id="s-parameters"></span><h2>Algorithm Parameters<a class="headerlink" href="#algorithm-parameters" title="Link to this heading"></a></h2>
 <p>In this section we list some algorithm control parameters that can be
 modified without editing the source code.  These control parameters are
 accessible via the dictionary <code class="xref py py-attr docutils literal notranslate"><span class="pre">solvers.options</span></code>.  By default the
@@ -1808,7 +1829,7 @@ inequality constraints; <code class="xref py py-const docutils literal notransla
 </dd>
 </dl>
 <p>For example the command</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">solvers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;show_progress&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 </pre></div>
 </div>
@@ -1886,7 +1907,7 @@ to their default values and can be customized by making an entry
 in <code class="xref py py-attr docutils literal notranslate"><span class="pre">solvers.options['glpk']</span></code>.  The entry must be a
 dictionary in which the key/value pairs are GLPK parameter names
 and values.  For example, the command</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">solvers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;glpk&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;msg_lev&#39;</span> <span class="p">:</span> <span class="s1">&#39;GLP_MSG_OFF&#39;</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -1898,8 +1919,8 @@ values.  They can be modified by adding an entry
 MOSEK parameter/value pairs, with the parameter names imported from
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">mosek</span></code>.  For details see Section 15 of the MOSEK Python API Manual.</p>
 <p>For example, the commands</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">mosek</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">solvers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">mosek</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">solvers</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s1">&#39;mosek&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">mosek</span><span class="o">.</span><span class="n">iparam</span><span class="o">.</span><span class="n">log</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -1920,7 +1941,7 @@ the screen (default: <code class="xref py py-const docutils literal notranslate"
 <p>It is also possible to override the options specified in the
 dictionary <code class="xref py py-attr docutils literal notranslate"><span class="pre">solvers.options</span></code> by passing a dictionary with
 options as a keyword argument. For example, the commands</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">solvers</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">solvers</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">opts</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;maxiters&#39;</span> <span class="p">:</span> <span class="mi">50</span><span class="p">}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">solvers</span><span class="o">.</span><span class="n">conelp</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">opts</span><span class="p">)</span>
 </pre></div>
@@ -1943,8 +1964,8 @@ instances should be solved in parallel, but using different options.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on Aug 09, 2023.
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2026, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on Feb 07, 2026.
       </span></p>
   </div>
 
@@ -1964,7 +1985,7 @@ instances should be solved in parallel, but using different options.</p>
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 5.0.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 8.2.3.
     </div>
 
 </body>

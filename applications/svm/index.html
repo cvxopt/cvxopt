@@ -1,20 +1,22 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Support Vector Machines &mdash; CVXOPT</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=27de62e5"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3b3401d5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="copyright" title="Copyright" href="../../copyright.html" />
@@ -26,14 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> CVXOPT
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CVXOPT
           </a>
-              <div class="version">
-                1.3.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -76,9 +79,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Applications and extensions</a> &raquo;</li>
-      <li>Support Vector Machines</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Applications and extensions</a></li>
+      <li class="breadcrumb-item active">Support Vector Machines</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -88,7 +91,7 @@
            <div itemprop="articleBody">
              
   <section id="support-vector-machines">
-<h1>Support Vector Machines<a class="headerlink" href="#support-vector-machines" title="Permalink to this heading"></a></h1>
+<h1>Support Vector Machines<a class="headerlink" href="#support-vector-machines" title="Link to this heading"></a></h1>
 <p>This software accompanies the paper <a class="reference external" href="http://www.ee.ucla.edu/~vandenbe/publications/svmcmpl.pdf">Support vector machine training
 using matrix completion techniques</a> by
 Martin Andersen and Lieven Vandenberghe. The code can be downloaded as
@@ -97,7 +100,7 @@ requires the Python extensions <a class="reference external" href="http://cvxopt
 <h4> Feedback and bug reports </h4><p>We welcome feedback, and bug reports are much appreciated. Please
 email bug reports to <span class="raw-html"><kbd>martin.skovgaard.andersen@gmail.com</kbd></span>.</p>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
 <p>This software provides two routines for soft-margin support vector
 machine training. Both routines use the CVXOPT QP solver which
 implements an interior-point method.</p>
@@ -114,10 +117,10 @@ solver. As a consequence, <a class="reference internal" href="#softmargin_appr" 
 larger problems than <a class="reference internal" href="#softmargin" title="softmargin"><code class="xref py py-func docutils literal notranslate"><span class="pre">softmargin()</span></code></a>.</p>
 </section>
 <section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading"></a></h2>
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="softmargin">
-<span class="sig-name descname"><span class="pre">softmargin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#softmargin" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">softmargin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#softmargin" title="Link to this definition"></a></dt>
 <dd><p>Solves the ‘soft-margin’ SVM problem</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{ll}
@@ -179,7 +182,7 @@ class 2</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="softmargin_appr">
-<span class="sig-name descname"><span class="pre">softmargin_appr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#softmargin_appr" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">softmargin_appr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#softmargin_appr" title="Link to this definition"></a></dt>
 <dd><p>Solves the ‘soft-margin’ SVM problem</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{ll}
@@ -218,7 +221,7 @@ and returns a vector with labels</p>
 
 </section>
 <section id="example-1">
-<h2>Example 1<a class="headerlink" href="#example-1" title="Permalink to this heading"></a></h2>
+<h2>Example 1<a class="headerlink" href="#example-1" title="Link to this heading"></a></h2>
 <p>As a toy example, consider the following classification problem with
 two (nonlinearly) separable classes.  We use as training set <span class="math notranslate nohighlight">\(m\)</span>
 points in <span class="math notranslate nohighlight">\(\mathbf{R}^2\)</span> generated according to a uniform
@@ -234,7 +237,7 @@ problem using each of the two routines provided in SVMCMPL.  In this
 example we solve a problem instance with 2,000 training
 points, and we use <span class="math notranslate nohighlight">\(\gamma = 2.0\)</span> and the RBF kernel with
 <span class="math notranslate nohighlight">\(\sigma = 1.0\)</span>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cvxopt</span><span class="o">,</span> <span class="nn">svmcmpl</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">cvxopt</span><span class="o">,</span><span class="w"> </span><span class="nn">svmcmpl</span>
 <span class="n">m</span> <span class="o">=</span> <span class="mi">2000</span>
 <span class="n">X</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">cvxopt</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mf">1.0</span>
 <span class="n">d</span> <span class="o">=</span> <span class="n">cvxopt</span><span class="o">.</span><span class="n">matrix</span><span class="p">([</span><span class="mi">2</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cvxopt</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])],(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
@@ -245,19 +248,24 @@ points, and we use <span class="math notranslate nohighlight">\(\gamma = 2.0\)</
 </div>
 <p>Solving the standard (dense) SVM problem produced 445 support
 vectors, marked with white dots in the plot below:</p>
-<a class="reference internal image-reference" href="../../_images/xor_N2000_rbf.png"><img alt="../../_images/xor_N2000_rbf.png" src="../../_images/xor_N2000_rbf.png" style="width: 450px;" /></a>
+<a class="reference internal image-reference" href="../../_images/xor_N2000_rbf.png"><img alt="../../_images/xor_N2000_rbf.png" src="../../_images/xor_N2000_rbf.png" style="width: 450px;" />
+</a>
 <p>The solid curve marks the decision boundry whereas the dashed curves
 are the -1 and +1 contours of <span class="math notranslate nohighlight">\(g(x)\)</span> where
 <span class="math notranslate nohighlight">\(\mathrm{sign}(g(x))\)</span> is the decision function.</p>
 <p>Solving the approximation problem with half-bandwidth <span class="math notranslate nohighlight">\(w = 10\)</span>
 produced 1,054 support vectors.</p>
-<a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_skc_w10.png"><img alt="../../_images/xor_N2000_rbf_skc_w10.png" src="../../_images/xor_N2000_rbf_skc_w10.png" style="width: 450px;" /></a>
-<a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_ckc_w10.png"><img alt="../../_images/xor_N2000_rbf_ckc_w10.png" src="../../_images/xor_N2000_rbf_ckc_w10.png" style="width: 450px;" /></a>
+<a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_skc_w10.png"><img alt="../../_images/xor_N2000_rbf_skc_w10.png" src="../../_images/xor_N2000_rbf_skc_w10.png" style="width: 450px;" />
+</a>
+<a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_ckc_w10.png"><img alt="../../_images/xor_N2000_rbf_ckc_w10.png" src="../../_images/xor_N2000_rbf_ckc_w10.png" style="width: 450px;" />
+</a>
 <p>In this example, the standard kernel classifier is clearly better than
 the completion kernel classifier at this bandwidth. Increasing the
 half-bandwidth to <span class="math notranslate nohighlight">\(w = 20\)</span> produced 467 support vectors.</p>
-<a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_skc_w20.png"><img alt="../../_images/xor_N2000_rbf_skc_w20.png" src="../../_images/xor_N2000_rbf_skc_w20.png" style="width: 450px;" /></a>
-<a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_ckc_w20.png"><img alt="../../_images/xor_N2000_rbf_ckc_w20.png" src="../../_images/xor_N2000_rbf_ckc_w20.png" style="width: 450px;" /></a>
+<a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_skc_w20.png"><img alt="../../_images/xor_N2000_rbf_skc_w20.png" src="../../_images/xor_N2000_rbf_skc_w20.png" style="width: 450px;" />
+</a>
+<a class="reference internal image-reference" href="../../_images/xor_N2000_rbf_ckc_w20.png"><img alt="../../_images/xor_N2000_rbf_ckc_w20.png" src="../../_images/xor_N2000_rbf_ckc_w20.png" style="width: 450px;" />
+</a>
 <p>Notice that both the standard kernel and completion kernel classifiers
 are now nearly identical to classifier obtained by solving the
 standard SVM QP.</p>
@@ -266,13 +274,13 @@ QPs required 0.3 seconds and 0.7 seconds for <span class="math notranslate nohig
 20\)</span>, respectively.</p>
 </section>
 <section id="example-2">
-<h2>Example 2<a class="headerlink" href="#example-2" title="Permalink to this heading"></a></h2>
+<h2>Example 2<a class="headerlink" href="#example-2" title="Link to this heading"></a></h2>
 <p>The following example demonstrates the approximate SVM method on the
 <a class="reference external" href="http://yann.lecun.com/exdb/mnist/">MNIST database</a> of handwritten
 digits. In the example we use the Python module <a class="reference download internal" download="" href="../../_downloads/c9a4adc5110201728860de8bd126fcb1/mnist.py"><code class="xref download docutils literal notranslate"><span class="pre">mnist.py</span></code></a> to read the database files. The following code trains
 a binary classifier using as training set 4,000 examples of the digit
 ‘0’ as class 1 and 4,000 examples of the digit ‘1’ as class 2.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mnist</span><span class="o">,</span> <span class="nn">svmcmpl</span><span class="o">,</span> <span class="nn">cvxopt</span><span class="o">,</span> <span class="nn">random</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">mnist</span><span class="o">,</span><span class="w"> </span><span class="nn">svmcmpl</span><span class="o">,</span><span class="w"> </span><span class="nn">cvxopt</span><span class="o">,</span><span class="w"> </span><span class="nn">random</span>
 
 <span class="n">digits1</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">0</span> <span class="p">]</span>
 <span class="n">digits2</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">1</span> <span class="p">]</span>
@@ -300,7 +308,8 @@ a binary classifier using as training set 4,000 examples of the digit
 </pre></div>
 </div>
 <p>In this example, both the standard kernel classifier and the completion kernel classifier misclassified 8 out of 2,115 test examples (digits ‘0’ and ‘1’ from the MNIST test set):</p>
-<a class="reference internal image-reference" href="../../_images/mnist_miscls.png"><img alt="../../_images/mnist_miscls.png" src="../../_images/mnist_miscls.png" style="width: 450px;" /></a>
+<a class="reference internal image-reference" href="../../_images/mnist_miscls.png"><img alt="../../_images/mnist_miscls.png" src="../../_images/mnist_miscls.png" style="width: 450px;" />
+</a>
 </section>
 </section>
 
@@ -314,8 +323,8 @@ a binary classifier using as training set 4,000 examples of the digit
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2023, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
-      <span class="lastupdated">Last updated on Aug 09, 2023.
+    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2026, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
+      <span class="lastupdated">Last updated on Feb 10, 2026.
       </span></p>
   </div>
 
@@ -335,7 +344,7 @@ a binary classifier using as training set 4,000 examples of the digit
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 7.1.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 8.2.3.
     </div>
 
 <script>

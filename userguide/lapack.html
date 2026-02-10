@@ -1,21 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The LAPACK Interface &mdash; CVXOPT User&#39;s Guide</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=3b3401d5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
@@ -28,14 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CVXOPT User's Guide
           </a>
-              <div class="version">
-                1.3.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -47,15 +48,90 @@
 <li class="toctree-l1"><a class="reference internal" href="matrices.html">Dense and Sparse Matrices</a></li>
 <li class="toctree-l1"><a class="reference internal" href="blas.html">The BLAS Interface</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">The LAPACK Interface</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#general-linear-equations">General Linear Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#positive-definite-linear-equations">Positive Definite Linear Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#symmetric-and-hermitian-linear-equations">Symmetric and Hermitian Linear Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#triangular-linear-equations">Triangular Linear Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#least-squares-and-least-norm-problems">Least-Squares and Least-Norm Problems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#symmetric-and-hermitian-eigenvalue-decomposition">Symmetric and Hermitian Eigenvalue Decomposition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#generalized-symmetric-definite-eigenproblems">Generalized Symmetric Definite Eigenproblems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#singular-value-decomposition">Singular Value Decomposition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#schur-and-generalized-schur-factorization">Schur and Generalized Schur Factorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#general-linear-equations">General Linear Equations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gesv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gesv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.getrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.getrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.getrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.getrs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.getri"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.getri</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gbsv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gbsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gbtrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gbtrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gbtrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gbtrs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gtsv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gtsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gttrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gttrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gttrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gttrs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#positive-definite-linear-equations">Positive Definite Linear Equations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.posv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.posv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.potrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.potrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.potrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.potrs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.potri"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.potri</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.pbsv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.pbsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.pbtrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.pbtrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.pbtrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.pbtrs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.ptsv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.ptsv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.pttrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.pttrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.pttrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.pttrs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#symmetric-and-hermitian-linear-equations">Symmetric and Hermitian Linear Equations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.sysv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.sysv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.sytrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.sytrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.sytrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.sytrs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.sytri"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.sytri</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.hesv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.hesv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.hetrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.hetrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.hetrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.hetrs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.hetri"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.hetri</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#triangular-linear-equations">Triangular Linear Equations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.trtrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.trtrs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.trtri"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.trtri</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.tbtrs"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.tbtrs</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#least-squares-and-least-norm-problems">Least-Squares and Least-Norm Problems</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gels"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gels</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.geqrf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.geqrf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gelqf"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gelqf</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.geqp3"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.geqp3</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.unmqr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.unmqr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.ormqr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.ormqr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.unmlq"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.unmlq</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.ormlq"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.ormlq</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.ungqr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.ungqr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.orgqr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.orgqr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.unglq"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.unglq</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.orglq"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.orglq</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#symmetric-and-hermitian-eigenvalue-decomposition">Symmetric and Hermitian Eigenvalue Decomposition</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.syev"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.syev</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.syevd"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.syevd</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.syevx"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.syevx</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.syevr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.syevr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.heev"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.heev</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.heevd"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.heevd</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.heevx"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.heevx</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.heevr"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.heevr</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#generalized-symmetric-definite-eigenproblems">Generalized Symmetric Definite Eigenproblems</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.sygv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.sygv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.hegv"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.hegv</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#singular-value-decomposition">Singular Value Decomposition</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gesvd"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gesvd</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gesdd"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gesdd</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#schur-and-generalized-schur-factorization">Schur and Generalized Schur Factorization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gees"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gees</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.lapack.gges"><code class="docutils literal notranslate"><span class="pre">cvxopt.lapack.gges</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#example-analytic-centering">Example: Analytic Centering</a></li>
 </ul>
 </li>
@@ -82,8 +158,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>The LAPACK Interface</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">The LAPACK Interface</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -93,7 +169,7 @@
            <div itemprop="articleBody">
              
   <section id="the-lapack-interface">
-<span id="c-lapack"></span><h1>The LAPACK Interface<a class="headerlink" href="#the-lapack-interface" title="Permalink to this heading"></a></h1>
+<span id="c-lapack"></span><h1>The LAPACK Interface<a class="headerlink" href="#the-lapack-interface" title="Link to this heading"></a></h1>
 <p>The module <code class="xref py py-mod docutils literal notranslate"><span class="pre">cvxopt.lapack</span></code> includes functions for solving dense sets
 of linear equations, for the corresponding matrix factorizations (LU,
 Cholesky, <span class="raw-html">LDL<sup><small>T</small></sup></span>),
@@ -112,10 +188,10 @@ complete definitions are documented in the docstrings in the source code.</p>
 <p><a class="reference external" href="http://www.netlib.org/lapack/lug/lapack_lug.html">LAPACK Users’ Guide, Third Edition, SIAM, 1999</a></p>
 </div>
 <section id="general-linear-equations">
-<h2>General Linear Equations<a class="headerlink" href="#general-linear-equations" title="Permalink to this heading"></a></h2>
+<h2>General Linear Equations<a class="headerlink" href="#general-linear-equations" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gesv">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gesv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gesv" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gesv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gesv" title="Link to this definition"></a></dt>
 <dd><p>Solves</p>
 <div class="math">
 <p><img src="_images/math/3352e62eefabf4e08a86652e339b0ef936c86ced.png" alt="A X = B,"/></p>
@@ -135,7 +211,7 @@ factorization and does not modify <code class="docutils literal notranslate"><sp
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.getrf">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">getrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.getrf" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">getrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.getrf" title="Link to this definition"></a></dt>
 <dd><p>LU factorization of a general, possibly rectangular, real or
 complex matrix,</p>
 <div class="math">
@@ -150,7 +226,7 @@ and the permutation matrix is returned in <code class="docutils literal notransl
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.getrs">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">getrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.getrs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">getrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.getrs" title="Link to this definition"></a></dt>
 <dd><p>Solves a general set of linear equations</p>
 <div class="math">
 <p><img src="_images/math/03da04b738c1b20d64d873e8f3c18eccc4c7bc84.png" alt="AX &amp; = B  \quad (\mathrm{trans} = \mathrm{'N'}), \\
@@ -167,7 +243,7 @@ right-hand side <img class="math" src="_images/math/4bc3e94a67870b41b7c20179693e
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.getri">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">getri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.getri" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">getri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.getri" title="Link to this definition"></a></dt>
 <dd><p>Computes the inverse of a matrix.</p>
 <p>On entry, <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">ipiv</span></code> must contain the factorization as computed
 by <a class="reference internal" href="#cvxopt.lapack.gesv" title="cvxopt.lapack.gesv"><code class="xref py py-func docutils literal notranslate"><span class="pre">gesv</span></code></a> or
@@ -179,8 +255,8 @@ matrix inverse.</p>
 <div class="math">
 <p><img src="_images/math/15ccba8c9b68894aeb55e081c819b82da74b90ed.png" alt="x = (A^{-1} + A^{-T})b"/></p>
 </div><p>for randomly generated problem data, factoring the coefficient matrix once.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.lapack</span> <span class="kn">import</span> <span class="n">gesv</span><span class="p">,</span> <span class="n">getrs</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt.lapack</span><span class="w"> </span><span class="kn">import</span> <span class="n">gesv</span><span class="p">,</span> <span class="n">getrs</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
@@ -195,7 +271,7 @@ matrix inverse.</p>
 <p>Separate functions are provided for equations with band matrices.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gbsv">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gbsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gbsv" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gbsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gbsv" title="Link to this definition"></a></dt>
 <dd><p>Solves</p>
 <div class="math">
 <p><img src="_images/math/3352e62eefabf4e08a86652e339b0ef936c86ced.png" alt="A X = B,"/></p>
@@ -221,7 +297,7 @@ general band matrices.  In this case, <a class="reference internal" href="#cvxop
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gbtrf">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gbtrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gbtrf" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gbtrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gbtrf" title="Link to this definition"></a></dt>
 <dd><p>LU factorization of a general <img class="math" src="_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/> by <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/> real or complex
 band matrix with <img class="math" src="_images/math/801e28cfd4de6fd9c1e00f5e71e5ce7b29ad57f7.png" alt="k_l"/> subdiagonals.</p>
 <p>The matrix is stored using the BLAS format for general band matrices
@@ -236,7 +312,7 @@ the details of the factorization.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gbtrs">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gbtrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">{A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gbtrs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gbtrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">{A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gbtrs" title="Link to this definition"></a></dt>
 <dd><p>Solves a set of linear equations</p>
 <div class="math">
 <p><img src="_images/math/34a857941bc037025e34cfc7d5ddf0cba068c3f7.png" alt="AX   &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
@@ -261,8 +337,8 @@ right-hand side <img class="math" src="_images/math/4bc3e94a67870b41b7c20179693e
     0 &amp; 10 &amp; 11 &amp; 12
     \end{array}\right], \qquad
 B = \left[\begin{array}{c} 1 \\ 1 \\ 1 \\ 1 \end{array}\right]."/></p>
-</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.lapack</span> <span class="kn">import</span> <span class="n">gbsv</span><span class="p">,</span> <span class="n">gbtrf</span><span class="p">,</span> <span class="n">gbtrs</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt.lapack</span><span class="w"> </span><span class="kn">import</span> <span class="n">gbsv</span><span class="p">,</span> <span class="n">gbtrf</span><span class="p">,</span> <span class="n">gbtrs</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="p">,</span> <span class="n">kl</span><span class="p">,</span> <span class="n">ku</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="mf">7.</span><span class="p">,</span> <span class="mf">10.</span><span class="p">],</span> <span class="p">[</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="mf">11.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">9.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
@@ -319,7 +395,7 @@ factorization.</p>
 simpler matrix format, with the diagonals stored in three separate vectors.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gtsv">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gtsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">du</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gtsv" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gtsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">du</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gtsv" title="Link to this definition"></a></dt>
 <dd><p>Solves</p>
 <div class="math">
 <p><img src="_images/math/3352e62eefabf4e08a86652e339b0ef936c86ced.png" alt="A X = B,"/></p>
@@ -337,7 +413,7 @@ contains the solution <img class="math" src="_images/math/ed38fa24f1c94891bd3120
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gttrf">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gttrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">du</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">du2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gttrf" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gttrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">du</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">du2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gttrf" title="Link to this definition"></a></dt>
 <dd><p>LU factorization of an <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/> by <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/> tridiagonal matrix.</p>
 <p>The subdiagonal of <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/> is stored as a matrix <code class="docutils literal notranslate"><span class="pre">dl</span></code> of length
 <img class="math" src="_images/math/a44c09dc69d687fd66b7a1a12197c0299aa5db1c.png" alt="n-1"/>, the diagonal is stored as a matrix <code class="docutils literal notranslate"><span class="pre">d</span></code> of length
@@ -351,7 +427,7 @@ On exit, the five arguments contain the details of the factorization.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gttrs">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gttrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">du</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">du2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gttrs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gttrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">du</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">du2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gttrs" title="Link to this definition"></a></dt>
 <dd><p>Solves a set of linear equations</p>
 <div class="math">
 <p><img src="_images/math/34a857941bc037025e34cfc7d5ddf0cba068c3f7.png" alt="AX   &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
@@ -368,10 +444,10 @@ the other arguments.</p>
 
 </section>
 <section id="positive-definite-linear-equations">
-<h2>Positive Definite Linear Equations<a class="headerlink" href="#positive-definite-linear-equations" title="Permalink to this heading"></a></h2>
+<h2>Positive Definite Linear Equations<a class="headerlink" href="#positive-definite-linear-equations" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.posv">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">posv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.posv" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">posv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.posv" title="Link to this definition"></a></dt>
 <dd><p>Solves</p>
 <div class="math">
 <p><img src="_images/math/3352e62eefabf4e08a86652e339b0ef936c86ced.png" alt="A X = B,"/></p>
@@ -386,7 +462,7 @@ definite.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.potrf">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">potrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.potrf" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">potrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.potrf" title="Link to this definition"></a></dt>
 <dd><p>Cholesky factorization</p>
 <div class="math">
 <p><img src="_images/math/887be39f02687d3e3a1565193924f04d7ccbb743.png" alt="A = LL^T \qquad \mbox{or} \qquad A = LL^H"/></p>
@@ -402,7 +478,7 @@ definite.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.potrs">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">potrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.potrs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">potrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.potrs" title="Link to this definition"></a></dt>
 <dd><p>Solves a set of linear equations</p>
 <div class="math">
 <p><img src="_images/math/e44d29f0cbcc5fa7a0f3f83d3bddc988f9b022ea.png" alt="AX = B"/></p>
@@ -417,7 +493,7 @@ solution.  <code class="docutils literal notranslate"><span class="pre">B</span>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.potri">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">potri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.potri" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">potri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.potri" title="Link to this definition"></a></dt>
 <dd><p>Computes the inverse of a positive definite matrix.</p>
 <p>On entry, <code class="docutils literal notranslate"><span class="pre">A</span></code> contains the Cholesky factorization computed by
 <a class="reference internal" href="#cvxopt.lapack.potri" title="cvxopt.lapack.potri"><code class="xref py py-func docutils literal notranslate"><span class="pre">potrf</span></code></a> or
@@ -428,7 +504,7 @@ inverse.</p>
 <p>As an example, we use <a class="reference internal" href="#cvxopt.lapack.posv" title="cvxopt.lapack.posv"><code class="xref py py-func docutils literal notranslate"><span class="pre">posv</span></code></a> to solve the
 linear system</p>
 <div class="math" id="equation-e-kkt-example">
-<p><span class="eqno">(1)<a class="headerlink" href="#equation-e-kkt-example" title="Permalink to this equation"></a></span><img src="_images/math/973e7149b3e7c5fd4b7a92e36771cc6c2d6e620b.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
+<p><span class="eqno">(1)<a class="headerlink" href="#equation-e-kkt-example" title="Link to this equation"></a></span><img src="_images/math/973e7149b3e7c5fd4b7a92e36771cc6c2d6e620b.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
 \left[ \begin{array}{cc}
     -\diag(d)^2  &amp; A \\ A^T  &amp; 0
 \end{array} \right]
@@ -436,9 +512,9 @@ linear system</p>
 =
 \left[ \begin{array}{c} b_1 \\ b_2 \end{array} \right]"/></p>
 </div><p>by block-elimination.  We first pick a random problem.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">uniform</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.blas</span> <span class="kn">import</span> <span class="n">syrk</span><span class="p">,</span> <span class="n">gemv</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.lapack</span> <span class="kn">import</span> <span class="n">posv</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">uniform</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt.blas</span><span class="w"> </span><span class="kn">import</span> <span class="n">syrk</span><span class="p">,</span> <span class="n">gemv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt.lapack</span><span class="w"> </span><span class="kn">import</span> <span class="n">posv</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b1</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">normal</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
@@ -467,7 +543,7 @@ A^T \diag(d)^{-2}A x_2 &amp; = b_2 + A^T \diag(d)^{-2} b_1 \\
 matrices.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.pbsv">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">pbsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo='L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.pbsv" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">pbsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo='L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.pbsv" title="Link to this definition"></a></dt>
 <dd><p>Solves</p>
 <div class="math">
 <p><img src="_images/math/e44d29f0cbcc5fa7a0f3f83d3bddc988f9b022ea.png" alt="AX = B"/></p>
@@ -485,7 +561,7 @@ definite.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.pbtrf">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">pbtrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.pbtrf" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">pbtrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.pbtrf" title="Link to this definition"></a></dt>
 <dd><p>Cholesky factorization</p>
 <div class="math">
 <p><img src="_images/math/887be39f02687d3e3a1565193924f04d7ccbb743.png" alt="A = LL^T \qquad \mbox{or} \qquad A = LL^H"/></p>
@@ -501,7 +577,7 @@ definite.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.pbtrs">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">pbtrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.pbtrs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">pbtrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.pbtrs" title="Link to this definition"></a></dt>
 <dd><p>Solves a set of linear equations</p>
 <div class="math">
 <p><img src="_images/math/f2cb671262e4538a530f4241ee603253c3e01118.png" alt="AX=B"/></p>
@@ -517,7 +593,7 @@ solution.  <code class="docutils literal notranslate"><span class="pre">B</span>
 <p>The following functions are useful for tridiagonal systems.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.ptsv">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">ptsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.ptsv" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">ptsv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.ptsv" title="Link to this definition"></a></dt>
 <dd><p>Solves</p>
 <div class="math">
 <p><img src="_images/math/3352e62eefabf4e08a86652e339b0ef936c86ced.png" alt="A X = B,"/></p>
@@ -539,7 +615,7 @@ Raises an <code class="xref py py-exc docutils literal notranslate"><span class=
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.pttrf">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">pttrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.pttrf" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">pttrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.pttrf" title="Link to this definition"></a></dt>
 <dd><p><span class="raw-html">LDL<sup><small>T</small></sup></span>
 or
 <span class="raw-html">LDL<sup><small>H</small></sup></span>
@@ -556,7 +632,7 @@ the subdiagonal elements of the unit lower bidiagonal matrix <img class="math" s
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.pttrs">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">pttrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.pttrs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">pttrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.pttrs" title="Link to this definition"></a></dt>
 <dd><p>Solves a set of linear equations</p>
 <div class="math">
 <p><img src="_images/math/e44d29f0cbcc5fa7a0f3f83d3bddc988f9b022ea.png" alt="AX = B"/></p>
@@ -577,10 +653,10 @@ solution <img class="math" src="_images/math/ed38fa24f1c94891bd312012aab3f6673be
 
 </section>
 <section id="symmetric-and-hermitian-linear-equations">
-<h2>Symmetric and Hermitian Linear Equations<a class="headerlink" href="#symmetric-and-hermitian-linear-equations" title="Permalink to this heading"></a></h2>
+<h2>Symmetric and Hermitian Linear Equations<a class="headerlink" href="#symmetric-and-hermitian-linear-equations" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.sysv">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">sysv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.sysv" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">sysv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.sysv" title="Link to this definition"></a></dt>
 <dd><p>Solves</p>
 <div class="math">
 <p><img src="_images/math/e44d29f0cbcc5fa7a0f3f83d3bddc988f9b022ea.png" alt="AX = B"/></p>
@@ -598,7 +674,7 @@ return the factorization and does not modify <code class="docutils literal notra
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.sytrf">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">sytrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.sytrf" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">sytrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.sytrf" title="Link to this definition"></a></dt>
 <dd><p><span class="raw-html">LDL<sup><small>T</small></sup></span>
 factorization</p>
 <div class="math">
@@ -611,7 +687,7 @@ exit, <code class="docutils literal notranslate"><span class="pre">A</span></cod
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.sytrs">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">sytrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.sytrs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">sytrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.sytrs" title="Link to this definition"></a></dt>
 <dd><p>Solves</p>
 <div class="math">
 <p><img src="_images/math/acc14817c5834249a732434e2919dfd4f708fffc.png" alt="A X = B"/></p>
@@ -625,7 +701,7 @@ factorization computed by
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.sytri">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">sytri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.sytri" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">sytri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.sytri" title="Link to this definition"></a></dt>
 <dd><p>Computes the inverse of a real or complex symmetric matrix.</p>
 <p>On entry, <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">ipiv</span></code> contain the
 <span class="raw-html">LDL<sup><small>T</small></sup></span>
@@ -636,7 +712,7 @@ On exit, <code class="docutils literal notranslate"><span class="pre">A</span></
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.hesv">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">hesv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.hesv" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">hesv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.hesv" title="Link to this definition"></a></dt>
 <dd><p>Solves</p>
 <div class="math">
 <p><img src="_images/math/acc14817c5834249a732434e2919dfd4f708fffc.png" alt="A X = B"/></p>
@@ -654,7 +730,7 @@ not return the factorization and does not modify <code class="docutils literal n
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.hetrf">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">hetrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.hetrf" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">hetrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.hetrf" title="Link to this definition"></a></dt>
 <dd><p><span class="raw-html">LDL<sup><small>H</small></sup></span>
 factorization</p>
 <div class="math">
@@ -667,7 +743,7 @@ On exit, <code class="docutils literal notranslate"><span class="pre">A</span></
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.hetrs">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">hetrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.hetrs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">hetrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.hetrs" title="Link to this definition"></a></dt>
 <dd><p>Solves</p>
 <div class="math">
 <p><img src="_images/math/acc14817c5834249a732434e2919dfd4f708fffc.png" alt="A X = B"/></p>
@@ -680,7 +756,7 @@ factorization computed by
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.hetri">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">hetri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.hetri" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">hetri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ipiv</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.hetri" title="Link to this definition"></a></dt>
 <dd><p>Computes the inverse of a real symmetric or complex Hermitian  matrix.</p>
 <p>On entry, <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">ipiv</span></code> contain the
 <span class="raw-html">LDL<sup><small>H</small></sup></span>
@@ -691,7 +767,7 @@ inverse.</p>
 </dd></dl>
 
 <p>As an example we solve the KKT system <a class="reference internal" href="#equation-e-kkt-example">(1)</a>.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt.lapack</span> <span class="kn">import</span> <span class="n">sysv</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt.lapack</span><span class="w"> </span><span class="kn">import</span> <span class="n">sysv</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">K</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">K</span><span class="p">[:</span> <span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="n">m</span> <span class="p">:</span> <span class="n">m</span><span class="o">+</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">d</span><span class="o">**</span><span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">K</span><span class="p">[:</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">:]</span> <span class="o">=</span> <span class="n">A</span>
@@ -702,10 +778,10 @@ inverse.</p>
 </div>
 </section>
 <section id="triangular-linear-equations">
-<h2>Triangular Linear Equations<a class="headerlink" href="#triangular-linear-equations" title="Permalink to this heading"></a></h2>
+<h2>Triangular Linear Equations<a class="headerlink" href="#triangular-linear-equations" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.trtrs">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">trtrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.trtrs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">trtrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.trtrs" title="Link to this definition"></a></dt>
 <dd><p>Solves a triangular set of equations</p>
 <div class="math">
 <p><img src="_images/math/34a857941bc037025e34cfc7d5ddf0cba068c3f7.png" alt="AX   &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
@@ -722,14 +798,14 @@ is zero (whereas <code class="xref py py-func docutils literal notranslate"><spa
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.trtri">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">trtri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.trtri" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">trtri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.trtri" title="Link to this definition"></a></dt>
 <dd><p>Computes the inverse of a real or complex triangular matrix <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/>.
 On exit, <code class="docutils literal notranslate"><span class="pre">A</span></code> contains the inverse.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.tbtrs">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">tbtrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'T'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.tbtrs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">tbtrs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'T'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diag</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.tbtrs" title="Link to this definition"></a></dt>
 <dd><p>Solves a triangular set of equations</p>
 <div class="math">
 <p><img src="_images/math/34a857941bc037025e34cfc7d5ddf0cba068c3f7.png" alt="AX   &amp; = B \quad (\mathrm{trans} = \mathrm{'N'}), \\
@@ -745,10 +821,10 @@ matrices with the same type (<code class="xref py py-const docutils literal notr
 
 </section>
 <section id="least-squares-and-least-norm-problems">
-<h2>Least-Squares and Least-Norm Problems<a class="headerlink" href="#least-squares-and-least-norm-problems" title="Permalink to this heading"></a></h2>
+<h2>Least-Squares and Least-Norm Problems<a class="headerlink" href="#least-squares-and-least-norm-problems" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gels">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gels" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gels" title="Link to this definition"></a></dt>
 <dd><p>Solves least-squares and least-norm problems with a full rank <img class="math" src="_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/>
 by <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/> matrix <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/>.</p>
 <ol class="arabic">
@@ -808,7 +884,7 @@ the QR or the LQ factorization of <img class="math" src="_images/math/211284f682
 <p>The following functions compute QR and LQ factorizations.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.geqrf">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">geqrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.geqrf" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">geqrf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.geqrf" title="Link to this definition"></a></dt>
 <dd><p>QR factorization of a real or complex matrix <code class="docutils literal notranslate"><span class="pre">A</span></code>:</p>
 <div class="math">
 <p><img src="_images/math/8b5c5ce382e60258664c8b9eef58be7dad76daf3.png" alt="A = Q R."/></p>
@@ -826,7 +902,7 @@ the first min{<img class="math" src="_images/math/e9bc7da808d33a16a8347f27a519bd
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gelqf">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gelqf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gelqf" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gelqf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gelqf" title="Link to this definition"></a></dt>
 <dd><p>LQ factorization of a real or complex matrix <code class="docutils literal notranslate"><span class="pre">A</span></code>:</p>
 <div class="math">
 <p><img src="_images/math/a45d21a76729b863a1a60fe7ebb40a96a4ec69e5.png" alt="A = L Q."/></p>
@@ -844,7 +920,7 @@ first min{<img class="math" src="_images/math/e9bc7da808d33a16a8347f27a519bd0671
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.geqp3">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">geqp3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jpvt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.geqp3" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">geqp3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jpvt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.geqp3" title="Link to this definition"></a></dt>
 <dd><p>QR factorization with column pivoting of a real or complex matrix
 <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/>:</p>
 <div class="math">
@@ -875,7 +951,7 @@ with the orthogonal matrix computed by
 <a class="reference internal" href="#cvxopt.lapack.geqrf" title="cvxopt.lapack.geqrf"><code class="xref py py-func docutils literal notranslate"><span class="pre">geqrf</span></code></a>.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.unmqr">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">unmqr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.unmqr" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">unmqr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.unmqr" title="Link to this definition"></a></dt>
 <dd><p>Product with a real orthogonal or complex unitary matrix:</p>
 <div class="math">
 <p><img src="_images/math/04b02267d8a264913c39b04bf73ab88181b03cfc.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
@@ -903,7 +979,7 @@ the typecode is <code class="xref py py-const docutils literal notranslate"><spa
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.ormqr">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">ormqr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.ormqr" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">ormqr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.ormqr" title="Link to this definition"></a></dt>
 <dd><p>Identical to <a class="reference internal" href="#cvxopt.lapack.unmqr" title="cvxopt.lapack.unmqr"><code class="xref py py-func docutils literal notranslate"><span class="pre">unmqr</span></code></a> but works only for
 real matrices, and the
 possible values of <code class="docutils literal notranslate"><span class="pre">trans</span></code> are <code class="xref py py-const docutils literal notranslate"><span class="pre">'N'</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">'T'</span></code>.</p>
@@ -914,7 +990,7 @@ possible values of <code class="docutils literal notranslate"><span class="pre">
 <a class="reference internal" href="#cvxopt.lapack.geqrf" title="cvxopt.lapack.geqrf"><code class="xref py py-func docutils literal notranslate"><span class="pre">geqrf</span></code></a>,
 <a class="reference internal" href="#cvxopt.lapack.ormqr" title="cvxopt.lapack.ormqr"><code class="xref py py-func docutils literal notranslate"><span class="pre">ormqr</span></code></a>, and
 <a class="reference internal" href="#cvxopt.lapack.trtrs" title="cvxopt.lapack.trtrs"><code class="xref py py-func docutils literal notranslate"><span class="pre">trtrs</span></code></a>.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="o">+</span><span class="n">b</span>
@@ -932,7 +1008,7 @@ possible values of <code class="docutils literal notranslate"><span class="pre">
 by <a class="reference internal" href="#cvxopt.lapack.gelqf" title="cvxopt.lapack.gelqf"><code class="xref py py-func docutils literal notranslate"><span class="pre">gelqf</span></code></a>.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.unmlq">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">unmlq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.unmlq" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">unmlq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.unmlq" title="Link to this definition"></a></dt>
 <dd><p>Product with a real orthogonal or complex unitary matrix:</p>
 <div class="math">
 <p><img src="_images/math/04b02267d8a264913c39b04bf73ab88181b03cfc.png" alt="\newcommand{\op}{\mathop{\mathrm{op}}}
@@ -960,7 +1036,7 @@ is <code class="xref py py-const docutils literal notranslate"><span class="pre"
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.ormlq">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">ormlq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.ormlq" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">ormlq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">side</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trans</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.ormlq" title="Link to this definition"></a></dt>
 <dd><p>Identical to <a class="reference internal" href="#cvxopt.lapack.unmlq" title="cvxopt.lapack.unmlq"><code class="xref py py-func docutils literal notranslate"><span class="pre">unmlq</span></code></a> but works only for
 real matrices, and the
 possible values of <code class="docutils literal notranslate"><span class="pre">trans</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'N'</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">'T'</span></code>.</p>
@@ -971,7 +1047,7 @@ possible values of <code class="docutils literal notranslate"><span class="pre">
 <a class="reference internal" href="#cvxopt.lapack.gelqf" title="cvxopt.lapack.gelqf"><code class="xref py py-func docutils literal notranslate"><span class="pre">gelqf</span></code></a>,
 <a class="reference internal" href="#cvxopt.lapack.ormlq" title="cvxopt.lapack.ormlq"><code class="xref py py-func docutils literal notranslate"><span class="pre">ormlq</span></code></a>,
 and <a class="reference internal" href="#cvxopt.lapack.trtrs" title="cvxopt.lapack.trtrs"><code class="xref py py-func docutils literal notranslate"><span class="pre">trtrs</span></code></a>.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x1</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
@@ -992,7 +1068,7 @@ from the output of <a class="reference internal" href="#cvxopt.lapack.geqrf" tit
 <a class="reference internal" href="#cvxopt.lapack.gelqf" title="cvxopt.lapack.gelqf"><code class="xref py py-func docutils literal notranslate"><span class="pre">gelqf</span></code></a> using one of the following functions.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.ungqr">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">ungqr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.ungqr" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">ungqr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.ungqr" title="Link to this definition"></a></dt>
 <dd><p>If <code class="docutils literal notranslate"><span class="pre">A</span></code> has size <img class="math" src="_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/> by <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/>, and <code class="docutils literal notranslate"><span class="pre">tau</span></code> has length
 <img class="math" src="_images/math/9630132210b904754c9ab272b61cb527d12263ca.png" alt="k"/>, then, on entry, the first <code class="docutils literal notranslate"><span class="pre">k</span></code> columns of the matrix <code class="docutils literal notranslate"><span class="pre">A</span></code>
 and the entries of <code class="docutils literal notranslate"><span class="pre">tau</span></code> contai an unitary or orthogonal matrix
@@ -1004,14 +1080,14 @@ in the leading columns of <code class="docutils literal notranslate"><span class
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.orgqr">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">orgqr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.orgqr" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">orgqr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.orgqr" title="Link to this definition"></a></dt>
 <dd><p>Identical to <a class="reference internal" href="#cvxopt.lapack.ungqr" title="cvxopt.lapack.ungqr"><code class="xref py py-func docutils literal notranslate"><span class="pre">ungqr</span></code></a> but works only for
 real matrices.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.unglq">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">unglq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.unglq" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">unglq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.unglq" title="Link to this definition"></a></dt>
 <dd><p>If <code class="docutils literal notranslate"><span class="pre">A</span></code> has size <img class="math" src="_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/> by <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/>, and <code class="docutils literal notranslate"><span class="pre">tau</span></code> has length
 <img class="math" src="_images/math/9630132210b904754c9ab272b61cb527d12263ca.png" alt="k"/>, then, on entry, the first <code class="docutils literal notranslate"><span class="pre">k</span></code> rows of the matrix <code class="docutils literal notranslate"><span class="pre">A</span></code>
 and the entries of <code class="docutils literal notranslate"><span class="pre">tau</span></code> contain a unitary or orthogonal matrix
@@ -1023,7 +1099,7 @@ contained in the leading rows of <code class="docutils literal notranslate"><spa
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.orglq">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">orglq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.orglq" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">orglq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.orglq" title="Link to this definition"></a></dt>
 <dd><p>Identical to <a class="reference internal" href="#cvxopt.lapack.unglq" title="cvxopt.lapack.unglq"><code class="xref py py-func docutils literal notranslate"><span class="pre">unglq</span></code></a> but works only for
 real matrices.</p>
 </dd></dl>
@@ -1036,7 +1112,7 @@ real matrices.</p>
   = \left[\begin{array}{cc}
     Q_1 &amp; Q_2 \end{array}\right]
     \left[\begin{array}{c} R \\ 0 \end{array}\right]."/></p>
-</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">lapack</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">lapack</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span> <span class="p">[</span><span class="mf">6.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">,</span> <span class="mf">19.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">7.</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">]</span> <span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tau</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
@@ -1089,7 +1165,7 @@ real matrices.</p>
 </div>
 </section>
 <section id="symmetric-and-hermitian-eigenvalue-decomposition">
-<h2>Symmetric and Hermitian Eigenvalue Decomposition<a class="headerlink" href="#symmetric-and-hermitian-eigenvalue-decomposition" title="Permalink to this heading"></a></h2>
+<h2>Symmetric and Hermitian Eigenvalue Decomposition<a class="headerlink" href="#symmetric-and-hermitian-eigenvalue-decomposition" title="Link to this heading"></a></h2>
 <p>The first four routines compute all or selected  eigenvalues and
 eigenvectors of a real symmetric matrix <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3dfb3.png" alt="A"/>:</p>
 <div class="math">
@@ -1097,7 +1173,7 @@ eigenvectors of a real symmetric matrix <img class="math" src="_images/math/2112
 A = V\diag(\lambda)V^T,\qquad  V^TV = I."/></p>
 </div><dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.syev">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">syev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.syev" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">syev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.syev" title="Link to this definition"></a></dt>
 <dd><p>Eigenvalue decomposition of a real symmetric matrix of order <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">W</span></code> is a real matrix of length at least <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/>.  On exit, <code class="docutils literal notranslate"><span class="pre">W</span></code>
 contains the eigenvalues in ascending order.  If <code class="docutils literal notranslate"><span class="pre">jobz</span></code> is
@@ -1109,7 +1185,7 @@ contents of <code class="docutils literal notranslate"><span class="pre">A</span
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.syevd">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">syevd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.syevd" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">syevd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.syevd" title="Link to this definition"></a></dt>
 <dd><p>This is an alternative to <a class="reference internal" href="#cvxopt.lapack.syev" title="cvxopt.lapack.syev"><code class="xref py py-func docutils literal notranslate"><span class="pre">syev</span></code></a>, based
 on a different
 algorithm.  It is faster on large problems, but also uses more memory.</p>
@@ -1117,7 +1193,7 @@ algorithm.  It is faster on large problems, but also uses more memory.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.syevx">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">syevx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range</span> <span class="pre">=</span> <span class="pre">'A'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vl</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vu</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">il</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iu</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.syevx" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">syevx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range</span> <span class="pre">=</span> <span class="pre">'A'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vl</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vu</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">il</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iu</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.syevx" title="Link to this definition"></a></dt>
 <dd><p>Computes selected eigenvalues and eigenvectors of a real symmetric
 matrix of order <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">W</span></code> is a real matrix of length at least <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/>.  On exit, <code class="docutils literal notranslate"><span class="pre">W</span></code>
@@ -1140,7 +1216,7 @@ least <img class="math" src="_images/math/812c22f26f3cabffdd7214c59716aef9a9fedc
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.syevr">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">syevr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range</span> <span class="pre">=</span> <span class="pre">'A'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vl</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vu</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">il</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iu</span> <span class="pre">=</span> <span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span> <span class="pre">=</span>&#160; <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.syevr" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">syevr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range</span> <span class="pre">=</span> <span class="pre">'A'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vl</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vu</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">il</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iu</span> <span class="pre">=</span> <span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span> <span class="pre">=</span>&#160; <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.syevr" title="Link to this definition"></a></dt>
 <dd><p>This is an alternative to <a class="reference internal" href="#cvxopt.lapack.syevr" title="cvxopt.lapack.syevr"><code class="xref py py-func docutils literal notranslate"><span class="pre">syevx</span></code></a>.
 <a class="reference internal" href="#cvxopt.lapack.syevr" title="cvxopt.lapack.syevr"><code class="xref py py-func docutils literal notranslate"><span class="pre">syevr</span></code></a> is the most
 recent LAPACK routine for symmetric eigenvalue problems, and expected
@@ -1156,7 +1232,7 @@ A = V\diag(\lambda)V^H,\qquad  V^HV = I."/></p>
 <code class="xref py py-func docutils literal notranslate"><span class="pre">syev*</span></code> routines.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.heev">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">heev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.heev" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">heev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.heev" title="Link to this definition"></a></dt>
 <dd><p>Eigenvalue decomposition of a real symmetric or complex Hermitian
 matrix of order <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/>.</p>
 <p>The calling sequence is identical to
@@ -1166,13 +1242,13 @@ except that <code class="docutils literal notranslate"><span class="pre">A</span
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.heevd">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">heevd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.heevd" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">heevd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.heevd" title="Link to this definition"></a></dt>
 <dd><p>This is an alternative to <a class="reference internal" href="#cvxopt.lapack.heevd" title="cvxopt.lapack.heevd"><code class="xref py py-func docutils literal notranslate"><span class="pre">heev</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.heevx">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">heevx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range</span> <span class="pre">=</span> <span class="pre">'A'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vl</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vu</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">il</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iu</span> <span class="pre">=</span> <span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.heevx" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">heevx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range</span> <span class="pre">=</span> <span class="pre">'A'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vl</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vu</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">il</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iu</span> <span class="pre">=</span> <span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.heevx" title="Link to this definition"></a></dt>
 <dd><p>Computes selected eigenvalues and eigenvectors of a real symmetric
 or complex Hermitian matrix.</p>
 <p>The calling sequence is identical to
@@ -1182,16 +1258,16 @@ can be real or complex.  <code class="docutils literal notranslate"><span class=
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.heevr">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">heevr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range</span> <span class="pre">=</span> <span class="pre">'A'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vl</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vu</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">il</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iu</span> <span class="pre">=</span> <span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.heevr" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">heevr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range</span> <span class="pre">=</span> <span class="pre">'A'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vl</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vu</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">il</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iu</span> <span class="pre">=</span> <span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Z</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.heevr" title="Link to this definition"></a></dt>
 <dd><p>This is an alternative to <a class="reference internal" href="#cvxopt.lapack.heevx" title="cvxopt.lapack.heevx"><code class="xref py py-func docutils literal notranslate"><span class="pre">heevx</span></code></a>.</p>
 </dd></dl>
 
 </section>
 <section id="generalized-symmetric-definite-eigenproblems">
-<h2>Generalized Symmetric Definite Eigenproblems<a class="headerlink" href="#generalized-symmetric-definite-eigenproblems" title="Permalink to this heading"></a></h2>
+<h2>Generalized Symmetric Definite Eigenproblems<a class="headerlink" href="#generalized-symmetric-definite-eigenproblems" title="Link to this heading"></a></h2>
 <p>Three types of generalized eigenvalue problems can be solved:</p>
 <div class="math" id="equation-e-gevd">
-<p><span class="eqno">(2)<a class="headerlink" href="#equation-e-gevd" title="Permalink to this equation"></a></span><img src="_images/math/385dad5a2df2ddd65900bef4c4ab58d4a4a0829d.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
+<p><span class="eqno">(2)<a class="headerlink" href="#equation-e-gevd" title="Link to this equation"></a></span><img src="_images/math/385dad5a2df2ddd65900bef4c4ab58d4a4a0829d.png" alt="\newcommand{\diag}{\mathop{\bf diag}}
 \begin{split}
     AZ  &amp; = BZ\diag(\lambda)\quad \mbox{(type 1)}, \\
     ABZ &amp; = Z\diag(\lambda) \quad \mbox{(type 2)}, \\
@@ -1205,7 +1281,7 @@ as follows:</p>
 Z^H B^{-1}Z = I \quad \mbox{(type 3)}."/></p>
 </div><dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.sygv">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">sygv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">itype</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.sygv" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">sygv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">itype</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.sygv" title="Link to this definition"></a></dt>
 <dd><p>Solves the generalized eigenproblem <a class="reference internal" href="#equation-e-gevd">(2)</a> for real symmetric
 matrices of order <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/>, stored in real matrices <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code>.
 <code class="docutils literal notranslate"><span class="pre">itype</span></code> is an integer with possible values 1, 2, 3, and specifies
@@ -1219,7 +1295,7 @@ contents of <code class="docutils literal notranslate"><span class="pre">A</span
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.hegv">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">hegv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">itype</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.hegv" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">hegv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">W</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">itype</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uplo</span> <span class="pre">=</span> <span class="pre">'L'</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.hegv" title="Link to this definition"></a></dt>
 <dd><p>Generalized eigenvalue problem <a class="reference internal" href="#equation-e-gevd">(2)</a> of real symmetric or
 complex Hermitian matrix of order <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/>.  The calling sequence is
 identical to <a class="reference internal" href="#cvxopt.lapack.sygv" title="cvxopt.lapack.sygv"><code class="xref py py-func docutils literal notranslate"><span class="pre">sygv</span></code></a>, except that
@@ -1228,10 +1304,10 @@ identical to <a class="reference internal" href="#cvxopt.lapack.sygv" title="cvx
 
 </section>
 <section id="singular-value-decomposition">
-<h2>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Permalink to this heading"></a></h2>
+<h2>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gesvd">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gesvd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobu</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jobvt</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vt</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gesvd" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gesvd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobu</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jobvt</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vt</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gesvd" title="Link to this definition"></a></dt>
 <dd><p>Singular value decomposition</p>
 <div class="math">
 <p><img src="_images/math/738092734154893db4338bbdedae2ef8c48eade3.png" alt="A = U \Sigma V^T, \qquad A = U \Sigma V^H"/></p>
@@ -1269,7 +1345,7 @@ or <code class="xref py py-const docutils literal notranslate"><span class="pre"
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gesdd">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gesdd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vt</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gesdd" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gesdd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">jobz</span> <span class="pre">=</span> <span class="pre">'N'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vt</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gesdd" title="Link to this definition"></a></dt>
 <dd><p>Singular value decomposition of a real or complex <img class="math" src="_images/math/e9bc7da808d33a16a8347f27a519bd067186aa66.png" alt="m"/> by
 <img class="math" src="_images/math/5a939c5280da7202ca4531f175a7780ad5e1f80a.png" alt="n"/> matrix..  This function is based on a divide-and-conquer
 algorithm and is faster than <a class="reference internal" href="#cvxopt.lapack.gesdd" title="cvxopt.lapack.gesdd"><code class="xref py py-func docutils literal notranslate"><span class="pre">gesvd</span></code></a>.</p>
@@ -1304,10 +1380,10 @@ or <code class="xref py py-const docutils literal notranslate"><span class="pre"
 
 </section>
 <section id="schur-and-generalized-schur-factorization">
-<h2>Schur and Generalized Schur Factorization<a class="headerlink" href="#schur-and-generalized-schur-factorization" title="Permalink to this heading"></a></h2>
+<h2>Schur and Generalized Schur Factorization<a class="headerlink" href="#schur-and-generalized-schur-factorization" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gees">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gees</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">w</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gees" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gees</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">w</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gees" title="Link to this definition"></a></dt>
 <dd><p>Computes the Schur factorization</p>
 <div class="math">
 <p><img src="_images/math/86384124ce2e714ba7b80c295f44157d2da07413.png" alt="A = V S V^T \quad \mbox{($A$ real)}, \qquad
@@ -1370,7 +1446,7 @@ that were selected by the ordering routine.  If <code class="docutils literal no
 <p>An ordered Schur factorization with the eigenvalues in the left half of
 the complex plane ordered first, can be computed as follows.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">S</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">tc</span><span class="o">=</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">real</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">F</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">real</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lapack</span><span class="o">.</span><span class="n">gees</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">select</span> <span class="o">=</span> <span class="n">F</span><span class="p">)</span>
 <span class="go">2</span>
@@ -1390,7 +1466,7 @@ the complex plane ordered first, can be computed as follows.</p>
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.lapack.gges">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vl</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vr</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gges" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.lapack.</span></span><span class="sig-name descname"><span class="pre">gges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vl</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vr</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.lapack.gges" title="Link to this definition"></a></dt>
 <dd><p>Computes the generalized Schur factorization</p>
 <div class="math">
 <p><img src="_images/math/d504b5e2a3245798a6ad5678ea1951fc914e8fac.png" alt="A = V_l S V_r^T, \quad B = V_l T V_r^T \quad
@@ -1480,7 +1556,7 @@ matrix <img class="math" src="_images/math/211284f68205c3e66773eaf026f32a0acdd3d
 </div>
 </section>
 <section id="example-analytic-centering">
-<h2>Example: Analytic Centering<a class="headerlink" href="#example-analytic-centering" title="Permalink to this heading"></a></h2>
+<h2>Example: Analytic Centering<a class="headerlink" href="#example-analytic-centering" title="Link to this heading"></a></h2>
 <p>The analytic centering problem is defined as</p>
 <div class="math">
 <p><img src="_images/math/82d7fac4e1442a73c02aa8bd6fedab161db0f758.png" alt="\begin{array}{ll}
@@ -1501,11 +1577,11 @@ matrix and the LAPACK function <a class="reference internal" href="#cvxopt.lapac
 solve the Newton system.
 The code can be further optimized by replacing the matrix-vector products
 with the level-2 BLAS function <a class="reference internal" href="blas.html#cvxopt.blas.gemv" title="cvxopt.blas.gemv"><code class="xref py py-func docutils literal notranslate"><span class="pre">blas.gemv</span></code></a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">mul</span><span class="p">,</span> <span class="n">div</span><span class="p">,</span> <span class="n">blas</span><span class="p">,</span> <span class="n">lapack</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sqrt</span>
 
-<span class="k">def</span> <span class="nf">acent</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">acent</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the analytic center of A*x &lt;= b.</span>
 <span class="sd">    We assume that b &gt; 0 and the feasible set is bounded.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1561,8 +1637,8 @@ with the level-2 BLAS function <a class="reference internal" href="blas.html#cvx
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on Aug 09, 2023.
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2026, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on Feb 07, 2026.
       </span></p>
   </div>
 
@@ -1582,7 +1658,7 @@ with the level-2 BLAS function <a class="reference internal" href="blas.html#cvx
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 5.0.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 8.2.3.
     </div>
 
 </body>

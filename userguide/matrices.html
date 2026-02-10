@@ -1,21 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dense and Sparse Matrices &mdash; CVXOPT User&#39;s Guide</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=3b3401d5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="search" title="Search" href="search.html" />
     <link rel="copyright" title="Copyright" href="copyright.html" />
@@ -28,14 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> CVXOPT User's Guide
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CVXOPT User's Guide
           </a>
-              <div class="version">
-                1.3.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -45,14 +46,61 @@
 <li class="toctree-l1"><a class="reference internal" href="copyright.html">Copyright and License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Dense and Sparse Matrices</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#dense-matrices">Dense Matrices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#sparse-matrices">Sparse Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dense-matrices">Dense Matrices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.matrix"><code class="docutils literal notranslate"><span class="pre">cvxopt.matrix</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sparse-matrices">Sparse Matrices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.spmatrix"><code class="docutils literal notranslate"><span class="pre">cvxopt.spmatrix</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.sparse"><code class="docutils literal notranslate"><span class="pre">cvxopt.sparse</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.spdiag"><code class="docutils literal notranslate"><span class="pre">cvxopt.spdiag</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#arithmetic-operations">Arithmetic Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#indexing-and-slicing">Indexing and Slicing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#attributes-and-methods">Attributes and Methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#built-in-functions">Built-In Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#other-matrix-functions">Other Matrix Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#randomly-generated-matrices">Randomly Generated Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#attributes-and-methods">Attributes and Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#size"><code class="docutils literal notranslate"><span class="pre">size</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#typecode"><code class="docutils literal notranslate"><span class="pre">typecode</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trans"><code class="docutils literal notranslate"><span class="pre">trans</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ctrans"><code class="docutils literal notranslate"><span class="pre">ctrans</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#real"><code class="docutils literal notranslate"><span class="pre">real</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imag"><code class="docutils literal notranslate"><span class="pre">imag</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#V"><code class="docutils literal notranslate"><span class="pre">V</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#I"><code class="docutils literal notranslate"><span class="pre">I</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#J"><code class="docutils literal notranslate"><span class="pre">J</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#CCS"><code class="docutils literal notranslate"><span class="pre">CCS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tofile"><code class="docutils literal notranslate"><span class="pre">tofile</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fromfile"><code class="docutils literal notranslate"><span class="pre">fromfile</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#built-in-functions">Built-In Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#len"><code class="docutils literal notranslate"><span class="pre">len</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bool"><code class="docutils literal notranslate"><span class="pre">bool</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#max"><code class="docutils literal notranslate"><span class="pre">max</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#min"><code class="docutils literal notranslate"><span class="pre">min</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abs"><code class="docutils literal notranslate"><span class="pre">abs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sum"><code class="docutils literal notranslate"><span class="pre">sum</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#other-matrix-functions">Other Matrix Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.sqrt"><code class="docutils literal notranslate"><span class="pre">cvxopt.sqrt</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.sin"><code class="docutils literal notranslate"><span class="pre">cvxopt.sin</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.cos"><code class="docutils literal notranslate"><span class="pre">cvxopt.cos</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.exp"><code class="docutils literal notranslate"><span class="pre">cvxopt.exp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.log"><code class="docutils literal notranslate"><span class="pre">cvxopt.log</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.mul"><code class="docutils literal notranslate"><span class="pre">cvxopt.mul</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.div"><code class="docutils literal notranslate"><span class="pre">cvxopt.div</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.max"><code class="docutils literal notranslate"><span class="pre">cvxopt.max</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.min"><code class="docutils literal notranslate"><span class="pre">cvxopt.min</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#randomly-generated-matrices">Randomly Generated Matrices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.normal"><code class="docutils literal notranslate"><span class="pre">cvxopt.normal</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.uniform"><code class="docutils literal notranslate"><span class="pre">cvxopt.uniform</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.setseed"><code class="docutils literal notranslate"><span class="pre">cvxopt.setseed</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvxopt.getseed"><code class="docutils literal notranslate"><span class="pre">cvxopt.getseed</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="blas.html">The BLAS Interface</a></li>
@@ -80,8 +128,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Dense and Sparse Matrices</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Dense and Sparse Matrices</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -91,19 +139,19 @@
            <div itemprop="articleBody">
              
   <section id="dense-and-sparse-matrices">
-<span id="c-matrices"></span><h1>Dense and Sparse Matrices<a class="headerlink" href="#dense-and-sparse-matrices" title="Permalink to this heading"></a></h1>
+<span id="c-matrices"></span><h1>Dense and Sparse Matrices<a class="headerlink" href="#dense-and-sparse-matrices" title="Link to this heading"></a></h1>
 <p>This chapter describes the two CVXOPT matrix types:
 <a class="reference internal" href="#cvxopt.matrix" title="cvxopt.matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a> objects, used for dense matrix
 computations, and <a class="reference internal" href="#cvxopt.spmatrix" title="cvxopt.spmatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">spmatrix</span></code></a> objects, used for
 sparse matrix computations.</p>
 <section id="dense-matrices">
-<span id="s-dense-matrices"></span><h2>Dense Matrices<a class="headerlink" href="#dense-matrices" title="Permalink to this heading"></a></h2>
+<span id="s-dense-matrices"></span><h2>Dense Matrices<a class="headerlink" href="#dense-matrices" title="Link to this heading"></a></h2>
 <p>A dense matrix is created by calling the function <code class="xref py py-func docutils literal notranslate"><span class="pre">matrix</span></code>.  The
 arguments specify the values of the coefficients, the dimensions, and the
 type (integer, double, or complex) of the matrix.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.matrix">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">tc</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.matrix" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">tc</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.matrix" title="Link to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">size</span></code>  is a tuple of length two with the matrix dimensions.
 The number of rows and/or the number of columns can be zero.</p>
 <p><code class="docutils literal notranslate"><span class="pre">tc</span></code>  stands for type code. The possible values are <code class="xref py py-const docutils literal notranslate"><span class="pre">'i'</span></code>,
@@ -121,7 +169,7 @@ of <code class="docutils literal notranslate"><span class="pre">tc</span></code>
 If necessary, the type of <code class="docutils literal notranslate"><span class="pre">x</span></code> is converted (from integer to double
 when used to create a matrix of type <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code>, and from integer or
 double to complex when used to create a matrix of type <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>).</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">[ 1  1  1  1]</span>
@@ -149,7 +197,7 @@ matrix.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">array</span> <span class="kn">import</span> <span class="n">array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">array</span><span class="w"> </span><span class="kn">import</span> <span class="n">array</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">array</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">[ 0  2]</span>
@@ -188,7 +236,7 @@ Type conversion takes place when the type of <code class="docutils literal notra
 </pre></div>
 </div>
 <p>NumPy arrays can be converted to matrices.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">array</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
 <span class="go">array([[ 1.  2.  3.]</span>
@@ -246,7 +294,7 @@ then the argument <code class="docutils literal notranslate"><span class="pre">x
 
 </section>
 <section id="sparse-matrices">
-<span id="s-sparse-matrices"></span><h2>Sparse Matrices<a class="headerlink" href="#sparse-matrices" title="Permalink to this heading"></a></h2>
+<span id="s-sparse-matrices"></span><h2>Sparse Matrices<a class="headerlink" href="#sparse-matrices" title="Link to this heading"></a></h2>
 <p>A general <a class="reference internal" href="#cvxopt.spmatrix" title="cvxopt.spmatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">spmatrix</span></code></a> object can be thought of as
 a <em>triplet description</em> of a sparse matrix, i.e., a list of entries of the
 matrix, with for each entry the value, row index, and column index.
@@ -277,7 +325,7 @@ The first, <code class="xref py py-func docutils literal notranslate"><span clas
 constructs a sparse matrix from a triplet description.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.spmatrix">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">spmatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">J</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">tc</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.spmatrix" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">spmatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">J</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">tc</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.spmatrix" title="Link to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">I</span></code> and <code class="docutils literal notranslate"><span class="pre">J</span></code> are sequences of integers (lists, tuples,
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">array</span></code> arrays, …) or integer matrices
 (<a class="reference internal" href="#cvxopt.matrix" title="cvxopt.matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a> objects with typecode <code class="xref py py-const docutils literal notranslate"><span class="pre">'i'</span></code>),
@@ -306,7 +354,7 @@ a matrix is created with the sparsity pattern defined by <code class="docutils l
 The default value of <code class="docutils literal notranslate"><span class="pre">tc</span></code> is <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> if <code class="docutils literal notranslate"><span class="pre">x</span></code> is integer or
 float, and <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code> if <code class="docutils literal notranslate"><span class="pre">x</span></code>  is complex.</p>
 <p>The following code creates a 4 by 4 sparse identity matrix.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">spmatrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">   [ 1.00e+00     0         0         0    ]</span>
@@ -348,7 +396,7 @@ values of the coefficients are added.</p></li>
 from a block-matrix description.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.sparse">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">sparse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">tc</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.sparse" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">sparse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">tc</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.sparse" title="Link to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">tc</span></code> is the typecode, <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>, for double and
 complex matrices, respectively.</p>
 <p><code class="docutils literal notranslate"><span class="pre">x</span></code> can be a <a class="reference internal" href="#cvxopt.matrix" title="cvxopt.matrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">matrix</span></code></a>, <a class="reference internal" href="#cvxopt.spmatrix" title="cvxopt.spmatrix"><code class="xref py py-class docutils literal notranslate"><span class="pre">spmatrix</span></code></a>, or a list of lists
@@ -368,7 +416,7 @@ block-columns (as in <a class="reference internal" href="#cvxopt.matrix" title="
 Numerical zeros are removed from the triplet description of the new
 matrix.</p></li>
 </ul>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">sparse</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">sparse</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">[ 1.00e+00  2.00e+00  0.00e+00]</span>
@@ -412,14 +460,14 @@ list.</p>
 sparse matrix from a list of matrices.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.spdiag">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">spdiag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.spdiag" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">spdiag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.spdiag" title="Link to this definition"></a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">x</span></code> is a dense or sparse matrix with a single row or column, or a
 list of square dense or sparse matrices or scalars.
 If <code class="docutils literal notranslate"><span class="pre">x</span></code> is a matrix, a sparse diagonal matrix is returned with
 the entries of <code class="docutils literal notranslate"><span class="pre">x</span></code> on its diagonal.
 If <code class="docutils literal notranslate"><span class="pre">x</span></code> is list, a sparse block-diagonal matrix is returned with
 the elements in the list as its diagonal blocks.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">spdiag</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">spdiag</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="mf">3.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">],[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
@@ -437,7 +485,7 @@ the elements in the list as its diagonal blocks.</p>
 
 </section>
 <section id="arithmetic-operations">
-<span id="s-arithmetic"></span><h2>Arithmetic Operations<a class="headerlink" href="#arithmetic-operations" title="Permalink to this heading"></a></h2>
+<span id="s-arithmetic"></span><h2>Arithmetic Operations<a class="headerlink" href="#arithmetic-operations" title="Link to this heading"></a></h2>
 <p>The following table lists the arithmetic operations defined for dense and
 sparse matrices.  In the table <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> are dense or sparse
 matrices of compatible dimensions, <code class="docutils literal notranslate"><span class="pre">c</span></code>  is a scalar (a Python number or
@@ -576,7 +624,7 @@ existing matrix object and do not create a new object.</p>
 </ul>
 </section>
 <section id="indexing-and-slicing">
-<span id="s-indexing"></span><h2>Indexing and Slicing<a class="headerlink" href="#indexing-and-slicing" title="Permalink to this heading"></a></h2>
+<span id="s-indexing"></span><h2>Indexing and Slicing<a class="headerlink" href="#indexing-and-slicing" title="Link to this heading"></a></h2>
 <p>Matrices can be indexed using one or two arguments.  In single-argument
 indexing of a matrix <code class="docutils literal notranslate"><span class="pre">A</span></code>, the index runs from <code class="docutils literal notranslate"><span class="pre">-len(A)</span></code> to
 <code class="docutils literal notranslate"><span class="pre">len(A)-1</span></code>, and is interpreted as an index in the one-dimensional
@@ -612,7 +660,7 @@ are matrices, these operations are interpreted as arithmetic operations.
 For large index sets, indexing with integer matrices is also faster
 than indexing with lists.</p>
 <p>The following example illustrates one-argument indexing.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="s1">&#39;d&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">[ 0.00e+00  4.00e+00  8.00e+00  1.20e+01]</span>
@@ -754,11 +802,11 @@ an integer matrix.</p>
 </div>
 </section>
 <section id="attributes-and-methods">
-<h2>Attributes and Methods<a class="headerlink" href="#attributes-and-methods" title="Permalink to this heading"></a></h2>
+<h2>Attributes and Methods<a class="headerlink" href="#attributes-and-methods" title="Link to this heading"></a></h2>
 <p>Dense and sparse matrices have the following attributes.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="size">
-<span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#size" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#size" title="Link to this definition"></a></dt>
 <dd><p>A tuple with the dimensions of the matrix. The size of the matrix can
 be changed by altering this attribute, as long as the number of
 elements in the matrix remains unchanged.</p>
@@ -766,7 +814,7 @@ elements in the matrix remains unchanged.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="typecode">
-<span class="sig-name descname"><span class="pre">typecode</span></span><a class="headerlink" href="#typecode" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">typecode</span></span><a class="headerlink" href="#typecode" title="Link to this definition"></a></dt>
 <dd><p>A character, either <code class="xref py py-const docutils literal notranslate"><span class="pre">'i'</span></code>, <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code>, or <code class="xref py py-const docutils literal notranslate"><span class="pre">'z'</span></code>, for
 integer, real, and complex matrices, respectively.  A read-only
 attribute.</p>
@@ -774,28 +822,28 @@ attribute.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="trans">
-<span class="sig-name descname"><span class="pre">trans</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trans" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">trans</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#trans" title="Link to this definition"></a></dt>
 <dd><p>Returns the transpose of the matrix as a new matrix.  One can also use
 <code class="docutils literal notranslate"><span class="pre">A.T</span></code> instead of <code class="docutils literal notranslate"><span class="pre">A.trans()</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ctrans">
-<span class="sig-name descname"><span class="pre">ctrans</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ctrans" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ctrans</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ctrans" title="Link to this definition"></a></dt>
 <dd><p>Returns the conjugate transpose of the matrix as a new matrix.  One
 can also use <code class="docutils literal notranslate"><span class="pre">A.H</span></code> instead of <code class="docutils literal notranslate"><span class="pre">A.ctrans()</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="real">
-<span class="sig-name descname"><span class="pre">real</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#real" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">real</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#real" title="Link to this definition"></a></dt>
 <dd><p>For complex matrices, returns the real part as a real matrix.  For
 integer and real matrices, returns a copy of the matrix.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="imag">
-<span class="sig-name descname"><span class="pre">imag</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imag" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">imag</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#imag" title="Link to this definition"></a></dt>
 <dd><p>For complex matrices, returns the imaginary part as a real matrix.
 For integer and real matrices, returns an integer or real zero matrix.</p>
 </dd></dl>
@@ -803,7 +851,7 @@ For integer and real matrices, returns an integer or real zero matrix.</p>
 <p>In addition, sparse matrices have the following attributes.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="V">
-<span class="sig-name descname"><span class="pre">V</span></span><a class="headerlink" href="#V" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">V</span></span><a class="headerlink" href="#V" title="Link to this definition"></a></dt>
 <dd><p>A single-column dense matrix containing the numerical values of the
 nonzero entries in column-major order.  Making an assignment to the
 attribute is an efficient way of changing the values of the sparse
@@ -818,21 +866,21 @@ new matrix are modified.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="I">
-<span class="sig-name descname"><span class="pre">I</span></span><a class="headerlink" href="#I" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">I</span></span><a class="headerlink" href="#I" title="Link to this definition"></a></dt>
 <dd><p>A single-column integer dense matrix with the row indices of the
 entries in <a class="reference internal" href="#V" title="V"><code class="xref py py-attr docutils literal notranslate"><span class="pre">V</span></code></a>.  A read-only attribute.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="J">
-<span class="sig-name descname"><span class="pre">J</span></span><a class="headerlink" href="#J" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">J</span></span><a class="headerlink" href="#J" title="Link to this definition"></a></dt>
 <dd><p>A single-column integer dense matrix with the column indices of the
 entries in <a class="reference internal" href="#V" title="V"><code class="xref py py-attr docutils literal notranslate"><span class="pre">V</span></code></a>.  A read-only attribute.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="CCS">
-<span class="sig-name descname"><span class="pre">CCS</span></span><a class="headerlink" href="#CCS" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">CCS</span></span><a class="headerlink" href="#CCS" title="Link to this definition"></a></dt>
 <dd><p>A triplet (column pointers, row indices, values) with the
 compressed-column-storage representation of the matrix.  A read-only
 attribute.  This attribute can be used to export sparse matrices to
@@ -840,7 +888,7 @@ other packages such as MOSEK.</p>
 </dd></dl>
 
 <p>The next example below illustrates assignments to <a class="reference internal" href="#V" title="V"><code class="xref py py-attr docutils literal notranslate"><span class="pre">V</span></code></a>.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">matrix</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">matrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">[ 0.00e+00     0         0    ]</span>
@@ -863,19 +911,19 @@ other packages such as MOSEK.</p>
 <p>The following attributes and methods are defined for dense matrices.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tofile">
-<span class="sig-name descname"><span class="pre">tofile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tofile" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">tofile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tofile" title="Link to this definition"></a></dt>
 <dd><p>Writes the elements of the matrix in column-major order to a binary
 file <code class="docutils literal notranslate"><span class="pre">f</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="fromfile">
-<span class="sig-name descname"><span class="pre">fromfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fromfile" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fromfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#fromfile" title="Link to this definition"></a></dt>
 <dd><p>Reads the contents of a binary file <code class="docutils literal notranslate"><span class="pre">f</span></code> into the matrix object.</p>
 </dd></dl>
 
 <p>The last two methods are illustrated in the following examples.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">1.</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">3.</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.</span><span class="p">,</span><span class="mf">5.</span><span class="p">,</span><span class="mf">6.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 <span class="go">[ 1.00e+00  4.00e+00]</span>
@@ -913,12 +961,12 @@ module offer a convenient alternative for writing matrices to files and
 reading matrices from files.</p>
 </section>
 <section id="built-in-functions">
-<h2>Built-In Functions<a class="headerlink" href="#built-in-functions" title="Permalink to this heading"></a></h2>
+<h2>Built-In Functions<a class="headerlink" href="#built-in-functions" title="Link to this heading"></a></h2>
 <p>Many Python built-in functions and operations can be used with matrix
 arguments.  We list some useful examples.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="len">
-<span class="sig-name descname"><span class="pre">len</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#len" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">len</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#len" title="Link to this definition"></a></dt>
 <dd><p>If <code class="docutils literal notranslate"><span class="pre">x</span></code> is a dense matrix, returns the product of the number of rows
 and the number of columns.  If <code class="docutils literal notranslate"><span class="pre">x</span></code> is a sparse matrix, returns the
 number of nonzero entries.</p>
@@ -926,21 +974,21 @@ number of nonzero entries.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="bool">
-<span class="sig-name descname"><span class="pre">bool</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#bool" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">bool</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#bool" title="Link to this definition"></a></dt>
 <dd><p>Returns <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> if <code class="docutils literal notranslate"><span class="pre">x</span></code> is a zero matrix and <code class="xref py py-const docutils literal notranslate"><span class="pre">True</span></code>
 otherwise.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="max">
-<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#max" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#max" title="Link to this definition"></a></dt>
 <dd><p>If <code class="docutils literal notranslate"><span class="pre">x</span></code> is a dense matrix, returns the maximum element of <code class="docutils literal notranslate"><span class="pre">x</span></code>.
 If <code class="docutils literal notranslate"><span class="pre">x</span></code> is a sparse, returns the maximum nonzero element of <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="min">
-<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#min" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#min" title="Link to this definition"></a></dt>
 <dd><p>If <code class="docutils literal notranslate"><span class="pre">x</span></code> is a dense matrix, returns the minimum element of <code class="docutils literal notranslate"><span class="pre">x</span></code>.
 If <code class="docutils literal notranslate"><span class="pre">x</span></code> is a sparse matrix, returns the minimum nonzero element of
 <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p>
@@ -948,13 +996,13 @@ If <code class="docutils literal notranslate"><span class="pre">x</span></code> 
 
 <dl class="py function">
 <dt class="sig sig-object py" id="abs">
-<span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abs" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#abs" title="Link to this definition"></a></dt>
 <dd><p>Returns a matrix with the absolute values of the elements of <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="sum">
-<span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">start</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#sum" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">start</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#sum" title="Link to this definition"></a></dt>
 <dd><p>Returns the sum of <code class="docutils literal notranslate"><span class="pre">start</span></code> and the elements of <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p>
 </dd></dl>
 
@@ -968,7 +1016,7 @@ respectively a tuple, from the elements of <code class="docutils literal notrans
 of the nonzero elements of <code class="docutils literal notranslate"><span class="pre">A</span></code> if <code class="docutils literal notranslate"><span class="pre">A</span></code> is sparse.</p>
 <p><code class="docutils literal notranslate"><span class="pre">list(zip(A,</span> <span class="pre">B,</span> <span class="pre">...))</span></code> returns a list of tuples, with the i-th tuple
 containing the i-th elements (or nonzero elements) of <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code>, ….</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="o">-</span><span class="mf">11.</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="o">-</span><span class="mf">20.</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">6.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">7.</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
@@ -1031,11 +1079,11 @@ of <code class="docutils literal notranslate"><span class="pre">A</span></code> 
 is equal to <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="xref py py-const docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 </section>
 <section id="other-matrix-functions">
-<h2>Other Matrix Functions<a class="headerlink" href="#other-matrix-functions" title="Permalink to this heading"></a></h2>
+<h2>Other Matrix Functions<a class="headerlink" href="#other-matrix-functions" title="Link to this heading"></a></h2>
 <p>The following functions can be imported from CVXOPT.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.sqrt">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">sqrt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.sqrt" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">sqrt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.sqrt" title="Link to this definition"></a></dt>
 <dd><p>The elementwise square root of a dense matrix <code class="docutils literal notranslate"><span class="pre">x</span></code>.  The result is
 returned as a real matrix if <code class="docutils literal notranslate"><span class="pre">x</span></code> is an integer or real matrix and
 as a complex matrix if <code class="docutils literal notranslate"><span class="pre">x</span></code> is a complex matrix.  Raises an exception
@@ -1047,7 +1095,7 @@ when <code class="docutils literal notranslate"><span class="pre">x</span></code
     2 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
     1 &amp; 2 &amp; 0 &amp; 4 &amp; 0 \\
     0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \end{array} \right]"/></p>
-</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">sqrt</span>
+</div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">sqrt</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">V</span><span class="p">),</span> <span class="n">A</span><span class="o">.</span><span class="n">I</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">J</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
@@ -1061,7 +1109,7 @@ when <code class="docutils literal notranslate"><span class="pre">x</span></code
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.sin">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">sin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.sin" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">sin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.sin" title="Link to this definition"></a></dt>
 <dd><p>The sine function applied elementwise to a dense matrix <code class="docutils literal notranslate"><span class="pre">x</span></code>.
 The result is returned as a real matrix if <code class="docutils literal notranslate"><span class="pre">x</span></code> is an integer
 or real matrix and as a complex matrix otherwise.</p>
@@ -1069,7 +1117,7 @@ or real matrix and as a complex matrix otherwise.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.cos">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">cos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cos" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">cos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.cos" title="Link to this definition"></a></dt>
 <dd><p>The cosine function applied elementwise to a dense matrix <code class="docutils literal notranslate"><span class="pre">x</span></code>.
 The result is returned as a real matrix if <code class="docutils literal notranslate"><span class="pre">x</span></code> is an integer
 or real matrix and as a complex matrix otherwise.</p>
@@ -1077,7 +1125,7 @@ or real matrix and as a complex matrix otherwise.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.exp">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.exp" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.exp" title="Link to this definition"></a></dt>
 <dd><p>The exponential function applied elementwise to a dense matrix <code class="docutils literal notranslate"><span class="pre">x</span></code>.
 The result is returned as a real matrix if <code class="docutils literal notranslate"><span class="pre">x</span></code> is an integer
 or real matrix and as a complex matrix otherwise.</p>
@@ -1085,7 +1133,7 @@ or real matrix and as a complex matrix otherwise.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.log">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.log" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.log" title="Link to this definition"></a></dt>
 <dd><p>The natural logarithm applied elementwise to a dense matrix <code class="docutils literal notranslate"><span class="pre">x</span></code>.
 The result is returned as a real matrix if <code class="docutils literal notranslate"><span class="pre">x</span></code> is an integer
 or real matrix and as a complex matrix otherwise.
@@ -1095,7 +1143,7 @@ nonpositive elements, or a complex matrix with zero elements.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.mul">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">mul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">x2</span> <span class="pre">...</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.mul" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">mul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">x2</span> <span class="pre">...</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.mul" title="Link to this definition"></a></dt>
 <dd><p>If the arguments are dense or sparse matrices of the same size, returns
 the elementwise product of its arguments.  The result is a sparse
 matrix if one or more of its arguments is sparse, and a dense matrix
@@ -1107,7 +1155,7 @@ of the other arguments are not all 1 by 1.)</p>
 (list, tuple, range object, or generator) as its single argument,
 if the iterable generates a list of dense or sparse matrices or
 scalars.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">mul</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="n">mul</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">([</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">mul</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">))</span>
@@ -1122,7 +1170,7 @@ scalars.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.div">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">div</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.div" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">div</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.div" title="Link to this definition"></a></dt>
 <dd><p>Returns the elementwise division of <code class="docutils literal notranslate"><span class="pre">x</span></code> by <code class="docutils literal notranslate"><span class="pre">y</span></code>.  <code class="docutils literal notranslate"><span class="pre">x</span></code> is a dense
 or sparse matrix, or a scalar (Python number of 1 by 1 dense matrix).
 <code class="docutils literal notranslate"><span class="pre">y</span></code> is a dense matrix or a scalar.</p>
@@ -1130,7 +1178,7 @@ or sparse matrix, or a scalar (Python number of 1 by 1 dense matrix).
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.max">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">x2</span> <span class="pre">...</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.max" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">x2</span> <span class="pre">...</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.max" title="Link to this definition"></a></dt>
 <dd><p>When called with a single matrix argument, returns the maximum of the
 elements of the matrix (including the zero entries, if the matrix is
 sparse).</p>
@@ -1147,7 +1195,7 @@ is a dense matrix if at least one of the arguments is a dense matrix.</p>
 (list, tuple, range object, or generator) as its single argument,
 if the iterable generates a list of dense or sparse matrices or
 scalars.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="nb">max</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">spmatrix</span><span class="p">,</span> <span class="nb">max</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="o">-</span><span class="n">A</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="go">[ 2.00e+00  1.00e+00]</span>
@@ -1157,7 +1205,7 @@ scalars.</p>
 <p>It is important to note the difference between this
 <a class="reference internal" href="#cvxopt.max" title="cvxopt.max"><code class="xref py py-func docutils literal notranslate"><span class="pre">max</span></code></a>
 and the built-in <a class="reference internal" href="#max" title="max"><code class="xref py py-func docutils literal notranslate"><span class="pre">max</span></code></a>, explained in the previous section.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">spmatrix</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">spmatrix</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">spmatrix</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">max</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>          <span class="c1"># built-in max of a sparse matrix takes maximum over nonzero elements</span>
 <span class="go">-1.0</span>
@@ -1165,7 +1213,7 @@ and the built-in <a class="reference internal" href="#max" title="max"><code cla
 <span class="gt">Traceback (most recent call last):</span>
   File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
 <span class="gr">NotImplementedError</span>: <span class="n">matrix comparison not implemented</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="nb">max</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="nb">max</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">max</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>          <span class="c1"># cvxopt.max takes maximum over all the  elements</span>
 <span class="go">0.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">))</span>
@@ -1177,7 +1225,7 @@ and the built-in <a class="reference internal" href="#max" title="max"><code cla
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.min">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">x2</span> <span class="pre">...</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.min" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">x2</span> <span class="pre">...</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.min" title="Link to this definition"></a></dt>
 <dd><p>When called with a single matrix argument, returns the minimum of the
 elements of the matrix (including the zero entries, if the matrix is
 sparse).</p>
@@ -1195,7 +1243,7 @@ scalars.</p>
 
 </section>
 <section id="randomly-generated-matrices">
-<span id="s-random"></span><h2>Randomly Generated Matrices<a class="headerlink" href="#randomly-generated-matrices" title="Permalink to this heading"></a></h2>
+<span id="s-random"></span><h2>Randomly Generated Matrices<a class="headerlink" href="#randomly-generated-matrices" title="Link to this heading"></a></h2>
 <p>The CVXOPT package provides two functions
 <a class="reference internal" href="#cvxopt.normal" title="cvxopt.normal"><code class="xref py py-func docutils literal notranslate"><span class="pre">normal</span></code></a> and
 <a class="reference internal" href="#cvxopt.uniform" title="cvxopt.uniform"><code class="xref py py-func docutils literal notranslate"><span class="pre">uniform</span></code></a> for generating randomly distributed
@@ -1209,7 +1257,7 @@ The random matrix functions based on GSL are faster than the default
 functions based on the <code class="xref py py-mod docutils literal notranslate"><span class="pre">random</span></code> module.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.normal">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nrows</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">ncols</span> <span class="pre">=</span> <span class="pre">1</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">mean</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">std</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.normal" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nrows</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">ncols</span> <span class="pre">=</span> <span class="pre">1</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">mean</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">std</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.normal" title="Link to this definition"></a></dt>
 <dd><p>Returns a type <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> dense matrix of size <code class="docutils literal notranslate"><span class="pre">nrows</span></code>  by
 <code class="docutils literal notranslate"><span class="pre">ncols</span></code> with elements chosen from a normal distribution
 with mean <code class="docutils literal notranslate"><span class="pre">mean</span></code> and standard deviation <code class="docutils literal notranslate"><span class="pre">std</span></code>.</p>
@@ -1217,7 +1265,7 @@ with mean <code class="docutils literal notranslate"><span class="pre">mean</spa
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.uniform">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">uniform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nrows</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">ncols</span> <span class="pre">=</span> <span class="pre">1</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.uniform" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">uniform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nrows</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">ncols</span> <span class="pre">=</span> <span class="pre">1</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">0.0</span></span></em><span class="optional">[</span>, <em class="sig-param"><span class="n"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">1.0</span></span></em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.uniform" title="Link to this definition"></a></dt>
 <dd><p>Returns a type <code class="xref py py-const docutils literal notranslate"><span class="pre">'d'</span></code> dense matrix of size <code class="docutils literal notranslate"><span class="pre">nrows</span></code> by
 <code class="docutils literal notranslate"><span class="pre">ncols</span></code> matrix with elements uniformly distributed between <code class="docutils literal notranslate"><span class="pre">a</span></code> and
 <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
@@ -1225,7 +1273,7 @@ with mean <code class="docutils literal notranslate"><span class="pre">mean</spa
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.setseed">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">setseed</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.setseed" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">setseed</span></span><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.setseed" title="Link to this definition"></a></dt>
 <dd><p>Sets the state of the random number generator.  <code class="docutils literal notranslate"><span class="pre">value</span></code> must be an
 integer.  If <code class="docutils literal notranslate"><span class="pre">value</span></code> is absent or equal to zero, the value is taken
 from the system clock.  If the Python random number generators are
@@ -1234,7 +1282,7 @@ used, this is equivalent to <code class="samp docutils literal notranslate"><spa
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cvxopt.getseed">
-<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">getseed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.getseed" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cvxopt.</span></span><span class="sig-name descname"><span class="pre">getseed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cvxopt.getseed" title="Link to this definition"></a></dt>
 <dd><p>Returns the current state of the random number generator.  This
 function is only available if the GSL random number generators are
 installed.   (The state of the random number generators in the Python
@@ -1256,8 +1304,8 @@ installed.   (The state of the random number generators in the Python
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2023, M.S. Andersen, J. Dahl, L. Vandenberghe.
-      <span class="lastupdated">Last updated on Aug 09, 2023.
+    <p>&#169; <a href="copyright.html">Copyright</a> 2004-2026, M.S. Andersen, J. Dahl, L. Vandenberghe.
+      <span class="lastupdated">Last updated on Feb 07, 2026.
       </span></p>
   </div>
 
@@ -1277,7 +1325,7 @@ installed.   (The state of the random number generators in the Python
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 5.0.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 8.2.3.
     </div>
 
 </body>

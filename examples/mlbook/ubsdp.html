@@ -1,20 +1,22 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SDPs with upper bounds &mdash; CVXOPT</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=27de62e5"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3b3401d5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="copyright" title="Copyright" href="../../copyright.html" />
@@ -27,14 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> CVXOPT
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CVXOPT
           </a>
-              <div class="version">
-                1.3.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -79,9 +82,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Examples</a> &raquo;</li>
-      <li>SDPs with upper bounds</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Examples</a></li>
+      <li class="breadcrumb-item active">SDPs with upper bounds</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -91,10 +94,10 @@
            <div itemprop="articleBody">
              
   <section id="sdps-with-upper-bounds">
-<h1>SDPs with upper bounds<a class="headerlink" href="#sdps-with-upper-bounds" title="Permalink to this heading"></a></h1>
+<h1>SDPs with upper bounds<a class="headerlink" href="#sdps-with-upper-bounds" title="Link to this heading"></a></h1>
 <p>Consider a standard form SDP with an added upper bound</p>
 <div class="math notranslate nohighlight" id="equation-ubsdp">
-<span class="eqno">(1)<a class="headerlink" href="#equation-ubsdp" title="Permalink to this equation"></a></span>\[\begin{split}\begin{array}{ll}
+<span class="eqno">(1)<a class="headerlink" href="#equation-ubsdp" title="Link to this equation"></a></span>\[\begin{split}\begin{array}{ll}
 \mbox{minimize}   &amp; \mathbf{Tr}(BX) \\
 \mbox{subject to} &amp; \mathbf{Tr}(A_iX) + c_i = 0, \quad i =
                      1,\ldots, n \\
@@ -102,7 +105,7 @@
 \end{array}\end{split}\]</div>
 <p>with variable <span class="math notranslate nohighlight">\(X \in \mathbf{S}^m\)</span>. The problem <a class="reference internal" href="#equation-ubsdp">(1)</a> can be reformulated by introducing a slack variable <span class="math notranslate nohighlight">\(S\)</span></p>
 <div class="math notranslate nohighlight" id="equation-ubsdp-2">
-<span class="eqno">(2)<a class="headerlink" href="#equation-ubsdp-2" title="Permalink to this equation"></a></span>\[\begin{split}\begin{array}{ll}
+<span class="eqno">(2)<a class="headerlink" href="#equation-ubsdp-2" title="Link to this equation"></a></span>\[\begin{split}\begin{array}{ll}
 \mbox{minimize}   &amp; \mathbf{Tr}(BX) \\
 \mbox{subject to} &amp; \mathbf{Tr}(A_iX) + c_i = 0, \quad i =
                      1,\ldots, n \\
@@ -114,7 +117,7 @@ module <a class="reference download internal" download="" href="../../_downloads
 <blockquote>
 <div><dl class="py function">
 <dt class="sig sig-object py" id="ubsdp">
-<span class="sig-name descname"><span class="pre">ubsdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pstart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dstart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ubsdp" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">ubsdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pstart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dstart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ubsdp" title="Link to this definition"></a></dt>
 <dd><p>Solves the problem <a class="reference internal" href="#equation-ubsdp-2">(2)</a> using a custom KKT solver.</p>
 <p>The input arguments are <span class="math notranslate nohighlight">\(c \in \mathbf{R}^n\)</span>, a matrix
 <span class="math notranslate nohighlight">\(A \in \mathbf{R}^{m^2 \times n}\)</span>, and a matrix <span class="math notranslate nohighlight">\(B
@@ -125,8 +128,8 @@ the i’th data matrix.</p>
 </dd></dl>
 
 </div></blockquote>
-<h3> Example </h3><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cvxopt</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">misc</span><span class="p">,</span> <span class="n">lapack</span>
-<span class="kn">from</span> <span class="nn">ubsdp</span> <span class="kn">import</span> <span class="n">ubsdp</span>
+<h3> Example </h3><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cvxopt</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">spdiag</span><span class="p">,</span> <span class="n">misc</span><span class="p">,</span> <span class="n">lapack</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ubsdp</span><span class="w"> </span><span class="kn">import</span> <span class="n">ubsdp</span>
 
 <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">m</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
@@ -173,8 +176,8 @@ the i’th data matrix.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2023, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
-      <span class="lastupdated">Last updated on Aug 09, 2023.
+    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2026, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
+      <span class="lastupdated">Last updated on Feb 10, 2026.
       </span></p>
   </div>
 
@@ -194,7 +197,7 @@ the i’th data matrix.</p>
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 7.1.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 8.2.3.
     </div>
 
 <script>

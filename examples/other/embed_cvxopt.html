@@ -1,19 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Using CVXOPT from C &mdash; CVXOPT</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=27de62e5"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
-        <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=3b3401d5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="copyright" title="Copyright" href="../../copyright.html" />
@@ -26,14 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> CVXOPT
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CVXOPT
           </a>
-              <div class="version">
-                1.3.2
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -71,9 +74,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Examples</a> &raquo;</li>
-      <li>Using CVXOPT from C</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Examples</a></li>
+      <li class="breadcrumb-item active">Using CVXOPT from C</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -83,28 +86,39 @@
            <div itemprop="articleBody">
              
   <section id="using-cvxopt-from-c">
-<h1>Using CVXOPT from C<a class="headerlink" href="#using-cvxopt-from-c" title="Permalink to this heading"></a></h1>
-<p>
-<a href="src/embed_cvxopt.c">source code</a>
-</p><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
-<span class="cm">   A modified version of the example in the Python documentation:</span>
-<span class="cm">   http://docs.python.org/ext/pure-embedding.html</span>
+<h1>Using CVXOPT from C<a class="headerlink" href="#using-cvxopt-from-c" title="Link to this heading"></a></h1>
+<p>This example solves a simple linear program using CVXOPT from C. The source code is shown below and can be downloaded here: <a class="reference download internal" download="" href="../../_downloads/f2f65ab7168bc8ec485b00e6ea47a40b/embed_cvxopt.c"><code class="xref download docutils literal notranslate"><span class="pre">embed_cvxopt.c</span></code></a></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">  A modified version of the example in the Python documentation:</span>
+<span class="cm">  http://docs.python.org/ext/pure-embedding.html</span>
 
-<span class="cm">   Solves the LP:</span>
+<span class="cm">  Solves the LP:</span>
 
-<span class="cm">   minimize -4*x1 -5*x2</span>
-<span class="cm">   subject  2*x1 + x2 &lt;= 3</span>
-<span class="cm">            x1 + 2*x2 &lt;= 3</span>
-<span class="cm">            x1 &gt;= 0,  x2 &gt;= 0</span>
+<span class="cm">  minimize -4*x1 -5*x2</span>
+<span class="cm">  subject  2*x1 + x2 &lt;= 3</span>
+<span class="cm">           x1 + 2*x2 &lt;= 3</span>
+<span class="cm">           x1 &gt;= 0,  x2 &gt;= 0</span>
 
-<span class="cm">   and prints the solution from C.</span>
+<span class="cm">  and prints the solution from C.</span>
 
+<span class="cm">  On Linux, set CVXOPT_SRC to the root of the src directory</span>
+<span class="cm">  in the cvxopt source tree and compile with:</span>
 
-<span class="cm">   On Ubuntu Linux compile with:</span>
+<span class="cm">  gcc -o embed_cvxopt embed_cvxopt.c \</span>
+<span class="cm">      -I${CVXOPT_SRC}/C \</span>
+<span class="cm">      $(python3.13-config --cflags) \</span>
+<span class="cm">      $(python3.13-config --embed --ldflags)</span>
 
-<span class="cm">   gcc -o embed_cvxopt embed_cvxopt.c \</span>
-<span class="cm">     -I${CVXOPT_SRC}/C \</span>
-<span class="cm">     -I/usr/include/python2.4 -lpython2.4</span>
+<span class="cm">  Change the Python version as needed.</span>
+
+<span class="cm">  On macOS/conda, additional flags may be needed to link against the correct Python framework:</span>
+
+<span class="cm">  gcc -o embed_cvxopt embed_cvxopt.c \</span>
+<span class="cm">      -I${CVXOPT_SRC}/C \</span>
+<span class="cm">      $(python3.13-config --cflags) \</span>
+<span class="cm">      -L&quot;$CONDA_PREFIX/lib&quot; \</span>
+<span class="cm">      -Wl,-rpath,&quot;$CONDA_PREFIX/lib&quot; \</span>
+<span class="cm">      $(python3.13-config --embed --ldflags)</span>
 <span class="cm">*/</span>
 
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;cvxopt.h&quot;</span>
@@ -199,8 +213,8 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2023, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
-      <span class="lastupdated">Last updated on Aug 09, 2023.
+    <p>&#169; <a href="../../copyright.html">Copyright</a> 2004-2026, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
+      <span class="lastupdated">Last updated on Feb 10, 2026.
       </span></p>
   </div>
 
@@ -220,7 +234,7 @@
       });
   </script>
     <div class="footer">
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 7.1.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 8.2.3.
     </div>
 
 <script>
