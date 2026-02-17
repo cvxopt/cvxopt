@@ -114,12 +114,6 @@ SUITESPARSE_INC_DIR = os.environ.get("CVXOPT_SUITESPARSE_INC_DIR",SUITESPARSE_IN
 SUITESPARSE_SRC_DIR = os.environ.get("CVXOPT_SUITESPARSE_SRC_DIR",SUITESPARSE_SRC_DIR)
 if type(SUITESPARSE_INC_DIR) is str: SUITESPARSE_INC_DIR = SUITESPARSE_INC_DIR.strip().split(';')
 MSVC = int(os.environ.get("CVXOPT_MSVC",MSVC)) == True
-PYTHON_REQUIRES = (
-    '>=3, !=3.0.*, !=3.1.*, '
-    '!=3.2.*, !=3.3.*, !=3.4.*, '
-    '!=3.5.*, !=3.6.*, !=3.7.*')
-INSTALL_REQUIRES = os.environ.get("CVXOPT_INSTALL_REQUIRES",[])
-if type(INSTALL_REQUIRES) is str: INSTALL_REQUIRES = INSTALL_REQUIRES.strip().split(';')
 
 RT_LIB = ["rt"] if sys.platform.startswith("linux") else []
 M_LIB = ["m"] if not MSVC else []
@@ -259,38 +253,7 @@ misc_solvers = Extension('misc_solvers',
 
 extmods += [base, blas, lapack, umfpack, cholmod, amd, misc_solvers]
 
-setup (name = 'cvxopt',
-    description = 'Convex optimization package',
-    long_description = '''
-CVXOPT is a free software package for convex optimization based on the
-Python programming language. It can be used with the interactive Python
-interpreter, on the command line by executing Python scripts, or
-integrated in other software via Python extension modules. Its main
-purpose is to make the development of software for convex optimization
-applications straightforward by building on Python's extensive standard
-library and on the strengths of Python as a high-level programming
-language.''',
-    author = 'M. Andersen, J. Dahl, and L. Vandenberghe',
-    author_email = 'martin.skovgaard.andersen@gmail.com, dahl.joachim@gmail.com, vandenbe@ee.ucla.edu',
-    url = 'https://cvxopt.org',
-    project_urls = {'Source': 'https://github.com/cvxopt/cvxopt'},
-    license = 'GNU GPL version 3',
+setup (
     ext_package = "cvxopt",
-    ext_modules = extmods,
-    package_dir = {"cvxopt": "src/python"},
-    package_data = {'': [".libs/*.dll", "LICENSE*"]},
-    packages = ["cvxopt"],
-    python_requires=PYTHON_REQUIRES,
-    install_requires = INSTALL_REQUIRES,
-    classifiers=[
-        'Development Status :: 5 - Production/Stable',
-        'Intended Audience :: Science/Research',
-        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
-        'Operating System :: OS Independent',
-        'Programming Language :: C',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
-        'Topic :: Scientific/Engineering',
-        ],
-    zip_safe=False
+    ext_modules = extmods    
     )
