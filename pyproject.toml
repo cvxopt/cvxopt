@@ -7,17 +7,16 @@ authors = [
     {name = "J. Dahl", email = "dahl.joachim@gmail.com"},
     {name = "L. Vandenberghe", email = "vandenbe@ee.ucla.edu"}
 ]
-dependencies = []
 requires-python = ">=3.8"
-readme = "README.md"
-license = { file = "LICENSE" }
+readme = {file = "README.md", content-type = "text/markdown"}
+license = "GPL-3.0-or-later"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Science/Research",
     "Operating System :: OS Independent",
     "Programming Language :: C",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Topic :: Scientific/Engineering",
 ]
 
@@ -26,12 +25,12 @@ Homepage = "https://cvxopt.org"
 Source = "https://github.com/cvxopt/cvxopt"
 
 [build-system]
-requires = ["setuptools>=64", "setuptools-scm>=8"]
+requires = ["setuptools>=77.0.3", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
 test-requires = "pytest"
-test-command = "pytest {project}/tests"
+test-command = "pytest {package}/tests"
 
 [tool.cibuildwheel.linux]
 archs = "x86_64 aarch64"
@@ -47,9 +46,14 @@ archs = "x86_64 arm64"
 environment = {CVXOPT_BUILD_DSDP="1", CVXOPT_BUILD_FFTW="1", CVXOPT_BUILD_GLPK="1", CVXOPT_BUILD_GSL="1", CVXOPT_DSDP_LIB_DIR=".local/lib", CVXOPT_DSDP_INC_DIR=".local/include"}
 before-all = "./.ci-support/before_all_macos.sh"
 
-[tool.cibuildwheel.windows]
-environment = {CVXOPT_BUILD_DSDP="0", CVXOPT_BUILD_FFTW="0", CVXOPT_BUILD_GLPK="1", CVXOPT_BUILD_GSL="1", CVXOPT_MSVC="1"}
-before-all = ".ci-support\before_all_windows.bat"
+[tool.setuptools]
+package-dir = {cvxopt = "src/python"}
+packages = ["cvxopt"]
+include-package-data = true
+zip-safe = false
+
+[tool.setuptools.package-data]
+"*" = ["LICENSE*", ".libs/*.dll"]
 
 [tool.setuptools_scm]
 write_to = "src/python/_version.py"
