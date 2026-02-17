@@ -150,19 +150,12 @@ optimization solvers.</p></li>
 </ul>
 <p class="rubric">Installation</p>
 <p>CVXOPT can be installed globally (for all users on a UNIX/Linux system)
-using the command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
-</pre></div>
-</div>
-<p>It can also be installed locally (for a single user) using the command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span>
+using the commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">build</span> <span class="o">--</span><span class="n">wheel</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">dist</span><span class="o">/</span><span class="n">cvxopt</span><span class="o">-*.</span><span class="n">whl</span>
 </pre></div>
 </div>
 <p>To test that the installation was successful, run the included tests using:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">unittest</span> <span class="n">discover</span> <span class="o">-</span><span class="n">s</span> <span class="n">tests</span>
-</pre></div>
-</div>
-<p>or alternatively, if <cite>pytest</cite> is installed:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span>
 </pre></div>
 </div>
@@ -210,7 +203,8 @@ relevant parts of SuiteSparse are build from source when
 <p>Each of the variables can be overridden by specifying an environment variable
 with the prefix <code class="docutils literal notranslate"><span class="pre">CVXOPT_</span></code>. For example, the following command installs CVXOPT
 locally with <code class="docutils literal notranslate"><span class="pre">BUILD_FFTW=1</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CVXOPT_BUILD_FFTW</span><span class="o">=</span><span class="mi">1</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CVXOPT_BUILD_FFTW</span><span class="o">=</span><span class="mi">1</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">build</span> <span class="o">--</span><span class="n">wheel</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">dist</span><span class="o">/</span><span class="n">cvxopt</span><span class="o">-*.</span><span class="n">whl</span>
 </pre></div>
 </div>
 <p>This approach also works with pip:</p>
@@ -245,7 +239,7 @@ the current configuration using the following commands:</p>
 <p>As of Ubuntu 16.04, SuiteSparse can be installed as a dynamic library by
 installing the <code class="docutils literal notranslate"><span class="pre">libsuitesparse-dev</span></code> package. Alternatively, if SuiteSparse is
 not available as a dynamic library, the
-<a class="reference external" href="https://www.suitesparse.com">SuiteSparse source</a> must be available.</p>
+<a class="reference external" href="https://github.com/DrTimothyAldenDavis/SuiteSparse">SuiteSparse source</a> must be available.</p>
 <p>To build the optional CVXOPT extensions (DSDP, FFTW, GLPK, and GSL), the
 following packages should be installed as well:</p>
 <ul class="simple">
@@ -263,11 +257,12 @@ git<span class="w"> </span>checkout<span class="w"> </span><span class="sb">`</s
 <span class="nb">export</span><span class="w"> </span><span class="nv">CVXOPT_BUILD_FFTW</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="c1"># optional</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">CVXOPT_BUILD_GLPK</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="c1"># optional</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">CVXOPT_BUILD_GSL</span><span class="o">=</span><span class="m">1</span><span class="w">     </span><span class="c1"># optional</span>
-python<span class="w"> </span>setup.py<span class="w"> </span>install
+python<span class="w"> </span>-m<span class="w"> </span>build<span class="w"> </span>--wheel
+pip<span class="w"> </span>install<span class="w"> </span>dist/cvxopt-*.whl
 </pre></div>
 </div>
 <p>To use the Intel MKL library instead of ATLAS or OpenBLAS, include the following commands
-before running <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></code>:</p>
+before running <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">build</span> <span class="pre">--wheel</span></code>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mkl
 <span class="nv">MKLLIB</span><span class="o">=</span>mkl_rt
 <span class="nv">PYDIR</span><span class="o">=</span><span class="sb">`</span>pip<span class="w"> </span>show<span class="w"> </span>mkl<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Location<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39; &#39;</span><span class="w"> </span>-f<span class="w"> </span><span class="m">2</span><span class="sb">`</span>
@@ -285,7 +280,7 @@ by downloading the SuiteSparse source and setting <code class="docutils literal 
 to the SuiteSparse source directory:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/DrTimothyAldenDavis/SuiteSparse.git
 <span class="nb">pushd</span><span class="w"> </span>SuiteSparse
-git<span class="w"> </span>checkout<span class="w"> </span>v5.6.0
+git<span class="w"> </span>checkout<span class="w"> </span>v7.12.2
 <span class="nb">popd</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/SuiteSparse
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/cvxopt/cvxopt.git
@@ -295,7 +290,8 @@ git<span class="w"> </span>checkout<span class="w"> </span><span class="sb">`</s
 <span class="nb">export</span><span class="w"> </span><span class="nv">CVXOPT_BUILD_FFTW</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="c1"># optional</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">CVXOPT_BUILD_GLPK</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="c1"># optional</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">CVXOPT_BUILD_GSL</span><span class="o">=</span><span class="m">1</span><span class="w">     </span><span class="c1"># optional</span>
-python<span class="w"> </span>setup.py<span class="w"> </span>install
+python<span class="w"> </span>-m<span class="w"> </span>build<span class="w"> </span>--wheel
+pip<span class="w"> </span>install<span class="w"> </span>dist/cvxopt-*.whl
 </pre></div>
 </div>
 </section>
@@ -316,20 +312,21 @@ git<span class="w"> </span>checkout<span class="w"> </span><span class="sb">`</s
 <span class="nb">export</span><span class="w"> </span><span class="nv">CVXOPT_BUILD_FFTW</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="c1"># optional</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">CVXOPT_BUILD_GLPK</span><span class="o">=</span><span class="m">1</span><span class="w">    </span><span class="c1"># optional</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">CVXOPT_BUILD_GSL</span><span class="o">=</span><span class="m">1</span><span class="w">     </span><span class="c1"># optional</span>
-python<span class="w"> </span>setup.py<span class="w"> </span>install
+python<span class="w"> </span>-m<span class="w"> </span>build<span class="w"> </span>--wheel
+pip<span class="w"> </span>install<span class="w"> </span>dist/cvxopt-*.whl
 </pre></div>
 </div>
 <p>To use OpenBLAS instead of the built-in BLAS/LAPACK
 libraries, include the following commands before running
-<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></code>:</p>
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">build</span> <span class="pre">--wheel</span></code>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew<span class="w"> </span>install<span class="w"> </span>openblas
-<span class="nb">export</span><span class="w"> </span><span class="nv">CVXOPT_BLAS_LIB_DIR</span><span class="o">=</span>/usr/local/opt/openblas/lib
+<span class="nb">export</span><span class="w"> </span><span class="nv">CVXOPT_BLAS_LIB_DIR</span><span class="o">=</span><span class="k">$(</span>brew<span class="w"> </span>--prefix<span class="k">)</span>/opt/openblas/lib
 <span class="nb">export</span><span class="w"> </span><span class="nv">CVXOPT_BLAS_LIB</span><span class="o">=</span>openblas
 <span class="nb">export</span><span class="w"> </span><span class="nv">CVXOPT_LAPACK_LIB</span><span class="o">=</span>openblas
 </pre></div>
 </div>
 <p>Alternatively, to use the Intel MKL library, include the following commands
-before running <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></code>:</p>
+before running <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">build</span> <span class="pre">--wheel</span></code>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mkl
 <span class="nv">MKLLIB</span><span class="o">=</span>mkl_rt
 <span class="nv">PYDIR</span><span class="o">=</span><span class="sb">`</span>pip<span class="w"> </span>show<span class="w"> </span>mkl<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>Location<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39; &#39;</span><span class="w"> </span>-f<span class="w"> </span><span class="m">2</span><span class="sb">`</span>
@@ -351,13 +348,14 @@ components can be built with CVXOPT by downloading the SuiteSparse source and
 setting <code class="docutils literal notranslate"><span class="pre">CVXOPT_SUITESPARSE_SRC_DIR</span></code> to the SuiteSparse source directory:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/DrTimothyAldenDavis/SuiteSparse.git
 <span class="nb">pushd</span><span class="w"> </span>SuiteSparse
-git<span class="w"> </span>checkout<span class="w"> </span>v5.6.0
+git<span class="w"> </span>checkout<span class="w"> </span>v7.12.2
 <span class="nb">popd</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/SuiteSparse
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/cvxopt/cvxopt.git
 <span class="nb">cd</span><span class="w"> </span>cvxopt
 git<span class="w"> </span>checkout<span class="w"> </span><span class="sb">`</span>git<span class="w"> </span>describe<span class="w"> </span>--abbrev<span class="o">=</span><span class="m">0</span><span class="w"> </span>--tags<span class="sb">`</span>
-python<span class="w"> </span>setup.py<span class="w"> </span>install
+python<span class="w"> </span>-m<span class="w"> </span>build<span class="w"> </span>--wheel
+pip<span class="w"> </span>install<span class="w"> </span>dist/cvxopt-*.whl
 </pre></div>
 </div>
 </section>
@@ -379,38 +377,36 @@ the path to the Python installation directory, e.g.,</p>
 </pre></div>
 </div>
 <p>where <code class="docutils literal notranslate"><span class="pre">%</span></code> must be replaced by <code class="docutils literal notranslate"><span class="pre">%%</span></code> if the above line is included in a batch file.</p>
-<p>Finally, we will assume that pip is available;
-if it is not, it can now be installed with <code class="docutils literal notranslate"><span class="pre">easy_install</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">PYTHON</span><span class="o">%</span>\<span class="n">Scripts</span>\<span class="n">easy_install</span> <span class="n">pip</span>
-</pre></div>
-</div>
-<p class="rubric">Python 3.5+</p>
-<p>CVXOPT 1.2.0+ can be built for Windows (64 bit) with MSVC14 and OpenBLAS.</p>
+<p>Finally, we will assume that pip is available.</p>
+<p class="rubric">Python 3.8+</p>
+<p>CVXOPT 1.3.3+ can be built for Windows (64 bit) with MSVC14 and OpenBLAS.</p>
 <p>The following example shows how to build/install CVXOPT for x64:</p>
-<div class="highlight-batch notranslate"><div class="highlight"><pre><span></span><span class="c1">rem Download SuiteSparse source</span>
-git clone https://github.com/DrTimothyAldenDavis/SuiteSparse.git
-<span class="k">cd</span> SuiteSparse
-git checkout v5.8.1
-<span class="k">cd</span> ..
-<span class="k">set</span> <span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="p">=</span><span class="s2">&quot;</span><span class="nv">%cd%</span><span class="s2">\SuiteSparse&quot;</span>
-
-<span class="c1">rem Download OpenBLAS</span>
-wget https://github.com/xianyi/OpenBLAS/releases/download/v0.3.10/OpenBLAS-0.3.10-x64.zip
-wget https://raw.githubusercontent.com/xianyi/OpenBLAS/v0.3.10/LICENSE -O LICENSE_OpenBLAS-0.3.10
-<span class="k">mkdir</span> OpenBLAS
-unzip OpenBLAS-0.3.10-x64.zip -d OpenBLAS
-<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB_DIR</span><span class="p">=</span><span class="s2">&quot;</span><span class="nv">%cd%</span><span class="s2">\OpenBLAS\lib&quot;</span>
-<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB</span><span class="p">=</span>openblas
-<span class="k">set</span> <span class="nv">CVXOPT_LAPACK_LIB</span><span class="p">=</span>openblas
-
-<span class="c1">rem Clone CVXOPT repository, compile, install, and run tests</span>
+<div class="highlight-batch notranslate"><div class="highlight"><pre><span></span><span class="c1">rem Clone CVXOPT repository and checkout latest tag</span>
 git clone https://github.com/cvxopt/cvxopt.git
 <span class="k">cd</span> cvxopt
 <span class="k">for</span> <span class="k">/f</span> <span class="se">%%</span>a <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;git describe --abbrev^=0 --tags&#39;</span><span class="p">)</span> <span class="k">do</span> git checkout <span class="se">%%</span>a
+
+<span class="c1">rem Download SuiteSparse source</span>
+git clone https://github.com/DrTimothyAldenDavis/SuiteSparse.git
+<span class="k">cd</span> SuiteSparse
+git checkout v7.12.2
+<span class="k">cd</span> ..
+<span class="k">set</span> <span class="nv">CVXOPT_SUITESPARSE_SRC_DIR</span><span class="p">=</span><span class="s2">&quot;SuiteSparse&quot;</span>
+
+<span class="c1">rem Download OpenBLAS and license file</span>
+wget https://github.com/OpenMathLib/OpenBLAS/releases/download/v<span class="nv">%OPENBLAS_VERSION%</span>/OpenBLAS-0.3.31-x64.zip
+wget https://raw.githubusercontent.com/OpenMathLib/OpenBLAS/v0.3.31/LICENSE -O LICENSE_OpenBLAS-0.3.31
+<span class="k">mkdir</span> OpenBLAS
+unzip OpenBLAS-0.3.31-x64.zip -d OpenBLAS
+<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB_DIR</span><span class="p">=</span><span class="s2">&quot;OpenBLAS\lib&quot;</span>
+<span class="k">set</span> <span class="nv">CVXOPT_BLAS_LIB</span><span class="p">=</span>openblas
+<span class="k">set</span> <span class="nv">CVXOPT_LAPACK_LIB</span><span class="p">=</span>openblas
+
+<span class="c1">Rem Build, install, and run tests</span>
 <span class="k">set</span> <span class="nv">CVXOPT_MSVC</span><span class="p">=</span>1
-python setup.py build --compiler=msvc
-python setup.py install
-python -m unittest discover -s tests
+python -m build --wheel
+pip install dist/cvxopt-*.whl
+pytest
 </pre></div>
 </div>
 </section>
@@ -428,7 +424,7 @@ python -m unittest discover -s tests
 
   <div role="contentinfo">
     <p>&#169; <a href="../copyright.html">Copyright</a> 2004-2026, Martin S. Andersen, Joachim Dahl, and Lieven Vandenberghe..
-      <span class="lastupdated">Last updated on Feb 10, 2026.
+      <span class="lastupdated">Last updated on Feb 17, 2026.
       </span></p>
   </div>
 
