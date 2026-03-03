@@ -5,17 +5,23 @@ from cvxopt import matrix, spdiag, mul, div, sqrt, normal, setseed
 from cvxopt import blas, lapack, solvers 
 import math
 
-def l1regls(A, y):
+def l1regls(A, y, lambd=1.0, show_progress=1):
     """
     
     Returns the solution of l1-norm regularized least-squares problem
   
-        minimize || A*x - y ||_2^2  + || x ||_1.
+        minimize || A*x - y ||_2^2  + lambd * || x ||_1.
 
+    Parameters: A : 2D cvxopt.matrix for the design matrix in (m, n)
+                y : 2D cvxopt.matrix for the observation in (m, 1)
+                lambd : float for the degree of shrinkage
+                show_progress : bool, show solving progress
+    Returns:    x : 2D cvxopt.matrix in (m, 1)
     """
+    solvers.options['show_progress'] = show_progress
 
     m, n = A.size
-    q = matrix(1.0, (2*n,1))
+    q = matrix(lambd, (2*n,1))
     q[:n] = -2.0 * A.T * y
 
     def P(u, v, alpha = 1.0, beta = 0.0 ):
