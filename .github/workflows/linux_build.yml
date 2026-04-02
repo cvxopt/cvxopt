@@ -31,7 +31,7 @@ jobs:
     - name: Install Python build tools
       run: |
         python -m pip install --upgrade pip
-        pip install meson meson-python ninja setuptools-scm build pytest pytest-cov coveralls
+        pip install meson meson-python ninja build pytest pytest-cov coveralls
 
     - name: Build wheel
       run: |

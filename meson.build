@@ -1,11 +1,8 @@
 project('cvxopt', 'c',
   version: run_command(
-    find_program('python3'), [
-      '-c',
-      'from setuptools_scm import get_version; print(get_version())',
-    ],
+    find_program('git'), 'describe', '--tags', '--match', 'v*',
     check: true,
-  ).stdout().strip(),
+  ).stdout().strip().strip('v'),
   license: 'GPL-3.0-or-later',
   meson_version: '>=1.1.0',
   default_options: [

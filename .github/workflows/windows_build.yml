@@ -34,7 +34,7 @@ jobs:
     - name: Install dependencies
       run: |
         conda install -y openblas "suitesparse>=7" pkg-config \
-          meson meson-python ninja setuptools-scm pytest pytest-cov
+          meson meson-python ninja pytest pytest-cov
         pip install build coveralls
 
     - name: Build wheel
