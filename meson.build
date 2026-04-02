@@ -34,29 +34,55 @@ if get_option('blas_no_underscore')
 endif
 
 # --- SuiteSparse ---
+_ss_lib_dirs = []
+_ss_lib_dir = get_option('suitesparse_lib_dir')
+if _ss_lib_dir != ''
+  _ss_lib_dirs = [_ss_lib_dir]
+endif
+_ss_inc_args = []
+_ss_inc_dir = get_option('suitesparse_inc_dir')
+if _ss_inc_dir != ''
+  _ss_inc_args = ['-I' + _ss_inc_dir]
+endif
+
 suitesparseconfig_dep = dependency('SuiteSparse_config', required: false)
 if not suitesparseconfig_dep.found()
-  suitesparseconfig_dep = cc.find_library('suitesparseconfig')
+  suitesparseconfig_dep = declare_dependency(
+    dependencies: cc.find_library('suitesparseconfig', dirs: _ss_lib_dirs),
+    compile_args: _ss_inc_args,
+  )
 endif
 
 amd_lib_dep = dependency('AMD', required: false)
 if not amd_lib_dep.found()
-  amd_lib_dep = cc.find_library('amd')
+  amd_lib_dep = declare_dependency(
+    dependencies: cc.find_library('amd', dirs: _ss_lib_dirs),
+    compile_args: _ss_inc_args,
+  )
 endif
 
 colamd_dep = dependency('COLAMD', required: false)
 if not colamd_dep.found()
-  colamd_dep = cc.find_library('colamd')
+  colamd_dep = declare_dependency(
+    dependencies: cc.find_library('colamd', dirs: _ss_lib_dirs),
+    compile_args: _ss_inc_args,
+  )
 endif
 
 cholmod_dep = dependency('CHOLMOD', required: false)
 if not cholmod_dep.found()
-  cholmod_dep = cc.find_library('cholmod')
+  cholmod_dep = declare_dependency(
+    dependencies: cc.find_library('cholmod', dirs: _ss_lib_dirs),
+    compile_args: _ss_inc_args,
+  )
 endif
 
 umfpack_dep = dependency('UMFPACK', required: false)
 if not umfpack_dep.found()
-  umfpack_dep = cc.find_library('umfpack')
+  umfpack_dep = declare_dependency(
+    dependencies: cc.find_library('umfpack', dirs: _ss_lib_dirs),
+    compile_args: _ss_inc_args,
+  )
 endif
 
 # --- Optional dependencies ---
