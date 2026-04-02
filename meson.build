@@ -1,8 +1,8 @@
 project('cvxopt', 'c',
   version: run_command(
-    find_program('git'), 'describe', '--tags', '--match', 'v*',
+    find_program('python3'), files('tools/gitversion.py'),
     check: true,
-  ).stdout().strip().strip('v'),
+  ).stdout().strip(),
   license: 'GPL-3.0-or-later',
   meson_version: '>=1.1.0',
   default_options: [

@@ -1,6 +1,6 @@
 [project]
 name = "cvxopt"
-dynamic = ["version"]
+version = "1.3.3"
 description = "Convex optimization package"
 authors = [
     {name = "M. Andersen", email = "martin.skovgaard.andersen@gmail.com"},
