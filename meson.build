@@ -30,76 +30,11 @@ if get_option('blas_no_underscore')
 endif
 
 # --- SuiteSparse ---
-# Detect SuiteSparse include directory for find_library fallback.
-# When pkg-config files are available (recommended), this is not needed.
-_ss_inc_args = []
-foreach d : ['/usr/include/suitesparse',
-             '/usr/local/include/suitesparse',
-             '/opt/homebrew/include/suitesparse']
-  if _ss_inc_args.length() == 0 and cc.has_header('umfpack.h', args: '-I' + d)
-    _ss_inc_args = ['-I' + d]
-  endif
-endforeach
-
-# SuiteSparse_config
-suitesparseconfig_dep = dependency('SuiteSparse_config', required: false)
-if not suitesparseconfig_dep.found()
-  suitesparseconfig_dep = dependency('suitesparseconfig', required: false)
-endif
-if not suitesparseconfig_dep.found()
-  suitesparseconfig_dep = declare_dependency(
-    dependencies: cc.find_library('suitesparseconfig'),
-    compile_args: _ss_inc_args,
-  )
-endif
-
-# AMD
-amd_lib_dep = dependency('AMD', required: false)
-if not amd_lib_dep.found()
-  amd_lib_dep = dependency('amd', required: false)
-endif
-if not amd_lib_dep.found()
-  amd_lib_dep = declare_dependency(
-    dependencies: cc.find_library('amd'),
-    compile_args: _ss_inc_args,
-  )
-endif
-
-# COLAMD
-colamd_dep = dependency('COLAMD', required: false)
-if not colamd_dep.found()
-  colamd_dep = dependency('colamd', required: false)
-endif
-if not colamd_dep.found()
-  colamd_dep = declare_dependency(
-    dependencies: cc.find_library('colamd'),
-    compile_args: _ss_inc_args,
-  )
-endif
-
-# CHOLMOD
-cholmod_dep = dependency('CHOLMOD', required: false)
-if not cholmod_dep.found()
-  cholmod_dep = dependency('cholmod', required: false)
-endif
-if not cholmod_dep.found()
-  cholmod_dep = declare_dependency(
-    dependencies: cc.find_library('cholmod'),
-    compile_args: _ss_inc_args,
-  )
-endif
-
-# UMFPACK
-umfpack_dep = dependency('UMFPACK', required: false)
-if not umfpack_dep.found()
-  umfpack_dep = dependency('umfpack', required: false)
-endif
-if not umfpack_dep.found()
-  umfpack_dep = declare_dependency(
-    dependencies: cc.find_library('umfpack'),
-    compile_args: _ss_inc_args,
-  )
-endif
+suitesparseconfig_dep = dependency('SuiteSparse_config')
+amd_lib_dep = dependency('AMD')
+colamd_dep = dependency('COLAMD')
+cholmod_dep = dependency('CHOLMOD')
+umfpack_dep = dependency('UMFPACK')
 
 # --- Optional dependencies ---
 
