@@ -10,3 +10,5 @@ option('blas_no_underscore', type: 'boolean', value: false,
   description: 'BLAS/LAPACK routines do not use trailing underscores')
 option('dsdp_inc_dir', type: 'string', value: '',
   description: 'DSDP include directory (only used when build_dsdp=true)')
+option('dsdp_lib_dir', type: 'string', value: '',
+  description: 'DSDP library search directory (only used when build_dsdp=true)')

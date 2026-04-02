@@ -1,98 +1,51 @@
 name: Windows build
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
-
-#    if: false
-    
     runs-on: windows-2022
-    env:
-      SUITESPARSE_VERSION: 7.11.0
-      SUITESPARSE_SHA256: decfcd86b7129b7a2f9624ed7cafb2e1215ef4858a610320a24a8987e310fb76
-      OPENBLAS_VERSION: 0.3.30
-      CVXOPT_MSVC: 1
-      CVXOPT_BUILD_DSDP: 0
-      CVXOPT_BUILD_FFTW: 0
-      CVXOPT_BUILD_GLPK: 0
-      CVXOPT_BUILD_GSL: 0
+
+    defaults:
+      run:
+        shell: bash -el {0}
 
     strategy:
       matrix:
-        suitesparse: [src]
         python-version: ['3.14']
-        include:
-        - ARCH: x64
-          MSVC_TARGET: 64
-          PLAT_NAME: win-amd64
-          OPENBLAS_SHA256: 8b04387766efc05c627e26d24797ec0d4ed4c105ec14fa7400aa84a02db22b66
-
-        # - ARCH: x86
-        #   MSVC_TARGET: 32
-        #   PLAT_NAME: win32
-        #   OPENBLAS_SHA256: 2eb2a21fc9eaa374132a491aa7f7b28840040e634075c86fb97fc277038e7c15
 
     steps:
-
     - name: Checkout source
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    - name: Setup Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+    - name: Set up Miniconda
+      uses: conda-incubator/setup-miniconda@v3
       with:
         python-version: ${{ matrix.python-version }}
-        architecture: ${{ matrix.ARCH}}
-
-    - name: Setup msys2
-      uses: msys2/setup-msys2@v2
-      with:
-        msystem: MINGW64
-        install: coreutils unzip
+        channels: conda-forge
+        channel-priority: strict
+        activate-environment: build-env
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install setuptools setuptools_scm build wheel pytest pytest-cov coveralls 
+        conda install -y openblas "suitesparse>=7" pkg-config \
+          meson meson-python ninja setuptools-scm pytest pytest-cov
+        pip install build coveralls
 
-    - name: Get OpenBLAS and copy to workspace
-      shell: msys2 {0}
+    - name: Build wheel
       run: |
-          wget https://github.com/OpenMathLib/OpenBLAS/releases/download/v${OPENBLAS_VERSION}/OpenBLAS-${OPENBLAS_VERSION}-${{matrix.ARCH}}.zip
-          wget https://raw.githubusercontent.com/OpenMathLib/OpenBLAS/v${OPENBLAS_VERSION}/LICENSE -O LICENSE_OpenBLAS-${OPENBLAS_VERSION}
-          echo "${{matrix.OPENBLAS_SHA256}}  OpenBLAS-${OPENBLAS_VERSION}-${{matrix.ARCH}}.zip" > OpenBLAS.sha256
-          sha256sum -c OpenBLAS.sha256
-          mkdir src/python/.libs
-          mkdir OpenBLAS
-          unzip OpenBLAS-${OPENBLAS_VERSION}-${{matrix.ARCH}}.zip -d OpenBLAS/
-          cp OpenBLAS/bin/libopenblas.dll src/python/.libs
-          cp OpenBLAS/lib/libopenblas.lib libopenblas.lib       
-          cp LICENSE_OpenBLAS-${OPENBLAS_VERSION} src/python  
-          echo "CVXOPT_BLAS_LIB_DIR=${{github.workspace}}" >> $GITHUB_ENV
-          echo "CVXOPT_BLAS_LIB=libopenblas" >> $GITHUB_ENV
-          echo "CVXOPT_LAPACK_LIB=libopenblas" >> $GITHUB_ENV
-
-    - name: Get SuiteSparse source
-      shell: msys2 {0}
-      if: ${{ matrix.suitesparse == 'src' }}
-      run: |
-        wget https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${SUITESPARSE_VERSION}.zip
-        echo "${SUITESPARSE_SHA256}  v${SUITESPARSE_VERSION}.zip" > SuiteSparse.sha256
-        sha256sum -c SuiteSparse.sha256
-        unzip v${SUITESPARSE_VERSION}.zip
-        echo "CVXOPT_SUITESPARSE_SRC_DIR=SuiteSparse-${{env.SUITESPARSE_VERSION}}" >> $GITHUB_ENV
-
-    - name: Build/install CVXOPT
-      shell: cmd
-      run: |
-        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars${{matrix.MSVC_TARGET}}.bat"
+        export PKG_CONFIG_PATH="$CONDA_PREFIX/Library/lib/pkgconfig:$CONDA_PREFIX/Library/share/pkgconfig"
         python -m build --wheel
-        pip install --no-index --find-links=${{github.workspace}}\dist cvxopt
+
+    - name: Install wheel
+      run: pip install --no-index --find-links=dist cvxopt
 
     - name: Test
-      shell: cmd
       run: |
         python -c "from cvxopt import blas,lapack,amd,cholmod,umfpack"
-        pytest --cov=cvxopt tests
+        pytest tests

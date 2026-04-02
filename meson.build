@@ -18,8 +18,15 @@ py_dep = py.dependency()
 cc = meson.get_compiler('c')
 
 # --- Common dependencies ---
-blas_dep = dependency('blas')
-lapack_dep = dependency('lapack')
+blas_dep = dependency('blas', required: false)
+if not blas_dep.found()
+  blas_dep = dependency('openblas')
+endif
+
+lapack_dep = dependency('lapack', required: false)
+if not lapack_dep.found()
+  lapack_dep = dependency('openblas')
+endif
 m_dep = cc.find_library('m', required: false)
 rt_dep = cc.find_library('rt', required: false)
 
@@ -54,7 +61,12 @@ if get_option('build_glpk')
 endif
 
 if get_option('build_dsdp')
-  dsdp_lib = cc.find_library('dsdp')
+  _dsdp_lib_dirs = []
+  _dsdp_lib_dir = get_option('dsdp_lib_dir')
+  if _dsdp_lib_dir != ''
+    _dsdp_lib_dirs = [_dsdp_lib_dir]
+  endif
+  dsdp_lib = cc.find_library('dsdp', dirs: _dsdp_lib_dirs)
   _dsdp_inc_dir = get_option('dsdp_inc_dir')
   if _dsdp_inc_dir != ''
     dsdp_dep = declare_dependency(

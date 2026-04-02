@@ -1,40 +1,24 @@
 name: macOS build
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
-
-#    if: false
-
     runs-on: macos-latest
+
     env:
-      CFLAGS: -target arm64-apple-macos14.0
-      ARCHFLAGS: -arch arm64
-      _PYTHON_HOST_PLATFORM: macosx-14.0-arm64
-      SUITESPARSE_VERSION: 7.11.0
-      SUITESPARSE_SHA256: 93ed4c4e546a49fc75884c3a8b807d5af4a91e39d191fbbc60a07380b12a35d1
       DSDP_VERSION: 5.8
       DSDP_SHA256: 26aa624525a636de272c0b329e2dfd01a0d5b7827f1c1c76f393d71e37dead70
-      CVXOPT_SUITESPARSE_LIB_DIR: /opt/homebrew/lib
-      CVXOPT_SUITESPARSE_INC_DIR: /opt/homebrew/include/suitesparse
-      CVXOPT_DSDP_LIB_DIR: ${{github.workspace}}/.local/lib
-      CVXOPT_DSDP_INC_DIR: ${{github.workspace}}/.local/include
-      CVXOPT_BLAS_LIB_DIR: /usr/lib
-      CVXOPT_BLAS_LIB: blas
-      CVXOPT_LAPACK_LIB: lapack
-      CVXOPT_BUILD_DSDP: 1
-      CVXOPT_BUILD_FFTW: 1
-      CVXOPT_BUILD_GLPK: 1
-      CVXOPT_BUILD_GSL: 1
 
     strategy:
       matrix:
         python-version: ['3.14']
-        suitesparse: [src, lib]
 
     steps:
-    - name: Checkout source    
+    - name: Checkout source
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
@@ -44,24 +28,17 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install dependencies
+    - name: Install Homebrew dependencies
       run: |
-        brew --prefix
-        brew install suite-sparse glpk gsl fftw
-        python -m pip install --upgrade pip
-        python -m pip install --upgrade setuptools setuptools_scm build wheel pytest pytest-cov coveralls 
+        brew install suite-sparse openblas fftw gsl glpk
+        echo "PKG_CONFIG_PATH=$(brew --prefix openblas)/lib/pkgconfig:$(brew --prefix)/lib/pkgconfig" >> $GITHUB_ENV
 
-    - name: Get SuiteSparse source
-      if: ${{ matrix.suitesparse == 'src' }}
+    - name: Install Python build tools
       run: |
-        wget https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${SUITESPARSE_VERSION}.tar.gz
-        echo "${SUITESPARSE_SHA256}  v${SUITESPARSE_VERSION}.tar.gz" > SuiteSparse.sha256
-        shasum -a 256 -c SuiteSparse.sha256
-        tar -xf v${SUITESPARSE_VERSION}.tar.gz
-        echo "CVXOPT_SUITESPARSE_SRC_DIR=SuiteSparse-${SUITESPARSE_VERSION}" >> $GITHUB_ENV
+        python -m pip install --upgrade pip
+        pip install meson meson-python ninja setuptools-scm build pytest pytest-cov coveralls
 
     - name: Build DSDP
-      if: ${{ env.CVXOPT_BUILD_DSDP == 1 }}
       run: |
         wget http://www.mcs.anl.gov/hs/software/DSDP/DSDP${DSDP_VERSION}.tar.gz
         echo "${DSDP_SHA256}  DSDP${DSDP_VERSION}.tar.gz" > DSDP.sha256
@@ -69,13 +46,23 @@ jobs:
         tar -xf DSDP${DSDP_VERSION}.tar.gz
         mkdir -p .local/lib .local/include
         cd DSDP${DSDP_VERSION}
-        patch -p1 < ${{github.workspace}}/.github/workflows/dsdp.patch
-        make PREFIX=${{github.workspace}}/.local ARCH_FLAGS="$ARCHFLAGS" LAPACKBLAS="-DACCELERATE_NEW_LAPACK -framework Accelerate -L${CVXOPT_BLAS_LIB_DIR} -l${CVXOPT_LAPACK_LIB} -l${CVXOPT_BLAS_LIB}" IS_OSX=1 DSDPROOT=`pwd` install
+        patch -p1 < ${{ github.workspace }}/.github/workflows/dsdp.patch
+        make PREFIX=${{ github.workspace }}/.local \
+          LAPACKBLAS="$(pkg-config --libs openblas)" \
+          IS_OSX=1 DSDPROOT=$(pwd) install
 
-    - name: Build/install CVXOPT
+    - name: Build wheel
       run: |
-        python -m build --wheel
-        python -m pip install --no-index --find-links=${{github.workspace}}/dist cvxopt
+        python -m build --wheel \
+          -C setup-args="-Dbuild_gsl=true" \
+          -C setup-args="-Dbuild_fftw=true" \
+          -C setup-args="-Dbuild_glpk=true" \
+          -C setup-args="-Dbuild_dsdp=true" \
+          -C setup-args="-Ddsdp_inc_dir=${{ github.workspace }}/.local/include" \
+          -C setup-args="-Ddsdp_lib_dir=${{ github.workspace }}/.local/lib"
+
+    - name: Install wheel
+      run: pip install --no-index --find-links=${{ github.workspace }}/dist cvxopt
 
     - name: Test with pytest
       run: |
