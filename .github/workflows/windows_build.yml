@@ -40,6 +40,8 @@ jobs:
     - name: Build wheel
       run: |
         export PKG_CONFIG_PATH="$CONDA_PREFIX/Library/lib/pkgconfig:$CONDA_PREFIX/Library/share/pkgconfig"
+        export LIB="$(cygpath -w "$CONDA_PREFIX/Library/lib");${LIB:-}"
+        export INCLUDE="$(cygpath -w "$CONDA_PREFIX/Library/include");$(cygpath -w "$CONDA_PREFIX/Library/include/suitesparse");${INCLUDE:-}"
         python -m build --wheel
 
     - name: Install wheel

@@ -31,12 +31,15 @@ jobs:
     - name: Install Homebrew dependencies
       run: |
         brew install suite-sparse openblas fftw gsl glpk
+        HOMEBREW_PREFIX="$(brew --prefix)"
         PKG_CONFIG_PATH="$(brew --prefix openblas)/lib/pkgconfig"
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$(brew --prefix suite-sparse)/lib/pkgconfig"
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$(brew --prefix fftw)/lib/pkgconfig"
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$(brew --prefix gsl)/lib/pkgconfig"
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$(brew --prefix glpk)/lib/pkgconfig"
         echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH" >> $GITHUB_ENV
+        echo "LDFLAGS=-L${HOMEBREW_PREFIX}/lib" >> $GITHUB_ENV
+        echo "CPPFLAGS=-I${HOMEBREW_PREFIX}/include" >> $GITHUB_ENV
 
     - name: Install Python build tools
       run: |

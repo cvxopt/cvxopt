@@ -34,11 +34,30 @@ if get_option('blas_no_underscore')
 endif
 
 # --- SuiteSparse ---
-suitesparseconfig_dep = dependency('SuiteSparse_config')
-amd_lib_dep = dependency('AMD')
-colamd_dep = dependency('COLAMD')
-cholmod_dep = dependency('CHOLMOD')
-umfpack_dep = dependency('UMFPACK')
+suitesparseconfig_dep = dependency('SuiteSparse_config', required: false)
+if not suitesparseconfig_dep.found()
+  suitesparseconfig_dep = cc.find_library('suitesparseconfig')
+endif
+
+amd_lib_dep = dependency('AMD', required: false)
+if not amd_lib_dep.found()
+  amd_lib_dep = cc.find_library('amd')
+endif
+
+colamd_dep = dependency('COLAMD', required: false)
+if not colamd_dep.found()
+  colamd_dep = cc.find_library('colamd')
+endif
+
+cholmod_dep = dependency('CHOLMOD', required: false)
+if not cholmod_dep.found()
+  cholmod_dep = cc.find_library('cholmod')
+endif
+
+umfpack_dep = dependency('UMFPACK', required: false)
+if not umfpack_dep.found()
+  umfpack_dep = cc.find_library('umfpack')
+endif
 
 # --- Optional dependencies ---
 
