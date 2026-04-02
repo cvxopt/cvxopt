@@ -291,9 +291,9 @@ __all__ = [ 'blas', 'lapack', 'amd', 'umfpack', 'cholmod', 'solvers',
     'div', 'normal', 'uniform', 'setseed', 'getseed' ]
 
 try:
-    from ._version import version as __version__
-    from ._version import version_tuple
-except ImportError:
+    from importlib.metadata import version as _get_version
+    __version__ = _get_version('cvxopt')
+    del _get_version
+except Exception:
     __version__ = "unknown version"
-    version_tuple = (0, 0, "unknown version")
 

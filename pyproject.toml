@@ -25,8 +25,8 @@ Homepage = "https://cvxopt.org"
 Source = "https://github.com/cvxopt/cvxopt"
 
 [build-system]
-requires = ["setuptools>=77.0.3", "setuptools-scm>=8"]
-build-backend = "setuptools.build_meta"
+requires = ["meson-python>=0.15.0", "meson>=1.1.0", "setuptools-scm>=8"]
+build-backend = "mesonpy"
 
 [tool.cibuildwheel]
 test-requires = "pytest"
@@ -38,22 +38,16 @@ manylinux-x86_64-image = "manylinux_2_28"
 manylinux-aarch64-image = "manylinux_2_28"
 musllinux-x86_64-image = "musllinux_1_2"
 musllinux-aarch64-image = "musllinux_1_2"
-environment = {CVXOPT_BUILD_DSDP="1", CVXOPT_BUILD_FFTW="1", CVXOPT_BUILD_GLPK="1", CVXOPT_BUILD_GSL="1", CVXOPT_BLAS_LIB="openblas", CVXOPT_LAPACK_LIB="openblas", CVXOPT_SUITESPARSE_INC_DIR="/usr/include/suitesparse;/usr/include/suitesparse/suitesparse"}
 before-all = "./.ci-support/before_all_linux.sh"
+
+[tool.cibuildwheel.linux.config-settings]
+setup-args = ["-Dbuild_gsl=true", "-Dbuild_fftw=true", "-Dbuild_glpk=true", "-Dbuild_dsdp=true"]
 
 [tool.cibuildwheel.macos]
 archs = "x86_64 arm64"
-environment = {CVXOPT_BUILD_DSDP="1", CVXOPT_BUILD_FFTW="1", CVXOPT_BUILD_GLPK="1", CVXOPT_BUILD_GSL="1", CVXOPT_DSDP_LIB_DIR=".local/lib", CVXOPT_DSDP_INC_DIR=".local/include"}
 before-all = "./.ci-support/before_all_macos.sh"
 
-[tool.setuptools]
-package-dir = {cvxopt = "src/python"}
-packages = ["cvxopt"]
-include-package-data = true
-zip-safe = false
+[tool.cibuildwheel.macos.config-settings]
+setup-args = ["-Dbuild_gsl=true", "-Dbuild_fftw=true", "-Dbuild_glpk=true", "-Dbuild_dsdp=true", "-Ddsdp_inc_dir=.local/include"]
 
-[tool.setuptools.package-data]
-"*" = ["LICENSE*", ".libs/*.dll"]
 
-[tool.setuptools_scm]
-write_to = "src/python/_version.py"

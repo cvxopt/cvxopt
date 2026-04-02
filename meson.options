@@ -1,0 +1,12 @@
+option('build_gsl', type: 'boolean', value: false,
+  description: 'Build GSL random number generator module')
+option('build_fftw', type: 'boolean', value: false,
+  description: 'Build FFTW module')
+option('build_glpk', type: 'boolean', value: false,
+  description: 'Build GLPK module')
+option('build_dsdp', type: 'boolean', value: false,
+  description: 'Build DSDP module')
+option('blas_no_underscore', type: 'boolean', value: false,
+  description: 'BLAS/LAPACK routines do not use trailing underscores')
+option('dsdp_inc_dir', type: 'string', value: '',
+  description: 'DSDP include directory (only used when build_dsdp=true)')
