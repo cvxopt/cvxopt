@@ -66,26 +66,32 @@ static PyNumberMethods matrix_as_number ;
 static PyObject * matrix_iter(matrix *) ;
 
 
-void dscal_(int *, double *, double *, int *) ;
+void BLAS_FUNC(dscal)(CBLAS_INT *, double *, double *, CBLAS_INT *) ;
 #ifndef _MSC_VER
-void zscal_(int *, double complex *, double complex *, int *) ;
+void BLAS_FUNC(zscal)(CBLAS_INT *, double complex *, double complex *, CBLAS_INT *) ;
 #else
-void zscal_(int *, _Dcomplex *, _Dcomplex *, int *) ;
+void BLAS_FUNC(zscal)(CBLAS_INT *, _Dcomplex *, _Dcomplex *, CBLAS_INT *) ;
 #endif
-void daxpy_(int *, double *, double *, int *, double *, int *) ;
+void BLAS_FUNC(daxpy)(CBLAS_INT *, double *, double *, CBLAS_INT *, double *,
+    CBLAS_INT *) ;
 #ifndef _MSC_VER
-void zaxpy_(int *, double complex *, double complex *, int *, double complex *, int *) ;
+void BLAS_FUNC(zaxpy)(CBLAS_INT *, double complex *, double complex *, CBLAS_INT *,
+    double complex *, CBLAS_INT *) ;
 #else
-void zaxpy_(int *, _Dcomplex *, _Dcomplex *, int *, _Dcomplex *, int *) ;
+void BLAS_FUNC(zaxpy)(CBLAS_INT *, _Dcomplex *, _Dcomplex *, CBLAS_INT *, _Dcomplex *,
+    CBLAS_INT *) ;
 #endif
-void dgemm_(char *, char *, int *, int *, int *, double *, double *,
-    int *, double *, int *, double *, double *, int *) ;
+void BLAS_FUNC(dgemm)(char *, char *, CBLAS_INT *, CBLAS_INT *, CBLAS_INT *, double *,
+    double *, CBLAS_INT *, double *, CBLAS_INT *, double *, double *,
+    CBLAS_INT *) ;
 #ifndef _MSC_VER
-void zgemm_(char *, char *, int *, int *, int *, double complex *, double complex *,
-    int *, double complex *, int *, double complex *, double complex *, int *) ;
+void BLAS_FUNC(zgemm)(char *, char *, CBLAS_INT *, CBLAS_INT *, CBLAS_INT *,
+    double complex *, double complex *, CBLAS_INT *, double complex *,
+    CBLAS_INT *, double complex *, double complex *, CBLAS_INT *) ;
 #else
-void zgemm_(char *, char *, int *, int *, int *, _Dcomplex *, _Dcomplex *,
-    int *, _Dcomplex *, int *, _Dcomplex *, _Dcomplex *, int *) ;
+void BLAS_FUNC(zgemm)(char *, char *, CBLAS_INT *, CBLAS_INT *, CBLAS_INT *,
+    _Dcomplex *, _Dcomplex *, CBLAS_INT *, _Dcomplex *, CBLAS_INT *,
+    _Dcomplex *, _Dcomplex *, CBLAS_INT *) ;
 #endif
 
 

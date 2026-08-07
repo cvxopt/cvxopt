@@ -6,6 +6,8 @@ import os, sys, platform
 BLAS_LIB = ['blas']
 LAPACK_LIB = ['lapack']
 BLAS_EXTRA_LINK_ARGS = []
+BLAS_ILP64 = False
+BUILD_BASE = 'build'
 
 # Set environment variable BLAS_NOUNDERSCORES=1 if your BLAS/LAPACK do
 # not use trailing underscores
@@ -94,6 +96,8 @@ BLAS_LIB = os.environ.get("CVXOPT_BLAS_LIB",BLAS_LIB)
 LAPACK_LIB = os.environ.get("CVXOPT_LAPACK_LIB",LAPACK_LIB)
 BLAS_LIB_DIR = os.environ.get("CVXOPT_BLAS_LIB_DIR",BLAS_LIB_DIR)
 BLAS_EXTRA_LINK_ARGS = os.environ.get("CVXOPT_BLAS_EXTRA_LINK_ARGS",BLAS_EXTRA_LINK_ARGS)
+BLAS_ILP64 = int(os.environ.get("CVXOPT_BLAS_ILP64",BLAS_ILP64)) == True
+BUILD_BASE = os.environ.get("CVXOPT_BUILD_BASE",BUILD_BASE)
 if type(BLAS_LIB) is str: BLAS_LIB = BLAS_LIB.strip().split(';')
 if type(LAPACK_LIB) is str: LAPACK_LIB = LAPACK_LIB.strip().split(';')
 if type(BLAS_EXTRA_LINK_ARGS) is str: BLAS_EXTRA_LINK_ARGS = BLAS_EXTRA_LINK_ARGS.strip().split(';')
@@ -115,6 +119,11 @@ SUITESPARSE_SRC_DIR = os.environ.get("CVXOPT_SUITESPARSE_SRC_DIR",SUITESPARSE_SR
 if type(SUITESPARSE_INC_DIR) is str: SUITESPARSE_INC_DIR = SUITESPARSE_INC_DIR.strip().split(';')
 MSVC = int(os.environ.get("CVXOPT_MSVC",MSVC)) == True
 
+MKL_MACROS = []
+if os.environ.get("FIX_MKL_2025_ILP64_MISSING_SYMBOL") == "1":
+    MKL_MACROS = [("FIX_MKL_2025_ILP64_MISSING_SYMBOL", "1")]
+
+
 RT_LIB = ["rt"] if sys.platform.startswith("linux") else []
 M_LIB = ["m"] if not MSVC else []
 UMFPACK_EXTRA_COMPILE_ARGS = ["-Wno-unknown-pragmas"] if not MSVC else []
@@ -124,6 +133,11 @@ extmods = []
 # Macros
 MACROS = []
 if BLAS_NOUNDERSCORES: MACROS.append(('BLAS_NO_UNDERSCORE',''))
+if BLAS_ILP64: MACROS += [('HAVE_BLAS_ILP64',''), ('BLAS_SYMBOL_SUFFIX','_64')]
+MACROS += MKL_MACROS
+
+SUITESPARSE_MACROS = []
+if BLAS_ILP64: SUITESPARSE_MACROS = [('BLAS64',''), ('BLAS64__SUFFIX','_64')]
 
 # optional modules
 
@@ -140,7 +154,7 @@ if BUILD_FFTW:
     fftw = Extension('fftw', libraries = ['fftw3'] + BLAS_LIB,
         include_dirs = [ FFTW_INC_DIR ],
         library_dirs = [ FFTW_LIB_DIR, BLAS_LIB_DIR ],
-        define_macros = FFTW_MACROS,
+        define_macros = MACROS + FFTW_MACROS,
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = ['src/C/fftw.c'] )
     extmods += [fftw];
@@ -156,6 +170,7 @@ if BUILD_DSDP:
     dsdp = Extension('dsdp', libraries = ['dsdp'] + LAPACK_LIB + BLAS_LIB,
         include_dirs = [ DSDP_INC_DIR ],
         library_dirs = [ DSDP_LIB_DIR, BLAS_LIB_DIR ],
+        define_macros = MACROS,
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = ['src/C/dsdp.c'] )
     extmods += [dsdp];
@@ -194,7 +209,7 @@ else:
             SUITESPARSE_SRC_DIR + '/AMD/Source',
             SUITESPARSE_SRC_DIR + '/SuiteSparse_config' ],
         library_dirs = [ BLAS_LIB_DIR ],
-        define_macros = MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
+        define_macros = MACROS + SUITESPARSE_MACROS + [('NTIMER', '1'), ('NCHOLMOD', '1')],
         libraries = LAPACK_LIB + BLAS_LIB,
         extra_compile_args = UMFPACK_EXTRA_COMPILE_ARGS,
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
@@ -213,7 +228,7 @@ else:
     amd = Extension('amd',
         include_dirs = [SUITESPARSE_SRC_DIR + '/AMD/Include',
             SUITESPARSE_SRC_DIR + '/SuiteSparse_config' ],
-        define_macros = MACROS + [('NTIMER', '1')],
+        define_macros = MACROS + SUITESPARSE_MACROS + [('NTIMER', '1')],
         sources = [ 'src/C/amd.c', SUITESPARSE_SRC_DIR + '/SuiteSparse_config/SuiteSparse_config.c'] +
         glob(SUITESPARSE_SRC_DIR + '/AMD/Source/*.c') )
 
@@ -232,7 +247,7 @@ else:
             SUITESPARSE_SRC_DIR + '/AMD/Include',
             SUITESPARSE_SRC_DIR + '/COLAMD/Include',
             SUITESPARSE_SRC_DIR + '/SuiteSparse_config' ],
-        define_macros = MACROS + [('NPARTITION', '1'), ('NTIMER', '1')],
+        define_macros = MACROS + SUITESPARSE_MACROS + [('NPARTITION', '1'), ('NTIMER', '1')],
         extra_link_args = BLAS_EXTRA_LINK_ARGS,
         sources = [ 'src/C/cholmod.c' ] +
             [SUITESPARSE_SRC_DIR + '/AMD/Source/' + s for s in ['amd_postorder.c', 'amd_l_postorder.c', 'amd_post_tree.c', 'amd_l_post_tree.c', 'amd_2.c', 'amd_l2.c']] +
@@ -255,5 +270,6 @@ extmods += [base, blas, lapack, umfpack, cholmod, amd, misc_solvers]
 
 setup (
     ext_package = "cvxopt",
-    ext_modules = extmods    
+    ext_modules = extmods,
+    options = {'build': {'build_base': BUILD_BASE}},
     )

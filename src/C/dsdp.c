@@ -20,6 +20,7 @@
  */
 
 #include "cvxopt.h"
+#include "cvxopt_int_shims.h"
 #include "misc.h"
 #include "dsdp5.h"
 #include "math.h"
@@ -101,8 +102,6 @@ typedef struct {     /* symmetric matrix X in DSDP packed storage */
                       *	rowwise. */
     int nnz;         /* length of val */
 } dsdp_matrix;
-
-extern void dcopy_(int *n, double *x, int *incx, double *y, int *incy);
 
 static PyObject* solvesdp(PyObject *self, PyObject *args,
     PyObject *kwrds)
@@ -320,7 +319,7 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
         lmis[k][0].nnz = mk*(mk+1)/2;
         for (j=0; j<mk; j++){
             lngth = j+1;  incx = mk;  incy = 1;
-            dcopy_(&lngth, MAT_BUFD(hk)+j, &incx,
+            cvxopt_int_dcopy(&lngth, MAT_BUFD(hk)+j, &incx,
                 lmis[k][0].val+j*(j+1)/2, &incy);
         }
 
@@ -338,7 +337,7 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
                 lmis[k][i+1].nnz = mk*(mk+1)/2;
                 for (j=0; j<mk; j++){
                     lngth = j+1;  incx = mk;  incy = 1;
-                    dcopy_(&lngth, MAT_BUFD(Gk)+i*mk*mk+j, &incx,
+                    cvxopt_int_dcopy(&lngth, MAT_BUFD(Gk)+i*mk*mk+j, &incx,
                         lmis[k][i+1].val+j*(j+1)/2, &incy);
                 }
             } else {
@@ -471,7 +470,8 @@ static PyObject* solvesdp(PyObject *self, PyObject *args,
         SDPConeComputeX(sdpcone, k, mk, zk, maxm*(maxm+1)/2);
         for (j=0; j<mk; j++){
             lngth=j+1;  incx=1;  incy=mk;
-            dcopy_(&lngth, zk+j*(j+1)/2, &incx, MAT_BUFD(zsk)+j, &incy);
+            cvxopt_int_dcopy(&lngth, zk+j*(j+1)/2, &incx, MAT_BUFD(zsk)+j,
+                &incy);
         }
         PyList_SetItem(zs, k, (PyObject *) zsk);
     }

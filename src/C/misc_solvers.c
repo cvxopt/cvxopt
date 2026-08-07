@@ -21,6 +21,7 @@
 
 #include "Python.h"
 #include "cvxopt.h"
+#include "cvxopt_int_shims.h"
 #include "misc.h"
 #include "math.h"
 #include "float.h"
@@ -28,35 +29,125 @@
 PyDoc_STRVAR(misc_solvers__doc__, "Miscellaneous functions used by the "
     "CVXOPT solvers.");
 
-extern void dcopy_(int *n, double *x, int *incx, double *y, int *incy);
-extern double dnrm2_(int *n, double *x, int *incx);
-extern double ddot_(int *n, double *x, int *incx, double *y, int *incy);
-extern void dscal_(int *n, double *alpha, double *x, int *incx);
-extern void daxpy_(int *n, double *alpha, double *x, int *incx, double *y,
-    int *incy);
-extern void dtbmv_(char *uplo, char *trans, char *diag, int *n, int *k,
-    double *A, int *lda, double *x, int *incx);
-extern void dtbsv_(char *uplo, char *trans, char *diag, int *n, int *k,
-    double *A, int *lda, double *x, int *incx);
-extern void dgemv_(char* trans, int *m, int *n, double *alpha, double *A,
-    int *lda, double *x, int *incx, double *beta, double *y, int *incy);
-extern void dger_(int *m, int *n, double *alpha, double *x, int *incx,
-    double *y, int *incy, double *A, int *lda);
-extern void dtrmm_(char *side, char *uplo, char *transa, char *diag,
-    int *m, int *n, double *alpha, double *A, int *lda, double *B,
-    int *ldb);
-extern void dsyr2k_(char *uplo, char *trans, int *n, int *k, double *alpha,
+extern double BLAS_FUNC(dnrm2)(CBLAS_INT *n, double *x, CBLAS_INT *incx);
+extern double BLAS_FUNC(ddot)(CBLAS_INT *n, double *x, CBLAS_INT *incx, double *y,
+    CBLAS_INT *incy);
+extern void BLAS_FUNC(daxpy)(CBLAS_INT *n, double *alpha, double *x,
+    CBLAS_INT *incx, double *y, CBLAS_INT *incy);
+extern void BLAS_FUNC(dtbmv)(char *uplo, char *trans, char *diag, CBLAS_INT *n,
+    CBLAS_INT *k, double *A, CBLAS_INT *lda, double *x, CBLAS_INT *incx);
+extern void BLAS_FUNC(dtbsv)(char *uplo, char *trans, char *diag, CBLAS_INT *n,
+    CBLAS_INT *k, double *A, CBLAS_INT *lda, double *x, CBLAS_INT *incx);
+extern void BLAS_FUNC(dgemv)(char* trans, CBLAS_INT *m, CBLAS_INT *n, double *alpha,
+    double *A, CBLAS_INT *lda, double *x, CBLAS_INT *incx, double *beta,
+    double *y, CBLAS_INT *incy);
+extern void BLAS_FUNC(dger)(CBLAS_INT *m, CBLAS_INT *n, double *alpha, double *x,
+    CBLAS_INT *incx, double *y, CBLAS_INT *incy, double *A,
+    CBLAS_INT *lda);
+extern void BLAS_FUNC(dtrmm)(char *side, char *uplo, char *transa, char *diag,
+    CBLAS_INT *m, CBLAS_INT *n, double *alpha, double *A,
+    CBLAS_INT *lda, double *B, CBLAS_INT *ldb);
+extern void BLAS_FUNC(dsyr2k)(char *uplo, char *trans, CBLAS_INT *n, CBLAS_INT *k,
+    double *alpha, double *A, CBLAS_INT *lda, double *B,
+    CBLAS_INT *ldb, double *beta, double *C, CBLAS_INT *ldc);
+extern void BLAS_FUNC(dlacpy)(char *uplo, CBLAS_INT *m, CBLAS_INT *n, double *A,
+    CBLAS_INT *lda, double *B, CBLAS_INT *ldb);
+extern void BLAS_FUNC(dsyevr)(char *jobz, char *range, char *uplo, CBLAS_INT *n,
+    double *A, CBLAS_INT *ldA, double *vl, double *vu, CBLAS_INT *il,
+    CBLAS_INT *iu, double *abstol, CBLAS_INT *m, double *W, double *Z,
+    CBLAS_INT *ldZ, CBLAS_INT *isuppz, double *work, CBLAS_INT *lwork,
+    CBLAS_INT *iwork, CBLAS_INT *liwork, CBLAS_INT *info);
+extern void BLAS_FUNC(dsyevd)(char *jobz, char *uplo, CBLAS_INT *n, double *A,
+    CBLAS_INT *ldA, double *W, double *work, CBLAS_INT *lwork,
+    CBLAS_INT *iwork, CBLAS_INT *liwork, CBLAS_INT *info);
+
+static void
+cvxopt_int_daxpy(int *n, double *alpha, double *x, int *incx, double *y,
+    int *incy)
+{
+    CBLAS_INT blas_n = *n, blas_incx = *incx, blas_incy = *incy;
+    BLAS_FUNC(daxpy)(&blas_n, alpha, x, &blas_incx, y, &blas_incy);
+}
+
+static double
+cvxopt_int_dnrm2(int *n, double *x, int *incx)
+{
+    CBLAS_INT blas_n = *n, blas_incx = *incx;
+    return BLAS_FUNC(dnrm2)(&blas_n, x, &blas_incx);
+}
+
+static double
+cvxopt_int_ddot(int *n, double *x, int *incx, double *y, int *incy)
+{
+    CBLAS_INT blas_n = *n, blas_incx = *incx, blas_incy = *incy;
+    return BLAS_FUNC(ddot)(&blas_n, x, &blas_incx, y, &blas_incy);
+}
+
+static void
+cvxopt_int_dtbmv(char *uplo, char *trans, char *diag, int *n, int *k,
+    double *A, int *lda, double *x, int *incx)
+{
+    CBLAS_INT blas_n = *n, blas_k = *k, blas_lda = *lda, blas_incx = *incx;
+    BLAS_FUNC(dtbmv)(uplo, trans, diag, &blas_n, &blas_k, A, &blas_lda, x,
+        &blas_incx);
+}
+
+static void
+cvxopt_int_dtbsv(char *uplo, char *trans, char *diag, int *n, int *k,
+    double *A, int *lda, double *x, int *incx)
+{
+    CBLAS_INT blas_n = *n, blas_k = *k, blas_lda = *lda, blas_incx = *incx;
+    BLAS_FUNC(dtbsv)(uplo, trans, diag, &blas_n, &blas_k, A, &blas_lda, x,
+        &blas_incx);
+}
+
+static void
+cvxopt_int_dgemv(char *trans, int *m, int *n, double *alpha, double *A,
+    int *lda, double *x, int *incx, double *beta, double *y, int *incy)
+{
+    CBLAS_INT blas_m = *m, blas_n = *n, blas_lda = *lda,
+        blas_incx = *incx, blas_incy = *incy;
+    BLAS_FUNC(dgemv)(trans, &blas_m, &blas_n, alpha, A, &blas_lda, x, &blas_incx,
+        beta, y, &blas_incy);
+}
+
+static void
+cvxopt_int_dger(int *m, int *n, double *alpha, double *x, int *incx,
+    double *y, int *incy, double *A, int *lda)
+{
+    CBLAS_INT blas_m = *m, blas_n = *n, blas_incx = *incx,
+        blas_incy = *incy, blas_lda = *lda;
+    BLAS_FUNC(dger)(&blas_m, &blas_n, alpha, x, &blas_incx, y, &blas_incy, A,
+        &blas_lda);
+}
+
+static void
+cvxopt_int_dtrmm(char *side, char *uplo, char *transa, char *diag, int *m,
+    int *n, double *alpha, double *A, int *lda, double *B, int *ldb)
+{
+    CBLAS_INT blas_m = *m, blas_n = *n, blas_lda = *lda, blas_ldb = *ldb;
+    BLAS_FUNC(dtrmm)(side, uplo, transa, diag, &blas_m, &blas_n, alpha, A, &blas_lda,
+        B, &blas_ldb);
+}
+
+static void
+cvxopt_int_dsyr2k(char *uplo, char *trans, int *n, int *k, double *alpha,
     double *A, int *lda, double *B, int *ldb, double *beta, double *C,
-    int *ldc);
-extern void dlacpy_(char *uplo, int *m, int *n, double *A, int *lda,
-    double *B, int *ldb);
-extern void dsyevr_(char *jobz, char *range, char *uplo, int *n, double *A,
-    int *ldA, double *vl, double *vu, int *il, int *iu, double *abstol,
-    int *m, double *W, double *Z, int *ldZ, int *isuppz, double *work,
-    int *lwork, int *iwork, int *liwork, int *info);
-extern void dsyevd_(char *jobz, char *uplo, int *n, double *A, int *ldA,
-    double *W, double *work, int *lwork, int *iwork, int *liwork,
-    int *info);
+    int *ldc)
+{
+    CBLAS_INT blas_n = *n, blas_k = *k, blas_lda = *lda, blas_ldb = *ldb,
+        blas_ldc = *ldc;
+    BLAS_FUNC(dsyr2k)(uplo, trans, &blas_n, &blas_k, alpha, A, &blas_lda, B,
+        &blas_ldb, beta, C, &blas_ldc);
+}
+
+static void
+cvxopt_int_dlacpy(char *uplo, int *m, int *n, double *A, int *lda, double *B,
+    int *ldb)
+{
+    CBLAS_INT blas_m = *m, blas_n = *n, blas_lda = *lda, blas_ldb = *ldb;
+    BLAS_FUNC(dlacpy)(uplo, &blas_m, &blas_n, A, &blas_lda, B, &blas_ldb);
+}
 
 
 static char doc_scale[] =
@@ -118,7 +209,7 @@ static PyObject* scale(PyObject *self, PyObject *args, PyObject *kwrds)
         (matrix *) PyDict_GetItemString(W, "dnli"))){
         m = len(d);
         for (i = 0; i < xc; i++)
-            dtbmv_("L", "N", "N", &m, &int0, MAT_BUFD(d), &int1,
+            cvxopt_int_dtbmv("L", "N", "N", &m, &int0, MAT_BUFD(d), &int1,
                 MAT_BUFD(x) + i*xr, &int1);
         ind += m;
     }
@@ -136,7 +227,7 @@ static PyObject* scale(PyObject *self, PyObject *args, PyObject *kwrds)
     }
     m = len(d);
     for (i = 0; i < xc; i++)
-        dtbmv_("L", "N", "N", &m, &int0, MAT_BUFD(d), &int1, MAT_BUFD(x)
+        cvxopt_int_dtbmv("L", "N", "N", &m, &int0, MAT_BUFD(d), &int1, MAT_BUFD(x)
             + i*xr + ind, &int1);
     ind += m;
 
@@ -164,21 +255,21 @@ static PyObject* scale(PyObject *self, PyObject *args, PyObject *kwrds)
         vk = (matrix *) PyList_GetItem(v, (Py_ssize_t) k);
         m = vk->nrows;
         if (inverse == 'I')
-            dscal_(&xc, &dblm1, MAT_BUFD(x) + ind, &xr);
+            cvxopt_int_dscal(&xc, &dblm1, MAT_BUFD(x) + ind, &xr);
         ld = MAX(xr, 1);
-        dgemv_("T", &m, &xc, &dbl1, MAT_BUFD(x) + ind, &ld, MAT_BUFD(vk), 
+        cvxopt_int_dgemv("T", &m, &xc, &dbl1, MAT_BUFD(x) + ind, &ld, MAT_BUFD(vk),
             &int1, &dbl0, wrk, &int1);
-        dscal_(&xc, &dblm1, MAT_BUFD(x) + ind, &xr);
-        dger_(&m, &xc, &dbl2, MAT_BUFD(vk), &int1, wrk, &int1,
+        cvxopt_int_dscal(&xc, &dblm1, MAT_BUFD(x) + ind, &xr);
+        cvxopt_int_dger(&m, &xc, &dbl2, MAT_BUFD(vk), &int1, wrk, &int1,
             MAT_BUFD(x) + ind, &ld);
         if (inverse == 'I')
-            dscal_(&xc, &dblm1, MAT_BUFD(x) + ind, &xr);
+            cvxopt_int_dscal(&xc, &dblm1, MAT_BUFD(x) + ind, &xr);
 
         betak = PyList_GetItem(beta, (Py_ssize_t) k);
         b = PyFloat_AS_DOUBLE(betak);
         if (inverse == 'I') b = 1.0 / b;
         for (i = 0; i < xc; i++)
-            dscal_(&m, &b, MAT_BUFD(x) + ind + i*xr, &int1);
+            cvxopt_int_dscal(&m, &b, MAT_BUFD(x) + ind + i*xr, &int1);
         ind += m;
     }
     free(wrk);
@@ -216,22 +307,22 @@ static PyObject* scale(PyObject *self, PyObject *args, PyObject *kwrds)
 
             /* scale diagonal of rk by 0.5 */
             inc = n + 1;
-            dscal_(&n, &dbl5, MAT_BUFD(x) + ind + i*xr, &inc);
+            cvxopt_int_dscal(&n, &dbl5, MAT_BUFD(x) + ind + i*xr, &inc);
 
             /* wrk = r*tril(x) if inverse is 'N' and trans is 'T' or
              *                 inverse is 'I' and trans is 'N'
              * wrk = tril(x)*r otherwise. */
             len = n*n;
-            dcopy_(&len, MAT_BUFD(rk), &int1, wrk, &int1);
+            cvxopt_int_dcopy(&len, MAT_BUFD(rk), &int1, wrk, &int1);
             ld = MAX(1, n);
-            dtrmm_( (( inverse == 'N' && trans == 'T') || ( inverse == 'I'
+            cvxopt_int_dtrmm( (( inverse == 'N' && trans == 'T') || ( inverse == 'I'
                 && trans == 'N')) ? "R" : "L", "L", "N", "N", &n, &n,
                 &dbl1, MAT_BUFD(x) + ind + i*xr, &ld, wrk, &ld);
 
             /* x := (r*wrk' + wrk*r') if inverse is 'N' and trans is 'T'
              *                        or inverse is 'I' and trans is 'N'
              * x := (r'*wrk + wrk'*r) otherwise. */
-            dsyr2k_("L", ((inverse == 'N' && trans == 'T') ||
+            cvxopt_int_dsyr2k("L", ((inverse == 'N' && trans == 'T') ||
                 (inverse == 'I' && trans == 'N')) ? "N" : "T", &n, &n,
                 &dbl1, MAT_BUFD(rk), &ld, wrk, &ld, &dbl0, MAT_BUFD(x) +
                 ind + i*xr, &ld);
@@ -291,10 +382,10 @@ static PyObject* scale2(PyObject *self, PyObject *args, PyObject *kwrds)
     m += (int) PyInt_AsLong(O);
 #endif
     if (inverse == 'N')
-        dtbsv_("L", "N", "N", &m, &int0, MAT_BUFD(lmbda), &int1,
+        cvxopt_int_dtbsv("L", "N", "N", &m, &int0, MAT_BUFD(lmbda), &int1,
              MAT_BUFD(x), &int1);
     else
-        dtbmv_("L", "N", "N", &m, &int0, MAT_BUFD(lmbda), &int1,
+        cvxopt_int_dtbmv("L", "N", "N", &m, &int0, MAT_BUFD(lmbda), &int1,
              MAT_BUFD(x), &int1);
 
 
@@ -321,23 +412,23 @@ static PyObject* scale2(PyObject *self, PyObject *args, PyObject *kwrds)
         mk = (int) PyInt_AsLong(Ok);
 #endif
         len = mk - 1;
-        a = dnrm2_(&len, MAT_BUFD(lmbda) + m + 1, &int1);
+        a = cvxopt_int_dnrm2(&len, MAT_BUFD(lmbda) + m + 1, &int1);
         a = sqrt(MAT_BUFD(lmbda)[m] + a) * sqrt(MAT_BUFD(lmbda)[m] - a);
         if (inverse == 'N')
             lx = ( MAT_BUFD(lmbda)[m] * MAT_BUFD(x)[m] -
-                ddot_(&len, MAT_BUFD(lmbda) + m + 1, &int1, MAT_BUFD(x) + m
+                cvxopt_int_ddot(&len, MAT_BUFD(lmbda) + m + 1, &int1, MAT_BUFD(x) + m
                     + 1, &int1) ) / a;
         else
-            lx = ddot_(&mk, MAT_BUFD(lmbda) + m, &int1, MAT_BUFD(x) + m,
+            lx = cvxopt_int_ddot(&mk, MAT_BUFD(lmbda) + m, &int1, MAT_BUFD(x) + m,
                 &int1) / a;
         x0 = MAT_BUFD(x)[m];
         MAT_BUFD(x)[m] = lx;
         b = (x0 + lx) / (MAT_BUFD(lmbda)[m]/a + 1.0) / a;
         if (inverse == 'N')  b *= -1.0;
-        daxpy_(&len, &b, MAT_BUFD(lmbda) + m + 1, &int1,
+        cvxopt_int_daxpy(&len, &b, MAT_BUFD(lmbda) + m + 1, &int1,
             MAT_BUFD(x) + m + 1, &int1);
         if (inverse == 'N')  a = 1.0 / a;
-        dscal_(&mk, &a, MAT_BUFD(x) + m, &int1);
+        cvxopt_int_dscal(&mk, &a, MAT_BUFD(x) + m, &int1);
         m += mk;
     }
 
@@ -382,14 +473,14 @@ static PyObject* scale2(PyObject *self, PyObject *args, PyObject *kwrds)
         for (j = 0; j < mk; j++)
             sql[j] = sqrt(MAT_BUFD(lmbda)[ind2 + j]);
         for (j = 0; j < mk; j++){
-            dcopy_(&mk, sql, &int1, c, &int1);
+            cvxopt_int_dcopy(&mk, sql, &int1, c, &int1);
             b = sqrt(MAT_BUFD(lmbda)[ind2 + j]);
-            dscal_(&mk, &b, c, &int1);
+            cvxopt_int_dscal(&mk, &b, c, &int1);
             if (inverse == 'N')
-                dtbsv_("L", "N", "N", &mk, &int0, c, &int1, MAT_BUFD(x) +
+                cvxopt_int_dtbsv("L", "N", "N", &mk, &int0, c, &int1, MAT_BUFD(x) +
                     m + j*mk, &int1);
             else
-                dtbmv_("L", "N", "N", &mk, &int0, c, &int1, MAT_BUFD(x) +
+                cvxopt_int_dtbmv("L", "N", "N", &mk, &int0, c, &int1, MAT_BUFD(x) +
                     m + j*mk, &int1);
         }
         m += mk*mk;
@@ -436,7 +527,7 @@ static PyObject* pack(PyObject *self, PyObject *args, PyObject *kwrds)
         nlq += (int) PyInt_AsLong(Ok);
 #endif
     }
-    dcopy_(&nlq, MAT_BUFD(x) + ox, &int1, MAT_BUFD(y) + oy, &int1);
+    cvxopt_int_dcopy(&nlq, MAT_BUFD(x) + ox, &int1, MAT_BUFD(y) + oy, &int1);
 
     O = PyDict_GetItemString(dims, "s");
     for (i = 0, np = 0, iu = ox + nlq, ip = oy + nlq; i < (int)
@@ -449,7 +540,7 @@ static PyObject* pack(PyObject *self, PyObject *args, PyObject *kwrds)
 #endif
         for (k = 0; k < n; k++){
             len = n-k;
-            dcopy_(&len, MAT_BUFD(x) + iu + k*(n+1), &int1,  MAT_BUFD(y) +
+            cvxopt_int_dcopy(&len, MAT_BUFD(x) + iu + k*(n+1), &int1,  MAT_BUFD(y) +
                 ip, &int1);
             MAT_BUFD(y)[ip] /= sqrt(2.0);
             ip += len;
@@ -459,7 +550,7 @@ static PyObject* pack(PyObject *self, PyObject *args, PyObject *kwrds)
     }
 
     a = sqrt(2.0);
-    dscal_(&np, &a, MAT_BUFD(y) + oy + nlq, &int1);
+    cvxopt_int_dscal(&np, &a, MAT_BUFD(y) + oy + nlq, &int1);
 
     return Py_BuildValue("");
 }
@@ -526,11 +617,11 @@ static PyObject* pack2(PyObject *self, PyObject *args, PyObject *kwrds)
 #endif
         for (k = 0; k < n; k++){
             len = n-k;
-            dlacpy_(" ", &len, &xc, MAT_BUFD(x) + iu + k*(n+1), &xr, wrk, 
+            cvxopt_int_dlacpy(" ", &len, &xc, MAT_BUFD(x) + iu + k*(n+1), &xr, wrk,
                 &maxn);
             for (j = 1; j < len; j++)
-                dscal_(&xc, &a, wrk + j, &maxn);
-            dlacpy_(" ", &len, &xc, wrk, &maxn, MAT_BUFD(x) + ip, &xr);
+                cvxopt_int_dscal(&xc, &a, wrk + j, &maxn);
+            cvxopt_int_dlacpy(" ", &len, &xc, wrk, &maxn, MAT_BUFD(x) + ip, &xr);
             ip += len;
         }
         iu += n*n;
@@ -576,7 +667,7 @@ static PyObject* unpack(PyObject *self, PyObject *args, PyObject *kwrds)
         m += (int) PyInt_AsLong(Ok);
 #endif
     }
-    dcopy_(&m, MAT_BUFD(x) + ox, &int1, MAT_BUFD(y) + oy, &int1);
+    cvxopt_int_dcopy(&m, MAT_BUFD(x) + ox, &int1, MAT_BUFD(y) + oy, &int1);
 
     O = PyDict_GetItemString(dims, "s");
     for (i = 0, ip = ox + m, iu = oy + m; i < (int) PyList_Size(O); i++){
@@ -588,11 +679,11 @@ static PyObject* unpack(PyObject *self, PyObject *args, PyObject *kwrds)
 #endif
         for (k = 0; k < n; k++){
             len = n-k;
-            dcopy_(&len, MAT_BUFD(x) + ip, &int1, MAT_BUFD(y) + iu +
+            cvxopt_int_dcopy(&len, MAT_BUFD(x) + ip, &int1, MAT_BUFD(y) + iu +
                 k*(n+1), &int1);
             ip += len;
             len -= 1;
-            dscal_(&len, &a, MAT_BUFD(y) + iu + k*(n+1) + 1, &int1);
+            cvxopt_int_dscal(&len, &a, MAT_BUFD(y) + iu + k*(n+1) + 1, &int1);
         }
         iu += n*n;
     }
@@ -618,7 +709,7 @@ static PyObject* symm(PyObject *self, PyObject *args, PyObject *kwrds)
 
     if (n > 1) for (k = 0; k < n; k++){
         len = n-k-1;
-        dcopy_(&len, MAT_BUFD(x) + ox + k*(n+1) + 1, &int1, MAT_BUFD(x) +
+        cvxopt_int_dcopy(&len, MAT_BUFD(x) + ox + k*(n+1) + 1, &int1, MAT_BUFD(x) +
             ox + (k+1)*(n+1)-1, &n);
     }
     return Py_BuildValue("");
@@ -665,7 +756,7 @@ static PyObject* sprod(PyObject *self, PyObject *args, PyObject *kwrds)
 #else
     ind += (int) PyInt_AsLong(O);
 #endif
-    dtbmv_("L", "N", "N", &ind, &int0, MAT_BUFD(y), &int1, MAT_BUFD(x),
+    cvxopt_int_dtbmv("L", "N", "N", &ind, &int0, MAT_BUFD(y), &int1, MAT_BUFD(x),
         &int1);
 
 
@@ -687,10 +778,10 @@ static PyObject* sprod(PyObject *self, PyObject *args, PyObject *kwrds)
 #else
         mk = (int) PyInt_AsLong(Ok);
 #endif
-        a = ddot_(&mk, MAT_BUFD(y) + ind, &int1, MAT_BUFD(x) + ind, &int1);
+        a = cvxopt_int_ddot(&mk, MAT_BUFD(y) + ind, &int1, MAT_BUFD(x) + ind, &int1);
         len = mk - 1;
-        dscal_(&len, MAT_BUFD(y) + ind, MAT_BUFD(x) + ind + 1, &int1);
-        daxpy_(&len, MAT_BUFD(x) + ind, MAT_BUFD(y) + ind + 1, &int1,
+        cvxopt_int_dscal(&len, MAT_BUFD(y) + ind, MAT_BUFD(x) + ind + 1, &int1);
+        cvxopt_int_daxpy(&len, MAT_BUFD(x) + ind, MAT_BUFD(y) + ind + 1, &int1,
             MAT_BUFD(x) + ind + 1, &int1);
         MAT_BUFD(x)[ind] = a;
         ind += mk;
@@ -725,18 +816,18 @@ static PyObject* sprod(PyObject *self, PyObject *args, PyObject *kwrds)
             mk = (int) PyInt_AsLong(Ok);
 #endif
             len = mk*mk;
-            dcopy_(&len, MAT_BUFD(x) + ind, &int1, A, &int1);
+            cvxopt_int_dcopy(&len, MAT_BUFD(x) + ind, &int1, A, &int1);
 
             if (mk > 1) for (k = 0; k < mk; k++){
                 len = mk - k - 1;
-                dcopy_(&len, A + k*(mk+1) + 1, &int1, A + (k+1)*(mk+1)-1,
+                cvxopt_int_dcopy(&len, A + k*(mk+1) + 1, &int1, A + (k+1)*(mk+1)-1,
                     &mk);
-                dcopy_(&len, MAT_BUFD(y) + ind + k*(mk+1) + 1, &int1,
+                cvxopt_int_dcopy(&len, MAT_BUFD(y) + ind + k*(mk+1) + 1, &int1,
                     MAT_BUFD(y) + ind + (k+1)*(mk+1)-1, &mk);
             }
 
             ld = MAX(1, mk);
-            dsyr2k_("L", "N", &mk, &mk, &dbl2, A, &ld, MAT_BUFD(y) + ind,
+            cvxopt_int_dsyr2k("L", "N", &mk, &mk, &dbl2, A, &ld, MAT_BUFD(y) + ind,
                 &ld, &dbl0, MAT_BUFD(x) + ind, &ld);
         }
     }
@@ -753,10 +844,10 @@ static PyObject* sprod(PyObject *self, PyObject *args, PyObject *kwrds)
 #endif
             for (k = 0; k < mk; k++){
                 len = mk - k;
-                dcopy_(&len, MAT_BUFD(y) + ind2 + k, &int1, A, &int1);
+                cvxopt_int_dcopy(&len, MAT_BUFD(y) + ind2 + k, &int1, A, &int1);
                 for (j = 0; j < len; j++) A[j] += MAT_BUFD(y)[ind2 + k];
-                dscal_(&len, &dbl2, A, &int1);
-                dtbmv_("L", "N", "N", &len, &int0, A, &int1, MAT_BUFD(x) +
+                cvxopt_int_dscal(&len, &dbl2, A, &int1);
+                cvxopt_int_dtbmv("L", "N", "N", &len, &int0, A, &int1, MAT_BUFD(x) +
                     ind + k * (mk+1), &int1);
             }
         }
@@ -796,7 +887,7 @@ static PyObject* sinv(PyObject *self, PyObject *args, PyObject *kwrds)
 #else
     ind += (int) PyInt_AsLong(O);
 #endif
-    dtbsv_("L", "N", "N", &ind, &int0, MAT_BUFD(y), &int1, MAT_BUFD(x),
+    cvxopt_int_dtbsv("L", "N", "N", &ind, &int0, MAT_BUFD(y), &int1, MAT_BUFD(x),
         &int1);
 
 
@@ -819,19 +910,19 @@ static PyObject* sinv(PyObject *self, PyObject *args, PyObject *kwrds)
         mk = (int) PyInt_AsLong(Ok);
 #endif
         len = mk - 1;
-        a = dnrm2_(&len, MAT_BUFD(y) + ind + 1, &int1);
+        a = cvxopt_int_dnrm2(&len, MAT_BUFD(y) + ind + 1, &int1);
         a = (MAT_BUFD(y)[ind] + a) * (MAT_BUFD(y)[ind] - a);
         c = MAT_BUFD(x)[ind];
-        d = ddot_(&len, MAT_BUFD(x) + ind + 1, &int1,
+        d = cvxopt_int_ddot(&len, MAT_BUFD(x) + ind + 1, &int1,
             MAT_BUFD(y) + ind + 1, &int1);
         MAT_BUFD(x)[ind] = c * MAT_BUFD(y)[ind] - d;
         alpha = a / MAT_BUFD(y)[ind];
-        dscal_(&len, &alpha, MAT_BUFD(x) + ind + 1, &int1);
+        cvxopt_int_dscal(&len, &alpha, MAT_BUFD(x) + ind + 1, &int1);
         alpha = d / MAT_BUFD(y)[ind] - c;
-        daxpy_(&len, &alpha, MAT_BUFD(y) + ind + 1, &int1, MAT_BUFD(x) +
+        cvxopt_int_daxpy(&len, &alpha, MAT_BUFD(y) + ind + 1, &int1, MAT_BUFD(x) +
             ind + 1, &int1);
         alpha = 1.0 / a;
-        dscal_(&mk, &alpha, MAT_BUFD(x) + ind, &int1);
+        cvxopt_int_dscal(&mk, &alpha, MAT_BUFD(x) + ind, &int1);
         ind += mk;
     }
 
@@ -865,10 +956,10 @@ static PyObject* sinv(PyObject *self, PyObject *args, PyObject *kwrds)
 #endif
         for (k = 0; k < mk; k++){
             len = mk - k;
-            dcopy_(&len, MAT_BUFD(y) + ind2 + k, &int1, A, &int1);
+            cvxopt_int_dcopy(&len, MAT_BUFD(y) + ind2 + k, &int1, A, &int1);
             for (j = 0; j < len; j++) A[j] += MAT_BUFD(y)[ind2 + k];
-            dscal_(&len, &dbl2, A, &int1);
-            dtbsv_("L", "N", "N", &len, &int0, A, &int1, MAT_BUFD(x) + ind
+            cvxopt_int_dscal(&len, &dbl2, A, &int1);
+            cvxopt_int_dtbsv("L", "N", "N", &len, &int0, A, &int1, MAT_BUFD(x) + ind
                 + k * (mk+1), &int1);
         }
     }
@@ -922,8 +1013,8 @@ static PyObject* trisc(PyObject *self, PyObject *args, PyObject *kwrds)
 #endif
         for (i = 1; i < nk; i++){
             len = nk - i;
-            dscal_(&len, &dbl0, MAT_BUFD(x) + ox + i*(nk+1) - 1, &nk);
-            dscal_(&len, &dbl2, MAT_BUFD(x) + ox + nk*(i-1) + i, &int1);
+            cvxopt_int_dscal(&len, &dbl0, MAT_BUFD(x) + ox + i*(nk+1) - 1, &nk);
+            cvxopt_int_dscal(&len, &dbl2, MAT_BUFD(x) + ox + nk*(i-1) + i, &int1);
         }
         ox += nk*nk;
     }
@@ -975,7 +1066,7 @@ static PyObject* triusc(PyObject *self, PyObject *args, PyObject *kwrds)
 #endif
         for (i = 1; i < nk; i++){
             len = nk - i;
-            dscal_(&len, &dbl5, MAT_BUFD(x) + ox + nk*(i-1) + i, &int1);
+            cvxopt_int_dscal(&len, &dbl5, MAT_BUFD(x) + ox + nk*(i-1) + i, &int1);
         }
         ox += nk*nk;
     }
@@ -1015,7 +1106,7 @@ static PyObject* sdot(PyObject *self, PyObject *args, PyObject *kwrds)
         m += (int) PyInt_AsLong(Ok);
 #endif
     }
-    a = ddot_(&m, MAT_BUFD(x), &int1, MAT_BUFD(y), &int1);
+    a = cvxopt_int_ddot(&m, MAT_BUFD(x), &int1, MAT_BUFD(y), &int1);
 
     O = PyDict_GetItemString(dims, "s");
     for (k = 0; k < (int) PyList_Size(O); k++){
@@ -1026,10 +1117,10 @@ static PyObject* sdot(PyObject *self, PyObject *args, PyObject *kwrds)
         nk = (int) PyInt_AsLong(Ok);
 #endif
         inc = nk+1;
-        a += ddot_(&nk, MAT_BUFD(x) + m, &inc, MAT_BUFD(y) + m, &inc);
+        a += cvxopt_int_ddot(&nk, MAT_BUFD(x) + m, &inc, MAT_BUFD(y) + m, &inc);
         for (i = 1; i < nk; i++){
             len = nk - i;
-            a += 2.0 * ddot_(&len, MAT_BUFD(x) + m + i, &inc,
+            a += 2.0 * cvxopt_int_ddot(&len, MAT_BUFD(x) + m + i, &inc,
                 MAT_BUFD(y) + m + i, &inc);
         }
         m += nk*nk;
@@ -1053,8 +1144,10 @@ static PyObject* max_step(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *x, *sigma = NULL;
     PyObject *dims, *O, *Ok;
-    int i, mk, len, maxn, ind = 0, ind2, int1 = 1, ld, Ns = 0, info, lwork,
-        *iwork = NULL, liwork, iwl, m;
+    int i, mk, len, maxn, ind = 0, ind2, int1 = 1, ld, Ns = 0, lwork,
+        liwork;
+    CBLAS_INT blas_int1 = 1, blas_maxn, blas_mk, blas_ld, blas_m, blas_lwork,
+        blas_liwork, blas_iwl, blas_info, *iwork = NULL;
     double t = -FLT_MAX, dbl0 = 0.0, *work = NULL, wl, *Q = NULL,
         *w = NULL;
     char *kwlist[] = {"x", "dims", "mnl", "sigma", NULL};
@@ -1079,7 +1172,7 @@ static PyObject* max_step(PyObject *self, PyObject *args, PyObject *kwrds)
         mk = (int) PyInt_AsLong(Ok);
 #endif
         len = mk - 1;
-        t = MAX(t, dnrm2_(&len, MAT_BUFD(x) + ind + 1, &int1) -
+        t = MAX(t, cvxopt_int_dnrm2(&len, MAT_BUFD(x) + ind + 1, &int1) -
             MAT_BUFD(x)[ind]);
         ind += mk;
     }
@@ -1099,9 +1192,13 @@ static PyObject* max_step(PyObject *self, PyObject *args, PyObject *kwrds)
     lwork = -1;
     liwork = -1;
     ld = MAX(1, maxn);
+    blas_maxn = maxn;
+    blas_ld = ld;
+    blas_lwork = lwork;
+    blas_liwork = liwork;
     if (sigma){
-        dsyevd_("V", "L", &maxn, NULL, &ld, NULL, &wl, &lwork, &iwl,
-            &liwork, &info);
+        BLAS_FUNC(dsyevd)("V", "L", &blas_maxn, NULL, &blas_ld, NULL, &wl,
+            &blas_lwork, &blas_iwl, &blas_liwork, &blas_info);
     }
     else {
         if (!(Q = (double *) calloc(maxn * maxn, sizeof(double))) ||
@@ -1109,14 +1206,15 @@ static PyObject* max_step(PyObject *self, PyObject *args, PyObject *kwrds)
             free(Q); free(w);
             return PyErr_NoMemory();
         }
-        dsyevr_("N", "I", "L", &maxn, NULL, &ld, &dbl0, &dbl0, &int1,
-            &int1, &dbl0, &maxn, NULL, NULL, &int1, NULL, &wl, &lwork,
-            &iwl, &liwork, &info);
+        BLAS_FUNC(dsyevr)("N", "I", "L", &blas_maxn, NULL, &blas_ld, &dbl0, &dbl0,
+            &blas_int1, &blas_int1, &dbl0, &blas_m, NULL, NULL,
+            &blas_int1, NULL, &wl, &blas_lwork, &blas_iwl, &blas_liwork,
+            &blas_info);
     }
     lwork = (int) wl;
-    liwork = iwl;
+    liwork = (int) blas_iwl;
     if (!(work = (double *) calloc(lwork, sizeof(double))) ||
-        (!(iwork = (int *) calloc(liwork, sizeof(int))))){
+        (!(iwork = (CBLAS_INT *) calloc(liwork, sizeof(CBLAS_INT))))){
         free(Q);  free(w);  free(work); free(iwork);
         return PyErr_NoMemory();
     }
@@ -1128,19 +1226,22 @@ static PyObject* max_step(PyObject *self, PyObject *args, PyObject *kwrds)
         mk = (int) PyInt_AsLong(Ok);
 #endif
         if (mk){
+            blas_mk = mk;
+            blas_lwork = lwork;
+            blas_liwork = liwork;
             if (sigma){
-                dsyevd_("V", "L", &mk, MAT_BUFD(x) + ind, &mk,
-                    MAT_BUFD(sigma) + ind2, work, &lwork, iwork, &liwork,
-                    &info);
+                BLAS_FUNC(dsyevd)("V", "L", &blas_mk, MAT_BUFD(x) + ind, &blas_mk,
+                    MAT_BUFD(sigma) + ind2, work, &blas_lwork, iwork,
+                    &blas_liwork, &blas_info);
                 t = MAX(t, -MAT_BUFD(sigma)[ind2]);
             }
             else {
                 len = mk*mk;
-                dcopy_(&len, MAT_BUFD(x) + ind, &int1, Q, &int1);
-                ld = MAX(1, mk);
-                dsyevr_("N", "I", "L", &mk, Q, &mk, &dbl0, &dbl0, &int1,
-                    &int1, &dbl0, &m, w, NULL, &int1, NULL, work, &lwork,
-                    iwork, &liwork, &info);
+                cvxopt_int_dcopy(&len, MAT_BUFD(x) + ind, &int1, Q, &int1);
+                BLAS_FUNC(dsyevr)("N", "I", "L", &blas_mk, Q, &blas_mk, &dbl0,
+                    &dbl0, &blas_int1, &blas_int1, &dbl0, &blas_m, w, NULL,
+                    &blas_int1, NULL, work, &blas_lwork, iwork,
+                    &blas_liwork, &blas_info);
                 t = MAX(t, -w[0]);
             }
         }

@@ -203,8 +203,10 @@ convert_znum(void *dest, void *val, int val_id, int_t offset)
 int (*convert_num[])(void *, void *, int, int_t) = {
     convert_inum, convert_dnum, convert_znum };
 
-extern void daxpy_(int *, void *, void *, int *, void *, int *) ;
-extern void zaxpy_(int *, void *, void *, int *, void *, int *) ;
+extern void BLAS_FUNC(daxpy)(CBLAS_INT *, void *, void *, CBLAS_INT *, void *,
+    CBLAS_INT *) ;
+extern void BLAS_FUNC(zaxpy)(CBLAS_INT *, void *, void *, CBLAS_INT *, void *,
+    CBLAS_INT *) ;
 
 static void i_axpy(int *n, void *a, void *x, int *incx, void *y, int *incy) {
   int i;
@@ -213,11 +215,21 @@ static void i_axpy(int *n, void *a, void *x, int *incx, void *y, int *incy) {
   }
 }
 
-void (*axpy[])(int *, void *, void *, int *, void *, int *) = {
-    i_axpy, daxpy_, zaxpy_ };
+static void d_axpy(int *n, void *a, void *x, int *incx, void *y, int *incy) {
+  CBLAS_INT _n = *n, _incx = *incx, _incy = *incy;
+  BLAS_FUNC(daxpy)(&_n, a, x, &_incx, y, &_incy);
+}
 
-extern void dscal_(int *, void *, void *, int *) ;
-extern void zscal_(int *, void *, void *, int *) ;
+static void z_axpy(int *n, void *a, void *x, int *incx, void *y, int *incy) {
+  CBLAS_INT _n = *n, _incx = *incx, _incy = *incy;
+  BLAS_FUNC(zaxpy)(&_n, a, x, &_incx, y, &_incy);
+}
+
+void (*axpy[])(int *, void *, void *, int *, void *, int *) = {
+    i_axpy, d_axpy, z_axpy };
+
+extern void BLAS_FUNC(dscal)(CBLAS_INT *, void *, void *, CBLAS_INT *) ;
+extern void BLAS_FUNC(zscal)(CBLAS_INT *, void *, void *, CBLAS_INT *) ;
 
 /* we dont implement a BLAS iscal */
 static void i_scal(int *n, void *a, void *x, int *incx) {
@@ -227,12 +239,24 @@ static void i_scal(int *n, void *a, void *x, int *incx) {
   }
 }
 
-void (*scal[])(int *, void *, void *, int *) = { i_scal, dscal_, zscal_ };
+static void d_scal(int *n, void *a, void *x, int *incx) {
+  CBLAS_INT _n = *n, _incx = *incx;
+  BLAS_FUNC(dscal)(&_n, a, x, &_incx);
+}
 
-extern void dgemm_(char *, char *, int *, int *, int *, void *, void *,
-    int *, void *, int *, void *, void *, int *) ;
-extern void zgemm_(char *, char *, int *, int *, int *, void *, void *,
-    int *, void *, int *, void *, void *, int *) ;
+static void z_scal(int *n, void *a, void *x, int *incx) {
+  CBLAS_INT _n = *n, _incx = *incx;
+  BLAS_FUNC(zscal)(&_n, a, x, &_incx);
+}
+
+void (*scal[])(int *, void *, void *, int *) = { i_scal, d_scal, z_scal };
+
+extern void BLAS_FUNC(dgemm)(char *, char *, CBLAS_INT *, CBLAS_INT *, CBLAS_INT *,
+    void *, void *, CBLAS_INT *, void *, CBLAS_INT *, void *, void *,
+    CBLAS_INT *) ;
+extern void BLAS_FUNC(zgemm)(char *, char *, CBLAS_INT *, CBLAS_INT *, CBLAS_INT *,
+    void *, void *, CBLAS_INT *, void *, CBLAS_INT *, void *, void *,
+    CBLAS_INT *) ;
 
 /* we dont implement a BLAS igemm */
 static void i_gemm(char *transA, char *transB, int *m, int *n, int *k,
@@ -249,29 +273,85 @@ static void i_gemm(char *transA, char *transB, int *m, int *n, int *k,
   }
 }
 
+static void d_gemm(char *transA, char *transB, int *m, int *n, int *k,
+    void *alpha, void *A, int *ldA, void *B, int *ldB, void *beta,
+    void *C, int *ldC)
+{
+  CBLAS_INT _m = *m, _n = *n, _k = *k, _ldA = *ldA, _ldB = *ldB,
+      _ldC = *ldC;
+  BLAS_FUNC(dgemm)(transA, transB, &_m, &_n, &_k, alpha, A, &_ldA, B, &_ldB,
+      beta, C, &_ldC);
+}
+
+static void z_gemm(char *transA, char *transB, int *m, int *n, int *k,
+    void *alpha, void *A, int *ldA, void *B, int *ldB, void *beta,
+    void *C, int *ldC)
+{
+  CBLAS_INT _m = *m, _n = *n, _k = *k, _ldA = *ldA, _ldB = *ldB,
+      _ldC = *ldC;
+  BLAS_FUNC(zgemm)(transA, transB, &_m, &_n, &_k, alpha, A, &_ldA, B, &_ldB,
+      beta, C, &_ldC);
+}
+
 void (*gemm[])(char *, char *, int *, int *, int *, void *, void *, int *,
-    void *, int *, void *, void *, int *) = { i_gemm, dgemm_, zgemm_ };
+    void *, int *, void *, void *, int *) = { i_gemm, d_gemm, z_gemm };
 
-extern void dgemv_(char *, int *, int *, void *, void *, int *, void *,
-    int *, void *, void *, int *);
-extern void zgemv_(char *, int *, int *, void *, void *, int *, void *,
-    int *, void *, void *, int *);
+extern void BLAS_FUNC(dgemv)(char *, CBLAS_INT *, CBLAS_INT *, void *, void *,
+    CBLAS_INT *, void *, CBLAS_INT *, void *, void *, CBLAS_INT *);
+extern void BLAS_FUNC(zgemv)(char *, CBLAS_INT *, CBLAS_INT *, void *, void *,
+    CBLAS_INT *, void *, CBLAS_INT *, void *, void *, CBLAS_INT *);
+static void d_gemv(char *trans, int *m, int *n, void *alpha, void *A,
+    int *ldA, void *x, int *incx, void *beta, void *y, int *incy)
+{
+  CBLAS_INT _m = *m, _n = *n, _ldA = *ldA, _incx = *incx, _incy = *incy;
+  BLAS_FUNC(dgemv)(trans, &_m, &_n, alpha, A, &_ldA, x, &_incx, beta, y, &_incy);
+}
+static void z_gemv(char *trans, int *m, int *n, void *alpha, void *A,
+    int *ldA, void *x, int *incx, void *beta, void *y, int *incy)
+{
+  CBLAS_INT _m = *m, _n = *n, _ldA = *ldA, _incx = *incx, _incy = *incy;
+  BLAS_FUNC(zgemv)(trans, &_m, &_n, alpha, A, &_ldA, x, &_incx, beta, y, &_incy);
+}
 static void (*gemv[])(char *, int *, int *, void *, void *, int *, void *,
-    int *, void *, void *, int *) = { NULL, dgemv_, zgemv_ };
+    int *, void *, void *, int *) = { NULL, d_gemv, z_gemv };
 
-extern void dsyrk_(char *, char *, int *, int *, void *, void *,
-    int *, void *, void *, int *);
-extern void zsyrk_(char *, char *, int *, int *, void *, void *,
-    int *, void *, void *, int *);
+extern void BLAS_FUNC(dsyrk)(char *, char *, CBLAS_INT *, CBLAS_INT *, void *, void *,
+    CBLAS_INT *, void *, void *, CBLAS_INT *);
+extern void BLAS_FUNC(zsyrk)(char *, char *, CBLAS_INT *, CBLAS_INT *, void *, void *,
+    CBLAS_INT *, void *, void *, CBLAS_INT *);
+static void d_syrk(char *uplo, char *trans, int *n, int *k, void *alpha,
+    void *A, int *ldA, void *beta, void *C, int *ldC)
+{
+  CBLAS_INT _n = *n, _k = *k, _ldA = *ldA, _ldC = *ldC;
+  BLAS_FUNC(dsyrk)(uplo, trans, &_n, &_k, alpha, A, &_ldA, beta, C, &_ldC);
+}
+static void z_syrk(char *uplo, char *trans, int *n, int *k, void *alpha,
+    void *A, int *ldA, void *beta, void *C, int *ldC)
+{
+  CBLAS_INT _n = *n, _k = *k, _ldA = *ldA, _ldC = *ldC;
+  BLAS_FUNC(zsyrk)(uplo, trans, &_n, &_k, alpha, A, &_ldA, beta, C, &_ldC);
+}
 void (*syrk[])(char *, char *, int *, int *, void *, void *,
-    int *, void *, void *, int *) = { NULL, dsyrk_, zsyrk_ };
+    int *, void *, void *, int *) = { NULL, d_syrk, z_syrk };
 
-extern void dsymv_(char *, int *, void *, void *, int *, void *, int *,
-    void *, void *, int *);
-extern void zsymv_(char *, int *, void *, void *, int *, void *, int *,
-    void *, void *, int *);
+extern void BLAS_FUNC(dsymv)(char *, CBLAS_INT *, void *, void *, CBLAS_INT *, void *,
+    CBLAS_INT *, void *, void *, CBLAS_INT *);
+extern void BLAS_FUNC(zsymv)(char *, CBLAS_INT *, void *, void *, CBLAS_INT *, void *,
+    CBLAS_INT *, void *, void *, CBLAS_INT *);
+static void d_symv(char *uplo, int *n, void *alpha, void *A, int *ldA,
+    void *x, int *incx, void *beta, void *y, int *incy)
+{
+  CBLAS_INT _n = *n, _ldA = *ldA, _incx = *incx, _incy = *incy;
+  BLAS_FUNC(dsymv)(uplo, &_n, alpha, A, &_ldA, x, &_incx, beta, y, &_incy);
+}
+static void z_symv(char *uplo, int *n, void *alpha, void *A, int *ldA,
+    void *x, int *incx, void *beta, void *y, int *incy)
+{
+  CBLAS_INT _n = *n, _ldA = *ldA, _incx = *incx, _incy = *incy;
+  BLAS_FUNC(zsymv)(uplo, &_n, alpha, A, &_ldA, x, &_incx, beta, y, &_incy);
+}
 void (*symv[])(char *, int *, void *, void *, int *, void *, int *,
-    void *, void *, int *) = { NULL, dsymv_, zsymv_ };
+    void *, void *, int *) = { NULL, d_symv, z_symv };
 
 static void mtx_iabs(void *src, void *dest, int n) {
   int i;
@@ -310,7 +390,7 @@ static int ddiv(void *dest, number a, int n) {
   if (a.d==0.0) PY_ERR_INT(PyExc_ZeroDivisionError, "division by zero");
   int _n = n, int1 = 1;
   double _a = 1/a.d;
-  dscal_(&_n, (void *)&_a, dest, &int1);
+  d_scal(&_n, (void *)&_a, dest, &int1);
   return 0;
 }
 
@@ -324,7 +404,7 @@ static int zdiv(void *dest, number a, int n) {
 #else
   _Dcomplex _a = _Cmulcr(conj(a.z),1.0/norm(a.z));
 #endif
-  zscal_(&_n, (void *)&_a, dest, &int1);
+  z_scal(&_n, (void *)&_a, dest, &int1);
   return 0;
 }
 

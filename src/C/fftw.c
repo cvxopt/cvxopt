@@ -20,6 +20,7 @@
  */
 
 #include "cvxopt.h"
+#include "cvxopt_int_shims.h"
 #include "misc.h"
 #include <fftw3.h>
 
@@ -31,8 +32,15 @@ typedef _Dcomplex complex_t;
 
 PyDoc_STRVAR(fftw__doc__, "Interface to the FFTW3 library.\n");
 
-extern void zscal_(int *n, complex_t *alpha, complex_t *x, int *incx);
-extern void dscal_(int *n, double *alpha, double *x, int *incx);
+extern void BLAS_FUNC(zscal)(CBLAS_INT *n, complex_t *alpha, complex_t *x,
+    CBLAS_INT *incx);
+
+static void
+cvxopt_zscal(int *n, complex_t *alpha, complex_t *x, int *incx)
+{
+  CBLAS_INT blas_n = *n, blas_incx = *incx;
+  BLAS_FUNC(zscal)(&blas_n, alpha, x, &blas_incx);
+}
 
 static char doc_dft[] =
     "DFT of a matrix,  X := dft(X)\n\n"
@@ -213,7 +221,7 @@ static PyObject *idft(PyObject *self, PyObject *args, PyObject *kwrds)
   a.z = _Cbuild(1.0/m,0.0);
 #endif
   int mn = m*n, ix = 1;
-  zscal_(&mn, &a.z, MAT_BUFZ(X), &ix);
+  cvxopt_zscal(&mn, &a.z, MAT_BUFZ(X), &ix);
 
   fftw_destroy_plan(p);
   return Py_BuildValue("");
@@ -324,7 +332,7 @@ static PyObject *idftn(PyObject *self, PyObject *args, PyObject *kwrds)
 #endif
 
   int ix = 1;
-  zscal_(&proddim, &a.z, MAT_BUFZ(X), &ix);
+  cvxopt_zscal(&proddim, &a.z, MAT_BUFZ(X), &ix);
 
   fftw_plan p = fftw_plan_dft(len, dimarr,
       X->buffer, X->buffer, FFTW_BACKWARD, FFTW_ESTIMATE);
@@ -607,7 +615,7 @@ static PyObject *idct(PyObject *self, PyObject *args, PyObject *kwrds)
 
   double a = 1.0/(type == 1 ? MAX(1,2*(m-1)) : 2*m);
   int mn = m*n, ix = 1;
-  dscal_(&mn, &a, MAT_BUFD(X), &ix);
+  cvxopt_int_dscal(&mn, &a, MAT_BUFD(X), &ix);
 
   fftw_destroy_plan(p);
   return Py_BuildValue("");
@@ -782,7 +790,7 @@ static PyObject *idctn(PyObject *self, PyObject *args, PyObject *kwrds)
     a /= (kindarr[i] == FFTW_REDFT00 ? MAX(1,2*(dimarr[i]-1)) : 2*dimarr[i]);
 
   int ix = 1;
-  dscal_(&proddim, &a, MAT_BUFD(X), &ix);
+  cvxopt_int_dscal(&proddim, &a, MAT_BUFD(X), &ix);
 
   fftw_plan p = fftw_plan_r2r(len, dimarr,
       X->buffer, X->buffer, kindarr, FFTW_ESTIMATE);
@@ -1039,7 +1047,7 @@ static PyObject *idst(PyObject *self, PyObject *args, PyObject *kwrds)
 
   double a = 1.0/(type == 1 ? MAX(1,2*(m+1)) : 2*m);
   int mn = m*n, ix = 1;
-  dscal_(&mn, &a, MAT_BUFD(X), &ix);
+  cvxopt_int_dscal(&mn, &a, MAT_BUFD(X), &ix);
 
   fftw_destroy_plan(p);
   return Py_BuildValue("");
@@ -1196,7 +1204,7 @@ static PyObject *idstn(PyObject *self, PyObject *args, PyObject *kwrds)
     a /= (kindarr[i] == FFTW_RODFT00 ? MAX(1,2*(dimarr[i]+1)) : 2*dimarr[i]);
 
   int ix = 1;
-  dscal_(&proddim, &a, MAT_BUFD(X), &ix);
+  cvxopt_int_dscal(&proddim, &a, MAT_BUFD(X), &ix);
 
   fftw_plan p = fftw_plan_r2r(len, dimarr,
       X->buffer, X->buffer, kindarr, FFTW_ESTIMATE);

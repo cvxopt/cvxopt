@@ -45,135 +45,135 @@ PyDoc_STRVAR(blas__doc__,"Interface to the double-precision real and "
 
 
 /* BLAS 1 prototypes */
-extern void dswap_(int *n, double *x, int *incx, double *y, int *incy);
-extern void zswap_(int *n, complex_t *x, int *incx, complex_t *y,
-    int *incy);
-extern void dscal_(int *n, double *alpha, double *x, int *incx);
-extern void zscal_(int *n, complex_t *alpha, complex_t *x, int *incx);
-extern void zdscal_(int *n, double *alpha, complex_t *x, int *incx);
-extern void dcopy_(int *n, double *x, int *incx, double *y, int *incy);
-extern void zcopy_(int *n, complex_t *x, int *incx, complex_t *y,
-    int *incy);
-extern void daxpy_(int *n, double *alpha, double *x, int *incx,
-    double *y, int *incy);
-extern void zaxpy_(int *n, complex_t *alpha, complex_t *x, int *incx,
-    complex_t *y, int *incy);
-extern double ddot_(int *n, double *x, int *incx, double *y, int *incy);
+extern void BLAS_FUNC(dswap)(CBLAS_INT *n, double *x, CBLAS_INT *incx, double *y, CBLAS_INT *incy);
+extern void BLAS_FUNC(zswap)(CBLAS_INT *n, complex_t *x, CBLAS_INT *incx, complex_t *y,
+    CBLAS_INT *incy);
+extern void BLAS_FUNC(dscal)(CBLAS_INT *n, double *alpha, double *x, CBLAS_INT *incx);
+extern void BLAS_FUNC(zscal)(CBLAS_INT *n, complex_t *alpha, complex_t *x, CBLAS_INT *incx);
+extern void BLAS_FUNC(zdscal)(CBLAS_INT *n, double *alpha, complex_t *x, CBLAS_INT *incx);
+extern void BLAS_FUNC(dcopy)(CBLAS_INT *n, double *x, CBLAS_INT *incx, double *y, CBLAS_INT *incy);
+extern void BLAS_FUNC(zcopy)(CBLAS_INT *n, complex_t *x, CBLAS_INT *incx, complex_t *y,
+    CBLAS_INT *incy);
+extern void BLAS_FUNC(daxpy)(CBLAS_INT *n, double *alpha, double *x, CBLAS_INT *incx,
+    double *y, CBLAS_INT *incy);
+extern void BLAS_FUNC(zaxpy)(CBLAS_INT *n, complex_t *alpha, complex_t *x, CBLAS_INT *incx,
+    complex_t *y, CBLAS_INT *incy);
+extern double BLAS_FUNC(ddot)(CBLAS_INT *n, double *x, CBLAS_INT *incx, double *y, CBLAS_INT *incy);
 #if USE_CBLAS_ZDOT
-extern void cblas_zdotc_sub(int n, void *x, int incx, void *y,
-    int incy, void *result);
-extern void cblas_zdotu_sub(int n, void *x, int incx, void *y, int incy,
+extern void cblas_zdotc_sub(CBLAS_INT n, void *x, CBLAS_INT incx, void *y,
+    CBLAS_INT incy, void *result);
+extern void cblas_zdotu_sub(CBLAS_INT n, void *x, CBLAS_INT incx, void *y, CBLAS_INT incy,
     void *result);
 #endif
-extern double dnrm2_(int *n, double *x, int *incx);
-extern double dznrm2_(int *n, complex_t *x, int *incx);
-extern double dasum_(int *n, double *x, int *incx);
-extern double dzasum_(int *n, complex_t *x, int *incx);
-extern int idamax_(int *n, double *x, int *incx);
-extern int izamax_(int *n, complex_t *x, int *incx);
+extern double BLAS_FUNC(dnrm2)(CBLAS_INT *n, double *x, CBLAS_INT *incx);
+extern double BLAS_FUNC(dznrm2)(CBLAS_INT *n, complex_t *x, CBLAS_INT *incx);
+extern double BLAS_FUNC(dasum)(CBLAS_INT *n, double *x, CBLAS_INT *incx);
+extern double BLAS_FUNC(dzasum)(CBLAS_INT *n, complex_t *x, CBLAS_INT *incx);
+extern CBLAS_INT BLAS_FUNC(idamax)(CBLAS_INT *n, double *x, CBLAS_INT *incx);
+extern CBLAS_INT BLAS_FUNC(izamax)(CBLAS_INT *n, complex_t *x, CBLAS_INT *incx);
 
 
 /* BLAS 2 prototypes */
-extern void dgemv_(char* trans, int *m, int *n, double *alpha,
-    double *A, int *lda, double *x, int *incx, double *beta, double *y,
-    int *incy);
-extern void zgemv_(char* trans, int *m, int *n, complex_t *alpha,
-    complex_t *A, int *lda, complex_t *x, int *incx, complex_t *beta,
-    complex_t *y, int *incy);
-extern void dgbmv_(char* trans, int *m, int *n, int *kl, int *ku,
-    double *alpha, double *A, int *lda, double *x, int *incx,
-    double *beta, double *y,  int *incy);
-extern void zgbmv_(char* trans, int *m, int *n, int *kl, int *ku,
-    complex_t *alpha, complex_t *A, int *lda, complex_t *x, int *incx,
-    complex_t *beta, complex_t *y,  int *incy);
-extern void dsymv_(char *uplo, int *n, double *alpha, double *A,
-    int *lda, double *x, int *incx, double *beta, double *y, int *incy);
-extern void zhemv_(char *uplo, int *n, complex_t *alpha, complex_t *A,
-    int *lda, complex_t *x, int *incx, complex_t *beta, complex_t *y,
-    int *incy);
-extern void dsbmv_(char *uplo, int *n, int *k, double *alpha, double *A,
-    int *lda, double *x, int *incx, double *beta, double *y, int *incy);
-extern void zhbmv_(char *uplo, int *n, int *k, complex_t *alpha,
-    complex_t *A, int *lda, complex_t *x, int *incx, complex_t *beta,
-    complex_t *y, int *incy);
-extern void dtrmv_(char *uplo, char *trans, char *diag, int *n,
-    double *A, int *lda, double *x, int *incx);
-extern void ztrmv_(char *uplo, char *trans, char *diag, int *n,
-    complex_t *A, int *lda, complex_t *x, int *incx);
-extern void dtbmv_(char *uplo, char *trans, char *diag, int *n, int *k,
-    double *A, int *lda, double *x, int *incx);
-extern void ztbmv_(char *uplo, char *trans, char *diag, int *n, int *k,
-    complex_t *A, int *lda, complex_t *x, int *incx);
-extern void dtrsv_(char *uplo, char *trans, char *diag, int *n,
-    double *A, int *lda, double *x, int *incx);
-extern void ztrsv_(char *uplo, char *trans, char *diag, int *n,
-    complex_t *A, int *lda, complex_t *x, int *incx);
-extern void dtbsv_(char *uplo, char *trans, char *diag, int *n, int *k,
-    double *A, int *lda, double *x, int *incx);
-extern void ztbsv_(char *uplo, char *trans, char *diag, int *n, int *k,
-    complex_t *A, int *lda, complex_t *x, int *incx);
-extern void dger_(int *m, int *n, double *alpha, double *x, int *incx,
-    double *y, int *incy, double *A, int *lda);
-extern void zgerc_(int *m, int *n, complex_t *alpha, complex_t *x,
-    int *incx, complex_t *y, int *incy, complex_t *A, int *lda);
-extern void zgeru_(int *m, int *n, complex_t *alpha, complex_t *x,
-    int *incx, complex_t *y, int *incy, complex_t *A, int *lda);
-extern void dsyr_(char *uplo, int *n, double *alpha, double *x,
-    int *incx, double *A, int *lda);
-extern void zher_(char *uplo, int *n, double *alpha, complex_t *x,
-    int *incx, complex_t *A, int *lda);
-extern void dsyr2_(char *uplo, int *n, double *alpha, double *x,
-    int *incx, double *y, int *incy, double *A, int *lda);
-extern void zher2_(char *uplo, int *n, complex_t *alpha, complex_t *x,
-    int *incx, complex_t *y, int *incy, complex_t *A, int *lda);
+extern void BLAS_FUNC(dgemv)(char* trans, CBLAS_INT *m, CBLAS_INT *n, double *alpha,
+    double *A, CBLAS_INT *lda, double *x, CBLAS_INT *incx, double *beta, double *y,
+    CBLAS_INT *incy);
+extern void BLAS_FUNC(zgemv)(char* trans, CBLAS_INT *m, CBLAS_INT *n, complex_t *alpha,
+    complex_t *A, CBLAS_INT *lda, complex_t *x, CBLAS_INT *incx, complex_t *beta,
+    complex_t *y, CBLAS_INT *incy);
+extern void BLAS_FUNC(dgbmv)(char* trans, CBLAS_INT *m, CBLAS_INT *n, CBLAS_INT *kl, CBLAS_INT *ku,
+    double *alpha, double *A, CBLAS_INT *lda, double *x, CBLAS_INT *incx,
+    double *beta, double *y,  CBLAS_INT *incy);
+extern void BLAS_FUNC(zgbmv)(char* trans, CBLAS_INT *m, CBLAS_INT *n, CBLAS_INT *kl, CBLAS_INT *ku,
+    complex_t *alpha, complex_t *A, CBLAS_INT *lda, complex_t *x, CBLAS_INT *incx,
+    complex_t *beta, complex_t *y,  CBLAS_INT *incy);
+extern void BLAS_FUNC(dsymv)(char *uplo, CBLAS_INT *n, double *alpha, double *A,
+    CBLAS_INT *lda, double *x, CBLAS_INT *incx, double *beta, double *y, CBLAS_INT *incy);
+extern void BLAS_FUNC(zhemv)(char *uplo, CBLAS_INT *n, complex_t *alpha, complex_t *A,
+    CBLAS_INT *lda, complex_t *x, CBLAS_INT *incx, complex_t *beta, complex_t *y,
+    CBLAS_INT *incy);
+extern void BLAS_FUNC(dsbmv)(char *uplo, CBLAS_INT *n, CBLAS_INT *k, double *alpha, double *A,
+    CBLAS_INT *lda, double *x, CBLAS_INT *incx, double *beta, double *y, CBLAS_INT *incy);
+extern void BLAS_FUNC(zhbmv)(char *uplo, CBLAS_INT *n, CBLAS_INT *k, complex_t *alpha,
+    complex_t *A, CBLAS_INT *lda, complex_t *x, CBLAS_INT *incx, complex_t *beta,
+    complex_t *y, CBLAS_INT *incy);
+extern void BLAS_FUNC(dtrmv)(char *uplo, char *trans, char *diag, CBLAS_INT *n,
+    double *A, CBLAS_INT *lda, double *x, CBLAS_INT *incx);
+extern void BLAS_FUNC(ztrmv)(char *uplo, char *trans, char *diag, CBLAS_INT *n,
+    complex_t *A, CBLAS_INT *lda, complex_t *x, CBLAS_INT *incx);
+extern void BLAS_FUNC(dtbmv)(char *uplo, char *trans, char *diag, CBLAS_INT *n, CBLAS_INT *k,
+    double *A, CBLAS_INT *lda, double *x, CBLAS_INT *incx);
+extern void BLAS_FUNC(ztbmv)(char *uplo, char *trans, char *diag, CBLAS_INT *n, CBLAS_INT *k,
+    complex_t *A, CBLAS_INT *lda, complex_t *x, CBLAS_INT *incx);
+extern void BLAS_FUNC(dtrsv)(char *uplo, char *trans, char *diag, CBLAS_INT *n,
+    double *A, CBLAS_INT *lda, double *x, CBLAS_INT *incx);
+extern void BLAS_FUNC(ztrsv)(char *uplo, char *trans, char *diag, CBLAS_INT *n,
+    complex_t *A, CBLAS_INT *lda, complex_t *x, CBLAS_INT *incx);
+extern void BLAS_FUNC(dtbsv)(char *uplo, char *trans, char *diag, CBLAS_INT *n, CBLAS_INT *k,
+    double *A, CBLAS_INT *lda, double *x, CBLAS_INT *incx);
+extern void BLAS_FUNC(ztbsv)(char *uplo, char *trans, char *diag, CBLAS_INT *n, CBLAS_INT *k,
+    complex_t *A, CBLAS_INT *lda, complex_t *x, CBLAS_INT *incx);
+extern void BLAS_FUNC(dger)(CBLAS_INT *m, CBLAS_INT *n, double *alpha, double *x, CBLAS_INT *incx,
+    double *y, CBLAS_INT *incy, double *A, CBLAS_INT *lda);
+extern void BLAS_FUNC(zgerc)(CBLAS_INT *m, CBLAS_INT *n, complex_t *alpha, complex_t *x,
+    CBLAS_INT *incx, complex_t *y, CBLAS_INT *incy, complex_t *A, CBLAS_INT *lda);
+extern void BLAS_FUNC(zgeru)(CBLAS_INT *m, CBLAS_INT *n, complex_t *alpha, complex_t *x,
+    CBLAS_INT *incx, complex_t *y, CBLAS_INT *incy, complex_t *A, CBLAS_INT *lda);
+extern void BLAS_FUNC(dsyr)(char *uplo, CBLAS_INT *n, double *alpha, double *x,
+    CBLAS_INT *incx, double *A, CBLAS_INT *lda);
+extern void BLAS_FUNC(zher)(char *uplo, CBLAS_INT *n, double *alpha, complex_t *x,
+    CBLAS_INT *incx, complex_t *A, CBLAS_INT *lda);
+extern void BLAS_FUNC(dsyr2)(char *uplo, CBLAS_INT *n, double *alpha, double *x,
+    CBLAS_INT *incx, double *y, CBLAS_INT *incy, double *A, CBLAS_INT *lda);
+extern void BLAS_FUNC(zher2)(char *uplo, CBLAS_INT *n, complex_t *alpha, complex_t *x,
+    CBLAS_INT *incx, complex_t *y, CBLAS_INT *incy, complex_t *A, CBLAS_INT *lda);
 
 
 /* BLAS 3 prototypes */
-extern void dgemm_(char *transa, char *transb, int *m, int *n, int *k,
-    double *alpha, double *A, int *lda, double *B, int *ldb,
-    double *beta, double *C, int *ldc);
-extern void zgemm_(char *transa, char *transb, int *m, int *n, int *k,
-    complex_t *alpha, complex_t *A, int *lda, complex_t *B, int *ldb,
-    complex_t *beta, complex_t *C, int *ldc);
-extern void dsymm_(char *side, char *uplo, int *m, int *n,
-    double *alpha, double *A, int *lda, double *B, int *ldb,
-    double *beta, double *C, int *ldc);
-extern void zsymm_(char *side, char *uplo, int *m, int *n,
-    complex_t *alpha, complex_t *A, int *lda, complex_t *B, int *ldb,
-    complex_t *beta, complex_t *C, int *ldc);
-extern void zhemm_(char *side, char *uplo, int *m, int *n,
-    complex_t *alpha, complex_t *A, int *lda, complex_t *B, int *ldb,
-    complex_t *beta, complex_t *C, int *ldc);
-extern void dsyrk_(char *uplo, char *trans, int *n, int *k,
-    double *alpha, double *A, int *lda, double *beta, double *B,
-    int *ldb);
-extern void zsyrk_(char *uplo, char *trans, int *n, int *k,
-    complex_t *alpha, complex_t *A, int *lda, complex_t *beta, complex_t *B,
-    int *ldb);
-extern void zherk_(char *uplo, char *trans, int *n, int *k,
-    double *alpha, complex_t *A, int *lda, double *beta, complex_t *B,
-    int *ldb);
-extern void dsyr2k_(char *uplo, char *trans, int *n, int *k,
-    double *alpha, double *A, int *lda, double *B, int *ldb,
-    double *beta, double *C, int *ldc);
-extern void zsyr2k_(char *uplo, char *trans, int *n, int *k,
-    complex_t *alpha, complex_t *A, int *lda, complex_t *B, int *ldb,
-    complex_t *beta, complex_t *C, int *ldc);
-extern void zher2k_(char *uplo, char *trans, int *n, int *k,
-    complex_t *alpha, complex_t *A, int *lda, complex_t *B, int *ldb,
-    double *beta, complex_t *C, int *ldc);
-extern void dtrmm_(char *side, char *uplo, char *transa, char *diag,
-    int *m, int *n, double *alpha, double *A, int *lda, double *B,
-    int *ldb);
-extern void ztrmm_(char *side, char *uplo, char *transa, char *diag,
-    int *m, int *n, complex_t *alpha, complex_t *A, int *lda, complex_t *B,
-    int *ldb);
-extern void dtrsm_(char *side, char *uplo, char *transa, char *diag,
-    int *m, int *n, double *alpha, double *A, int *lda, double *B,
-    int *ldb);
-extern void ztrsm_(char *side, char *uplo, char *transa, char *diag,
-    int *m, int *n, complex_t *alpha, complex_t *A, int *lda, complex_t *B,
-    int *ldb);
+extern void BLAS_FUNC(dgemm)(char *transa, char *transb, CBLAS_INT *m, CBLAS_INT *n, CBLAS_INT *k,
+    double *alpha, double *A, CBLAS_INT *lda, double *B, CBLAS_INT *ldb,
+    double *beta, double *C, CBLAS_INT *ldc);
+extern void BLAS_FUNC(zgemm)(char *transa, char *transb, CBLAS_INT *m, CBLAS_INT *n, CBLAS_INT *k,
+    complex_t *alpha, complex_t *A, CBLAS_INT *lda, complex_t *B, CBLAS_INT *ldb,
+    complex_t *beta, complex_t *C, CBLAS_INT *ldc);
+extern void BLAS_FUNC(dsymm)(char *side, char *uplo, CBLAS_INT *m, CBLAS_INT *n,
+    double *alpha, double *A, CBLAS_INT *lda, double *B, CBLAS_INT *ldb,
+    double *beta, double *C, CBLAS_INT *ldc);
+extern void BLAS_FUNC(zsymm)(char *side, char *uplo, CBLAS_INT *m, CBLAS_INT *n,
+    complex_t *alpha, complex_t *A, CBLAS_INT *lda, complex_t *B, CBLAS_INT *ldb,
+    complex_t *beta, complex_t *C, CBLAS_INT *ldc);
+extern void BLAS_FUNC(zhemm)(char *side, char *uplo, CBLAS_INT *m, CBLAS_INT *n,
+    complex_t *alpha, complex_t *A, CBLAS_INT *lda, complex_t *B, CBLAS_INT *ldb,
+    complex_t *beta, complex_t *C, CBLAS_INT *ldc);
+extern void BLAS_FUNC(dsyrk)(char *uplo, char *trans, CBLAS_INT *n, CBLAS_INT *k,
+    double *alpha, double *A, CBLAS_INT *lda, double *beta, double *B,
+    CBLAS_INT *ldb);
+extern void BLAS_FUNC(zsyrk)(char *uplo, char *trans, CBLAS_INT *n, CBLAS_INT *k,
+    complex_t *alpha, complex_t *A, CBLAS_INT *lda, complex_t *beta, complex_t *B,
+    CBLAS_INT *ldb);
+extern void BLAS_FUNC(zherk)(char *uplo, char *trans, CBLAS_INT *n, CBLAS_INT *k,
+    double *alpha, complex_t *A, CBLAS_INT *lda, double *beta, complex_t *B,
+    CBLAS_INT *ldb);
+extern void BLAS_FUNC(dsyr2k)(char *uplo, char *trans, CBLAS_INT *n, CBLAS_INT *k,
+    double *alpha, double *A, CBLAS_INT *lda, double *B, CBLAS_INT *ldb,
+    double *beta, double *C, CBLAS_INT *ldc);
+extern void BLAS_FUNC(zsyr2k)(char *uplo, char *trans, CBLAS_INT *n, CBLAS_INT *k,
+    complex_t *alpha, complex_t *A, CBLAS_INT *lda, complex_t *B, CBLAS_INT *ldb,
+    complex_t *beta, complex_t *C, CBLAS_INT *ldc);
+extern void BLAS_FUNC(zher2k)(char *uplo, char *trans, CBLAS_INT *n, CBLAS_INT *k,
+    complex_t *alpha, complex_t *A, CBLAS_INT *lda, complex_t *B, CBLAS_INT *ldb,
+    double *beta, complex_t *C, CBLAS_INT *ldc);
+extern void BLAS_FUNC(dtrmm)(char *side, char *uplo, char *transa, char *diag,
+    CBLAS_INT *m, CBLAS_INT *n, double *alpha, double *A, CBLAS_INT *lda, double *B,
+    CBLAS_INT *ldb);
+extern void BLAS_FUNC(ztrmm)(char *side, char *uplo, char *transa, char *diag,
+    CBLAS_INT *m, CBLAS_INT *n, complex_t *alpha, complex_t *A, CBLAS_INT *lda, complex_t *B,
+    CBLAS_INT *ldb);
+extern void BLAS_FUNC(dtrsm)(char *side, char *uplo, char *transa, char *diag,
+    CBLAS_INT *m, CBLAS_INT *n, double *alpha, double *A, CBLAS_INT *lda, double *B,
+    CBLAS_INT *ldb);
+extern void BLAS_FUNC(ztrsm)(char *side, char *uplo, char *transa, char *diag,
+    CBLAS_INT *m, CBLAS_INT *n, complex_t *alpha, complex_t *A, CBLAS_INT *lda, complex_t *B,
+    CBLAS_INT *ldb);
 
 
 static int number_from_pyobject(PyObject *o, number *a, int id)
@@ -229,12 +229,20 @@ static char doc_swap[] =
 static PyObject* swap(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *x, *y;
-    int n=-1, ix=1, iy=1, ox=0, oy=0;
+    CBLAS_INT n=-1, ix=1, iy=1, ox=0, oy=0;
     char *kwlist[] = {"x", "y", "n", "incx", "incy", "offsetx",
         "offsety", NULL};
+    Py_ssize_t _n = n, _ix = ix, _iy = iy, _ox = ox, _oy = oy;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|iiiii", kwlist,
-        &x, &y, &n, &ix, &iy, &ox, &oy)) return NULL;
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|nnnnn", kwlist,
+        &x, &y, &_n, &_ix, &_iy, &_ox, &_oy)) return NULL;
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_iy, &iy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oy, &oy) < 0)
+        return NULL;
 
     if (!Matrix_Check(x)) err_mtrx("x");
     if (!Matrix_Check(y)) err_mtrx("y");
@@ -247,6 +255,12 @@ static PyObject* swap(PyObject *self, PyObject *args, PyObject *kwrds)
     if (oy < 0) err_nn_int("offsety");
 
     if (n<0){
+        /* libc abs() takes/returns a 32-bit int, so under ILP64
+         * (CBLAS_INT is int64_t) an |incx|/|incy| beyond INT32_MAX
+         * would truncate here and in the similar abs()-based
+         * buffer-length checks throughout this file.  Not reachable
+         * in practice: a stride that large needs a multi-exabyte
+         * matrix. */
         n = (len(x) >= ox+1) ? 1+(len(x)-ox-1)/abs(ix) : 0;
         if (n != ((len(y) >= oy+1) ? 1+(len(y)-oy-1)/abs(iy) : 0)){
             PyErr_SetString(PyExc_ValueError, "arrays have unequal "
@@ -262,13 +276,13 @@ static PyObject* swap(PyObject *self, PyObject *args, PyObject *kwrds)
     switch (MAT_ID(x)){
         case DOUBLE:
             Py_BEGIN_ALLOW_THREADS
-            dswap_(&n, MAT_BUFD(x)+ox, &ix, MAT_BUFD(y)+oy, &iy);
+            BLAS_FUNC(dswap)(&n, MAT_BUFD(x)+ox, &ix, MAT_BUFD(y)+oy, &iy);
             Py_END_ALLOW_THREADS
             break;
 
         case COMPLEX:
             Py_BEGIN_ALLOW_THREADS
-            zswap_(&n, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy, &iy);
+            BLAS_FUNC(zswap)(&n, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy, &iy);
             Py_END_ALLOW_THREADS
             break;
 
@@ -298,11 +312,17 @@ static PyObject* scal(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *x;
     PyObject *ao;
     number a;
-    int n=-1, ix=1, ox=0;
+    CBLAS_INT n=-1, ix=1, ox=0;
     char *kwlist[] = {"alpha", "x", "n", "inc", "offset", NULL};
+    Py_ssize_t _n = n, _ix = ix, _ox = ox;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|iii", kwlist,
-        &ao, &x, &n, &ix, &ox)) return NULL;
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|nnn", kwlist,
+        &ao, &x, &_n, &_ix, &_ox)) return NULL;
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0)
+        return NULL;
 
     if (!Matrix_Check(x)) err_mtrx("x");
     if (ix <= 0) err_p_int("inc");
@@ -316,18 +336,18 @@ static PyObject* scal(PyObject *self, PyObject *args, PyObject *kwrds)
             if (number_from_pyobject(ao, &a, MAT_ID(x)))
                 err_type("alpha");
             Py_BEGIN_ALLOW_THREADS
-            dscal_(&n, &a.d, MAT_BUFD(x)+ox, &ix);
+            BLAS_FUNC(dscal)(&n, &a.d, MAT_BUFD(x)+ox, &ix);
             Py_END_ALLOW_THREADS
 	    break;
 
         case COMPLEX:
             if (!number_from_pyobject(ao, &a, DOUBLE))
                 Py_BEGIN_ALLOW_THREADS
-                zdscal_(&n, &a.d, MAT_BUFZ(x)+ox, &ix);
+                BLAS_FUNC(zdscal)(&n, &a.d, MAT_BUFZ(x)+ox, &ix);
                 Py_END_ALLOW_THREADS
             else if (!number_from_pyobject(ao, &a, COMPLEX))
                 Py_BEGIN_ALLOW_THREADS
-                zscal_(&n, &a.z, MAT_BUFZ(x)+ox, &ix);
+                BLAS_FUNC(zscal)(&n, &a.z, MAT_BUFZ(x)+ox, &ix);
                 Py_END_ALLOW_THREADS
             else
                 err_type("alpha");
@@ -358,12 +378,20 @@ static char doc_copy[] =
 static PyObject* copy(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *x, *y;
-    int n=-1, ix=1, iy=1, ox=0, oy=0;
+    CBLAS_INT n=-1, ix=1, iy=1, ox=0, oy=0;
     char *kwlist[] = {"x", "y", "n", "incx", "incy", "offsetx",
         "offsety", NULL};
+    Py_ssize_t _n = n, _ix = ix, _iy = iy, _ox = ox, _oy = oy;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|iiiii", kwlist,
-        &x, &y, &n, &ix, &iy, &ox, &oy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|nnnnn", kwlist,
+        &x, &y, &_n, &_ix, &_iy, &_ox, &_oy))
+        return NULL;
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_iy, &iy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oy, &oy) < 0)
         return NULL;
 
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -385,13 +413,13 @@ static PyObject* copy(PyObject *self, PyObject *args, PyObject *kwrds)
     switch (MAT_ID(x)){
         case DOUBLE:
             Py_BEGIN_ALLOW_THREADS
-            dcopy_(&n, MAT_BUFD(x)+ox, &ix, MAT_BUFD(y)+oy, &iy);
+            BLAS_FUNC(dcopy)(&n, MAT_BUFD(x)+ox, &ix, MAT_BUFD(y)+oy, &iy);
             Py_END_ALLOW_THREADS
             break;
 
         case COMPLEX:
             Py_BEGIN_ALLOW_THREADS
-            zcopy_(&n, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy, &iy);
+            BLAS_FUNC(zcopy)(&n, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy, &iy);
             Py_END_ALLOW_THREADS
             break;
 
@@ -425,12 +453,20 @@ static PyObject* axpy(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *x, *y;
     PyObject *ao=NULL;
     number a;
-    int n=-1, ix=1, iy=1, ox=0, oy=0;
+    CBLAS_INT n=-1, ix=1, iy=1, ox=0, oy=0;
     char *kwlist[] = {"x", "y", "alpha", "n", "incx", "incy", "offsetx",
         "offsety", NULL};
+    Py_ssize_t _n = n, _ix = ix, _iy = iy, _ox = ox, _oy = oy;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|Oiiiii", kwlist,
-        &x, &y, &ao, &n, &ix, &iy, &ox, &oy)) return NULL;
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|Onnnnn", kwlist,
+        &x, &y, &ao, &_n, &_ix, &_iy, &_ox, &_oy)) return NULL;
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_iy, &iy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oy, &oy) < 0)
+        return NULL;
 
     if (!Matrix_Check(x)) err_mtrx("x");
     if (!Matrix_Check(y)) err_mtrx("y");
@@ -455,7 +491,7 @@ static PyObject* axpy(PyObject *self, PyObject *args, PyObject *kwrds)
         case DOUBLE:
             if (!ao) a.d=1.0;
             Py_BEGIN_ALLOW_THREADS
-            daxpy_(&n, &a.d, MAT_BUFD(x)+ox, &ix, MAT_BUFD(y)+oy, &iy);
+            BLAS_FUNC(daxpy)(&n, &a.d, MAT_BUFD(x)+ox, &ix, MAT_BUFD(y)+oy, &iy);
             Py_END_ALLOW_THREADS
             break;
 
@@ -466,7 +502,7 @@ static PyObject* axpy(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!ao) a.z=_Cbuild(1.0,0.0);
 #endif
             Py_BEGIN_ALLOW_THREADS
-            zaxpy_(&n, &a.z, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy, &iy);
+            BLAS_FUNC(zaxpy)(&n, &a.z, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy, &iy);
             Py_END_ALLOW_THREADS
             break;
 
@@ -499,12 +535,20 @@ static PyObject* dot(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *x, *y;
     number val;
-    int n=-1, ix=1, iy=1, ox=0, oy=0;
+    CBLAS_INT n=-1, ix=1, iy=1, ox=0, oy=0;
     char *kwlist[] = {"x", "y", "n", "incx", "incy", "offsetx",
         "offsety", NULL};
+    Py_ssize_t _n = n, _ix = ix, _iy = iy, _ox = ox, _oy = oy;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|iiiii", kwlist,
-        &x, &y, &n, &ix, &iy, &ox, &oy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|nnnnn", kwlist,
+        &x, &y, &_n, &_ix, &_iy, &_ox, &_oy))
+        return NULL;
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_iy, &iy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oy, &oy) < 0)
         return NULL;
 
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -532,7 +576,7 @@ static PyObject* dot(PyObject *self, PyObject *args, PyObject *kwrds)
     switch (MAT_ID(x)){
         case DOUBLE:
             Py_BEGIN_ALLOW_THREADS
-            val.d = (n==0) ? 0.0 : ddot_(&n, MAT_BUFD(x)+ox, &ix,
+            val.d = (n==0) ? 0.0 : BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+ox, &ix,
                 MAT_BUFD(y)+oy, &iy);
             Py_END_ALLOW_THREADS
             return Py_BuildValue("d", val.d);
@@ -552,22 +596,22 @@ static PyObject* dot(PyObject *self, PyObject *args, PyObject *kwrds)
                 iy *= 2;
                 Py_BEGIN_ALLOW_THREADS
 #ifndef _MSC_VER
-                val.z = (ddot_(&n, MAT_BUFD(x)+2*ox, &ix,
+                val.z = (BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox, &ix,
                     MAT_BUFD(y)+2*oy, &iy) +
-                    ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
+                    BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox + 1, &ix,
                     MAT_BUFD(y)+2*oy + 1, &iy)) +
-                    I*(ddot_(&n, MAT_BUFD(x)+2*ox, &ix,
+                    I*(BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox, &ix,
                     MAT_BUFD(y)+2*oy + 1, &iy) -
-                    ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
+                    BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox + 1, &ix,
                     MAT_BUFD(y)+2*oy, &iy));
 #else
-                val.z = _Cbuild(ddot_(&n, MAT_BUFD(x)+2*ox, &ix,
+                val.z = _Cbuild(BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox, &ix,
 				      MAT_BUFD(y)+2*oy, &iy) +
-				ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
+				BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox + 1, &ix,
 				      MAT_BUFD(y)+2*oy + 1, &iy),
-				ddot_(&n, MAT_BUFD(x)+2*ox, &ix,
+				BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox, &ix,
 				      MAT_BUFD(y)+2*oy + 1, &iy) -
-				ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
+				BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox + 1, &ix,
 				      MAT_BUFD(y)+2*oy, &iy));
 #endif
                 Py_END_ALLOW_THREADS
@@ -601,12 +645,20 @@ static PyObject* dotu(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *x, *y;
     number val;
-    int n=-1, ix=1, iy=1, ox=0, oy=0;
+    CBLAS_INT n=-1, ix=1, iy=1, ox=0, oy=0;
     char *kwlist[] = {"x", "y", "n", "incx", "incy", "offsetx",
         "offsety", NULL};
+    Py_ssize_t _n = n, _ix = ix, _iy = iy, _ox = ox, _oy = oy;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|iiiii", kwlist,
-        &x, &y, &n, &ix, &iy, &ox, &oy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|nnnnn", kwlist,
+        &x, &y, &_n, &_ix, &_iy, &_ox, &_oy))
+        return NULL;
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_iy, &iy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oy, &oy) < 0)
         return NULL;
 
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -634,7 +686,7 @@ static PyObject* dotu(PyObject *self, PyObject *args, PyObject *kwrds)
     switch (MAT_ID(x)){
         case DOUBLE:
             Py_BEGIN_ALLOW_THREADS
-            val.d = (n==0) ? 0.0 : ddot_(&n, MAT_BUFD(x)+ox, &ix,
+            val.d = (n==0) ? 0.0 : BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+ox, &ix,
                 MAT_BUFD(y)+oy, &iy);
             Py_END_ALLOW_THREADS
             return Py_BuildValue("d", val.d);
@@ -656,22 +708,22 @@ static PyObject* dotu(PyObject *self, PyObject *args, PyObject *kwrds)
                 iy *= 2;
                 Py_BEGIN_ALLOW_THREADS
 #ifndef _MSC_VER
-                val.z = (ddot_(&n, MAT_BUFD(x)+2*ox, &ix,
+                val.z = (BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox, &ix,
                     MAT_BUFD(y)+2*oy, &iy) -
-                    ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
+                    BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox + 1, &ix,
                     MAT_BUFD(y)+2*oy + 1, &iy)) +
-                    I*(ddot_(&n, MAT_BUFD(x)+2*ox, &ix,
+                    I*(BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox, &ix,
                     MAT_BUFD(y)+2*oy + 1, &iy) +
-                    ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
+                    BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox + 1, &ix,
                     MAT_BUFD(y)+2*oy, &iy));
 #else
-                val.z = _Cbuild(ddot_(&n, MAT_BUFD(x)+2*ox, &ix,
+                val.z = _Cbuild(BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox, &ix,
 				      MAT_BUFD(y)+2*oy, &iy) -
-				ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
+				BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox + 1, &ix,
 				      MAT_BUFD(y)+2*oy + 1, &iy),
-				ddot_(&n, MAT_BUFD(x)+2*ox, &ix,
+				BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox, &ix,
 				      MAT_BUFD(y)+2*oy + 1, &iy) +
-				ddot_(&n, MAT_BUFD(x)+2*ox + 1, &ix,
+				BLAS_FUNC(ddot)(&n, MAT_BUFD(x)+2*ox + 1, &ix,
 				      MAT_BUFD(y)+2*oy, &iy));
 #endif
                 Py_END_ALLOW_THREADS
@@ -699,11 +751,17 @@ static char doc_nrm2[] =
 static PyObject* nrm2(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *x;
-    int n=-1, ix=1, ox=0;
+    CBLAS_INT n=-1, ix=1, ox=0;
     char *kwlist[] = {"x", "n", "inc", "offset", NULL};
+    Py_ssize_t _n = n, _ix = ix, _ox = ox;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|iii", kwlist, &x,
-        &n, &ix, &ox)) return NULL;
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|nnn", kwlist, &x,
+        &_n, &_ix, &_ox)) return NULL;
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0)
+        return NULL;
 
     if (!Matrix_Check(x)) err_mtrx("x");
     if (ix <= 0) err_p_int("incx");
@@ -714,10 +772,10 @@ static PyObject* nrm2(PyObject *self, PyObject *args, PyObject *kwrds)
 
     switch (MAT_ID(x)){
         case DOUBLE:
-            return Py_BuildValue("d", dnrm2_(&n, MAT_BUFD(x)+ox, &ix));
+            return Py_BuildValue("d", BLAS_FUNC(dnrm2)(&n, MAT_BUFD(x)+ox, &ix));
 
         case COMPLEX:
-            return Py_BuildValue("d", dznrm2_(&n, MAT_BUFZ(x)+ox, &ix));
+            return Py_BuildValue("d", BLAS_FUNC(dznrm2)(&n, MAT_BUFZ(x)+ox, &ix));
 
         default:
             err_invalid_id;
@@ -741,11 +799,17 @@ static char doc_asum[] =
 static PyObject* asum(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *x;
-    int n=-1, ix=1, ox=0;
+    CBLAS_INT n=-1, ix=1, ox=0;
     char *kwlist[] = {"x", "n", "inc", "offset", NULL};
+    Py_ssize_t _n = n, _ix = ix, _ox = ox;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|iii", kwlist,
-        &x, &n, &ix, &ox))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|nnn", kwlist,
+        &x, &_n, &_ix, &_ox))
+        return NULL;
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0)
         return NULL;
 
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -759,13 +823,13 @@ static PyObject* asum(PyObject *self, PyObject *args, PyObject *kwrds)
     switch (MAT_ID(x)){
         case DOUBLE:
             Py_BEGIN_ALLOW_THREADS
-	    val = dasum_(&n, MAT_BUFD(x)+ox, &ix);
+	    val = BLAS_FUNC(dasum)(&n, MAT_BUFD(x)+ox, &ix);
             Py_END_ALLOW_THREADS
             return Py_BuildValue("d", val);
 
         case COMPLEX:
             Py_BEGIN_ALLOW_THREADS
-	    val = dzasum_(&n, MAT_BUFZ(x)+ox, &ix);
+	    val = BLAS_FUNC(dzasum)(&n, MAT_BUFZ(x)+ox, &ix);
             Py_END_ALLOW_THREADS
             return Py_BuildValue("d", val);
 
@@ -792,42 +856,50 @@ static char doc_iamax[] =
 static PyObject* iamax(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *x;
-    int n=-1, ix=1, ox=0;
+    CBLAS_INT n=-1, ix=1, ox=0;
     char *kwlist[] = {"x", "n", "inc", "offset", NULL};
+    Py_ssize_t _n = n, _ix = ix, _ox = ox;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|iii", kwlist,
-        &x, &n, &ix, &ox))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "O|nnn", kwlist,
+        &x, &_n, &_ix, &_ox))
+        return NULL;
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0)
         return NULL;
 
     if (!Matrix_Check(x)) err_mtrx("x");
     if (ix <= 0) err_p_int("inc");
     if (ox < 0) err_nn_int("offset");
     if (n < 0) n = (len(x) >= ox+1) ? 1+(len(x)-ox-1)/ix : 0;
-    if (n == 0) return Py_BuildValue("i", 0);
+    if (n == 0) return Py_BuildValue("n", (Py_ssize_t) (0));
     if (len(x) < ox + 1+(n-1)*ix) err_buf_len("x");
 
 #if PY_MAJOR_VERSION >= 3
-    int val;
+    CBLAS_INT val;
 #endif
     switch (MAT_ID(x)){
         case DOUBLE:
 #if PY_MAJOR_VERSION >= 3
             Py_BEGIN_ALLOW_THREADS
-            val = idamax_(&n, MAT_BUFD(x)+ox, &ix)-1;
+            val = BLAS_FUNC(idamax)(&n, MAT_BUFD(x)+ox, &ix)-1;
             Py_END_ALLOW_THREADS
-            return Py_BuildValue("i", val);
+            return Py_BuildValue("n", (Py_ssize_t) (val));
 #else
-            return Py_BuildValue("i", idamax_(&n, MAT_BUFD(x)+ox, &ix)-1);
+            return Py_BuildValue("n", (Py_ssize_t)
+                (BLAS_FUNC(idamax)(&n, MAT_BUFD(x)+ox, &ix)-1));
 #endif
 
         case COMPLEX:
 #if PY_MAJOR_VERSION >= 3
             Py_BEGIN_ALLOW_THREADS
-            val = izamax_(&n, MAT_BUFZ(x)+ox, &ix)-1;
+            val = BLAS_FUNC(izamax)(&n, MAT_BUFZ(x)+ox, &ix)-1;
             Py_END_ALLOW_THREADS
-            return Py_BuildValue("i", val);
+            return Py_BuildValue("n", (Py_ssize_t) (val));
 #else
-            return Py_BuildValue("i", izamax_(&n, MAT_BUFZ(x)+ox, &ix)-1);
+            return Py_BuildValue("n", (Py_ssize_t)
+                (BLAS_FUNC(izamax)(&n, MAT_BUFZ(x)+ox, &ix)-1));
 #endif
 
         default:
@@ -874,26 +946,37 @@ static PyObject* gemv(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *x, *y;
     PyObject *ao=NULL, *bo=NULL;
     number a, b;
-    int m=-1, n=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
+    CBLAS_INT m=-1, n=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
 #if PY_MAJOR_VERSION >= 3
     int trans_ = 'N';
 #endif
     char trans='N';
     char *kwlist[] = {"A", "x", "y", "trans", "alpha", "beta", "m", "n",
         "ldA", "incx", "incy", "offsetA", "offsetx", "offsety", NULL};
+    Py_ssize_t _m = m, _n = n, _ldA = ldA, _ix = ix, _iy = iy, _oA = oA, _ox = ox, _oy = oy;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COOiiiiiiii",
-        kwlist, &A, &x, &y, &trans_, &ao, &bo, &m, &n, &ldA, &ix, &iy,
-        &oA, &ox, &oy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COOnnnnnnnn",
+        kwlist, &A, &x, &y, &trans_, &ao, &bo, &_m, &_n, &_ldA, &_ix, &_iy,
+        &_oA, &_ox, &_oy))
         return NULL;
     trans = (char) trans_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOOiiiiiiii",
-        kwlist, &A, &x, &y, &trans, &ao, &bo, &m, &n, &ldA, &ix, &iy,
-        &oA, &ox, &oy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOOnnnnnnnn",
+        kwlist, &A, &x, &y, &trans, &ao, &bo, &_m, &_n, &_ldA, &_ix, &_iy,
+        &_oA, &_ox, &_oy))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_m, &m) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_iy, &iy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oy, &oy) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -939,15 +1022,15 @@ static PyObject* gemv(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!bo) b.d=0.0;
             if (trans == 'N' && n == 0)
                 Py_BEGIN_ALLOW_THREADS
-                dscal_(&m, &b.d, MAT_BUFD(y)+oy, &iy);
+                BLAS_FUNC(dscal)(&m, &b.d, MAT_BUFD(y)+oy, &iy);
                 Py_END_ALLOW_THREADS
             else if ((trans == 'T' || trans == 'C') && m == 0)
                 Py_BEGIN_ALLOW_THREADS
-                dscal_(&n, &b.d, MAT_BUFD(y)+oy, &iy);
+                BLAS_FUNC(dscal)(&n, &b.d, MAT_BUFD(y)+oy, &iy);
                 Py_END_ALLOW_THREADS
             else
                 Py_BEGIN_ALLOW_THREADS
-                dgemv_(&trans, &m, &n, &a.d, MAT_BUFD(A)+oA, &ldA,
+                BLAS_FUNC(dgemv)(&trans, &m, &n, &a.d, MAT_BUFD(A)+oA, &ldA,
                     MAT_BUFD(x)+ox, &ix, &b.d, MAT_BUFD(y)+oy, &iy);
                 Py_END_ALLOW_THREADS
             break;
@@ -962,15 +1045,15 @@ static PyObject* gemv(PyObject *self, PyObject *args, PyObject *kwrds)
 #endif
             if (trans == 'N' && n == 0)
                 Py_BEGIN_ALLOW_THREADS
-                zscal_(&m, &b.z, MAT_BUFZ(y)+oy, &iy);
+                BLAS_FUNC(zscal)(&m, &b.z, MAT_BUFZ(y)+oy, &iy);
                 Py_END_ALLOW_THREADS
             else if ((trans == 'T' || trans == 'C') && m == 0)
                 Py_BEGIN_ALLOW_THREADS
-                zscal_(&n, &b.z, MAT_BUFZ(y)+oy, &iy);
+                BLAS_FUNC(zscal)(&n, &b.z, MAT_BUFZ(y)+oy, &iy);
                 Py_END_ALLOW_THREADS
             else
                 Py_BEGIN_ALLOW_THREADS
-                zgemv_(&trans, &m, &n, &a.z, MAT_BUFZ(A)+oA, &ldA,
+                BLAS_FUNC(zgemv)(&trans, &m, &n, &a.z, MAT_BUFZ(A)+oA, &ldA,
                     MAT_BUFZ(x)+ox, &ix, &b.z, MAT_BUFZ(y)+oy, &iy);
                 Py_END_ALLOW_THREADS
             break;
@@ -1026,7 +1109,7 @@ static PyObject* gbmv(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *x, *y;
     PyObject *ao=NULL, *bo=NULL;
     number a, b;
-    int m, kl, ku=-1, n=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
+    CBLAS_INT m, kl, ku=-1, n=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
 #if PY_MAJOR_VERSION >= 3
     int trans_ = 'N';
 #endif
@@ -1034,19 +1117,32 @@ static PyObject* gbmv(PyObject *self, PyObject *args, PyObject *kwrds)
     char *kwlist[] = {"A", "m", "kl", "x", "y", "trans", "alpha", "beta",
         "n", "ku", "ldA", "incx", "incy", "offsetA", "offsetx", "offsety",
         NULL};
+    Py_ssize_t _m, _kl, _n = n, _ku = ku, _ldA = ldA, _ix = ix, _iy = iy, _oA = oA, _ox = ox, _oy = oy;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OiiOO|COOiiiiiiii",
-        kwlist, &A, &m, &kl, &x, &y, &trans_, &ao, &bo, &n, &ku, &ldA, &ix,
-        &iy, &oA, &ox, &oy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OnnOO|COOnnnnnnnn",
+        kwlist, &A, &_m, &_kl, &x, &y, &trans_, &ao, &bo, &_n, &_ku, &_ldA, &_ix,
+        &_iy, &_oA, &_ox, &_oy))
         return NULL;
     trans = (char) trans_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OiiOO|cOOiiiiiiii",
-        kwlist, &A, &m, &kl, &x, &y, &trans, &ao, &bo, &n, &ku, &ldA, &ix,
-        &iy, &oA, &ox, &oy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OnnOO|cOOnnnnnnnn",
+        kwlist, &A, &_m, &_kl, &x, &y, &trans, &ao, &bo, &_n, &_ku, &_ldA, &_ix,
+        &_iy, &_oA, &_ox, &_oy))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_m, &m) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_kl, &kl) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ku, &ku) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_iy, &iy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oy, &oy) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -1093,15 +1189,15 @@ static PyObject* gbmv(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!bo) b.d=0.0;
             if (trans == 'N' && n == 0)
                 Py_BEGIN_ALLOW_THREADS
-                dscal_(&m, &b.d, MAT_BUFD(y)+oy, &iy);
+                BLAS_FUNC(dscal)(&m, &b.d, MAT_BUFD(y)+oy, &iy);
                 Py_END_ALLOW_THREADS
             else if ((trans == 'T' || trans == 'C') && m == 0)
                 Py_BEGIN_ALLOW_THREADS
-                dscal_(&n, &b.d, MAT_BUFD(y)+oy, &iy);
+                BLAS_FUNC(dscal)(&n, &b.d, MAT_BUFD(y)+oy, &iy);
                 Py_END_ALLOW_THREADS
             else
                 Py_BEGIN_ALLOW_THREADS
-                dgbmv_(&trans, &m, &n, &kl, &ku, &a.d, MAT_BUFD(A)+oA,
+                BLAS_FUNC(dgbmv)(&trans, &m, &n, &kl, &ku, &a.d, MAT_BUFD(A)+oA,
                     &ldA, MAT_BUFD(x)+ox, &ix, &b.d, MAT_BUFD(y)+oy, &iy);
 	        Py_END_ALLOW_THREADS
             break;
@@ -1116,15 +1212,15 @@ static PyObject* gbmv(PyObject *self, PyObject *args, PyObject *kwrds)
 #endif
             if (trans == 'N' && n == 0)
                 Py_BEGIN_ALLOW_THREADS
-                zscal_(&m, &b.z, MAT_BUFZ(y)+oy, &iy);
+                BLAS_FUNC(zscal)(&m, &b.z, MAT_BUFZ(y)+oy, &iy);
                 Py_END_ALLOW_THREADS
             else if ((trans == 'T' || trans == 'C') && m == 0)
                 Py_BEGIN_ALLOW_THREADS
-                zscal_(&n, &b.z, MAT_BUFZ(y)+oy, &iy);
+                BLAS_FUNC(zscal)(&n, &b.z, MAT_BUFZ(y)+oy, &iy);
                 Py_END_ALLOW_THREADS
             else
                 Py_BEGIN_ALLOW_THREADS
-                zgbmv_(&trans, &m, &n, &kl, &ku, &a.z, MAT_BUFZ(A)+oA,
+                BLAS_FUNC(zgbmv)(&trans, &m, &n, &kl, &ku, &a.z, MAT_BUFZ(A)+oA,
                     &ldA, MAT_BUFZ(x)+ox, &ix, &b.z, MAT_BUFZ(y)+oy, &iy);
                 Py_END_ALLOW_THREADS
             break;
@@ -1168,26 +1264,36 @@ static PyObject* symv(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *x, *y;
     PyObject *ao=NULL, *bo=NULL;
     number a, b;
-    int n=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
+    CBLAS_INT n=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
 #if PY_MAJOR_VERSION >= 3
     int uplo_ = 'L';
 #endif
     char uplo = 'L';
     char *kwlist[] = {"A", "x", "y", "uplo", "alpha", "beta", "n",
         "ldA", "incx", "incy", "offsetA", "offsetx", "offsety", NULL};
+    Py_ssize_t _n = n, _ldA = ldA, _ix = ix, _iy = iy, _oA = oA, _ox = ox, _oy = oy;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COOiiiiiii",
-        kwlist, &A, &x, &y, &uplo_, &ao, &bo, &n, &ldA, &ix, &iy, &oA,
-        &ox, &oy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COOnnnnnnn",
+        kwlist, &A, &x, &y, &uplo_, &ao, &bo, &_n, &_ldA, &_ix, &_iy, &_oA,
+        &_ox, &_oy))
         return NULL;
     uplo = (char) uplo_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOOiiiiiii",
-        kwlist, &A, &x, &y, &uplo, &ao, &bo, &n, &ldA, &ix, &iy, &oA,
-        &ox, &oy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOOnnnnnnn",
+        kwlist, &A, &x, &y, &uplo, &ao, &bo, &_n, &_ldA, &_ix, &_iy, &_oA,
+        &_ox, &_oy))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_iy, &iy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oy, &oy) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -1228,7 +1334,7 @@ static PyObject* symv(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!ao) a.d=1.0;
             if (!bo) b.d=0.0;
             Py_BEGIN_ALLOW_THREADS
-            dsymv_(&uplo, &n, &a.d, MAT_BUFD(A)+oA, &ldA,
+            BLAS_FUNC(dsymv)(&uplo, &n, &a.d, MAT_BUFD(A)+oA, &ldA,
                 MAT_BUFD(x)+ox, &ix, &b.d, MAT_BUFD(y)+oy, &iy);
             Py_END_ALLOW_THREADS
             break;
@@ -1277,26 +1383,36 @@ static PyObject* hemv(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *x, *y;
     PyObject *ao=NULL, *bo=NULL;
     number a, b;
-    int n=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
+    CBLAS_INT n=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
 #if PY_MAJOR_VERSION >= 3
     int uplo_ = 'L';
 #endif
     char uplo = 'L';
     char *kwlist[] = {"A", "x", "y", "uplo", "alpha", "beta", "n",
         "ldA", "incx", "incy", "offsetA", "offsetx", "offsety", NULL};
+    Py_ssize_t _n = n, _ldA = ldA, _ix = ix, _iy = iy, _oA = oA, _ox = ox, _oy = oy;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COOiiiiiii",
-        kwlist, &A, &x, &y, &uplo_, &ao, &bo, &n, &ldA, &ix, &iy, &oA,
-        &ox, &oy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COOnnnnnnn",
+        kwlist, &A, &x, &y, &uplo_, &ao, &bo, &_n, &_ldA, &_ix, &_iy, &_oA,
+        &_ox, &_oy))
         return NULL;
     uplo = (char) uplo_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOOiiiiiii",
-        kwlist, &A, &x, &y, &uplo, &ao, &bo, &n, &ldA, &ix, &iy, &oA,
-        &ox, &oy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOOnnnnnnn",
+        kwlist, &A, &x, &y, &uplo, &ao, &bo, &_n, &_ldA, &_ix, &_iy, &_oA,
+        &_ox, &_oy))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_iy, &iy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oy, &oy) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -1337,7 +1453,7 @@ static PyObject* hemv(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!ao) a.d=1.0;
             if (!bo) b.d=0.0;
             Py_BEGIN_ALLOW_THREADS
-            dsymv_(&uplo, &n, &a.d, MAT_BUFD(A)+oA, &ldA,
+            BLAS_FUNC(dsymv)(&uplo, &n, &a.d, MAT_BUFD(A)+oA, &ldA,
                 MAT_BUFD(x)+ox, &ix, &b.d, MAT_BUFD(y)+oy, &iy);
             Py_END_ALLOW_THREADS
             break;
@@ -1351,7 +1467,7 @@ static PyObject* hemv(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!bo) b.z=_Cbuild(0.0,0.0);
 #endif
             Py_BEGIN_ALLOW_THREADS
-            zhemv_(&uplo, &n, &a.z, MAT_BUFZ(A)+oA, &ldA,
+            BLAS_FUNC(zhemv)(&uplo, &n, &a.z, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(x)+ox, &ix, &b.z, MAT_BUFZ(y)+oy, &iy);
             Py_END_ALLOW_THREADS
             break;
@@ -1395,26 +1511,37 @@ static PyObject* sbmv(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *x, *y;
     PyObject *ao=NULL, *bo=NULL;
     number a, b;
-    int n=-1, k=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
+    CBLAS_INT n=-1, k=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
 #if PY_MAJOR_VERSION >= 3
     int uplo_ = 'L';
 #endif
     char uplo = 'L';
     char *kwlist[] = {"A", "x", "y", "uplo", "alpha", "beta", "n", "k",
         "ldA", "incx", "incy", "offsetA", "offsetx", "offsety", NULL};
+    Py_ssize_t _n = n, _k = k, _ldA = ldA, _ix = ix, _iy = iy, _oA = oA, _ox = ox, _oy = oy;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COOiiiiiiii",
-        kwlist, &A, &x, &y, &uplo_, &ao, &bo, &n, &k, &ldA, &ix, &iy,
-        &oA, &ox, &oy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COOnnnnnnnn",
+        kwlist, &A, &x, &y, &uplo_, &ao, &bo, &_n, &_k, &_ldA, &_ix, &_iy,
+        &_oA, &_ox, &_oy))
         return NULL;
     uplo = (char) uplo_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOOiiiiiiii",
-        kwlist, &A, &x, &y, &uplo, &ao, &bo, &n, &k, &ldA, &ix, &iy,
-        &oA, &ox, &oy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOOnnnnnnnn",
+        kwlist, &A, &x, &y, &uplo, &ao, &bo, &_n, &_k, &_ldA, &_ix, &_iy,
+        &_oA, &_ox, &_oy))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_k, &k) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_iy, &iy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oy, &oy) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -1451,7 +1578,7 @@ static PyObject* sbmv(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!ao) a.d=1.0;
             if (!bo) b.d=0.0;
             Py_BEGIN_ALLOW_THREADS
-            dsbmv_(&uplo, &n, &k, &a.d, MAT_BUFD(A)+oA, &ldA,
+            BLAS_FUNC(dsbmv)(&uplo, &n, &k, &a.d, MAT_BUFD(A)+oA, &ldA,
                 MAT_BUFD(x)+ox, &ix, &b.d, MAT_BUFD(y)+oy, &iy);
             Py_END_ALLOW_THREADS
             break;
@@ -1498,26 +1625,37 @@ static PyObject* hbmv(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *x, *y;
     PyObject *ao=NULL, *bo=NULL;
     number a, b;
-    int n=-1, k=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
+    CBLAS_INT n=-1, k=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
 #if PY_MAJOR_VERSION >= 3
     int uplo_ = 'L';
 #endif
     char uplo = 'L';
     char *kwlist[] = {"A", "x", "y", "uplo", "alpha", "beta", "n", "k",
         "ldA", "incx", "incy", "offsetA", "offsetx", "offsety", NULL};
+    Py_ssize_t _n = n, _k = k, _ldA = ldA, _ix = ix, _iy = iy, _oA = oA, _ox = ox, _oy = oy;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COOiiiiiiii",
-        kwlist, &A, &x, &y, &uplo_, &ao, &bo, &n, &k, &ldA, &ix, &iy,
-        &oA, &ox, &oy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COOnnnnnnnn",
+        kwlist, &A, &x, &y, &uplo_, &ao, &bo, &_n, &_k, &_ldA, &_ix, &_iy,
+        &_oA, &_ox, &_oy))
         return NULL;
     uplo = (char) uplo_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOOiiiiiiii",
-        kwlist, &A, &x, &y, &uplo, &ao, &bo, &n, &k, &ldA, &ix, &iy,
-        &oA, &ox, &oy))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOOnnnnnnnn",
+        kwlist, &A, &x, &y, &uplo, &ao, &bo, &_n, &_k, &_ldA, &_ix, &_iy,
+        &_oA, &_ox, &_oy))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_k, &k) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_iy, &iy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oy, &oy) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -1554,7 +1692,7 @@ static PyObject* hbmv(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!ao) a.d=1.0;
             if (!bo) b.d=0.0;
             Py_BEGIN_ALLOW_THREADS
-            dsbmv_(&uplo, &n, &k, &a.d, MAT_BUFD(A)+oA, &ldA,
+            BLAS_FUNC(dsbmv)(&uplo, &n, &k, &a.d, MAT_BUFD(A)+oA, &ldA,
                 MAT_BUFD(x)+ox, &ix, &b.d, MAT_BUFD(y)+oy, &iy);
             Py_END_ALLOW_THREADS
             break;
@@ -1568,7 +1706,7 @@ static PyObject* hbmv(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!bo) b.z=_Cbuild(0.0,0.0);
 #endif
             Py_BEGIN_ALLOW_THREADS
-            zhbmv_(&uplo, &n, &k, &a.z, MAT_BUFZ(A)+oA, &ldA,
+            BLAS_FUNC(zhbmv)(&uplo, &n, &k, &a.z, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(x)+ox, &ix, &b.z, MAT_BUFZ(y)+oy, &iy);
             Py_END_ALLOW_THREADS
             break;
@@ -1608,26 +1746,34 @@ static char doc_trmv[] =
 static PyObject* trmv(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *x;
-    int n=-1, ldA=0, ix=1, oA=0, ox=0;
+    CBLAS_INT n=-1, ldA=0, ix=1, oA=0, ox=0;
 #if PY_MAJOR_VERSION >= 3
     int uplo_ = 'L', trans_ = 'N', diag_ = 'N';
 #endif
     char uplo = 'L', trans = 'N', diag = 'N';
     char *kwlist[] = {"A", "x", "uplo", "trans", "diag", "n", "ldA",
         "incx", "offsetA", "offsetx", NULL};
+    Py_ssize_t _n = n, _ldA = ldA, _ix = ix, _oA = oA, _ox = ox;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCiiiii",
-        kwlist, &A, &x, &uplo_, &trans_, &diag_, &n, &ldA, &ix, &oA, &ox))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCnnnnn",
+        kwlist, &A, &x, &uplo_, &trans_, &diag_, &_n, &_ldA, &_ix, &_oA, &_ox))
         return NULL;
     uplo = (char) uplo_;
     trans = (char) trans_;
     diag = (char) diag_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccciiiii",
-        kwlist, &A, &x, &uplo, &trans, &diag, &n, &ldA, &ix, &oA, &ox))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cccnnnnn",
+        kwlist, &A, &x, &uplo, &trans, &diag, &_n, &_ldA, &_ix, &_oA, &_ox))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -1659,14 +1805,14 @@ static PyObject* trmv(PyObject *self, PyObject *args, PyObject *kwrds)
     switch (MAT_ID(x)){
         case DOUBLE:
             Py_BEGIN_ALLOW_THREADS
-            dtrmv_(&uplo, &trans, &diag, &n, MAT_BUFD(A)+oA, &ldA,
+            BLAS_FUNC(dtrmv)(&uplo, &trans, &diag, &n, MAT_BUFD(A)+oA, &ldA,
                 MAT_BUFD(x)+ox, &ix);
             Py_END_ALLOW_THREADS
             break;
 
         case COMPLEX:
             Py_BEGIN_ALLOW_THREADS
-            ztrmv_(&uplo, &trans, &diag, &n, MAT_BUFZ(A)+oA, &ldA,
+            BLAS_FUNC(ztrmv)(&uplo, &trans, &diag, &n, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(x)+ox, &ix);
             Py_END_ALLOW_THREADS
             break;
@@ -1708,28 +1854,37 @@ static char doc_tbmv[] =
 static PyObject* tbmv(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *x;
-    int n=-1, k=-1, ldA=0, ix=1, oA=0, ox=0;
+    CBLAS_INT n=-1, k=-1, ldA=0, ix=1, oA=0, ox=0;
 #if PY_MAJOR_VERSION >= 3
     int uplo_ = 'L', trans_ = 'N', diag_ = 'N';
 #endif
     char uplo = 'L', trans = 'N', diag = 'N';
     char *kwlist[] = {"A", "x", "uplo", "trans", "diag", "n", "k",
         "ldA", "incx", "offsetA", "offsetx", NULL};
+    Py_ssize_t _n = n, _k = k, _ldA = ldA, _ix = ix, _oA = oA, _ox = ox;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCiiiiii",
-        kwlist, &A, &x, &uplo_, &trans_, &diag_, &n, &k, &ldA, &ix, &oA,
-        &ox))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCnnnnnn",
+        kwlist, &A, &x, &uplo_, &trans_, &diag_, &_n, &_k, &_ldA, &_ix, &_oA,
+        &_ox))
         return NULL;
     uplo = (char) uplo_;
     trans = (char) trans_;
     diag = (char) diag_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccciiiiii",
-        kwlist, &A, &x, &uplo, &trans, &diag, &n, &k, &ldA, &ix, &oA,
-        &ox))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cccnnnnnn",
+        kwlist, &A, &x, &uplo, &trans, &diag, &_n, &_k, &_ldA, &_ix, &_oA,
+        &_ox))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_k, &k) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -1757,14 +1912,14 @@ static PyObject* tbmv(PyObject *self, PyObject *args, PyObject *kwrds)
     switch (MAT_ID(x)){
         case DOUBLE:
             Py_BEGIN_ALLOW_THREADS
-            dtbmv_(&uplo, &trans, &diag, &n, &k, MAT_BUFD(A)+oA, &ldA,
+            BLAS_FUNC(dtbmv)(&uplo, &trans, &diag, &n, &k, MAT_BUFD(A)+oA, &ldA,
                 MAT_BUFD(x)+ox, &ix);
             Py_END_ALLOW_THREADS
             break;
 
         case COMPLEX:
             Py_BEGIN_ALLOW_THREADS
-            ztbmv_(&uplo, &trans, &diag, &n, &k, MAT_BUFZ(A)+oA, &ldA,
+            BLAS_FUNC(ztbmv)(&uplo, &trans, &diag, &n, &k, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(x)+ox, &ix);
             Py_END_ALLOW_THREADS
             break;
@@ -1806,26 +1961,34 @@ static char doc_trsv[] =
 static PyObject* trsv(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *x;
-    int n=-1, ldA=0, ix=1, oA=0, ox=0;
+    CBLAS_INT n=-1, ldA=0, ix=1, oA=0, ox=0;
 #if PY_MAJOR_VERSION >= 3
     int uplo_ = 'L', trans_ = 'N', diag_ = 'N';
 #endif
     char uplo = 'L', trans = 'N', diag = 'N';
     char *kwlist[] = {"A", "x", "uplo", "trans", "diag", "n", "ldA",
         "incx", "offsetA", "offsetx", NULL};
+    Py_ssize_t _n = n, _ldA = ldA, _ix = ix, _oA = oA, _ox = ox;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCiiiii",
-        kwlist, &A, &x, &uplo_, &trans_, &diag_, &n, &ldA, &ix, &oA, &ox))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCnnnnn",
+        kwlist, &A, &x, &uplo_, &trans_, &diag_, &_n, &_ldA, &_ix, &_oA, &_ox))
         return NULL;
     uplo = (char) uplo_;
     trans = (char) trans_;
     diag = (char) diag_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccciiiii",
-        kwlist, &A, &x, &uplo, &trans, &diag, &n, &ldA, &ix, &oA, &ox))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cccnnnnn",
+        kwlist, &A, &x, &uplo, &trans, &diag, &_n, &_ldA, &_ix, &_oA, &_ox))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -1858,14 +2021,14 @@ static PyObject* trsv(PyObject *self, PyObject *args, PyObject *kwrds)
     switch (MAT_ID(x)){
         case DOUBLE:
             Py_BEGIN_ALLOW_THREADS
-            dtrsv_(&uplo, &trans, &diag, &n, MAT_BUFD(A)+oA, &ldA,
+            BLAS_FUNC(dtrsv)(&uplo, &trans, &diag, &n, MAT_BUFD(A)+oA, &ldA,
                 MAT_BUFD(x)+ox, &ix);
             Py_END_ALLOW_THREADS
             break;
 
         case COMPLEX:
             Py_BEGIN_ALLOW_THREADS
-            ztrsv_(&uplo, &trans, &diag, &n, MAT_BUFZ(A)+oA, &ldA,
+            BLAS_FUNC(ztrsv)(&uplo, &trans, &diag, &n, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(x)+ox, &ix);
             Py_END_ALLOW_THREADS
             break;
@@ -1907,28 +2070,37 @@ static char doc_tbsv[] =
 static PyObject* tbsv(PyObject *self, PyObject *args, PyObject *kwrds)
 {
     matrix *A, *x;
-    int n=-1, k=-1, ldA=0, ix=1, oA=0, ox=0;
+    CBLAS_INT n=-1, k=-1, ldA=0, ix=1, oA=0, ox=0;
 #if PY_MAJOR_VERSION >= 3
     int uplo_ = 'L', trans_ = 'N', diag_ = 'N';
 #endif
     char uplo='L', trans='N', diag='N';
     char *kwlist[] = {"A", "x", "uplo", "trans", "diag", "n", "k",
         "ldA", "incx", "offsetA", "offsetx", NULL};
+    Py_ssize_t _n = n, _k = k, _ldA = ldA, _ix = ix, _oA = oA, _ox = ox;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCiiiiii",
-        kwlist, &A, &x, &uplo_, &trans_, &diag_, &n, &k, &ldA, &ix, &oA,
-        &ox))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCnnnnnn",
+        kwlist, &A, &x, &uplo_, &trans_, &diag_, &_n, &_k, &_ldA, &_ix, &_oA,
+        &_ox))
         return NULL;
     uplo = (char) uplo_;
     trans = (char) trans_;
     diag = (char) diag_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccciiiiii",
-        kwlist, &A, &x, &uplo, &trans, &diag, &n, &k, &ldA, &ix, &oA,
-        &ox))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cccnnnnnn",
+        kwlist, &A, &x, &uplo, &trans, &diag, &_n, &_k, &_ldA, &_ix, &_oA,
+        &_ox))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_k, &k) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -1956,14 +2128,14 @@ static PyObject* tbsv(PyObject *self, PyObject *args, PyObject *kwrds)
     switch (MAT_ID(x)){
         case DOUBLE:
             Py_BEGIN_ALLOW_THREADS
-            dtbsv_(&uplo, &trans, &diag, &n, &k, MAT_BUFD(A)+oA, &ldA,
+            BLAS_FUNC(dtbsv)(&uplo, &trans, &diag, &n, &k, MAT_BUFD(A)+oA, &ldA,
                 MAT_BUFD(x)+ox, &ix);
             Py_END_ALLOW_THREADS
             break;
 
         case COMPLEX:
             Py_BEGIN_ALLOW_THREADS
-            ztbsv_(&uplo, &trans, &diag, &n, &k, MAT_BUFZ(A)+oA, &ldA,
+            BLAS_FUNC(ztbsv)(&uplo, &trans, &diag, &n, &k, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(x)+ox, &ix);
             Py_END_ALLOW_THREADS
             break;
@@ -2004,12 +2176,23 @@ static PyObject* ger(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *x, *y;
     PyObject *ao=NULL;
     number a;
-    int m=-1, n=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
+    CBLAS_INT m=-1, n=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
     char *kwlist[] = {"x", "y", "A", "alpha", "m", "n", "incx", "incy",
         "ldA", "offsetx", "offsety", "offsetA", NULL};
+    Py_ssize_t _m = m, _n = n, _ix = ix, _iy = iy, _ldA = ldA, _ox = ox, _oy = oy, _oA = oA;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|Oiiiiiiii",
-        kwlist, &x, &y, &A, &ao, &m, &n, &ix, &iy, &ldA, &ox, &oy, &oA))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|Onnnnnnnn",
+        kwlist, &x, &y, &A, &ao, &_m, &_n, &_ix, &_iy, &_ldA, &_ox, &_oy, &_oA))
+        return NULL;
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_m, &m) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_iy, &iy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oy, &oy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0)
         return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
@@ -2042,7 +2225,7 @@ static PyObject* ger(PyObject *self, PyObject *args, PyObject *kwrds)
         case DOUBLE:
             if (!ao) a.d = 1.0;
             Py_BEGIN_ALLOW_THREADS
-            dger_(&m, &n, &a.d, MAT_BUFD(x)+ox, &ix, MAT_BUFD(y)+oy,
+            BLAS_FUNC(dger)(&m, &n, &a.d, MAT_BUFD(x)+ox, &ix, MAT_BUFD(y)+oy,
                 &iy, MAT_BUFD(A)+oA, &ldA);
             Py_END_ALLOW_THREADS
             break;
@@ -2054,7 +2237,7 @@ static PyObject* ger(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!ao) a.z = _Cbuild(1.0,0.0);
 #endif
             Py_BEGIN_ALLOW_THREADS
-            zgerc_(&m, &n, &a.z, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy, &iy,
+            BLAS_FUNC(zgerc)(&m, &n, &a.z, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy, &iy,
                 MAT_BUFZ(A)+oA, &ldA);
             Py_END_ALLOW_THREADS
             break;
@@ -2095,12 +2278,23 @@ static PyObject* geru(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *x, *y;
     PyObject *ao=NULL;
     number a;
-    int m=-1, n=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
+    CBLAS_INT m=-1, n=-1, ldA=0, ix=1, iy=1, oA=0, ox=0, oy=0;
     char *kwlist[] = {"x", "y", "A", "alpha", "m", "n", "incx", "incy",
         "ldA", "offsetx", "offsety", "offsetA", NULL};
+    Py_ssize_t _m = m, _n = n, _ix = ix, _iy = iy, _ldA = ldA, _ox = ox, _oy = oy, _oA = oA;
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|Oiiiiiiii",
-        kwlist, &x, &y, &A, &ao, &m, &n, &ix, &iy, &ldA, &ox, &oy, &oA))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|Onnnnnnnn",
+        kwlist, &x, &y, &A, &ao, &_m, &_n, &_ix, &_iy, &_ldA, &_ox, &_oy, &_oA))
+        return NULL;
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_m, &m) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_iy, &iy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oy, &oy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0)
         return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
@@ -2133,7 +2327,7 @@ static PyObject* geru(PyObject *self, PyObject *args, PyObject *kwrds)
         case DOUBLE:
             if (!ao) a.d = 1.0;
             Py_BEGIN_ALLOW_THREADS
-            dger_(&m, &n, &a.d, MAT_BUFD(x)+ox, &ix, MAT_BUFD(y)+oy, &iy,
+            BLAS_FUNC(dger)(&m, &n, &a.d, MAT_BUFD(x)+ox, &ix, MAT_BUFD(y)+oy, &iy,
                 MAT_BUFD(A)+oA, &ldA);
             Py_END_ALLOW_THREADS
             break;
@@ -2145,7 +2339,7 @@ static PyObject* geru(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!ao) a.z = _Cbuild(1.0,0.0);
 #endif
             Py_BEGIN_ALLOW_THREADS
-            zgeru_(&m, &n, &a.z, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy,
+            BLAS_FUNC(zgeru)(&m, &n, &a.z, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy,
                 &iy, MAT_BUFZ(A)+oA, &ldA);
             Py_END_ALLOW_THREADS
             break;
@@ -2183,24 +2377,32 @@ static PyObject* syr(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *x;
     PyObject *ao=NULL;
     number a;
-    int n=-1, ldA=0, ix=1, oA=0, ox=0;
+    CBLAS_INT n=-1, ldA=0, ix=1, oA=0, ox=0;
 #if PY_MAJOR_VERSION >= 3
     int uplo_ = 'L';
 #endif
     char uplo='L';
     char *kwlist[] = {"x", "A", "uplo", "alpha", "n", "incx", "ldA",
         "offsetx", "offsetA", NULL};
+    Py_ssize_t _n = n, _ix = ix, _ldA = ldA, _ox = ox, _oA = oA;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|COiiiii", kwlist,
-        &x, &A, &uplo_, &ao, &n, &ix, &ldA, &ox, &oA))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|COnnnnn", kwlist,
+        &x, &A, &uplo_, &ao, &_n, &_ix, &_ldA, &_ox, &_oA))
         return NULL;
     uplo = (char) uplo_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cOiiiii", kwlist,
-        &x, &A, &uplo, &ao, &n, &ix, &ldA, &ox, &oA))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cOnnnnn", kwlist,
+        &x, &A, &uplo, &ao, &_n, &_ix, &_ldA, &_ox, &_oA))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -2233,7 +2435,7 @@ static PyObject* syr(PyObject *self, PyObject *args, PyObject *kwrds)
     switch (MAT_ID(x)){
         case DOUBLE:
             Py_BEGIN_ALLOW_THREADS
-            dsyr_(&uplo, &n, &a.d, MAT_BUFD(x)+ox, &ix, MAT_BUFD(A)+oA,
+            BLAS_FUNC(dsyr)(&uplo, &n, &a.d, MAT_BUFD(x)+ox, &ix, MAT_BUFD(A)+oA,
                 &ldA);
             Py_END_ALLOW_THREADS
             break;
@@ -2271,24 +2473,32 @@ static PyObject* her(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *x;
     PyObject *ao=NULL;
     number a;
-    int n=-1, ldA=0, ix=1, oA=0, ox=0;
+    CBLAS_INT n=-1, ldA=0, ix=1, oA=0, ox=0;
 #if PY_MAJOR_VERSION >= 3
     int uplo_ = 'L';
 #endif
     char uplo = 'L';
     char *kwlist[] = {"x", "A", "uplo", "alpha", "n", "incx", "ldA",
         "offsetx", "offsetA", NULL};
+    Py_ssize_t _n = n, _ix = ix, _ldA = ldA, _ox = ox, _oA = oA;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|COiiiii",
-        kwlist, &x, &A, &uplo_, &ao, &n, &ix, &ldA, &ox, &oA))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|COnnnnn",
+        kwlist, &x, &A, &uplo_, &ao, &_n, &_ix, &_ldA, &_ox, &_oA))
         return NULL;
     uplo = (char) uplo_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cOiiiii",
-        kwlist, &x, &A, &uplo, &ao, &n, &ix, &ldA, &ox, &oA))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|cOnnnnn",
+        kwlist, &x, &A, &uplo, &ao, &_n, &_ix, &_ldA, &_ox, &_oA))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -2321,14 +2531,14 @@ static PyObject* her(PyObject *self, PyObject *args, PyObject *kwrds)
     switch (MAT_ID(x)){
         case DOUBLE:
             Py_BEGIN_ALLOW_THREADS
-            dsyr_(&uplo, &n, &a.d, MAT_BUFD(x)+ox, &ix, MAT_BUFD(A)+oA,
+            BLAS_FUNC(dsyr)(&uplo, &n, &a.d, MAT_BUFD(x)+ox, &ix, MAT_BUFD(A)+oA,
                 &ldA);
             Py_END_ALLOW_THREADS
             break;
 
         case COMPLEX:
             Py_BEGIN_ALLOW_THREADS
-            zher_(&uplo, &n, &a.d, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(A)+oA,
+            BLAS_FUNC(zher)(&uplo, &n, &a.d, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(A)+oA,
                 &ldA);
             Py_END_ALLOW_THREADS
             break;
@@ -2368,26 +2578,36 @@ static PyObject* syr2(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *x, *y;
     PyObject *ao=NULL;
     number a;
-    int n=-1, ldA=0, ix=1, iy=1, ox=0, oy=0, oA=0;
+    CBLAS_INT n=-1, ldA=0, ix=1, iy=1, ox=0, oy=0, oA=0;
 #if PY_MAJOR_VERSION >= 3
     int uplo_ = 'L';
 #endif
     char uplo = 'L';
     char *kwlist[] = {"x", "y", "A", "uplo", "alpha", "n", "incx",
         "incy", "ldA", "offsetx", "offsety", "offsetA", NULL};
+    Py_ssize_t _n = n, _ix = ix, _iy = iy, _ldA = ldA, _ox = ox, _oy = oy, _oA = oA;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COiiiiiii",
-        kwlist, &x, &y, &A, &uplo_, &ao, &n, &ix, &iy, &ldA, &ox, &oy,
-        &oA))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COnnnnnnn",
+        kwlist, &x, &y, &A, &uplo_, &ao, &_n, &_ix, &_iy, &_ldA, &_ox, &_oy,
+        &_oA))
         return NULL;
     uplo = (char) uplo_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOiiiiiii",
-        kwlist, &x, &y, &A, &uplo, &ao, &n, &ix, &iy, &ldA, &ox, &oy,
-        &oA))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOnnnnnnn",
+        kwlist, &x, &y, &A, &uplo, &ao, &_n, &_ix, &_iy, &_ldA, &_ox, &_oy,
+        &_oA))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_iy, &iy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oy, &oy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -2425,7 +2645,7 @@ static PyObject* syr2(PyObject *self, PyObject *args, PyObject *kwrds)
         case DOUBLE:
             if (!ao) a.d = 1.0;
             Py_BEGIN_ALLOW_THREADS
-            dsyr2_(&uplo, &n, &a.d, MAT_BUFD(x)+ox, &ix, MAT_BUFD(y)+oy,
+            BLAS_FUNC(dsyr2)(&uplo, &n, &a.d, MAT_BUFD(x)+ox, &ix, MAT_BUFD(y)+oy,
                 &iy, MAT_BUFD(A)+oA, &ldA);
             Py_END_ALLOW_THREADS
             break;
@@ -2466,26 +2686,36 @@ static PyObject* her2(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *x, *y;
     PyObject *ao=NULL;
     number a;
-    int n=-1, ldA=0, ix=1, iy=1, ox=0, oy=0, oA=0;
+    CBLAS_INT n=-1, ldA=0, ix=1, iy=1, ox=0, oy=0, oA=0;
 #if PY_MAJOR_VERSION >= 3
     int uplo_ = 'L';
 #endif
     char uplo = 'L';
     char *kwlist[] = {"x", "y", "A", "uplo", "alpha", "n", "incx",
         "incy", "ldA", "offsetx", "offsety", "offsetA", NULL};
+    Py_ssize_t _n = n, _ix = ix, _iy = iy, _ldA = ldA, _ox = ox, _oy = oy, _oA = oA;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COiiiiiii",
-        kwlist, &x, &y, &A, &uplo_, &ao, &n, &ix, &iy, &ldA, &ox, &oy,
-        &oA))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|COnnnnnnn",
+        kwlist, &x, &y, &A, &uplo_, &ao, &_n, &_ix, &_iy, &_ldA, &_ox, &_oy,
+        &_oA))
         return NULL;
     uplo = (char) uplo_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOiiiiiii",
-        kwlist, &x, &y, &A, &uplo, &ao, &n, &ix, &iy, &ldA, &ox, &oy,
-        &oA))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|cOnnnnnnn",
+        kwlist, &x, &y, &A, &uplo, &ao, &_n, &_ix, &_iy, &_ldA, &_ox, &_oy,
+        &_oA))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ix, &ix) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_iy, &iy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ox, &ox) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oy, &oy) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(x)) err_mtrx("x");
@@ -2523,7 +2753,7 @@ static PyObject* her2(PyObject *self, PyObject *args, PyObject *kwrds)
         case DOUBLE:
             if (!ao) a.d = 1.0;
             Py_BEGIN_ALLOW_THREADS
-            dsyr2_(&uplo, &n, &a.d, MAT_BUFD(x)+ox, &ix, MAT_BUFD(y)+oy,
+            BLAS_FUNC(dsyr2)(&uplo, &n, &a.d, MAT_BUFD(x)+ox, &ix, MAT_BUFD(y)+oy,
                 &iy, MAT_BUFD(A)+oA, &ldA);
             Py_END_ALLOW_THREADS
             break;
@@ -2535,7 +2765,7 @@ static PyObject* her2(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!ao) a.z = _Cbuild(1.0,0.0);
 #endif
             Py_BEGIN_ALLOW_THREADS
-            zher2_(&uplo, &n, &a.z, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy,
+            BLAS_FUNC(zher2)(&uplo, &n, &a.z, MAT_BUFZ(x)+ox, &ix, MAT_BUFZ(y)+oy,
                 &iy, MAT_BUFZ(A)+oA, &ldA);
             Py_END_ALLOW_THREADS
             break;
@@ -2604,7 +2834,7 @@ static PyObject* gemm(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *B, *C;
     PyObject *ao=NULL, *bo=NULL;
     number a, b;
-    int m=-1, n=-1, k=-1, ldA=0, ldB=0, ldC=0, oA=0, oB=0, oC=0;
+    CBLAS_INT m=-1, n=-1, k=-1, ldA=0, ldB=0, ldC=0, oA=0, oB=0, oC=0;
 #if PY_MAJOR_VERSION >= 3
     int transA_ = 'N', transB_ = 'N';
 #endif
@@ -2612,20 +2842,32 @@ static PyObject* gemm(PyObject *self, PyObject *args, PyObject *kwrds)
     char *kwlist[] = {"A", "B", "C", "transA", "transB", "alpha",
         "beta", "m", "n", "k", "ldA", "ldB", "ldC", "offsetA",
         "offsetB", "offsetC", NULL};
+    Py_ssize_t _m = m, _n = n, _k = k, _ldA = ldA, _ldB = ldB, _ldC = ldC, _oA = oA, _oB = oB, _oC = oC;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|CCOOiiiiiiiii",
-        kwlist, &A, &B, &C, &transA_, &transB_, &ao, &bo, &m, &n, &k,
-        &ldA, &ldB, &ldC, &oA, &oB, &oC))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|CCOOnnnnnnnnn",
+        kwlist, &A, &B, &C, &transA_, &transB_, &ao, &bo, &_m, &_n, &_k,
+        &_ldA, &_ldB, &_ldC, &_oA, &_oB, &_oC))
         return NULL;
     transA = (char) transA_;
     transB = (char) transB_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ccOOiiiiiiiii",
-        kwlist, &A, &B, &C, &transA, &transB, &ao, &bo, &m, &n, &k,
-        &ldA, &ldB, &ldC, &oA, &oB, &oC))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ccOOnnnnnnnnn",
+        kwlist, &A, &B, &C, &transA, &transB, &ao, &bo, &_m, &_n, &_k,
+        &_ldA, &_ldB, &_ldC, &_oA, &_oB, &_oC))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_m, &m) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_k, &k) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldB, &ldB) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldC, &ldC) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oB, &oB) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oC, &oC) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -2678,7 +2920,7 @@ static PyObject* gemm(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!ao) a.d = 1.0;
             if (!bo) b.d = 0.0;
             Py_BEGIN_ALLOW_THREADS
-            dgemm_(&transA, &transB, &m, &n, &k, &a.d,
+            BLAS_FUNC(dgemm)(&transA, &transB, &m, &n, &k, &a.d,
                 MAT_BUFD(A)+oA, &ldA, MAT_BUFD(B)+oB, &ldB, &b.d,
                 MAT_BUFD(C)+oC, &ldC);
             Py_END_ALLOW_THREADS
@@ -2693,7 +2935,7 @@ static PyObject* gemm(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!bo) b.z = _Cbuild(0.0,0.0);
 #endif
             Py_BEGIN_ALLOW_THREADS
-            zgemm_(&transA, &transB, &m, &n, &k, &a.z,
+            BLAS_FUNC(zgemm)(&transA, &transB, &m, &n, &k, &a.z,
                 MAT_BUFZ(A)+oA, &ldA, MAT_BUFZ(B)+oB, &ldB, &b.z,
                 MAT_BUFZ(C)+oC, &ldC);
             Py_END_ALLOW_THREADS
@@ -2752,7 +2994,7 @@ static PyObject* symm(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *B, *C;
     PyObject *ao=NULL, *bo=NULL;
     number a, b;
-    int m=-1, n=-1, ldA=0, ldB=0, ldC=0, oA=0, oB=0, oC = 0;
+    CBLAS_INT m=-1, n=-1, ldA=0, ldB=0, ldC=0, oA=0, oB=0, oC = 0;
 #if PY_MAJOR_VERSION >= 3
     int side_  = 'L', uplo_ = 'L';
 #endif
@@ -2760,20 +3002,31 @@ static PyObject* symm(PyObject *self, PyObject *args, PyObject *kwrds)
     char *kwlist[] = {"A", "B", "C", "side", "uplo", "alpha", "beta",
         "m", "n", "ldA", "ldB", "ldC", "offsetA", "offsetB", "offsetC",
         NULL};
+    Py_ssize_t _m = m, _n = n, _ldA = ldA, _ldB = ldB, _ldC = ldC, _oA = oA, _oB = oB, _oC = oC;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|CCOOiiiiiiii",
-        kwlist, &A, &B, &C, &side_, &uplo_, &ao, &bo, &m, &n, &ldA, &ldB,
-        &ldC, &oA, &oB, &oC))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|CCOOnnnnnnnn",
+        kwlist, &A, &B, &C, &side_, &uplo_, &ao, &bo, &_m, &_n, &_ldA, &_ldB,
+        &_ldC, &_oA, &_oB, &_oC))
         return NULL;
     side = (char) side_;
     uplo = (char) uplo_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ccOOiiiiiiii",
-        kwlist, &A, &B, &C, &side, &uplo, &ao, &bo, &m, &n, &ldA, &ldB,
-        &ldC, &oA, &oB, &oC))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ccOOnnnnnnnn",
+        kwlist, &A, &B, &C, &side, &uplo, &ao, &bo, &_m, &_n, &_ldA, &_ldB,
+        &_ldC, &_oA, &_oB, &_oC))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_m, &m) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldB, &ldB) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldC, &ldC) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oB, &oB) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oC, &oC) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -2827,7 +3080,7 @@ static PyObject* symm(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!ao) a.d = 1.0;
             if (!bo) b.d = 0.0;
             Py_BEGIN_ALLOW_THREADS
-            dsymm_(&side, &uplo, &m, &n, &a.d, MAT_BUFD(A)+oA, &ldA,
+            BLAS_FUNC(dsymm)(&side, &uplo, &m, &n, &a.d, MAT_BUFD(A)+oA, &ldA,
                 MAT_BUFD(B)+oB, &ldB, &b.d, MAT_BUFD(C)+oC, &ldC);
             Py_END_ALLOW_THREADS
             break;
@@ -2841,7 +3094,7 @@ static PyObject* symm(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!bo) b.z = _Cbuild(0.0,0.0);
 #endif
             Py_BEGIN_ALLOW_THREADS
-            zsymm_(&side, &uplo, &m, &n, &a.z, MAT_BUFZ(A)+oA, &ldA,
+            BLAS_FUNC(zsymm)(&side, &uplo, &m, &n, &a.z, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(B)+oB, &ldB, &b.z, MAT_BUFZ(C)+oC, &ldC);
             Py_END_ALLOW_THREADS
             break;
@@ -2899,7 +3152,7 @@ static PyObject* hemm(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *B, *C;
     PyObject *ao=NULL, *bo=NULL;
     number a, b;
-    int m=-1, n=-1, ldA=0, ldB=0, ldC=0, oA=0, oB=0, oC = 0;
+    CBLAS_INT m=-1, n=-1, ldA=0, ldB=0, ldC=0, oA=0, oB=0, oC = 0;
 #if PY_MAJOR_VERSION >= 3
     int side_ = 'L', uplo_ = 'L';
 #endif
@@ -2907,20 +3160,31 @@ static PyObject* hemm(PyObject *self, PyObject *args, PyObject *kwrds)
     char *kwlist[] = {"A", "B", "C", "side", "uplo", "alpha", "beta",
         "m", "n", "ldA", "ldB", "ldC", "offsetA", "offsetB", "offsetC",
         NULL};
+    Py_ssize_t _m = m, _n = n, _ldA = ldA, _ldB = ldB, _ldC = ldC, _oA = oA, _oB = oB, _oC = oC;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|CCOOiiiiiiii",
-        kwlist, &A, &B, &C, &side_, &uplo_, &ao, &bo, &m, &n, &ldA, &ldB,
-        &ldC, &oA, &oB, &oC))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|CCOOnnnnnnnn",
+        kwlist, &A, &B, &C, &side_, &uplo_, &ao, &bo, &_m, &_n, &_ldA, &_ldB,
+        &_ldC, &_oA, &_oB, &_oC))
         return NULL;
     side = (char) side_;
     uplo = (char) uplo_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ccOOiiiiiiii",
-        kwlist, &A, &B, &C, &side, &uplo, &ao, &bo, &m, &n, &ldA, &ldB,
-        &ldC, &oA, &oB, &oC))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ccOOnnnnnnnn",
+        kwlist, &A, &B, &C, &side, &uplo, &ao, &bo, &_m, &_n, &_ldA, &_ldB,
+        &_ldC, &_oA, &_oB, &_oC))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_m, &m) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldB, &ldB) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldC, &ldC) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oB, &oB) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oC, &oC) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -2974,7 +3238,7 @@ static PyObject* hemm(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!ao) a.d = 1.0;
             if (!bo) b.d = 0.0;
             Py_BEGIN_ALLOW_THREADS
-            dsymm_(&side, &uplo, &m, &n, &a.d, MAT_BUFD(A)+oA, &ldA,
+            BLAS_FUNC(dsymm)(&side, &uplo, &m, &n, &a.d, MAT_BUFD(A)+oA, &ldA,
                 MAT_BUFD(B)+oB, &ldB, &b.d, MAT_BUFD(C)+oC, &ldC);
             Py_END_ALLOW_THREADS
             break;
@@ -2988,7 +3252,7 @@ static PyObject* hemm(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!bo) b.z = _Cbuild(0.0,0.0);
 #endif
             Py_BEGIN_ALLOW_THREADS
-            zhemm_(&side, &uplo, &m, &n, &a.z, MAT_BUFZ(A)+oA, &ldA,
+            BLAS_FUNC(zhemm)(&side, &uplo, &m, &n, &a.z, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(B)+oB, &ldB, &b.z, MAT_BUFZ(C)+oC, &ldC);
             Py_END_ALLOW_THREADS
             break;
@@ -3041,27 +3305,36 @@ static PyObject* syrk(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *C;
     PyObject *ao=NULL, *bo=NULL;
     number a, b;
-    int n=-1, k=-1, ldA=0, ldC=0, oA = 0, oC = 0;
+    CBLAS_INT n=-1, k=-1, ldA=0, ldC=0, oA = 0, oC = 0;
 #if PY_MAJOR_VERSION >= 3
     int trans_ = 'N', uplo_ = 'L';
 #endif
     char trans = 'N', uplo = 'L';
     char *kwlist[] = {"A", "C", "uplo", "trans", "alpha", "beta", "n",
         "k", "ldA", "ldC", "offsetA", "offsetC", NULL};
+    Py_ssize_t _n = n, _k = k, _ldA = ldA, _ldC = ldC, _oA = oA, _oC = oC;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCOOiiiiii",
-        kwlist, &A, &C, &uplo_, &trans_, &ao, &bo, &n, &k, &ldA, &ldC,
-	&oA, &oC))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCOOnnnnnn",
+        kwlist, &A, &C, &uplo_, &trans_, &ao, &bo, &_n, &_k, &_ldA, &_ldC,
+	&_oA, &_oC))
         return NULL;
     uplo = (char) uplo_;
     trans = (char) trans_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccOOiiiiii",
-        kwlist, &A, &C, &uplo, &trans, &ao, &bo, &n, &k, &ldA, &ldC,
-	&oA, &oC))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccOOnnnnnn",
+        kwlist, &A, &C, &uplo, &trans, &ao, &bo, &_n, &_k, &_ldA, &_ldC,
+	&_oA, &_oC))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_k, &k) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldC, &ldC) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oC, &oC) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(C)) err_mtrx("C");
@@ -3099,7 +3372,7 @@ static PyObject* syrk(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!ao) a.d = 1.0;
             if (!bo) b.d = 0.0;
             Py_BEGIN_ALLOW_THREADS
-            dsyrk_(&uplo, &trans, &n, &k, &a.d, MAT_BUFD(A)+oA, &ldA,
+            BLAS_FUNC(dsyrk)(&uplo, &trans, &n, &k, &a.d, MAT_BUFD(A)+oA, &ldA,
                 &b.d, MAT_BUFD(C)+oC, &ldC);
             Py_END_ALLOW_THREADS
             break;
@@ -3113,7 +3386,7 @@ static PyObject* syrk(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!bo) b.z = _Cbuild(0.0,0.0);
 #endif
             Py_BEGIN_ALLOW_THREADS
-            zsyrk_(&uplo, &trans, &n, &k, &a.z, MAT_BUFZ(A)+oA, &ldA,
+            BLAS_FUNC(zsyrk)(&uplo, &trans, &n, &k, &a.z, MAT_BUFZ(A)+oA, &ldA,
                 &b.z, MAT_BUFZ(C)+oC, &ldC);
             Py_END_ALLOW_THREADS
             break;
@@ -3163,27 +3436,36 @@ static PyObject* herk(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *C;
     PyObject *ao=NULL, *bo=NULL;
     number a, b;
-    int n=-1, k=-1, ldA=0, ldC=0, oA = 0, oC = 0;
+    CBLAS_INT n=-1, k=-1, ldA=0, ldC=0, oA = 0, oC = 0;
 #if PY_MAJOR_VERSION >= 3
     int trans_ = 'N', uplo_ = 'L';
 #endif
     char trans = 'N', uplo = 'L';
     char *kwlist[] = {"A", "C", "uplo", "trans", "alpha", "beta", "n",
         "k", "ldA", "ldC", "offsetA", "offsetC", NULL};
+    Py_ssize_t _n = n, _k = k, _ldA = ldA, _ldC = ldC, _oA = oA, _oC = oC;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCOOiiiiii",
-        kwlist, &A, &C, &uplo_, &trans_, &ao, &bo, &n, &k, &ldA, &ldC,
-	&oA, &oC))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCOOnnnnnn",
+        kwlist, &A, &C, &uplo_, &trans_, &ao, &bo, &_n, &_k, &_ldA, &_ldC,
+	&_oA, &_oC))
         return NULL;
     uplo = (char) uplo_;
     trans = (char) trans_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccOOiiiiii",
-        kwlist, &A, &C, &uplo, &trans, &ao, &bo, &n, &k, &ldA, &ldC,
-	&oA, &oC))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccOOnnnnnn",
+        kwlist, &A, &C, &uplo, &trans, &ao, &bo, &_n, &_k, &_ldA, &_ldC,
+	&_oA, &_oC))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_k, &k) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldC, &ldC) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oC, &oC) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(C)) err_mtrx("C");
@@ -3219,14 +3501,14 @@ static PyObject* herk(PyObject *self, PyObject *args, PyObject *kwrds)
     switch (MAT_ID(A)){
         case DOUBLE:
             Py_BEGIN_ALLOW_THREADS
-            dsyrk_(&uplo, &trans, &n, &k, &a.d, MAT_BUFD(A)+oA, &ldA,
+            BLAS_FUNC(dsyrk)(&uplo, &trans, &n, &k, &a.d, MAT_BUFD(A)+oA, &ldA,
                 &b.d, MAT_BUFD(C)+oC, &ldC);
             Py_END_ALLOW_THREADS
             break;
 
         case COMPLEX:
             Py_BEGIN_ALLOW_THREADS
-            zherk_(&uplo, &trans, &n, &k, &a.d, MAT_BUFZ(A)+oA, &ldA,
+            BLAS_FUNC(zherk)(&uplo, &trans, &n, &k, &a.d, MAT_BUFZ(A)+oA, &ldA,
                 &b.d, MAT_BUFZ(C)+oC, &ldC);
             Py_END_ALLOW_THREADS
             break;
@@ -3288,7 +3570,7 @@ static PyObject* syr2k(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *B, *C;
     PyObject *ao=NULL, *bo=NULL;
     number a, b;
-    int n=-1, k=-1, ldA=0, ldB=0, ldC=0, oA = 0, oB = 0, oC = 0;
+    CBLAS_INT n=-1, k=-1, ldA=0, ldB=0, ldC=0, oA = 0, oB = 0, oC = 0;
 #if PY_MAJOR_VERSION >= 3
     int trans_ = 'N', uplo_ = 'L';
 #endif
@@ -3296,20 +3578,31 @@ static PyObject* syr2k(PyObject *self, PyObject *args, PyObject *kwrds)
     char *kwlist[] = {"A", "B", "C", "uplo", "trans", "alpha", "beta",
         "n", "k", "ldA", "ldB", "ldC", "offsetA", "offsetB", "offsetC",
         NULL};
+    Py_ssize_t _n = n, _k = k, _ldA = ldA, _ldB = ldB, _ldC = ldC, _oA = oA, _oB = oB, _oC = oC;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|CCOOiiiiiiii",
-        kwlist, &A, &B, &C, &uplo_, &trans_, &ao, &bo, &n, &k, &ldA, &ldB,
-	&ldC, &oA, &oB, &oC))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|CCOOnnnnnnnn",
+        kwlist, &A, &B, &C, &uplo_, &trans_, &ao, &bo, &_n, &_k, &_ldA, &_ldB,
+	&_ldC, &_oA, &_oB, &_oC))
         return NULL;
     uplo = (char) uplo_;
     trans = (char) trans_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ccOOiiiiiiii",
-        kwlist, &A, &B, &C, &uplo, &trans, &ao, &bo, &n, &k, &ldA, &ldB,
-	&ldC, &oA, &oB, &oC))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ccOOnnnnnnnn",
+        kwlist, &A, &B, &C, &uplo, &trans, &ao, &bo, &_n, &_k, &_ldA, &_ldB,
+	&_ldC, &_oA, &_oB, &_oC))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_k, &k) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldB, &ldB) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldC, &ldC) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oB, &oB) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oC, &oC) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -3372,7 +3665,7 @@ static PyObject* syr2k(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!ao) a.d = 1.0;
             if (!bo) b.d = 0.0;
             Py_BEGIN_ALLOW_THREADS
-            dsyr2k_(&uplo, &trans, &n, &k, &a.d, MAT_BUFD(A)+oA, &ldA,
+            BLAS_FUNC(dsyr2k)(&uplo, &trans, &n, &k, &a.d, MAT_BUFD(A)+oA, &ldA,
                 MAT_BUFD(B)+oB, &ldB, &b.d, MAT_BUFD(C)+oC, &ldC);
             Py_END_ALLOW_THREADS
             break;
@@ -3386,7 +3679,7 @@ static PyObject* syr2k(PyObject *self, PyObject *args, PyObject *kwrds)
             if (!bo) b.z = _Cbuild(0.0,0.0);
 #endif
             Py_BEGIN_ALLOW_THREADS
-            zsyr2k_(&uplo, &trans, &n, &k, &a.z, MAT_BUFZ(A)+oA, &ldA,
+            BLAS_FUNC(zsyr2k)(&uplo, &trans, &n, &k, &a.z, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(B)+oB, &ldB, &b.z, MAT_BUFZ(C)+oC, &ldC);
             Py_END_ALLOW_THREADS
             break;
@@ -3448,7 +3741,7 @@ static PyObject* her2k(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *B, *C;
     PyObject *ao=NULL, *bo=NULL;
     number a, b;
-    int n=-1, k=-1, ldA=0, ldB=0, ldC=0, oA = 0, oB = 0, oC = 0;
+    CBLAS_INT n=-1, k=-1, ldA=0, ldB=0, ldC=0, oA = 0, oB = 0, oC = 0;
 #if PY_MAJOR_VERSION >= 3
     int trans_ = 'N', uplo_ = 'L';
 #endif
@@ -3456,20 +3749,31 @@ static PyObject* her2k(PyObject *self, PyObject *args, PyObject *kwrds)
     char *kwlist[] = {"A", "B", "C", "uplo", "trans", "alpha", "beta",
         "n", "k", "ldA", "ldB", "ldC", "offsetA", "offsetB", "offsetC",
         NULL};
+    Py_ssize_t _n = n, _k = k, _ldA = ldA, _ldB = ldB, _ldC = ldC, _oA = oA, _oB = oB, _oC = oC;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|CCOOiiiiiiii",
-        kwlist, &A, &B, &C, &uplo_, &trans_, &ao, &bo, &n, &k, &ldA, &ldB,
-	&ldC, &oA, &oB, &oC))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|CCOOnnnnnnnn",
+        kwlist, &A, &B, &C, &uplo_, &trans_, &ao, &bo, &_n, &_k, &_ldA, &_ldB,
+	&_ldC, &_oA, &_oB, &_oC))
         return NULL;
     uplo = (char) uplo_;
     trans = (char) trans_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ccOOiiiiiiii",
-        kwlist, &A, &B, &C, &uplo, &trans, &ao, &bo, &n, &k, &ldA, &ldB,
-	&ldC, &oA, &oB, &oC))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OOO|ccOOnnnnnnnn",
+        kwlist, &A, &B, &C, &uplo, &trans, &ao, &bo, &_n, &_k, &_ldA, &_ldB,
+	&_ldC, &_oA, &_oB, &_oC))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_k, &k) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldB, &ldB) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldC, &ldC) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oB, &oB) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oC, &oC) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -3532,7 +3836,7 @@ static PyObject* her2k(PyObject *self, PyObject *args, PyObject *kwrds)
         case DOUBLE:
             if (!ao) a.d = 1.0;
             Py_BEGIN_ALLOW_THREADS
-            dsyr2k_(&uplo, &trans, &n, &k, &a.d, MAT_BUFD(A)+oA, &ldA,
+            BLAS_FUNC(dsyr2k)(&uplo, &trans, &n, &k, &a.d, MAT_BUFD(A)+oA, &ldA,
                 MAT_BUFD(B)+oB, &ldB, &b.d, MAT_BUFD(C)+oC, &ldC);
             Py_END_ALLOW_THREADS
             break;
@@ -3544,7 +3848,7 @@ static PyObject* her2k(PyObject *self, PyObject *args, PyObject *kwrds)
 	    if (!ao) a.z = _Cbuild(1.0,0.0);
 #endif
             Py_BEGIN_ALLOW_THREADS
-            zher2k_(&uplo, &trans, &n, &k, &a.z, MAT_BUFZ(A)+oA, &ldA,
+            BLAS_FUNC(zher2k)(&uplo, &trans, &n, &k, &a.z, MAT_BUFZ(A)+oA, &ldA,
                 MAT_BUFZ(B)+oB, &ldB, &b.d, MAT_BUFZ(C)+oC, &ldC);
             Py_END_ALLOW_THREADS
             break;
@@ -3603,29 +3907,38 @@ static PyObject* trmm(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *B;
     PyObject *ao=NULL;
     number a;
-    int m=-1, n=-1, ldA=0, ldB=0, oA=0, oB=0;
+    CBLAS_INT m=-1, n=-1, ldA=0, ldB=0, oA=0, oB=0;
 #if PY_MAJOR_VERSION >= 3
     int side_ = 'L', uplo_ = 'L', transA_ = 'N', diag_ = 'N';
 #endif
     char side = 'L', uplo = 'L', transA = 'N', diag = 'N';
     char *kwlist[] = {"A", "B", "side", "uplo", "transA", "diag",
         "alpha", "m", "n", "ldA", "ldB", "offsetA", "offsetB", NULL};
+    Py_ssize_t _m = m, _n = n, _ldA = ldA, _ldB = ldB, _oA = oA, _oB = oB;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCCOiiiiii",
-        kwlist, &A, &B, &side_, &uplo_, &transA_, &diag_, &ao, &m, &n,
-        &ldA, &ldB, &oA, &oB))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCCOnnnnnn",
+        kwlist, &A, &B, &side_, &uplo_, &transA_, &diag_, &ao, &_m, &_n,
+        &_ldA, &_ldB, &_oA, &_oB))
         return NULL;
     side = (char) side_;
     uplo = (char) uplo_;
     transA = (char) transA_;
     diag = (char) diag_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccccOiiiiii",
-        kwlist, &A, &B, &side, &uplo, &transA, &diag, &ao, &m, &n, &ldA,
-        &ldB, &oA, &oB))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccccOnnnnnn",
+        kwlist, &A, &B, &side, &uplo, &transA, &diag, &ao, &_m, &_n, &_ldA,
+        &_ldB, &_oA, &_oB))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_m, &m) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldB, &ldB) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oB, &oB) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -3670,7 +3983,7 @@ static PyObject* trmm(PyObject *self, PyObject *args, PyObject *kwrds)
         case DOUBLE:
             if (!ao) a.d = 1.0;
             Py_BEGIN_ALLOW_THREADS
-            dtrmm_(&side, &uplo, &transA, &diag, &m, &n, &a.d,
+            BLAS_FUNC(dtrmm)(&side, &uplo, &transA, &diag, &m, &n, &a.d,
                 MAT_BUFD(A)+oA, &ldA, MAT_BUFD(B)+oB, &ldB);
             Py_END_ALLOW_THREADS
             break;
@@ -3682,7 +3995,7 @@ static PyObject* trmm(PyObject *self, PyObject *args, PyObject *kwrds)
    	    if (!ao) a.z = _Cbuild(1.0,0.0);
 #endif
             Py_BEGIN_ALLOW_THREADS
-            ztrmm_(&side, &uplo, &transA, &diag, &m, &n, &a.z,
+            BLAS_FUNC(ztrmm)(&side, &uplo, &transA, &diag, &m, &n, &a.z,
                 MAT_BUFZ(A)+oA, &ldA, MAT_BUFZ(B)+oB, &ldB);
             Py_END_ALLOW_THREADS
             break;
@@ -3744,29 +4057,38 @@ static PyObject* trsm(PyObject *self, PyObject *args, PyObject *kwrds)
     matrix *A, *B;
     PyObject *ao=NULL;
     number a;
-    int m=-1, n=-1, ldA=0, ldB=0, oA=0, oB=0;
+    CBLAS_INT m=-1, n=-1, ldA=0, ldB=0, oA=0, oB=0;
 #if PY_MAJOR_VERSION >= 3
     int side_ = 'L', uplo_ = 'L', transA_ = 'N', diag_ = 'N';
 #endif
     char side = 'L', uplo = 'L', transA = 'N', diag = 'N';
     char *kwlist[] = {"A", "B", "side", "uplo", "transA", "diag",
         "alpha", "m", "n", "ldA", "ldB", "offsetA", "offsetB", NULL};
+    Py_ssize_t _m = m, _n = n, _ldA = ldA, _ldB = ldB, _oA = oA, _oB = oB;
 
 #if PY_MAJOR_VERSION >= 3
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCCOiiiiii",
-        kwlist, &A, &B, &side_, &uplo_, &transA_, &diag_, &ao, &m, &n,
-        &ldA, &ldB, &oA, &oB))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|CCCCOnnnnnn",
+        kwlist, &A, &B, &side_, &uplo_, &transA_, &diag_, &ao, &_m, &_n,
+        &_ldA, &_ldB, &_oA, &_oB))
         return NULL;
     side = (char) side_;
     uplo = (char) uplo_;
     transA = (char) transA_;
     diag = (char) diag_;
 #else
-    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccccOiiiiii",
-        kwlist, &A, &B, &side, &uplo, &transA, &diag, &ao, &m, &n, &ldA,
-        &ldB, &oA, &oB))
+    if (!PyArg_ParseTupleAndKeywords(args, kwrds, "OO|ccccOnnnnnn",
+        kwlist, &A, &B, &side, &uplo, &transA, &diag, &ao, &_m, &_n, &_ldA,
+        &_ldB, &_oA, &_oB))
         return NULL;
 #endif
+
+    if (cvxopt_cblas_int_from_py_ssize_t(_m, &m) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_n, &n) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldA, &ldA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_ldB, &ldB) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oA, &oA) < 0 ||
+        cvxopt_cblas_int_from_py_ssize_t(_oB, &oB) < 0)
+        return NULL;
 
     if (!Matrix_Check(A)) err_mtrx("A");
     if (!Matrix_Check(B)) err_mtrx("B");
@@ -3811,7 +4133,7 @@ static PyObject* trsm(PyObject *self, PyObject *args, PyObject *kwrds)
         case DOUBLE:
             if (!ao) a.d = 1.0;
              Py_BEGIN_ALLOW_THREADS
-            dtrsm_(&side, &uplo, &transA, &diag, &m, &n, &a.d,
+            BLAS_FUNC(dtrsm)(&side, &uplo, &transA, &diag, &m, &n, &a.d,
                 MAT_BUFD(A)+oA, &ldA, MAT_BUFD(B)+oB, &ldB);
             Py_END_ALLOW_THREADS
             break;
@@ -3823,7 +4145,7 @@ static PyObject* trsm(PyObject *self, PyObject *args, PyObject *kwrds)
   	    if (!ao) a.z = _Cbuild(1.0,0.0);
 #endif
             Py_BEGIN_ALLOW_THREADS
-            ztrsm_(&side, &uplo, &transA, &diag, &m, &n, &a.z,
+            BLAS_FUNC(ztrsm)(&side, &uplo, &transA, &diag, &m, &n, &a.z,
                 MAT_BUFZ(A)+oA, &ldA, MAT_BUFZ(B)+oB, &ldB);
             Py_END_ALLOW_THREADS
             break;
