@@ -22,6 +22,7 @@ BUILD_FFTW = 0
 
 # Set to 1 if you are installing the glpk module.
 BUILD_GLPK = 0
+GLPK_EXTRA_LINK_ARGS = []
 
 # Set to 1 if you are installing the DSDP module.
 BUILD_DSDP = 0
@@ -110,6 +111,8 @@ FFTW_INC_DIR = os.environ.get("CVXOPT_FFTW_INC_DIR",FFTW_INC_DIR)
 BUILD_GLPK = int(os.environ.get("CVXOPT_BUILD_GLPK",BUILD_GLPK))
 GLPK_LIB_DIR = os.environ.get("CVXOPT_GLPK_LIB_DIR",GLPK_LIB_DIR)
 GLPK_INC_DIR = os.environ.get("CVXOPT_GLPK_INC_DIR",GLPK_INC_DIR)
+GLPK_EXTRA_LINK_ARGS = os.environ.get("CVXOPT_GLPK_EXTRA_LINK_ARGS",GLPK_EXTRA_LINK_ARGS)
+if type(GLPK_EXTRA_LINK_ARGS) is str: GLPK_EXTRA_LINK_ARGS = GLPK_EXTRA_LINK_ARGS.strip().split(';')
 BUILD_DSDP = int(os.environ.get("CVXOPT_BUILD_DSDP",BUILD_DSDP))
 DSDP_LIB_DIR = os.environ.get("CVXOPT_DSDP_LIB_DIR",DSDP_LIB_DIR)
 DSDP_INC_DIR = os.environ.get("CVXOPT_DSDP_INC_DIR",DSDP_INC_DIR)
@@ -163,6 +166,7 @@ if BUILD_GLPK:
     glpk = Extension('glpk', libraries = ['glpk'],
         include_dirs = [ GLPK_INC_DIR ],
         library_dirs = [ GLPK_LIB_DIR ],
+        extra_link_args = GLPK_EXTRA_LINK_ARGS,
         sources = ['src/C/glpk.c'] )
     extmods += [glpk];
 
