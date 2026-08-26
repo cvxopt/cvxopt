@@ -21,9 +21,35 @@
 
 #include "Python.h"
 #include "structmember.h"
-#include "blas_redefines.h"
+#include "scipy_blas_defines.h"
 
 #include "assert.h"
+
+static int
+cvxopt_cblas_int_from_py_ssize_t(Py_ssize_t value, CBLAS_INT *result)
+{
+  if (value < -((Py_ssize_t) CBLAS_INT_MAX) - 1 ||
+      value > (Py_ssize_t) CBLAS_INT_MAX) {
+    PyErr_SetString(PyExc_OverflowError, "integer out of range for CBLAS_INT");
+    return -1;
+  }
+
+  *result = (CBLAS_INT) value;
+  return 0;
+}
+
+static int
+cvxopt_cblas_int_array_from_py_ssize_t(CBLAS_INT *dest, Py_ssize_t *src, Py_ssize_t n)
+{
+  Py_ssize_t i;
+
+  for (i = 0; i < n; i++) {
+    if (cvxopt_cblas_int_from_py_ssize_t(src[i], &dest[i]) < 0)
+      return -1;
+  }
+
+  return 0;
+}
 
 /* ANSI99 complex is disabled during build of CHOLMOD */
 
@@ -130,6 +156,49 @@ import_cvxopt(void)
 #define MAT_NCOLS(O) ((matrix *)O)->ncols
 #define MAT_LGT(O)   (MAT_NROWS(O)*MAT_NCOLS(O))
 #define MAT_ID(O)    ((matrix *)O)->id
+
+/* Returns a CBLAS_INT array of length n reflecting an integer matrix's
+ * Py_ssize_t buffer, suitable for passing directly to a BLAS_FUNC/LAPACK
+ * call as a pivot/permutation argument.  When CBLAS_INT and Py_ssize_t are
+ * the same width this aliases iarr's buffer directly; otherwise it
+ * allocates a temporary copy.  If populate is nonzero the copy is
+ * initialized from iarr's current contents (overflow-checked); otherwise
+ * it is left uninitialized, for arguments that are pure LAPACK output.
+ * Returns NULL with a Python exception set on failure. */
+static CBLAS_INT *
+cvxopt_cblas_int_acquire(matrix *iarr, Py_ssize_t n, int populate)
+{
+#if (CBLAS_INT_SIZE != SIZEOF_SIZE_T)
+  CBLAS_INT *ptr = malloc(n * sizeof(CBLAS_INT));
+  if (!ptr) {
+    PyErr_NoMemory();
+    return NULL;
+  }
+  if (populate && cvxopt_cblas_int_array_from_py_ssize_t(ptr, MAT_BUFI(iarr), n) < 0) {
+    free(ptr);
+    return NULL;
+  }
+  return ptr;
+#else
+  return MAT_BUFI(iarr);
+#endif
+}
+
+/* Releases an array obtained from cvxopt_cblas_int_acquire().  If writeback
+ * is nonzero, copies ptr's contents back into iarr first (a no-op when
+ * acquire aliased iarr's buffer directly).  A no-op if ptr is NULL. */
+static void
+cvxopt_cblas_int_release(matrix *iarr, CBLAS_INT *ptr, Py_ssize_t n, int writeback)
+{
+#if (CBLAS_INT_SIZE != SIZEOF_SIZE_T)
+  if (!ptr) return;
+  if (writeback) {
+    Py_ssize_t i;
+    for (i = 0; i < n; i++) MAT_BUFI(iarr)[i] = ptr[i];
+  }
+  free(ptr);
+#endif
+}
 
 #define SP_NCOLS(O)  ((spmatrix *)O)->obj->ncols
 #define SP_NROWS(O)  ((spmatrix *)O)->obj->nrows

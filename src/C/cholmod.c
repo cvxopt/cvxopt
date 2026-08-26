@@ -963,8 +963,10 @@ static char doc_diag[] =
     "F         a numeric Cholesky factor obtained by a call to\n"
     "          cholmod.numeric computed with options['supernodal'] = 2";
 
-extern void dcopy_(int *n, double *x, int *incx, double *y, int *incy);
-extern void zcopy_(int *n, complex_t *x, int *incx, complex_t *y, int *incy);
+extern void BLAS_FUNC(dcopy)(CBLAS_INT *n, double *x, CBLAS_INT *incx, double *y,
+    CBLAS_INT *incy);
+extern void BLAS_FUNC(zcopy)(CBLAS_INT *n, complex_t *x, CBLAS_INT *incx,
+    complex_t *y, CBLAS_INT *incy);
 
 static PyObject* diag(PyObject *self, PyObject *args)
 {
@@ -1013,12 +1015,13 @@ static PyObject* diag(PyObject *self, PyObject *args)
             ((int_t *) L->super)[k];
         nrows = (int)((int_t *) L->pi)[k+1] - ((int_t *) L->pi)[k];
         incy = nrows+1;
+        CBLAS_INT blas_ncols = ncols, blas_incx = incx, blas_incy = incy;
         if (MAT_ID(d) == DOUBLE)
-	    dcopy_(&ncols, ((double *) L->x) + ((int_t *) L->px)[k],
-                &incy, MAT_BUFD(d)+strt, &incx);
+	    BLAS_FUNC(dcopy)(&blas_ncols, ((double *) L->x) + ((int_t *) L->px)[k],
+                &blas_incy, MAT_BUFD(d)+strt, &blas_incx);
         else
-	    zcopy_(&ncols, ((complex_t *) L->x) + ((int_t *) L->px)[k],
-                &incy, MAT_BUFZ(d)+strt, &incx);
+	    BLAS_FUNC(zcopy)(&blas_ncols, ((complex_t *) L->x) + ((int_t *) L->px)[k],
+                &blas_incy, MAT_BUFZ(d)+strt, &blas_incx);
         strt += ncols;
     }
     return (PyObject *)d;
