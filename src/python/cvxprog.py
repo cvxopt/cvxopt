@@ -1175,7 +1175,7 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
                         MAX_RELAXED_ITERS ):
                         # Do a standard line search.
                         if newphi <= phi + ALPHA * step * dphi:
-                            relaxed_iters == 0
+                            relaxed_iters = 0
                             backtrack = False
                         else:
                             step *= BETA
