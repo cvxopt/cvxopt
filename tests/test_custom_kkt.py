@@ -387,5 +387,42 @@ def l1regls(A, b):
     return sol['x'][:n],sol['status']
 
 
+
+
+class TestCustomYRequiresB(unittest.TestCase):
+    """A custom y-space (ynewcopy etc.) without b must raise ValueError."""
+
+    @staticmethod
+    def _kkt(*args, **kwargs):
+        raise AssertionError("kktsolver must not be reached")
+
+    @staticmethod
+    def _A(x, y, trans='N', alpha=1.0, beta=0.0):
+        pass
+
+    @staticmethod
+    def _F(x=None, z=None):
+        if x is None:
+            return 0, matrix(0.0, (2, 1))
+        return matrix(0.0, (1, 1)), matrix(0.0, (1, 2))
+
+    def test_coneqp(self):
+        P = matrix([[1.0, 0.0], [0.0, 1.0]])
+        q = matrix([1.0, 1.0])
+        with self.assertRaisesRegex(ValueError, "requires b"):
+            solvers.coneqp(P, q, kktsolver=self._kkt, ynewcopy=matrix)
+
+    def test_cpl(self):
+        c = matrix([1.0, 1.0])
+        with self.assertRaisesRegex(ValueError, "requires b"):
+            solvers.cpl(c, self._F, A=self._A, kktsolver=self._kkt,
+                        ynewcopy=matrix)
+
+    def test_cp(self):
+        with self.assertRaisesRegex(ValueError, "requires b"):
+            solvers.cp(self._F, A=self._A, kktsolver=self._kkt,
+                       ynewcopy=matrix)
+
+
 if __name__ == '__main__':
     unittest.main()
