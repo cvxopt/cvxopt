@@ -20,6 +20,9 @@ classifiers = [
     "Topic :: Scientific/Engineering",
 ]
 
+[project.optional-dependencies]
+mosek = ["mosek"]
+
 [project.urls]
 Homepage = "https://cvxopt.org"
 Source = "https://github.com/cvxopt/cvxopt"
