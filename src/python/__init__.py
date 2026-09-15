@@ -158,15 +158,9 @@ def getseed():
         raise NotImplementedError("getseed() not installed (requires GSL)")
     
 
-import sys
-if sys.version_info[0] < 3:
-    import __builtin__
-    omax = __builtin__.max
-    omin = __builtin__.min
-else:
-    omax = max
-    omin = min
-    from functools import reduce
+from functools import reduce
+omax = max
+omin = min
 
 
 def max(*args):
@@ -185,7 +179,7 @@ def max(*args):
     '''    
     
     if len(args) == 1 and type(args[0]).__name__ in \
-            ['list', 'tuple', 'xrange', 'range', 'generator']: 
+            ['list', 'tuple', 'range', 'generator']: 
         return +reduce(cvxopt.base.emax, *args)
     elif len(args) == 1 and type(args[0]) is cvxopt.base.matrix:
         return omax(args[0])
@@ -214,7 +208,7 @@ def min(*args):
     '''
 
     if len(args) == 1 and type(args[0]).__name__ in \
-            ['list', 'tuple', 'xrange', 'range', 'generator']: 
+            ['list', 'tuple', 'range', 'generator']: 
         return +reduce(cvxopt.base.emin, *args)
     elif len(args) == 1 and type(args[0]) is cvxopt.base.matrix:
         return omin(args[0])
@@ -243,7 +237,7 @@ def mul(*args):
     '''
 
     if len(args) == 1 and type(args[0]).__name__ in \
-            ['list', 'tuple', 'xrange', 'range', 'generator']: 
+            ['list', 'tuple', 'range', 'generator']: 
         return +reduce(cvxopt.base.emul, *args)
     else:
         return +reduce(cvxopt.base.emul, args)
@@ -265,7 +259,7 @@ def div(*args):
     '''
 
     if len(args) == 1 and type(args[0]).__name__ in \
-            ['list', 'tuple', 'xrange', 'range', 'generator']: 
+            ['list', 'tuple', 'range', 'generator']: 
         return +reduce(cvxopt.base.ediv, *args)
     else:
         return +reduce(cvxopt.base.ediv, args)
