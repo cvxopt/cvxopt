@@ -512,7 +512,7 @@ def cpl(c, F, G = None, h = None, dims = None, A = None, b = None,
         if not operatorA and b.size[0] != A.size[0]:
             raise TypeError("'b' must have length %d" %A.size[0])
     if b is None and customy:  
-        raise ValueEror("use of non vector type for y requires b")
+        raise ValueError("use of non vector type for y requires b")
 
    
     # kktsolver(x, z, W) returns a routine for solving
@@ -1724,7 +1724,7 @@ def cp(F, G = None, h = None, dims = None, A = None, b = None,
         if not operatorA and b.size[0] != A.size[0]:
             raise TypeError("'b' must have length %d" %A.size[0])
     if b is None and customy:  
-        raise ValueEror("use of non vector type for y requires b")
+        raise ValueError("use of non vector type for y requires b")
 
 
     if xnewcopy is None: xnewcopy = matrix 
