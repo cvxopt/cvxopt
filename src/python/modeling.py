@@ -26,11 +26,7 @@ piecewise-linear objective and constraint functions.
 
 from cvxopt.base import matrix, spmatrix
 from cvxopt import blas, solvers 
-import sys
-if sys.version_info[0] < 3: 
-    import __builtin__ as builtins
-else:
-    import builtins
+import builtins
 
 __all__ = ["variable", "constraint", "op", "min", "max", "sum", "dot"]
  
@@ -185,29 +181,15 @@ class variable(object):
             "implemented for 'variable' objects")
 
 
-    if sys.version_info[0] < 3: 
+    def __truediv__(self,other):
 
-        def __div__(self,other):
-
-            return (+self).__div__(other)
+        return (+self).__truediv__(other)
 
 
-        def __idiv__(self,other):
+    def __itruediv__(self,other):
 
-            raise NotImplementedError("in-place division not implemented "\
-                "for 'variable' objects")
-
-    else:
-    
-        def __truediv__(self,other):
-
-            return (+self).__truediv__(other)
-
-
-        def __itruediv__(self,other):
-
-            raise NotImplementedError("in-place division not implemented "\
-                "for 'variable' objects")
+        raise NotImplementedError("in-place division not implemented "\
+            "for 'variable' objects")
 
 
     def __eq__(self,other):
@@ -240,11 +222,9 @@ class variable(object):
         return (+self).__getitem__(key)
 
 
-    if sys.version_info[0] >= 3: 
+    def __hash__(self):
 
-        def __hash__(self):
-
-            return id(self)
+        return id(self)
 
 
 class _function(object):
@@ -820,64 +800,34 @@ class _function(object):
         else: 
             raise TypeError('incompatible dimensions or types')
 
-    if sys.version_info[0] < 3: 
+    def __truediv__(self,other):
 
-        def __div__(self,other):
+        if type(other) is int or type(other) is float:
+            return self.__mul__(1.0/other)
 
-            if type(other) is int or type(other) is float:
-                return self.__mul__(1.0/other)
+        elif _isdmatrix(other) and other.size == (1,1):
+            return self.__mul__(1.0/other[0])
 
-            elif _isdmatrix(other) and other.size == (1,1):
-                return self.__mul__(1.0/other[0])
-
-            else:
-                return NotImplemented
-
-    else:
-
-        def __truediv__(self,other):
-
-            if type(other) is int or type(other) is float:
-                return self.__mul__(1.0/other)
-
-            elif _isdmatrix(other) and other.size == (1,1):
-                return self.__mul__(1.0/other[0])
-
-            else:
-                return NotImplemented
+        else:
+            return NotImplemented
 
 
 
-    def __rdiv__(self,other):
+    def __rtruediv__(self,other):
 
         return NotImplemented
 
 
-    if sys.version_info[0] < 3: 
+    def __itruediv__(self,other):
 
-        def __idiv__(self,other):
+        if type(other) is int or type(other) is float:
+            return self.__imul__(1.0/other)
 
-            if type(other) is int or type(other) is float:
-                return self.__imul__(1.0/other)
+        elif _isdmatrix(other) and other.size == (1,1):
+            return self.__imul__(1.0/other[0])
 
-            elif _isdmatrix(other) and other.size == (1,1):
-                return self.__imul__(1.0/other[0])
-
-            else:
-                return NotImplemented
-
-    else:
-
-        def __itruediv__(self,other):
-
-            if type(other) is int or type(other) is float:
-                return self.__imul__(1.0/other)
-
-            elif _isdmatrix(other) and other.size == (1,1):
-                return self.__imul__(1.0/other[0])
-
-            else:
-                return NotImplemented
+        else:
+            return NotImplemented
         
 
     def __abs__(self):
